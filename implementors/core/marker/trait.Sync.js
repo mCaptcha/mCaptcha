@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["guard"] = [{"text":"impl Sync for Data","synthetic":true,"types":[]},{"text":"impl Sync for ServiceError","synthetic":true,"types":[]},{"text":"impl Sync for ErrorToResponse","synthetic":true,"types":[]},{"text":"impl Sync for Server","synthetic":true,"types":[]},{"text":"impl Sync for DatabaseBuilder","synthetic":true,"types":[]},{"text":"impl Sync for Database","synthetic":true,"types":[]},{"text":"impl Sync for Settings","synthetic":true,"types":[]},{"text":"impl Sync for SETTINGS","synthetic":true,"types":[]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

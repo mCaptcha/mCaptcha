@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["guard"] = [{"text":"impl Unpin for Data","synthetic":true,"types":[]},{"text":"impl Unpin for ServiceError","synthetic":true,"types":[]},{"text":"impl Unpin for ErrorToResponse","synthetic":true,"types":[]},{"text":"impl Unpin for Server","synthetic":true,"types":[]},{"text":"impl Unpin for DatabaseBuilder","synthetic":true,"types":[]},{"text":"impl Unpin for Database","synthetic":true,"types":[]},{"text":"impl Unpin for Settings","synthetic":true,"types":[]},{"text":"impl Unpin for SETTINGS","synthetic":true,"types":[]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

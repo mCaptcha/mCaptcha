@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["guard"] = [{"text":"impl Freeze for Data","synthetic":true,"types":[]},{"text":"impl Freeze for ServiceError","synthetic":true,"types":[]},{"text":"impl Freeze for ErrorToResponse","synthetic":true,"types":[]},{"text":"impl Freeze for Server","synthetic":true,"types":[]},{"text":"impl Freeze for DatabaseBuilder","synthetic":true,"types":[]},{"text":"impl Freeze for Database","synthetic":true,"types":[]},{"text":"impl Freeze for Settings","synthetic":true,"types":[]},{"text":"impl Freeze for SETTINGS","synthetic":true,"types":[]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["set_database_url",""],["set_from_database_url",""]],"struct":[["Database",""],["DatabaseBuilder",""],["Server",""],["Settings",""]]});

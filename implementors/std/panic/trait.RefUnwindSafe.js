@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["guard"] = [{"text":"impl !RefUnwindSafe for Data","synthetic":true,"types":[]},{"text":"impl RefUnwindSafe for ServiceError","synthetic":true,"types":[]},{"text":"impl RefUnwindSafe for ErrorToResponse","synthetic":true,"types":[]},{"text":"impl RefUnwindSafe for Server","synthetic":true,"types":[]},{"text":"impl RefUnwindSafe for DatabaseBuilder","synthetic":true,"types":[]},{"text":"impl RefUnwindSafe for Database","synthetic":true,"types":[]},{"text":"impl RefUnwindSafe for Settings","synthetic":true,"types":[]},{"text":"impl RefUnwindSafe for SETTINGS","synthetic":true,"types":[]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
