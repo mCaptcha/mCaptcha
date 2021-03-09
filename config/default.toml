@@ -1,0 +1,30 @@
+debug = true
+
+[database]
+# This section deals with the database location and how to access it
+# Please note that at the moment, we have support for only postgresqa.
+# Example, if you are Batman, your config would be:
+# hostname = "batcave.org"
+# port = "5432"
+# username = "batman"
+# password = "somereallycomplicatedBatmanpassword"
+hostname = "localhost"
+port = "5432"
+username = "postgres"
+password = "password"
+name = "webhunt-postgress"
+pool = 4
+
+# This section deals with the configuration of the actual server
+[server]
+cookie_secret = "Zae0OOxf^bOJ#zN^&k7VozgW&QAx%n02TQFXpRMG4cCU0xMzgu3dna@tQ9dvc&TlE6p*n#kXUdLZJCQsuODIV%r$@o4%770ePQB7m#dpV!optk01NpY0@615w5e2Br4d"
+# The port at which you want authentication to listen to
+# takes a number, choose from 1000-10000 if you dont know what you are doing
+port = 7000
+#IP address. Enter 0.0.0.0 to listen on all availale addresses
+ip= "0.0.0.0" 
+# enter your hostname, eg: example.com
+domain = "localhost"
+allow_registration = true
+# directory containing static files
+static_files_dir = "./frontend/dist"
