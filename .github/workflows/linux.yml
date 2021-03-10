@@ -103,6 +103,8 @@ jobs:
         with:
           command: doc
           args: --no-deps --workspace --all-features
+        env:
+          DATABASE_URL: postgres://postgres:password@localhost:5432/postgres
 
       - name: Deploy to GitHub Pages
         if: matrix.version == 'stable' && (github.repository == 'mCaptcha/guard')
