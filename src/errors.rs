@@ -1,4 +1,19 @@
-use std::io::{Error as IOError, ErrorKind as IOErrorKind};
+/*
+* Copyright (C) 2021  Aravinth Manivannan <realaravinth@batsense.net>
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as
+* published by the Free Software Foundation, either version 3 of the
+* License, or (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+*
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
 
 use actix_web::{
     dev::HttpResponseBuilder,
@@ -11,7 +26,7 @@ use argon2_creds::errors::CredsError;
 
 use derive_more::{Display, Error};
 use log::debug;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 // use validator::ValidationErrors;
 
 use std::convert::From;
@@ -23,14 +38,11 @@ pub enum ServiceError {
     InternalServerError,
     #[display(fmt = "The value you entered for email is not an email")] //405j
     NotAnEmail,
-    #[display(fmt = "File not found")]
-    FileNotFound,
-    #[display(fmt = "File exists")]
-    FileExists,
-    #[display(fmt = "Permission denied")]
-    PermissionDenied,
-    #[display(fmt = "Invalid credentials")]
-    InvalidCredentials,
+    #[display(fmt = "Wrong password")]
+    WrongPassword,
+    #[display(fmt = "Username not found")]
+    UsernameNotFound,
+
     #[display(fmt = "Authorization required")]
     AuthorizationRequired,
 
@@ -51,15 +63,16 @@ pub enum ServiceError {
     /// when the value passed contains profainity
     #[display(fmt = "Username not available")]
     UsernameTaken,
-    /// when a question is already answered
-    #[display(fmt = "Already answered")]
-    AlreadyAnswered,
+    #[display(fmt = "Passsword too short")]
+    PasswordTooShort,
+    #[display(fmt = "Username too long")]
+    PasswordTooLong,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Deserialize)]
 #[cfg(not(tarpaulin_include))]
-struct ErrorToResponse {
-    error: String,
+pub struct ErrorToResponse {
+    pub error: String,
 }
 
 impl ResponseError for ServiceError {
@@ -75,28 +88,15 @@ impl ResponseError for ServiceError {
         match *self {
             ServiceError::InternalServerError => StatusCode::INTERNAL_SERVER_ERROR,
             ServiceError::NotAnEmail => StatusCode::BAD_REQUEST,
-            ServiceError::FileNotFound => StatusCode::NOT_FOUND,
-            ServiceError::FileExists => StatusCode::METHOD_NOT_ALLOWED,
-            ServiceError::PermissionDenied => StatusCode::UNAUTHORIZED,
-            ServiceError::InvalidCredentials => StatusCode::UNAUTHORIZED,
+            ServiceError::WrongPassword => StatusCode::UNAUTHORIZED,
+            ServiceError::UsernameNotFound => StatusCode::UNAUTHORIZED,
             ServiceError::AuthorizationRequired => StatusCode::UNAUTHORIZED,
             ServiceError::ProfainityError => StatusCode::BAD_REQUEST,
             ServiceError::BlacklistError => StatusCode::BAD_REQUEST,
+            ServiceError::PasswordTooShort => StatusCode::BAD_REQUEST,
+            ServiceError::PasswordTooLong => StatusCode::BAD_REQUEST,
             ServiceError::UsernameCaseMappedError => StatusCode::BAD_REQUEST,
             ServiceError::UsernameTaken => StatusCode::BAD_REQUEST,
-            ServiceError::AlreadyAnswered => StatusCode::BAD_REQUEST,
-        }
-    }
-}
-
-impl From<IOError> for ServiceError {
-    fn from(e: IOError) -> ServiceError {
-        debug!("{:?}", &e);
-        match e.kind() {
-            IOErrorKind::NotFound => ServiceError::FileNotFound,
-            IOErrorKind::PermissionDenied => ServiceError::PermissionDenied,
-            IOErrorKind::AlreadyExists => ServiceError::FileExists,
-            _ => ServiceError::InternalServerError,
         }
     }
 }
@@ -110,7 +110,8 @@ impl From<CredsError> for ServiceError {
             CredsError::BlacklistError => ServiceError::BlacklistError,
             CredsError::NotAnEmail => ServiceError::NotAnEmail,
             CredsError::Argon2Error(_) => ServiceError::InternalServerError,
-            _ => ServiceError::InternalServerError,
+            CredsError::PasswordTooLong => ServiceError::PasswordTooLong,
+            CredsError::PasswordTooShort => ServiceError::PasswordTooShort,
         }
     }
 }

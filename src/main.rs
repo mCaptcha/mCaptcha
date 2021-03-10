@@ -24,6 +24,7 @@ use lazy_static::lazy_static;
 mod data;
 mod errors;
 //mod routes;
+mod api;
 mod settings;
 
 pub use data::Data;
@@ -35,24 +36,24 @@ lazy_static! {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    //    use routes::services;
+    use api::v1::services as v1_services;
 
-    //  let data = Data::new().await;
+    let data = Data::new().await;
     pretty_env_logger::init();
 
-    //   sqlx::migrate!("./migrations/").run(&data.db).await.unwrap();
+    sqlx::migrate!("./migrations/").run(&data.db).await.unwrap();
 
     HttpServer::new(move || {
         App::new()
             .wrap(middleware::Logger::default())
             .wrap(get_identity_service())
             .wrap(middleware::Compress::default())
-            //         .data(data.clone())
+            .data(data.clone())
             .wrap(middleware::NormalizePath::new(
                 middleware::normalize::TrailingSlash::Trim,
             ))
             .app_data(get_json_err())
-        //.configure(services)
+            .configure(v1_services)
     })
     .bind(SETTINGS.server.get_ip())
     .unwrap()
@@ -61,7 +62,7 @@ async fn main() -> std::io::Result<()> {
 }
 
 #[cfg(not(tarpaulin_include))]
-fn get_json_err() -> JsonConfig {
+pub fn get_json_err() -> JsonConfig {
     JsonConfig::default().error_handler(|err, _| {
         //debug!("JSON deserialization error: {:?}", &err);
         InternalError::new(err, StatusCode::BAD_REQUEST).into()
@@ -69,7 +70,7 @@ fn get_json_err() -> JsonConfig {
 }
 
 #[cfg(not(tarpaulin_include))]
-fn get_identity_service() -> IdentityService<CookieIdentityPolicy> {
+pub fn get_identity_service() -> IdentityService<CookieIdentityPolicy> {
     let cookie_secret = &SETTINGS.server.cookie_secret;
     IdentityService::new(
         CookieIdentityPolicy::new(cookie_secret.as_bytes())

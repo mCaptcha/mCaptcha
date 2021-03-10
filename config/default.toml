@@ -12,7 +12,7 @@ hostname = "localhost"
 port = "5432"
 username = "postgres"
 password = "password"
-name = "webhunt-postgress"
+name = "postgres"
 pool = 4
 
 # This section deals with the configuration of the actual server
@@ -28,3 +28,7 @@ domain = "localhost"
 allow_registration = true
 # directory containing static files
 static_files_dir = "./frontend/dist"
+
+
+[pow]
+salt = "asdl;kjfhjawehfpa;osdkjasdvjaksndfpoanjdfainsdfaijdsfajlkjdsaf;ajsdfweroire"

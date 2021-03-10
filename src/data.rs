@@ -15,7 +15,14 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+use actix::prelude::*;
 use argon2_creds::{Config, ConfigBuilder, PasswordPolicy};
+use m_captcha::{
+    cache::HashCache,
+    master::Master,
+    pow::ConfigBuilder as PoWConfigBuilder,
+    system::{System, SystemBuilder},
+};
 use sqlx::postgres::PgPoolOptions;
 use sqlx::PgPool;
 
@@ -25,6 +32,7 @@ use crate::SETTINGS;
 pub struct Data {
     pub db: PgPool,
     pub creds: Config,
+    pub captcha: System<HashCache>,
 }
 
 impl Data {
@@ -44,6 +52,20 @@ impl Data {
             .build()
             .unwrap();
 
-        Data { creds, db }
+        let master = Master::new().start();
+        let cache = HashCache::default().start();
+        let pow = PoWConfigBuilder::default()
+            .salt(SETTINGS.pow.salt.clone())
+            .build()
+            .unwrap();
+
+        let captcha = SystemBuilder::default()
+            .master(master)
+            .cache(cache)
+            .pow(pow)
+            .build()
+            .unwrap();
+
+        Data { creds, db, captcha }
     }
 }

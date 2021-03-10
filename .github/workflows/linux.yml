@@ -20,6 +20,22 @@ jobs:
     name: ${{ matrix.version }} - x86_64-unknown-linux-gnu
     runs-on: ubuntu-latest
 
+    services:
+
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: password
+          POSTGRES_USER: postgres
+          POSTGRES_DB: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
     steps:
       - uses: actions/checkout@v2
       - name: ⚡ Cache
@@ -37,6 +53,14 @@ jobs:
           toolchain: ${{ matrix.version }}-x86_64-unknown-linux-gnu
           profile: minimal
           override: true
+
+      - name: Run migrations
+        uses: actions-rs/cargo@v1
+        with:
+          command: run
+          args: --bin tests-migrate
+        env:
+          DATABASE_URL: postgres://postgres:password@localhost:5432/postgres
 
       - name: check build
         uses: actions-rs/cargo@v1

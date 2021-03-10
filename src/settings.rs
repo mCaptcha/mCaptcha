@@ -31,6 +31,11 @@ pub struct Server {
     pub ip: String,
 }
 
+#[derive(Debug, Clone, Deserialize)]
+pub struct Captcha {
+    pub salt: String,
+}
+
 impl Server {
     pub fn get_ip(&self) -> String {
         format!("{}:{}", self.ip, self.port)
@@ -79,6 +84,7 @@ pub struct Settings {
     pub debug: bool,
     pub database: Database,
     pub server: Server,
+    pub pow: Captcha,
 }
 
 #[cfg(not(tarpaulin_include))]
