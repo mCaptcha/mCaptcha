@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["is_authenticated",""]],"struct":[["Login",""],["Password",""],["Register",""],["SomeData",""],["signin",""],["signout",""],["signup",""]]});

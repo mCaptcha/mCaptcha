@@ -50,6 +50,28 @@
 <span id="47">47</span>
 <span id="48">48</span>
 <span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -68,7 +90,14 @@
 * along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
 */</span>
 
+<span class="kw">use</span> <span class="ident">actix</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">argon2_creds</span>::{<span class="ident">Config</span>, <span class="ident">ConfigBuilder</span>, <span class="ident">PasswordPolicy</span>};
+<span class="kw">use</span> <span class="ident">m_captcha</span>::{
+    <span class="ident">cache</span>::<span class="ident">HashCache</span>,
+    <span class="ident">master</span>::<span class="ident">Master</span>,
+    <span class="ident">pow</span>::<span class="ident">ConfigBuilder</span> <span class="kw">as</span> <span class="ident">PoWConfigBuilder</span>,
+    <span class="ident">system</span>::{<span class="ident">System</span>, <span class="ident">SystemBuilder</span>},
+};
 <span class="kw">use</span> <span class="ident">sqlx</span>::<span class="ident">postgres</span>::<span class="ident">PgPoolOptions</span>;
 <span class="kw">use</span> <span class="ident">sqlx</span>::<span class="ident">PgPool</span>;
 
@@ -78,6 +107,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Data</span> {
     <span class="kw">pub</span> <span class="ident">db</span>: <span class="ident">PgPool</span>,
     <span class="kw">pub</span> <span class="ident">creds</span>: <span class="ident">Config</span>,
+    <span class="kw">pub</span> <span class="ident">captcha</span>: <span class="ident">System</span><span class="op">&lt;</span><span class="ident">HashCache</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Data</span> {
@@ -97,7 +127,21 @@
             .<span class="ident">build</span>()
             .<span class="ident">unwrap</span>();
 
-        <span class="ident">Data</span> { <span class="ident">creds</span>, <span class="ident">db</span> }
+        <span class="kw">let</span> <span class="ident">master</span> <span class="op">=</span> <span class="ident">Master</span>::<span class="ident">new</span>().<span class="ident">start</span>();
+        <span class="kw">let</span> <span class="ident">cache</span> <span class="op">=</span> <span class="ident">HashCache</span>::<span class="ident">default</span>().<span class="ident">start</span>();
+        <span class="kw">let</span> <span class="ident">pow</span> <span class="op">=</span> <span class="ident">PoWConfigBuilder</span>::<span class="ident">default</span>()
+            .<span class="ident">salt</span>(<span class="ident">SETTINGS</span>.<span class="ident">pow</span>.<span class="ident">salt</span>.<span class="ident">clone</span>())
+            .<span class="ident">build</span>()
+            .<span class="ident">unwrap</span>();
+
+        <span class="kw">let</span> <span class="ident">captcha</span> <span class="op">=</span> <span class="ident">SystemBuilder</span>::<span class="ident">default</span>()
+            .<span class="ident">master</span>(<span class="ident">master</span>)
+            .<span class="ident">cache</span>(<span class="ident">cache</span>)
+            .<span class="ident">pow</span>(<span class="ident">pow</span>)
+            .<span class="ident">build</span>()
+            .<span class="ident">unwrap</span>();
+
+        <span class="ident">Data</span> { <span class="ident">creds</span>, <span class="ident">db</span>, <span class="ident">captcha</span> }
     }
 }
 </pre></div>
