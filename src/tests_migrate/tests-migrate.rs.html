@@ -37,6 +37,8 @@
 <span id="34">34</span>
 <span id="35">35</span>
 <span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -64,9 +66,11 @@
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">settings</span>::<span class="ident">Settings</span>;
 
 <span class="macro">lazy_static</span><span class="macro">!</span> {
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
     <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">SETTINGS</span>: <span class="ident">Settings</span> <span class="op">=</span> <span class="ident">Settings</span>::<span class="ident">new</span>().<span class="ident">unwrap</span>();
 }
 
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
 <span class="attribute">#[<span class="ident">actix_web</span>::<span class="ident">main</span>]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">main</span>() {
     <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">Data</span>::<span class="ident">new</span>().<span class="kw">await</span>;
