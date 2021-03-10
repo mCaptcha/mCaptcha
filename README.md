@@ -4,18 +4,21 @@
     <strong>Back-end component of mCaptcha</strong>
   </p>
 
-[![Documentation](https://img.shields.io/badge/docs-master-blue)](https://mcaptcha.github.io/mCaptcha/guard/index.html)
+[![Documentation](https://img.shields.io/badge/docs-master-blue)](https://mcaptcha.github.io/guard/guard/)
 ![CI (Linux)](<https://github.com/mCaptcha/guard/workflows/CI%20(Linux)/badge.svg>)
 [![dependency status](https://deps.rs/repo/github/mCaptcha/guard/status.svg)](https://deps.rs/repo/github/mCaptcha/guard)
 [![codecov](https://codecov.io/gh/mCaptcha/guard/branch/master/graph/badge.svg)](https://codecov.io/gh/mCaptcha/guard)
 <br />
 [![AGPL License](https://img.shields.io/badge/license-AGPL-blue.svg)](http://www.gnu.org/licenses/agpl-3.0)
-</div>
 
 </div>
 
-**placeholder-repo** is an placeholder-repo and access management platform built for the
-[IndieWeb](indieweb.org)
+</div>
+
+Guard is the back-end component of [mCaptcha](https://mcaptcha.org)
+system.
+
+**STATUS: UNUSABLE BUT ACTIVE DEVELOPMENT** 
 
 ### How to build
 
@@ -39,14 +42,12 @@ $ cd guard && cargo build
 
 ### Configuration:
 
-placeholder-repo is highly configurable.
+Guard is highly configurable.
 Configuration is applied/merged in the following order:
 
 1. `config/default.toml`
 2. environment variables.
 
-To make installation process seamless, placeholder-repo ships with a CLI tool to
-assist in database migrations.
 
 #### Setup
 
@@ -58,26 +59,19 @@ you will be overriding the values set in the configuration files.
 
 ###### Database:
 
-| Name                            | Value                                  |
-| ------------------------------- | -------------------------------------- |
-| `PLACEHOLDER_DATEBASE_PASSWORD` | Postgres password                      |
-| `PLACEHOLDER_DATEBASE_NAME`     | Postgres database name                 |
-| `PLACEHOLDER_DATEBASE_PORT`     | Postgres port                          |
-| `PLACEHOLDER_DATEBASE_HOSTNAME` | Postgres hostmane                      |
-| `PLACEHOLDER_DATEBASE_USERNAME` | Postgres username                      |
-| `PLACEHOLDER_DATEBASE_POOL`     | Postgres database connection pool size |
-
-###### Redis cache:
-
-| Name                         | Value          |
-| ---------------------------- | -------------- |
-| `PLACEHOLDER_REDIS_PORT`     | Redis port     |
-| `PLACEHOLDER_REDIS_HOSTNAME` | Redis hostmane |
+| Name                      | Value                                  |
+| ------------------------- | -------------------------------------- |
+| `GUARD_DATEBASE_PASSWORD` | Postgres password                      |
+| `GUARD_DATEBASE_NAME`     | Postgres database name                 |
+| `GUARD_DATEBASE_PORT`     | Postgres port                          |
+| `GUARD_DATEBASE_HOSTNAME` | Postgres hostmane                      |
+| `GUARD_DATEBASE_USERNAME` | Postgres username                      |
+| `GUARD_DATEBASE_POOL`     | Postgres database connection pool size |
 
 ###### Server:
 
-| Name                                      | Value                                               |
-| ----------------------------------------- | --------------------------------------------------- |
-| `PLACEHOLDER_SERVER_PORT` (or) `PORT`\*\* | The port on which you want wagon to listen to       |
-| `PLACEHOLDER_SERVER_IP`                   | The IP address on which you want wagon to listen to |
-| `PLACEHOLDER_SERVER_STATIC_FILES_DIR`     | Path to directory containing static files           |
+| Name                                | Value                                               |
+| ----------------------------------- | --------------------------------------------------- |
+| `GUARD_SERVER_PORT` (or) `PORT`\*\* | The port on which you want wagon to listen to       |
+| `GUARD_SERVER_IP`                   | The IP address on which you want wagon to listen to |
+| `GUARD_SERVER_STATIC_FILES_DIR`     | Path to directory containing static files           |

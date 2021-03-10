@@ -103,7 +103,7 @@ impl Settings {
         s.merge(File::with_name("./config/default.toml"))?;
 
         // TODO change PLACEHOLDER to app name
-        s.merge(Environment::with_prefix("WEBHUNT"))?;
+        s.merge(Environment::with_prefix("GUARD"))?;
 
         match env::var("PORT") {
             Ok(val) => {
