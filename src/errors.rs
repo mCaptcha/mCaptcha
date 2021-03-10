@@ -75,7 +75,9 @@ pub struct ErrorToResponse {
     pub error: String,
 }
 
+#[cfg(not(tarpaulin_include))]
 impl ResponseError for ServiceError {
+    #[cfg(not(tarpaulin_include))]
     fn error_response(&self) -> HttpResponse {
         HttpResponseBuilder::new(self.status_code())
             .set_header(header::CONTENT_TYPE, "application/json; charset=UTF-8")
@@ -84,6 +86,7 @@ impl ResponseError for ServiceError {
             })
     }
 
+    #[cfg(not(tarpaulin_include))]
     fn status_code(&self) -> StatusCode {
         match *self {
             ServiceError::InternalServerError => StatusCode::INTERNAL_SERVER_ERROR,
@@ -102,6 +105,7 @@ impl ResponseError for ServiceError {
 }
 
 impl From<CredsError> for ServiceError {
+    #[cfg(not(tarpaulin_include))]
     fn from(e: CredsError) -> ServiceError {
         debug!("{:?}", &e);
         match e {
@@ -122,7 +126,10 @@ impl From<CredsError> for ServiceError {
 //     }
 // }
 //
+
+#[cfg(not(tarpaulin_include))]
 impl From<sqlx::Error> for ServiceError {
+    #[cfg(not(tarpaulin_include))]
     fn from(e: sqlx::Error) -> Self {
         use sqlx::error::Error;
         use std::borrow::Cow;
@@ -137,4 +144,5 @@ impl From<sqlx::Error> for ServiceError {
     }
 }
 
+#[cfg(not(tarpaulin_include))]
 pub type ServiceResult<V> = std::result::Result<V, ServiceError>;

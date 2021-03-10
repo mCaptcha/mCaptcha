@@ -24,9 +24,11 @@ pub use data::Data;
 pub use settings::Settings;
 
 lazy_static! {
+#[cfg(not(tarpaulin_include))]
     pub static ref SETTINGS: Settings = Settings::new().unwrap();
 }
 
+#[cfg(not(tarpaulin_include))]
 #[actix_web::main]
 async fn main() {
     let data = Data::new().await;

@@ -37,6 +37,7 @@ pub struct Captcha {
 }
 
 impl Server {
+    #[cfg(not(tarpaulin_include))]
     pub fn get_ip(&self) -> String {
         format!("{}:{}", self.ip, self.port)
     }
@@ -53,6 +54,7 @@ struct DatabaseBuilder {
 }
 
 impl DatabaseBuilder {
+    #[cfg(not(tarpaulin_include))]
     fn extract_database_url(url: &Url) -> Self {
         //        if url.scheme() != "postgres" || url.scheme() != "postgresql" {
         //            panic!("URL must be postgres://url, url found: {}", url.scheme());
@@ -125,6 +127,7 @@ impl Settings {
     }
 }
 
+#[cfg(not(tarpaulin_include))]
 fn set_from_database_url(s: &mut Config, database_conf: &DatabaseBuilder) {
     s.set("database.username", database_conf.username.clone())
         .expect("Couldn't set database username");
@@ -138,6 +141,7 @@ fn set_from_database_url(s: &mut Config, database_conf: &DatabaseBuilder) {
         .expect("Couldn't access database name");
 }
 
+#[cfg(not(tarpaulin_include))]
 fn set_database_url(s: &mut Config) {
     s.set(
         "database.url",

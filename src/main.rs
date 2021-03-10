@@ -34,6 +34,7 @@ lazy_static! {
     pub static ref SETTINGS: Settings = Settings::new().unwrap();
 }
 
+#[cfg(not(tarpaulin_include))]
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     use api::v1::services as v1_services;
