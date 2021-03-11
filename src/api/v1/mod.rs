@@ -31,4 +31,6 @@ pub fn services(cfg: &mut ServiceConfig) {
 
     cfg.service(add_domain);
     cfg.service(delete_domain);
+    cfg.service(add_mcaptcha);
+    cfg.service(delete_mcaptcha);
 }

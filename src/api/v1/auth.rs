@@ -172,13 +172,15 @@ mod tests {
         const NAME: &str = "testuser";
         const PASSWORD: &str = "longpassword";
         const EMAIL: &str = "testuser1@a.com";
+        const SIGNIN: &str = "/api/v1/signin";
+        const SIGNUP: &str = "/api/v1/signup";
 
         let mut app = get_app!(data).await;
 
         delete_user(NAME, &data).await;
 
         // 1. Register and signin
-        let (data, _, signin_resp) = signin_util(NAME, EMAIL, PASSWORD).await;
+        let (_, _, signin_resp) = register_and_signin(NAME, EMAIL, PASSWORD).await;
         let cookies = get_cookie!(signin_resp);
 
         // 2. check if duplicate username is allowed
@@ -187,49 +189,55 @@ mod tests {
             password: PASSWORD.into(),
             email: EMAIL.into(),
         };
-        let duplicate_user_resp =
-            test::call_service(&mut app, post_request!(&msg, "/api/v1/signup").to_request()).await;
-        assert_eq!(duplicate_user_resp.status(), StatusCode::BAD_REQUEST);
+        bad_post_req_test(
+            NAME,
+            PASSWORD,
+            SIGNUP,
+            &msg,
+            ServiceError::UsernameTaken,
+            StatusCode::BAD_REQUEST,
+        )
+        .await;
 
         // 3. sigining in with non-existent user
-        let nonexistantuser = Login {
+        let mut login = Login {
             username: "nonexistantuser".into(),
             password: msg.password.clone(),
         };
-        let userdoesntexist = test::call_service(
-            &mut app,
-            post_request!(&nonexistantuser, "/api/v1/signin").to_request(),
+        bad_post_req_test(
+            NAME,
+            PASSWORD,
+            SIGNIN,
+            &login,
+            ServiceError::UsernameNotFound,
+            StatusCode::UNAUTHORIZED,
         )
         .await;
-        assert_eq!(userdoesntexist.status(), StatusCode::UNAUTHORIZED);
-        let txt: ErrorToResponse = test::read_body_json(userdoesntexist).await;
-        assert_eq!(txt.error, format!("{}", ServiceError::UsernameNotFound));
 
         // 4. trying to signin with wrong password
-        let wrongpassword = Login {
-            username: NAME.into(),
-            password: NAME.into(),
-        };
-        let wrongpassword_resp = test::call_service(
-            &mut app,
-            post_request!(&wrongpassword, "/api/v1/signin").to_request(),
+        login.username = NAME.into();
+        login.password = NAME.into();
+
+        bad_post_req_test(
+            NAME,
+            PASSWORD,
+            SIGNIN,
+            &login,
+            ServiceError::WrongPassword,
+            StatusCode::UNAUTHORIZED,
         )
         .await;
-        assert_eq!(wrongpassword_resp.status(), StatusCode::UNAUTHORIZED);
-        let txt: ErrorToResponse = test::read_body_json(wrongpassword_resp).await;
-        assert_eq!(txt.error, format!("{}", ServiceError::WrongPassword));
 
         // 5. signout
         let signout_resp = test::call_service(
             &mut app,
-            post_request!(&wrongpassword, "/api/v1/signout")
-                .cookie(cookies.clone())
+            test::TestRequest::post()
+                .uri("/api/v1/signout")
+                .cookie(cookies)
                 .to_request(),
         )
         .await;
         assert_eq!(signout_resp.status(), StatusCode::OK);
-
-        delete_user(NAME, &data).await;
     }
 
     #[actix_rt::test]
@@ -238,7 +246,12 @@ mod tests {
         const PASSWORD: &str = "longpassword2";
         const EMAIL: &str = "testuser1@a.com2";
 
-        let (data, creds, signin_resp) = signin_util(NAME, EMAIL, PASSWORD).await;
+        {
+            let data = Data::new().await;
+            delete_user(NAME, &data).await;
+        }
+
+        let (data, creds, signin_resp) = register_and_signin(NAME, EMAIL, PASSWORD).await;
         let cookies = get_cookie!(signin_resp);
         let mut app = get_app!(data).await;
 
@@ -251,6 +264,5 @@ mod tests {
         .await;
 
         assert_eq!(delete_user_resp.status(), StatusCode::OK);
-        delete_user(NAME, &data).await;
     }
 }

@@ -76,6 +76,9 @@ pub enum ServiceError {
     /// when the a token name is already taken
     #[display(fmt = "token name not available")]
     TokenNameTaken,
+    /// when the a host name is already taken
+    #[display(fmt = "host name not available")]
+    HostnameTaken,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -97,6 +100,7 @@ impl ResponseError for ServiceError {
 
     #[cfg(not(tarpaulin_include))]
     fn status_code(&self) -> StatusCode {
+        println!("{:?}", &self);
         match *self {
             ServiceError::InternalServerError => StatusCode::INTERNAL_SERVER_ERROR,
             ServiceError::NotAnEmail => StatusCode::BAD_REQUEST,
@@ -111,6 +115,7 @@ impl ResponseError for ServiceError {
             ServiceError::UsernameCaseMappedError => StatusCode::BAD_REQUEST,
             ServiceError::UsernameTaken => StatusCode::BAD_REQUEST,
             ServiceError::TokenNameTaken => StatusCode::BAD_REQUEST,
+            ServiceError::HostnameTaken => StatusCode::BAD_REQUEST,
         }
     }
 }
@@ -162,6 +167,7 @@ impl From<sqlx::Error> for ServiceError {
 pub fn dup_error(e: sqlx::Error, dup_error: ServiceError) -> ServiceError {
     use sqlx::error::Error;
     use std::borrow::Cow;
+    println!("database error: {:?}", &e);
     if let Error::Database(err) = e {
         if err.code() == Some(Cow::from("23505")) {
             dup_error
