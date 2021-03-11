@@ -178,6 +178,12 @@
 <span id="175">175</span>
 <span id="176">176</span>
 <span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -257,6 +263,9 @@
     <span class="doccomment">/// when the a token name is already taken</span>
     <span class="attribute">#[<span class="ident">display</span>(<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;token name not available&quot;</span>)]</span>
     <span class="ident">TokenNameTaken</span>,
+    <span class="doccomment">/// when the a host name is already taken</span>
+    <span class="attribute">#[<span class="ident">display</span>(<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;host name not available&quot;</span>)]</span>
+    <span class="ident">HostnameTaken</span>,
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
@@ -278,6 +287,7 @@
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
     <span class="kw">fn</span> <span class="ident">status_code</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StatusCode</span> {
+        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>);
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
             <span class="ident">ServiceError</span>::<span class="ident">InternalServerError</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode</span>::<span class="ident">INTERNAL_SERVER_ERROR</span>,
             <span class="ident">ServiceError</span>::<span class="ident">NotAnEmail</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode</span>::<span class="ident">BAD_REQUEST</span>,
@@ -292,6 +302,7 @@
             <span class="ident">ServiceError</span>::<span class="ident">UsernameCaseMappedError</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode</span>::<span class="ident">BAD_REQUEST</span>,
             <span class="ident">ServiceError</span>::<span class="ident">UsernameTaken</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode</span>::<span class="ident">BAD_REQUEST</span>,
             <span class="ident">ServiceError</span>::<span class="ident">TokenNameTaken</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode</span>::<span class="ident">BAD_REQUEST</span>,
+            <span class="ident">ServiceError</span>::<span class="ident">HostnameTaken</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode</span>::<span class="ident">BAD_REQUEST</span>,
         }
     }
 }
@@ -343,6 +354,7 @@
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dup_error</span>(<span class="ident">e</span>: <span class="ident">sqlx</span>::<span class="ident">Error</span>, <span class="ident">dup_error</span>: <span class="ident">ServiceError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceError</span> {
     <span class="kw">use</span> <span class="ident">sqlx</span>::<span class="ident">error</span>::<span class="ident">Error</span>;
     <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">borrow</span>::<span class="ident">Cow</span>;
+    <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;database error: {:?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">e</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Error</span>::<span class="ident">Database</span>(<span class="ident">err</span>) <span class="op">=</span> <span class="ident">e</span> {
         <span class="kw">if</span> <span class="ident">err</span>.<span class="ident">code</span>() <span class="op">=</span><span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">Cow</span>::<span class="ident">from</span>(<span class="string">&quot;23505&quot;</span>)) {
             <span class="ident">dup_error</span>

@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["get_random",""]],"struct":[["Domain",""],["TokenKeyPair",""],["TokenName",""],["add_domain",""],["delete_domain",""]]});
+initSidebarItems({"fn":[["get_random",""]],"struct":[["CreateToken",""],["Domain",""],["TokenKeyPair",""],["add_domain",""],["add_mcaptcha",""],["delete_domain",""],["delete_mcaptcha",""]]});
