@@ -38,9 +38,15 @@ pub async fn add_domain(
     is_authenticated(&id)?;
     let url = Url::parse(&payload.name)?;
     if let Some(host) = url.host_str() {
-        sqlx::query!("INSERT INTO mcaptcha_domains (name) VALUES ($1)", host,)
-            .execute(&data.db)
-            .await?;
+        let user = id.identity().unwrap();
+        sqlx::query!(
+            "insert into mcaptcha_domains (name, ID) values  
+            ($1, (select ID from mcaptcha_users where name = ($2) ));",
+            host,
+            user
+        )
+        .execute(&data.db)
+        .await?;
         Ok(HttpResponse::Ok())
     } else {
         Err(ServiceError::NotAUrl)
@@ -65,6 +71,60 @@ pub async fn delete_domain(
     }
 }
 
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct TokenName {
+    pub name: String,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct TokenKeyPair {
+    pub name: String,
+    pub key: String,
+}
+
+//#[post("/api/v1/mcaptcha/domain/token/add")]
+//pub async fn add_mcaptcha(
+//    payload: web::Json<Domain>,
+//    data: web::Data<Data>,
+//    id: Identity,
+//) -> ServiceResult<impl Responder> {
+//    is_authenticated(&id)?;
+//    let key = get_random(32);
+//    let res = sqlx::query!(
+//        "INSERT INTO mcaptcha_config (name, key) VALUES ($1, $2)",
+//        &payload.name,
+//        &key,
+//    )
+//    .execute(&data.db)
+//    .await;
+//
+//    match res {
+//        Err(e) => Err(dup_error(e, ServiceError::UsernameTaken)),
+//        Ok(_) => {
+//            let resp = TokenKeyPair {
+//                key,
+//                name: payload.name,
+//            };
+//
+//            Ok(HttpResponse::Ok().json(resp))
+//        }
+//    }
+//}
+
+fn get_random(len: usize) -> String {
+    use std::iter;
+
+    use rand::{distributions::Alphanumeric, rngs::ThreadRng, thread_rng, Rng};
+
+    let mut rng: ThreadRng = thread_rng();
+
+    iter::repeat(())
+        .map(|()| rng.sample(Alphanumeric))
+        .map(char::from)
+        .take(len)
+        .collect::<String>()
+}
+
 #[cfg(test)]
 mod tests {
     use actix_web::http::{header, StatusCode};
@@ -77,7 +137,7 @@ mod tests {
 
     #[actix_rt::test]
     async fn add_domains_work() {
-        const NAME: &str = "testuserdomain";
+        const NAME: &str = "testuserdomainn";
         const PASSWORD: &str = "longpassworddomain";
         const EMAIL: &str = "testuserdomain@a.com";
         const DOMAIN: &str = "http://example.com";

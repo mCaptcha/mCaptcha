@@ -48,15 +48,19 @@ pub async fn signup(
     let username = data.creds.username(&payload.username)?;
     let hash = data.creds.password(&payload.password)?;
     data.creds.email(Some(&payload.email))?;
-    sqlx::query!(
+    let res = sqlx::query!(
         "INSERT INTO mcaptcha_users (name , password, email) VALUES ($1, $2, $3)",
         username,
         hash,
         &payload.email
     )
     .execute(&data.db)
-    .await?;
-    Ok(HttpResponse::Ok())
+    .await;
+
+    match res {
+        Err(e) => Err(dup_error(e, ServiceError::UsernameTaken)),
+        Ok(_) => Ok(HttpResponse::Ok()),
+    }
 }
 
 #[post("/api/v1/signin")]
@@ -128,6 +132,8 @@ pub async fn delete_account(
     )
     .fetch_one(&data.db)
     .await;
+
+    id.forget();
 
     match rec {
         Ok(s) => {

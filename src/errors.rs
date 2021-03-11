@@ -37,8 +37,12 @@ use std::convert::From;
 pub enum ServiceError {
     #[display(fmt = "internal server error")]
     InternalServerError,
+
     #[display(fmt = "The value you entered for email is not an email")] //405j
     NotAnEmail,
+    #[display(fmt = "The value you entered for URL is not a URL")] //405j
+    NotAUrl,
+
     #[display(fmt = "Wrong password")]
     WrongPassword,
     #[display(fmt = "Username not found")]
@@ -54,22 +58,24 @@ pub enum ServiceError {
     /// see [blacklist](https://github.com/shuttlecraft/The-Big-Username-Blacklist)
     #[display(fmt = "Username contains blacklisted words")]
     BlacklistError,
-
     /// when the value passed contains characters not present
     /// in [UsernameCaseMapped](https://tools.ietf.org/html/rfc8265#page-7)
     /// profile
     #[display(fmt = "username_case_mapped violation")]
     UsernameCaseMappedError,
 
-    /// when the value passed contains profainity
-    #[display(fmt = "Username not available")]
-    UsernameTaken,
     #[display(fmt = "Passsword too short")]
     PasswordTooShort,
     #[display(fmt = "Username too long")]
     PasswordTooLong,
-    #[display(fmt = "The value you entered for URL is not a URL")] //405j
-    NotAUrl,
+
+    /// when the a username is already taken
+    #[display(fmt = "Username not available")]
+    UsernameTaken,
+
+    /// when the a token name is already taken
+    #[display(fmt = "token name not available")]
+    TokenNameTaken,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -104,6 +110,7 @@ impl ResponseError for ServiceError {
             ServiceError::PasswordTooLong => StatusCode::BAD_REQUEST,
             ServiceError::UsernameCaseMappedError => StatusCode::BAD_REQUEST,
             ServiceError::UsernameTaken => StatusCode::BAD_REQUEST,
+            ServiceError::TokenNameTaken => StatusCode::BAD_REQUEST,
         }
     }
 }
@@ -142,13 +149,26 @@ impl From<sqlx::Error> for ServiceError {
     fn from(e: sqlx::Error) -> Self {
         use sqlx::error::Error;
         use std::borrow::Cow;
-        debug!("{:?}", &e);
         if let Error::Database(err) = e {
             if err.code() == Some(Cow::from("23505")) {
                 return ServiceError::UsernameTaken;
             }
         }
 
+        ServiceError::InternalServerError
+    }
+}
+
+pub fn dup_error(e: sqlx::Error, dup_error: ServiceError) -> ServiceError {
+    use sqlx::error::Error;
+    use std::borrow::Cow;
+    if let Error::Database(err) = e {
+        if err.code() == Some(Cow::from("23505")) {
+            dup_error
+        } else {
+            ServiceError::InternalServerError
+        }
+    } else {
         ServiceError::InternalServerError
     }
 }

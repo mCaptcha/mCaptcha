@@ -1179,6 +1179,7 @@ dependencies = [
  "log",
  "m_captcha",
  "pretty_env_logger",
+ "rand 0.8.3",
  "serde 1.0.124",
  "serde_json",
  "sqlx",
