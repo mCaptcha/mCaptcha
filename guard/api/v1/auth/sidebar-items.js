@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["is_authenticated",""]],"struct":[["Login",""],["Password",""],["Register",""],["SomeData",""],["signin",""],["signout",""],["signup",""]]});
+initSidebarItems({"fn":[["is_authenticated","Check if user is authenticated"]],"struct":[["Login",""],["Password",""],["Register",""],["delete_account",""],["signin",""],["signout",""],["signup",""]]});
