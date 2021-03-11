@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Domain",""],["add_domain",""],["delete_domain",""]]});
+initSidebarItems({"fn":[["get_random",""]],"struct":[["Domain",""],["TokenKeyPair",""],["TokenName",""],["add_domain",""],["delete_domain",""]]});
