@@ -24,11 +24,6 @@ use crate::errors::*;
 use crate::Data;
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct SomeData {
-    pub a: String,
-}
-
-#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Register {
     pub username: String,
     pub password: String,
@@ -104,13 +99,52 @@ pub async fn signout(id: Identity) -> impl Responder {
     HttpResponse::Ok()
 }
 
-fn is_authenticated(id: &Identity) -> ServiceResult<bool> {
-    debug!("{:?}", id.identity());
+/// Check if user is authenticated
+// TODO use middleware
+pub fn is_authenticated(id: &Identity) -> ServiceResult<()> {
     // access request identity
     if let Some(_) = id.identity() {
-        Ok(true)
+        Ok(())
     } else {
         Err(ServiceError::AuthorizationRequired)
+    }
+}
+
+#[post("/api/v1/account/delete")]
+pub async fn delete_account(
+    id: Identity,
+    payload: web::Json<Login>,
+    data: web::Data<Data>,
+) -> ServiceResult<impl Responder> {
+    use argon2_creds::Config;
+    use sqlx::Error::RowNotFound;
+
+    is_authenticated(&id)?;
+
+    let rec = sqlx::query_as!(
+        Password,
+        r#"SELECT password  FROM mcaptcha_users WHERE name = ($1)"#,
+        &payload.username,
+    )
+    .fetch_one(&data.db)
+    .await;
+
+    match rec {
+        Ok(s) => {
+            if Config::verify(&s.password, &payload.password)? {
+                sqlx::query!(
+                    "DELETE FROM mcaptcha_users WHERE name = ($1)",
+                    &payload.username,
+                )
+                .execute(&data.db)
+                .await?;
+                Ok(HttpResponse::Ok())
+            } else {
+                Err(ServiceError::WrongPassword)
+            }
+        }
+        Err(RowNotFound) => return Err(ServiceError::UsernameNotFound),
+        Err(_) => return Err(ServiceError::InternalServerError)?,
     }
 }
 
@@ -124,34 +158,7 @@ mod tests {
     use crate::data::Data;
     use crate::*;
 
-    pub async fn delete_user(name: &str, data: &Data) {
-        let _ = sqlx::query!("DELETE FROM mcaptcha_users WHERE name = ($1)", name,)
-            .execute(&data.db)
-            .await;
-    }
-
-    macro_rules! post_request {
-        ($serializable:expr, $uri:expr) => {
-            test::TestRequest::post()
-                .uri($uri)
-                .header(header::CONTENT_TYPE, "application/json")
-                .set_payload(serde_json::to_string($serializable).unwrap())
-        };
-    }
-
-    macro_rules! get_server {
-        () => {
-            App::new()
-                .wrap(middleware::Logger::default())
-                .wrap(get_identity_service())
-                .wrap(middleware::Compress::default())
-                .wrap(middleware::NormalizePath::new(
-                    middleware::normalize::TrailingSlash::Trim,
-                ))
-                .app_data(get_json_err())
-                .configure(v1_services)
-        };
-    }
+    use crate::tests::*;
 
     #[actix_rt::test]
     async fn auth_works() {
@@ -160,39 +167,25 @@ mod tests {
         const PASSWORD: &str = "longpassword";
         const EMAIL: &str = "testuser1@a.com";
 
-        let mut app = test::init_service(get_server!().data(data.clone())).await;
+        let mut app = get_app!(data).await;
 
         delete_user(NAME, &data).await;
 
-        // 1. Register
+        // 1. Register and signin
+        let (data, _, signin_resp) = signin_util(NAME, EMAIL, PASSWORD).await;
+        let cookies = get_cookie!(signin_resp);
+
+        // 2. check if duplicate username is allowed
         let msg = Register {
             username: NAME.into(),
             password: PASSWORD.into(),
             email: EMAIL.into(),
         };
-        let resp =
-            test::call_service(&mut app, post_request!(&msg, "/api/v1/signup").to_request()).await;
-        assert_eq!(resp.status(), StatusCode::OK);
-
-        // 2. check if duplicate username is allowed
         let duplicate_user_resp =
             test::call_service(&mut app, post_request!(&msg, "/api/v1/signup").to_request()).await;
         assert_eq!(duplicate_user_resp.status(), StatusCode::BAD_REQUEST);
 
-        // 3. signin
-        let sigin_msg = Login {
-            username: NAME.into(),
-            password: PASSWORD.into(),
-        };
-        let signin_resp = test::call_service(
-            &mut app,
-            post_request!(&sigin_msg, "/api/v1/signin").to_request(),
-        )
-        .await;
-        assert_eq!(signin_resp.status(), StatusCode::OK);
-        let cookies = signin_resp.response().cookies().next().unwrap().to_owned();
-
-        // 4. sigining in with non-existent user
+        // 3. sigining in with non-existent user
         let nonexistantuser = Login {
             username: "nonexistantuser".into(),
             password: msg.password.clone(),
@@ -206,7 +199,7 @@ mod tests {
         let txt: ErrorToResponse = test::read_body_json(userdoesntexist).await;
         assert_eq!(txt.error, format!("{}", ServiceError::UsernameNotFound));
 
-        // 5. trying to signin with wrong password
+        // 4. trying to signin with wrong password
         let wrongpassword = Login {
             username: NAME.into(),
             password: NAME.into(),
@@ -220,7 +213,7 @@ mod tests {
         let txt: ErrorToResponse = test::read_body_json(wrongpassword_resp).await;
         assert_eq!(txt.error, format!("{}", ServiceError::WrongPassword));
 
-        // 6. signout
+        // 5. signout
         let signout_resp = test::call_service(
             &mut app,
             post_request!(&wrongpassword, "/api/v1/signout")
@@ -230,6 +223,28 @@ mod tests {
         .await;
         assert_eq!(signout_resp.status(), StatusCode::OK);
 
+        delete_user(NAME, &data).await;
+    }
+
+    #[actix_rt::test]
+    async fn del_userworks() {
+        const NAME: &str = "testuser2";
+        const PASSWORD: &str = "longpassword2";
+        const EMAIL: &str = "testuser1@a.com2";
+
+        let (data, creds, signin_resp) = signin_util(NAME, EMAIL, PASSWORD).await;
+        let cookies = get_cookie!(signin_resp);
+        let mut app = get_app!(data).await;
+
+        let delete_user_resp = test::call_service(
+            &mut app,
+            post_request!(&creds, "/api/v1/account/delete")
+                .cookie(cookies)
+                .to_request(),
+        )
+        .await;
+
+        assert_eq!(delete_user_resp.status(), StatusCode::OK);
         delete_user(NAME, &data).await;
     }
 }

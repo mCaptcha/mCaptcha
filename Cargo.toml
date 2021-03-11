@@ -22,10 +22,10 @@ actix-web = "3"
 actix = "0.10"
 
 sqlx = { version = "0.4.0", features = [ "runtime-actix-rustls", "postgres" ] }
-argon2-creds = { version = "0.2", git = "https://github.com/realaravinth/argon2-creds", tag = "0.2.0" }
+argon2-creds = { version = "0.2", git = "https://github.com/realaravinth/argon2-creds", commit = "61f2d1d" }
 
 config = "0.10"
-validator = "0.12"
+validator = { version = "0.12", features = ["derive"]}
 
 derive_builder = "0.9"
 derive_more = "0.99"

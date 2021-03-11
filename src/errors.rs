@@ -23,11 +23,12 @@ use actix_web::{
 };
 
 use argon2_creds::errors::CredsError;
+use url::ParseError;
 
 use derive_more::{Display, Error};
 use log::debug;
 use serde::{Deserialize, Serialize};
-// use validator::ValidationErrors;
+use validator::ValidationErrors;
 
 use std::convert::From;
 
@@ -67,6 +68,8 @@ pub enum ServiceError {
     PasswordTooShort,
     #[display(fmt = "Username too long")]
     PasswordTooLong,
+    #[display(fmt = "The value you entered for URL is not a URL")] //405j
+    NotAUrl,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -91,6 +94,7 @@ impl ResponseError for ServiceError {
         match *self {
             ServiceError::InternalServerError => StatusCode::INTERNAL_SERVER_ERROR,
             ServiceError::NotAnEmail => StatusCode::BAD_REQUEST,
+            ServiceError::NotAUrl => StatusCode::BAD_REQUEST,
             ServiceError::WrongPassword => StatusCode::UNAUTHORIZED,
             ServiceError::UsernameNotFound => StatusCode::UNAUTHORIZED,
             ServiceError::AuthorizationRequired => StatusCode::UNAUTHORIZED,
@@ -120,12 +124,17 @@ impl From<CredsError> for ServiceError {
     }
 }
 
-// impl From<ValidationErrors> for ServiceError {
-//     fn from(_: ValidationErrors) -> ServiceError {
-//         ServiceError::NotAnEmail
-//     }
-// }
-//
+impl From<ValidationErrors> for ServiceError {
+    fn from(_: ValidationErrors) -> ServiceError {
+        ServiceError::NotAnEmail
+    }
+}
+
+impl From<ParseError> for ServiceError {
+    fn from(_: ParseError) -> ServiceError {
+        ServiceError::NotAUrl
+    }
+}
 
 #[cfg(not(tarpaulin_include))]
 impl From<sqlx::Error> for ServiceError {

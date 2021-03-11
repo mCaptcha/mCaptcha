@@ -26,6 +26,9 @@ mod errors;
 //mod routes;
 mod api;
 mod settings;
+#[cfg(test)]
+#[macro_use]
+mod tests;
 
 pub use data::Data;
 pub use settings::Settings;

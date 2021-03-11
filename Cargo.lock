@@ -415,7 +415,7 @@ dependencies = [
 [[package]]
 name = "argon2-creds"
 version = "0.2.0"
-source = "git+https://github.com/realaravinth/argon2-creds?tag=0.2.0#1934a6cc1b1fd4b9583da2ea6862f176c03cbfb6"
+source = "git+https://github.com/realaravinth/argon2-creds#61f2d1d5a2660905939054f6be03e76584965b63"
 dependencies = [
  "ammonia",
  "derive_builder",
@@ -426,7 +426,6 @@ dependencies = [
  "rust-argon2",
  "unicode-normalization",
  "validator",
- "validator_derive",
 ]
 
 [[package]]
@@ -1861,7 +1860,7 @@ dependencies = [
 [[package]]
 name = "pow_sha256"
 version = "0.2.0"
-source = "git+https://github.com/mcaptcha/pow_sha256#d0889fc9008e63795b024b57432ed0034a703d0b"
+source = "git+https://github.com/mcaptcha/pow_sha256#1b65c603bdd527e3e1f3b8b565a11fcde48575b5"
 dependencies = [
  "bincode",
  "derive_builder",
@@ -2930,6 +2929,7 @@ dependencies = [
  "serde_derive",
  "serde_json",
  "url",
+ "validator_derive",
  "validator_types",
 ]
 

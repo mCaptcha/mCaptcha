@@ -23,8 +23,9 @@ mod settings;
 pub use data::Data;
 pub use settings::Settings;
 
-lazy_static! {
 #[cfg(not(tarpaulin_include))]
+lazy_static! {
+    #[cfg(not(tarpaulin_include))]
     pub static ref SETTINGS: Settings = Settings::new().unwrap();
 }
 
