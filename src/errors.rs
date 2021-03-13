@@ -15,22 +15,21 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+use std::convert::From;
+
 use actix_web::{
     dev::HttpResponseBuilder,
     error::ResponseError,
     http::{header, StatusCode},
     HttpResponse,
 };
-
 use argon2_creds::errors::CredsError;
-use url::ParseError;
-
 use derive_more::{Display, Error};
 use log::debug;
+use m_captcha::errors::CaptchaError;
 use serde::{Deserialize, Serialize};
+use url::ParseError;
 use validator::ValidationErrors;
-
-use std::convert::From;
 
 #[derive(Debug, Display, Clone, PartialEq, Error)]
 #[cfg(not(tarpaulin_include))]
@@ -72,13 +71,15 @@ pub enum ServiceError {
     /// when the a username is already taken
     #[display(fmt = "Username not available")]
     UsernameTaken,
-
     /// when the a token name is already taken
     #[display(fmt = "token name not available")]
     TokenNameTaken,
     /// when the a host name is already taken
     #[display(fmt = "host name not available")]
     HostnameTaken,
+
+    #[display(fmt = "{}", _0)]
+    CaptchaError(CaptchaError),
 }
 
 #[derive(Serialize, Deserialize)]
@@ -101,7 +102,7 @@ impl ResponseError for ServiceError {
     #[cfg(not(tarpaulin_include))]
     fn status_code(&self) -> StatusCode {
         println!("{:?}", &self);
-        match *self {
+        match self {
             ServiceError::InternalServerError => StatusCode::INTERNAL_SERVER_ERROR,
             ServiceError::NotAnEmail => StatusCode::BAD_REQUEST,
             ServiceError::NotAUrl => StatusCode::BAD_REQUEST,
@@ -116,6 +117,11 @@ impl ResponseError for ServiceError {
             ServiceError::UsernameTaken => StatusCode::BAD_REQUEST,
             ServiceError::TokenNameTaken => StatusCode::BAD_REQUEST,
             ServiceError::HostnameTaken => StatusCode::BAD_REQUEST,
+            ServiceError::CaptchaError(e) => match e {
+                CaptchaError::MailboxError => StatusCode::INTERNAL_SERVER_ERROR,
+
+                _ => StatusCode::BAD_REQUEST,
+            },
         }
     }
 }
@@ -145,6 +151,12 @@ impl From<ValidationErrors> for ServiceError {
 impl From<ParseError> for ServiceError {
     fn from(_: ParseError) -> ServiceError {
         ServiceError::NotAUrl
+    }
+}
+
+impl From<CaptchaError> for ServiceError {
+    fn from(e: CaptchaError) -> ServiceError {
+        ServiceError::CaptchaError(e)
     }
 }
 

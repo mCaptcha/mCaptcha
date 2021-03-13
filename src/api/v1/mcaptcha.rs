@@ -17,6 +17,7 @@
 
 use actix_identity::Identity;
 use actix_web::{post, web, HttpResponse, Responder};
+use m_captcha::{defense::Level, DefenseBuilder};
 use serde::{Deserialize, Serialize};
 use url::Url;
 
@@ -40,8 +41,8 @@ pub async fn add_domain(
     if let Some(host) = url.host_str() {
         let user = id.identity().unwrap();
         let res = sqlx::query!(
-            "insert into mcaptcha_domains (name, ID) values  
-            ($1, (select ID from mcaptcha_users where name = ($2) ));",
+            "INSERT INTO mcaptcha_domains (name, ID) VALUES  
+            ($1, (SELECT ID FROM mcaptcha_users WHERE name = ($2) ));",
             host,
             user
         )
@@ -155,139 +156,225 @@ fn get_random(len: usize) -> String {
         .collect::<String>()
 }
 
-#[cfg(test)]
-mod tests {
-    use actix_web::http::{header, StatusCode};
-    use actix_web::test;
+#[derive(Serialize, Deserialize)]
+pub struct AddLevels {
+    pub levels: Vec<Level>,
+    // name is config_name
+    pub name: String,
+}
 
-    use super::*;
-    use crate::api::v1::services as v1_services;
-    use crate::tests::*;
-    use crate::*;
+#[post("/api/v1/mcaptcha/domain/token/levels/add")]
+pub async fn add_levels(
+    payload: web::Json<AddLevels>,
+    data: web::Data<Data>,
+    id: Identity,
+) -> ServiceResult<impl Responder> {
+    is_authenticated(&id)?;
+    let mut defense = DefenseBuilder::default();
 
-    #[actix_rt::test]
-    async fn add_domains_work() {
-        const NAME: &str = "testuserdomainn";
-        const PASSWORD: &str = "longpassworddomain";
-        const EMAIL: &str = "testuserdomain@a.com";
-        const DOMAIN: &str = "http://example.com";
-        const ADD_URL: &str = "/api/v1/mcaptcha/domain/add";
-
-        {
-            let data = Data::new().await;
-            delete_user(NAME, &data).await;
-        }
-
-        register_and_signin(NAME, EMAIL, PASSWORD).await;
-
-        // 1. add domain
-        let (data, _, signin_resp) = add_domain_util(NAME, PASSWORD, DOMAIN).await;
-        let cookies = get_cookie!(signin_resp);
-        let mut app = get_app!(data).await;
-
-        let mut domain = Domain {
-            name: DOMAIN.into(),
-        };
-
-        // 2. duplicate domain
-        bad_post_req_test(
-            NAME,
-            PASSWORD,
-            ADD_URL,
-            &domain,
-            ServiceError::HostnameTaken,
-            StatusCode::BAD_REQUEST,
-        )
-        .await;
-
-        // 3. delete domain
-        let del_domain_resp = test::call_service(
-            &mut app,
-            post_request!(&domain, "/api/v1/mcaptcha/domain/delete")
-                .cookie(cookies.clone())
-                .to_request(),
-        )
-        .await;
-        assert_eq!(del_domain_resp.status(), StatusCode::OK);
-
-        // 4. not a URL test for adding domain
-        domain.name = "testing".into();
-        bad_post_req_test(
-            NAME,
-            PASSWORD,
-            ADD_URL,
-            &domain,
-            ServiceError::NotAUrl,
-            StatusCode::BAD_REQUEST,
-        )
-        .await;
+    for level in payload.levels.iter() {
+        defense.add_level(level.clone())?;
     }
 
-    #[actix_rt::test]
-    async fn add_mcaptcha_works() {
-        const NAME: &str = "testusermcaptcha";
-        const PASSWORD: &str = "longpassworddomain";
-        const EMAIL: &str = "testusermcaptcha@a.com";
-        const DOMAIN: &str = "http://mcaptcha.example.com";
-        const TOKEN_NAME: &str = "add_mcaptcha_works_token";
-        const ADD_URL: &str = "/api/v1/mcaptcha/domain/token/add";
-        const DEL_URL: &str = "/api/v1/mcaptcha/domain/token/delete";
+    defense.build()?;
 
-        {
-            let data = Data::new().await;
-            delete_user(NAME, &data).await;
-        }
-
-        register_and_signin(NAME, EMAIL, PASSWORD).await;
-        let (data, _, signin_resp) = add_domain_util(NAME, PASSWORD, DOMAIN).await;
-        let cookies = get_cookie!(signin_resp);
-        let mut app = get_app!(data).await;
-
-        // 1. add mcaptcha token
-        let mut domain = CreateToken {
-            domain: DOMAIN.into(),
-            name: TOKEN_NAME.into(),
-        };
-        let add_token_resp = test::call_service(
-            &mut app,
-            post_request!(&domain, ADD_URL)
-                .cookie(cookies.clone())
-                .to_request(),
+    for level in payload.levels.iter() {
+        let difficulty_factor = level.difficulty_factor as i32;
+        let visitor_threshold = level.visitor_threshold as i32;
+        sqlx::query!(
+            "INSERT INTO mcaptcha_levels (
+            difficulty_factor, 
+            visitor_threshold,
+            config_id) VALUES  ($1, $2, (SELECT config_id FROM mcaptcha_config WHERE name = ($3) ));",
+            difficulty_factor,
+            visitor_threshold,
+            &payload.name,
         )
-        .await;
-        assert_eq!(add_token_resp.status(), StatusCode::OK);
+        .execute(&data.db)
+        .await?;
+    }
 
-        // 2. add duplicate mcaptha
-        bad_post_req_test(
-            NAME,
-            PASSWORD,
-            ADD_URL,
-            &domain,
-            ServiceError::TokenNameTaken,
-            StatusCode::BAD_REQUEST,
-        )
-        .await;
+    Ok(HttpResponse::Ok())
+}
 
-        // 4. not a URL test for adding domain
-        domain.domain = "testing".into();
-        bad_post_req_test(
-            NAME,
-            PASSWORD,
-            ADD_URL,
-            &domain,
-            ServiceError::NotAUrl,
-            StatusCode::BAD_REQUEST,
-        )
-        .await;
+#[post("/api/v1/mcaptcha/domain/token/levels/update")]
+pub async fn update_levels(
+    payload: web::Json<AddLevels>,
+    data: web::Data<Data>,
+    id: Identity,
+) -> ServiceResult<impl Responder> {
+    is_authenticated(&id)?;
+    let mut defense = DefenseBuilder::default();
 
-        // 4. delete token
-        let del_token = test::call_service(
-            &mut app,
-            post_request!(&domain, DEL_URL)
-                .cookie(cookies.clone())
-                .to_request(),
+    for level in payload.levels.iter() {
+        defense.add_level(level.clone())?;
+    }
+
+    // I feel this is necessary as both difficulty factor _and_ visitor threshold of a
+    // level could change so doing this would not require us to send level_id to client
+    // still, needs to be benchmarked
+    defense.build()?;
+
+    sqlx::query!(
+        "DELETE FROM mcaptcha_levels 
+        WHERE config_id = (
+            SELECT config_id FROM mcaptcha_config where name = ($1)
+            )",
+        &payload.name,
+    )
+    .execute(&data.db)
+    .await?;
+
+    for level in payload.levels.iter() {
+        let difficulty_factor = level.difficulty_factor as i32;
+        let visitor_threshold = level.visitor_threshold as i32;
+        sqlx::query!(
+            "INSERT INTO mcaptcha_levels (
+            difficulty_factor, 
+            visitor_threshold,
+            config_id) VALUES  ($1, $2, (SELECT config_id FROM mcaptcha_config WHERE name = ($3) ));",
+            difficulty_factor,
+            visitor_threshold,
+            &payload.name,
         )
-        .await;
-        assert_eq!(del_token.status(), StatusCode::OK);
+        .execute(&data.db)
+        .await?;
+    }
+
+    Ok(HttpResponse::Ok())
+}
+
+#[post("/api/v1/mcaptcha/domain/token/levels/delete")]
+pub async fn delete_levels(
+    payload: web::Json<AddLevels>,
+    data: web::Data<Data>,
+    id: Identity,
+) -> ServiceResult<impl Responder> {
+    is_authenticated(&id)?;
+
+    for level in payload.levels.iter() {
+        let difficulty_factor = level.difficulty_factor as i32;
+        sqlx::query!(
+            "DELETE FROM mcaptcha_levels  WHERE 
+            config_id = (
+                SELECT config_id FROM mcaptcha_config WHERE name = ($1)
+                ) AND difficulty_factor = ($2);",
+            &payload.name,
+            difficulty_factor,
+        )
+        .execute(&data.db)
+        .await?;
+    }
+
+    Ok(HttpResponse::Ok())
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct GetLevels {
+    pub token: String,
+}
+
+#[post("/api/v1/mcaptcha/domain/token/levels/get")]
+pub async fn get_levels(
+    payload: web::Json<GetLevels>,
+    data: web::Data<Data>,
+    id: Identity,
+) -> ServiceResult<impl Responder> {
+    is_authenticated(&id)?;
+
+    let levels = get_levels_util(&payload.token, &data).await?;
+
+    Ok(HttpResponse::Ok().json(levels))
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct Duration {
+    pub token_name: String,
+    pub duration: i32,
+}
+
+#[post("/api/v1/mcaptcha/domain/token/duration/update")]
+pub async fn update_duration(
+    payload: web::Json<Duration>,
+    data: web::Data<Data>,
+    id: Identity,
+) -> ServiceResult<impl Responder> {
+    is_authenticated(&id)?;
+
+    if payload.duration > 0 {
+        sqlx::query!(
+            "UPDATE mcaptcha_config  set duration = $1 WHERE 
+            name = $2;",
+            &payload.duration,
+            &payload.token_name,
+        )
+        .execute(&data.db)
+        .await?;
+
+        Ok(HttpResponse::Ok())
+    } else {
+        // when mCaptcha/mCaptcha #2 is fixed, this wont be necessary
+        Err(ServiceError::CaptchaError(
+            m_captcha::errors::CaptchaError::DifficultyFactorZero,
+        ))
     }
 }
+
+#[derive(Deserialize, Serialize)]
+pub struct GetDuration {
+    pub duration: i32,
+}
+
+#[post("/api/v1/mcaptcha/domain/token/duration/get")]
+pub async fn get_duration(
+    payload: web::Json<GetLevels>,
+    data: web::Data<Data>,
+    id: Identity,
+) -> ServiceResult<impl Responder> {
+    is_authenticated(&id)?;
+
+    let duration = sqlx::query_as!(
+        GetDuration,
+        "SELECT duration FROM mcaptcha_config  WHERE 
+            name = $1;",
+        &payload.token,
+    )
+    .fetch_one(&data.db)
+    .await?;
+    Ok(HttpResponse::Ok().json(duration))
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct Levels {
+    levels: I32Levels,
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct I32Levels {
+    difficulty_factor: i32,
+    visitor_threshold: i32,
+}
+
+async fn get_levels_util(name: &str, data: &Data) -> ServiceResult<Vec<I32Levels>> {
+    let levels = sqlx::query_as!(
+        I32Levels,
+        "SELECT difficulty_factor, visitor_threshold FROM mcaptcha_levels  WHERE
+            config_id = (
+                SELECT config_id FROM mcaptcha_config WHERE name = ($1)
+                );",
+        name
+    )
+    .fetch_all(&data.db)
+    .await?;
+
+    Ok(levels)
+}
+
+// Workflow:
+// 1. Sign up
+// 2. Sign in
+// 3. Add domain(DNS TXT record verification? / put string at path)
+// 4. Create token
+// 5. Add levels
+// 6. Update duration
+// 7. Start syatem

@@ -43,7 +43,7 @@ log = "0.4"
 lazy_static = "1.4"
 
 
-m_captcha = { version = "0.1.0", git = "https://github.com/mCaptcha/mCaptcha", tag = "0.1.0" }
+m_captcha = { version = "0.1.1", git = "https://github.com/mCaptcha/mCaptcha" }
 
 rand = "0.8"
 

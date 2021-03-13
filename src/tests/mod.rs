@@ -60,7 +60,7 @@ pub async fn register_and_signin<'a>(
     signin(name, password).await
 }
 
-/// register and signin utility
+/// register utility
 pub async fn register<'a>(name: &'a str, email: &str, password: &str) {
     let data = Data::new().await;
     let mut app = get_app!(data).await;
@@ -121,6 +121,37 @@ pub async fn add_domain_util(
     )
     .await;
     assert_eq!(add_domain_resp.status(), StatusCode::OK);
+
+    (data, creds, signin_resp)
+}
+
+pub async fn add_token_util(
+    name: &str,
+    password: &str,
+    domain: &str,
+    token_name: &str,
+) -> (data::Data, Login, ServiceResponse) {
+    use crate::api::v1::mcaptcha::CreateToken;
+
+    const ADD_URL: &str = "/api/v1/mcaptcha/domain/token/add";
+
+    let (data, creds, signin_resp) = add_domain_util(name, password, domain).await;
+    let cookies = get_cookie!(signin_resp);
+    let mut app = get_app!(data).await;
+
+    // 1. add mcaptcha token
+    let domain = CreateToken {
+        domain: domain.into(),
+        name: token_name.into(),
+    };
+    let add_token_resp = test::call_service(
+        &mut app,
+        post_request!(&domain, ADD_URL)
+            .cookie(cookies.clone())
+            .to_request(),
+    )
+    .await;
+    assert_eq!(add_token_resp.status(), StatusCode::OK);
 
     (data, creds, signin_resp)
 }

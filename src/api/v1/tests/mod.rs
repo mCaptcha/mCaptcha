@@ -15,33 +15,5 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-use actix_web::web::ServiceConfig;
-
-pub mod auth;
-pub mod mcaptcha;
-
-pub fn services(cfg: &mut ServiceConfig) {
-    use auth::*;
-    use mcaptcha::*;
-
-    cfg.service(signout);
-    cfg.service(signin);
-    cfg.service(signup);
-    cfg.service(delete_account);
-
-    cfg.service(add_domain);
-    cfg.service(delete_domain);
-    cfg.service(add_mcaptcha);
-    cfg.service(delete_mcaptcha);
-
-    cfg.service(add_levels);
-    cfg.service(update_levels);
-    cfg.service(delete_levels);
-    cfg.service(get_levels);
-
-    cfg.service(update_duration);
-    cfg.service(get_duration);
-}
-
-#[cfg(test)]
-mod tests;
+mod auth;
+mod mcaptcha;
