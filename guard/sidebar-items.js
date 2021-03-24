@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["get_identity_service",""],["get_json_err",""],["main",""]],"mod":[["api",""],["data",""],["errors",""],["settings",""]],"struct":[["Data",""],["SETTINGS",""],["Settings",""]]});
+initSidebarItems({"fn":[["get_identity_service",""],["get_json_err",""],["main",""]],"mod":[["api",""],["data",""],["errors",""],["settings",""]],"static":[["PKG_DESCRIPTION",""],["PKG_HOMEPAGE",""],["PKG_NAME",""],["VERSION",""]],"struct":[["Data",""],["GIT_COMMIT_HASH",""],["SETTINGS",""],["Settings",""]]});

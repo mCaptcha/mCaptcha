@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Health","Health check return datatype"],["HealthBuilder","Builder for `Health`."],["build_details",""],["health",""]]});

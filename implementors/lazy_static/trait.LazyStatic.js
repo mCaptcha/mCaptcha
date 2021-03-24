@@ -1,4 +1,4 @@
 (function() {var implementors = {};
-implementors["guard"] = [{"text":"impl LazyStatic for SETTINGS","synthetic":false,"types":[]}];
+implementors["guard"] = [{"text":"impl LazyStatic for SETTINGS","synthetic":false,"types":[]},{"text":"impl LazyStatic for GIT_COMMIT_HASH","synthetic":false,"types":[]}];
 implementors["tests_migrate"] = [{"text":"impl LazyStatic for SETTINGS","synthetic":false,"types":[]}];
 if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
