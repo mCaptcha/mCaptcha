@@ -34,6 +34,7 @@ pub struct Server {
 #[derive(Debug, Clone, Deserialize)]
 pub struct Captcha {
     pub salt: String,
+    pub gc: u64,
 }
 
 impl Server {

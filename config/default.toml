@@ -17,6 +17,8 @@ pool = 4
 
 # This section deals with the configuration of the actual server
 [server]
+# Please set a unique value, your mCaptcha instance's security depends on this being 
+# unique
 cookie_secret = "Zae0OOxf^bOJ#zN^&k7VozgW&QAx%n02TQFXpRMG4cCU0xMzgu3dna@tQ9dvc&TlE6p*n#kXUdLZJCQsuODIV%r$@o4%770ePQB7m#dpV!optk01NpY0@615w5e2Br4d"
 # The port at which you want authentication to listen to
 # takes a number, choose from 1000-10000 if you dont know what you are doing
@@ -31,4 +33,9 @@ static_files_dir = "./frontend/dist"
 
 
 [pow]
+# Please set a unique value, your mCaptcha instance's security depends on this being 
+# unique
 salt = "asdl;kjfhjawehfpa;osdkjasdvjaksndfpoanjdfainsdfaijdsfajlkjdsaf;ajsdfweroire"
+# garbage collection period to manage mCaptcha system
+# leave untouched if you don't know what you are doing
+gc = 30

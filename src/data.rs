@@ -52,7 +52,7 @@ impl Data {
             .build()
             .unwrap();
 
-        let master = Master::new().start();
+        let master = Master::new(SETTINGS.pow.gc).start();
         let cache = HashCache::default().start();
         let pow = PoWConfigBuilder::default()
             .salt(SETTINGS.pow.salt.clone())
