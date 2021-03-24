@@ -30,7 +30,7 @@ lazy_static! {
 }
 
 #[cfg(not(tarpaulin_include))]
-#[actix_web::main]
+#[actix_rt::main]
 async fn main() {
     let data = Data::new().await;
     pretty_env_logger::init();

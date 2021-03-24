@@ -28,6 +28,7 @@ actix-web = "3"
 actix = "0.11"
 actix-identity = "0.3"
 actix-http = "2.2"
+actix-rt = "2"
 
 sqlx = { version = "0.5.0", features = [ "runtime-actix-rustls", "postgres" ] }
 argon2-creds = { version = "0.2", git = "https://github.com/realaravinth/argon2-creds", commit = "61f2d1d" }
@@ -52,7 +53,3 @@ lazy_static = "1.4"
 m_captcha = { version = "0.1.2", git = "https://github.com/mCaptcha/mCaptcha" }
 
 rand = "0.8"
-
-
-[dev-dependencies]
-actix-rt = "2"
