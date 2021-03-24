@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["get_levels_util",""],["get_random",""]],"struct":[["AddLevels",""],["CreateToken",""],["Domain",""],["Duration",""],["GetDuration",""],["GetLevels",""],["I32Levels",""],["Levels",""],["TokenKeyPair",""],["add_domain",""],["add_levels",""],["add_mcaptcha",""],["delete_domain",""],["delete_levels",""],["delete_mcaptcha",""],["get_duration",""],["get_levels",""],["update_duration",""],["update_levels",""]]});
+initSidebarItems({"mod":[["domains",""],["duration",""],["levels",""],["mcaptcha",""]]});

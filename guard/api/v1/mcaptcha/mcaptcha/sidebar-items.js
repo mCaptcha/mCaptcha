@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["get_random",""]],"struct":[["MCaptchaDetails",""],["MCaptchaID",""],["add_mcaptcha",""],["delete_mcaptcha",""]]});
