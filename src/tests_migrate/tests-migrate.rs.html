@@ -73,7 +73,7 @@
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
-<span class="attribute">#[<span class="ident">actix_web</span>::<span class="ident">main</span>]</span>
+<span class="attribute">#[<span class="ident">actix_rt</span>::<span class="ident">main</span>]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">main</span>() {
     <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">Data</span>::<span class="ident">new</span>().<span class="kw">await</span>;
     <span class="ident">pretty_env_logger</span>::<span class="ident">init</span>();

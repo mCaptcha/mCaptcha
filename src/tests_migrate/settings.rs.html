@@ -164,6 +164,7 @@
 <span id="161">161</span>
 <span id="162">162</span>
 <span id="163">163</span>
+<span id="164">164</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -201,6 +202,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Captcha</span> {
     <span class="kw">pub</span> <span class="ident">salt</span>: <span class="ident">String</span>,
+    <span class="kw">pub</span> <span class="ident">gc</span>: <span class="ident">u64</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Server</span> {
