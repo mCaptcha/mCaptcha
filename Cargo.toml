@@ -1,9 +1,15 @@
 [package]
 name = "guard"
 version = "0.1.0"
+description = "mCaptcha - a PoW-based CAPTCHA system"
+homepage = "https://mcaptcha.org"
+repository = "https://github.com/mCaptcha/guard"
+documentation = "https://mcaptcha.org/docs/"
+lisense = "AGPLv3 or later version"
 authors = ["realaravinth <realaravinth@batsense.net>"]
 edition = "2018"
 default-run = "guard"
+build = "build.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

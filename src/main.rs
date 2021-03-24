@@ -14,12 +14,14 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+use std::env;
 
 use actix_identity::{CookieIdentityPolicy, IdentityService};
 use actix_web::{
     error::InternalError, http::StatusCode, middleware, web::JsonConfig, App, HttpServer,
 };
 use lazy_static::lazy_static;
+use log::info;
 
 mod data;
 mod errors;
@@ -35,15 +37,25 @@ pub use settings::Settings;
 
 lazy_static! {
     pub static ref SETTINGS: Settings = Settings::new().unwrap();
+    pub static ref GIT_COMMIT_HASH: String = env::var("GIT_HASH").unwrap();
 }
+
+pub static VERSION: &str = env!("CARGO_PKG_VERSION");
+pub static PKG_NAME: &str = env!("CARGO_PKG_NAME");
+pub static PKG_DESCRIPTION: &str = env!("CARGO_PKG_DESCRIPTION");
+pub static PKG_HOMEPAGE: &str = env!("CARGO_PKG_HOMEPAGE");
 
 #[cfg(not(tarpaulin_include))]
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     use api::v1::services as v1_services;
+    pretty_env_logger::init();
+    info!(
+        "{}: {}.\nFor more information, see: {}\nBuild info:\nVersion: {} commit: {}",
+        PKG_NAME, PKG_DESCRIPTION, PKG_HOMEPAGE, VERSION, *GIT_COMMIT_HASH
+    );
 
     let data = Data::new().await;
-    pretty_env_logger::init();
 
     sqlx::migrate!("./migrations/").run(&data.db).await.unwrap();
 

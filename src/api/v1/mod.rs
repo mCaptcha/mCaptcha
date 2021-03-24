@@ -19,28 +19,33 @@ use actix_web::web::ServiceConfig;
 
 pub mod auth;
 pub mod mcaptcha;
+pub mod meta;
 
 pub fn services(cfg: &mut ServiceConfig) {
-    use auth::*;
-    use mcaptcha::*;
+    // auth
+    cfg.service(auth::signout);
+    cfg.service(auth::signin);
+    cfg.service(auth::signup);
+    cfg.service(auth::delete_account);
 
-    cfg.service(signout);
-    cfg.service(signin);
-    cfg.service(signup);
-    cfg.service(delete_account);
+    // mcaptcha
+    // 1. domain and mcaptcha
+    cfg.service(mcaptcha::add_domain);
+    cfg.service(mcaptcha::delete_domain);
+    cfg.service(mcaptcha::add_mcaptcha);
+    cfg.service(mcaptcha::delete_mcaptcha);
+    // levels
+    cfg.service(mcaptcha::add_levels);
+    cfg.service(mcaptcha::update_levels);
+    cfg.service(mcaptcha::delete_levels);
+    cfg.service(mcaptcha::get_levels);
+    // duration
+    cfg.service(mcaptcha::update_duration);
+    cfg.service(mcaptcha::get_duration);
 
-    cfg.service(add_domain);
-    cfg.service(delete_domain);
-    cfg.service(add_mcaptcha);
-    cfg.service(delete_mcaptcha);
-
-    cfg.service(add_levels);
-    cfg.service(update_levels);
-    cfg.service(delete_levels);
-    cfg.service(get_levels);
-
-    cfg.service(update_duration);
-    cfg.service(get_duration);
+    // meta
+    cfg.service(meta::build_details);
+    cfg.service(meta::health);
 }
 
 #[cfg(test)]
