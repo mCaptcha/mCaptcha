@@ -89,6 +89,10 @@ jobs:
           args: '-t 1200'
         env:
           DATABASE_URL: postgres://postgres:password@localhost:5432/postgres
+          # GIT_HASH is dummy value. I guess build.rs is skipped in tarpaulin
+          # execution so this value is required for preventing meta tests from
+          # panicking
+          GIT_HASH: 8e77345f1597e40c2e266cb4e6dee74888918a61 
 
 
       - name: Upload to Codecov
@@ -105,6 +109,7 @@ jobs:
           args: --no-deps --workspace --all-features
         env:
           DATABASE_URL: postgres://postgres:password@localhost:5432/postgres
+          GIT_hash: 8e77345f1597e40c2e266cb4e6dee74888918a61  # dummy value
 
       - name: Deploy to GitHub Pages
         if: matrix.version == 'stable' && (github.repository == 'mCaptcha/guard')
