@@ -102,7 +102,7 @@ pub async fn add_domain_util(
     password: &str,
     domain: &str,
 ) -> (data::Data, Login, ServiceResponse) {
-    use crate::api::v1::mcaptcha::Domain;
+    use crate::api::v1::mcaptcha::domains::Domain;
 
     let (data, creds, signin_resp) = signin(name, password).await;
     let cookies = get_cookie!(signin_resp);
@@ -131,7 +131,7 @@ pub async fn add_token_util(
     domain: &str,
     token_name: &str,
 ) -> (data::Data, Login, ServiceResponse) {
-    use crate::api::v1::mcaptcha::CreateToken;
+    use crate::api::v1::mcaptcha::mcaptcha::MCaptchaID;
 
     const ADD_URL: &str = "/api/v1/mcaptcha/domain/token/add";
 
@@ -140,7 +140,7 @@ pub async fn add_token_util(
     let mut app = get_app!(data).await;
 
     // 1. add mcaptcha token
-    let domain = CreateToken {
+    let domain = MCaptchaID {
         domain: domain.into(),
         name: token_name.into(),
     };

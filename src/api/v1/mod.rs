@@ -29,19 +29,23 @@ pub fn services(cfg: &mut ServiceConfig) {
     cfg.service(auth::delete_account);
 
     // mcaptcha
-    // 1. domain and mcaptcha
-    cfg.service(mcaptcha::add_domain);
-    cfg.service(mcaptcha::delete_domain);
-    cfg.service(mcaptcha::add_mcaptcha);
-    cfg.service(mcaptcha::delete_mcaptcha);
+    // domain
+    cfg.service(mcaptcha::domains::add_domain);
+    cfg.service(mcaptcha::domains::delete_domain);
+
+    // mcaptcha
+    cfg.service(mcaptcha::mcaptcha::add_mcaptcha);
+    cfg.service(mcaptcha::mcaptcha::delete_mcaptcha);
+
     // levels
-    cfg.service(mcaptcha::add_levels);
-    cfg.service(mcaptcha::update_levels);
-    cfg.service(mcaptcha::delete_levels);
-    cfg.service(mcaptcha::get_levels);
+    cfg.service(mcaptcha::levels::add_levels);
+    cfg.service(mcaptcha::levels::update_levels);
+    cfg.service(mcaptcha::levels::delete_levels);
+    cfg.service(mcaptcha::levels::get_levels);
+
     // duration
-    cfg.service(mcaptcha::update_duration);
-    cfg.service(mcaptcha::get_duration);
+    cfg.service(mcaptcha::duration::update_duration);
+    cfg.service(mcaptcha::duration::get_duration);
 
     // meta
     cfg.service(meta::build_details);

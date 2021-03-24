@@ -19,142 +19,10 @@ use actix_identity::Identity;
 use actix_web::{post, web, HttpResponse, Responder};
 use m_captcha::{defense::Level, DefenseBuilder};
 use serde::{Deserialize, Serialize};
-use url::Url;
 
-use super::auth::is_authenticated;
+use super::is_authenticated;
 use crate::errors::*;
 use crate::Data;
-
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct Domain {
-    pub name: String,
-}
-
-#[post("/api/v1/mcaptcha/domain/add")]
-pub async fn add_domain(
-    payload: web::Json<Domain>,
-    data: web::Data<Data>,
-    id: Identity,
-) -> ServiceResult<impl Responder> {
-    is_authenticated(&id)?;
-    let url = Url::parse(&payload.name)?;
-    if let Some(host) = url.host_str() {
-        let user = id.identity().unwrap();
-        let res = sqlx::query!(
-            "INSERT INTO mcaptcha_domains (name, ID) VALUES  
-            ($1, (SELECT ID FROM mcaptcha_users WHERE name = ($2) ));",
-            host,
-            user
-        )
-        .execute(&data.db)
-        .await;
-        match res {
-            Err(e) => Err(dup_error(e, ServiceError::HostnameTaken)),
-            Ok(_) => Ok(HttpResponse::Ok()),
-        }
-    } else {
-        Err(ServiceError::NotAUrl)
-    }
-}
-
-#[post("/api/v1/mcaptcha/domain/delete")]
-pub async fn delete_domain(
-    payload: web::Json<Domain>,
-    data: web::Data<Data>,
-    id: Identity,
-) -> ServiceResult<impl Responder> {
-    is_authenticated(&id)?;
-    let url = Url::parse(&payload.name)?;
-    if let Some(host) = url.host_str() {
-        sqlx::query!("DELETE FROM mcaptcha_domains WHERE name = ($1)", host,)
-            .execute(&data.db)
-            .await?;
-        Ok(HttpResponse::Ok())
-    } else {
-        Err(ServiceError::NotAUrl)
-    }
-}
-
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct CreateToken {
-    pub name: String,
-    pub domain: String,
-}
-
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct TokenKeyPair {
-    pub name: String,
-    pub key: String,
-}
-
-#[post("/api/v1/mcaptcha/domain/token/add")]
-pub async fn add_mcaptcha(
-    payload: web::Json<CreateToken>,
-    data: web::Data<Data>,
-    id: Identity,
-) -> ServiceResult<impl Responder> {
-    is_authenticated(&id)?;
-    let key = get_random(32);
-    let url = Url::parse(&payload.domain)?;
-    println!("got req");
-    if let Some(host) = url.host_str() {
-        let res = sqlx::query!(
-            "INSERT INTO mcaptcha_config 
-        (name, key, domain_name)
-        VALUES ($1, $2, (
-                SELECT name FROM mcaptcha_domains WHERE name = ($3)))",
-            &payload.name,
-            &key,
-            &host,
-        )
-        .execute(&data.db)
-        .await;
-
-        match res {
-            Err(e) => Err(dup_error(e, ServiceError::TokenNameTaken)),
-            Ok(_) => {
-                let resp = TokenKeyPair {
-                    key,
-                    name: payload.into_inner().name,
-                };
-
-                Ok(HttpResponse::Ok().json(resp))
-            }
-        }
-    } else {
-        Err(ServiceError::NotAUrl)
-    }
-}
-
-#[post("/api/v1/mcaptcha/domain/token/delete")]
-pub async fn delete_mcaptcha(
-    payload: web::Json<CreateToken>,
-    data: web::Data<Data>,
-    id: Identity,
-) -> ServiceResult<impl Responder> {
-    is_authenticated(&id)?;
-    sqlx::query!(
-        "DELETE FROM mcaptcha_config WHERE name = ($1)",
-        &payload.name,
-    )
-    .execute(&data.db)
-    .await?;
-    Ok(HttpResponse::Ok())
-}
-
-fn get_random(len: usize) -> String {
-    use std::iter;
-
-    use rand::{distributions::Alphanumeric, rngs::ThreadRng, thread_rng, Rng};
-
-    let mut rng: ThreadRng = thread_rng();
-
-    iter::repeat(())
-        .map(|()| rng.sample(Alphanumeric))
-        .map(char::from)
-        .take(len)
-        .collect::<String>()
-}
 
 #[derive(Serialize, Deserialize)]
 pub struct AddLevels {
@@ -288,63 +156,6 @@ pub async fn get_levels(
 }
 
 #[derive(Deserialize, Serialize)]
-pub struct Duration {
-    pub token_name: String,
-    pub duration: i32,
-}
-
-#[post("/api/v1/mcaptcha/domain/token/duration/update")]
-pub async fn update_duration(
-    payload: web::Json<Duration>,
-    data: web::Data<Data>,
-    id: Identity,
-) -> ServiceResult<impl Responder> {
-    is_authenticated(&id)?;
-
-    if payload.duration > 0 {
-        sqlx::query!(
-            "UPDATE mcaptcha_config  set duration = $1 WHERE 
-            name = $2;",
-            &payload.duration,
-            &payload.token_name,
-        )
-        .execute(&data.db)
-        .await?;
-
-        Ok(HttpResponse::Ok())
-    } else {
-        // when mCaptcha/mCaptcha #2 is fixed, this wont be necessary
-        Err(ServiceError::CaptchaError(
-            m_captcha::errors::CaptchaError::DifficultyFactorZero,
-        ))
-    }
-}
-
-#[derive(Deserialize, Serialize)]
-pub struct GetDuration {
-    pub duration: i32,
-}
-
-#[post("/api/v1/mcaptcha/domain/token/duration/get")]
-pub async fn get_duration(
-    payload: web::Json<GetLevels>,
-    data: web::Data<Data>,
-    id: Identity,
-) -> ServiceResult<impl Responder> {
-    is_authenticated(&id)?;
-
-    let duration = sqlx::query_as!(
-        GetDuration,
-        "SELECT duration FROM mcaptcha_config  WHERE 
-            name = $1;",
-        &payload.token,
-    )
-    .fetch_one(&data.db)
-    .await?;
-    Ok(HttpResponse::Ok().json(duration))
-}
-
-#[derive(Deserialize, Serialize)]
 pub struct Levels {
     levels: I32Levels,
 }
@@ -370,11 +181,143 @@ async fn get_levels_util(name: &str, data: &Data) -> ServiceResult<Vec<I32Levels
     Ok(levels)
 }
 
-// Workflow:
-// 1. Sign up
-// 2. Sign in
-// 3. Add domain(DNS TXT record verification? / put string at path)
-// 4. Create token
-// 5. Add levels
-// 6. Update duration
-// 7. Start syatem
+#[cfg(test)]
+mod tests {
+    use actix_web::http::{header, StatusCode};
+    use actix_web::test;
+
+    use super::*;
+    use crate::api::v1::services as v1_services;
+    use crate::tests::*;
+    use crate::*;
+
+    #[actix_rt::test]
+    async fn level_routes_work() {
+        const NAME: &str = "testuserlevelroutes";
+        const PASSWORD: &str = "longpassworddomain";
+        const EMAIL: &str = "testuserlevelrouts@a.com";
+        const DOMAIN: &str = "http://level.example.com";
+        const TOKEN_NAME: &str = "level_routes_work";
+        const ADD_URL: &str = "/api/v1/mcaptcha/domain/token/levels/add";
+        const UPDATE_URL: &str = "/api/v1/mcaptcha/domain/token/levels/update";
+        const DEL_URL: &str = "/api/v1/mcaptcha/domain/token/levels/delete";
+        const GET_URL: &str = "/api/v1/mcaptcha/domain/token/levels/get";
+
+        let l1 = Level {
+            difficulty_factor: 50,
+            visitor_threshold: 50,
+        };
+        let l2 = Level {
+            difficulty_factor: 500,
+            visitor_threshold: 500,
+        };
+        let levels = vec![l1, l2];
+        let add_level = AddLevels {
+            levels: levels.clone(),
+            name: TOKEN_NAME.into(),
+        };
+
+        let get_level = GetLevels {
+            token: TOKEN_NAME.into(),
+        };
+
+        {
+            let data = Data::new().await;
+            delete_user(NAME, &data).await;
+        }
+
+        register_and_signin(NAME, EMAIL, PASSWORD).await;
+        let (data, _, signin_resp) = add_token_util(NAME, PASSWORD, DOMAIN, TOKEN_NAME).await;
+        let cookies = get_cookie!(signin_resp);
+        let mut app = get_app!(data).await;
+
+        // 1. add level
+        let add_token_resp = test::call_service(
+            &mut app,
+            post_request!(&add_level, ADD_URL)
+                .cookie(cookies.clone())
+                .to_request(),
+        )
+        .await;
+        assert_eq!(add_token_resp.status(), StatusCode::OK);
+
+        // 2. get level
+        let get_level_resp = test::call_service(
+            &mut app,
+            post_request!(&get_level, GET_URL)
+                .cookie(cookies.clone())
+                .to_request(),
+        )
+        .await;
+        assert_eq!(get_level_resp.status(), StatusCode::OK);
+        let res_levels: Vec<Level> = test::read_body_json(get_level_resp).await;
+        assert_eq!(res_levels, levels);
+
+        // 3. update level
+
+        let l1 = Level {
+            difficulty_factor: 10,
+            visitor_threshold: 10,
+        };
+        let l2 = Level {
+            difficulty_factor: 5000,
+            visitor_threshold: 5000,
+        };
+        let levels = vec![l1, l2];
+        let add_level = AddLevels {
+            levels: levels.clone(),
+            name: TOKEN_NAME.into(),
+        };
+        let add_token_resp = test::call_service(
+            &mut app,
+            post_request!(&add_level, UPDATE_URL)
+                .cookie(cookies.clone())
+                .to_request(),
+        )
+        .await;
+        assert_eq!(add_token_resp.status(), StatusCode::OK);
+        let get_level_resp = test::call_service(
+            &mut app,
+            post_request!(&get_level, GET_URL)
+                .cookie(cookies.clone())
+                .to_request(),
+        )
+        .await;
+        assert_eq!(get_level_resp.status(), StatusCode::OK);
+        let res_levels: Vec<Level> = test::read_body_json(get_level_resp).await;
+        assert_eq!(res_levels, levels);
+
+        // 4. delete level
+        let l1 = Level {
+            difficulty_factor: 10,
+            visitor_threshold: 10,
+        };
+        let l2 = Level {
+            difficulty_factor: 5000,
+            visitor_threshold: 5000,
+        };
+        let levels = vec![l1, l2];
+        let add_level = AddLevels {
+            levels: levels.clone(),
+            name: TOKEN_NAME.into(),
+        };
+        let add_token_resp = test::call_service(
+            &mut app,
+            post_request!(&add_level, DEL_URL)
+                .cookie(cookies.clone())
+                .to_request(),
+        )
+        .await;
+        assert_eq!(add_token_resp.status(), StatusCode::OK);
+        let get_level_resp = test::call_service(
+            &mut app,
+            post_request!(&get_level, GET_URL)
+                .cookie(cookies.clone())
+                .to_request(),
+        )
+        .await;
+        assert_eq!(get_level_resp.status(), StatusCode::OK);
+        let res_levels: Vec<Level> = test::read_body_json(get_level_resp).await;
+        assert_eq!(res_levels, Vec::new());
+    }
+}
