@@ -1,3 +1,3 @@
 (function() {var implementors = {};
-implementors["guard"] = [{"text":"impl Default for HealthBuilder","synthetic":false,"types":[]}];
+implementors["guard"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/default/trait.Default.html\" title=\"trait core::default::Default\">Default</a> for <a class=\"struct\" href=\"guard/api/v1/meta/struct.HealthBuilder.html\" title=\"struct guard::api::v1::meta::HealthBuilder\">HealthBuilder</a>","synthetic":false,"types":["guard::api::v1::meta::HealthBuilder"]}];
 if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

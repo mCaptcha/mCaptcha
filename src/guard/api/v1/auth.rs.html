@@ -153,9 +153,6 @@
 <span id="150">150</span>
 <span id="151">151</span>
 <span id="152">152</span>
-<span id="153">153</span>
-<span id="154">154</span>
-<span id="155">155</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -266,11 +263,8 @@
 <span class="comment">// TODO use middleware</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_authenticated</span>(<span class="ident">id</span>: <span class="kw-2">&amp;</span><span class="ident">Identity</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="comment">// access request identity</span>
-    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="kw">_</span>) <span class="op">=</span> <span class="ident">id</span>.<span class="ident">identity</span>() {
-        <span class="prelude-val">Ok</span>(())
-    } <span class="kw">else</span> {
-        <span class="prelude-val">Err</span>(<span class="ident">ServiceError</span>::<span class="ident">AuthorizationRequired</span>)
-    }
+    <span class="ident">id</span>.<span class="ident">identity</span>().<span class="ident">ok_or</span>(<span class="ident">ServiceError</span>::<span class="ident">AuthorizationRequired</span>)<span class="question-mark">?</span>;
+    <span class="prelude-val">Ok</span>(())
 }
 
 <span class="attribute">#[<span class="ident">post</span>(<span class="string">&quot;/api/v1/account/delete&quot;</span>)]</span>
@@ -313,4 +307,5 @@
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../../";window.currentCrate = "guard";</script><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script><script defer src="../../../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="guard"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script><script defer src="../../../../search-index.js"></script></body></html>

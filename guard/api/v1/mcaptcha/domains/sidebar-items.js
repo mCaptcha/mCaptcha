@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Domain",""],["add_domain",""],["delete_domain",""]]});
+initSidebarItems({"struct":[["Challenge",""],["Domain",""],["add_domain",""],["delete_domain",""],["get_challenge",""],["verify",""]]});

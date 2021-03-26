@@ -24,6 +24,20 @@
 <span id="21">21</span>
 <span id="22">22</span>
 <span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -48,5 +62,20 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">mcaptcha</span>;
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">auth</span>::<span class="ident">is_authenticated</span>;
+
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_random</span>(<span class="ident">len</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">iter</span>;
+
+    <span class="kw">use</span> <span class="ident">rand</span>::{<span class="ident">distributions</span>::<span class="ident">Alphanumeric</span>, <span class="ident">rngs</span>::<span class="ident">ThreadRng</span>, <span class="ident">thread_rng</span>, <span class="ident">Rng</span>};
+
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rng</span>: <span class="ident">ThreadRng</span> <span class="op">=</span> <span class="ident">thread_rng</span>();
+
+    <span class="ident">iter</span>::<span class="ident">repeat</span>(())
+        .<span class="ident">map</span>(<span class="op">|</span>()<span class="op">|</span> <span class="ident">rng</span>.<span class="ident">sample</span>(<span class="ident">Alphanumeric</span>))
+        .<span class="ident">map</span>(<span class="ident">char</span>::<span class="ident">from</span>)
+        .<span class="ident">take</span>(<span class="ident">len</span>)
+        .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>()
+}
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../../../";window.currentCrate = "guard";</script><script src="../../../../../main.js"></script><script src="../../../../../source-script.js"></script><script src="../../../../../source-files.js"></script><script defer src="../../../../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="guard"></div>
+    <script src="../../../../../main.js"></script><script src="../../../../../source-script.js"></script><script src="../../../../../source-files.js"></script><script defer src="../../../../../search-index.js"></script></body></html>

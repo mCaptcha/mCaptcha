@@ -1,3 +1,3 @@
 (function() {var implementors = {};
-implementors["guard"] = [{"text":"impl Error for ServiceError","synthetic":false,"types":[]}];
+implementors["guard"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/std/error/trait.Error.html\" title=\"trait std::error::Error\">Error</a> for <a class=\"enum\" href=\"guard/errors/enum.ServiceError.html\" title=\"enum guard::errors::ServiceError\">ServiceError</a>","synthetic":false,"types":["guard::errors::ServiceError"]}];
 if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
