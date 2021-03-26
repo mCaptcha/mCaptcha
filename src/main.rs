@@ -18,7 +18,8 @@ use std::env;
 
 use actix_identity::{CookieIdentityPolicy, IdentityService};
 use actix_web::{
-    error::InternalError, http::StatusCode, middleware, web::JsonConfig, App, HttpServer,
+    client::Client, error::InternalError, http::StatusCode, middleware, web::JsonConfig, App,
+    HttpServer,
 };
 use lazy_static::lazy_static;
 use log::info;
@@ -60,14 +61,14 @@ async fn main() -> std::io::Result<()> {
     sqlx::migrate!("./migrations/").run(&data.db).await.unwrap();
 
     HttpServer::new(move || {
+        let client = Client::default();
         App::new()
             .wrap(middleware::Logger::default())
             .wrap(get_identity_service())
             .wrap(middleware::Compress::default())
             .data(data.clone())
-            .wrap(middleware::NormalizePath::new(
-                middleware::normalize::TrailingSlash::Trim,
-            ))
+            .data(client.clone())
+            .wrap(middleware::NormalizePath::default())
             .app_data(get_json_err())
             .configure(v1_services)
     })

@@ -16,3 +16,6 @@
 */
 
 mod auth;
+mod kvserver;
+
+pub use kvserver::server;

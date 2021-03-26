@@ -97,30 +97,45 @@ pub async fn signin<'a>(name: &'a str, password: &str) -> (data::Data, Login, Se
 }
 
 /// register and signin and domain
+/// bypasses domain verification, use with care
 pub async fn add_domain_util(
     name: &str,
     password: &str,
     domain: &str,
 ) -> (data::Data, Login, ServiceResponse) {
     use crate::api::v1::mcaptcha::domains::Domain;
+    use url::Url;
 
     let (data, creds, signin_resp) = signin(name, password).await;
     let cookies = get_cookie!(signin_resp);
     let mut app = get_app!(data).await;
 
     // 1. add domain
-    let domain = Domain {
+    let add_domain = Domain {
         name: domain.into(),
     };
 
     let add_domain_resp = test::call_service(
         &mut app,
-        post_request!(&domain, "/api/v1/mcaptcha/domain/add")
+        post_request!(&add_domain, "/api/v1/mcaptcha/domain/add")
             .cookie(cookies.clone())
             .to_request(),
     )
     .await;
     assert_eq!(add_domain_resp.status(), StatusCode::OK);
+
+    // verification work around
+    let url = Url::parse(domain).unwrap();
+    let host = url.host_str().unwrap();
+    sqlx::query!(
+        "INSERT INTO mcaptcha_domains_verified (name, owner_id) VALUES  
+            ($1, (SELECT ID from mcaptcha_users WHERE name = $2))",
+        &host,
+        &name
+    )
+    .execute(&data.db)
+    .await
+    .unwrap();
 
     (data, creds, signin_resp)
 }

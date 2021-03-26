@@ -18,6 +18,7 @@
 use std::convert::From;
 
 use actix_web::{
+    client::SendRequestError,
     dev::HttpResponseBuilder,
     error::ResponseError,
     http::{header, StatusCode},
@@ -80,6 +81,13 @@ pub enum ServiceError {
 
     #[display(fmt = "{}", _0)]
     CaptchaError(CaptchaError),
+
+    #[display(fmt = "Couldn't reach your server. If Problem presists, contact support")]
+    ClientServerUnreachable,
+    #[display(fmt = "Couldn't parse challenge from your server. Check for courruption")]
+    ChallengeCourruption,
+    #[display(fmt = "Verification failure, vaules didn't match")]
+    ChallengeVerificationFailure,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -117,6 +125,9 @@ impl ResponseError for ServiceError {
             ServiceError::UsernameTaken => StatusCode::BAD_REQUEST,
             ServiceError::TokenNameTaken => StatusCode::BAD_REQUEST,
             ServiceError::HostnameTaken => StatusCode::BAD_REQUEST,
+            ServiceError::ClientServerUnreachable => StatusCode::SERVICE_UNAVAILABLE,
+            ServiceError::ChallengeCourruption => StatusCode::BAD_REQUEST,
+            ServiceError::ChallengeVerificationFailure => StatusCode::UNAUTHORIZED,
             ServiceError::CaptchaError(e) => match e {
                 CaptchaError::MailboxError => StatusCode::INTERNAL_SERVER_ERROR,
 
@@ -145,6 +156,19 @@ impl From<CredsError> for ServiceError {
 impl From<ValidationErrors> for ServiceError {
     fn from(_: ValidationErrors) -> ServiceError {
         ServiceError::NotAnEmail
+    }
+}
+
+impl From<SendRequestError> for ServiceError {
+    fn from(e: SendRequestError) -> ServiceError {
+        debug!("{:?}", &e);
+        match e {
+            SendRequestError::Url(_) => ServiceError::NotAUrl,
+            SendRequestError::Send(_) => ServiceError::InternalServerError,
+            SendRequestError::Response(_) => ServiceError::InternalServerError,
+            SendRequestError::Body(_) => ServiceError::InternalServerError,
+            _ => ServiceError::ClientServerUnreachable,
+        }
     }
 }
 

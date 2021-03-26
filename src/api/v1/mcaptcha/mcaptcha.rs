@@ -20,7 +20,7 @@ use actix_web::{post, web, HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
 use url::Url;
 
-use super::is_authenticated;
+use super::{get_random, is_authenticated};
 use crate::errors::*;
 use crate::Data;
 
@@ -46,32 +46,30 @@ pub async fn add_mcaptcha(
     let key = get_random(32);
     let url = Url::parse(&payload.domain)?;
     println!("got req");
-    if let Some(host) = url.host_str() {
-        let res = sqlx::query!(
-            "INSERT INTO mcaptcha_config 
+
+    let host = url.host_str().ok_or(ServiceError::NotAUrl)?;
+    let res = sqlx::query!(
+        "INSERT INTO mcaptcha_config 
         (name, key, domain_name)
         VALUES ($1, $2, (
-                SELECT name FROM mcaptcha_domains WHERE name = ($3)))",
-            &payload.name,
-            &key,
-            &host,
-        )
-        .execute(&data.db)
-        .await;
+                SELECT name FROM mcaptcha_domains_verified WHERE name = ($3)))",
+        &payload.name,
+        &key,
+        &host,
+    )
+    .execute(&data.db)
+    .await;
 
-        match res {
-            Err(e) => Err(dup_error(e, ServiceError::TokenNameTaken)),
-            Ok(_) => {
-                let resp = MCaptchaDetails {
-                    key,
-                    name: payload.into_inner().name,
-                };
+    match res {
+        Err(e) => Err(dup_error(e, ServiceError::TokenNameTaken)),
+        Ok(_) => {
+            let resp = MCaptchaDetails {
+                key,
+                name: payload.into_inner().name,
+            };
 
-                Ok(HttpResponse::Ok().json(resp))
-            }
+            Ok(HttpResponse::Ok().json(resp))
         }
-    } else {
-        Err(ServiceError::NotAUrl)
     }
 }
 
@@ -89,20 +87,6 @@ pub async fn delete_mcaptcha(
     .execute(&data.db)
     .await?;
     Ok(HttpResponse::Ok())
-}
-
-fn get_random(len: usize) -> String {
-    use std::iter;
-
-    use rand::{distributions::Alphanumeric, rngs::ThreadRng, thread_rng, Rng};
-
-    let mut rng: ThreadRng = thread_rng();
-
-    iter::repeat(())
-        .map(|()| rng.sample(Alphanumeric))
-        .map(char::from)
-        .take(len)
-        .collect::<String>()
 }
 
 // Workflow:

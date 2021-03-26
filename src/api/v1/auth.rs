@@ -107,11 +107,8 @@ pub async fn signout(id: Identity) -> impl Responder {
 // TODO use middleware
 pub fn is_authenticated(id: &Identity) -> ServiceResult<()> {
     // access request identity
-    if let Some(_) = id.identity() {
-        Ok(())
-    } else {
-        Err(ServiceError::AuthorizationRequired)
-    }
+    id.identity().ok_or(ServiceError::AuthorizationRequired)?;
+    Ok(())
 }
 
 #[post("/api/v1/account/delete")]
