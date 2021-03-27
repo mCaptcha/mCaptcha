@@ -18,13 +18,13 @@
 use std::convert::From;
 
 use actix_web::{
-    client::SendRequestError,
     dev::HttpResponseBuilder,
     error::ResponseError,
     http::{header, StatusCode},
     HttpResponse,
 };
 use argon2_creds::errors::CredsError;
+use awc::error::SendRequestError;
 use derive_more::{Display, Error};
 use log::debug;
 use m_captcha::errors::CaptchaError;

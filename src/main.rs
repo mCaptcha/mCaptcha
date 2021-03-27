@@ -46,6 +46,8 @@ pub static PKG_NAME: &str = env!("CARGO_PKG_NAME");
 pub static PKG_DESCRIPTION: &str = env!("CARGO_PKG_DESCRIPTION");
 pub static PKG_HOMEPAGE: &str = env!("CARGO_PKG_HOMEPAGE");
 
+pub static VERIFICATION_PATH: &str = "mcaptchaVerificationChallenge.json";
+
 #[cfg(not(tarpaulin_include))]
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {

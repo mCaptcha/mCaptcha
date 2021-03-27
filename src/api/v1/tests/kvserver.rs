@@ -20,7 +20,7 @@ use std::env;
 use std::sync::mpsc;
 use std::sync::{Arc, RwLock};
 
-use actix_web::{dev::Server, web, App, HttpResponse, HttpServer, Responder};
+use actix_web::{dev::Server, middleware, web, App, HttpResponse, HttpServer, Responder};
 use serde::{Deserialize, Serialize};
 
 // from
@@ -30,32 +30,13 @@ pub struct Challenge {
     verification_challenge: String,
 }
 
-#[cfg(not(tarpaulin_include))]
-#[actix_web::main]
-async fn main() {
-    pretty_env_logger::init();
-    let mut confif = env::args();
-    confif.next();
-    let port = confif.next().unwrap();
-    HttpServer::new(move || {
-        let store: UtilKVServer = Arc::new(RwLock::new(HashMap::new()));
-        App::new()
-            .data(store)
-            .route("/{key}/", web::post().to(util_server_add))
-            .route("/{key}/", web::get().to(util_server_retrive))
-    })
-    .bind(format!("localhost:{}", port))
-    .unwrap()
-    .run()
-    .await
-    .unwrap();
-}
-
 pub async fn server(ip: &str, tx: mpsc::Sender<Server>) {
     pretty_env_logger::init();
     let srv = HttpServer::new(move || {
         let store: UtilKVServer = Arc::new(RwLock::new(HashMap::new()));
         App::new()
+            .wrap(middleware::Logger::default())
+            .wrap(middleware::NormalizePath::default())
             .data(store)
             .route("/{key}/", web::post().to(util_server_add))
             .route("/{key}/", web::get().to(util_server_retrive))
@@ -64,7 +45,7 @@ pub async fn server(ip: &str, tx: mpsc::Sender<Server>) {
     .unwrap()
     .run();
 
-    tx.send(srv.clone());
+    tx.send(srv.clone()).unwrap();
 }
 
 type UtilKVServer = Arc<RwLock<HashMap<String, Challenge>>>;
@@ -77,7 +58,7 @@ async fn util_server_retrive(
     let key = key.into_inner();
     let store = data.read().unwrap();
     let resp = store.get(&key).unwrap();
-    info!("key :{}, value: {:?}", key, resp);
+    info!("[kv-server] retrive: key :{}, value: {:?}", key, resp);
     HttpResponse::Ok().json(resp)
 }
 
@@ -87,7 +68,7 @@ async fn util_server_add(
     payload: web::Json<Challenge>,
     data: web::Data<UtilKVServer>,
 ) -> impl Responder {
-    info!("key :{}, value: {:?}", key, payload);
+    info!("[kv-server] cache: key :{}, value: {:?}", key, payload);
     let mut store = data.write().unwrap();
     store.insert(key.into_inner(), payload.into_inner());
     HttpResponse::Ok()

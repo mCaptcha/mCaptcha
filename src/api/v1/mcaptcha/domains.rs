@@ -67,12 +67,11 @@ pub async fn get_challenge(
     payload: web::Json<Domain>,
     data: web::Data<Data>,
     id: Identity,
-    client: web::Data<Client>,
 ) -> ServiceResult<impl Responder> {
     is_authenticated(&id)?;
     let url = Url::parse(&payload.name)?;
 
-    let host = url.host_str().ok_or(ServiceError::NotAUrl).unwrap();
+    let host = url.host_str().ok_or(ServiceError::NotAUrl)?;
     let user = id.identity().unwrap();
     let res = sqlx::query_as!(
         Challenge,
@@ -83,8 +82,7 @@ pub async fn get_challenge(
         user,
     )
     .fetch_one(&data.db)
-    .await
-    .unwrap();
+    .await?;
     Ok(HttpResponse::Ok().json(res))
 }
 
@@ -95,56 +93,58 @@ pub async fn verify(
     client: web::Data<Client>,
     id: Identity,
 ) -> ServiceResult<impl Responder> {
+    use crate::VERIFICATION_PATH;
     use futures::{future::TryFutureExt, try_join};
 
-    is_authenticated(&id).unwrap();
-    //let url = Url::parse(&payload.name).unwrap();
-    //let host = url.host_str().ok_or(ServiceError::NotAUrl).unwrap();
-    //let user = id.identity().unwrap();
-    //let challenge_fut = sqlx::query_as!(
-    //    Challenge,
-    //    "SELECT verification_challenge
-    //        FROM mcaptcha_domains_unverified where
-    //        name = $1 AND owner_id = (SELECT ID from mcaptcha_users where name = $2)",
-    //    &host,
-    //    &user,
-    //)
-    //.fetch_one(&data.db)
-    //.map_err(|e| {
-    //    let r: ServiceError = e.into();
-    //    r
-    //});
+    is_authenticated(&id)?;
+    let url = Url::parse(&payload.name)?;
+    let host = url.host_str().ok_or(ServiceError::NotAUrl)?;
+    let user = id.identity().unwrap();
+    let challenge_fut = sqlx::query_as!(
+        Challenge,
+        "SELECT verification_challenge
+            FROM mcaptcha_domains_unverified where
+            name = $1 AND owner_id = (SELECT ID from mcaptcha_users where name = $2)",
+        &host,
+        &user,
+    )
+    .fetch_one(&data.db)
+    .map_err(|e| {
+        let r: ServiceError = e.into();
+        r
+    });
 
-    //let res_fut = client.get(host).send().map_err(|e| {
-    //    let r: ServiceError = e.into();
-    //    r
-    //});
+    let res_fut = client
+        .get(format!("{}{}", url.to_string(), VERIFICATION_PATH))
+        .send()
+        .map_err(|e| {
+            let r: ServiceError = e.into();
+            r
+        });
 
-    //let (challenge, mut server_res) = try_join!(challenge_fut, res_fut).unwrap();
+    let (challenge, mut server_res) = try_join!(challenge_fut, res_fut)?;
 
-    //let server_resp: Challenge = server_res
-    //    .json()
-    //    .await
-    //    .map_err(|_| return ServiceError::ChallengeCourruption)
-    //    .unwrap();
+    let server_resp: Challenge = server_res
+        .json()
+        .await
+        .map_err(|_| return ServiceError::ChallengeCourruption)?;
 
-    //if server_resp.verification_challenge == challenge.verification_challenge {
-    //    sqlx::query!(
-    //        "INSERT INTO mcaptcha_domains_verified (name, owner_id) VALUES
-    //        ($1, (SELECT ID from mcaptcha_users WHERE name = $2))",
-    //        &host,
-    //        &user
-    //    )
-    //    .execute(&data.db)
-    //    .await
-    //    .unwrap();
+    if server_resp.verification_challenge == challenge.verification_challenge {
+        sqlx::query!(
+            "INSERT INTO mcaptcha_domains_verified (name, owner_id) VALUES
+            ($1, (SELECT ID from mcaptcha_users WHERE name = $2))",
+            &host,
+            &user
+        )
+        .execute(&data.db)
+        .await?;
 
-    //    // TODO delete staging unverified
+        // TODO delete staging unverified
 
-    Ok(HttpResponse::Ok())
-    //} else {
-    //    Err(ServiceError::ChallengeVerificationFailure)
-    //}
+        Ok(HttpResponse::Ok())
+    } else {
+        Err(ServiceError::ChallengeVerificationFailure)
+    }
 }
 
 #[post("/api/v1/mcaptcha/domain/delete")]
@@ -304,7 +304,7 @@ mod tests {
         let challenge: Challenge = test::read_body_json(get_challenge_resp).await;
 
         client
-            .post(format!("{}/domain_verification_works/", DOMAIN))
+            .post(format!("{}/{}/", DOMAIN, VERIFICATION_PATH))
             .send_json(&challenge)
             .await
             .unwrap();

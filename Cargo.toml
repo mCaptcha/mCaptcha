@@ -21,10 +21,6 @@ path = "./src/main.rs"
 name = "tests-migrate"
 path = "./src/tests-migrate.rs"
 
-[[bin]]
-name = "kv-test-util"
-path = "./src/api/v1/tests/kvserver.rs"
-
 [dependencies]
 actix-web = "3"
 actix = "0.11"
