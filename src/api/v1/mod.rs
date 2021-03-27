@@ -38,6 +38,8 @@ pub fn services(cfg: &mut ServiceConfig) {
     // mcaptcha
     cfg.service(mcaptcha::mcaptcha::add_mcaptcha);
     cfg.service(mcaptcha::mcaptcha::delete_mcaptcha);
+    cfg.service(mcaptcha::mcaptcha::update_token);
+    cfg.service(mcaptcha::mcaptcha::get_token);
 
     // levels
     cfg.service(mcaptcha::levels::add_levels);

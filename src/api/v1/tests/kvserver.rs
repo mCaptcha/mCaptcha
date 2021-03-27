@@ -16,15 +16,17 @@
 */
 use log::info;
 use std::collections::HashMap;
-use std::env;
 use std::sync::mpsc;
 use std::sync::{Arc, RwLock};
 
 use actix_web::{dev::Server, middleware, web, App, HttpResponse, HttpServer, Responder};
 use serde::{Deserialize, Serialize};
 
-// from
-// use crate::api::v1::mcaptcha::domains::Challenge;
+/*
+ * Simple KV Server that stores a json of with schema
+ * `Challenge` at path /{key}/ on POST and emits on GET
+ */
+
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Challenge {
     verification_challenge: String,

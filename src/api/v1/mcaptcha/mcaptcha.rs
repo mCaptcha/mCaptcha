@@ -45,7 +45,6 @@ pub async fn add_mcaptcha(
     is_authenticated(&id)?;
     let key = get_random(32);
     let url = Url::parse(&payload.domain)?;
-    println!("got req");
 
     let host = url.host_str().ok_or(ServiceError::NotAUrl)?;
     let res = sqlx::query!(
@@ -71,6 +70,57 @@ pub async fn add_mcaptcha(
             Ok(HttpResponse::Ok().json(resp))
         }
     }
+}
+
+#[post("/api/v1/mcaptcha/domain/token/update")]
+pub async fn update_token(
+    payload: web::Json<MCaptchaID>,
+    data: web::Data<Data>,
+    id: Identity,
+) -> ServiceResult<impl Responder> {
+    is_authenticated(&id)?;
+    let key = get_random(32);
+    let url = Url::parse(&payload.domain)?;
+
+    let host = url.host_str().ok_or(ServiceError::NotAUrl)?;
+    sqlx::query!(
+        "UPDATE mcaptcha_config SET key = $1 
+        WHERE name = $2 AND domain_name = $3",
+        &key,
+        &payload.name,
+        &host,
+    )
+    .execute(&data.db)
+    .await?;
+
+    let resp = MCaptchaDetails {
+        key,
+        name: payload.into_inner().name,
+    };
+
+    Ok(HttpResponse::Ok().json(resp))
+}
+
+#[post("/api/v1/mcaptcha/domain/token/get")]
+pub async fn get_token(
+    payload: web::Json<MCaptchaID>,
+    data: web::Data<Data>,
+    id: Identity,
+) -> ServiceResult<impl Responder> {
+    is_authenticated(&id)?;
+    let url = Url::parse(&payload.domain)?;
+
+    let host = url.host_str().ok_or(ServiceError::NotAUrl)?;
+    let res = sqlx::query_as!(
+        MCaptchaDetails,
+        "SELECT key, name from mcaptcha_config WHERE name = $1 AND domain_name = $2",
+        &payload.name,
+        &host,
+    )
+    .fetch_one(&data.db)
+    .await?;
+
+    Ok(HttpResponse::Ok().json(res))
 }
 
 #[post("/api/v1/mcaptcha/domain/token/delete")]
@@ -166,5 +216,53 @@ mod tests {
         )
         .await;
         assert_eq!(del_token.status(), StatusCode::OK);
+    }
+
+    #[actix_rt::test]
+    async fn update_and_get_mcaptcha_works() {
+        const NAME: &str = "updateusermcaptcha";
+        const PASSWORD: &str = "longpassworddomain";
+        const EMAIL: &str = "testupdateusermcaptcha@a.com";
+        const DOMAIN: &str = "http://update-mcaptcha.example.com";
+        const TOKEN_NAME: &str = "get_update_mcaptcha_works_token";
+        const UPDATE_URL: &str = "/api/v1/mcaptcha/domain/token/update";
+        const GET_URL: &str = "/api/v1/mcaptcha/domain/token/get";
+
+        {
+            let data = Data::new().await;
+            delete_user(NAME, &data).await;
+        }
+
+        // 1. add mcaptcha token
+        register_and_signin(NAME, EMAIL, PASSWORD).await;
+        let (data, _, signin_resp) = add_token_util(NAME, PASSWORD, DOMAIN, TOKEN_NAME).await;
+        let cookies = get_cookie!(signin_resp);
+        let mut app = get_app!(data).await;
+
+        let domain = MCaptchaID {
+            domain: DOMAIN.into(),
+            name: TOKEN_NAME.into(),
+        };
+
+        let update_token_resp = test::call_service(
+            &mut app,
+            post_request!(&domain, UPDATE_URL)
+                .cookie(cookies.clone())
+                .to_request(),
+        )
+        .await;
+        assert_eq!(update_token_resp.status(), StatusCode::OK);
+        let updated_token: MCaptchaDetails = test::read_body_json(update_token_resp).await;
+
+        let get_token_resp = test::call_service(
+            &mut app,
+            post_request!(&domain, GET_URL)
+                .cookie(cookies.clone())
+                .to_request(),
+        )
+        .await;
+        assert_eq!(get_token_resp.status(), StatusCode::OK);
+        let get_token_key: MCaptchaDetails = test::read_body_json(get_token_resp).await;
+        assert_eq!(get_token_key.key, updated_token.key);
     }
 }

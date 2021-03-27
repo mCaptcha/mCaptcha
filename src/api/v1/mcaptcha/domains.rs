@@ -43,7 +43,8 @@ pub async fn add_domain(
     let user = id.identity().unwrap();
     let challenge = get_random(32);
     let res = sqlx::query!(
-        "INSERT INTO mcaptcha_domains_unverified (name, owner_id, verification_challenge) VALUES  
+        "INSERT INTO mcaptcha_domains_unverified 
+            (name, owner_id, verification_challenge) VALUES  
             ($1, (SELECT ID FROM mcaptcha_users WHERE name = ($2) ), $3);",
         host,
         user,
