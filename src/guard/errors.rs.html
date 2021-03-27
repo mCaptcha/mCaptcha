@@ -241,13 +241,13 @@
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">convert</span>::<span class="ident">From</span>;
 
 <span class="kw">use</span> <span class="ident">actix_web</span>::{
-    <span class="ident">client</span>::<span class="ident">SendRequestError</span>,
     <span class="ident">dev</span>::<span class="ident">HttpResponseBuilder</span>,
     <span class="ident">error</span>::<span class="ident">ResponseError</span>,
     <span class="ident">http</span>::{<span class="ident">header</span>, <span class="ident">StatusCode</span>},
     <span class="ident">HttpResponse</span>,
 };
 <span class="kw">use</span> <span class="ident">argon2_creds</span>::<span class="ident">errors</span>::<span class="ident">CredsError</span>;
+<span class="kw">use</span> <span class="ident">awc</span>::<span class="ident">error</span>::<span class="ident">SendRequestError</span>;
 <span class="kw">use</span> <span class="ident">derive_more</span>::{<span class="ident">Display</span>, <span class="ident">Error</span>};
 <span class="kw">use</span> <span class="ident">log</span>::<span class="ident">debug</span>;
 <span class="kw">use</span> <span class="ident">m_captcha</span>::<span class="ident">errors</span>::<span class="ident">CaptchaError</span>;

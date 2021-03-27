@@ -393,12 +393,11 @@
     <span class="ident">payload</span>: <span class="ident">web</span>::<span class="ident">Json</span><span class="op">&lt;</span><span class="ident">Domain</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>,
     <span class="ident">id</span>: <span class="ident">Identity</span>,
-    <span class="ident">client</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Client</span><span class="op">&gt;</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
     <span class="ident">is_authenticated</span>(<span class="kw-2">&amp;</span><span class="ident">id</span>)<span class="question-mark">?</span>;
     <span class="kw">let</span> <span class="ident">url</span> <span class="op">=</span> <span class="ident">Url</span>::<span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="ident">payload</span>.<span class="ident">name</span>)<span class="question-mark">?</span>;
 
-    <span class="kw">let</span> <span class="ident">host</span> <span class="op">=</span> <span class="ident">url</span>.<span class="ident">host_str</span>().<span class="ident">ok_or</span>(<span class="ident">ServiceError</span>::<span class="ident">NotAUrl</span>).<span class="ident">unwrap</span>();
+    <span class="kw">let</span> <span class="ident">host</span> <span class="op">=</span> <span class="ident">url</span>.<span class="ident">host_str</span>().<span class="ident">ok_or</span>(<span class="ident">ServiceError</span>::<span class="ident">NotAUrl</span>)<span class="question-mark">?</span>;
     <span class="kw">let</span> <span class="ident">user</span> <span class="op">=</span> <span class="ident">id</span>.<span class="ident">identity</span>().<span class="ident">unwrap</span>();
     <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">sqlx</span>::<span class="macro">query_as</span><span class="macro">!</span>(
         <span class="ident">Challenge</span>,
@@ -409,8 +408,7 @@
         <span class="ident">user</span>,
     )
     .<span class="ident">fetch_one</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>.<span class="ident">db</span>)
-    .<span class="kw">await</span>
-    .<span class="ident">unwrap</span>();
+    .<span class="kw">await</span><span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse</span>::<span class="prelude-val">Ok</span>().<span class="ident">json</span>(<span class="ident">res</span>))
 }
 
@@ -421,56 +419,58 @@
     <span class="ident">client</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Client</span><span class="op">&gt;</span>,
     <span class="ident">id</span>: <span class="ident">Identity</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
+    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">VERIFICATION_PATH</span>;
     <span class="kw">use</span> <span class="ident">futures</span>::{<span class="ident">future</span>::<span class="ident">TryFutureExt</span>, <span class="ident">try_join</span>};
 
-    <span class="ident">is_authenticated</span>(<span class="kw-2">&amp;</span><span class="ident">id</span>).<span class="ident">unwrap</span>();
-    <span class="comment">//let url = Url::parse(&amp;payload.name).unwrap();</span>
-    <span class="comment">//let host = url.host_str().ok_or(ServiceError::NotAUrl).unwrap();</span>
-    <span class="comment">//let user = id.identity().unwrap();</span>
-    <span class="comment">//let challenge_fut = sqlx::query_as!(</span>
-    <span class="comment">//    Challenge,</span>
-    <span class="comment">//    &quot;SELECT verification_challenge</span>
-    <span class="comment">//        FROM mcaptcha_domains_unverified where</span>
-    <span class="comment">//        name = $1 AND owner_id = (SELECT ID from mcaptcha_users where name = $2)&quot;,</span>
-    <span class="comment">//    &amp;host,</span>
-    <span class="comment">//    &amp;user,</span>
-    <span class="comment">//)</span>
-    <span class="comment">//.fetch_one(&amp;data.db)</span>
-    <span class="comment">//.map_err(|e| {</span>
-    <span class="comment">//    let r: ServiceError = e.into();</span>
-    <span class="comment">//    r</span>
-    <span class="comment">//});</span>
+    <span class="ident">is_authenticated</span>(<span class="kw-2">&amp;</span><span class="ident">id</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">url</span> <span class="op">=</span> <span class="ident">Url</span>::<span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="ident">payload</span>.<span class="ident">name</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">host</span> <span class="op">=</span> <span class="ident">url</span>.<span class="ident">host_str</span>().<span class="ident">ok_or</span>(<span class="ident">ServiceError</span>::<span class="ident">NotAUrl</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">user</span> <span class="op">=</span> <span class="ident">id</span>.<span class="ident">identity</span>().<span class="ident">unwrap</span>();
+    <span class="kw">let</span> <span class="ident">challenge_fut</span> <span class="op">=</span> <span class="ident">sqlx</span>::<span class="macro">query_as</span><span class="macro">!</span>(
+        <span class="ident">Challenge</span>,
+        <span class="string">&quot;SELECT verification_challenge
+            FROM mcaptcha_domains_unverified where
+            name = $1 AND owner_id = (SELECT ID from mcaptcha_users where name = $2)&quot;</span>,
+        <span class="kw-2">&amp;</span><span class="ident">host</span>,
+        <span class="kw-2">&amp;</span><span class="ident">user</span>,
+    )
+    .<span class="ident">fetch_one</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>.<span class="ident">db</span>)
+    .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
+        <span class="kw">let</span> <span class="ident">r</span>: <span class="ident">ServiceError</span> <span class="op">=</span> <span class="ident">e</span>.<span class="ident">into</span>();
+        <span class="ident">r</span>
+    });
 
-    <span class="comment">//let res_fut = client.get(host).send().map_err(|e| {</span>
-    <span class="comment">//    let r: ServiceError = e.into();</span>
-    <span class="comment">//    r</span>
-    <span class="comment">//});</span>
+    <span class="kw">let</span> <span class="ident">res_fut</span> <span class="op">=</span> <span class="ident">client</span>
+        .<span class="ident">get</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}{}&quot;</span>, <span class="ident">url</span>.<span class="ident">to_string</span>(), <span class="ident">VERIFICATION_PATH</span>))
+        .<span class="ident">send</span>()
+        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
+            <span class="kw">let</span> <span class="ident">r</span>: <span class="ident">ServiceError</span> <span class="op">=</span> <span class="ident">e</span>.<span class="ident">into</span>();
+            <span class="ident">r</span>
+        });
 
-    <span class="comment">//let (challenge, mut server_res) = try_join!(challenge_fut, res_fut).unwrap();</span>
+    <span class="kw">let</span> (<span class="ident">challenge</span>, <span class="kw-2">mut</span> <span class="ident">server_res</span>) <span class="op">=</span> <span class="macro">try_join</span><span class="macro">!</span>(<span class="ident">challenge_fut</span>, <span class="ident">res_fut</span>)<span class="question-mark">?</span>;
 
-    <span class="comment">//let server_resp: Challenge = server_res</span>
-    <span class="comment">//    .json()</span>
-    <span class="comment">//    .await</span>
-    <span class="comment">//    .map_err(|_| return ServiceError::ChallengeCourruption)</span>
-    <span class="comment">//    .unwrap();</span>
+    <span class="kw">let</span> <span class="ident">server_resp</span>: <span class="ident">Challenge</span> <span class="op">=</span> <span class="ident">server_res</span>
+        .<span class="ident">json</span>()
+        .<span class="kw">await</span>
+        .<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="kw">return</span> <span class="ident">ServiceError</span>::<span class="ident">ChallengeCourruption</span>)<span class="question-mark">?</span>;
 
-    <span class="comment">//if server_resp.verification_challenge == challenge.verification_challenge {</span>
-    <span class="comment">//    sqlx::query!(</span>
-    <span class="comment">//        &quot;INSERT INTO mcaptcha_domains_verified (name, owner_id) VALUES</span>
-    <span class="comment">//        ($1, (SELECT ID from mcaptcha_users WHERE name = $2))&quot;,</span>
-    <span class="comment">//        &amp;host,</span>
-    <span class="comment">//        &amp;user</span>
-    <span class="comment">//    )</span>
-    <span class="comment">//    .execute(&amp;data.db)</span>
-    <span class="comment">//    .await</span>
-    <span class="comment">//    .unwrap();</span>
+    <span class="kw">if</span> <span class="ident">server_resp</span>.<span class="ident">verification_challenge</span> <span class="op">=</span><span class="op">=</span> <span class="ident">challenge</span>.<span class="ident">verification_challenge</span> {
+        <span class="ident">sqlx</span>::<span class="macro">query</span><span class="macro">!</span>(
+            <span class="string">&quot;INSERT INTO mcaptcha_domains_verified (name, owner_id) VALUES
+            ($1, (SELECT ID from mcaptcha_users WHERE name = $2))&quot;</span>,
+            <span class="kw-2">&amp;</span><span class="ident">host</span>,
+            <span class="kw-2">&amp;</span><span class="ident">user</span>
+        )
+        .<span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>.<span class="ident">db</span>)
+        .<span class="kw">await</span><span class="question-mark">?</span>;
 
-    <span class="comment">//    // TODO delete staging unverified</span>
+        <span class="comment">// TODO delete staging unverified</span>
 
-    <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse</span>::<span class="prelude-val">Ok</span>())
-    <span class="comment">//} else {</span>
-    <span class="comment">//    Err(ServiceError::ChallengeVerificationFailure)</span>
-    <span class="comment">//}</span>
+        <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse</span>::<span class="prelude-val">Ok</span>())
+    } <span class="kw">else</span> {
+        <span class="prelude-val">Err</span>(<span class="ident">ServiceError</span>::<span class="ident">ChallengeVerificationFailure</span>)
+    }
 }
 
 <span class="attribute">#[<span class="ident">post</span>(<span class="string">&quot;/api/v1/mcaptcha/domain/delete&quot;</span>)]</span>
@@ -630,7 +630,7 @@
         <span class="kw">let</span> <span class="ident">challenge</span>: <span class="ident">Challenge</span> <span class="op">=</span> <span class="ident">test</span>::<span class="ident">read_body_json</span>(<span class="ident">get_challenge_resp</span>).<span class="kw">await</span>;
 
         <span class="ident">client</span>
-            .<span class="ident">post</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}/domain_verification_works/&quot;</span>, <span class="ident">DOMAIN</span>))
+            .<span class="ident">post</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}/{}/&quot;</span>, <span class="ident">DOMAIN</span>, <span class="ident">VERIFICATION_PATH</span>))
             .<span class="ident">send_json</span>(<span class="kw-2">&amp;</span><span class="ident">challenge</span>)
             .<span class="kw">await</span>
             .<span class="ident">unwrap</span>();
