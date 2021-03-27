@@ -59,6 +59,8 @@
 <span id="56">56</span>
 <span id="57">57</span>
 <span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -100,6 +102,8 @@
     <span class="comment">// mcaptcha</span>
     <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">mcaptcha</span>::<span class="ident">mcaptcha</span>::<span class="ident">add_mcaptcha</span>);
     <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">mcaptcha</span>::<span class="ident">mcaptcha</span>::<span class="ident">delete_mcaptcha</span>);
+    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">mcaptcha</span>::<span class="ident">mcaptcha</span>::<span class="ident">update_token</span>);
+    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">mcaptcha</span>::<span class="ident">mcaptcha</span>::<span class="ident">get_token</span>);
 
     <span class="comment">// levels</span>
     <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">mcaptcha</span>::<span class="ident">levels</span>::<span class="ident">add_levels</span>);
