@@ -78,20 +78,28 @@ pub async fn update_token(
     data: web::Data<Data>,
     id: Identity,
 ) -> ServiceResult<impl Responder> {
+    use std::borrow::Cow;
+
     is_authenticated(&id)?;
-    let key = get_random(32);
     let url = Url::parse(&payload.domain)?;
+    let mut key;
 
     let host = url.host_str().ok_or(ServiceError::NotAUrl)?;
-    sqlx::query!(
-        "UPDATE mcaptcha_config SET key = $1 
-        WHERE name = $2 AND domain_name = $3",
-        &key,
-        &payload.name,
-        &host,
-    )
-    .execute(&data.db)
-    .await?;
+    loop {
+        key = get_random(32);
+        let res = update_token_helper(&key, &payload.name, &host, &data).await;
+        if res.is_ok() {
+            break;
+        } else {
+            if let Err(sqlx::Error::Database(err)) = res {
+                if err.code() == Some(Cow::from("23505")) {
+                    continue;
+                } else {
+                    Err(sqlx::Error::Database(err))?;
+                }
+            };
+        }
+    }
 
     let resp = MCaptchaDetails {
         key,
@@ -99,6 +107,24 @@ pub async fn update_token(
     };
 
     Ok(HttpResponse::Ok().json(resp))
+}
+
+async fn update_token_helper(
+    key: &str,
+    name: &str,
+    host: &str,
+    data: &Data,
+) -> Result<(), sqlx::Error> {
+    sqlx::query!(
+        "UPDATE mcaptcha_config SET key = $1 
+        WHERE name = $2 AND domain_name = $3",
+        &key,
+        &name,
+        &host,
+    )
+    .execute(&data.db)
+    .await?;
+    Ok(())
 }
 
 #[post("/api/v1/mcaptcha/domain/token/get")]
