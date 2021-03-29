@@ -19,6 +19,7 @@ pub mod domains;
 pub mod duration;
 pub mod levels;
 pub mod mcaptcha;
+pub mod pow;
 
 pub use super::auth::is_authenticated;
 

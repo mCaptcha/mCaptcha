@@ -21,6 +21,7 @@ use actix_web::{
     client::Client, error::InternalError, http::StatusCode, middleware, web::JsonConfig, App,
     HttpServer,
 };
+//use awc::Client;
 use lazy_static::lazy_static;
 use log::info;
 
@@ -59,7 +60,6 @@ async fn main() -> std::io::Result<()> {
     );
 
     let data = Data::new().await;
-
     sqlx::migrate!("./migrations/").run(&data.db).await.unwrap();
 
     HttpServer::new(move || {

@@ -18,13 +18,14 @@
 use std::convert::From;
 
 use actix_web::{
+    client::SendRequestError,
     dev::HttpResponseBuilder,
     error::ResponseError,
     http::{header, StatusCode},
     HttpResponse,
 };
 use argon2_creds::errors::CredsError;
-use awc::error::SendRequestError;
+//use awc::error::SendRequestError;
 use derive_more::{Display, Error};
 use log::debug;
 use m_captcha::errors::CaptchaError;
@@ -78,6 +79,9 @@ pub enum ServiceError {
     /// when the a host name is already taken
     #[display(fmt = "host name not available")]
     HostnameTaken,
+    /// token not found
+    #[display(fmt = "Token not found. Is token registered?")]
+    TokenNotFound,
 
     #[display(fmt = "{}", _0)]
     CaptchaError(CaptchaError),
@@ -109,7 +113,6 @@ impl ResponseError for ServiceError {
 
     #[cfg(not(tarpaulin_include))]
     fn status_code(&self) -> StatusCode {
-        println!("{:?}", &self);
         match self {
             ServiceError::InternalServerError => StatusCode::INTERNAL_SERVER_ERROR,
             ServiceError::NotAnEmail => StatusCode::BAD_REQUEST,
@@ -124,6 +127,7 @@ impl ResponseError for ServiceError {
             ServiceError::UsernameCaseMappedError => StatusCode::BAD_REQUEST,
             ServiceError::UsernameTaken => StatusCode::BAD_REQUEST,
             ServiceError::TokenNameTaken => StatusCode::BAD_REQUEST,
+            ServiceError::TokenNotFound => StatusCode::NOT_FOUND,
             ServiceError::HostnameTaken => StatusCode::BAD_REQUEST,
             ServiceError::ClientServerUnreachable => StatusCode::SERVICE_UNAVAILABLE,
             ServiceError::ChallengeCourruption => StatusCode::BAD_REQUEST,
@@ -203,7 +207,6 @@ impl From<sqlx::Error> for ServiceError {
 pub fn dup_error(e: sqlx::Error, dup_error: ServiceError) -> ServiceError {
     use sqlx::error::Error;
     use std::borrow::Cow;
-    println!("database error: {:?}", &e);
     if let Error::Database(err) = e {
         if err.code() == Some(Cow::from("23505")) {
             dup_error

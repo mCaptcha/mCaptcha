@@ -16,8 +16,8 @@
 */
 
 use actix_identity::Identity;
-use actix_web::{post, web, HttpResponse, Responder};
-use awc::Client;
+use actix_web::{client::Client, post, web, HttpResponse, Responder};
+//use awc::Client;
 use serde::{Deserialize, Serialize};
 use url::Url;
 
@@ -163,6 +163,8 @@ pub async fn delete_domain(
     )
     .execute(&data.db)
     .await?;
+    // TODO check running actors and delete
+    // if domain(api_key) matches mcaptcha actor id
     Ok(HttpResponse::Ok())
 }
 
@@ -246,7 +248,6 @@ mod tests {
     #[actix_rt::test]
     async fn domain_verification_works() {
         use crate::api::v1::tests::*;
-        use awc::Client;
         use std::sync::mpsc;
         use std::thread;
 
@@ -264,7 +265,7 @@ mod tests {
 
         let (tx, rx) = mpsc::channel();
         thread::spawn(move || {
-            rt::System::new("").block_on(server(IP, tx));
+            actix_rt::System::new("").block_on(server(IP, tx));
         });
         let srv = rx.recv().unwrap();
 

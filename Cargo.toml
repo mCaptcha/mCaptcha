@@ -22,16 +22,15 @@ name = "tests-migrate"
 path = "./src/tests-migrate.rs"
 
 [dependencies]
-actix-web = "3"
+actix-web = "3.3.2"
 actix = "0.11"
 actix-identity = "0.3"
 actix-http = "2.2"
-actix-rt = "2"
-awc = "3.0.0-beta.3"
+actix-rt = "1"
 
 futures = "0.3"
 
-sqlx = { version = "0.5.0", features = [ "runtime-actix-rustls", "postgres" ] }
+sqlx = { version = "0.4.0", features = [ "runtime-actix-rustls", "postgres" ] }
 argon2-creds = { version = "0.2", git = "https://github.com/realaravinth/argon2-creds", commit = "61f2d1d" }
 
 config = "0.11"
@@ -54,6 +53,3 @@ lazy_static = "1.4"
 m_captcha = { version = "0.1.2", git = "https://github.com/mCaptcha/mCaptcha" }
 
 rand = "0.8"
-
-[dev-dependencies]
-rt = { package = "actix-rt", version = "1"}
