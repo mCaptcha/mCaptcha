@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["GetConfigPayload",""],["PoWConfig",""],["get_config",""]]});
