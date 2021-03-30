@@ -1,0 +1,246 @@
+openapi: 3.0.0
+info:
+  version: 0.1.0
+  title: mCaptcha/guard
+servers:
+  - url: 'http://localhost:3000'
+
+paths:
+  /api/v1/signup:
+    post:
+      summary: 'Registration endpoint'
+      operationId: registerUser
+      tags:
+        - user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterUser'
+      responses:
+        '200':
+          description: 'Successful registration'
+        '500':
+          description: 'Internal server error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error' 
+        '400':
+          description: 'Bad request: username contains profainity/blacklisted words or email not acceptable or password too long/short or duplicate username/password'
+          content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'   
+
+  /api/v1/signin:
+    post:
+      summary: 'Login endpoint'
+      operationId: loginUser
+      tags:
+        - user
+        - authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginUser'
+      responses:
+        '200':
+          description: 'Successful authentication'
+        '500':
+          description: 'Internal server error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error' 
+        '401':
+          description: 'authentication failed, wrong password'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+            description: 'username not found'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'                           
+                                              
+  /api/v1/signout:
+    post:
+      security:
+        - cookieAuth: []
+      summary: 'Signout endpoint'
+      operationId: signoutUser
+      tags:
+        - user
+        - authentication
+      responses:
+        '200':
+          description: 'OK'
+
+  /api/v1/account/delete:
+    post:
+      security:
+        - cookieAuth: []
+      summary: 'Delete user account'
+      operationId: deleteUserAccount
+      tags:
+        - user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteUser'
+      responses:
+        '200':
+          description: 'OK'
+        '500':
+          description: 'Internal server error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error' 
+        '401':
+          description: '(cookie)authentication required or wrong password'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+            description: 'username not found'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'                           
+
+  /api/v1/account/username/exists:
+    post:
+      summary: 'Check if username exists'
+      operationId: usernameExists
+      tags:
+        - user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDetailCheck'
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetailCheckRes' 
+        '500':
+          description: 'Internal server error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error' 
+
+
+  /api/v1/account/email/exists:
+    post:
+      summary: 'Check if email exists'
+      operationId: emailExists
+      tags:
+        - user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDetailCheck'
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetailCheckRes' 
+        '500':
+          description: 'Internal server error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error' 
+
+components:
+  schemas:
+    RegisterUser:
+      type: object
+      required:
+        - username
+        - password
+        - email
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+          format: password
+    LoginUser:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+        password:
+          type: string                
+          format: password
+    DeleteUser:
+      type: object
+      required:
+        - password
+      properties:
+        password:
+          type: string                
+          format: password
+    Error:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
+    User:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+    UserDetailCheck:
+      type: object
+      required:
+        - val
+      properties:
+        val:
+          type: string
+    UserDetailCheckRes:
+      type: object
+      required:
+          - exists
+      properties:
+          val:
+            type: boolean
+
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: Authorization

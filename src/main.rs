@@ -30,6 +30,7 @@ mod data;
 mod errors;
 //mod routes;
 mod api;
+mod docs;
 mod settings;
 //mod templates;
 #[cfg(test)]
@@ -54,7 +55,9 @@ pub static VERIFICATION_PATH: &str = "mcaptchaVerificationChallenge.json";
 #[cfg(not(tarpaulin_include))]
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    use api::v1::services as v1_services;
+    use actix_web::web;
+    use api::v1;
+    use docs;
     pretty_env_logger::init();
     info!(
         "{}: {}.\nFor more information, see: {}\nBuild info:\nVersion: {} commit: {}",
@@ -67,7 +70,9 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(move || {
         let client = Client::default();
         App::new()
-            .configure(v1_services)
+            .configure(v1::services)
+            .configure(docs::services)
+            //.service(web::resource("/dist/{_:.*}").route(web::get().to(docs::dist)))
             .wrap(middleware::Logger::default())
             .wrap(get_identity_service())
             .wrap(middleware::Compress::default())

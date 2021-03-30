@@ -70,7 +70,7 @@ async fn auth_works() {
         SIGNIN,
         &login,
         ServiceError::UsernameNotFound,
-        StatusCode::UNAUTHORIZED,
+        StatusCode::NOT_FOUND,
     )
     .await;
 
@@ -115,9 +115,13 @@ async fn del_userworks() {
     let cookies = get_cookie!(signin_resp);
     let mut app = get_app!(data).await;
 
+    let payload = Password {
+        password: creds.password,
+    };
+
     let delete_user_resp = test::call_service(
         &mut app,
-        post_request!(&creds, "/api/v1/account/delete")
+        post_request!(&payload, "/api/v1/account/delete")
             .cookie(cookies)
             .to_request(),
     )
@@ -143,7 +147,7 @@ async fn uname_email_exists_works() {
     let cookies = get_cookie!(signin_resp);
     let mut app = get_app!(data).await;
 
-    let mut payload = AccountCheckPayload { field: NAME.into() };
+    let mut payload = AccountCheckPayload { val: NAME.into() };
 
     let user_exists_resp = test::call_service(
         &mut app,
@@ -156,7 +160,7 @@ async fn uname_email_exists_works() {
     let mut resp: AccountCheckResp = test::read_body_json(user_exists_resp).await;
     assert!(resp.exists);
 
-    payload.field = PASSWORD.into();
+    payload.val = PASSWORD.into();
 
     let user_doesnt_exist = test::call_service(
         &mut app,
@@ -180,7 +184,7 @@ async fn uname_email_exists_works() {
     resp = test::read_body_json(email_doesnt_exist).await;
     assert!(!resp.exists);
 
-    payload.field = EMAIL.into();
+    payload.val = EMAIL.into();
 
     let email_exist = test::call_service(
         &mut app,

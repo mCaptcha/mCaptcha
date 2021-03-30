@@ -118,14 +118,18 @@ impl ResponseError for ServiceError {
             ServiceError::NotAnEmail => StatusCode::BAD_REQUEST,
             ServiceError::NotAUrl => StatusCode::BAD_REQUEST,
             ServiceError::WrongPassword => StatusCode::UNAUTHORIZED,
-            ServiceError::UsernameNotFound => StatusCode::UNAUTHORIZED,
+            ServiceError::UsernameNotFound => StatusCode::NOT_FOUND,
             ServiceError::AuthorizationRequired => StatusCode::UNAUTHORIZED,
+
             ServiceError::ProfainityError => StatusCode::BAD_REQUEST,
             ServiceError::BlacklistError => StatusCode::BAD_REQUEST,
+            ServiceError::UsernameCaseMappedError => StatusCode::BAD_REQUEST,
+
             ServiceError::PasswordTooShort => StatusCode::BAD_REQUEST,
             ServiceError::PasswordTooLong => StatusCode::BAD_REQUEST,
-            ServiceError::UsernameCaseMappedError => StatusCode::BAD_REQUEST,
+
             ServiceError::UsernameTaken => StatusCode::BAD_REQUEST,
+
             ServiceError::TokenNameTaken => StatusCode::BAD_REQUEST,
             ServiceError::TokenNotFound => StatusCode::NOT_FOUND,
             ServiceError::HostnameTaken => StatusCode::BAD_REQUEST,

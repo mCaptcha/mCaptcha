@@ -36,8 +36,9 @@ pub struct Login {
     pub password: String,
 }
 
-struct Password {
-    password: String,
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct Password {
+    pub password: String,
 }
 
 #[post("/api/v1/signup")]
@@ -114,7 +115,7 @@ pub fn is_authenticated(id: &Identity) -> ServiceResult<()> {
 #[post("/api/v1/account/delete")]
 pub async fn delete_account(
     id: Identity,
-    payload: web::Json<Login>,
+    payload: web::Json<Password>,
     data: web::Data<Data>,
 ) -> ServiceResult<impl Responder> {
     use argon2_creds::Config;
@@ -122,10 +123,12 @@ pub async fn delete_account(
 
     is_authenticated(&id)?;
 
+    let username = id.identity().unwrap();
+
     let rec = sqlx::query_as!(
         Password,
         r#"SELECT password  FROM mcaptcha_users WHERE name = ($1)"#,
-        &payload.username,
+        &username,
     )
     .fetch_one(&data.db)
     .await;
@@ -135,12 +138,9 @@ pub async fn delete_account(
     match rec {
         Ok(s) => {
             if Config::verify(&s.password, &payload.password)? {
-                sqlx::query!(
-                    "DELETE FROM mcaptcha_users WHERE name = ($1)",
-                    &payload.username,
-                )
-                .execute(&data.db)
-                .await?;
+                sqlx::query!("DELETE FROM mcaptcha_users WHERE name = ($1)", &username)
+                    .execute(&data.db)
+                    .await?;
                 Ok(HttpResponse::Ok())
             } else {
                 Err(ServiceError::WrongPassword)
@@ -153,7 +153,7 @@ pub async fn delete_account(
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct AccountCheckPayload {
-    pub field: String,
+    pub val: String,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -168,7 +168,7 @@ pub async fn username_exists(
 ) -> ServiceResult<impl Responder> {
     let res = sqlx::query!(
         "SELECT EXISTS (SELECT 1 from mcaptcha_users WHERE name = $1)",
-        &payload.field,
+        &payload.val,
     )
     .fetch_one(&data.db)
     .await?;
@@ -191,7 +191,7 @@ pub async fn email_exists(
 ) -> ServiceResult<impl Responder> {
     let res = sqlx::query!(
         "SELECT EXISTS (SELECT 1 from mcaptcha_users WHERE email = $1)",
-        &payload.field,
+        &payload.val,
     )
     .fetch_one(&data.db)
     .await?;
