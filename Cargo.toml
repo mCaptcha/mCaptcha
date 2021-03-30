@@ -27,6 +27,7 @@ actix = "0.11"
 actix-identity = "0.3"
 actix-http = "2.2"
 actix-rt = "1"
+actix-files = "0.4"
 
 futures = "0.3"
 
@@ -53,3 +54,5 @@ lazy_static = "1.4"
 m_captcha = { version = "0.1.2", git = "https://github.com/mCaptcha/mCaptcha" }
 
 rand = "0.8"
+
+sailfish = "0.3.2"

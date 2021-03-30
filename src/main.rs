@@ -16,6 +16,7 @@
 */
 use std::env;
 
+use actix_files::Files;
 use actix_identity::{CookieIdentityPolicy, IdentityService};
 use actix_web::{
     client::Client, error::InternalError, http::StatusCode, middleware, web::JsonConfig, App,
@@ -30,6 +31,7 @@ mod errors;
 //mod routes;
 mod api;
 mod settings;
+//mod templates;
 #[cfg(test)]
 #[macro_use]
 mod tests;
@@ -65,14 +67,17 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(move || {
         let client = Client::default();
         App::new()
+            .configure(v1_services)
             .wrap(middleware::Logger::default())
             .wrap(get_identity_service())
             .wrap(middleware::Compress::default())
             .data(data.clone())
             .data(client.clone())
-            .wrap(middleware::NormalizePath::default())
+            .wrap(middleware::NormalizePath::new(
+                middleware::normalize::TrailingSlash::Trim,
+            ))
             .app_data(get_json_err())
-            .configure(v1_services)
+            .service(Files::new("/", "./static"))
     })
     .bind(SETTINGS.server.get_ip())
     .unwrap()

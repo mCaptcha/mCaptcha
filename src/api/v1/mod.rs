@@ -22,6 +22,10 @@ pub mod mcaptcha;
 pub mod meta;
 
 pub fn services(cfg: &mut ServiceConfig) {
+    // meta
+    cfg.service(meta::build_details);
+    cfg.service(meta::health);
+
     // auth
     cfg.service(auth::signout);
     cfg.service(auth::signin);
@@ -53,10 +57,6 @@ pub fn services(cfg: &mut ServiceConfig) {
 
     // pow
     cfg.service(mcaptcha::pow::get_config);
-
-    // meta
-    cfg.service(meta::build_details);
-    cfg.service(meta::health);
 }
 
 #[cfg(test)]
