@@ -125,3 +125,71 @@ async fn del_userworks() {
 
     assert_eq!(delete_user_resp.status(), StatusCode::OK);
 }
+
+#[actix_rt::test]
+async fn uname_email_exists_works() {
+    const NAME: &str = "testuserexists";
+    const PASSWORD: &str = "longpassword2";
+    const EMAIL: &str = "testuserexists@a.com2";
+    const UNAME_CHECK: &str = "/api/v1/account/username/exists";
+    const EMAIL_CHECK: &str = "/api/v1/account/email/exists";
+
+    {
+        let data = Data::new().await;
+        delete_user(NAME, &data).await;
+    }
+
+    let (data, _, signin_resp) = register_and_signin(NAME, EMAIL, PASSWORD).await;
+    let cookies = get_cookie!(signin_resp);
+    let mut app = get_app!(data).await;
+
+    let mut payload = AccountCheckPayload { field: NAME.into() };
+
+    let user_exists_resp = test::call_service(
+        &mut app,
+        post_request!(&payload, UNAME_CHECK)
+            .cookie(cookies.clone())
+            .to_request(),
+    )
+    .await;
+    assert_eq!(user_exists_resp.status(), StatusCode::OK);
+    let mut resp: AccountCheckResp = test::read_body_json(user_exists_resp).await;
+    assert!(resp.exists);
+
+    payload.field = PASSWORD.into();
+
+    let user_doesnt_exist = test::call_service(
+        &mut app,
+        post_request!(&payload, UNAME_CHECK)
+            .cookie(cookies.clone())
+            .to_request(),
+    )
+    .await;
+    assert_eq!(user_doesnt_exist.status(), StatusCode::OK);
+    resp = test::read_body_json(user_doesnt_exist).await;
+    assert!(!resp.exists);
+
+    let email_doesnt_exist = test::call_service(
+        &mut app,
+        post_request!(&payload, EMAIL_CHECK)
+            .cookie(cookies.clone())
+            .to_request(),
+    )
+    .await;
+    assert_eq!(email_doesnt_exist.status(), StatusCode::OK);
+    resp = test::read_body_json(email_doesnt_exist).await;
+    assert!(!resp.exists);
+
+    payload.field = EMAIL.into();
+
+    let email_exist = test::call_service(
+        &mut app,
+        post_request!(&payload, EMAIL_CHECK)
+            .cookie(cookies.clone())
+            .to_request(),
+    )
+    .await;
+    assert_eq!(email_exist.status(), StatusCode::OK);
+    resp = test::read_body_json(email_exist).await;
+    assert!(resp.exists);
+}

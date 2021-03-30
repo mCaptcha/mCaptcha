@@ -150,3 +150,59 @@ pub async fn delete_account(
         Err(_) => return Err(ServiceError::InternalServerError)?,
     }
 }
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct AccountCheckPayload {
+    pub field: String,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct AccountCheckResp {
+    pub exists: bool,
+}
+
+#[post("/api/v1/account/username/exists")]
+pub async fn username_exists(
+    payload: web::Json<AccountCheckPayload>,
+    data: web::Data<Data>,
+) -> ServiceResult<impl Responder> {
+    let res = sqlx::query!(
+        "SELECT EXISTS (SELECT 1 from mcaptcha_users WHERE name = $1)",
+        &payload.field,
+    )
+    .fetch_one(&data.db)
+    .await?;
+
+    let mut resp = AccountCheckResp { exists: false };
+
+    if let Some(x) = res.exists {
+        if x {
+            resp.exists = true;
+        }
+    }
+
+    Ok(HttpResponse::Ok().json(resp))
+}
+
+#[post("/api/v1/account/email/exists")]
+pub async fn email_exists(
+    payload: web::Json<AccountCheckPayload>,
+    data: web::Data<Data>,
+) -> ServiceResult<impl Responder> {
+    let res = sqlx::query!(
+        "SELECT EXISTS (SELECT 1 from mcaptcha_users WHERE email = $1)",
+        &payload.field,
+    )
+    .fetch_one(&data.db)
+    .await?;
+
+    let mut resp = AccountCheckResp { exists: false };
+
+    if let Some(x) = res.exists {
+        if x {
+            resp.exists = true;
+        }
+    }
+
+    Ok(HttpResponse::Ok().json(resp))
+}

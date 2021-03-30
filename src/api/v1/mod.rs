@@ -31,6 +31,8 @@ pub fn services(cfg: &mut ServiceConfig) {
     cfg.service(auth::signin);
     cfg.service(auth::signup);
     cfg.service(auth::delete_account);
+    cfg.service(auth::username_exists);
+    cfg.service(auth::email_exists);
 
     // mcaptcha
     // domain
