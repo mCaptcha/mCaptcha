@@ -83,6 +83,10 @@ paths:
           description: OK
   /api/v1/account/delete:
     post:
+      security:
+        - cookieAuth: []
+      summary: Delete account
+      operationId: deleteAccount
       tags:
         - user
       requestBody:
@@ -290,7 +294,7 @@ paths:
         '200':
           description: OK
         '400':
-          description: "Bad request: challenge is courrupt"
+          description: 'Bad request: challenge is courrupt'
           content:
             application/json:
               schema:
@@ -334,7 +338,7 @@ paths:
         '200':
           description: OK
         '400':
-          description: "Bad request: Submited URI is not a URI"
+          description: 'Bad request: Submited URI is not a URI'
           content:
             application/json:
               schema:
@@ -378,7 +382,7 @@ paths:
                 $ref: '#/components/schemas/MCaptchaDetails'
 
         '400':
-          description: "Bad request: Submited URI is not a URI or duplicate token name"
+          description: 'Bad request: Submited URI is not a URI or duplicate token name'
           content:
             application/json:
               schema:
@@ -422,7 +426,7 @@ paths:
                 $ref: '#/components/schemas/MCaptchaDetails'
 
         '400':
-          description: "Bad request: Submited URI is not a URI or duplicate token name"
+          description: 'Bad request: Submited URI is not a URI or duplicate token name'
           content:
             application/json:
               schema:
@@ -439,7 +443,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-
 
   /api/v1/mcaptcha/domain/token/get:
     post:
@@ -467,7 +470,7 @@ paths:
                 $ref: '#/components/schemas/MCaptchaDetails'
 
         '400':
-          description: "Bad request: Submited URI is not a URI"
+          description: 'Bad request: Submited URI is not a URI'
           content:
             application/json:
               schema:
@@ -496,11 +499,12 @@ paths:
     post:
       security:
         - cookieAuth: []
-      summary: Delete domain from mcaptcha
-      operationId: deleteDomain
+      summary: Delete token from mcaptcha
+      operationId: deleteToken
       tags:
         - mcaptcha
         - domain
+        - token
       requestBody:
         required: true
         content:
@@ -524,7 +528,156 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /api/v1/mcaptcha/domain/token/levels/add:
+    post:
+      security:
+        - cookieAuth: []
+      summary: Add levels to a token
+      operationId: addTokenLevels
+      tags:
+        - mcaptcha
+        - domain
+        - token
+        - levels
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddLevels'
 
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: 'duplicate visitor count or difficulty_factor is zero or difficulty_factor decreases with increase in visitor count'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+        '401':
+          description: 'authentication failed'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/v1/mcaptcha/domain/token/levels/update:
+    post:
+      security:
+        - cookieAuth: []
+      summary: Update levels of a token
+      operationId: updateTokenLevels
+      tags:
+        - mcaptcha
+        - domain
+        - token
+        - levels
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddLevels'
+
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: 'duplicate visitor count or difficulty_factor is zero or difficulty_factor decreases with increase in visitor count'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+        '401':
+          description: 'authentication failed'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/v1/mcaptcha/domain/token/levels/delete:
+    post:
+      security:
+        - cookieAuth: []
+      tags:
+        - mcaptcha
+        - domain
+        - token
+        - levels
+      summary: Delete levels of a token
+      operationId: deleteTokenLevels
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddLevels'
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: (cookie)authentication required or wrong password
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/v1/mcaptcha/domain/token/levels/get:
+    post:
+      security:
+        - cookieAuth: []
+      tags:
+        - mcaptcha
+        - domain
+        - token
+        - levels
+      summary: Get levels of a token
+      operationId: getTokenLevels
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddLevels'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Levels'
+        '401':
+          description: (cookie)authentication required or wrong password
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
 components:
   schemas:
@@ -644,6 +797,43 @@ components:
           type: string
         key:
           type: string
+    Level:
+      type: object
+      required:
+        - visitor_threshold
+        - difficulty_factor
+      properties:
+        visitor_threshold:
+          type: number
+          minimum: 1
+          maximum: 2147483647
+        difficulty_factor:
+          type: number
+          minimum: 1
+    GetLevels:
+      type: object
+      required:
+        - token
+      properties:
+        token:
+          type: string
+    Levels:
+      type: array
+      items:
+        $ref: '#/components/schemas/Level'
+
+    AddLevels:
+      type: object
+      required:
+        - name
+        - levels
+      properties:
+        name:
+          type: string
+        levels:
+          type: array
+          items:
+            $ref: '#/components/schemas/Level'
 
   securitySchemes:
     cookieAuth:
