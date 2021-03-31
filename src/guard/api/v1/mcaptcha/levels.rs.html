@@ -324,6 +324,8 @@
 <span id="321">321</span>
 <span id="322">322</span>
 <span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -357,6 +359,8 @@
     <span class="comment">// name is config_name</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">String</span>,
 }
+
+<span class="comment">// TODO try for non-existent token names</span>
 
 <span class="attribute">#[<span class="ident">post</span>(<span class="string">&quot;/api/v1/mcaptcha/domain/token/levels/add&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">add_levels</span>(
