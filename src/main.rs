@@ -55,7 +55,6 @@ pub static VERIFICATION_PATH: &str = "mcaptchaVerificationChallenge.json";
 #[cfg(not(tarpaulin_include))]
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    use actix_web::web;
     use api::v1;
     use docs;
     pretty_env_logger::init();
@@ -70,9 +69,6 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(move || {
         let client = Client::default();
         App::new()
-            .configure(v1::services)
-            .configure(docs::services)
-            //.service(web::resource("/dist/{_:.*}").route(web::get().to(docs::dist)))
             .wrap(middleware::Logger::default())
             .wrap(get_identity_service())
             .wrap(middleware::Compress::default())
@@ -81,6 +77,8 @@ async fn main() -> std::io::Result<()> {
             .wrap(middleware::NormalizePath::new(
                 middleware::normalize::TrailingSlash::Trim,
             ))
+            .configure(v1::services)
+            .configure(docs::services)
             .app_data(get_json_err())
             .service(Files::new("/", "./static"))
     })

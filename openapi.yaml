@@ -3,12 +3,11 @@ info:
   version: 0.1.0
   title: mCaptcha/guard
 servers:
-  - url: 'http://localhost:3000'
-
+  - url: /
 paths:
   /api/v1/signup:
     post:
-      summary: 'Registration endpoint'
+      summary: Registration endpoint
       operationId: registerUser
       tags:
         - user
@@ -20,23 +19,25 @@ paths:
               $ref: '#/components/schemas/RegisterUser'
       responses:
         '200':
-          description: 'Successful registration'
-        '500':
-          description: 'Internal server error'
+          description: Successful registration
+        '400':
+          description: >-
+            Bad request: username contains profainity/blacklisted words or email
+            not acceptable or password too long/short or duplicate
+            username/password
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error' 
-        '400':
-          description: 'Bad request: username contains profainity/blacklisted words or email not acceptable or password too long/short or duplicate username/password'
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
           content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'   
-
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /api/v1/signin:
     post:
-      summary: 'Login endpoint'
+      summary: Login endpoint
       operationId: loginUser
       tags:
         - user
@@ -49,13 +50,7 @@ paths:
               $ref: '#/components/schemas/LoginUser'
       responses:
         '200':
-          description: 'Successful authentication'
-        '500':
-          description: 'Internal server error'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error' 
+          description: Successful authentication
         '401':
           description: 'authentication failed, wrong password'
           content:
@@ -63,31 +58,31 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
         '404':
-            description: 'username not found'
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'                           
-                                              
+          description: username not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /api/v1/signout:
     post:
       security:
         - cookieAuth: []
-      summary: 'Signout endpoint'
+      summary: Signout endpoint
       operationId: signoutUser
       tags:
         - user
         - authentication
       responses:
         '200':
-          description: 'OK'
-
+          description: OK
   /api/v1/account/delete:
     post:
-      security:
-        - cookieAuth: []
-      summary: 'Delete user account'
-      operationId: deleteUserAccount
       tags:
         - user
       requestBody:
@@ -98,29 +93,28 @@ paths:
               $ref: '#/components/schemas/DeleteUser'
       responses:
         '200':
-          description: 'OK'
-        '500':
-          description: 'Internal server error'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error' 
+          description: OK
         '401':
-          description: '(cookie)authentication required or wrong password'
+          description: (cookie)authentication required or wrong password
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '404':
-            description: 'username not found'
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'                           
-
+          description: username not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /api/v1/account/username/exists:
     post:
-      summary: 'Check if username exists'
+      summary: Check if username exists
       operationId: usernameExists
       tags:
         - user
@@ -132,22 +126,20 @@ paths:
               $ref: '#/components/schemas/UserDetailCheck'
       responses:
         '200':
-          description: 'OK'
+          description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserDetailCheckRes' 
+                $ref: '#/components/schemas/UserDetailCheckRes'
         '500':
-          description: 'Internal server error'
+          description: Internal server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error' 
-
-
+                $ref: '#/components/schemas/Error'
   /api/v1/account/email/exists:
     post:
-      summary: 'Check if email exists'
+      summary: Check if email exists
       operationId: emailExists
       tags:
         - user
@@ -159,17 +151,168 @@ paths:
               $ref: '#/components/schemas/UserDetailCheck'
       responses:
         '200':
-          description: 'OK'
+          description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserDetailCheckRes' 
+                $ref: '#/components/schemas/UserDetailCheckRes'
         '500':
-          description: 'Internal server error'
+          description: Internal server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error' 
+                $ref: '#/components/schemas/Error'
+  /api/v1/meta/health:
+    get:
+      summary: Health check
+      operationId: healthCheck
+      tags:
+        - meta
+        - health
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Health'
+  /api/v1/meta/build:
+    get:
+      summary: Get server binary build details
+      operationId: buildDetails
+      tags:
+        - meta
+        - build
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BuildDetails'
+  /api/v1/mcaptcha/domain/add:
+    post:
+      security:
+        - cookieAuth: []
+      summary: Add new domain to mCaptcha
+      operationId: addDomain
+      tags:
+        - mcaptcha
+        - domain
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/addDomain'
+
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: "Bad request: Submited domain name isn't a URI"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: 'authentication failed, wrong password'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/v1/mcaptcha/domain/domain/verify/challenge/get:
+    post:
+      security:
+        - cookieAuth: []
+      summary: Get verification challenge for adding a domain
+      operationId: challengeDomain
+      tags:
+        - mcaptcha
+        - domain
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/addDomain'
+
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DomainVerificationChallenge'
+        '400':
+          description: "Bad request: Submited domain name isn't a URI"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: 'authentication failed, wrong password'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/v1/mcaptcha/domain/domain/verify/challenge/prove:
+    post:
+      security:
+        - cookieAuth: []
+      summary: Verifiy domain
+      operationId: proveDomain
+      tags:
+        - mcaptcha
+        - domain
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/addDomain'
+
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: "Bad request: challenge is courrupt"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: 'authentication failed or challenge verification failure'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: Client server unavailable, please check if your server is online
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
 components:
   schemas:
@@ -196,7 +339,7 @@ components:
         username:
           type: string
         password:
-          type: string                
+          type: string
           format: password
     DeleteUser:
       type: object
@@ -204,7 +347,7 @@ components:
         - password
       properties:
         password:
-          type: string                
+          type: string
           format: password
     Error:
       type: object
@@ -231,13 +374,44 @@ components:
       properties:
         val:
           type: string
+    Health:
+      type: object
+      required:
+        - db
+      properties:
+        db:
+          type: boolean
     UserDetailCheckRes:
       type: object
       required:
-          - exists
+        - exists
       properties:
-          val:
-            type: boolean
+        val:
+          type: boolean
+    BuildDetails:
+      type: object
+      required:
+        - version
+        - git_commit_hash
+      properties:
+        version:
+          type: string
+        git_commit_hash:
+          type: string
+    AddDomain:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+    DomainVerificationChallenge:
+      type: object
+      required:
+        - verification_challenge
+      properties:
+        verification_challenge:
+          type: string
 
   securitySchemes:
     cookieAuth:

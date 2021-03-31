@@ -10,7 +10,7 @@
     }
   ],
   "paths": {
-    "/api/v1/signup": {
+    "/api//signup": {
       "post": {
         "summary": "Registration endpoint",
         "operationId": "registerUser",
@@ -52,7 +52,7 @@
         }
       }
     },
-    "/api/v1/signin": {
+    "/api//signin": {
       "post": {
         "summary": "Login endpoint",
         "operationId": "loginUser",
@@ -104,7 +104,7 @@
         }
       }
     },
-    "/api/v1/signout": {
+    "/api//signout": {
       "post": {
         "security": [
           {
@@ -121,7 +121,7 @@
         }
       }
     },
-    "/api/v1/account/delete": {
+    "/api//account/delete": {
       "post": {
         "security": [
           {
@@ -178,7 +178,7 @@
         }
       }
     },
-    "/api/v1/account/username/exists": {
+    "/api//account/username/exists": {
       "post": {
         "summary": "Check if username exists",
         "operationId": "usernameExists",
@@ -217,7 +217,7 @@
         }
       }
     },
-    "/api/v1/account/email/exists": {
+    "/api//account/email/exists": {
       "post": {
         "summary": "Check if email exists",
         "operationId": "emailExists",
@@ -256,31 +256,11 @@
         }
       }
     },
-    "/api/v1/meta/health": {
-      "get": {
-        "summary": "Health check",
-        "operationId": "healthCheck",
-        "tags": ["meta","health"],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Health"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-
-    "/api/v1/meta/build": {
-      "get": {
-        "summary": "Get server binary build details",
-        "operationId": "buildDetails",
-        "tags": ["meta", "build"],
+    "/api//meta/build": {
+      "post": {
+        "summary": "Check if email exists",
+        "operationId": "emailExists",
+        "tags": ["user"],
         "responses": {
           "200": {
             "description": "OK",
@@ -294,95 +274,86 @@
           }
         }
       }
-    }
-  },
-  "components": {
-    "schemas": {
-      "RegisterUser": {
-        "type": "object",
-        "required": ["username", "password", "email"],
-        "properties": {
-          "username": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string",
-            "format": "password"
+    },
+    "components": {
+      "schemas": {
+        "RegisterUser": {
+          "type": "object",
+          "required": ["username", "password", "email"],
+          "properties": {
+            "username": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string",
+              "format": "password"
+            }
           }
-        }
-      },
-      "LoginUser": {
-        "type": "object",
-        "required": ["username", "password"],
-        "properties": {
-          "username": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string",
-            "format": "password"
+        },
+        "LoginUser": {
+          "type": "object",
+          "required": ["username", "password"],
+          "properties": {
+            "username": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string",
+              "format": "password"
+            }
           }
-        }
-      },
-      "DeleteUser": {
-        "type": "object",
-        "required": ["password"],
-        "properties": {
-          "password": {
-            "type": "string",
-            "format": "password"
+        },
+        "DeleteUser": {
+          "type": "object",
+          "required": ["password"],
+          "properties": {
+            "password": {
+              "type": "string",
+              "format": "password"
+            }
           }
-        }
-      },
-      "Error": {
-        "type": "object",
-        "required": ["error"],
-        "properties": {
-          "error": {
-            "type": "string"
+        },
+        "Error": {
+          "type": "object",
+          "required": ["error"],
+          "properties": {
+            "error": {
+              "type": "string"
+            }
           }
-        }
-      },
-      "User": {
-        "type": "object",
-        "required": ["id", "name"],
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "name": {
-            "type": "string"
+        },
+        "User": {
+          "type": "object",
+          "required": ["id", "name"],
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "name": {
+              "type": "string"
+            }
           }
-        }
-      },
-      "UserDetailCheck": {
-        "type": "object",
-        "required": ["val"],
-        "properties": {
-          "val": {
-            "type": "string"
+        },
+        "UserDetailCheck": {
+          "type": "object",
+          "required": ["val"],
+          "properties": {
+            "val": {
+              "type": "string"
+            }
           }
-        }
-      },
-      "Health": {
-        "type": "object",
-        "required": ["db"],
-        "properties": {
-          "db": {
-            "type": "boolean"
-          }
-        }
-      },
-      "UserDetailCheckRes": {
-        "type": "object",
-        "required": ["exists"],
-        "properties": {
-          "val": {
-            "type": "boolean"
+        },
+        "UserDetailCheckRes": {
+          "type": "object",
+          "required": ["exists"],
+          "properties": {
+            "val": {
+              "type": "boolean"
+            }
           }
         }
       },
@@ -399,6 +370,7 @@
         }
       }
     },
+
     "securitySchemes": {
       "cookieAuth": {
         "type": "apiKey",

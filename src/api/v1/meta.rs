@@ -22,13 +22,20 @@ use serde::{Deserialize, Serialize};
 use crate::Data;
 use crate::{GIT_COMMIT_HASH, VERSION};
 
+#[derive(Clone, Debug, Deserialize, Builder, Serialize)]
+pub struct BuildDetails {
+    pub version: &'static str,
+    pub git_commit_hash: &'static str,
+}
+
 #[get("/api/v1/meta/build")]
 /// emmits build details of the bninary
 pub async fn build_details() -> impl Responder {
-    HttpResponse::Ok().content_type("text/html").body(format!(
-        "version: {}\ncommit: {}",
-        VERSION, *GIT_COMMIT_HASH
-    ))
+    let build = BuildDetails {
+        version: VERSION,
+        git_commit_hash: &GIT_COMMIT_HASH,
+    };
+    HttpResponse::Ok().json(build)
 }
 
 #[derive(Clone, Debug, Deserialize, Builder, Serialize)]
