@@ -678,6 +678,81 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /api/v1/mcaptcha/domain/token/token/get:
+    post:
+      security:
+        - cookieAuth: []
+      tags:
+        - mcaptcha
+        - domain
+        - token
+        - levels
+        - duration
+      summary: Get duration of a token
+      operationId: getTokenDuration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetDuration'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Duration'
+        '401':
+          description: (cookie)authentication required or wrong password
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/v1/mcaptcha/domain/token/token/update:
+    post:
+      security:
+        - cookieAuth: []
+      tags:
+        - mcaptcha
+        - domain
+        - token
+        - levels
+        - duration
+      summary: update duration of a token
+      operationId: updateTokenDuration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDuration'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: 'Bad request: Duration must be greater than 0'
+        '401':
+          description: (cookie)authentication required or wrong password
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+
 
 components:
   schemas:
@@ -834,6 +909,36 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Level'
+    GetDuration:
+      type: object
+      required:
+        - token
+      properties:
+        token:
+          type: string
+    Duration:
+      type: object
+      required:
+        - duration
+      properties:
+        duration:
+          type: number
+          minimum: 1
+          maximum: 2147483647
+
+    UpdateDuration:
+      type: object
+      required:
+        - duration
+        - token_name
+      properties:
+        token_name:
+          type: string
+        duration:
+          type: number
+          minimum: 1
+          maximum: 2147483647
+
 
   securitySchemes:
     cookieAuth:
