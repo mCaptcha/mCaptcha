@@ -216,7 +216,7 @@
     } <span class="kw">else</span> {
         <span class="comment">// when mCaptcha/mCaptcha #2 is fixed, this wont be necessary</span>
         <span class="prelude-val">Err</span>(<span class="ident">ServiceError</span>::<span class="ident">CaptchaError</span>(
-            <span class="ident">m_captcha</span>::<span class="ident">errors</span>::<span class="ident">CaptchaError</span>::<span class="ident">DifficultyFactorZero</span>,
+            <span class="ident">m_captcha</span>::<span class="ident">errors</span>::<span class="ident">CaptchaError</span>::<span class="ident">CaptchaDurationZero</span>,
         ))
     }
 }
