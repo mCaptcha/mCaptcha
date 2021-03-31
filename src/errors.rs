@@ -138,7 +138,6 @@ impl ResponseError for ServiceError {
             ServiceError::ChallengeVerificationFailure => StatusCode::UNAUTHORIZED,
             ServiceError::CaptchaError(e) => match e {
                 CaptchaError::MailboxError => StatusCode::INTERNAL_SERVER_ERROR,
-
                 _ => StatusCode::BAD_REQUEST,
             },
         }

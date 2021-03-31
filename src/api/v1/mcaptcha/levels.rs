@@ -31,6 +31,8 @@ pub struct AddLevels {
     pub name: String,
 }
 
+// TODO try for non-existent token names
+
 #[post("/api/v1/mcaptcha/domain/token/levels/add")]
 pub async fn add_levels(
     payload: web::Json<AddLevels>,

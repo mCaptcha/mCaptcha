@@ -17,6 +17,10 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/RegisterUser'
+            example:
+              username: "testuser"
+              password: "mysuperlongandsecurepassword"
+              email: "testuser@example.com"
       responses:
         '200':
           description: Successful registration
@@ -48,6 +52,9 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/LoginUser'
+            example:
+              username: "testuser"
+              password: "mysuperlongandsecurepassword"
       responses:
         '200':
           description: Successful authentication
@@ -95,6 +102,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/DeleteUser'
+            example:
+              password: "mysuperlongandsecurepassword"
       responses:
         '200':
           description: OK
@@ -128,6 +137,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UserDetailCheck'
+            example:
+              val: "testuser"
       responses:
         '200':
           description: OK
@@ -153,6 +164,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UserDetailCheck'
+            example:
+              val: "testuser@example.com"
       responses:
         '200':
           description: OK
@@ -208,7 +221,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/addDomain'
+              $ref: '#/components/schemas/AddDomain'
 
       responses:
         '200':
@@ -246,7 +259,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/addDomain'
+              $ref: '#/components/schemas/AddDomain'
 
       responses:
         '200':
@@ -288,7 +301,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/addDomain'
+              $ref: '#/components/schemas/AddDomain'
 
       responses:
         '200':
@@ -332,7 +345,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/addDomain'
+              $ref: '#/components/schemas/AddDomain'
 
       responses:
         '200':
