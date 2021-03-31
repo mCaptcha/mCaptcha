@@ -137,14 +137,22 @@ pub async fn get_token(
     let url = Url::parse(&payload.domain)?;
 
     let host = url.host_str().ok_or(ServiceError::NotAUrl)?;
-    let res = sqlx::query_as!(
+    let res = match sqlx::query_as!(
         MCaptchaDetails,
         "SELECT key, name from mcaptcha_config WHERE name = $1 AND domain_name = $2",
         &payload.name,
         &host,
     )
     .fetch_one(&data.db)
-    .await?;
+    .await
+    {
+        Err(sqlx::Error::RowNotFound) => Err(ServiceError::TokenNotFound),
+        Ok(m) => Ok(m),
+        Err(e) => {
+            let e: ServiceError = e.into();
+            Err(e)
+        }
+    }?;
 
     Ok(HttpResponse::Ok().json(res))
 }
@@ -265,7 +273,7 @@ mod tests {
         let cookies = get_cookie!(signin_resp);
         let mut app = get_app!(data).await;
 
-        let domain = MCaptchaID {
+        let mut domain = MCaptchaID {
             domain: DOMAIN.into(),
             name: TOKEN_NAME.into(),
         };
@@ -290,5 +298,16 @@ mod tests {
         assert_eq!(get_token_resp.status(), StatusCode::OK);
         let get_token_key: MCaptchaDetails = test::read_body_json(get_token_resp).await;
         assert_eq!(get_token_key.key, updated_token.key);
+
+        domain.name = "https://batsense.net".into();
+
+        let get_nonexistent_token_resp = test::call_service(
+            &mut app,
+            post_request!(&domain, GET_URL)
+                .cookie(cookies.clone())
+                .to_request(),
+        )
+        .await;
+        assert_eq!(get_nonexistent_token_resp.status(), StatusCode::NOT_FOUND);
     }
 }

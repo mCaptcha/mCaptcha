@@ -198,10 +198,14 @@ impl From<sqlx::Error> for ServiceError {
     fn from(e: sqlx::Error) -> Self {
         use sqlx::error::Error;
         use std::borrow::Cow;
+
+        println!("{:?}", &e);
         if let Error::Database(err) = e {
             if err.code() == Some(Cow::from("23505")) {
                 return ServiceError::UsernameTaken;
             }
+
+            println!("{:?}", &err.code());
         }
 
         ServiceError::InternalServerError

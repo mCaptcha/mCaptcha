@@ -314,6 +314,218 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /api/v1/mcaptcha/domain/delete:
+    post:
+      security:
+        - cookieAuth: []
+      summary: Delete domain from mcaptcha
+      operationId: deleteDomain
+      tags:
+        - mcaptcha
+        - domain
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/addDomain'
+
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: "Bad request: Submited URI is not a URI"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: 'authentication failed'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/v1/mcaptcha/domain/token/add:
+    post:
+      security:
+        - cookieAuth: []
+      summary: Add token for registered domain
+      operationId: addToken
+      tags:
+        - mcaptcha
+        - domain
+        - token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MCaptchaID'
+
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MCaptchaDetails'
+
+        '400':
+          description: "Bad request: Submited URI is not a URI or duplicate token name"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: 'authentication failed'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/v1/mcaptcha/domain/token/update:
+    post:
+      security:
+        - cookieAuth: []
+      summary: Update token key
+      operationId: updateTokenKey
+      tags:
+        - mcaptcha
+        - domain
+        - token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MCaptchaID'
+
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MCaptchaDetails'
+
+        '400':
+          description: "Bad request: Submited URI is not a URI or duplicate token name"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: 'authentication failed'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+
+  /api/v1/mcaptcha/domain/token/get:
+    post:
+      security:
+        - cookieAuth: []
+      summary: Get token key
+      operationId: getTokenKey
+      tags:
+        - mcaptcha
+        - domain
+        - token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MCaptchaID'
+
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MCaptchaDetails'
+
+        '400':
+          description: "Bad request: Submited URI is not a URI"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: 'authentication failed'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: token name not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/v1/mcaptcha/domain/token/delete:
+    post:
+      security:
+        - cookieAuth: []
+      summary: Delete domain from mcaptcha
+      operationId: deleteDomain
+      tags:
+        - mcaptcha
+        - domain
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MCaptchaID'
+
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: 'authentication failed'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+
+
 components:
   schemas:
     RegisterUser:
@@ -411,6 +623,26 @@ components:
         - verification_challenge
       properties:
         verification_challenge:
+          type: string
+    MCaptchaID:
+      type: object
+      required:
+        - name
+        - domain
+      properties:
+        name:
+          type: string
+        domain:
+          type: string
+    MCaptchaDetails:
+      type: object
+      required:
+        - name
+        - key
+      properties:
+        name:
+          type: string
+        key:
           type: string
 
   securitySchemes:
