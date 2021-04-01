@@ -46,12 +46,20 @@ async fn dist(path: web::Path<String>) -> impl Responder {
     handle_embedded_file(&path.0)
 }
 
+#[get("/docs/openapi.json")]
+async fn spec() -> HttpResponse {
+    HttpResponse::Ok()
+        .content_type("appilcation/json")
+        .body(&*crate::OPEN_API_DOC)
+}
+
 #[get("/docs")]
 async fn index() -> HttpResponse {
     handle_embedded_file("index.html")
 }
 
 pub fn services(cfg: &mut web::ServiceConfig) {
+    cfg.service(spec);
     cfg.service(index);
     cfg.service(dist);
 }
@@ -67,7 +75,8 @@ mod tests {
     #[actix_rt::test]
     async fn docs_work() {
         const INDEX: &str = "/docs";
-        const FILE: &str = "/docs/swagger.json";
+        const FILE: &str = "/docs/favicon-32x32.png";
+        const SPEC: &str = "/docs/openapi.json";
 
         let mut app = test::init_service(App::new().configure(services)).await;
 
@@ -77,6 +86,10 @@ mod tests {
 
         let resp =
             test::call_service(&mut app, test::TestRequest::get().uri(FILE).to_request()).await;
+        assert_eq!(resp.status(), StatusCode::OK);
+
+        let resp =
+            test::call_service(&mut app, test::TestRequest::get().uri(SPEC).to_request()).await;
         assert_eq!(resp.status(), StatusCode::OK);
     }
 }

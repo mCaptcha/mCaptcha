@@ -15,6 +15,7 @@
           >Username
           <input
             class="form__in-field"
+            id="username"
             type="text"
             name="username"
             id="username"
@@ -27,6 +28,7 @@
           <input
             class="form__in-field"
             type="password"
+            id="password"
             name="password"
             id="password"
             required
@@ -45,6 +47,45 @@
         <p class="form__secondary-action__banner">New to mCaptcha? <a href="/signup" class="form__secondary-action__link">Create account</a></p>
       </div>
     </div>
+  <script>
+  export const SUBMIT = '/';
+
+  export const isBlankString = (event, value, field) => {
+    if (!value.replace(/\s/g, '').length) {
+      event.preventDefautl()
+      alert(`${field} can't be empty`);
+    }
+  };
+
+  const genJsonPayload = payload => {
+    let value = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    };
+    return value;
+  };
+
+  const submit = async e => {
+    let name = document.getElementById('username').value;
+    isBlankString(e, name, 'username');
+
+    let password = document.getElementById('password').value;
+    isBlankString(e, email, 'email');
+
+    let payload = {
+      username,
+
+    }
+  };
+
+  let form = document.getElementById('form');
+
+  form.addEventListener('submit', submit, true);
+  </script>
+
   </body>
   <style>
     * {
@@ -141,43 +182,4 @@
     }
 
   </style>
-  <script>
-    export const SUBMIT = '/';
-
-export const isBlankString = (event, value, field) => {
-  if (!value.replace(/\s/g, '').length) {
-    event.preventDefautl()
-    alert(`${field} can't be empty`);
-  }
-};
-
-export const genJsonPayload = payload => {
-  let value = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(payload),
-  };
-  return value;
-};
-
-const submit = async e => {
-  let name = document.getElementById('name').value;
-  isBlankString(e, name, 'Name');
-
-  let registration_number = document.getElementById('email').value;
-  isBlankString(e, registration_number, 'Registration number');
-
-  let email = document.getElementById('email').value;
-  isBlankString(e, email, 'email');
-
-  console.log(`from signup: PoW: ${pow}`);
-
-};
-
-let form = document.getElementById('form');
-
-form.addEventListener('submit', submit, true);
-  </script>
 </html>

@@ -43,6 +43,8 @@ pub use settings::Settings;
 lazy_static! {
     pub static ref SETTINGS: Settings = Settings::new().unwrap();
     pub static ref GIT_COMMIT_HASH: String = env::var("GIT_HASH").unwrap();
+    pub static ref OPEN_API_DOC: String = env::var("OPEN_API_DOCS").unwrap();
+    pub static ref S: String = env::var("S").unwrap();
 }
 
 pub static VERSION: &str = env!("CARGO_PKG_VERSION");
