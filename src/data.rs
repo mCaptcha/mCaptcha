@@ -32,7 +32,7 @@ use crate::SETTINGS;
 pub struct Data {
     pub db: PgPool,
     pub creds: Config,
-    //    pub captcha: System<HashCache>,
+    pub captcha: System<HashCache>,
 }
 
 impl Data {
@@ -52,20 +52,20 @@ impl Data {
             .build()
             .unwrap();
 
-        //       let master = Master::new(SETTINGS.pow.gc).start();
-        //       let cache = HashCache::default().start();
-        //       let pow = PoWConfigBuilder::default()
-        //           .salt(SETTINGS.pow.salt.clone())
-        //           .build()
-        //           .unwrap();
+        let master = Master::new(SETTINGS.pow.gc).start();
+        let cache = HashCache::default().start();
+        let pow = PoWConfigBuilder::default()
+            .salt(SETTINGS.pow.salt.clone())
+            .build()
+            .unwrap();
 
-        //       let captcha = SystemBuilder::default()
-        //           .master(master)
-        //           .cache(cache)
-        //           .pow(pow)
-        //           .build()
-        //           .unwrap();
+        let captcha = SystemBuilder::default()
+            .master(master)
+            .cache(cache)
+            .pow(pow)
+            .build()
+            .unwrap();
 
-        Data { creds, db } //captcha }
+        Data { creds, db, captcha }
     }
 }

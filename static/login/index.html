@@ -48,7 +48,7 @@
       </div>
     </div>
   <script>
-  export const SUBMIT = '/';
+  export const SUBMIT = '/api/v1/signup';
 
   export const isBlankString = (event, value, field) => {
     if (!value.replace(/\s/g, '').length) {
@@ -77,8 +77,16 @@
 
     let payload = {
       username,
-
+      password
     }
+
+    fetch(SUBMIT, genJsonPayload(payload)).then(resp => {
+      if (resp.ok) {
+        aslert('signed in');
+      } else {
+        resp.json().then(err => alert(`Error ${resp.error}`));
+      }
+    });
   };
 
   let form = document.getElementById('form');
