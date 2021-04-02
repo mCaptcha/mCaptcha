@@ -42,11 +42,14 @@ pub use settings::Settings;
 
 lazy_static! {
     pub static ref SETTINGS: Settings = Settings::new().unwrap();
-    pub static ref GIT_COMMIT_HASH: String = env::var("GIT_HASH").unwrap();
-    pub static ref OPEN_API_DOC: String = env::var("OPEN_API_DOCS").unwrap();
+//    pub static ref GIT_COMMIT_HASH: String = env::var("GIT_HASH").unwrap();
+
+//    pub static ref OPEN_API_DOC: String = env::var("OPEN_API_DOCS").unwrap();
     pub static ref S: String = env::var("S").unwrap();
 }
 
+pub static OPEN_API_DOC: &str = env!("OPEN_API_DOCS");
+pub static GIT_COMMIT_HASH: &str = env!("GIT_HASH");
 pub static VERSION: &str = env!("CARGO_PKG_VERSION");
 pub static PKG_NAME: &str = env!("CARGO_PKG_NAME");
 pub static PKG_DESCRIPTION: &str = env!("CARGO_PKG_DESCRIPTION");
@@ -62,7 +65,7 @@ async fn main() -> std::io::Result<()> {
     pretty_env_logger::init();
     info!(
         "{}: {}.\nFor more information, see: {}\nBuild info:\nVersion: {} commit: {}",
-        PKG_NAME, PKG_DESCRIPTION, PKG_HOMEPAGE, VERSION, *GIT_COMMIT_HASH
+        PKG_NAME, PKG_DESCRIPTION, PKG_HOMEPAGE, VERSION, GIT_COMMIT_HASH
     );
 
     let data = Data::new().await;
@@ -82,7 +85,7 @@ async fn main() -> std::io::Result<()> {
             .configure(v1::services)
             .configure(docs::services)
             .app_data(get_json_err())
-            .service(Files::new("/", "./static"))
+            .service(Files::new("/", "./frontend/dist").index_file("index.html"))
     })
     .bind(SETTINGS.server.get_ip())
     .unwrap()
