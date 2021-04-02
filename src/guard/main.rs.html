@@ -113,6 +113,9 @@
 <span id="110">110</span>
 <span id="111">111</span>
 <span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -158,11 +161,14 @@
 
 <span class="macro">lazy_static</span><span class="macro">!</span> {
     <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">SETTINGS</span>: <span class="ident">Settings</span> <span class="op">=</span> <span class="ident">Settings</span>::<span class="ident">new</span>().<span class="ident">unwrap</span>();
-    <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">GIT_COMMIT_HASH</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;GIT_HASH&quot;</span>).<span class="ident">unwrap</span>();
-    <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">OPEN_API_DOC</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;OPEN_API_DOCS&quot;</span>).<span class="ident">unwrap</span>();
+<span class="comment">//    pub static ref GIT_COMMIT_HASH: String = env::var(&quot;GIT_HASH&quot;).unwrap();</span>
+
+<span class="comment">//    pub static ref OPEN_API_DOC: String = env::var(&quot;OPEN_API_DOCS&quot;).unwrap();</span>
     <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">S</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;S&quot;</span>).<span class="ident">unwrap</span>();
 }
 
+<span class="kw">pub</span> <span class="kw">static</span> <span class="ident">OPEN_API_DOC</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="macro">env</span><span class="macro">!</span>(<span class="string">&quot;OPEN_API_DOCS&quot;</span>);
+<span class="kw">pub</span> <span class="kw">static</span> <span class="ident">GIT_COMMIT_HASH</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="macro">env</span><span class="macro">!</span>(<span class="string">&quot;GIT_HASH&quot;</span>);
 <span class="kw">pub</span> <span class="kw">static</span> <span class="ident">VERSION</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="macro">env</span><span class="macro">!</span>(<span class="string">&quot;CARGO_PKG_VERSION&quot;</span>);
 <span class="kw">pub</span> <span class="kw">static</span> <span class="ident">PKG_NAME</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="macro">env</span><span class="macro">!</span>(<span class="string">&quot;CARGO_PKG_NAME&quot;</span>);
 <span class="kw">pub</span> <span class="kw">static</span> <span class="ident">PKG_DESCRIPTION</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="macro">env</span><span class="macro">!</span>(<span class="string">&quot;CARGO_PKG_DESCRIPTION&quot;</span>);
@@ -178,7 +184,7 @@
     <span class="ident">pretty_env_logger</span>::<span class="ident">init</span>();
     <span class="macro">info</span><span class="macro">!</span>(
         <span class="string">&quot;{}: {}.\nFor more information, see: {}\nBuild info:\nVersion: {} commit: {}&quot;</span>,
-        <span class="ident">PKG_NAME</span>, <span class="ident">PKG_DESCRIPTION</span>, <span class="ident">PKG_HOMEPAGE</span>, <span class="ident">VERSION</span>, <span class="kw-2">*</span><span class="ident">GIT_COMMIT_HASH</span>
+        <span class="ident">PKG_NAME</span>, <span class="ident">PKG_DESCRIPTION</span>, <span class="ident">PKG_HOMEPAGE</span>, <span class="ident">VERSION</span>, <span class="ident">GIT_COMMIT_HASH</span>
     );
 
     <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">Data</span>::<span class="ident">new</span>().<span class="kw">await</span>;
@@ -198,7 +204,7 @@
             .<span class="ident">configure</span>(<span class="ident">v1</span>::<span class="ident">services</span>)
             .<span class="ident">configure</span>(<span class="ident">docs</span>::<span class="ident">services</span>)
             .<span class="ident">app_data</span>(<span class="ident">get_json_err</span>())
-            .<span class="ident">service</span>(<span class="ident">Files</span>::<span class="ident">new</span>(<span class="string">&quot;/&quot;</span>, <span class="string">&quot;./static&quot;</span>))
+            .<span class="ident">service</span>(<span class="ident">Files</span>::<span class="ident">new</span>(<span class="string">&quot;/&quot;</span>, <span class="string">&quot;./frontend/dist&quot;</span>).<span class="ident">index_file</span>(<span class="string">&quot;index.html&quot;</span>))
     })
     .<span class="ident">bind</span>(<span class="ident">SETTINGS</span>.<span class="ident">server</span>.<span class="ident">get_ip</span>())
     .<span class="ident">unwrap</span>()
