@@ -1,11 +1,6 @@
-<html lang="en"><head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | mCaptcha</title>
-  </head>
-  <body>
+<% include!("components/headers.stpl"); %>
     <div class="form-container">
-      <img src="/img/icon-trans.png" class="form__logo" alt="">
+      <img src="../static/img/icon-trans.png" class="form__logo" alt="">
       <h2 class="form__brand">Sign in to mCaptcha</h2>
 
       <form class="form__box" id="form">
@@ -32,7 +27,4 @@
         </p>
       </div>
     </div>
-
-  <link rel="stylesheet" href="/css/forms.css">
-
 </body></html>

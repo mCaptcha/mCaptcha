@@ -18,7 +18,7 @@ module.exports = merge(common, {
       new OptimizeCssAssetsPlugin(),
       new TerserPlugin(),
       new HtmlWebpackPlugin({
-        template: path.resolve(__dirname, 'public/', 'index.html'),
+        template: path.resolve(__dirname, 'output', 'index.html'),
         minify: {
           removeAttributeQuotes: true,
           collapseWhitespace: true,
@@ -26,8 +26,8 @@ module.exports = merge(common, {
         },
       }),
       new HtmlWebpackPlugin({
-        filename: 'signup/index.html',
-        template: path.resolve(__dirname, 'public/signup/', 'index.html'),
+        filename: 'signup/index.html', // output filename
+        template: path.resolve(__dirname, 'output/signup/', 'index.html'),
         minify: {
           removeAttributeQuotes: true,
           collapseWhitespace: true,
