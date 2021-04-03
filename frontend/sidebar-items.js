@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["BASE_DIR",""]],"fn":[["main",""],["path",""]],"mod":[["signup",""]],"struct":[["IndexPage",""]]});
