@@ -14,8 +14,8 @@ module.exports = merge(common, {
       template: './output/index.html',
     }),
     new HtmlWebpackPlugin({
-      filename: 'signup/index.html',
-      template: './output/signup/index.html',
+      filename: 'register/index.html',
+      template: './output/register/index.html',
     }),
 
     new HtmlWebpackPlugin({

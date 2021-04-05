@@ -26,8 +26,8 @@ module.exports = merge(common, {
         },
       }),
       new HtmlWebpackPlugin({
-        filename: 'signup/index.html', // output filename
-        template: path.resolve(__dirname, 'output/signup/', 'index.html'),
+        filename: 'register/index.html', // output filename
+        template: path.resolve(__dirname, 'output/register/', 'index.html'),
         minify: {
           removeAttributeQuotes: true,
           collapseWhitespace: true,

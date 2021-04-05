@@ -3,3 +3,4 @@ dist/
 /target
 .html
 output/
+static

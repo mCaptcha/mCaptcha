@@ -4,7 +4,7 @@ use tokio::fs;
 use tokio::io::{Error, ErrorKind};
 
 #[derive(Clone, TemplateOnce)]
-#[template(path = "index.html")]
+#[template(path = "auth/login/index.html")]
 struct IndexPage {
     name: String,
     title: String,
@@ -66,7 +66,7 @@ mod signup {
     use super::*;
 
     #[derive(TemplateOnce, Clone)]
-    #[template(path = "signup/index.html")]
+    #[template(path = "auth/register/index.html")]
     pub struct IndexPage {
         pub name: String,
         pub title: String,
@@ -83,7 +83,7 @@ mod signup {
 
     impl IndexPage {
         pub async fn run(&self) -> Result<(), Error> {
-            let dir = root_path("signup");
+            let dir = root_path("register");
             let file = rel_path(&dir, "index.html");
 
             print!("");

@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
   entry: {
-    main: './static/js/index.js',
+    main: './templates/index.js',
   },
   module: {
     rules: [
