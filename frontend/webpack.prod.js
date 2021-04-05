@@ -34,6 +34,10 @@ module.exports = merge(common, {
           removeComments: true,
         },
       }),
+      new HtmlWebpackPlugin({
+        filename: 'panel/index.html',
+        template: './output/panel/index.html',
+      }),
     ],
   },
   plugins: [

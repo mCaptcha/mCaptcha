@@ -1,0 +1,20 @@
+<header class="page-header nav-container">
+  <nav class="nav">
+    <a href="#0" aria-label="forecastr logo" class="nav__home-btn">
+      <img class="nav__logo" src="/svg/shield.svg" alt="logo" />
+    </a>
+    <button
+      class="toggle-mob-menu nav__show-menu"
+      aria-expanded="false"
+      aria-label="open menu"
+    >
+      <.# TODO change show-menu icon .>
+      <svg width="20" height="20" class="nav__show-menu-icon" aria-hidden="true">
+        <use xlink:href="#down"></use>
+      </svg>
+    </button>
+    <. include!("menu/index.html"); .>
+    <. include!("theme-toggle/index.html"); .>
+    <. include!("collapse-nav/index.html"); .>
+  </nav>
+</header>

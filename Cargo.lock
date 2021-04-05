@@ -1118,6 +1118,7 @@ dependencies = [
 name = "frontend"
 version = "0.1.0"
 dependencies = [
+ "lazy_static",
  "log",
  "pretty_env_logger",
  "sailfish",

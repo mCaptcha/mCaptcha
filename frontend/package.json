@@ -7,7 +7,9 @@
   "author": "Aravinth Manivannan <realaravinth@batsense.net>",
   "license": "AGPLv3 or above",
   "scripts": {
-    "start": "cargo run && webpack-dev-server  --config webpack.dev.js --open",
+    "start": "find . | entr yarn build-dev",
+    "build-dev": "cargo run && webpack --config webpack.dev.js",
+    "build-fast-dev": "cargo run && webpack-dev-server --config webpack.dev.js",
     "build": "cargo run && webpack --config webpack.prod.js"
   },
   "private": true,

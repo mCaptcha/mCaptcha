@@ -3,12 +3,33 @@ use sailfish::TemplateOnce;
 use tokio::fs;
 use tokio::io::{Error, ErrorKind};
 
-#[derive(TemplateOnce)] // automatically implement `TemplateOnce` trait
-#[template(path = "index.stpl")] // specify the path to template
+#[derive(Clone, TemplateOnce)]
+#[template(path = "index.html")]
 struct IndexPage {
-    // data to be passed to the template
     name: String,
     title: String,
+}
+
+impl Default for IndexPage {
+    fn default() -> Self {
+        IndexPage {
+            name: "mCaptcha".into(),
+            title: "Login".into(),
+        }
+    }
+}
+
+impl IndexPage {
+    pub async fn run(&self) -> Result<(), Error> {
+        let file = root_path("index.html");
+
+        info!("rendering {}", &file);
+        let index = self.clone().render_once().unwrap();
+
+        fs::write(&file, index).await?;
+        info!("wrote {}", &file);
+        Ok(())
+    }
 }
 
 const BASE_DIR: &str = "./output";
@@ -28,43 +49,132 @@ async fn main() {
         _ => (),
     };
 
-    let ctx = IndexPage {
-        name: "mCaptcha".into(),
-        title: "Login".into(),
-    };
-
-    // Now render templates with given data
-    info!("rendering {}", path("index.html"));
-    let index = ctx.render_once().unwrap();
-    fs::write(path("index.html"), index).await.unwrap();
-    info!("wrote {}", path("index.html"));
-
-    let ctx = signup::IndexPage {
-        name: "mCaptcha".into(),
-        title: "Register".into(),
-    };
-
-    // Now render templates with given data
-    info!("rendering {}", path("signup/index.html"));
-    let index = ctx.render_once().unwrap();
-    fs::create_dir(path("signup")).await.unwrap();
-    info!("creating dir {}", path("signup/"));
-
-    fs::write(path("signup/index.html"), index).await.unwrap();
-    info!("wrote {}", path("signup/index.html"));
+    IndexPage::default().run().await.unwrap();
+    signup::IndexPage::default().run().await.unwrap();
+    panel::IndexPage::default().run().await.unwrap();
 }
 
-fn path(rel: &str) -> String {
+fn root_path(rel: &str) -> String {
     format!("{}/{}", BASE_DIR, rel)
+}
+
+fn rel_path(dir: &str, file: &str) -> String {
+    format!("{}/{}", dir, file)
 }
 
 mod signup {
     use super::*;
-    #[derive(TemplateOnce)] // automatically implement `TemplateOnce` trait
-    #[template(path = "signup/index.stpl", escape = false)] // specify the path to template
+
+    #[derive(TemplateOnce, Clone)]
+    #[template(path = "signup/index.html")]
     pub struct IndexPage {
-        // data to be passed to the template
         pub name: String,
         pub title: String,
+    }
+
+    impl Default for IndexPage {
+        fn default() -> Self {
+            IndexPage {
+                name: "mCaptcha".into(),
+                title: "Join".into(),
+            }
+        }
+    }
+
+    impl IndexPage {
+        pub async fn run(&self) -> Result<(), Error> {
+            let dir = root_path("signup");
+            let file = rel_path(&dir, "index.html");
+
+            print!("");
+            info!("rendering {}", &file);
+            let index = self.clone().render_once().unwrap();
+
+            fs::create_dir(&dir).await?;
+            info!("creating dir {}", &dir);
+
+            fs::write(&file, index).await?;
+            info!("wrote {}", &file);
+            Ok(())
+        }
+    }
+}
+
+pub type Literal = &'static str;
+
+pub mod panel {
+    use super::*;
+    use section::*;
+
+    #[derive(TemplateOnce, Clone)]
+    #[template(path = "panel/index.html")]
+    pub struct IndexPage {
+        pub name: String,
+        pub title: String,
+        pub active: &'static SubPanel,
+    }
+
+    impl Default for IndexPage {
+        fn default() -> Self {
+            IndexPage {
+                name: "mCaptcha".into(),
+                title: "Home".into(),
+                active: &COMMENTS,
+            }
+        }
+    }
+
+    impl IndexPage {
+        pub async fn run(&self) -> Result<(), Error> {
+            let dir = root_path("panel");
+            let file = rel_path(&dir, "index.html");
+
+            info!("rendering {}", &file);
+            let index = self.clone().render_once().unwrap();
+
+            fs::create_dir(&dir).await?;
+            info!("creating dir {}", &dir);
+
+            fs::write(&file, index).await?;
+            info!("wrote {}", &file);
+            Ok(())
+        }
+    }
+
+    pub mod section {
+        use super::*;
+
+        pub struct Section<const N: usize> {
+            pub name: Literal,
+            pub elements: [&'static SubPanel; N],
+        }
+
+        pub struct SubPanel {
+            pub name: Literal,
+            pub icon: Literal,
+        }
+
+        macro_rules! sub_panel {
+            ($var:ident, $name:expr, $icon:expr) => {
+                pub static $var: SubPanel = SubPanel {
+                    name: $name,
+                    icon: $icon,
+                };
+            };
+        }
+
+        sub_panel!(COMMENTS, "Comments", "comments");
+        sub_panel!(USERS, "Users", "users");
+        sub_panel!(PAGES, "Pages", "pages");
+
+        pub static ADMIN_SECTION: Section<3> = Section {
+            elements: [&COMMENTS, &USERS, &PAGES],
+            name: "Admin",
+        };
+
+        pub static SETTINGS_SECTION: Section<3> = Section {
+            elements: [&COMMENTS, &USERS, &PAGES],
+            name: "Settings",
+        };
     }
 }
