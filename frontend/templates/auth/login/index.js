@@ -3,6 +3,8 @@ import ROUTES from '../../api/v1/routes';
 import isBlankString from '../../utils/genJsonPayload';
 import genJsonPayload from '../../utils/genJsonPayload';
 
+import '../forms.scss';
+
 const login = e => {
   e.preventDefault();
   let username = document.getElementById('username').value;
@@ -23,4 +25,7 @@ const login = e => {
   });
 };
 
-export default login;
+export const index = () => {
+  let form = document.getElementById('form');
+  form.addEventListener('submit', login, true);
+};

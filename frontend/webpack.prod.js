@@ -37,6 +37,11 @@ module.exports = merge(common, {
       new HtmlWebpackPlugin({
         filename: 'panel/index.html',
         template: './output/panel/index.html',
+        minify: {
+          removeAttributeQuotes: true,
+          collapseWhitespace: true,
+          removeComments: true,
+        }
       }),
     ],
   },

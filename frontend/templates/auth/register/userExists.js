@@ -3,12 +3,8 @@ import ROUTES from '../../api/v1/routes';
 import genJsonPayload from '../../utils/genJsonPayload';
 
 
-const checkUsernameEventHandler = _e => {
-  checkUsernameExists();
-};
-
 //export const checkUsernameExists = async () => {
-async function checkUsernameExists()  {
+async function userExists()  {
   let username = document.getElementById('username');
   let val = username.value;
   let payload = {
@@ -45,4 +41,4 @@ async function checkUsernameExists()  {
   return false;
 };
 
-export {checkUsernameExists, checkUsernameEventHandler};
+export default userExists;

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <header>
+      <nav class="secondary-menu">
+        <ul>
+          <li class="secondary-menu__item">mCaptcha</li>
+          <li class="secondary-menu__item">API Docs</li>
+          <li class="secondary-menu__section-partition"></li>
+          <li class="secondary-menu__item">Settings</li>
+          <li class="secondary-menu__item">Billing</li>
+          <li class="secondary-menu__section-partition"></li>
+          <li class="secondary-menu__item">FAQ</li>
+          <li class="secondary-menu__item">Help</li>
+          <li class="secondary-menu__item">Support</li>
+          <li class="secondary-menu__section-partition"></li>
+          <li class="secondary-menu__item">Source Code</li>
+        </ul>
+      </nav>
+      <!-- Nav/Side/Secondary bar -->
+    </header>
+    <!--
+    <nav class="secondary-menu">
+      <ul>
+        <li class="secondary-menu__item">Sidebar Item</li>
+        <li class="secondary-menu__item">Sidebar Item</li>
+        <li class="secondary-menu__item">Sidebar Item</li>
+        <li class="secondary-menu__item">Sidebar Item</li>
+        <li class="secondary-menu__item">Sidebar Item</li>
+      </ul>
+    </nav>
+    -->
+
+    <main>
+      <ul class="task-bar">
+        <!--
+        <li class="task-bar__action">Brand Name</li>
+        -->
+        <li class="task-bar__action"></li>
+        <li class="task-bar__action">
+          <img src="../../static/img/svg/bell.svg" alt="Notifications" />
+        </li>
+
+        <li class="task-bar__action">
+          <img src="../../static/img/svg/user.svg" alt="Profile" />
+        </li>
+      </ul>
+
+      <ul class="main-menu">
+        <!-- important actions -->
+        <li class="main-menu__item">Overview</li>
+        <li class="main-menu__item">Site Keys</li>
+        <li class="main-menu__item">Settings</li>
+        <li class="main-menu__item--spacer"></li>
+        <!-- dummy-->
+        <li class="main-menu__item">
+          <button class="main-menu__add-site">+ New Site</button>
+        </li>
+      </ul>
+
+      <ul class="help-text">
+        <li class="help-text__instructions">
+          <span class="help-text__serial-num">1</span>
+          Add sitekey
+        </li>
+        <li class="help-text__instructions">
+          <span class="help-text__serial-num">2</span>
+          Add client-side code snippets in places that you want to protext
+        </li>
+        <li class="help-text__instructions">
+          <span class="help-text__serial-num">3</span>
+          Add servers-side verification logic
+        </li>
+      </ul>
+
+      <!-- Main content container -->
+      <div class="inner-container">
+        <!-- Main menu/ important actions roaster -->
+
+        <form class="sitekey-form" action="/something" method="post">
+          <div class="sitekey-form__title-flex-container">
+            <b class="sitekey-form__title">Add Site Key</b>
+          </div>
+          <div class="sitekey-form__add-level-flex-container">
+            <label class="sitekey-form__label" for="description"
+              >Description</label
+            >
+          </div>
+          <input
+            class="sitekey-form__input"
+            type="text/"
+            name="description"
+            id="description"
+            value=""
+          />
+
+          <div class="sitekey-form__add-level-flex-container">
+            <!-- insert Javascript for adding more levels as needed -->
+            <label class="sitekey-form__label" for="level1">Level 1</label>
+          </div>
+
+          <input
+            class="sitekey-form__input"
+            type="text/"
+            name="level1"
+            id="level1"
+            value=""
+          />
+
+          <div class="sitekey-form__add-level-flex-container">
+            <label class="sitekey-form__label" for="level1">Level 2</label>
+          </div>
+
+          <div class="sitekey-form__add-level-flex-container">
+            <!--
+              <div class="sitekey-form__add-level-spacer"></div>
+              -->
+            <input
+              class="sitekey-form__input--add-level"
+              type="text/"
+              name="level2"
+              id="level2"
+              value=""
+            />
+
+            <button class="sitekey-form__add-level">Add Level</button>
+          </div>
+          <button class="sitekey-form__submit" type="submit">Submit</button>
+        </form>
+      </div>
+      <!-- end of container -->
+    </main>
+  </body>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    .home-button {
+      width: 250px;
+      margin: auto;
+      flex: 5;
+    }
+    .secondary-menu {
+      position: fixed;
+      width: 14%;
+      left: 0;
+      bottom: 0;
+      top: 0;
+      right: 0;
+      height: 100%;
+      overflow: auto;
+
+      background-color: #2b2c30;
+      color: white;
+      color: rgba(255, 255, 255, 0.87);
+    }
+
+    .secondary-menu__item {
+      margin: auto;
+      padding: 20px;
+      list-style: none;
+    }
+
+    .secondary-menu__section-partition {
+      border-bottom: 1px solid #c3c3c3;
+      list-style: none;
+      margin: 20px 0;
+    }
+
+    .secondary-menu__item:hover {
+      color: #5cad66 !important;
+      cursor: grab;
+    }
+
+    main {
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 14%;
+      bottom: 0;
+      background-color: #f0f0f0;
+    }
+
+    .task-bar {
+      display: flex;
+      padding: 0px;
+      margin: 0px;
+      background-color: #fff;
+    }
+
+    .task-bar__action {
+      display: inline-block;
+      list-style: none;
+      flex: 1;
+      padding: 15px 0px;
+      margin: auto;
+    }
+
+    .task-bar__action:first-child {
+      min-width: 250px;
+      flex: 6;
+    }
+
+    .main-menu {
+      display: flex;
+      flex-grow: 0;
+      padding-top: 20px;
+      padding-left: 10px;
+    }
+
+    .main-menu__item {
+      list-style: none;
+      background-color: #c3c3c3;
+      flex: 2;
+      text-align: center;
+      vertical-align: middle;
+      margin: auto 20px;
+      padding: 10px 0;
+    }
+
+    .main-menu__item--spacer {
+      list-style: none;
+      flex: 3;
+      text-align: center;
+    }
+
+    .main-menu__item:hover {
+      background-color: grey;
+      cursor: grab;
+    }
+
+    .main-menu__item:last-child {
+      padding: 0;
+      display: flex;
+      flex: 2;
+      border: none;
+      background-color: unset;
+    }
+
+    .main-menu__item:last-child:hover {
+      cursor: unset;
+      background-color: unset;
+    }
+
+    .main-menu__add-site {
+      display: inline-block;
+      background-color: purple;
+      color: white;
+      padding: 10px;
+
+      border-radius: 5px;
+      border: 1px grey solid;
+      min-height: 45px;
+      min-width: 125px;
+      margin: auto;
+    }
+
+    .main-menu__add-site:hover {
+      background-color: violet;
+      cursor: grab;
+      transform: translateY(-5px);
+    }
+
+    .help-text {
+      border-radius: 4px;
+      box-shadow: rgba(0, 0, 0.5) 0px 2px 6px 0px;
+      max-width: 70%;
+      height: 70px;
+      display: flex;
+      margin-top: 50px;
+      margin-left: 25px;
+    }
+
+    .help-text__serial-num {
+      display: inline-flex;
+      background-color: purple;
+      color: #fff;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .help-text__instructions {
+      display: inline-block;
+      list-style: none;
+      font-size: 16px;
+      padding: 10px;
+      margin: auto;
+    }
+
+    .inner-container {
+      display: flex;
+      box-sizing: border-box;
+      max-width: 50%;
+      margin: 50px auto;
+      border-radius: 5px;
+      display: flex;
+    }
+
+    .sitekey-form {
+      display: flex;
+      flex-direction: column;
+      width: 90%;
+      justify-content: center;
+      align-items: center;
+      box-sizing: content-box;
+      background-color: #fff;
+      margin: auto;
+    }
+
+
+    .sitekey-form__title-flex-container {
+      display: flex;
+      width: 100%;
+      border-bottom: 0.1px solid rgba(0,0,0,.125);
+    }
+
+    .sitekey-form__title{
+      padding-left: 10px;
+      font-size: 1rem;
+      padding: .75rem 1.25rem;
+    }
+
+
+
+    .sitekey-form__label {
+      display: block;
+      margin: 10px 0;
+      box-sizing: inherit;
+      justify-self: left;
+    }
+
+    .sitekey-form__input {
+      position: relative;
+      margin-top: 5px;
+      box-sizing: border-box;
+      height: 40px;
+      width: 90%;
+    }
+
+    .sitekey-form__input--add-level {
+      position: relative;
+      margin-top: 5px;
+      box-sizing: inherit;
+      flex: 3;
+      height: 40px;
+      margin-right: 20px;
+    }
+
+    .sitekey-form__add-level-flex-container {
+      display: flex;
+      box-sizing: border-box;
+      width: 90%;
+      margin-top: 10px;
+    }
+
+    .sitekey-form__add-level-spacer {
+      flex: 3;
+    }
+
+    .sitekey-form__add-level {
+      background-color: purple;
+      color: white;
+      padding: 10px;
+
+      border-radius: 5px;
+      border: 1px grey solid;
+      height: 40px;
+      min-width: 125px;
+      margin: auto;
+    }
+
+    .sitekey-form__submit {
+      margin-top: 50px;
+      display: block;
+      background-color: purple;
+      color: white;
+      padding: 10px;
+
+      border-radius: 5px;
+      border: 1px grey solid;
+      min-height: 45px;
+      width: 125px;
+    }
+  </style>
+</html>

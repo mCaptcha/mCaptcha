@@ -11,16 +11,16 @@ module.exports = merge(common, {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './output/index.html',
-    }),
-    new HtmlWebpackPlugin({
       filename: 'register/index.html',
-      template: './output/register/index.html',
+      template: path.resolve(__dirname, 'output/register/', 'index.html'),
     }),
 
     new HtmlWebpackPlugin({
       filename: 'panel/index.html',
-      template: './output/panel/index.html',
+      template: path.resolve(__dirname, 'output/panel/', 'index.html'),
+    }),
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, 'output/', 'index.html'),
     }),
   ],
   module: {

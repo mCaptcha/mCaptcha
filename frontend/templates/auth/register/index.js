@@ -3,8 +3,10 @@ import ROUTES from '../../api/v1/routes';
 import isBlankString from '../../utils/genJsonPayload';
 import genJsonPayload from '../../utils/genJsonPayload';
 
-import {checkUsernameExists} from './userExists';
+import userExists from './userExists';
 import {checkEmailExists} from './emailExists';
+
+import '../forms.scss';
 
 const registerUser = async e => {
   e.preventDefault();
@@ -46,10 +48,12 @@ const registerUser = async e => {
   }
 };
 
-let form = document.getElementById('form');
-form.addEventListener('submit', registerUser, true);
+const index = () => {
+  let form = document.getElementById('form');
+  form.addEventListener('submit', registerUser, true);
 
-let username = document.getElementById('username');
-username.addEventListener('input', checkUsernameEventHandler, false);
+  let username = document.getElementById('username');
+  username.addEventListener('input', userExists, false);
+}
 
-export default registerUser;
+export default index;
