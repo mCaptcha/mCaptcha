@@ -48,12 +48,10 @@ const registerUser = async e => {
   }
 };
 
-const index = () => {
+export const index = () => {
   let form = document.getElementById('form');
   form.addEventListener('submit', registerUser, true);
 
   let username = document.getElementById('username');
   username.addEventListener('input', userExists, false);
 }
-
-export default index;
