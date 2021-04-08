@@ -1,3 +1,19 @@
+const normalizeUri = uri => {
+  if (!uri) {
+    throw new Error('uri is empty');
+  }
+
+  if (typeof uri !== 'string') {
+    throw new TypeError('URI must be a string');
+  }
+
+  let uriLength = uri.length;
+  if (uri[uriLength - 1] == '/') {
+    uri = uri.slice(0, uriLength - 1);
+  }
+  return uri;
+};
+
 export class Router {
   constructor() {
     this.routes = [];
@@ -28,11 +44,7 @@ export class Router {
       }
     });
 
-    // normalize URI for trailing slash
-    let uriLength = uri.length;
-    if (uri[uriLength - 1] == '/') {
-      uri = uri.slice(0, uriLength - 1);
-    }
+    uri = normalizeUri(uri);
 
     const route = {
       uri,
@@ -44,8 +56,9 @@ export class Router {
   route() {
     this.routes.forEach(route => {
       // normalize for trailing slash
-      let pattern = new RegExp(`^${route.uri}/$`);
+      let pattern = new RegExp(`^${route.uri}$`);
       let path = window.location.pathname;
+      path = normalizeUri(path);
       if (path.match(pattern)) {
         return route.fn.call();
       }

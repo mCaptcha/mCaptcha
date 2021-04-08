@@ -9,25 +9,109 @@
     <header>
       <nav class="secondary-menu">
         <ul>
-          <li class="secondary-menu__item">mCaptcha</li>
+          <li class="secondary-menu__heading">
+            <img
+              class="secondary-menu__logo"
+              src="./icon-trans.png"
+              alt="Logo"
+            />
+            <div class="secondary-menu__brand-name">
+              mCaptcha
+            </div>
+          </li>
 
+          <!--
           <li class="secondary-menu__section-partition"></li>
-          <button class="main-menu__add-site">+ New Site</button>
-        <li class="secondary-menu__item">Overview</li>
-        <li class="secondary-menu__item">Site Keys</li>
-        <li class="main-menu__item--spacer"></li>
- 
-          <li class="secondary-menu__section-partition"></li>
-          <li class="secondary-menu__item">API Docs</li>
-          <li class="secondary-menu__section-partition"></li>
-          <li class="secondary-menu__item">Settings</li>
-          <li class="secondary-menu__item">Billing</li>
-          <li class="secondary-menu__section-partition"></li>
-          <li class="secondary-menu__item">FAQ</li>
-          <li class="secondary-menu__item">Help</li>
-          <li class="secondary-menu__item">Support</li>
-          <li class="secondary-menu__section-partition"></li>
-          <li class="secondary-menu__item">Source Code</li>
+          -->
+          <li class="secondary-menu__item">
+            <a class="secondary-menu__item-link" href="">
+              <img class="secondary-menu__icon" src="./svg/home.svg" alt="" />
+              <div class="secondary-menu__item-name">
+                Overview
+              </div>
+            </a>
+          </li>
+          <li class="secondary-menu__item">
+            <a class="secondary-menu__item-link" href="">
+              <img class="secondary-menu__icon" src="./svg/key.svg" alt="" />
+              <div class="secondary-menu__item-name">
+                Site Keys
+              </div>
+            </a>
+          </li>
+          <!--
+          <li class="main-menu__item--spacer"></li>
+          -->
+
+          <li class="secondary-menu__item">
+            <a class="secondary-menu__item-link" href="">
+              <img
+                class="secondary-menu__icon"
+                src="./svg/settings.svg"
+                alt=""
+              />
+              <div class="secondary-menu__item-name">
+                Settings
+              </div>
+            </a>
+          </li>
+          <li class="secondary-menu__item">
+            <a class="secondary-menu__item-link" href="">
+              <img
+                class="secondary-menu__icon"
+                src="./svg/credit-card.svg"
+                alt=""
+              />
+              <div class="secondary-menu__item-name">
+                Billing
+              </div>
+            </a>
+          </li>
+          <li class="secondary-menu__item">
+            <a class="secondary-menu__item-link" href="">
+              <img
+                class="secondary-menu__icon"
+                src="./svg/help-circle.svg"
+                alt=""
+              />
+              <div class="secondary-menu__item-name">
+                Help
+              </div>
+            </a>
+          </li>
+          <li class="secondary-menu__item">
+            <a class="secondary-menu__item-link" href="">
+              <img
+                class="secondary-menu__icon"
+                src="./svg/message-square.svg"
+                alt=""
+              />
+
+              <div class="secondary-menu__item-name">
+                Support
+              </div>
+            </a>
+          </li>
+          <li class="secondary-menu__item">
+            <a class="secondary-menu__item-link" href="">
+              <img
+                class="secondary-menu__icon"
+                src="./svg/file-text.svg"
+                alt=""
+              />
+              <div class="secondary-menu__item-name">
+                API Docs
+              </div>
+            </a>
+          </li>
+          <li class="secondary-menu__item">
+            <a class="secondary-menu__item-link" href="">
+              <img class="secondary-menu__icon" src="./svg/github.svg" alt="" />
+              <div class="secondary-menu__item-name">
+                Source Code
+              </div>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- Nav/Side/Secondary bar -->
@@ -49,31 +133,43 @@
         <!--
         <li class="task-bar__action">Brand Name</li>
         -->
+        <li class="task-bar__spacer"></li>
         <li class="task-bar__action">
-		</li>
+          <button class="main-menu__add-site">+ New Site</button>
+        </li>
         <li class="task-bar__action">
-          <img src="../../static/img/svg/bell.svg" alt="Notifications" />
+          <img class="task-bar__icon" src="./svg/moon.svg" alt="Profile" />
+        </li>
+
+
+        <li class="task-bar__action">
+          <img
+            class="task-bar__icon"
+            src="./svg/bell.svg"
+            alt="Notifications"
+          />
         </li>
 
         <li class="task-bar__action">
-          <img src="../../static/img/svg/user.svg" alt="Profile" />
+          <img class="task-bar__icon" src="./svg/user.svg" alt="Profile" />
         </li>
       </ul>
 
-
+      <!--
       <ul class="main-menu">
-        <!-- important actions -->
-		<!--
+        <!-- important actions
+        <!--
         <li class="main-menu__item">Overview</li>
         <li class="main-menu__item">Site Keys</li>
         <li class="main-menu__item">Settings</li>
 		-->
-        <li class="main-menu__item--spacer"></li>
-        <!-- dummy-->
+      <li class="main-menu__item--spacer"></li>
+      <!-- dummy
         <li class="main-menu__item">
           <button class="main-menu__add-site">+ New Site</button>
         </li>
       </ul>
+      -->
 
       <ul class="help-text">
         <li class="help-text__instructions">
@@ -154,15 +250,23 @@
       padding: 0;
     }
 
-	:root {
-      --green: #5cad66;
-	}
-
-    .home-button {
-      width: 250px;
-      margin: auto;
-      flex: 5;
+    a {
+      text-decoration: none;
     }
+
+    li {
+      list-style: none;
+    }
+
+    :root {
+      --green: #5cad66;
+      --violet: #800080;
+      --backdrop: #f0f0f0;
+      --light-text: rgba(255, 255, 255, 0.87);
+      --secondary-backdrop: #2b2c30;
+      --light-grey: rgba(0, 0, 0, 0.125);
+    }
+
     .secondary-menu {
       position: fixed;
       width: 14%;
@@ -173,26 +277,75 @@
       height: 100%;
       overflow: auto;
 
-      background-color: #2b2c30;
-      color: white;
-      color: rgba(255, 255, 255, 0.87);
+      background-color: var(--secondary-backdrop);
+      color: var(--light-text);
+    }
+
+    .secondary-menu__heading {
+      margin: auto;
+      padding: 20px 5px;
+      display: flex;
+    }
+    .secondary-menu__heading:hover {
+      color: var(--green);
+      cursor: grab;
+    }
+
+    .secondary-menu__logo {
+      width: 70px;
+      display: inline-block;
+    }
+
+    .secondary-menu__brand-name {
+      display: inline-block;
+      margin: auto;
+      font-size: 1.5rem;
     }
 
     .secondary-menu__item {
       margin: auto;
-      padding: 20px;
-      list-style: none;
+      padding: 20px 25px;
+      display: flex;
     }
 
+    .secondary-menu__icon {
+      filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg)
+        brightness(103%) contrast(103%);
+      opacity: 0.8;
+      width: 1rem;
+      margin: auto;
+      margin-right: 10px;
+    }
+
+
+
+    .secondary-menu__item-name {
+      display: inline-block;
+      margin: auto;
+      font-size: 1rem;
+    }
+
+    /*
     .secondary-menu__section-partition {
-      border-bottom: 1px solid #c3c3c3;
+      border-bottom: 1px solid var(--light-text);
+      margin: auto;
+      max-width: 70%;
       list-style: none;
-      margin: 20px 0;
+      margin: 20px;
     }
+    */
 
-    .secondary-menu__item:hover {
+    .secondary-menu__item-link:hover {
       color: var(--green);
       cursor: grab;
+      filter: invert(58%) sepia(60%) saturate(331%) hue-rotate(76deg)
+        brightness(91%) contrast(92%);
+    }
+
+    .secondary-menu__item-link {
+      color: inherit;
+      width: 100%;
+      height: 100%;
     }
 
     main {
@@ -201,7 +354,7 @@
       right: 0;
       left: 14%;
       bottom: 0;
-      background-color: #f0f0f0;
+      background-color: var(--backdrop);
     }
 
     .task-bar {
@@ -211,17 +364,26 @@
       background-color: #fff;
     }
 
-    .task-bar__action {
+
+    .task-bar__action{
       display: inline-block;
-      list-style: none;
-      flex: 1;
-      padding: 15px 0px;
+      padding: 10px 0px;
       margin: auto;
     }
 
-    .task-bar__action:first-child {
+    .task-bar__spacer {
       min-width: 250px;
       flex: 6;
+    }
+
+    .task-bar__icon {
+      opacity: 0.8;
+      width: 1.5rem;
+      margin: auto 20px;
+    }
+
+    .task-bar__icon:hover{
+      cursor: grab;
     }
 
     .main-menu {
@@ -267,37 +429,39 @@
 
     .main-menu__add-site {
       display: inline-block;
-      background-color: purple;
+      background-color: var(--violet);
       color: white;
-      padding: 10px;
+      font-weight: 500;
+      font-size: 16px;
+      padding: 10px 15px;
 
       border-radius: 5px;
       border: 1px grey solid;
       min-height: 45px;
-      min-width: 125px;
       margin: auto;
     }
 
     .main-menu__add-site:hover {
-      background-color: violet;
+      background-color: var(--violet);
       cursor: grab;
       transform: translateY(-5px);
     }
 
     .help-text {
       border-radius: 4px;
-      box-shadow: rgba(0, 0, 0.5) 0px 2px 6px 0px;
-      max-width: 70%;
-      height: 70px;
+      box-shadow: var(--secondary-backdrop) 0px 2px 6px 0px;
+      min-width: 70%;
+      max-width: 80%;
+      min-height: 70px;
       display: flex;
-      margin-top: 50px;
-      margin-left: 25px;
+      margin-left: 15px;
+      margin-top: 40px;
     }
 
     .help-text__serial-num {
       display: inline-flex;
-      background-color: purple;
-      color: #fff;
+      background-color: var(--violet);
+      color: var(--light-text);
       width: 30px;
       height: 30px;
       border-radius: 50%;
@@ -308,7 +472,8 @@
     .help-text__instructions {
       display: inline-block;
       list-style: none;
-      font-size: 16px;
+      font-size: 19px;
+      font-weight: 500;
       padding: 10px;
       margin: auto;
     }
@@ -331,22 +496,20 @@
       box-sizing: content-box;
       background-color: #fff;
       margin: auto;
+      padding-bottom: 30px;
     }
-
 
     .sitekey-form__title-flex-container {
       display: flex;
       width: 100%;
-      border-bottom: 0.1px solid rgba(0,0,0,.125);
+      border-bottom: 0.1px solid var(--light-grey);
     }
 
-    .sitekey-form__title{
+    .sitekey-form__title {
       padding-left: 10px;
       font-size: 1rem;
-      padding: .75rem 1.25rem;
+      padding: 0.75rem 1.25rem;
     }
-
-
 
     .sitekey-form__label {
       display: block;
@@ -384,12 +547,13 @@
     }
 
     .sitekey-form__add-level {
-      background-color: purple;
+      background-color: var(--violet);
       color: white;
-      padding: 10px;
+      padding: 5px;
+      font-size: 16px;
 
       border-radius: 5px;
-      border: 1px grey solid;
+      border: 1px var(--light-grey) solid;
       height: 40px;
       min-width: 125px;
       margin: auto;
@@ -398,14 +562,16 @@
     .sitekey-form__submit {
       margin-top: 50px;
       display: block;
-      background-color: purple;
+      background-color: var(--violet);
       color: white;
-      padding: 10px;
+      padding: 5px;
+      font-size: 20px;
 
       border-radius: 5px;
-      border: 1px grey solid;
+      border: 1px var(--light-grey) solid;
       min-height: 45px;
       width: 125px;
+      width: 90%;
     }
   </style>
 </html>
