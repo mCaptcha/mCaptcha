@@ -181,6 +181,8 @@
 <span id="178">178</span>
 <span id="179">179</span>
 <span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">log</span>::{<span class="ident">debug</span>, <span class="ident">info</span>};
 <span class="kw">use</span> <span class="ident">sailfish</span>::<span class="ident">TemplateOnce</span>;
@@ -297,6 +299,8 @@
         <span class="kw">pub</span> <span class="ident">title</span>: <span class="ident">String</span>,
         <span class="kw">pub</span> <span class="ident">active</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">SubPanel</span>,
     }
+
+    <span class="kw">const</span> <span class="ident">TITLE</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;Dashboard&quot;</span>;
 
     <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">IndexPage</span> {
         <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {

@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["section",""]],"struct":[["IndexPage",""]]});
+initSidebarItems({"constant":[["TITLE",""]],"mod":[["section",""]],"struct":[["IndexPage",""]]});
