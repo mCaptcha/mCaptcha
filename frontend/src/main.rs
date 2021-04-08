@@ -114,6 +114,8 @@ pub mod panel {
         pub active: &'static SubPanel,
     }
 
+    const TITLE: &str = "Dashboard";
+
     impl Default for IndexPage {
         fn default() -> Self {
             IndexPage {

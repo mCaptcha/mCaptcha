@@ -2,4 +2,4 @@
 tarpaulin-report.html
 .env
 .env
-tarpaulin-report.html
+cobertura.xml
