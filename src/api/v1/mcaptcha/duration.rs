@@ -20,12 +20,13 @@ use actix_web::{post, web, HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
 
 use super::is_authenticated;
+use crate::api::v1::mcaptcha::mcaptcha::MCaptchaDetails;
 use crate::errors::*;
 use crate::Data;
 
 #[derive(Deserialize, Serialize)]
 pub struct UpdateDuration {
-    pub token_name: String,
+    pub key: String,
     pub duration: i32,
 }
 
@@ -36,13 +37,15 @@ pub async fn update_duration(
     id: Identity,
 ) -> ServiceResult<impl Responder> {
     is_authenticated(&id)?;
+    let username = id.identity().unwrap();
 
     if payload.duration > 0 {
         sqlx::query!(
-            "UPDATE mcaptcha_config  set duration = $1 WHERE 
-            name = $2;",
+            "UPDATE mcaptcha_config  set duration = $1 
+        WHERE key = $2 AND user_id = (SELECT ID FROM mcaptcha_users WHERE name = $3)",
             &payload.duration,
-            &payload.token_name,
+            &payload.key,
+            &username,
         )
         .execute(&data.db)
         .await?;
@@ -68,17 +71,19 @@ pub struct GetDuration {
 
 #[post("/api/v1/mcaptcha/domain/token/duration/get")]
 pub async fn get_duration(
-    payload: web::Json<GetDuration>,
+    payload: web::Json<MCaptchaDetails>,
     data: web::Data<Data>,
     id: Identity,
 ) -> ServiceResult<impl Responder> {
     is_authenticated(&id)?;
+    let username = id.identity().unwrap();
 
     let duration = sqlx::query_as!(
         GetDurationResp,
-        "SELECT duration FROM mcaptcha_config  WHERE 
-            name = $1;",
-        &payload.token,
+        "SELECT duration FROM mcaptcha_config  
+        WHERE key = $1 AND user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2)",
+        &payload.key,
+        &username,
     )
     .fetch_one(&data.db)
     .await?;
@@ -100,8 +105,6 @@ mod tests {
         const NAME: &str = "testuserduration";
         const PASSWORD: &str = "longpassworddomain";
         const EMAIL: &str = "testuserduration@a.com";
-        const DOMAIN: &str = "http://duration.example.com";
-        const TOKEN_NAME: &str = "duration_routes_token";
         const GET_URL: &str = "/api/v1/mcaptcha/domain/token/duration/get";
         const UPDATE_URL: &str = "/api/v1/mcaptcha/domain/token/duration/update";
 
@@ -111,24 +114,20 @@ mod tests {
         }
 
         register_and_signin(NAME, EMAIL, PASSWORD).await;
-        let (data, _, signin_resp) = add_token_util(NAME, PASSWORD, DOMAIN, TOKEN_NAME).await;
+        let (data, _, signin_resp, token_key) = add_token_util(NAME, PASSWORD).await;
         let cookies = get_cookie!(signin_resp);
         let mut app = get_app!(data).await;
 
         let update = UpdateDuration {
-            token_name: TOKEN_NAME.into(),
+            key: token_key.key.clone(),
             duration: 40,
-        };
-
-        let get = GetDuration {
-            token: TOKEN_NAME.into(),
         };
 
         // check default
 
         let get_level_resp = test::call_service(
             &mut app,
-            post_request!(&get, GET_URL)
+            post_request!(&token_key, GET_URL)
                 .cookie(cookies.clone())
                 .to_request(),
         )
@@ -149,7 +148,7 @@ mod tests {
         assert_eq!(update_duration.status(), StatusCode::OK);
         let get_level_resp = test::call_service(
             &mut app,
-            post_request!(&get, GET_URL)
+            post_request!(&token_key, GET_URL)
                 .cookie(cookies.clone())
                 .to_request(),
         )

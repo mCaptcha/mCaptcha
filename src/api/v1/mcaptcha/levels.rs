@@ -21,6 +21,7 @@ use m_captcha::{defense::Level, DefenseBuilder};
 use serde::{Deserialize, Serialize};
 
 use super::is_authenticated;
+use crate::api::v1::mcaptcha::mcaptcha::MCaptchaDetails;
 use crate::errors::*;
 use crate::Data;
 
@@ -28,12 +29,12 @@ use crate::Data;
 pub struct AddLevels {
     pub levels: Vec<Level>,
     // name is config_name
-    pub name: String,
+    pub key: String,
 }
 
 // TODO try for non-existent token names
 
-#[post("/api/v1/mcaptcha/domain/token/levels/add")]
+#[post("/api/v1/mcaptcha/levels/add")]
 pub async fn add_levels(
     payload: web::Json<AddLevels>,
     data: web::Data<Data>,
@@ -41,6 +42,7 @@ pub async fn add_levels(
 ) -> ServiceResult<impl Responder> {
     is_authenticated(&id)?;
     let mut defense = DefenseBuilder::default();
+    let username = id.identity().unwrap();
 
     for level in payload.levels.iter() {
         defense.add_level(level.clone())?;
@@ -55,10 +57,16 @@ pub async fn add_levels(
             "INSERT INTO mcaptcha_levels (
             difficulty_factor, 
             visitor_threshold,
-            config_id) VALUES  ($1, $2, (SELECT config_id FROM mcaptcha_config WHERE name = ($3) ));",
+            config_id) VALUES  (
+            $1, $2, (
+                SELECT config_id FROM mcaptcha_config WHERE
+                key = ($3) AND user_id = (
+                SELECT ID FROM mcaptcha_users WHERE name = $4
+                    )));",
             difficulty_factor,
             visitor_threshold,
-            &payload.name,
+            &payload.key,
+            &username,
         )
         .execute(&data.db)
         .await?;
@@ -67,13 +75,14 @@ pub async fn add_levels(
     Ok(HttpResponse::Ok())
 }
 
-#[post("/api/v1/mcaptcha/domain/token/levels/update")]
+#[post("/api/v1/mcaptcha/levels/update")]
 pub async fn update_levels(
     payload: web::Json<AddLevels>,
     data: web::Data<Data>,
     id: Identity,
 ) -> ServiceResult<impl Responder> {
     is_authenticated(&id)?;
+    let username = id.identity().unwrap();
     let mut defense = DefenseBuilder::default();
 
     for level in payload.levels.iter() {
@@ -88,9 +97,13 @@ pub async fn update_levels(
     sqlx::query!(
         "DELETE FROM mcaptcha_levels 
         WHERE config_id = (
-            SELECT config_id FROM mcaptcha_config where name = ($1)
+            SELECT config_id FROM mcaptcha_config where key = ($1) 
+            AND user_id = (
+            SELECT ID from mcaptcha_users WHERE name = $2
+            )
             )",
-        &payload.name,
+        &payload.key,
+        &username
     )
     .execute(&data.db)
     .await?;
@@ -102,10 +115,17 @@ pub async fn update_levels(
             "INSERT INTO mcaptcha_levels (
             difficulty_factor, 
             visitor_threshold,
-            config_id) VALUES  ($1, $2, (SELECT config_id FROM mcaptcha_config WHERE name = ($3) ));",
+            config_id) VALUES  (
+            $1, $2, (
+                    SELECT config_id FROM mcaptcha_config WHERE key = ($3) AND
+                    user_id = (
+                        SELECT ID from mcaptcha_users WHERE name = $4
+                    )
+                ));",
             difficulty_factor,
             visitor_threshold,
-            &payload.name,
+            &payload.key,
+            &username,
         )
         .execute(&data.db)
         .await?;
@@ -114,23 +134,26 @@ pub async fn update_levels(
     Ok(HttpResponse::Ok())
 }
 
-#[post("/api/v1/mcaptcha/domain/token/levels/delete")]
+#[post("/api/v1/mcaptcha/levels/delete")]
 pub async fn delete_levels(
     payload: web::Json<AddLevels>,
     data: web::Data<Data>,
     id: Identity,
 ) -> ServiceResult<impl Responder> {
     is_authenticated(&id)?;
+    let username = id.identity().unwrap();
 
     for level in payload.levels.iter() {
         let difficulty_factor = level.difficulty_factor as i32;
         sqlx::query!(
             "DELETE FROM mcaptcha_levels  WHERE 
             config_id = (
-                SELECT config_id FROM mcaptcha_config WHERE name = ($1)
+                SELECT config_id FROM mcaptcha_config WHERE key = $1 AND
+                 user_id = (SELECT ID from mcaptcha_users WHERE name = $3)
                 ) AND difficulty_factor = ($2);",
-            &payload.name,
+            &payload.key,
             difficulty_factor,
+            &username
         )
         .execute(&data.db)
         .await?;
@@ -139,20 +162,16 @@ pub async fn delete_levels(
     Ok(HttpResponse::Ok())
 }
 
-#[derive(Deserialize, Serialize)]
-pub struct GetLevels {
-    pub token: String,
-}
-
-#[post("/api/v1/mcaptcha/domain/token/levels/get")]
+#[post("/api/v1/mcaptcha/levels/get")]
 pub async fn get_levels(
-    payload: web::Json<GetLevels>,
+    payload: web::Json<MCaptchaDetails>,
     data: web::Data<Data>,
     id: Identity,
 ) -> ServiceResult<impl Responder> {
     is_authenticated(&id)?;
+    let username = id.identity().unwrap();
 
-    let levels = get_levels_util(&payload.token, &data).await?;
+    let levels = get_levels_util(&payload.key, &username, &data).await?;
 
     Ok(HttpResponse::Ok().json(levels))
 }
@@ -168,14 +187,16 @@ pub struct I32Levels {
     visitor_threshold: i32,
 }
 
-async fn get_levels_util(name: &str, data: &Data) -> ServiceResult<Vec<I32Levels>> {
+async fn get_levels_util(key: &str, username: &str, data: &Data) -> ServiceResult<Vec<I32Levels>> {
     let levels = sqlx::query_as!(
         I32Levels,
         "SELECT difficulty_factor, visitor_threshold FROM mcaptcha_levels  WHERE
             config_id = (
-                SELECT config_id FROM mcaptcha_config WHERE name = ($1)
+                SELECT config_id FROM mcaptcha_config WHERE key = ($1)
+                AND user_id = (SELECT ID from mcaptcha_users WHERE name = $2)
                 );",
-        name
+        key,
+        &username
     )
     .fetch_all(&data.db)
     .await?;
@@ -198,12 +219,10 @@ mod tests {
         const NAME: &str = "testuserlevelroutes";
         const PASSWORD: &str = "longpassworddomain";
         const EMAIL: &str = "testuserlevelrouts@a.com";
-        const DOMAIN: &str = "http://level.example.com";
-        const TOKEN_NAME: &str = "level_routes_work";
-        const ADD_URL: &str = "/api/v1/mcaptcha/domain/token/levels/add";
-        const UPDATE_URL: &str = "/api/v1/mcaptcha/domain/token/levels/update";
-        const DEL_URL: &str = "/api/v1/mcaptcha/domain/token/levels/delete";
-        const GET_URL: &str = "/api/v1/mcaptcha/domain/token/levels/get";
+        const ADD_URL: &str = "/api/v1/mcaptcha/levels/add";
+        const UPDATE_URL: &str = "/api/v1/mcaptcha/levels/update";
+        const DEL_URL: &str = "/api/v1/mcaptcha/levels/delete";
+        const GET_URL: &str = "/api/v1/mcaptcha/levels/get";
 
         let l1 = Level {
             difficulty_factor: 50,
@@ -214,14 +233,6 @@ mod tests {
             visitor_threshold: 500,
         };
         let levels = vec![l1, l2];
-        let add_level = AddLevels {
-            levels: levels.clone(),
-            name: TOKEN_NAME.into(),
-        };
-
-        let get_level = GetLevels {
-            token: TOKEN_NAME.into(),
-        };
 
         {
             let data = Data::new().await;
@@ -229,9 +240,14 @@ mod tests {
         }
 
         register_and_signin(NAME, EMAIL, PASSWORD).await;
-        let (data, _, signin_resp) = add_token_util(NAME, PASSWORD, DOMAIN, TOKEN_NAME).await;
+        let (data, _, signin_resp, key) = add_token_util(NAME, PASSWORD).await;
         let cookies = get_cookie!(signin_resp);
         let mut app = get_app!(data).await;
+
+        let add_level = AddLevels {
+            levels: levels.clone(),
+            key: key.key.clone(),
+        };
 
         // 1. add level
         let add_token_resp = test::call_service(
@@ -246,7 +262,7 @@ mod tests {
         // 2. get level
         let get_level_resp = test::call_service(
             &mut app,
-            post_request!(&get_level, GET_URL)
+            post_request!(&key, GET_URL)
                 .cookie(cookies.clone())
                 .to_request(),
         )
@@ -268,7 +284,7 @@ mod tests {
         let levels = vec![l1, l2];
         let add_level = AddLevels {
             levels: levels.clone(),
-            name: TOKEN_NAME.into(),
+            key: key.key.clone(),
         };
         let add_token_resp = test::call_service(
             &mut app,
@@ -280,7 +296,7 @@ mod tests {
         assert_eq!(add_token_resp.status(), StatusCode::OK);
         let get_level_resp = test::call_service(
             &mut app,
-            post_request!(&get_level, GET_URL)
+            post_request!(&key, GET_URL)
                 .cookie(cookies.clone())
                 .to_request(),
         )
@@ -301,7 +317,7 @@ mod tests {
         let levels = vec![l1, l2];
         let add_level = AddLevels {
             levels: levels.clone(),
-            name: TOKEN_NAME.into(),
+            key: key.key.clone(),
         };
         let add_token_resp = test::call_service(
             &mut app,
@@ -313,7 +329,7 @@ mod tests {
         assert_eq!(add_token_resp.status(), StatusCode::OK);
         let get_level_resp = test::call_service(
             &mut app,
-            post_request!(&get_level, GET_URL)
+            post_request!(&key, GET_URL)
                 .cookie(cookies.clone())
                 .to_request(),
         )

@@ -7,6 +7,7 @@ use serde::Serialize;
 
 use super::*;
 use crate::api::v1::auth::{Login, Register};
+use crate::api::v1::mcaptcha::mcaptcha::MCaptchaDetails;
 use crate::api::v1::services as v1_services;
 use crate::data::Data;
 use crate::errors::*;
@@ -30,6 +31,10 @@ pub async fn delete_user(name: &str, data: &Data) {
 
 #[macro_export]
 macro_rules! post_request {
+    ($uri:expr) => {
+        test::TestRequest::post().uri($uri)
+    };
+
     ($serializable:expr, $uri:expr) => {
         test::TestRequest::post()
             .uri($uri)
@@ -96,79 +101,81 @@ pub async fn signin<'a>(name: &'a str, password: &str) -> (data::Data, Login, Se
     (data, creds, signin_resp)
 }
 
-/// register and signin and domain
-/// bypasses domain verification, use with care
-pub async fn add_domain_util(
+///// register and signin and domain
+///// bypasses domain verification, use with care
+//pub async fn add_domain_util(
+//    name: &str,
+//    password: &str,
+//    domain: &str,
+//) -> (data::Data, Login, ServiceResponse) {
+//    use crate::api::v1::mcaptcha::domains::Domain;
+//    use url::Url;
+//
+//    let (data, creds, signin_resp) = signin(name, password).await;
+//    let cookies = get_cookie!(signin_resp);
+//    let mut app = get_app!(data).await;
+//
+//    // 1. add domain
+//    let add_domain = Domain {
+//        name: domain.into(),
+//    };
+//
+//    let add_domain_resp = test::call_service(
+//        &mut app,
+//        post_request!(&add_domain, "/api/v1/mcaptcha/domain/add")
+//            .cookie(cookies.clone())
+//            .to_request(),
+//    )
+//    .await;
+//    assert_eq!(add_domain_resp.status(), StatusCode::OK);
+//
+//    // verification work around
+//    let url = Url::parse(domain).unwrap();
+//    let host = url.host_str().unwrap();
+//    sqlx::query!(
+//        "INSERT INTO mcaptcha_domains_verified (name, owner_id) VALUES
+//            ($1, (SELECT ID from mcaptcha_users WHERE name = $2))",
+//        &host,
+//        &name
+//    )
+//    .execute(&data.db)
+//    .await
+//    .unwrap();
+//
+//    (data, creds, signin_resp)
+//}
+
+pub async fn add_token_util(
     name: &str,
     password: &str,
-    domain: &str,
-) -> (data::Data, Login, ServiceResponse) {
-    use crate::api::v1::mcaptcha::domains::Domain;
-    use url::Url;
+) -> (data::Data, Login, ServiceResponse, MCaptchaDetails) {
+    //    use crate::api::v1::mcaptcha::mcaptcha::MCaptchaID;
+
+    const ADD_URL: &str = "/api/v1/mcaptcha/add";
 
     let (data, creds, signin_resp) = signin(name, password).await;
     let cookies = get_cookie!(signin_resp);
     let mut app = get_app!(data).await;
 
-    // 1. add domain
-    let add_domain = Domain {
-        name: domain.into(),
-    };
-
-    let add_domain_resp = test::call_service(
-        &mut app,
-        post_request!(&add_domain, "/api/v1/mcaptcha/domain/add")
-            .cookie(cookies.clone())
-            .to_request(),
-    )
-    .await;
-    assert_eq!(add_domain_resp.status(), StatusCode::OK);
-
-    // verification work around
-    let url = Url::parse(domain).unwrap();
-    let host = url.host_str().unwrap();
-    sqlx::query!(
-        "INSERT INTO mcaptcha_domains_verified (name, owner_id) VALUES  
-            ($1, (SELECT ID from mcaptcha_users WHERE name = $2))",
-        &host,
-        &name
-    )
-    .execute(&data.db)
-    .await
-    .unwrap();
-
-    (data, creds, signin_resp)
-}
-
-pub async fn add_token_util(
-    name: &str,
-    password: &str,
-    domain: &str,
-    token_name: &str,
-) -> (data::Data, Login, ServiceResponse) {
-    use crate::api::v1::mcaptcha::mcaptcha::MCaptchaID;
-
-    const ADD_URL: &str = "/api/v1/mcaptcha/domain/token/add";
-
-    let (data, creds, signin_resp) = add_domain_util(name, password, domain).await;
-    let cookies = get_cookie!(signin_resp);
-    let mut app = get_app!(data).await;
-
-    // 1. add mcaptcha token
-    let domain = MCaptchaID {
-        domain: domain.into(),
-        name: token_name.into(),
-    };
+    //    // 1. add mcaptcha token
+    //    let domain = MCaptchaID {
+    //        name: token_name.into(),
+    //    };
     let add_token_resp = test::call_service(
         &mut app,
-        post_request!(&domain, ADD_URL)
-            .cookie(cookies.clone())
-            .to_request(),
+        post_request!(ADD_URL).cookie(cookies.clone()).to_request(),
     )
     .await;
+    //    let status = add_token_resp.status();
+    //    let txt: ErrorToResponse = test::read_body_json(add_token_resp).await;
+    //    println!("{:?}", txt.error);
+    //
     assert_eq!(add_token_resp.status(), StatusCode::OK);
+    let token_key: MCaptchaDetails = test::read_body_json(add_token_resp).await;
 
-    (data, creds, signin_resp)
+    //    assert_eq!(status, StatusCode::OK);
+
+    (data, creds, signin_resp, token_key)
 }
 
 /// pub duplicate test

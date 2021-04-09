@@ -18,7 +18,6 @@
 use actix_identity::Identity;
 use actix_web::{post, web, HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
-use url::Url;
 
 use super::{get_random, is_authenticated};
 use crate::errors::*;
@@ -26,68 +25,58 @@ use crate::Data;
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct MCaptchaID {
-    pub name: String,
-    pub domain: String,
+    pub name: Option<String>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct MCaptchaDetails {
-    pub name: String,
+    pub name: Option<String>,
     pub key: String,
 }
 
-#[post("/api/v1/mcaptcha/domain/token/add")]
-pub async fn add_mcaptcha(
-    payload: web::Json<MCaptchaID>,
-    data: web::Data<Data>,
-    id: Identity,
-) -> ServiceResult<impl Responder> {
+#[post("/api/v1/mcaptcha/add")]
+pub async fn add_mcaptcha(data: web::Data<Data>, id: Identity) -> ServiceResult<impl Responder> {
     is_authenticated(&id)?;
+    let username = id.identity().unwrap();
     let key = get_random(32);
-    let url = Url::parse(&payload.domain)?;
 
-    let host = url.host_str().ok_or(ServiceError::NotAUrl)?;
     let res = sqlx::query!(
         "INSERT INTO mcaptcha_config 
-        (name, key, domain_name)
-        VALUES ($1, $2, (
-                SELECT name FROM mcaptcha_domains_verified WHERE name = ($3)))",
-        &payload.name,
+        (key, user_id)
+        VALUES ($1, (SELECT ID FROM mcaptcha_users WHERE name = $2))",
         &key,
-        &host,
+        &username,
     )
     .execute(&data.db)
     .await;
 
     match res {
-        Err(e) => Err(dup_error(e, ServiceError::TokenNameTaken)),
+        Err(e) => {
+            println!("{}", &e);
+            Err(dup_error(e, ServiceError::TokenNameTaken))
+        }
         Ok(_) => {
-            let resp = MCaptchaDetails {
-                key,
-                name: payload.into_inner().name,
-            };
-
+            let resp = MCaptchaDetails { key, name: None };
             Ok(HttpResponse::Ok().json(resp))
         }
     }
 }
 
-#[post("/api/v1/mcaptcha/domain/token/update")]
+#[post("/api/v1/mcaptcha/update/key")]
 pub async fn update_token(
-    payload: web::Json<MCaptchaID>,
+    payload: web::Json<MCaptchaDetails>,
     data: web::Data<Data>,
     id: Identity,
 ) -> ServiceResult<impl Responder> {
     use std::borrow::Cow;
 
     is_authenticated(&id)?;
-    let url = Url::parse(&payload.domain)?;
+    let username = id.identity().unwrap();
     let mut key;
 
-    let host = url.host_str().ok_or(ServiceError::NotAUrl)?;
     loop {
         key = get_random(32);
-        let res = update_token_helper(&key, &payload.name, &host, &data).await;
+        let res = update_token_helper(&key, &payload.key, &username, &data).await;
         if res.is_ok() {
             break;
         } else {
@@ -111,37 +100,36 @@ pub async fn update_token(
 
 async fn update_token_helper(
     key: &str,
-    name: &str,
-    host: &str,
+    old_key: &str,
+    username: &str,
     data: &Data,
 ) -> Result<(), sqlx::Error> {
     sqlx::query!(
         "UPDATE mcaptcha_config SET key = $1 
-        WHERE name = $2 AND domain_name = $3",
+        WHERE key = $2 AND user_id = (SELECT ID FROM mcaptcha_users WHERE name = $3)",
         &key,
-        &name,
-        &host,
+        &old_key,
+        &username,
     )
     .execute(&data.db)
     .await?;
     Ok(())
 }
 
-#[post("/api/v1/mcaptcha/domain/token/get")]
+#[post("/api/v1/mcaptcha/get")]
 pub async fn get_token(
-    payload: web::Json<MCaptchaID>,
+    payload: web::Json<MCaptchaDetails>,
     data: web::Data<Data>,
     id: Identity,
 ) -> ServiceResult<impl Responder> {
     is_authenticated(&id)?;
-    let url = Url::parse(&payload.domain)?;
-
-    let host = url.host_str().ok_or(ServiceError::NotAUrl)?;
+    let username = id.identity().unwrap();
     let res = match sqlx::query_as!(
         MCaptchaDetails,
-        "SELECT key, name from mcaptcha_config WHERE name = $1 AND domain_name = $2",
-        &payload.name,
-        &host,
+        "SELECT key, name from mcaptcha_config
+        WHERE key = ($1) AND user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2) ",
+        &payload.key,
+        &username,
     )
     .fetch_one(&data.db)
     .await
@@ -157,16 +145,20 @@ pub async fn get_token(
     Ok(HttpResponse::Ok().json(res))
 }
 
-#[post("/api/v1/mcaptcha/domain/token/delete")]
+#[post("/api/v1/mcaptcha/delete")]
 pub async fn delete_mcaptcha(
-    payload: web::Json<MCaptchaID>,
+    payload: web::Json<MCaptchaDetails>,
     data: web::Data<Data>,
     id: Identity,
 ) -> ServiceResult<impl Responder> {
     is_authenticated(&id)?;
+    let username = id.identity().unwrap();
+
     sqlx::query!(
-        "DELETE FROM mcaptcha_config WHERE name = ($1)",
-        &payload.name,
+        "DELETE FROM mcaptcha_config 
+        WHERE key = ($1) AND user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2) ",
+        &payload.key,
+        &username,
     )
     .execute(&data.db)
     .await?;
@@ -197,10 +189,8 @@ mod tests {
         const NAME: &str = "testusermcaptcha";
         const PASSWORD: &str = "longpassworddomain";
         const EMAIL: &str = "testusermcaptcha@a.com";
-        const DOMAIN: &str = "http://mcaptcha.example.com";
-        const TOKEN_NAME: &str = "add_mcaptcha_works_token";
-        const ADD_URL: &str = "/api/v1/mcaptcha/domain/token/add";
-        const DEL_URL: &str = "/api/v1/mcaptcha/domain/token/delete";
+        const ADD_URL: &str = "/api/v1/mcaptcha/add";
+        const DEL_URL: &str = "/api/v1/mcaptcha/delete";
 
         {
             let data = Data::new().await;
@@ -209,42 +199,18 @@ mod tests {
 
         // 1. add mcaptcha token
         register_and_signin(NAME, EMAIL, PASSWORD).await;
-        let (data, _, signin_resp) = add_token_util(NAME, PASSWORD, DOMAIN, TOKEN_NAME).await;
+        let (data, _, signin_resp, token_key) = add_token_util(NAME, PASSWORD).await;
         let cookies = get_cookie!(signin_resp);
         let mut app = get_app!(data).await;
 
-        let mut domain = MCaptchaID {
-            domain: DOMAIN.into(),
-            name: TOKEN_NAME.into(),
-        };
-
-        // 2. add duplicate mcaptha
-        bad_post_req_test(
-            NAME,
-            PASSWORD,
-            ADD_URL,
-            &domain,
-            ServiceError::TokenNameTaken,
-            StatusCode::BAD_REQUEST,
-        )
-        .await;
-
-        // 4. not a URL test for adding domain
-        domain.domain = "testing".into();
-        bad_post_req_test(
-            NAME,
-            PASSWORD,
-            ADD_URL,
-            &domain,
-            ServiceError::NotAUrl,
-            StatusCode::BAD_REQUEST,
-        )
-        .await;
+        //        let mut domain = MCaptchaID {
+        //            name: TOKEN_NAME.into(),
+        //        };
 
         // 4. delete token
         let del_token = test::call_service(
             &mut app,
-            post_request!(&domain, DEL_URL)
+            post_request!(&token_key, DEL_URL)
                 .cookie(cookies.clone())
                 .to_request(),
         )
@@ -257,10 +223,8 @@ mod tests {
         const NAME: &str = "updateusermcaptcha";
         const PASSWORD: &str = "longpassworddomain";
         const EMAIL: &str = "testupdateusermcaptcha@a.com";
-        const DOMAIN: &str = "http://update-mcaptcha.example.com";
-        const TOKEN_NAME: &str = "get_update_mcaptcha_works_token";
-        const UPDATE_URL: &str = "/api/v1/mcaptcha/domain/token/update";
-        const GET_URL: &str = "/api/v1/mcaptcha/domain/token/get";
+        const UPDATE_URL: &str = "/api/v1/mcaptcha/update/key";
+        const GET_URL: &str = "/api/v1/mcaptcha/get";
 
         {
             let data = Data::new().await;
@@ -269,18 +233,14 @@ mod tests {
 
         // 1. add mcaptcha token
         register_and_signin(NAME, EMAIL, PASSWORD).await;
-        let (data, _, signin_resp) = add_token_util(NAME, PASSWORD, DOMAIN, TOKEN_NAME).await;
+        let (data, _, signin_resp, token_key) = add_token_util(NAME, PASSWORD).await;
         let cookies = get_cookie!(signin_resp);
         let mut app = get_app!(data).await;
 
-        let mut domain = MCaptchaID {
-            domain: DOMAIN.into(),
-            name: TOKEN_NAME.into(),
-        };
-
+        // 2. update token key
         let update_token_resp = test::call_service(
             &mut app,
-            post_request!(&domain, UPDATE_URL)
+            post_request!(&token_key, UPDATE_URL)
                 .cookie(cookies.clone())
                 .to_request(),
         )
@@ -288,22 +248,25 @@ mod tests {
         assert_eq!(update_token_resp.status(), StatusCode::OK);
         let updated_token: MCaptchaDetails = test::read_body_json(update_token_resp).await;
 
+        // get token key with updated key
         let get_token_resp = test::call_service(
             &mut app,
-            post_request!(&domain, GET_URL)
+            post_request!(&updated_token, GET_URL)
                 .cookie(cookies.clone())
                 .to_request(),
         )
         .await;
         assert_eq!(get_token_resp.status(), StatusCode::OK);
-        let get_token_key: MCaptchaDetails = test::read_body_json(get_token_resp).await;
+
+        // check if they match
+        let mut get_token_key: MCaptchaDetails = test::read_body_json(get_token_resp).await;
         assert_eq!(get_token_key.key, updated_token.key);
 
-        domain.name = "https://batsense.net".into();
+        get_token_key.key = "nonexistent".into();
 
         let get_nonexistent_token_resp = test::call_service(
             &mut app,
-            post_request!(&domain, GET_URL)
+            post_request!(&get_token_key, GET_URL)
                 .cookie(cookies.clone())
                 .to_request(),
         )
