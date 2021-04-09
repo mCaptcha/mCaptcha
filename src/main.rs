@@ -33,6 +33,7 @@ mod errors;
 mod api;
 mod docs;
 mod settings;
+mod static_assets;
 mod templates;
 #[cfg(test)]
 #[macro_use]
@@ -91,8 +92,9 @@ async fn main() -> std::io::Result<()> {
             .configure(v1::services)
             .configure(docs::services)
             .configure(templates::services)
+            .configure(static_assets::services)
             .app_data(get_json_err())
-            .service(Files::new("/", "./prod"))
+        //    .service(Files::new("/", "./prod"))
     })
     .bind(SETTINGS.server.get_ip())
     .unwrap()

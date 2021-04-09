@@ -21,12 +21,6 @@ path = "./src/main.rs"
 name = "tests-migrate"
 path = "./src/tests-migrate.rs"
 
-[workspace]
-members = [
-	".",
-	"frontend",
-]
-
 [dependencies]
 actix-web = "3.3.2"
 actix = "0.10"
