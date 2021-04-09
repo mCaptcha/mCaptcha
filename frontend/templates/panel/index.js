@@ -1,5 +1,7 @@
+/*
 import './main.scss';
 import './nav/main.scss';
+*/
 
 export const index = () => {
   //  const html = document.documentElement;

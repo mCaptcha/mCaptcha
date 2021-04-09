@@ -3,14 +3,22 @@ name = "frontend"
 version = "0.1.0"
 authors = ["realaravinth <realaravinth@batsense.net>"]
 edition = "2018"
+build = "build.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 sailfish = { version = "0.3.2", features = ["derive"]}
 tokio = { version = "1.4.0", features = [ "rt-multi-thread", "macros", "fs", "test-util" ]}
+cache-buster = { version = "0.1", git = "https://github.com/realaravinth/cache-buster" }
 
 pretty_env_logger = "0.4"
 log = "0.4"
 
 lazy_static = "1.4"
+
+sha2 = "0.9.3"
+
+[build-dependencies]
+cache-buster = { version = "0.1", git = "https://github.com/realaravinth/cache-buster" }
+mime = "0.3.16"

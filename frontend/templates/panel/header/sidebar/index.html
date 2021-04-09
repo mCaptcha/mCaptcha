@@ -1,7 +1,7 @@
 <nav class="secondary-menu">
   <ul>
     <li class="secondary-menu__heading">
-      <img class="secondary-menu__logo" src="./icon-trans.png" alt="Logo" />
+      <img class="secondary-menu__logo" src="<.= crate::FILES.get("./static/img/icon-trans.png").unwrap() .>" alt="Logo" />
       <div class="secondary-menu__brand-name">
         mCaptcha
       </div>
@@ -12,7 +12,7 @@
           -->
     <li class="secondary-menu__item">
       <a class="secondary-menu__item-link" href="">
-        <img class="secondary-menu__icon" src="./svg/home.svg" alt="" />
+        <img class="secondary-menu__icon" src="<.= crate::FILES.get("./static/img/svg/home.svg").unwrap() .>" alt="" />
         <div class="secondary-menu__item-name">
           Overview
         </div>
@@ -20,19 +20,16 @@
     </li>
     <li class="secondary-menu__item">
       <a class="secondary-menu__item-link" href="">
-        <img class="secondary-menu__icon" src="./svg/key.svg" alt="" />
+        <img class="secondary-menu__icon" src="<.= crate::FILES.get("./static/img/svg/key.svg").unwrap() .>" alt="" />
         <div class="secondary-menu__item-name">
           Site Keys
         </div>
       </a>
     </li>
-    <!--
-          <li class="main-menu__item--spacer"></li>
-          -->
 
     <li class="secondary-menu__item">
       <a class="secondary-menu__item-link" href="">
-        <img class="secondary-menu__icon" src="./svg/settings.svg" alt="" />
+        <img class="secondary-menu__icon" src="<.= crate::FILES.get("./static/img/svg/settings.svg").unwrap() .>" alt="" />
         <div class="secondary-menu__item-name">
           Settings
         </div>
@@ -40,7 +37,7 @@
     </li>
     <li class="secondary-menu__item">
       <a class="secondary-menu__item-link" href="">
-        <img class="secondary-menu__icon" src="./svg/credit-card.svg" alt="" />
+        <img class="secondary-menu__icon" src="<.= crate::FILES.get("./static/img/svg/credit-card.svg").unwrap() .>" alt="" />
         <div class="secondary-menu__item-name">
           Billing
         </div>
@@ -48,7 +45,7 @@
     </li>
     <li class="secondary-menu__item">
       <a class="secondary-menu__item-link" href="">
-        <img class="secondary-menu__icon" src="./svg/help-circle.svg" alt="" />
+        <img class="secondary-menu__icon" src="<.= crate::FILES.get("./static/img/svg/help-circle.svg").unwrap() .>" alt="" />
         <div class="secondary-menu__item-name">
           Help
         </div>
@@ -58,7 +55,7 @@
       <a class="secondary-menu__item-link" href="">
         <img
           class="secondary-menu__icon"
-          src="./svg/message-square.svg"
+		  src="<.= crate::FILES.get("./static/img/svg/message-square.svg").unwrap() .>"
           alt=""
         />
 
@@ -69,7 +66,7 @@
     </li>
     <li class="secondary-menu__item">
       <a class="secondary-menu__item-link" href="">
-        <img class="secondary-menu__icon" src="./svg/file-text.svg" alt="" />
+        <img class="secondary-menu__icon" src="<.= crate::FILES.get("./static/img/svg/file-text.svg").unwrap() .>" alt="" />
         <div class="secondary-menu__item-name">
           API Docs
         </div>
@@ -77,7 +74,8 @@
     </li>
     <li class="secondary-menu__item">
       <a class="secondary-menu__item-link" href="">
-        <img class="secondary-menu__icon" src="./svg/github.svg" alt="" />
+        <img class="secondary-menu__icon" 
+		src="<.= crate::FILES.get("./static/img/svg/github.svg").unwrap() .>" alt="" />
         <div class="secondary-menu__item-name">
           Source Code
         </div>

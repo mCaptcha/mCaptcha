@@ -8,7 +8,7 @@
   "license": "AGPLv3 or above",
   "scripts": {
     "start": "find . | entr yarn build-dev",
-    "build-dev": "cargo run && webpack --config webpack.dev.js",
+    "build-dev": "webpack --config webpack.dev.js",
     "build-fast-dev": "cargo run && webpack-dev-server --config webpack.dev.js",
     "build-check": "webpack-dev-server --config webpack.dev.js",
     "build": "cargo run && webpack --config webpack.prod.js"

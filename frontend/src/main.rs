@@ -1,3 +1,5 @@
+use cache_buster::Files;
+use lazy_static::lazy_static;
 use log::{debug, info};
 use sailfish::TemplateOnce;
 use tokio::fs;
@@ -32,7 +34,11 @@ impl IndexPage {
     }
 }
 
-const BASE_DIR: &str = "./output";
+const BASE_DIR: &str = "./prod";
+
+lazy_static! {
+    pub static ref FILES: Files = Files::load();
+}
 
 #[tokio::main]
 async fn main() {

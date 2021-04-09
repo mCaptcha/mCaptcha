@@ -17,7 +17,28 @@ module.exports = merge(common, {
     minimizer: [
       new OptimizeCssAssetsPlugin(),
       new TerserPlugin(),
-      new HtmlWebpackPlugin({
+    ],
+  },
+  plugins: [
+    new MiniCssExtractPlugin({filename: '[name].[contentHash].css'}),
+    new CleanWebpackPlugin(),
+  ],
+  module: {
+    rules: [
+      {
+        test: /\.scss$/,
+        use: [
+          MiniCssExtractPlugin.loader, //3. Extract css into files
+          'css-loader', //2. Turns css into commonjs
+          'sass-loader', //1. Turns sass into css
+        ],
+      },
+    ],
+  },
+});
+
+/*
+ *       new HtmlWebpackPlugin({
         template: path.resolve(__dirname, 'output', 'index.html'),
         minify: {
           removeAttributeQuotes: true,
@@ -43,22 +64,5 @@ module.exports = merge(common, {
           removeComments: true,
         }
       }),
-    ],
-  },
-  plugins: [
-    new MiniCssExtractPlugin({filename: '[name].[contentHash].css'}),
-    new CleanWebpackPlugin(),
-  ],
-  module: {
-    rules: [
-      {
-        test: /\.scss$/,
-        use: [
-          MiniCssExtractPlugin.loader, //3. Extract css into files
-          'css-loader', //2. Turns css into commonjs
-          'sass-loader', //1. Turns sass into css
-        ],
-      },
-    ],
-  },
-});
+
+*/

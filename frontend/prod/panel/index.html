@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Dashboard</title>
+  </head>
+  <body>
+
+	  <header>
+  <nav class="secondary-menu">
+  <ul>
+    <li class="secondary-menu__heading">
+      <img class="secondary-menu__logo" src="./prod/img/icon-trans.7920418313D84DCDB2491E02E52E4BEF374970C216E85BD721274EE51241ECD4.png" alt="Logo" />
+      <div class="secondary-menu__brand-name">
+        mCaptcha
+      </div>
+    </li>
+
+    <!--
+          <li class="secondary-menu__section-partition"></li>
+          -->
+    <li class="secondary-menu__item">
+      <a class="secondary-menu__item-link" href="">
+        <img class="secondary-menu__icon" src="./prod/img/svg/home.28C26C2D3E4013D24D755A589A80D8DD5C49DA5397032E3F09B76BC3A2C314ED.svg" alt="" />
+        <div class="secondary-menu__item-name">
+          Overview
+        </div>
+      </a>
+    </li>
+    <li class="secondary-menu__item">
+      <a class="secondary-menu__item-link" href="">
+        <img class="secondary-menu__icon" src="./prod/img/svg/key.F0AACBED8D0F7A279977392F92F4DA73C35E905AC73B3C83320D54856E627EEC.svg" alt="" />
+        <div class="secondary-menu__item-name">
+          Site Keys
+        </div>
+      </a>
+    </li>
+
+    <li class="secondary-menu__item">
+      <a class="secondary-menu__item-link" href="">
+        <img class="secondary-menu__icon" src="./prod/img/svg/settings.910C6241743C9C694141971BE8E1C4016A1A5BF203E4E9D676D4CE93BD518F4C.svg" alt="" />
+        <div class="secondary-menu__item-name">
+          Settings
+        </div>
+      </a>
+    </li>
+    <li class="secondary-menu__item">
+      <a class="secondary-menu__item-link" href="">
+        <img class="secondary-menu__icon" src="./prod/img/svg/credit-card.DF612AFE367A7B31410F2F6CD3C7B515B0F1889C0107EA695D840DFFA492E07D.svg" alt="" />
+        <div class="secondary-menu__item-name">
+          Billing
+        </div>
+      </a>
+    </li>
+    <li class="secondary-menu__item">
+      <a class="secondary-menu__item-link" href="">
+        <img class="secondary-menu__icon" src="./prod/img/svg/help-circle.BE230ABD2E05EB05EF6C5B7D04D35A3A43637EF1E046DEF3D244425609B99F81.svg" alt="" />
+        <div class="secondary-menu__item-name">
+          Help
+        </div>
+      </a>
+    </li>
+    <li class="secondary-menu__item">
+      <a class="secondary-menu__item-link" href="">
+        <img
+          class="secondary-menu__icon"
+		  src="./prod/img/svg/message-square.E246A6B2AAEFCE8A62B9BDD2D155D3B4923C3E48325EAEF099D509A2D7BB4DD1.svg"
+          alt=""
+        />
+
+        <div class="secondary-menu__item-name">
+          Support
+        </div>
+      </a>
+    </li>
+    <li class="secondary-menu__item">
+      <a class="secondary-menu__item-link" href="">
+        <img class="secondary-menu__icon" src="./prod/img/svg/file-text.CF57DF252051E7E81C240D36AF1DB8A9DDAF282F9A5E8C338408FE88A6545A02.svg" alt="" />
+        <div class="secondary-menu__item-name">
+          API Docs
+        </div>
+      </a>
+    </li>
+    <li class="secondary-menu__item">
+      <a class="secondary-menu__item-link" href="">
+        <img class="secondary-menu__icon" 
+		src="./prod/img/svg/github.FA9EB1C66F548EC2C7598B94BA6A17275E1EA383D42B6C83351A2388C773E621.svg" alt="" />
+        <div class="secondary-menu__item-name">
+          Source Code
+        </div>
+      </a>
+    </li>
+  </ul>
+</nav>
+<!-- Nav/Side/Secondary bar -->
+</header>
+
+    <main>
+
+		<ul class="task-bar">
+  <!--
+        <li class="task-bar__action">Brand Name</li>
+        -->
+  <li class="task-bar__spacer"></li>
+  <li class="task-bar__action">
+    <button class="main-menu__add-site">+ New Site</button>
+  </li>
+  <li class="task-bar__action">
+    <img class="task-bar__icon" src="./svg/moon.svg" alt="Profile" />
+  </li>
+
+  <li class="task-bar__action">
+    <img class="task-bar__icon" src="./svg/bell.svg" alt="Notifications" />
+  </li>
+
+  <li class="task-bar__action">
+    <img class="task-bar__icon" src="../svg/log-out.svg" alt="Profile" />
+  </li>
+</ul>
+
+		<ul class="help-text">
+  <li class="help-text__instructions">
+    <span class="help-text__serial-num">1</span>
+    Add sitekey
+  </li>
+  <li class="help-text__instructions">
+    <span class="help-text__serial-num">2</span>
+    Add client-side code snippets in places that you want to protext
+  </li>
+  <li class="help-text__instructions">
+    <span class="help-text__serial-num">3</span>
+    Add servers-side verification logic
+  </li>
+</ul>
+      <!-- Main content container -->
+      <div class="inner-container">
+        <!-- Main menu/ important actions roaster -->
+
+		<form class="sitekey-form" action="/something" method="post">
+  <div class="sitekey-form__title-flex-container">
+    <b class="sitekey-form__title">Add Site Key</b>
+  </div>
+  <div class="sitekey-form__add-level-flex-container">
+    <label class="sitekey-form__label" for="description">Description</label>
+  </div>
+  <input
+    class="sitekey-form__input"
+    type="text/"
+    name="description"
+    id="description"
+    value=""
+  />
+
+  <div class="sitekey-form__add-level-flex-container">
+    <!-- insert Javascript for adding more levels as needed -->
+    <label class="sitekey-form__label" for="level1">Level 1</label>
+  </div>
+
+  <input
+    class="sitekey-form__input"
+    type="text/"
+    name="level1"
+    id="level1"
+    value=""
+  />
+
+  <div class="sitekey-form__add-level-flex-container">
+    <label class="sitekey-form__label" for="level1">Level 2</label>
+  </div>
+
+  <div class="sitekey-form__add-level-flex-container">
+    <!--
+              <div class="sitekey-form__add-level-spacer"></div>
+              -->
+    <input
+      class="sitekey-form__input--add-level"
+      type="text/"
+      name="level2"
+      id="level2"
+      value=""
+    />
+
+    <button class="sitekey-form__add-level">Add Level</button>
+  </div>
+  <button class="sitekey-form__submit" type="submit">Submit</button>
+</form>
+      </div>
+      <!-- end of container -->
+    </main>
+  </body>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    li {
+      list-style: none;
+    }
+
+    :root {
+      --green: #5cad66;
+      --violet: #800080;
+      --backdrop: #f0f0f0;
+      --light-text: rgba(255, 255, 255, 0.87);
+      --secondary-backdrop: #2b2c30;
+      --light-grey: rgba(0, 0, 0, 0.125);
+    }
+
+    .secondary-menu {
+      position: fixed;
+      width: 14%;
+      left: 0;
+      bottom: 0;
+      top: 0;
+      right: 0;
+      height: 100%;
+      overflow: auto;
+
+      background-color: var(--secondary-backdrop);
+      color: var(--light-text);
+    }
+
+    .secondary-menu__heading {
+      margin: auto;
+      padding: 20px 5px;
+      display: flex;
+    }
+    .secondary-menu__heading:hover {
+      color: var(--green);
+      cursor: grab;
+    }
+
+    .secondary-menu__logo {
+      width: 70px;
+      display: inline-block;
+    }
+
+    .secondary-menu__brand-name {
+      display: inline-block;
+      margin: auto;
+      font-size: 1.5rem;
+    }
+
+    .secondary-menu__item {
+      margin: auto;
+      padding: 20px 25px;
+      display: flex;
+    }
+
+    .secondary-menu__icon {
+      filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg)
+        brightness(103%) contrast(103%);
+      opacity: 0.8;
+      width: 1rem;
+      margin: auto;
+      margin-right: 10px;
+    }
+
+
+
+    .secondary-menu__item-name {
+      display: inline-block;
+      margin: auto;
+      font-size: 1rem;
+    }
+
+    /*
+    .secondary-menu__section-partition {
+      border-bottom: 1px solid var(--light-text);
+      margin: auto;
+      max-width: 70%;
+      list-style: none;
+      margin: 20px;
+    }
+    */
+
+    .secondary-menu__item-link:hover {
+      color: var(--green);
+      cursor: grab;
+      filter: invert(58%) sepia(60%) saturate(331%) hue-rotate(76deg)
+        brightness(91%) contrast(92%);
+    }
+
+    .secondary-menu__item-link {
+      color: inherit;
+      width: 100%;
+      height: 100%;
+    }
+
+    main {
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 14%;
+      bottom: 0;
+      background-color: var(--backdrop);
+    }
+
+    .task-bar {
+      display: flex;
+      padding: 0px;
+      margin: 0px;
+      background-color: #fff;
+    }
+
+
+    .task-bar__action{
+      display: inline-block;
+      padding: 10px 0px;
+      margin: auto;
+    }
+
+    .task-bar__spacer {
+      min-width: 250px;
+      flex: 6;
+    }
+
+    .task-bar__icon {
+      opacity: 0.8;
+      width: 1.5rem;
+      margin: auto 20px;
+    }
+
+    .task-bar__icon:hover{
+      cursor: grab;
+    }
+
+    .main-menu {
+      display: flex;
+      flex-grow: 0;
+      padding-top: 20px;
+      padding-left: 10px;
+    }
+
+    .main-menu__item {
+      list-style: none;
+      background-color: #c3c3c3;
+      flex: 2;
+      text-align: center;
+      vertical-align: middle;
+      margin: auto 20px;
+      padding: 10px 0;
+    }
+
+    .main-menu__item--spacer {
+      list-style: none;
+      flex: 3;
+      text-align: center;
+    }
+
+    .main-menu__item:hover {
+      background-color: grey;
+      cursor: grab;
+    }
+
+    .main-menu__item:last-child {
+      padding: 0;
+      display: flex;
+      flex: 2;
+      border: none;
+      background-color: unset;
+    }
+
+    .main-menu__item:last-child:hover {
+      cursor: unset;
+      background-color: unset;
+    }
+
+    .main-menu__add-site {
+      display: inline-block;
+      background-color: var(--violet);
+      color: white;
+      font-weight: 500;
+      font-size: 16px;
+      padding: 10px 15px;
+
+      border-radius: 5px;
+      border: 1px grey solid;
+      min-height: 45px;
+      margin: auto;
+    }
+
+    .main-menu__add-site:hover {
+      background-color: var(--violet);
+      cursor: grab;
+      transform: translateY(-5px);
+    }
+
+    .help-text {
+      border-radius: 4px;
+      box-shadow: var(--secondary-backdrop) 0px 2px 6px 0px;
+      min-width: 70%;
+      max-width: 80%;
+      min-height: 70px;
+      display: flex;
+      margin-left: 15px;
+      margin-top: 40px;
+    }
+
+    .help-text__serial-num {
+      display: inline-flex;
+      background-color: var(--violet);
+      color: var(--light-text);
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .help-text__instructions {
+      display: inline-block;
+      list-style: none;
+      font-size: 19px;
+      font-weight: 500;
+      padding: 10px;
+      margin: auto;
+    }
+
+    .inner-container {
+      display: flex;
+      box-sizing: border-box;
+      max-width: 50%;
+      margin: 50px auto;
+      border-radius: 5px;
+      display: flex;
+    }
+
+    .sitekey-form {
+      display: flex;
+      flex-direction: column;
+      width: 90%;
+      justify-content: center;
+      align-items: center;
+      box-sizing: content-box;
+      background-color: #fff;
+      margin: auto;
+      padding-bottom: 30px;
+    }
+
+    .sitekey-form__title-flex-container {
+      display: flex;
+      width: 100%;
+      border-bottom: 0.1px solid var(--light-grey);
+    }
+
+    .sitekey-form__title {
+      padding-left: 10px;
+      font-size: 1rem;
+      padding: 0.75rem 1.25rem;
+    }
+
+    .sitekey-form__label {
+      display: block;
+      margin: 10px 0;
+      box-sizing: inherit;
+      justify-self: left;
+    }
+
+    .sitekey-form__input {
+      position: relative;
+      margin-top: 5px;
+      box-sizing: border-box;
+      height: 40px;
+      width: 90%;
+    }
+
+    .sitekey-form__input--add-level {
+      position: relative;
+      margin-top: 5px;
+      box-sizing: inherit;
+      flex: 3;
+      height: 40px;
+      margin-right: 20px;
+    }
+
+    .sitekey-form__add-level-flex-container {
+      display: flex;
+      box-sizing: border-box;
+      width: 90%;
+      margin-top: 10px;
+    }
+
+    .sitekey-form__add-level-spacer {
+      flex: 3;
+    }
+
+    .sitekey-form__add-level {
+      background-color: var(--violet);
+      color: white;
+      padding: 5px;
+      font-size: 16px;
+
+      border-radius: 5px;
+      border: 1px var(--light-grey) solid;
+      height: 40px;
+      min-width: 125px;
+      margin: auto;
+    }
+
+    .sitekey-form__submit {
+      margin-top: 50px;
+      display: block;
+      background-color: var(--violet);
+      color: white;
+      padding: 5px;
+      font-size: 20px;
+
+      border-radius: 5px;
+      border: 1px var(--light-grey) solid;
+      min-height: 45px;
+      width: 125px;
+      width: 90%;
+    }
+  </style>
+</html>

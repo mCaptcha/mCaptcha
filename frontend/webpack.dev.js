@@ -7,22 +7,8 @@ module.exports = merge(common, {
   mode: 'development',
   output: {
     filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'static'),
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      filename: 'register/index.html',
-      template: path.resolve(__dirname, 'output/register/', 'index.html'),
-    }),
-
-    new HtmlWebpackPlugin({
-      filename: 'panel/index.html',
-      template: path.resolve(__dirname, 'output/panel/', 'index.html'),
-    }),
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, 'output/', 'index.html'),
-    }),
-  ],
   module: {
     rules: [
       {
@@ -36,3 +22,21 @@ module.exports = merge(common, {
     ],
   },
 });
+
+/*
+ *  plugins: [
+    new HtmlWebpackPlugin({
+      filename: 'register/index.html',
+      template: path.resolve(__dirname, 'output/register/', 'index.html'),
+    }),
+
+    new HtmlWebpackPlugin({
+      filename: 'panel/index.html',
+      template: path.resolve(__dirname, 'output/panel/', 'index.html'),
+    }),
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, 'output/', 'index.html'),
+    }),
+  ],
+
+*/
