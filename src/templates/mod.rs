@@ -25,3 +25,25 @@ pub fn services(cfg: &mut ServiceConfig) {
     cfg.service(auth::register::join);
     cfg.service(panel::panel);
 }
+
+//#[cfg(not(tarpaulin_include))]
+//#[cfg(test)]
+//mod tests {
+//    use actix_web::http::StatusCode;
+//    use actix_web::test;
+//
+//    use super::*;
+//    use crate::*;
+//
+//    #[actix_rt::test]
+//    async fn templates_work() {
+//        let mut app = test::init_service(App::new().configure(services)).await;
+//        let urls = vec!["/", "/join", "/panel"];
+//
+//        for url in urls.iter() {
+//            let resp =
+//                test::call_service(&mut app, test::TestRequest::get().uri(url).to_request()).await;
+//            assert_eq!(resp.status(), StatusCode::OK);
+//        }
+//    }
+//}

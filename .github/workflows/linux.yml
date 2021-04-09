@@ -101,29 +101,10 @@ jobs:
           # panicking
           GIT_HASH: 8e77345f1597e40c2e266cb4e6dee74888918a61 
           OPEN_API_DOCS: 8e77345f1597e40c2e266cb4e6dee74888918a61 
-
+          CACHE_BUSTER_FILE_MAP: '{"map":{"./static/bundle/main.js":"./prod/bundle/main.1417115E59909BE0A01040A45A398ADB09D928DF89CCF038FA44B14850442096.js"},"base_dir":"./prod"}'
 
       - name: Upload to Codecov
         if: matrix.version == 'stable' && (github.ref == 'refs/heads/master' || github.event_name == 'pull_request')
         uses: codecov/codecov-action@v1
         with:
           file: cobertura.xml
-
-      - name: generate documentation
-        if: matrix.version == 'stable' && (github.repository == 'mCaptcha/guard')
-        uses: actions-rs/cargo@v1
-        with:
-          command: doc
-          args: --no-deps --workspace --all-features
-        env:
-          DATABASE_URL: postgres://postgres:password@localhost:5432/postgres
-          GIT_HASH: 8e77345f1597e40c2e266cb4e6dee74888918a61  # dummy value
-          OPEN_API_DOCS: 8e77345f1597e40c2e266cb4e6dee74888918a61 
-
-      - name: Deploy to GitHub Pages
-        if: matrix.version == 'stable' && (github.repository == 'mCaptcha/guard')
-        uses: JamesIves/github-pages-deploy-action@3.7.1
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages
-          FOLDER: target/doc
