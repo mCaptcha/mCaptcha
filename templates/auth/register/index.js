@@ -23,7 +23,7 @@ const registerUser = async e => {
   let email = document.getElementById('email').value;
   isBlankString(e, email, 'email');
 
-  let exists = await checkUsernameExists();
+  let exists = await userExists();
   if (exists) {
     return;
   }

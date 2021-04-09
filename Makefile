@@ -2,7 +2,7 @@
 default: build-frontend
 	cargo build
 
-run: build-frontend
+run: build-frontend-dev
 	cargo run
 
 dev-env:
@@ -11,6 +11,9 @@ dev-env:
 
 docs:
 	cargo doc --no-deps --workspace --all-features
+
+build-frontend-dev:
+	yarn start
 
 build-frontend:
 	yarn build

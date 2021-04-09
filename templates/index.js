@@ -7,7 +7,7 @@ import * as panel from './panel/index';
 const router = new Router();
 
 router.register('/', login.index);
-router.register('/register', register.index);
+router.register('/join', register.index);
 router.register('/panel/', panel.index);
 router.register('/panel/layout.html/', panel.index);
 
