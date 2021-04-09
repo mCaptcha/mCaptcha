@@ -123,6 +123,8 @@
 <span id="120">120</span>
 <span id="121">121</span>
 <span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -159,6 +161,7 @@
 <span class="kw">mod</span> <span class="ident">api</span>;
 <span class="kw">mod</span> <span class="ident">docs</span>;
 <span class="kw">mod</span> <span class="ident">settings</span>;
+<span class="kw">mod</span> <span class="ident">static_assets</span>;
 <span class="kw">mod</span> <span class="ident">templates</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
@@ -217,8 +220,9 @@
             .<span class="ident">configure</span>(<span class="ident">v1</span>::<span class="ident">services</span>)
             .<span class="ident">configure</span>(<span class="ident">docs</span>::<span class="ident">services</span>)
             .<span class="ident">configure</span>(<span class="ident">templates</span>::<span class="ident">services</span>)
+            .<span class="ident">configure</span>(<span class="ident">static_assets</span>::<span class="ident">services</span>)
             .<span class="ident">app_data</span>(<span class="ident">get_json_err</span>())
-            .<span class="ident">service</span>(<span class="ident">Files</span>::<span class="ident">new</span>(<span class="string">&quot;/&quot;</span>, <span class="string">&quot;./prod&quot;</span>))
+        <span class="comment">//    .service(Files::new(&quot;/&quot;, &quot;./prod&quot;))</span>
     })
     .<span class="ident">bind</span>(<span class="ident">SETTINGS</span>.<span class="ident">server</span>.<span class="ident">get_ip</span>())
     .<span class="ident">unwrap</span>()

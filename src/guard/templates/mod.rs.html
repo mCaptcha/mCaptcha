@@ -28,6 +28,28 @@
 <span id="25">25</span>
 <span id="26">26</span>
 <span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -56,6 +78,28 @@
     <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">auth</span>::<span class="ident">register</span>::<span class="ident">join</span>);
     <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">panel</span>::<span class="ident">panel</span>);
 }
+
+<span class="comment">//#[cfg(not(tarpaulin_include))]</span>
+<span class="comment">//#[cfg(test)]</span>
+<span class="comment">//mod tests {</span>
+<span class="comment">//    use actix_web::http::StatusCode;</span>
+<span class="comment">//    use actix_web::test;</span>
+<span class="comment">//</span>
+<span class="comment">//    use super::*;</span>
+<span class="comment">//    use crate::*;</span>
+<span class="comment">//</span>
+<span class="comment">//    #[actix_rt::test]</span>
+<span class="comment">//    async fn templates_work() {</span>
+<span class="comment">//        let mut app = test::init_service(App::new().configure(services)).await;</span>
+<span class="comment">//        let urls = vec![&quot;/&quot;, &quot;/join&quot;, &quot;/panel&quot;];</span>
+<span class="comment">//</span>
+<span class="comment">//        for url in urls.iter() {</span>
+<span class="comment">//            let resp =</span>
+<span class="comment">//                test::call_service(&amp;mut app, test::TestRequest::get().uri(url).to_request()).await;</span>
+<span class="comment">//            assert_eq!(resp.status(), StatusCode::OK);</span>
+<span class="comment">//        }</span>
+<span class="comment">//    }</span>
+<span class="comment">//}</span>
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="guard"></div>
     <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>

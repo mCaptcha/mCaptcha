@@ -1,1 +1,0 @@
-initSidebarItems({"static":[["ADMIN_SECTION",""],["COMMENTS",""],["PAGES",""],["SETTINGS_SECTION",""],["USERS",""]],"struct":[["Section",""],["SubPanel",""]]});

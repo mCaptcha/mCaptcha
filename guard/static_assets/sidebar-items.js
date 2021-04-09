@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["handle_embedded_file",""],["services",""]],"struct":[["Asset",""],["dist",""]]});
