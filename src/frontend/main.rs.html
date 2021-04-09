@@ -183,7 +183,15 @@
 <span id="180">180</span>
 <span id="181">181</span>
 <span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
 </pre><div class="example-wrap"><pre class="rust ">
+<span class="kw">use</span> <span class="ident">cache_buster</span>::<span class="ident">Files</span>;
+<span class="kw">use</span> <span class="ident">lazy_static</span>::<span class="ident">lazy_static</span>;
 <span class="kw">use</span> <span class="ident">log</span>::{<span class="ident">debug</span>, <span class="ident">info</span>};
 <span class="kw">use</span> <span class="ident">sailfish</span>::<span class="ident">TemplateOnce</span>;
 <span class="kw">use</span> <span class="ident">tokio</span>::<span class="ident">fs</span>;
@@ -218,7 +226,11 @@
     }
 }
 
-<span class="kw">const</span> <span class="ident">BASE_DIR</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;./output&quot;</span>;
+<span class="kw">const</span> <span class="ident">BASE_DIR</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;./prod&quot;</span>;
+
+<span class="macro">lazy_static</span><span class="macro">!</span> {
+    <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">FILES</span>: <span class="ident">Files</span> <span class="op">=</span> <span class="ident">Files</span>::<span class="ident">load</span>();
+}
 
 <span class="attribute">#[<span class="ident">tokio</span>::<span class="ident">main</span>]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">main</span>() {

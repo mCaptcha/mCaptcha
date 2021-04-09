@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["BASE_DIR",""]],"fn":[["main",""],["rel_path",""],["root_path",""]],"mod":[["panel",""],["signup",""]],"struct":[["IndexPage",""]],"type":[["Literal",""]]});
+initSidebarItems({"constant":[["BASE_DIR",""]],"fn":[["main",""],["rel_path",""],["root_path",""]],"mod":[["panel",""],["signup",""]],"struct":[["FILES",""],["IndexPage",""]],"type":[["Literal",""]]});
