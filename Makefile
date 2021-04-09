@@ -7,13 +7,13 @@ run: build-frontend
 
 dev-env:
 	cargo fetch
-	cd frontend; yarn install
+	yarn install
 
 docs:
 	cargo doc --no-deps --workspace --all-features
 
 build-frontend:
-	cd frontend; yarn build
+	yarn build
 
 test: migrate
 	cargo test
@@ -29,7 +29,6 @@ release: build-frontend
 
 clean:
 	cargo clean
-	cd frontend
 	yarn clean
 
 migrate:

@@ -15,6 +15,7 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+use cache_buster::BusterBuilder;
 use std::process::Command;
 
 fn main() {
@@ -32,4 +33,28 @@ fn main() {
         "cargo:rustc-env=OPEN_API_DOCS={}",
         serde_json::to_string(&api_json).unwrap()
     );
+    cache_bust();
+}
+
+fn cache_bust() {
+    let types = vec![
+        mime::IMAGE_PNG,
+        mime::IMAGE_SVG,
+        mime::IMAGE_JPEG,
+        mime::IMAGE_GIF,
+        mime::APPLICATION_JAVASCRIPT,
+        mime::TEXT_CSS,
+    ];
+
+    let config = BusterBuilder::default()
+        .source("./static")
+        .result("./prod")
+        .mime_types(types)
+        .copy(true)
+        .follow_links(true)
+        .build()
+        .unwrap();
+
+    config.init().unwrap();
+    config.hash().unwrap().to_env();
 }

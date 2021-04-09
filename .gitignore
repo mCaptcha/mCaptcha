@@ -3,3 +3,5 @@ tarpaulin-report.html
 .env
 .env
 cobertura.xml
+prod/
+node_modules/

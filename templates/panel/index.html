@@ -3,188 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Dashboard</title>
+	<title><.= TITLE .></title>
   </head>
   <body>
 
-	  <header>
-  <nav class="secondary-menu">
-  <ul>
-    <li class="secondary-menu__heading">
-      <img class="secondary-menu__logo" src="./prod/img/icon-trans.7920418313D84DCDB2491E02E52E4BEF374970C216E85BD721274EE51241ECD4.png" alt="Logo" />
-      <div class="secondary-menu__brand-name">
-        mCaptcha
-      </div>
-    </li>
-
-    <!--
-          <li class="secondary-menu__section-partition"></li>
-          -->
-    <li class="secondary-menu__item">
-      <a class="secondary-menu__item-link" href="">
-        <img class="secondary-menu__icon" src="./prod/img/svg/home.28C26C2D3E4013D24D755A589A80D8DD5C49DA5397032E3F09B76BC3A2C314ED.svg" alt="" />
-        <div class="secondary-menu__item-name">
-          Overview
-        </div>
-      </a>
-    </li>
-    <li class="secondary-menu__item">
-      <a class="secondary-menu__item-link" href="">
-        <img class="secondary-menu__icon" src="./prod/img/svg/key.F0AACBED8D0F7A279977392F92F4DA73C35E905AC73B3C83320D54856E627EEC.svg" alt="" />
-        <div class="secondary-menu__item-name">
-          Site Keys
-        </div>
-      </a>
-    </li>
-
-    <li class="secondary-menu__item">
-      <a class="secondary-menu__item-link" href="">
-        <img class="secondary-menu__icon" src="./prod/img/svg/settings.910C6241743C9C694141971BE8E1C4016A1A5BF203E4E9D676D4CE93BD518F4C.svg" alt="" />
-        <div class="secondary-menu__item-name">
-          Settings
-        </div>
-      </a>
-    </li>
-    <li class="secondary-menu__item">
-      <a class="secondary-menu__item-link" href="">
-        <img class="secondary-menu__icon" src="./prod/img/svg/credit-card.DF612AFE367A7B31410F2F6CD3C7B515B0F1889C0107EA695D840DFFA492E07D.svg" alt="" />
-        <div class="secondary-menu__item-name">
-          Billing
-        </div>
-      </a>
-    </li>
-    <li class="secondary-menu__item">
-      <a class="secondary-menu__item-link" href="">
-        <img class="secondary-menu__icon" src="./prod/img/svg/help-circle.BE230ABD2E05EB05EF6C5B7D04D35A3A43637EF1E046DEF3D244425609B99F81.svg" alt="" />
-        <div class="secondary-menu__item-name">
-          Help
-        </div>
-      </a>
-    </li>
-    <li class="secondary-menu__item">
-      <a class="secondary-menu__item-link" href="">
-        <img
-          class="secondary-menu__icon"
-		  src="./prod/img/svg/message-square.E246A6B2AAEFCE8A62B9BDD2D155D3B4923C3E48325EAEF099D509A2D7BB4DD1.svg"
-          alt=""
-        />
-
-        <div class="secondary-menu__item-name">
-          Support
-        </div>
-      </a>
-    </li>
-    <li class="secondary-menu__item">
-      <a class="secondary-menu__item-link" href="">
-        <img class="secondary-menu__icon" src="./prod/img/svg/file-text.CF57DF252051E7E81C240D36AF1DB8A9DDAF282F9A5E8C338408FE88A6545A02.svg" alt="" />
-        <div class="secondary-menu__item-name">
-          API Docs
-        </div>
-      </a>
-    </li>
-    <li class="secondary-menu__item">
-      <a class="secondary-menu__item-link" href="">
-        <img class="secondary-menu__icon" 
-		src="./prod/img/svg/github.FA9EB1C66F548EC2C7598B94BA6A17275E1EA383D42B6C83351A2388C773E621.svg" alt="" />
-        <div class="secondary-menu__item-name">
-          Source Code
-        </div>
-      </a>
-    </li>
-  </ul>
-</nav>
-<!-- Nav/Side/Secondary bar -->
-</header>
+	  <. include!("./header/index.html"); .>
 
     <main>
 
-		<ul class="task-bar">
-  <!--
-        <li class="task-bar__action">Brand Name</li>
-        -->
-  <li class="task-bar__spacer"></li>
-  <li class="task-bar__action">
-    <button class="main-menu__add-site">+ New Site</button>
-  </li>
-  <li class="task-bar__action">
-    <img class="task-bar__icon" src="./svg/moon.svg" alt="Profile" />
-  </li>
+		<. include!("./taskbar/index.html"); .>
 
-  <li class="task-bar__action">
-    <img class="task-bar__icon" src="./svg/bell.svg" alt="Notifications" />
-  </li>
-
-  <li class="task-bar__action">
-    <img class="task-bar__icon" src="../svg/log-out.svg" alt="Profile" />
-  </li>
-</ul>
-
-		<ul class="help-text">
-  <li class="help-text__instructions">
-    <span class="help-text__serial-num">1</span>
-    Add sitekey
-  </li>
-  <li class="help-text__instructions">
-    <span class="help-text__serial-num">2</span>
-    Add client-side code snippets in places that you want to protext
-  </li>
-  <li class="help-text__instructions">
-    <span class="help-text__serial-num">3</span>
-    Add servers-side verification logic
-  </li>
-</ul>
+		<. include!("./help-banner/index.html"); .>
       <!-- Main content container -->
       <div class="inner-container">
         <!-- Main menu/ important actions roaster -->
 
-		<form class="sitekey-form" action="/something" method="post">
-  <div class="sitekey-form__title-flex-container">
-    <b class="sitekey-form__title">Add Site Key</b>
-  </div>
-  <div class="sitekey-form__add-level-flex-container">
-    <label class="sitekey-form__label" for="description">Description</label>
-  </div>
-  <input
-    class="sitekey-form__input"
-    type="text/"
-    name="description"
-    id="description"
-    value=""
-  />
-
-  <div class="sitekey-form__add-level-flex-container">
-    <!-- insert Javascript for adding more levels as needed -->
-    <label class="sitekey-form__label" for="level1">Level 1</label>
-  </div>
-
-  <input
-    class="sitekey-form__input"
-    type="text/"
-    name="level1"
-    id="level1"
-    value=""
-  />
-
-  <div class="sitekey-form__add-level-flex-container">
-    <label class="sitekey-form__label" for="level1">Level 2</label>
-  </div>
-
-  <div class="sitekey-form__add-level-flex-container">
-    <!--
-              <div class="sitekey-form__add-level-spacer"></div>
-              -->
-    <input
-      class="sitekey-form__input--add-level"
-      type="text/"
-      name="level2"
-      id="level2"
-      value=""
-    />
-
-    <button class="sitekey-form__add-level">Add Level</button>
-  </div>
-  <button class="sitekey-form__submit" type="submit">Submit</button>
-</form>
+		<. include!("./add-site-key/index.html"); .>
       </div>
       <!-- end of container -->
     </main>

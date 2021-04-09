@@ -16,19 +16,13 @@
 */
 
 use sailfish::TemplateOnce;
+//use au
 
-#[derive(TemplateOnce, Default)]
-#[template(path = "signin.stpl")]
-struct SignIn;
-
-use actix_web::{get, post, web, HttpResponse, Responder};
-//use awc::Client;
-
-#[get("/login/")]
-pub async fn login() -> impl Responder {
-    let body = SignIn::default().render_once().unwrap();
-    //        .map_err(|_| ServiceError::InternalError)?;
-    HttpResponse::Ok()
-        .content_type("text/html; charset=utf-8")
-        .body(body)
-}
+//#[get("/")]
+//pub async fn login() -> impl Responder {
+//    let body = SignIn::default().render_once().unwrap();
+//    //        .map_err(|_| ServiceError::InternalError)?;
+//    HttpResponse::Ok()
+//        .content_type("text/html; charset=utf-8")
+//        .body(body)
+//}

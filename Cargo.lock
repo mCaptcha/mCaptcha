@@ -664,7 +664,7 @@ dependencies = [
 [[package]]
 name = "cache-buster"
 version = "0.1.0"
-source = "git+https://github.com/realaravinth/cache-buster#b7336fc0b15aa98368dfb9a313ea01bef1711859"
+source = "git+https://github.com/realaravinth/cache-buster#26d40b9993820837aa9d2d683937e502bfd3be12"
 dependencies = [
  "data-encoding",
  "derive_builder 0.10.0",
@@ -1335,6 +1335,7 @@ dependencies = [
  "actix-rt",
  "actix-web",
  "argon2-creds",
+ "cache-buster",
  "config",
  "derive_builder 0.9.0",
  "derive_more",
@@ -1342,6 +1343,7 @@ dependencies = [
  "lazy_static",
  "log",
  "m_captcha",
+ "mime",
  "mime_guess",
  "pretty_env_logger",
  "rand 0.8.3",

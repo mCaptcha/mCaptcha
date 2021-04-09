@@ -17,8 +17,11 @@
 
 use actix_web::web::ServiceConfig;
 
-mod routes;
+mod auth;
+mod panel;
 
 pub fn services(cfg: &mut ServiceConfig) {
-    cfg.service(routes::login);
+    cfg.service(auth::login::login);
+    cfg.service(auth::register::join);
+    cfg.service(panel::panel);
 }

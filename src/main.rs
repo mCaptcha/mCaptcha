@@ -23,6 +23,7 @@ use actix_web::{
     HttpServer,
 };
 //use awc::Client;
+use cache_buster::Files as FileMap;
 use lazy_static::lazy_static;
 use log::info;
 
@@ -32,7 +33,7 @@ mod errors;
 mod api;
 mod docs;
 mod settings;
-//mod templates;
+mod templates;
 #[cfg(test)]
 #[macro_use]
 mod tests;
@@ -46,6 +47,11 @@ lazy_static! {
 
 //    pub static ref OPEN_API_DOC: String = env::var("OPEN_API_DOCS").unwrap();
     pub static ref S: String = env::var("S").unwrap();
+
+    pub static ref FILES: FileMap = FileMap::load();
+    pub static ref JS: &'static str = FILES.get("./static/bundle/main.js").unwrap();
+    pub static ref CSS: &'static str = FILES.get("./static/bundle/main.css").unwrap();
+
 }
 
 pub static OPEN_API_DOC: &str = env!("OPEN_API_DOCS");
@@ -84,8 +90,9 @@ async fn main() -> std::io::Result<()> {
             ))
             .configure(v1::services)
             .configure(docs::services)
+            .configure(templates::services)
             .app_data(get_json_err())
-            .service(Files::new("/", "./frontend/dist").index_file("index.html"))
+            .service(Files::new("/", "./prod"))
     })
     .bind(SETTINGS.server.get_ip())
     .unwrap()
