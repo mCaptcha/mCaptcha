@@ -44,9 +44,21 @@ async fn auth_works() {
     let (_, _, signin_resp) = register_and_signin(NAME, EMAIL, PASSWORD).await;
     let cookies = get_cookie!(signin_resp);
 
+    // chech if get user secret works
     let resp = test::call_service(
         &mut app,
         test::TestRequest::get()
+            .cookie(cookies.clone())
+            .uri(GET_SECRET)
+            .to_request(),
+    )
+    .await;
+    assert_eq!(resp.status(), StatusCode::OK);
+
+    // check if update user secret works
+    let resp = test::call_service(
+        &mut app,
+        test::TestRequest::post()
             .cookie(cookies.clone())
             .uri(GET_SECRET)
             .to_request(),

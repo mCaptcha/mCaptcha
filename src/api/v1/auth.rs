@@ -142,6 +142,44 @@ pub async fn get_secret(id: Identity, data: web::Data<Data>) -> ServiceResult<im
     Ok(HttpResponse::Ok().json(secret))
 }
 
+#[post("/api/v1/account/secret/")]
+pub async fn update_user_secret(
+    id: Identity,
+    data: web::Data<Data>,
+) -> ServiceResult<impl Responder> {
+    is_authenticated(&id)?;
+
+    let username = id.identity().unwrap();
+
+    let mut secret;
+
+    loop {
+        secret = get_random(32);
+        let res = sqlx::query!(
+            "UPDATE mcaptcha_users set secret = $1
+        WHERE name = $2",
+            &secret,
+            &username,
+        )
+        .execute(&data.db)
+        .await;
+        if res.is_ok() {
+            break;
+        } else {
+            if let Err(sqlx::Error::Database(err)) = res {
+                if err.code() == Some(Cow::from("23505"))
+                    && err.message().contains("mcaptcha_users_secret_key")
+                {
+                    continue;
+                } else {
+                    Err(sqlx::Error::Database(err))?;
+                }
+            };
+        }
+    }
+    Ok(HttpResponse::Ok())
+}
+
 #[post("/api/v1/signout")]
 pub async fn signout(id: Identity) -> impl Responder {
     if let Some(_) = id.identity() {
