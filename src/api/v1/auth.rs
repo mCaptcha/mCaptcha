@@ -17,7 +17,7 @@
 use std::borrow::Cow;
 
 use actix_identity::Identity;
-use actix_web::{post, web, HttpResponse, Responder};
+use actix_web::{get, post, web, HttpResponse, Responder};
 use log::debug;
 use serde::{Deserialize, Serialize};
 
@@ -56,7 +56,16 @@ pub async fn signup(
 
     loop {
         secret = get_random(32);
-        let res = add_user_helper(&username, &hash, &payload.email, &secret, &data).await;
+        let res = sqlx::query!(
+            "INSERT INTO mcaptcha_users 
+        (name , password, email, secret) VALUES ($1, $2, $3, $4)",
+            &username,
+            &hash,
+            &payload.email,
+            &secret,
+        )
+        .execute(&data.db)
+        .await;
         if res.is_ok() {
             break;
         } else {
@@ -77,27 +86,6 @@ pub async fn signup(
         }
     }
     Ok(HttpResponse::Ok())
-}
-
-pub async fn add_user_helper(
-    username: &str,
-    hash: &str,
-    email: &str,
-    secret: &str,
-    data: &Data,
-) -> Result<(), sqlx::Error> {
-    sqlx::query!(
-        "INSERT INTO mcaptcha_users 
-        (name , password, email, secret) VALUES ($1, $2, $3, $4)",
-        username,
-        hash,
-        email,
-        //get_random(32),
-        secret,
-    )
-    .execute(&data.db)
-    .await?;
-    Ok(())
 }
 
 #[post("/api/v1/signin")]
@@ -130,6 +118,28 @@ pub async fn signin(
         Err(RowNotFound) => return Err(ServiceError::UsernameNotFound),
         Err(_) => return Err(ServiceError::InternalServerError)?,
     }
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct Secret {
+    pub secret: String,
+}
+
+#[get("/api/v1/account/secret/")]
+pub async fn get_secret(id: Identity, data: web::Data<Data>) -> ServiceResult<impl Responder> {
+    is_authenticated(&id)?;
+
+    let username = id.identity().unwrap();
+
+    let secret = sqlx::query_as!(
+        Secret,
+        r#"SELECT secret  FROM mcaptcha_users WHERE name = ($1)"#,
+        &username,
+    )
+    .fetch_one(&data.db)
+    .await?;
+
+    Ok(HttpResponse::Ok().json(secret))
 }
 
 #[post("/api/v1/signout")]

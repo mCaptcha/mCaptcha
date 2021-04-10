@@ -33,6 +33,7 @@ pub fn services(cfg: &mut ServiceConfig) {
     cfg.service(auth::delete_account);
     cfg.service(auth::username_exists);
     cfg.service(auth::email_exists);
+    cfg.service(auth::get_secret);
 
     // mcaptcha
     cfg.service(mcaptcha::mcaptcha::add_mcaptcha);

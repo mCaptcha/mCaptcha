@@ -219,7 +219,6 @@ mod tests {
         const NAME: &str = "testuserlevelroutes";
         const PASSWORD: &str = "longpassworddomain";
         const EMAIL: &str = "testuserlevelrouts@a.com";
-        const ADD_URL: &str = "/api/v1/mcaptcha/levels/add";
         const UPDATE_URL: &str = "/api/v1/mcaptcha/levels/update";
         const DEL_URL: &str = "/api/v1/mcaptcha/levels/delete";
         const GET_URL: &str = "/api/v1/mcaptcha/levels/get";

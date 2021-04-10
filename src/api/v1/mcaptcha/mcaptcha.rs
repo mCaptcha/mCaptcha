@@ -189,7 +189,6 @@ mod tests {
         const NAME: &str = "testusermcaptcha";
         const PASSWORD: &str = "longpassworddomain";
         const EMAIL: &str = "testusermcaptcha@a.com";
-        const ADD_URL: &str = "/api/v1/mcaptcha/add";
         const DEL_URL: &str = "/api/v1/mcaptcha/delete";
 
         {

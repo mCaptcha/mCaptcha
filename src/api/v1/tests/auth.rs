@@ -34,6 +34,7 @@ async fn auth_works() {
     const EMAIL: &str = "testuser1@a.com";
     const SIGNIN: &str = "/api/v1/signin";
     const SIGNUP: &str = "/api/v1/signup";
+    const GET_SECRET: &str = "/api/v1/account/secret/";
 
     let mut app = get_app!(data).await;
 
@@ -42,6 +43,16 @@ async fn auth_works() {
     // 1. Register and signin
     let (_, _, signin_resp) = register_and_signin(NAME, EMAIL, PASSWORD).await;
     let cookies = get_cookie!(signin_resp);
+
+    let resp = test::call_service(
+        &mut app,
+        test::TestRequest::get()
+            .cookie(cookies.clone())
+            .uri(GET_SECRET)
+            .to_request(),
+    )
+    .await;
+    assert_eq!(resp.status(), StatusCode::OK);
 
     // 2. check if duplicate username is allowed
     let msg = Register {
