@@ -220,6 +220,8 @@
 <span id="217">217</span>
 <span id="218">218</span>
 <span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -427,7 +429,9 @@
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dup_error</span>(<span class="ident">e</span>: <span class="ident">sqlx</span>::<span class="ident">Error</span>, <span class="ident">dup_error</span>: <span class="ident">ServiceError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceError</span> {
     <span class="kw">use</span> <span class="ident">sqlx</span>::<span class="ident">error</span>::<span class="ident">Error</span>;
     <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">borrow</span>::<span class="ident">Cow</span>;
+    <span class="comment">// println!(&quot;sqlx:Error: {:#?}&quot;, &amp;e);</span>
     <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Error</span>::<span class="ident">Database</span>(<span class="ident">err</span>) <span class="op">=</span> <span class="ident">e</span> {
+        <span class="comment">// println!(&quot;Database Error: {:#?}&quot;, &amp;err);</span>
         <span class="kw">if</span> <span class="ident">err</span>.<span class="ident">code</span>() <span class="op">=</span><span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">Cow</span>::<span class="ident">from</span>(<span class="string">&quot;23505&quot;</span>)) {
             <span class="ident">dup_error</span>
         } <span class="kw">else</span> {
