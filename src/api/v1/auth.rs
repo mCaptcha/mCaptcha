@@ -14,12 +14,14 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+use std::borrow::Cow;
 
 use actix_identity::Identity;
 use actix_web::{post, web, HttpResponse, Responder};
 use log::debug;
 use serde::{Deserialize, Serialize};
 
+use super::mcaptcha::get_random;
 use crate::errors::*;
 use crate::Data;
 
@@ -49,19 +51,53 @@ pub async fn signup(
     let username = data.creds.username(&payload.username)?;
     let hash = data.creds.password(&payload.password)?;
     data.creds.email(Some(&payload.email))?;
-    let res = sqlx::query!(
-        "INSERT INTO mcaptcha_users (name , password, email) VALUES ($1, $2, $3)",
+
+    let mut secret;
+
+    loop {
+        secret = get_random(32);
+        let res = add_user_helper(&username, &hash, &payload.email, &secret, &data).await;
+        if res.is_ok() {
+            break;
+        } else {
+            if let Err(sqlx::Error::Database(err)) = res {
+                if err.code() == Some(Cow::from("23505")) {
+                    let msg = err.message();
+                    if msg.contains("mcaptcha_users_name_key") {
+                        Err(ServiceError::UsernameTaken)?;
+                    } else if msg.contains("mcaptcha_users_secret_key") {
+                        continue;
+                    } else {
+                        Err(ServiceError::InternalServerError)?;
+                    }
+                } else {
+                    Err(sqlx::Error::Database(err))?;
+                }
+            };
+        }
+    }
+    Ok(HttpResponse::Ok())
+}
+
+pub async fn add_user_helper(
+    username: &str,
+    hash: &str,
+    email: &str,
+    secret: &str,
+    data: &Data,
+) -> Result<(), sqlx::Error> {
+    sqlx::query!(
+        "INSERT INTO mcaptcha_users 
+        (name , password, email, secret) VALUES ($1, $2, $3, $4)",
         username,
         hash,
-        &payload.email
+        email,
+        //get_random(32),
+        secret,
     )
     .execute(&data.db)
-    .await;
-
-    match res {
-        Err(e) => Err(dup_error(e, ServiceError::UsernameTaken)),
-        Ok(_) => Ok(HttpResponse::Ok()),
-    }
+    .await?;
+    Ok(())
 }
 
 #[post("/api/v1/signin")]
