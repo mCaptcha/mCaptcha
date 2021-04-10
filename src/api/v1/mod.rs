@@ -51,7 +51,8 @@ pub fn services(cfg: &mut ServiceConfig) {
     cfg.service(mcaptcha::duration::get_duration);
 
     // pow
-    cfg.service(mcaptcha::pow::get_config);
+    cfg.service(mcaptcha::pow::get_config::get_config);
+    cfg.service(mcaptcha::pow::verify_pow::verify_pow);
 }
 
 #[cfg(test)]

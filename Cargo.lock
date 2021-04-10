@@ -521,11 +521,10 @@ checksum = "904dfeac50f3cdaba28fc6f57fdcddb75f49ed61346676a78c4ffe55877802fd"
 
 [[package]]
 name = "bincode"
-version = "1.3.2"
+version = "1.3.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d175dfa69e619905c4c3cdb7c3c203fa3bdd5d51184e3afdb2742c0280493772"
+checksum = "b1f45e9417d87227c7a56d22e471c6206462cba514c7590c09aff4cf6d1ddcad"
 dependencies = [
- "byteorder",
  "serde 1.0.125",
 ]
 
@@ -601,9 +600,9 @@ checksum = "63396b8a4b9de3f4fdfb320ab6080762242f66a8ef174c49d8e19b674db4cdbe"
 
 [[package]]
 name = "byteorder"
-version = "1.3.4"
+version = "1.4.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "08c48aae112d48ed9f069b33538ea9e3e90aa263cfa3d1c24309612b1f7472de"
+checksum = "14c189c53d098945499cdfa7ecc63567cf3886b3332b312a5b4585d8d3a6a610"
 
 [[package]]
 name = "bytes"
@@ -629,7 +628,7 @@ dependencies = [
 [[package]]
 name = "cache-buster"
 version = "0.1.0"
-source = "git+https://github.com/realaravinth/cache-buster#26d40b9993820837aa9d2d683937e502bfd3be12"
+source = "git+https://github.com/realaravinth/cache-buster#71d5ef67a2788789922eaa484e10269acbaeb8a7"
 dependencies = [
  "data-encoding",
  "derive_builder 0.10.0",
@@ -1295,6 +1294,7 @@ dependencies = [
  "m_captcha",
  "mime",
  "mime_guess",
+ "pow_sha256",
  "pretty_env_logger",
  "rand 0.8.3",
  "rust-embed",
@@ -1611,7 +1611,7 @@ dependencies = [
 [[package]]
 name = "m_captcha"
 version = "0.1.3"
-source = "git+https://github.com/mCaptcha/mCaptcha?branch=master#2d120d6791d8a32e7b3e31a7c5f1b54e3b35f9ef"
+source = "git+https://github.com/mCaptcha/mCaptcha?branch=master#29cd8f4fd83a3646a48ca2c9f5563d8d5360d2c3"
 dependencies = [
  "actix",
  "derive_builder 0.9.0",

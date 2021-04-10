@@ -16,14 +16,12 @@
 */
 
 use actix::prelude::*;
-use actix_identity::Identity;
 use actix_web::{post, web, HttpResponse, Responder};
 use m_captcha::{defense::LevelBuilder, master::AddSiteBuilder, DefenseBuilder, MCaptchaBuilder};
 use serde::{Deserialize, Serialize};
 
-use super::duration::GetDurationResp;
-use super::is_authenticated;
-use super::levels::I32Levels;
+use super::GetDurationResp;
+use super::I32Levels;
 use crate::errors::*;
 use crate::Data;
 
@@ -44,10 +42,7 @@ pub struct GetConfigPayload {
 pub async fn get_config(
     payload: web::Json<GetConfigPayload>,
     data: web::Data<Data>,
-    id: Identity,
 ) -> ServiceResult<impl Responder> {
-    is_authenticated(&id)?;
-
     let res = sqlx::query!(
         "SELECT EXISTS (SELECT 1 from mcaptcha_config WHERE key = $1)",
         &payload.key,

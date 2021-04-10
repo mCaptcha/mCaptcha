@@ -76,9 +76,6 @@ pub enum ServiceError {
     /// when the a token name is already taken
     #[display(fmt = "token name not available")]
     TokenNameTaken,
-    /// when the a host name is already taken
-    #[display(fmt = "host name not available")]
-    HostnameTaken,
     /// token not found
     #[display(fmt = "Token not found. Is token registered?")]
     TokenNotFound,
@@ -88,10 +85,6 @@ pub enum ServiceError {
 
     #[display(fmt = "Couldn't reach your server. If Problem presists, contact support")]
     ClientServerUnreachable,
-    #[display(fmt = "Couldn't parse challenge from your server. Check for courruption")]
-    ChallengeCourruption,
-    #[display(fmt = "Verification failure, vaules didn't match")]
-    ChallengeVerificationFailure,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -132,10 +125,7 @@ impl ResponseError for ServiceError {
 
             ServiceError::TokenNameTaken => StatusCode::BAD_REQUEST,
             ServiceError::TokenNotFound => StatusCode::NOT_FOUND,
-            ServiceError::HostnameTaken => StatusCode::BAD_REQUEST,
             ServiceError::ClientServerUnreachable => StatusCode::SERVICE_UNAVAILABLE,
-            ServiceError::ChallengeCourruption => StatusCode::BAD_REQUEST,
-            ServiceError::ChallengeVerificationFailure => StatusCode::UNAUTHORIZED,
             ServiceError::CaptchaError(e) => match e {
                 CaptchaError::MailboxError => StatusCode::INTERNAL_SERVER_ERROR,
                 _ => StatusCode::BAD_REQUEST,
