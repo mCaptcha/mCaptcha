@@ -176,15 +176,15 @@ pub async fn get_levels(
     Ok(HttpResponse::Ok().json(levels))
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Levels {
     levels: I32Levels,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct I32Levels {
-    difficulty_factor: i32,
-    visitor_threshold: i32,
+    pub difficulty_factor: i32,
+    pub visitor_threshold: i32,
 }
 
 async fn get_levels_util(key: &str, username: &str, data: &Data) -> ServiceResult<Vec<I32Levels>> {
@@ -224,25 +224,16 @@ mod tests {
         const DEL_URL: &str = "/api/v1/mcaptcha/levels/delete";
         const GET_URL: &str = "/api/v1/mcaptcha/levels/get";
 
-        let l1 = Level {
-            difficulty_factor: 50,
-            visitor_threshold: 50,
-        };
-        let l2 = Level {
-            difficulty_factor: 500,
-            visitor_threshold: 500,
-        };
-        let levels = vec![l1, l2];
-
         {
             let data = Data::new().await;
             delete_user(NAME, &data).await;
         }
 
         register_and_signin(NAME, EMAIL, PASSWORD).await;
-        let (data, _, signin_resp, key) = add_token_util(NAME, PASSWORD).await;
+        let (data, _, signin_resp, key) = add_levels_util(NAME, PASSWORD).await;
         let cookies = get_cookie!(signin_resp);
         let mut app = get_app!(data).await;
+        /*
 
         let add_level = AddLevels {
             levels: levels.clone(),
@@ -258,8 +249,12 @@ mod tests {
         )
         .await;
         assert_eq!(add_token_resp.status(), StatusCode::OK);
+        */
 
         // 2. get level
+
+        let levels = vec![L1, L2];
+
         let get_level_resp = test::call_service(
             &mut app,
             post_request!(&key, GET_URL)

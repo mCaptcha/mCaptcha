@@ -16,7 +16,6 @@
 */
 use std::env;
 
-use actix_files::Files;
 use actix_identity::{CookieIdentityPolicy, IdentityService};
 use actix_web::{
     client::Client, error::InternalError, http::StatusCode, middleware, web::JsonConfig, App,

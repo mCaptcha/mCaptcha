@@ -3,10 +3,12 @@ use actix_web::{
     dev::ServiceResponse,
     http::{header, StatusCode},
 };
+use m_captcha::defense::Level;
 use serde::Serialize;
 
 use super::*;
 use crate::api::v1::auth::{Login, Register};
+use crate::api::v1::mcaptcha::levels::AddLevels;
 use crate::api::v1::mcaptcha::mcaptcha::MCaptchaDetails;
 use crate::api::v1::services as v1_services;
 use crate::data::Data;
@@ -97,53 +99,8 @@ pub async fn signin<'a>(name: &'a str, password: &str) -> (data::Data, Login, Se
     )
     .await;
     assert_eq!(signin_resp.status(), StatusCode::OK);
-
     (data, creds, signin_resp)
 }
-
-///// register and signin and domain
-///// bypasses domain verification, use with care
-//pub async fn add_domain_util(
-//    name: &str,
-//    password: &str,
-//    domain: &str,
-//) -> (data::Data, Login, ServiceResponse) {
-//    use crate::api::v1::mcaptcha::domains::Domain;
-//    use url::Url;
-//
-//    let (data, creds, signin_resp) = signin(name, password).await;
-//    let cookies = get_cookie!(signin_resp);
-//    let mut app = get_app!(data).await;
-//
-//    // 1. add domain
-//    let add_domain = Domain {
-//        name: domain.into(),
-//    };
-//
-//    let add_domain_resp = test::call_service(
-//        &mut app,
-//        post_request!(&add_domain, "/api/v1/mcaptcha/domain/add")
-//            .cookie(cookies.clone())
-//            .to_request(),
-//    )
-//    .await;
-//    assert_eq!(add_domain_resp.status(), StatusCode::OK);
-//
-//    // verification work around
-//    let url = Url::parse(domain).unwrap();
-//    let host = url.host_str().unwrap();
-//    sqlx::query!(
-//        "INSERT INTO mcaptcha_domains_verified (name, owner_id) VALUES
-//            ($1, (SELECT ID from mcaptcha_users WHERE name = $2))",
-//        &host,
-//        &name
-//    )
-//    .execute(&data.db)
-//    .await
-//    .unwrap();
-//
-//    (data, creds, signin_resp)
-//}
 
 pub async fn add_token_util(
     name: &str,
@@ -167,7 +124,7 @@ pub async fn add_token_util(
     )
     .await;
     //    let status = add_token_resp.status();
-    //    let txt: ErrorToResponse = test::read_body_json(add_token_resp).await;
+    //    let txt: errortoresponse = test::read_body_json(add_token_resp).await;
     //    println!("{:?}", txt.error);
     //
     assert_eq!(add_token_resp.status(), StatusCode::OK);
@@ -201,4 +158,42 @@ pub async fn bad_post_req_test<T: Serialize>(
     assert_eq!(dup_token_resp.status(), s);
     let txt: ErrorToResponse = test::read_body_json(dup_token_resp).await;
     assert_eq!(txt.error, format!("{}", dup_err));
+}
+
+pub const L1: Level = Level {
+    difficulty_factor: 50,
+    visitor_threshold: 50,
+};
+pub const L2: Level = Level {
+    difficulty_factor: 500,
+    visitor_threshold: 500,
+};
+
+pub async fn add_levels_util(
+    name: &str,
+    password: &str,
+) -> (data::Data, Login, ServiceResponse, MCaptchaDetails) {
+    const ADD_URL: &str = "/api/v1/mcaptcha/levels/add";
+    let (data, creds, signin_resp, token_key) = add_token_util(name, password).await;
+    let cookies = get_cookie!(signin_resp);
+    let mut app = get_app!(data).await;
+
+    let levels = vec![L1, L2];
+
+    let add_level = AddLevels {
+        levels: levels.clone(),
+        key: token_key.key.clone(),
+    };
+
+    // 1. add level
+    let add_token_resp = test::call_service(
+        &mut app,
+        post_request!(&add_level, ADD_URL)
+            .cookie(cookies.clone())
+            .to_request(),
+    )
+    .await;
+    assert_eq!(add_token_resp.status(), StatusCode::OK);
+
+    (data, creds, signin_resp, token_key)
 }
