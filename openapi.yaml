@@ -18,9 +18,9 @@ paths:
             schema:
               $ref: '#/components/schemas/RegisterUser'
             example:
-              username: "testuser"
-              password: "mysuperlongandsecurepassword"
-              email: "testuser@example.com"
+              username: 'testuser'
+              password: 'mysuperlongandsecurepassword'
+              email: 'testuser@example.com'
       responses:
         '200':
           description: Successful registration
@@ -53,8 +53,8 @@ paths:
             schema:
               $ref: '#/components/schemas/LoginUser'
             example:
-              username: "testuser"
-              password: "mysuperlongandsecurepassword"
+              username: 'testuser'
+              password: 'mysuperlongandsecurepassword'
       responses:
         '200':
           description: Successful authentication
@@ -103,7 +103,7 @@ paths:
             schema:
               $ref: '#/components/schemas/DeleteUser'
             example:
-              password: "mysuperlongandsecurepassword"
+              password: 'mysuperlongandsecurepassword'
       responses:
         '200':
           description: OK
@@ -138,7 +138,7 @@ paths:
             schema:
               $ref: '#/components/schemas/UserDetailCheck'
             example:
-              val: "testuser"
+              val: 'testuser'
       responses:
         '200':
           description: OK
@@ -165,7 +165,7 @@ paths:
             schema:
               $ref: '#/components/schemas/UserDetailCheck'
             example:
-              val: "testuser@example.com"
+              val: 'testuser@example.com'
       responses:
         '200':
           description: OK
@@ -207,168 +207,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BuildDetails'
-  /api/v1/mcaptcha/domain/add:
-    post:
-      security:
-        - cookieAuth: []
-      summary: Add new domain to mCaptcha
-      operationId: addDomain
-      tags:
-        - mcaptcha
-        - domain
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AddDomain'
-
-      responses:
-        '200':
-          description: OK
-        '400':
-          description: "Bad request: Submited domain name isn't a URI"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '401':
-          description: 'authentication failed, wrong password'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /api/v1/mcaptcha/domain/domain/verify/challenge/get:
-    post:
-      security:
-        - cookieAuth: []
-      summary: Get verification challenge for adding a domain
-      operationId: challengeDomain
-      tags:
-        - mcaptcha
-        - domain
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AddDomain'
-
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DomainVerificationChallenge'
-        '400':
-          description: "Bad request: Submited domain name isn't a URI"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '401':
-          description: 'authentication failed, wrong password'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /api/v1/mcaptcha/domain/domain/verify/challenge/prove:
-    post:
-      security:
-        - cookieAuth: []
-      summary: Verifiy domain
-      operationId: proveDomain
-      tags:
-        - mcaptcha
-        - domain
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AddDomain'
-
-      responses:
-        '200':
-          description: OK
-        '400':
-          description: 'Bad request: challenge is courrupt'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '401':
-          description: 'authentication failed or challenge verification failure'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '503':
-          description: Client server unavailable, please check if your server is online
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /api/v1/mcaptcha/domain/delete:
-    post:
-      security:
-        - cookieAuth: []
-      summary: Delete domain from mcaptcha
-      operationId: deleteDomain
-      tags:
-        - mcaptcha
-        - domain
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AddDomain'
-
-      responses:
-        '200':
-          description: OK
-        '400':
-          description: 'Bad request: Submited URI is not a URI'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '401':
-          description: 'authentication failed'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
   /api/v1/mcaptcha/domain/token/add:
     post:
       security:
@@ -765,8 +603,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
-
-
 components:
   schemas:
     RegisterUser:
@@ -951,7 +787,6 @@ components:
           type: number
           minimum: 1
           maximum: 2147483647
-
 
   securitySchemes:
     cookieAuth:
