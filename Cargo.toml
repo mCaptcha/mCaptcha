@@ -27,6 +27,9 @@ actix = "0.10"
 actix-identity = "0.3"
 actix-http = "2.2"
 actix-rt = "1"
+actix-cors= "0.5.4"
+
+
 mime_guess = "2.0.3"
 rust-embed = "5.9.0"
 cache-buster = { version = "0.1", git = "https://github.com/realaravinth/cache-buster" }

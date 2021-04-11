@@ -28,9 +28,7 @@ ip= "0.0.0.0"
 # enter your hostname, eg: example.com
 domain = "localhost"
 allow_registration = true
-# directory containing static files
-static_files_dir = "./frontend/dist"
-
+#url_prefix = ""
 
 [pow]
 # Please set a unique value, your mCaptcha instance's security depends on this being 

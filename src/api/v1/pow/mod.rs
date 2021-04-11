@@ -15,6 +15,9 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+//use actix_cors::Cors;
+//use lazy_static::lazy_static;
+
 pub mod get_config;
 pub mod verify_pow;
 pub mod verify_token;
@@ -22,3 +25,12 @@ pub mod verify_token;
 pub use super::mcaptcha::duration::GetDurationResp;
 pub use super::mcaptcha::is_authenticated;
 pub use super::mcaptcha::levels::I32Levels;
+
+//lazy_static! {
+//    pub static ref CORS: Cors = Cors::default()
+//        .allow_any_origin()
+//        .allowed_methods(vec!["POST"])
+//        .allow_any_header()
+//        .max_age(0)
+//        .send_wildcard();
+//}
