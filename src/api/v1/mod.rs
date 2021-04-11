@@ -20,6 +20,7 @@ use actix_web::web::ServiceConfig;
 pub mod auth;
 pub mod mcaptcha;
 pub mod meta;
+pub mod pow;
 
 pub fn services(cfg: &mut ServiceConfig) {
     // meta
@@ -53,9 +54,9 @@ pub fn services(cfg: &mut ServiceConfig) {
     cfg.service(mcaptcha::duration::get_duration);
 
     // pow
-    cfg.service(mcaptcha::pow::get_config::get_config);
-    cfg.service(mcaptcha::pow::verify_pow::verify_pow);
-    cfg.service(mcaptcha::pow::verify_token::validate_captcha_token);
+    cfg.service(pow::get_config::get_config);
+    cfg.service(pow::verify_pow::verify_pow);
+    cfg.service(pow::verify_token::validate_captcha_token);
 }
 
 #[cfg(test)]

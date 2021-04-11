@@ -16,30 +16,26 @@
 */
 
 use actix_web::{post, web, HttpResponse, Responder};
-use m_captcha::cache::messages::VerifyCaptchaResult;
+use m_captcha::pow::Work;
 use serde::{Deserialize, Serialize};
 
 use crate::errors::*;
 use crate::Data;
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct CaptchaValidateResp {
-    pub valid: bool,
+pub struct ValidationToken {
+    pub token: String,
 }
 
 // API keys are mcaptcha actor names
 
-#[post("/api/v1/siteverify")]
-pub async fn validate_captcha_token(
-    payload: web::Json<VerifyCaptchaResult>,
+#[post("/api/v1/mcaptcha/pow/verify")]
+pub async fn verify_pow(
+    payload: web::Json<Work>,
     data: web::Data<Data>,
 ) -> ServiceResult<impl Responder> {
-    let res = data
-        .captcha
-        .validate_verification_tokens(payload.into_inner())
-        .await?;
-    let payload = CaptchaValidateResp { valid: res };
-    println!("{:?}", &payload);
+    let res = data.captcha.verify_pow(payload.into_inner()).await?;
+    let payload = ValidationToken { token: res };
     Ok(HttpResponse::Ok().json(payload))
 }
 
@@ -48,23 +44,20 @@ mod tests {
     use actix_web::http::{header, StatusCode};
     use actix_web::test;
     use m_captcha::pow::PoWConfig;
-    use m_captcha::pow::Work;
 
     use super::*;
-    use crate::api::v1::mcaptcha::pow::get_config::GetConfigPayload;
-    use crate::api::v1::mcaptcha::pow::verify_pow::ValidationToken;
+    use crate::api::v1::pow::get_config::GetConfigPayload;
     use crate::api::v1::services as v1_services;
     use crate::tests::*;
     use crate::*;
 
     #[actix_rt::test]
-    async fn validate_captcha_token_works() {
-        const NAME: &str = "enterprisetken";
+    async fn verify_pow_works() {
+        const NAME: &str = "powverifyusr";
         const PASSWORD: &str = "testingpas";
-        const EMAIL: &str = "verifyuser@enter.com";
-        const VERIFY_CAPTCHA_URL: &str = "/api/v1/mcaptcha/pow/verify";
+        const EMAIL: &str = "verifyuser@a.com";
+        const VERIFY_URL: &str = "/api/v1/mcaptcha/pow/verify";
         const GET_URL: &str = "/api/v1/mcaptcha/pow/config";
-        const VERIFY_TOKEN_URL: &str = "/api/v1/siteverify";
         //        const UPDATE_URL: &str = "/api/v1/mcaptcha/domain/token/duration/update";
 
         {
@@ -105,49 +98,32 @@ mod tests {
             key: token_key.key.clone(),
         };
 
-        let pow_verify_resp = test::call_service(
-            &mut app,
-            post_request!(&work, VERIFY_CAPTCHA_URL).to_request(),
-        )
-        .await;
+        let pow_verify_resp =
+            test::call_service(&mut app, post_request!(&work, VERIFY_URL).to_request()).await;
         assert_eq!(pow_verify_resp.status(), StatusCode::OK);
-        let client_token: ValidationToken = test::read_body_json(pow_verify_resp).await;
 
-        let validate_payload = VerifyCaptchaResult {
-            token: client_token.token.clone(),
-            key: token_key.key.clone(),
-        };
+        let string_not_found =
+            test::call_service(&mut app, post_request!(&work, VERIFY_URL).to_request()).await;
+        assert_eq!(string_not_found.status(), StatusCode::BAD_REQUEST);
+        let err: ErrorToResponse = test::read_body_json(string_not_found).await;
+        assert_eq!(
+            err.error,
+            format!(
+                "{}",
+                ServiceError::CaptchaError(m_captcha::errors::CaptchaError::StringNotFound)
+            )
+        );
 
-        let validate_client_token = test::call_service(
+        let pow_config_resp = test::call_service(
             &mut app,
-            post_request!(&validate_payload, VERIFY_TOKEN_URL).to_request(),
+            post_request!(&get_config_payload, GET_URL).to_request(),
         )
         .await;
-        assert_eq!(validate_client_token.status(), StatusCode::OK);
-        let resp: CaptchaValidateResp = test::read_body_json(validate_client_token).await;
-        assert!(resp.valid);
-
-        // string not found
-        let string_not_found = test::call_service(
-            &mut app,
-            post_request!(&validate_payload, VERIFY_TOKEN_URL).to_request(),
-        )
-        .await;
-        let resp: CaptchaValidateResp = test::read_body_json(string_not_found).await;
-        assert!(!resp.valid);
-
-        let validate_payload = VerifyCaptchaResult {
-            token: client_token.token.clone(),
-            key: client_token.token.clone(),
-        };
-
-        // key not found
-        let key_not_found = test::call_service(
-            &mut app,
-            post_request!(&validate_payload, VERIFY_TOKEN_URL).to_request(),
-        )
-        .await;
-        let resp: CaptchaValidateResp = test::read_body_json(key_not_found).await;
-        assert!(!resp.valid);
+        assert_eq!(pow_config_resp.status(), StatusCode::OK);
+        // I'm not checking for errors because changing work.result triggered
+        // InssuficientDifficulty, which is possible becuase m_captcha calculates
+        // difficulty with the submitted result. Besides, this endpoint is merely
+        // propagating errors from m_captcha and m_captcha has tests covering the
+        // pow aspects ¯\_(ツ)_/¯
     }
 }

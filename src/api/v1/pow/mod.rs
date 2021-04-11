@@ -19,6 +19,6 @@ pub mod get_config;
 pub mod verify_pow;
 pub mod verify_token;
 
-pub use super::duration::GetDurationResp;
-pub use super::is_authenticated;
-pub use super::levels::I32Levels;
+pub use super::mcaptcha::duration::GetDurationResp;
+pub use super::mcaptcha::is_authenticated;
+pub use super::mcaptcha::levels::I32Levels;
