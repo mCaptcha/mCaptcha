@@ -19,7 +19,6 @@ use actix_web::http::{header, StatusCode};
 use actix_web::test;
 
 use crate::api::v1::auth::*;
-use crate::api::v1::services as v1_services;
 use crate::data::Data;
 use crate::errors::*;
 use crate::*;

@@ -47,7 +47,6 @@ mod tests {
 
     use super::*;
     use crate::api::v1::pow::get_config::GetConfigPayload;
-    use crate::api::v1::services as v1_services;
     use crate::tests::*;
     use crate::*;
 

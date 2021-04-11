@@ -210,7 +210,6 @@ mod tests {
     use actix_web::test;
 
     use super::*;
-    use crate::api::v1::services as v1_services;
     use crate::tests::*;
     use crate::*;
 

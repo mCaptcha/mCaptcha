@@ -10,7 +10,6 @@ use super::*;
 use crate::api::v1::auth::{Login, Register};
 use crate::api::v1::mcaptcha::levels::AddLevels;
 use crate::api::v1::mcaptcha::mcaptcha::MCaptchaDetails;
-use crate::api::v1::services as v1_services;
 use crate::data::Data;
 use crate::errors::*;
 
@@ -51,7 +50,8 @@ macro_rules! get_app {
         test::init_service(
             App::new()
                 .wrap(get_identity_service())
-                .configure(v1_services)
+                .configure(crate::api::v1::pow::services)
+                .configure(crate::api::v1::services)
                 .data($data.clone()),
         )
     };
