@@ -48,6 +48,9 @@ pub async fn signup(
     payload: web::Json<Register>,
     data: web::Data<Data>,
 ) -> ServiceResult<impl Responder> {
+    if !crate::SETTINGS.server.allow_registration {
+        Err(ServiceError::ClosedForRegistration)?
+    }
     let username = data.creds.username(&payload.username)?;
     let hash = data.creds.password(&payload.password)?;
     data.creds.email(Some(&payload.email))?;

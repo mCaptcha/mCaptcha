@@ -18,7 +18,6 @@
 use std::convert::From;
 
 use actix_web::{
-    client::SendRequestError,
     dev::HttpResponseBuilder,
     error::ResponseError,
     http::{header, StatusCode},
@@ -38,6 +37,11 @@ use validator::ValidationErrors;
 pub enum ServiceError {
     #[display(fmt = "internal server error")]
     InternalServerError,
+
+    #[display(
+        fmt = "This server is is closed for registration. Contact admin if this is unexpecter"
+    )]
+    ClosedForRegistration,
 
     #[display(fmt = "The value you entered for email is not an email")] //405j
     NotAnEmail,
@@ -74,17 +78,12 @@ pub enum ServiceError {
     #[display(fmt = "Username not available")]
     UsernameTaken,
     /// when the a token name is already taken
-    #[display(fmt = "token name not available")]
-    TokenNameTaken,
     /// token not found
     #[display(fmt = "Token not found. Is token registered?")]
     TokenNotFound,
 
     #[display(fmt = "{}", _0)]
     CaptchaError(CaptchaError),
-
-    #[display(fmt = "Couldn't reach your server. If Problem presists, contact support")]
-    ClientServerUnreachable,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -107,6 +106,7 @@ impl ResponseError for ServiceError {
     #[cfg(not(tarpaulin_include))]
     fn status_code(&self) -> StatusCode {
         match self {
+            ServiceError::ClosedForRegistration => StatusCode::FORBIDDEN,
             ServiceError::InternalServerError => StatusCode::INTERNAL_SERVER_ERROR,
             ServiceError::NotAnEmail => StatusCode::BAD_REQUEST,
             ServiceError::NotAUrl => StatusCode::BAD_REQUEST,
@@ -123,9 +123,7 @@ impl ResponseError for ServiceError {
 
             ServiceError::UsernameTaken => StatusCode::BAD_REQUEST,
 
-            ServiceError::TokenNameTaken => StatusCode::BAD_REQUEST,
             ServiceError::TokenNotFound => StatusCode::NOT_FOUND,
-            ServiceError::ClientServerUnreachable => StatusCode::SERVICE_UNAVAILABLE,
             ServiceError::CaptchaError(e) => match e {
                 CaptchaError::MailboxError => StatusCode::INTERNAL_SERVER_ERROR,
                 _ => StatusCode::BAD_REQUEST,
@@ -153,19 +151,6 @@ impl From<CredsError> for ServiceError {
 impl From<ValidationErrors> for ServiceError {
     fn from(_: ValidationErrors) -> ServiceError {
         ServiceError::NotAnEmail
-    }
-}
-
-impl From<SendRequestError> for ServiceError {
-    fn from(e: SendRequestError) -> ServiceError {
-        debug!("{:?}", &e);
-        match e {
-            SendRequestError::Url(_) => ServiceError::NotAUrl,
-            SendRequestError::Send(_) => ServiceError::InternalServerError,
-            SendRequestError::Response(_) => ServiceError::InternalServerError,
-            SendRequestError::Body(_) => ServiceError::InternalServerError,
-            _ => ServiceError::ClientServerUnreachable,
-        }
     }
 }
 
