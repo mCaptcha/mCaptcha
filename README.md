@@ -18,7 +18,11 @@
 Guard is the back-end component of [mCaptcha](https://mcaptcha.org)
 system.
 
-**STATUS: UNUSABLE BUT ACTIVE DEVELOPMENT** 
+**STATUS: UNUSABLE BUT ACTIVE DEVELOPMENT**
+
+### Development:
+
+See [DEVELOPMENT.md](./DEVELOPMENT.md)
 
 ### How to build
 
@@ -47,7 +51,6 @@ Configuration is applied/merged in the following order:
 
 1. `config/default.toml`
 2. environment variables.
-
 
 #### Setup
 
