@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["get_config",""],["verify_pow",""]]});
+initSidebarItems({"mod":[["get_config",""],["verify_pow",""],["verify_token",""]]});

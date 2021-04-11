@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["PoWConfig",""],["ValidationToken",""],["verify_pow",""]]});
+initSidebarItems({"struct":[["ValidationToken",""],["verify_pow",""]]});
