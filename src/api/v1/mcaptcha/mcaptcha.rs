@@ -14,6 +14,7 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+use std::borrow::Cow;
 
 use actix_identity::Identity;
 use actix_web::{post, web, HttpResponse, Responder};
@@ -38,28 +39,43 @@ pub struct MCaptchaDetails {
 pub async fn add_mcaptcha(data: web::Data<Data>, id: Identity) -> ServiceResult<impl Responder> {
     is_authenticated(&id)?;
     let username = id.identity().unwrap();
-    let key = get_random(32);
+    let mut key;
 
-    let res = sqlx::query!(
-        "INSERT INTO mcaptcha_config 
+    let resp;
+
+    loop {
+        key = get_random(32);
+
+        let res = sqlx::query!(
+            "INSERT INTO mcaptcha_config 
         (key, user_id)
         VALUES ($1, (SELECT ID FROM mcaptcha_users WHERE name = $2))",
-        &key,
-        &username,
-    )
-    .execute(&data.db)
-    .await;
+            &key,
+            &username,
+        )
+        .execute(&data.db)
+        .await;
 
-    match res {
-        Err(e) => {
-            println!("{}", &e);
-            Err(dup_error(e, ServiceError::TokenNameTaken))
-        }
-        Ok(_) => {
-            let resp = MCaptchaDetails { key, name: None };
-            Ok(HttpResponse::Ok().json(resp))
+        match res {
+            Err(sqlx::Error::Database(err)) => {
+                if err.code() == Some(Cow::from("23505"))
+                    && err.message().contains("mcaptcha_config_key_key")
+                {
+                    continue;
+                } else {
+                    Err(sqlx::Error::Database(err))?;
+                }
+            }
+            Err(e) => Err(e)?,
+
+            Ok(_) => {
+                resp = MCaptchaDetails { key, name: None };
+                break;
+            }
         }
     }
+
+    Ok(HttpResponse::Ok().json(resp))
 }
 
 #[post("/api/v1/mcaptcha/update/key")]

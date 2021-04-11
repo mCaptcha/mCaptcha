@@ -196,19 +196,5 @@ impl From<sqlx::Error> for ServiceError {
     }
 }
 
-pub fn dup_error(e: sqlx::Error, dup_error: ServiceError) -> ServiceError {
-    use sqlx::error::Error;
-    use std::borrow::Cow;
-    if let Error::Database(err) = e {
-        if err.code() == Some(Cow::from("23505")) {
-            dup_error
-        } else {
-            ServiceError::InternalServerError
-        }
-    } else {
-        ServiceError::InternalServerError
-    }
-}
-
 #[cfg(not(tarpaulin_include))]
 pub type ServiceResult<V> = std::result::Result<V, ServiceError>;
