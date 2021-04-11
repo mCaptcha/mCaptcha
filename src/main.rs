@@ -16,10 +16,11 @@
 */
 use std::env;
 
+use actix_cors::Cors;
 use actix_identity::{CookieIdentityPolicy, IdentityService};
 use actix_web::{
-    client::Client, error::InternalError, http::StatusCode, middleware, web::JsonConfig, App,
-    HttpServer,
+    client::Client, error::InternalError, http::StatusCode, middleware, web::scope,
+    web::JsonConfig, App, HttpServer,
 };
 //use awc::Client;
 use cache_buster::Files as FileMap;
@@ -79,6 +80,14 @@ async fn main() -> std::io::Result<()> {
 
     HttpServer::new(move || {
         let client = Client::default();
+
+        let captcha_api_cors = Cors::default()
+            .allow_any_origin()
+            .allowed_methods(vec!["POST"])
+            .allow_any_header()
+            .max_age(0)
+            .send_wildcard();
+
         App::new()
             .wrap(middleware::Logger::default())
             .wrap(get_identity_service())
@@ -89,6 +98,11 @@ async fn main() -> std::io::Result<()> {
                 middleware::normalize::TrailingSlash::Trim,
             ))
             .configure(v1::services)
+            .service(
+                scope("/api/v1/pow")
+                    .wrap(captcha_api_cors)
+                    .configure(v1::pow::services),
+            )
             .configure(docs::services)
             .configure(templates::services)
             .configure(static_assets::services)

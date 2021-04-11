@@ -16,7 +16,7 @@
 */
 
 //use actix_cors::Cors;
-//use lazy_static::lazy_static;
+use actix_web::web;
 
 pub mod get_config;
 pub mod verify_pow;
@@ -34,3 +34,24 @@ pub use super::mcaptcha::levels::I32Levels;
 //        .max_age(0)
 //        .send_wildcard();
 //}
+
+//pub fn services(cfg: &mut web::ServiceConfig) -> web::Scope<impl actix_service::ServiceFactory> {
+//    let captcha_api_cors = Cors::default()
+//        .allow_any_origin()
+//        .allowed_methods(vec!["POST"])
+//        .allow_any_header()
+//        .max_age(0)
+//        .send_wildcard();
+//
+//    web::scope("/api/v1/pow/*")
+//        .wrap(captcha_api_cors)
+//        .configure(pow_services)
+//
+//    // pow
+//}
+
+pub fn services(cfg: &mut web::ServiceConfig) {
+    cfg.service(get_config::get_config);
+    cfg.service(verify_pow::verify_pow);
+    cfg.service(verify_token::validate_captcha_token);
+}

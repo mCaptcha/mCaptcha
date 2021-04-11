@@ -29,7 +29,7 @@ pub struct CaptchaValidateResp {
 
 // API keys are mcaptcha actor names
 
-#[post("/api/v1/siteverify")]
+#[post("/api/v1/pow/siteverify")]
 pub async fn validate_captcha_token(
     payload: web::Json<VerifyCaptchaResult>,
     data: web::Data<Data>,
@@ -64,7 +64,7 @@ mod tests {
         const EMAIL: &str = "verifyuser@enter.com";
         const VERIFY_CAPTCHA_URL: &str = "/api/v1/mcaptcha/pow/verify";
         const GET_URL: &str = "/api/v1/mcaptcha/pow/config";
-        const VERIFY_TOKEN_URL: &str = "/api/v1/siteverify";
+        const VERIFY_TOKEN_URL: &str = "/api/v1/pow/siteverify";
         //        const UPDATE_URL: &str = "/api/v1/mcaptcha/domain/token/duration/update";
 
         {
