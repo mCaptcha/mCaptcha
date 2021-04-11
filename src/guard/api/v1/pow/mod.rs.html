@@ -25,6 +25,18 @@
 <span id="22">22</span>
 <span id="23">23</span>
 <span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -43,6 +55,9 @@
 * along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
 */</span>
 
+<span class="comment">//use actix_cors::Cors;</span>
+<span class="comment">//use lazy_static::lazy_static;</span>
+
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">get_config</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">verify_pow</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">verify_token</span>;
@@ -50,6 +65,15 @@
 <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">mcaptcha</span>::<span class="ident">duration</span>::<span class="ident">GetDurationResp</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">mcaptcha</span>::<span class="ident">is_authenticated</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">mcaptcha</span>::<span class="ident">levels</span>::<span class="ident">I32Levels</span>;
+
+<span class="comment">//lazy_static! {</span>
+<span class="comment">//    pub static ref CORS: Cors = Cors::default()</span>
+<span class="comment">//        .allow_any_origin()</span>
+<span class="comment">//        .allowed_methods(vec![&quot;POST&quot;])</span>
+<span class="comment">//        .allow_any_header()</span>
+<span class="comment">//        .max_age(0)</span>
+<span class="comment">//        .send_wildcard();</span>
+<span class="comment">//}</span>
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="guard"></div>
     <script src="../../../../../main.js"></script><script src="../../../../../source-script.js"></script><script src="../../../../../source-files.js"></script><script defer src="../../../../../search-index.js"></script></body></html>
