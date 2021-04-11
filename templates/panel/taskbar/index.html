@@ -7,14 +7,17 @@
     <button class="main-menu__add-site">+ New Site</button>
   </li>
   <li class="task-bar__action">
-    <img class="task-bar__icon" src="./svg/moon.svg" alt="Profile" />
+    <img class="task-bar__icon" src="<.=
+    crate::FILES.get("./static/img/svg/moon.svg").unwrap() .>" alt="Profile" />
   </li>
 
   <li class="task-bar__action">
-    <img class="task-bar__icon" src="./svg/bell.svg" alt="Notifications" />
+    <img class="task-bar__icon" src="<.=
+    crate::FILES.get("./static/img/svg/bell.svg").unwrap() .>" alt="Notifications" />
   </li>
 
   <li class="task-bar__action">
-    <img class="task-bar__icon" src="../svg/log-out.svg" alt="Profile" />
+    <img class="task-bar__icon" src="<.=
+    crate::FILES.get("./static/img/svg/log-out.svg").unwrap() .>" alt="Profile" />
   </li>
 </ul>
