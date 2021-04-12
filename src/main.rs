@@ -81,12 +81,12 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(move || {
         let client = Client::default();
 
-        let captcha_api_cors = Cors::default()
-            .allow_any_origin()
-            .allowed_methods(vec!["POST"])
-            .allow_any_header()
-            .max_age(0)
-            .send_wildcard();
+        //        let captcha_api_cors = Cors::default()
+        //            .allow_any_origin()
+        //            .allowed_methods(vec!["POST"])
+        //            .allow_any_header()
+        //            .max_age(0)
+        //            .send_wildcard();
 
         App::new()
             .wrap(middleware::Logger::default())
@@ -97,12 +97,13 @@ async fn main() -> std::io::Result<()> {
             .wrap(middleware::NormalizePath::new(
                 middleware::normalize::TrailingSlash::Trim,
             ))
+            .configure(v1::pow::services)
             .configure(v1::services)
-            .service(
-                scope("/api/v1/pow")
-                    .wrap(captcha_api_cors)
-                    .configure(v1::pow::services),
-            )
+            //.service(
+            //    scope("/")
+            //        .wrap(captcha_api_cors)
+            //        .configure(v1::pow::services),
+            //)
             .configure(docs::services)
             .configure(templates::services)
             .configure(static_assets::services)

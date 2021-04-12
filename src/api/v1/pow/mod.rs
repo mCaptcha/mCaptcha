@@ -15,7 +15,7 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-//use actix_cors::Cors;
+use actix_cors::Cors;
 use actix_web::web;
 
 pub mod get_config;
@@ -51,6 +51,27 @@ pub use super::mcaptcha::levels::I32Levels;
 //}
 
 pub fn services(cfg: &mut web::ServiceConfig) {
+    let captcha_api_cors = Cors::default()
+        .allow_any_origin()
+        .allowed_methods(vec!["POST"])
+        .allow_any_header()
+        .max_age(0)
+        .send_wildcard();
+
+    cfg.service(
+        web::scope("/api/v1/pow/")
+            .wrap(captcha_api_cors)
+            .configure(intenral_services),
+    );
+
+    //   cfg.service(
+
+    //    cfg.service(get_config::get_config);
+    //    cfg.service(verify_pow::verify_pow);
+    //    cfg.service(verify_token::validate_captcha_token);
+}
+
+fn intenral_services(cfg: &mut web::ServiceConfig) {
     cfg.service(get_config::get_config);
     cfg.service(verify_pow::verify_pow);
     cfg.service(verify_token::validate_captcha_token);

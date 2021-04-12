@@ -29,7 +29,7 @@ pub struct ValidationToken {
 
 // API keys are mcaptcha actor names
 
-#[post("/api/v1/mcaptcha/pow/verify")]
+#[post("/verify")]
 pub async fn verify_pow(
     payload: web::Json<Work>,
     data: web::Data<Data>,

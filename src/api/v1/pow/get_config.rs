@@ -38,7 +38,8 @@ pub struct GetConfigPayload {
 
 // API keys are mcaptcha actor names
 
-#[post("/api/v1/mcaptcha/pow/config")]
+#[post("/config")]
+//#[post("/pow/config")]
 pub async fn get_config(
     payload: web::Json<GetConfigPayload>,
     data: web::Data<Data>,
@@ -149,7 +150,7 @@ mod tests {
         const NAME: &str = "powusrworks";
         const PASSWORD: &str = "testingpas";
         const EMAIL: &str = "randomuser@a.com";
-        const GET_URL: &str = "/api/v1/mcaptcha/pow/config";
+        const GET_URL: &str = "/api/v1/pow/config";
         //        const UPDATE_URL: &str = "/api/v1/mcaptcha/domain/token/duration/update";
 
         {
