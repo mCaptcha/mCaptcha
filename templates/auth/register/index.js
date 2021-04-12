@@ -20,17 +20,19 @@ const registerUser = async e => {
     return alert("passwords don't match, check again!");
   }
 
-  let email = document.getElementById('email').value;
-  isBlankString(e, email, 'email');
-
   let exists = await userExists();
   if (exists) {
     return;
   }
 
-  exists = await checkEmailExists();
-  if (exists) {
-    return;
+  let email = document.getElementById('email').value;
+  if (!email.replace(/\s/g, '').length) {
+    email = null;
+  } else {
+    exists = await checkEmailExists();
+    if (exists) {
+      return;
+    }
   }
 
   let payload = {
@@ -54,4 +56,4 @@ export const index = () => {
 
   let username = document.getElementById('username');
   username.addEventListener('input', userExists, false);
-}
+};
