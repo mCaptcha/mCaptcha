@@ -55,8 +55,8 @@ mod tests {
         const NAME: &str = "powverifyusr";
         const PASSWORD: &str = "testingpas";
         const EMAIL: &str = "verifyuser@a.com";
-        const VERIFY_URL: &str = "/api/v1/mcaptcha/pow/verify";
-        const GET_URL: &str = "/api/v1/mcaptcha/pow/config";
+        const VERIFY_URL: &str = "/api/v1/pow/verify";
+        const GET_URL: &str = "/api/v1/pow/config";
         //        const UPDATE_URL: &str = "/api/v1/mcaptcha/domain/token/duration/update";
 
         {

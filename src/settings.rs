@@ -48,7 +48,7 @@ impl Server {
         if let Some(prefix) = self.url_prefix.clone() {
             self.url_prefix = Some(prefix.trim().into());
             if prefix.trim().is_empty() {
-                panic!("URL prefix is set to empty string")
+                self.url_prefix = None;
             }
         }
     }
@@ -183,13 +183,8 @@ mod tests {
         assert!(settings.server.url_prefix.is_none());
         settings.server.url_prefix = Some("test".into());
         settings.server.check_url_prefix();
-    }
-
-    #[test]
-    #[should_panic]
-    fn url_prefix_panic_test() {
-        let mut settings = Settings::new().unwrap();
         settings.server.url_prefix = Some("    ".into());
         settings.server.check_url_prefix();
+        assert!(settings.server.url_prefix.is_none());
     }
 }
