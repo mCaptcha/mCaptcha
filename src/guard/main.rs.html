@@ -138,6 +138,7 @@
 <span id="135">135</span>
 <span id="136">136</span>
 <span id="137">137</span>
+<span id="138">138</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -222,12 +223,12 @@
     <span class="ident">HttpServer</span>::<span class="ident">new</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
         <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">Client</span>::<span class="ident">default</span>();
 
-        <span class="kw">let</span> <span class="ident">captcha_api_cors</span> <span class="op">=</span> <span class="ident">Cors</span>::<span class="ident">default</span>()
-            .<span class="ident">allow_any_origin</span>()
-            .<span class="ident">allowed_methods</span>(<span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;POST&quot;</span>])
-            .<span class="ident">allow_any_header</span>()
-            .<span class="ident">max_age</span>(<span class="number">0</span>)
-            .<span class="ident">send_wildcard</span>();
+        <span class="comment">//        let captcha_api_cors = Cors::default()</span>
+        <span class="comment">//            .allow_any_origin()</span>
+        <span class="comment">//            .allowed_methods(vec![&quot;POST&quot;])</span>
+        <span class="comment">//            .allow_any_header()</span>
+        <span class="comment">//            .max_age(0)</span>
+        <span class="comment">//            .send_wildcard();</span>
 
         <span class="ident">App</span>::<span class="ident">new</span>()
             .<span class="ident">wrap</span>(<span class="ident">middleware</span>::<span class="ident">Logger</span>::<span class="ident">default</span>())
@@ -238,12 +239,13 @@
             .<span class="ident">wrap</span>(<span class="ident">middleware</span>::<span class="ident">NormalizePath</span>::<span class="ident">new</span>(
                 <span class="ident">middleware</span>::<span class="ident">normalize</span>::<span class="ident">TrailingSlash</span>::<span class="ident">Trim</span>,
             ))
+            .<span class="ident">configure</span>(<span class="ident">v1</span>::<span class="ident">pow</span>::<span class="ident">services</span>)
             .<span class="ident">configure</span>(<span class="ident">v1</span>::<span class="ident">services</span>)
-            .<span class="ident">service</span>(
-                <span class="ident">scope</span>(<span class="string">&quot;/api/v1/pow&quot;</span>)
-                    .<span class="ident">wrap</span>(<span class="ident">captcha_api_cors</span>)
-                    .<span class="ident">configure</span>(<span class="ident">v1</span>::<span class="ident">pow</span>::<span class="ident">services</span>),
-            )
+            <span class="comment">//.service(</span>
+            <span class="comment">//    scope(&quot;/&quot;)</span>
+            <span class="comment">//        .wrap(captcha_api_cors)</span>
+            <span class="comment">//        .configure(v1::pow::services),</span>
+            <span class="comment">//)</span>
             .<span class="ident">configure</span>(<span class="ident">docs</span>::<span class="ident">services</span>)
             .<span class="ident">configure</span>(<span class="ident">templates</span>::<span class="ident">services</span>)
             .<span class="ident">configure</span>(<span class="ident">static_assets</span>::<span class="ident">services</span>)

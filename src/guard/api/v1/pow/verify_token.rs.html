@@ -185,7 +185,7 @@
 
 <span class="comment">// API keys are mcaptcha actor names</span>
 
-<span class="attribute">#[<span class="ident">post</span>(<span class="string">&quot;/api/v1/pow/siteverify&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">post</span>(<span class="string">&quot;/siteverify&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">validate_captcha_token</span>(
     <span class="ident">payload</span>: <span class="ident">web</span>::<span class="ident">Json</span><span class="op">&lt;</span><span class="ident">VerifyCaptchaResult</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>,
@@ -217,8 +217,8 @@
         <span class="kw">const</span> <span class="ident">NAME</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;enterprisetken&quot;</span>;
         <span class="kw">const</span> <span class="ident">PASSWORD</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;testingpas&quot;</span>;
         <span class="kw">const</span> <span class="ident">EMAIL</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;verifyuser@enter.com&quot;</span>;
-        <span class="kw">const</span> <span class="ident">VERIFY_CAPTCHA_URL</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;/api/v1/mcaptcha/pow/verify&quot;</span>;
-        <span class="kw">const</span> <span class="ident">GET_URL</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;/api/v1/mcaptcha/pow/config&quot;</span>;
+        <span class="kw">const</span> <span class="ident">VERIFY_CAPTCHA_URL</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;/api/v1/pow/verify&quot;</span>;
+        <span class="kw">const</span> <span class="ident">GET_URL</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;/api/v1/pow/config&quot;</span>;
         <span class="kw">const</span> <span class="ident">VERIFY_TOKEN_URL</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;/api/v1/pow/siteverify&quot;</span>;
         <span class="comment">//        const UPDATE_URL: &amp;str = &quot;/api/v1/mcaptcha/domain/token/duration/update&quot;;</span>
 
