@@ -17,7 +17,7 @@
 use std::env;
 
 use config::{Config, ConfigError, Environment, File};
-use log::debug;
+use log::{debug, info};
 use serde::Deserialize;
 use url::Url;
 
@@ -29,7 +29,7 @@ pub struct Server {
     pub domain: String,
     pub cookie_secret: String,
     pub ip: String,
-    pub url_prefix: Option<String>,
+    pub url_prefix: String,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -44,13 +44,18 @@ impl Server {
         format!("{}:{}", self.ip, self.port)
     }
 
-    fn check_url_prefix(&mut self) {
-        if let Some(prefix) = self.url_prefix.clone() {
-            self.url_prefix = Some(prefix.trim().into());
+    fn check_url_prefix(prefix: Option<String>) -> String {
+        let mut url_prefix;
+        if let Some(prefix) = prefix.clone() {
+            url_prefix = prefix.trim().into();
             if prefix.trim().is_empty() {
-                self.url_prefix = None;
+                url_prefix = "".into();
             }
+        } else {
+            url_prefix = "".into();
         }
+
+        url_prefix
     }
 }
 
@@ -133,9 +138,32 @@ impl Settings {
         }
 
         set_database_url(&mut s);
+        set_url_prefix(&mut s);
 
         s.try_into()
     }
+}
+
+#[cfg(not(tarpaulin_include))]
+fn set_url_prefix(s: &mut Config) {
+    let prefix = s
+        .get::<Option<String>>("server.url_prefix")
+        .expect("Couldn't access server url prefix");
+
+    let mut url_prefix: String;
+    if let Some(prefix) = prefix.clone() {
+        url_prefix = prefix.trim().into();
+        if prefix.trim().is_empty() {
+            url_prefix = "".into();
+        }
+    } else {
+        url_prefix = "".into();
+    }
+
+    info!("Setting URL prefix to: {}", &url_prefix);
+
+    s.set("server.url_prefix", url_prefix)
+        .expect("Couldn't set url prefix");
 }
 
 #[cfg(not(tarpaulin_include))]
@@ -171,20 +199,4 @@ fn set_database_url(s: &mut Config) {
         ),
     )
     .expect("Couldn't set databse url");
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn url_prefix_test() {
-        let mut settings = Settings::new().unwrap();
-        assert!(settings.server.url_prefix.is_none());
-        settings.server.url_prefix = Some("test".into());
-        settings.server.check_url_prefix();
-        settings.server.url_prefix = Some("    ".into());
-        settings.server.check_url_prefix();
-        assert!(settings.server.url_prefix.is_none());
-    }
 }

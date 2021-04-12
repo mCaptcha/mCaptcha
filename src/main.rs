@@ -16,11 +16,10 @@
 */
 use std::env;
 
-use actix_cors::Cors;
 use actix_identity::{CookieIdentityPolicy, IdentityService};
 use actix_web::{
-    client::Client, error::InternalError, http::StatusCode, middleware, web::scope,
-    web::JsonConfig, App, HttpServer,
+    error::InternalError, http::StatusCode, middleware, web::scope, web::JsonConfig, App,
+    HttpServer,
 };
 //use awc::Client;
 use cache_buster::Files as FileMap;
@@ -49,8 +48,8 @@ lazy_static! {
 //    pub static ref OPEN_API_DOC: String = env::var("OPEN_API_DOCS").unwrap();
     pub static ref S: String = env::var("S").unwrap();
 
-    pub static ref FILES: FileMap = FileMap::load();
-    pub static ref JS: &'static str = FILES.get("./static/bundle/main.js").unwrap();
+    pub static ref FILES: FileMap = FileMap::new();
+    pub static ref JS: &'static str = FILES.get_full_path("./static/bundle/main.js").unwrap();
     pub static ref CSS: &'static str = FILES.get("./static/bundle/main.css").unwrap();
 
 }
@@ -67,8 +66,6 @@ pub static VERIFICATION_PATH: &str = "mcaptchaVerificationChallenge.json";
 #[cfg(not(tarpaulin_include))]
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    use api::v1;
-    use docs;
     pretty_env_logger::init();
     info!(
         "{}: {}.\nFor more information, see: {}\nBuild info:\nVersion: {} commit: {}",
@@ -79,36 +76,36 @@ async fn main() -> std::io::Result<()> {
     sqlx::migrate!("./migrations/").run(&data.db).await.unwrap();
 
     HttpServer::new(move || {
-        let client = Client::default();
-
-        //        let captcha_api_cors = Cors::default()
-        //            .allow_any_origin()
-        //            .allowed_methods(vec!["POST"])
-        //            .allow_any_header()
-        //            .max_age(0)
-        //            .send_wildcard();
-
-        App::new()
-            .wrap(middleware::Logger::default())
-            .wrap(get_identity_service())
-            .wrap(middleware::Compress::default())
-            .data(data.clone())
-            .data(client.clone())
-            .wrap(middleware::NormalizePath::new(
-                middleware::normalize::TrailingSlash::Trim,
-            ))
-            .configure(v1::pow::services)
-            .configure(v1::services)
-            //.service(
-            //    scope("/")
-            //        .wrap(captcha_api_cors)
-            //        .configure(v1::pow::services),
-            //)
-            .configure(docs::services)
-            .configure(templates::services)
-            .configure(static_assets::services)
-            .app_data(get_json_err())
-        //    .service(Files::new("/", "./prod"))
+        //        let mut app = App::new()
+        //            .wrap(middleware::Logger::default())
+        //            .wrap(get_identity_service())
+        //            .wrap(middleware::Compress::default())
+        //            .data(data.clone())
+        //            .data(client.clone())
+        //            .wrap(middleware::NormalizePath::new(
+        //                middleware::normalize::TrailingSlash::Trim,
+        //            ))
+        //            .app_data(get_json_err());
+        //
+        //        if let Some(prefix) = &SETTINGS.server.url_prefix {
+        //            app = app.service(
+        //                scope(prefix)
+        //                    .configure(v1::pow::services)
+        //                    .configure(v1::services)
+        //                    .configure(docs::services)
+        //                    .configure(templates::services)
+        //                    .configure(static_assets::services),
+        //            );
+        //        } else {
+        //            app = app
+        //                .configure(v1::pow::services)
+        //                .configure(v1::services)
+        //                .configure(docs::services)
+        //                .configure(templates::services)
+        //                .configure(static_assets::services);
+        //        }
+        let app = get_scoped_app!(data);
+        app
     })
     .bind(SETTINGS.server.get_ip())
     .unwrap()
@@ -135,4 +132,46 @@ pub fn get_identity_service() -> IdentityService<CookieIdentityPolicy> {
             .domain(&SETTINGS.server.domain)
             .secure(false),
     )
+}
+
+#[macro_export]
+macro_rules! get_scoped_app {
+    ($data:expr) => {
+        App::new()
+            .wrap(middleware::Logger::default())
+            .wrap(get_identity_service())
+            .wrap(middleware::Compress::default())
+            .data($data.clone())
+            .wrap(middleware::NormalizePath::new(
+                middleware::normalize::TrailingSlash::Trim,
+            ))
+            .app_data(get_json_err())
+            .service(
+                scope(&crate::SETTINGS.server.url_prefix)
+                    .configure(crate::api::v1::pow::services)
+                    .configure(crate::api::v1::services)
+                    .configure(crate::docs::services)
+                    .configure(crate::templates::services)
+                    .configure(crate::static_assets::services),
+            )
+
+        //        if let Some(prefix) = &SETTINGS.server.url_prefix {
+        //            app = app.service(
+        //                scope(prefix)
+        //                    .configure(crate::api::v1::pow::services)
+        //                    .configure(crate::api::v1::services)
+        //                    .configure(crate::docs::services)
+        //                    .configure(crate::templates::services)
+        //                    .configure(crate::static_assets::services),
+        //            );
+        //        } else {
+        //            app = app
+        //.configure(crate::api::v1::pow::services)
+        //                    .configure(crate::api::v1::services)
+        //                    .configure(crate::docs::services)
+        //                    .configure(crate::templates::services)
+        //                    .configure(crate::static_assets::services),
+        //        }
+        //        app
+    };
 }

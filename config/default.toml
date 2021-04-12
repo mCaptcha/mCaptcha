@@ -28,7 +28,7 @@ ip= "0.0.0.0"
 # enter your hostname, eg: example.com
 domain = "localhost"
 allow_registration = true
-#url_prefix = ""
+url_prefix = "/test"
 
 [pow]
 # Please set a unique value, your mCaptcha instance's security depends on this being 

@@ -15,8 +15,12 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-use cache_buster::BusterBuilder;
 use std::process::Command;
+
+use cache_buster::BusterBuilder;
+
+#[path = "./src/settings.rs"]
+mod settings;
 
 fn main() {
     // note: add error checking yourself.
@@ -37,6 +41,7 @@ fn main() {
 }
 
 fn cache_bust() {
+    let settings = settings::Settings::new().unwrap();
     let types = vec![
         mime::IMAGE_PNG,
         mime::IMAGE_SVG,
@@ -49,11 +54,12 @@ fn cache_bust() {
     let config = BusterBuilder::default()
         .source("./static")
         .result("./prod")
+        .prefix(settings.server.url_prefix)
         .mime_types(types)
         .copy(true)
         .follow_links(true)
         .build()
         .unwrap();
 
-    config.process().unwrap().to_env();
+    config.process().unwrap();
 }

@@ -15,19 +15,22 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+use std::borrow::Cow;
+
 use actix_web::body::Body;
 use actix_web::{get, web, HttpResponse, Responder};
 use mime_guess::from_path;
 use rust_embed::RustEmbed;
 
-use std::borrow::Cow;
+use crate::SETTINGS;
 
 #[derive(RustEmbed)]
 #[folder = "docs/"]
 struct Asset;
 
 pub fn handle_embedded_file(path: &str) -> HttpResponse {
-    match Asset::get(path) {
+    println!("{}", &path);
+    match Asset::get(&path) {
         Some(content) => {
             let body: Body = match content {
                 Cow::Borrowed(bytes) => bytes.into(),
@@ -55,6 +58,7 @@ async fn spec() -> HttpResponse {
 
 #[get("/docs")]
 async fn index() -> HttpResponse {
+    println!("checking index");
     handle_embedded_file("index.html")
 }
 

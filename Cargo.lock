@@ -641,8 +641,8 @@ dependencies = [
 
 [[package]]
 name = "cache-buster"
-version = "0.1.0"
-source = "git+https://github.com/realaravinth/cache-buster#71d5ef67a2788789922eaa484e10269acbaeb8a7"
+version = "0.1.1"
+source = "git+https://github.com/realaravinth/cache-buster#d5593b2db677406b2c086d7eb25c9efb33d3b168"
 dependencies = [
  "data-encoding",
  "derive_builder 0.10.0",
@@ -802,9 +802,9 @@ dependencies = [
 
 [[package]]
 name = "crossbeam-channel"
-version = "0.5.0"
+version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dca26ee1f8d361640700bde38b2c37d8c22b3ce2d360e1fc1c74ea4b0aa7d775"
+checksum = "06ed27e177f16d65f0f0c22a213e17c696ace5dd64b14258b52f9417ccb52db4"
 dependencies = [
  "cfg-if 1.0.0",
  "crossbeam-utils 0.8.3",
@@ -1297,6 +1297,7 @@ dependencies = [
  "actix-http",
  "actix-identity",
  "actix-rt",
+ "actix-service",
  "actix-web",
  "argon2-creds",
  "cache-buster",
@@ -2385,9 +2386,9 @@ checksum = "d29ab0c6d3fc0ee92fe66e2d99f700eab17a8d57d1c1d3b748380fb20baa78cd"
 
 [[package]]
 name = "sct"
-version = "0.6.0"
+version = "0.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e3042af939fca8c3453b7af0f1c66e533a15a86169e39de2657310ade8f98d3c"
+checksum = "b362b83898e0e69f38515b82ee15aa80636befe47c3b6d3d89a911e78fc228ce"
 dependencies = [
  "ring",
  "untrusted",
@@ -2612,7 +2613,7 @@ dependencies = [
  "byteorder",
  "bytes 0.5.6",
  "crc",
- "crossbeam-channel 0.5.0",
+ "crossbeam-channel 0.5.1",
  "crossbeam-queue",
  "crossbeam-utils 0.8.3",
  "either",

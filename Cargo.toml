@@ -27,8 +27,8 @@ actix = "0.10"
 actix-identity = "0.3"
 actix-http = "2.2"
 actix-rt = "1"
-actix-cors= "0.5.4"
-
+actix-cors = "0.5.4"
+actix-service = "1.0.6"
 
 mime_guess = "2.0.3"
 rust-embed = "5.9.0"
@@ -66,10 +66,14 @@ sailfish = "0.3.2"
 
 [build-dependencies]
 serde_yaml = "0.8.17"
+serde = "1"
 serde_json = "1"
 yaml-rust = "0.4.5"
 cache-buster = { version = "0.1", git = "https://github.com/realaravinth/cache-buster" }
 mime = "0.3.16"
+log = "0.4"
+config = "0.11"
+url = "2.2"
 
 [dev-dependencies]
 pow_sha256 = { version = "0.2.1", git = "https://github.com/mcaptcha/pow_sha256" }
