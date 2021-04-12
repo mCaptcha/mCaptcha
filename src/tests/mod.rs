@@ -76,7 +76,7 @@ pub async fn register<'a>(name: &'a str, email: &str, password: &str) {
     let msg = Register {
         username: name.into(),
         password: password.into(),
-        email: email.into(),
+        email: Some(email.into()),
     };
     let resp =
         test::call_service(&mut app, post_request!(&msg, "/api/v1/signup").to_request()).await;

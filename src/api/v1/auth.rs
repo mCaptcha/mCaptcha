@@ -29,7 +29,7 @@ use crate::Data;
 pub struct Register {
     pub username: String,
     pub password: String,
-    pub email: String,
+    pub email: Option<String>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -53,22 +53,44 @@ pub async fn signup(
     }
     let username = data.creds.username(&payload.username)?;
     let hash = data.creds.password(&payload.password)?;
-    data.creds.email(Some(&payload.email))?;
+    //    let payload = payload.into_inner();
+    //    let email = payload.email.clone();
+    //    if payload.email.is_some() {
+    //        let email = email.clone().unwrap();
+    //        data.creds.email(Some(&email))?;
+    //    }
+
+    if let Some(email) = &payload.email {
+        data.creds.email(Some(&email))?;
+    }
 
     let mut secret;
 
     loop {
         secret = get_random(32);
-        let res = sqlx::query!(
-            "INSERT INTO mcaptcha_users 
+        let res;
+        if let Some(email) = &payload.email {
+            res = sqlx::query!(
+                "INSERT INTO mcaptcha_users 
         (name , password, email, secret) VALUES ($1, $2, $3, $4)",
-            &username,
-            &hash,
-            &payload.email,
-            &secret,
-        )
-        .execute(&data.db)
-        .await;
+                &username,
+                &hash,
+                &email,
+                &secret,
+            )
+            .execute(&data.db)
+            .await;
+        } else {
+            res = sqlx::query!(
+                "INSERT INTO mcaptcha_users 
+        (name , password,  secret) VALUES ($1, $2, $3)",
+                &username,
+                &hash,
+                &secret,
+            )
+            .execute(&data.db)
+            .await;
+        }
         if res.is_ok() {
             break;
         } else {

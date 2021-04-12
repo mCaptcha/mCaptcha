@@ -39,6 +39,17 @@ async fn auth_works() {
 
     delete_user(NAME, &data).await;
 
+    // 1. Register with email == None
+    let msg = Register {
+        username: NAME.into(),
+        password: PASSWORD.into(),
+        email: None,
+    };
+    let resp = test::call_service(&mut app, post_request!(&msg, SIGNUP).to_request()).await;
+    assert_eq!(resp.status(), StatusCode::OK);
+    // delete user
+    delete_user(NAME, &data).await;
+
     // 1. Register and signin
     let (_, _, signin_resp) = register_and_signin(NAME, EMAIL, PASSWORD).await;
     let cookies = get_cookie!(signin_resp);
@@ -69,7 +80,7 @@ async fn auth_works() {
     let msg = Register {
         username: NAME.into(),
         password: PASSWORD.into(),
-        email: EMAIL.into(),
+        email: Some(EMAIL.into()),
     };
     bad_post_req_test(
         NAME,
