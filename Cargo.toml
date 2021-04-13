@@ -30,9 +30,11 @@ actix-rt = "1"
 actix-cors = "0.5.4"
 actix-service = "1.0.6"
 
+csrf = "0.4.0"
+
 mime_guess = "2.0.3"
 rust-embed = "5.9.0"
-cache-buster = { version = "0.1", git = "https://github.com/realaravinth/cache-buster" }
+cache-buster = { version = "0.1.0", git = "https://github.com/realaravinth/cache-buster" }
 
 futures = "0.3.14"
 
@@ -69,7 +71,7 @@ serde_yaml = "0.8.17"
 serde = "1"
 serde_json = "1"
 yaml-rust = "0.4.5"
-cache-buster = { version = "0.1", git = "https://github.com/realaravinth/cache-buster" }
+cache-buster = { version = "0.1.0", git = "https://github.com/realaravinth/cache-buster" }
 mime = "0.3.16"
 log = "0.4"
 config = "0.11"
