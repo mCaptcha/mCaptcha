@@ -16,11 +16,10 @@
 */
 use std::env;
 
-use actix_cors::Cors;
 use actix_identity::{CookieIdentityPolicy, IdentityService};
 use actix_web::{
-    client::Client, error::InternalError, http::StatusCode, middleware, web::scope,
-    web::JsonConfig, App, HttpServer,
+    client::Client, error::InternalError, http::StatusCode, middleware, web::JsonConfig, App,
+    HttpServer,
 };
 //use awc::Client;
 use cache_buster::Files as FileMap;

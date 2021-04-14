@@ -36,6 +36,7 @@ pub fn services(cfg: &mut ServiceConfig) {
     cfg.service(auth::email_exists);
     cfg.service(auth::get_secret);
     cfg.service(auth::update_user_secret);
+    cfg.service(auth::set_email);
 
     // mcaptcha
     cfg.service(mcaptcha::mcaptcha::add_mcaptcha);

@@ -205,6 +205,47 @@ pub async fn update_user_secret(
     Ok(HttpResponse::Ok())
 }
 
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct Email {
+    pub email: String,
+}
+
+#[post("/api/v1/account/email/")]
+pub async fn set_email(
+    id: Identity,
+
+    payload: web::Json<Email>,
+
+    data: web::Data<Data>,
+) -> ServiceResult<impl Responder> {
+    is_authenticated(&id)?;
+
+    let username = id.identity().unwrap();
+
+    data.creds.email(Some(&payload.email))?;
+
+    let res = sqlx::query!(
+        "UPDATE mcaptcha_users set email = $1
+        WHERE name = $2",
+        &payload.email,
+        &username,
+    )
+    .execute(&data.db)
+    .await;
+    if !res.is_ok() {
+        if let Err(sqlx::Error::Database(err)) = res {
+            if err.code() == Some(Cow::from("23505"))
+                && err.message().contains("mcaptcha_users_email_key")
+            {
+                Err(ServiceError::EmailTaken)?
+            } else {
+                Err(sqlx::Error::Database(err))?
+            }
+        };
+    }
+    Ok(HttpResponse::Ok())
+}
+
 #[post("/api/v1/signout")]
 pub async fn signout(id: Identity) -> impl Responder {
     if let Some(_) = id.identity() {

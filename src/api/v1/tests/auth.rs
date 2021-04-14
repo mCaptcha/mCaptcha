@@ -134,10 +134,12 @@ async fn auth_works() {
 }
 
 #[actix_rt::test]
-async fn del_userworks() {
+async fn email_udpate_and_del_userworks() {
     const NAME: &str = "testuser2";
     const PASSWORD: &str = "longpassword2";
     const EMAIL: &str = "testuser1@a.com2";
+    const DEL_URL: &str = "/api/v1/account/delete";
+    const EMAIL_UPDATE: &str = "/api/v1/account/email/";
 
     {
         let data = Data::new().await;
@@ -148,13 +150,26 @@ async fn del_userworks() {
     let cookies = get_cookie!(signin_resp);
     let mut app = get_app!(data).await;
 
+    let email_payload = Email {
+        email: EMAIL.into(),
+    };
+    let email_update_resp = test::call_service(
+        &mut app,
+        post_request!(&email_payload, EMAIL_UPDATE)
+            .cookie(cookies.clone())
+            .to_request(),
+    )
+    .await;
+
+    assert_eq!(email_update_resp.status(), StatusCode::OK);
+
     let payload = Password {
         password: creds.password,
     };
 
     let delete_user_resp = test::call_service(
         &mut app,
-        post_request!(&payload, "/api/v1/account/delete")
+        post_request!(&payload, DEL_URL)
             .cookie(cookies)
             .to_request(),
     )

@@ -77,6 +77,11 @@ pub enum ServiceError {
     /// when the a username is already taken
     #[display(fmt = "Username not available")]
     UsernameTaken,
+
+    /// email is already taken
+    #[display(fmt = "Email not available")]
+    EmailTaken,
+
     /// when the a token name is already taken
     /// token not found
     #[display(fmt = "Token not found. Is token registered?")]
@@ -122,6 +127,7 @@ impl ResponseError for ServiceError {
             ServiceError::PasswordTooLong => StatusCode::BAD_REQUEST,
 
             ServiceError::UsernameTaken => StatusCode::BAD_REQUEST,
+            ServiceError::EmailTaken => StatusCode::BAD_REQUEST,
 
             ServiceError::TokenNotFound => StatusCode::NOT_FOUND,
             ServiceError::CaptchaError(e) => match e {

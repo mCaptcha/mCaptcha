@@ -44,14 +44,14 @@ impl Server {
         format!("{}:{}", self.ip, self.port)
     }
 
-    fn check_url_prefix(&mut self) {
-        if let Some(prefix) = self.url_prefix.clone() {
-            self.url_prefix = Some(prefix.trim().into());
-            if prefix.trim().is_empty() {
-                self.url_prefix = None;
-            }
-        }
-    }
+    //fn check_url_prefix(&mut self) {
+    //    if let Some(prefix) = self.url_prefix.clone() {
+    //        self.url_prefix = Some(prefix.trim().into());
+    //        if prefix.trim().is_empty() {
+    //            self.url_prefix = None;
+    //        }
+    //    }
+    //}
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -173,18 +173,18 @@ fn set_database_url(s: &mut Config) {
     .expect("Couldn't set databse url");
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn url_prefix_test() {
-        let mut settings = Settings::new().unwrap();
-        assert!(settings.server.url_prefix.is_none());
-        settings.server.url_prefix = Some("test".into());
-        settings.server.check_url_prefix();
-        settings.server.url_prefix = Some("    ".into());
-        settings.server.check_url_prefix();
-        assert!(settings.server.url_prefix.is_none());
-    }
-}
+//#[cfg(test)]
+//mod tests {
+//    use super::*;
+//
+//    #[test]
+//    fn url_prefix_test() {
+//        let mut settings = Settings::new().unwrap();
+//        assert!(settings.server.url_prefix.is_none());
+//        settings.server.url_prefix = Some("test".into());
+//        settings.server.check_url_prefix();
+//        settings.server.url_prefix = Some("    ".into());
+//        settings.server.check_url_prefix();
+//        assert!(settings.server.url_prefix.is_none());
+//    }
+//}
