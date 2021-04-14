@@ -138,7 +138,6 @@
 <span id="135">135</span>
 <span id="136">136</span>
 <span id="137">137</span>
-<span id="138">138</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -158,11 +157,10 @@
 */</span>
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">env</span>;
 
-<span class="kw">use</span> <span class="ident">actix_cors</span>::<span class="ident">Cors</span>;
 <span class="kw">use</span> <span class="ident">actix_identity</span>::{<span class="ident">CookieIdentityPolicy</span>, <span class="ident">IdentityService</span>};
 <span class="kw">use</span> <span class="ident">actix_web</span>::{
-    <span class="ident">client</span>::<span class="ident">Client</span>, <span class="ident">error</span>::<span class="ident">InternalError</span>, <span class="ident">http</span>::<span class="ident">StatusCode</span>, <span class="ident">middleware</span>, <span class="ident">web</span>::<span class="ident">scope</span>,
-    <span class="ident">web</span>::<span class="ident">JsonConfig</span>, <span class="ident">App</span>, <span class="ident">HttpServer</span>,
+    <span class="ident">client</span>::<span class="ident">Client</span>, <span class="ident">error</span>::<span class="ident">InternalError</span>, <span class="ident">http</span>::<span class="ident">StatusCode</span>, <span class="ident">middleware</span>, <span class="ident">web</span>::<span class="ident">JsonConfig</span>, <span class="ident">App</span>,
+    <span class="ident">HttpServer</span>,
 };
 <span class="comment">//use awc::Client;</span>
 <span class="kw">use</span> <span class="ident">cache_buster</span>::<span class="ident">Files</span> <span class="kw">as</span> <span class="ident">FileMap</span>;
