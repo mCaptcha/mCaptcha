@@ -3,6 +3,9 @@ import './main.scss';
 import './nav/main.scss';
 */
 
+
+import './main.scss';
+
 export const index = () => {
   //  const html = document.documentElement;
   //  const body = document.body;

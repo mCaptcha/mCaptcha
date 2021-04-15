@@ -1,4 +1,5 @@
 import ROUTES from '../../api/v1/routes';
+import VIEWS from '../../views/v1/routes';
 
 import isBlankString from '../../utils/genJsonPayload';
 import genJsonPayload from '../../utils/genJsonPayload';
@@ -44,6 +45,7 @@ const registerUser = async e => {
   let res = await fetch(ROUTES.registerUser, genJsonPayload(payload));
   if (res.ok) {
     alert('success');
+    window.location.assign(VIEWS.loginUser);
   } else {
     let err = await res.json();
     alert(`error: ${err.error}`);

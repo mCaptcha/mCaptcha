@@ -1,4 +1,5 @@
 import ROUTES from '../../api/v1/routes';
+import VIEWS from '../../views/v1/routes';
 
 import isBlankString from '../../utils/genJsonPayload';
 import genJsonPayload from '../../utils/genJsonPayload';
@@ -19,6 +20,7 @@ const login = e => {
   fetch(ROUTES.loginUser, genJsonPayload(payload)).then(res => {
     if (res.ok) {
       alert('success');
+      window.location.assign(VIEWS.panelHome);
     } else {
       res.json().then(err => alert(`error: ${err.error}`));
     }
