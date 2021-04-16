@@ -1,4 +1,9 @@
 @import '../reset';
+@import '../vars';
+
+body {
+  background-color: $backdrop;
+}
 
 .form__logo {
   width: 110px;
@@ -32,6 +37,7 @@
 
 .form__box {
   border: 1px solid #eaecef;
+  border: 1px solid black;
   background-color: #f6f8fa;
   border-radius: 5px;
   padding: 20px 0;
@@ -75,8 +81,9 @@
 .form__submit-button {
   display: block;
   border: 1px solid skyblue;
-  background: #2ea44f;
-  color: white;
+
+  background: $violet;
+  color: $light-text;
   height: 40px;
   border-radius: 5px;
   width: 80%;

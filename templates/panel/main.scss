@@ -1,3 +1,6 @@
+@import '../reset';
+@import '../vars';
+
 * {
   margin: 0;
   padding: 0;
@@ -11,15 +14,6 @@ li {
   list-style: none;
 }
 
-:root {
-  --green: #5cad66;
-  --violet: #800080;
-  --backdrop: #f0f0f0;
-  --light-text: rgba(255, 255, 255, 0.87);
-  --secondary-backdrop: #2b2c30;
-  --light-grey: rgba(0, 0, 0, 0.125);
-}
-
 .secondary-menu {
   position: fixed;
   width: 14%;
@@ -30,8 +24,8 @@ li {
   height: 100%;
   overflow: auto;
 
-  background-color: var(--secondary-backdrop);
-  color: var(--light-text);
+  background-color: $secondary-backdrop;
+  color: $light-text;
 }
 
 .secondary-menu__heading {
@@ -40,7 +34,7 @@ li {
   display: flex;
 }
 .secondary-menu__heading:hover {
-  color: var(--green);
+  color: $green;
   cursor: grab;
 }
 
@@ -87,7 +81,7 @@ li {
     */
 
 .secondary-menu__item-link:hover {
-  color: var(--green);
+  color: $green;
   cursor: grab;
   filter: invert(58%) sepia(60%) saturate(331%) hue-rotate(76deg)
     brightness(91%) contrast(92%);
@@ -105,7 +99,7 @@ main {
   right: 0;
   left: 14%;
   bottom: 0;
-  background-color: var(--backdrop);
+  background-color: $backdrop;
 }
 
 .task-bar {
@@ -179,7 +173,7 @@ main {
 
 .main-menu__add-site {
   display: inline-block;
-  background-color: var(--violet);
+  background-color: $violet;
   color: white;
   font-weight: 500;
   font-size: 16px;
@@ -192,14 +186,14 @@ main {
 }
 
 .main-menu__add-site:hover {
-  background-color: var(--violet);
+  background-color: $violet;
   cursor: grab;
   transform: translateY(-5px);
 }
 
 .help-text {
   border-radius: 4px;
-  box-shadow: var(--secondary-backdrop) 0px 2px 6px 0px;
+  box-shadow: $secondary-backdrop 0px 2px 6px 0px;
   min-width: 70%;
   max-width: 80%;
   min-height: 70px;
@@ -210,8 +204,8 @@ main {
 
 .help-text__serial-num {
   display: inline-flex;
-  background-color: var(--violet);
-  color: var(--light-text);
+  background-color: $violet;
+  color: $light-text;
   width: 30px;
   height: 30px;
   border-radius: 50%;
@@ -252,7 +246,7 @@ main {
 .sitekey-form__title-flex-container {
   display: flex;
   width: 100%;
-  border-bottom: 0.1px solid var(--light-grey);
+  border-bottom: 0.1px solid $light-grey;
 }
 
 .sitekey-form__title {
@@ -297,13 +291,13 @@ main {
 }
 
 .sitekey-form__add-level {
-  background-color: var(--violet);
+  background-color: $violet;
   color: white;
   padding: 5px;
   font-size: 16px;
 
   border-radius: 5px;
-  border: 1px var(--light-grey) solid;
+  border: 1px $light-grey solid;
   height: 40px;
   min-width: 125px;
   margin: auto;
@@ -312,13 +306,13 @@ main {
 .sitekey-form__submit {
   margin-top: 50px;
   display: block;
-  background-color: var(--violet);
+  background-color: $violet;
   color: white;
   padding: 5px;
   font-size: 20px;
 
   border-radius: 5px;
-  border: 1px var(--light-grey) solid;
+  border: 1px $light-grey solid;
   min-height: 45px;
   width: 125px;
   width: 90%;

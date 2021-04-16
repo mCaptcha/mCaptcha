@@ -7,7 +7,7 @@ import genJsonPayload from '../../utils/genJsonPayload';
 import userExists from './userExists';
 import {checkEmailExists} from './emailExists';
 
-import '../forms.scss';
+//import '../forms.scss';
 
 const registerUser = async e => {
   e.preventDefault();

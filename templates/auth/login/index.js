@@ -4,7 +4,7 @@ import VIEWS from '../../views/v1/routes';
 import isBlankString from '../../utils/genJsonPayload';
 import genJsonPayload from '../../utils/genJsonPayload';
 
-import '../forms.scss';
+//import '../forms.scss';
 
 const login = e => {
   e.preventDefault();

@@ -4,7 +4,7 @@ import './nav/main.scss';
 */
 
 
-import './main.scss';
+//import './main.scss';
 
 export const index = () => {
   //  const html = document.documentElement;
