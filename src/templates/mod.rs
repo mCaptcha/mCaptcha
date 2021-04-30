@@ -29,24 +29,28 @@ pub fn services(cfg: &mut ServiceConfig) {
     cfg.service(panel::sitekey::add_sitekey);
 }
 
-//#[cfg(not(tarpaulin_include))]
-//#[cfg(test)]
-//mod tests {
-//    use actix_web::http::StatusCode;
-//    use actix_web::test;
-//
-//    use super::*;
-//    use crate::*;
-//
-//    #[actix_rt::test]
-//    async fn templates_work() {
-//        let mut app = test::init_service(App::new().configure(services)).await;
-//        let urls = vec!["/", "/join", "/panel"];
-//
-//        for url in urls.iter() {
-//            let resp =
-//                test::call_service(&mut app, test::TestRequest::get().uri(url).to_request()).await;
-//            assert_eq!(resp.status(), StatusCode::OK);
-//        }
-//    }
-//}
+#[cfg(not(tarpaulin_include))]
+#[cfg(test)]
+mod tests {
+    use actix_web::http::StatusCode;
+    use actix_web::test;
+
+    use super::*;
+    use crate::*;
+
+    #[actix_rt::test]
+    async fn templates_work() {
+        let mut app = test::init_service(App::new().configure(services)).await;
+        let urls = vec!["/", "/join", "/login", "/sitekey/add"];
+
+        for url in urls.iter() {
+            let resp =
+                test::call_service(&mut app, test::TestRequest::get().uri(url).to_request()).await;
+            if url == urls.get(0).unwrap() {
+                assert_eq!(resp.status(), StatusCode::TEMPORARY_REDIRECT);
+            } else {
+                assert_eq!(resp.status(), StatusCode::OK);
+            }
+        }
+    }
+}

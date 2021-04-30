@@ -55,5 +55,5 @@ fn cache_bust() {
         .build()
         .unwrap();
 
-    config.process().unwrap().to_env();
+    config.process().unwrap();
 }

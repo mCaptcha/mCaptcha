@@ -62,7 +62,7 @@ pub async fn signup(
     //    }
 
     if let Some(email) = &payload.email {
-        data.creds.email(Some(&email))?;
+        data.creds.email(&email)?;
     }
 
     let mut secret;
@@ -223,7 +223,7 @@ pub async fn set_email(
 
     let username = id.identity().unwrap();
 
-    data.creds.email(Some(&payload.email))?;
+    data.creds.email(&payload.email)?;
 
     let res = sqlx::query!(
         "UPDATE mcaptcha_users set email = $1

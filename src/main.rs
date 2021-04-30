@@ -42,7 +42,10 @@ pub use settings::Settings;
 lazy_static! {
     pub static ref SETTINGS: Settings = Settings::new().unwrap();
     pub static ref S: String = env::var("S").unwrap();
-    pub static ref FILES: FileMap = FileMap::load();
+    pub static ref FILES: FileMap = {
+        let map = include_str!("cache_buster_data.json");
+        FileMap::new(&map)
+    };
     pub static ref JS: &'static str = FILES.get("./static/bundle/main.js").unwrap();
     pub static ref CSS: &'static str = FILES.get("./static/bundle/main.css").unwrap();
 }
