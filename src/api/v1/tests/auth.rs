@@ -124,13 +124,13 @@ async fn auth_works() {
     // 5. signout
     let signout_resp = test::call_service(
         &mut app,
-        test::TestRequest::post()
-            .uri("/api/v1/signout")
+        test::TestRequest::get()
+            .uri("/logout")
             .cookie(cookies)
             .to_request(),
     )
     .await;
-    assert_eq!(signout_resp.status(), StatusCode::OK);
+    assert_eq!(signout_resp.status(), StatusCode::TEMPORARY_REDIRECT);
 }
 
 #[actix_rt::test]

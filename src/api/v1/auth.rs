@@ -17,6 +17,7 @@
 use std::borrow::Cow;
 
 use actix_identity::Identity;
+use actix_web::http::header;
 use actix_web::{get, post, web, HttpResponse, Responder};
 use log::debug;
 use serde::{Deserialize, Serialize};
@@ -246,12 +247,14 @@ pub async fn set_email(
     Ok(HttpResponse::Ok())
 }
 
-#[post("/api/v1/signout")]
+#[get("/logout")]
 pub async fn signout(id: Identity) -> impl Responder {
     if let Some(_) = id.identity() {
         id.forget();
     }
-    HttpResponse::Ok()
+    HttpResponse::TemporaryRedirect()
+        .set_header(header::LOCATION, "/login")
+        .body("")
 }
 
 /// Check if user is authenticated

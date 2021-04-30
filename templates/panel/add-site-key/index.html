@@ -1,48 +1,15 @@
-<form class="sitekey-form" action="/something" method="post">
-  <div class="sitekey-form__title-flex-container">
-    <b class="sitekey-form__title">Add Site Key</b>
-  </div>
-  <div class="sitekey-form__add-level-flex-container">
-    <label class="sitekey-form__label" for="description">Description</label>
-  </div>
-  <input
-    class="sitekey-form__input"
-    type="text/"
-    name="description"
-    id="description"
-    value=""
-  />
+<. include!("../../components/headers.html"); .> <. include!("../header/index.html");
+.>
 
-  <div class="sitekey-form__add-level-flex-container">
-    <!-- insert Javascript for adding more levels as needed -->
-    <label class="sitekey-form__label" for="level1">Level 1</label>
+<main>
+  <. include!("../taskbar/index.html"); .> <.
+  include!("../help-banner/index.html"); .>
+  <!-- Main content container -->
+  <div class="inner-container">
+    <!-- Main menu/ important actions roaster -->
+
+    <. include!("../add-site-key/form.html"); .>
   </div>
-
-  <input
-    class="sitekey-form__input"
-    type="text/"
-    name="level1"
-    id="level1"
-    value=""
-  />
-
-  <div class="sitekey-form__add-level-flex-container">
-    <label class="sitekey-form__label" for="level1">Level 2</label>
-  </div>
-
-  <div class="sitekey-form__add-level-flex-container">
-    <!--
-              <div class="sitekey-form__add-level-spacer"></div>
-              -->
-    <input
-      class="sitekey-form__input--add-level"
-      type="text/"
-      name="level2"
-      id="level2"
-      value=""
-    />
-
-    <button class="sitekey-form__add-level">Add Level</button>
-  </div>
-  <button class="sitekey-form__submit" type="submit">Submit</button>
-</form>
+  <!-- end of container -->
+</main>
+<. include!("../../components/footers.html"); .>

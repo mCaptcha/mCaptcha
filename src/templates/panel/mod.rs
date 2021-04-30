@@ -15,37 +15,42 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+use actix_identity::Identity;
+use actix_web::http::header;
 use actix_web::{get, HttpResponse, Responder};
 use sailfish::TemplateOnce;
 
+use crate::api::v1::auth::is_authenticated;
+
+pub mod sitekey;
+
 #[derive(TemplateOnce, Clone)]
 #[template(path = "panel/index.html")]
-pub struct IndexPage {
-    pub name: String,
-    pub title: String,
+pub struct IndexPage<'a> {
+    pub name: &'a str,
+    pub title: &'a str,
 }
 
 const TITLE: &str = "Dashboard";
 
-impl Default for IndexPage {
+impl<'a> Default for IndexPage<'a> {
     fn default() -> Self {
         IndexPage {
-            name: "mCaptcha".into(),
-            title: "Home".into(),
+            name: "mCaptcha",
+            title: TITLE,
         }
     }
 }
 
-impl IndexPage {
-    pub fn run(&self) -> Result<String, &'static str> {
-        let index = self.clone().render_once().unwrap();
-        Ok(index)
+#[get("/")]
+pub async fn panel(id: Identity) -> impl Responder {
+    if is_authenticated(&id).is_err() {
+        return HttpResponse::TemporaryRedirect()
+            .set_header(header::LOCATION, "/login")
+            .body("");
     }
-}
 
-#[get("/panel")]
-pub async fn panel() -> impl Responder {
-    let body = IndexPage::default().run().unwrap();
+    let body = IndexPage::default().render_once().unwrap();
     HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
         .body(body)

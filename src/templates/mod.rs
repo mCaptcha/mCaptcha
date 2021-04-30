@@ -23,7 +23,10 @@ mod panel;
 pub fn services(cfg: &mut ServiceConfig) {
     cfg.service(auth::login::login);
     cfg.service(auth::register::join);
+
+    // panel
     cfg.service(panel::panel);
+    cfg.service(panel::sitekey::add_sitekey);
 }
 
 //#[cfg(not(tarpaulin_include))]

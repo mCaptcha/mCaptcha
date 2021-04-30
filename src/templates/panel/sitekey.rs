@@ -18,24 +18,26 @@
 use actix_web::{get, HttpResponse, Responder};
 use sailfish::TemplateOnce;
 
-#[derive(Clone, TemplateOnce)]
-#[template(path = "auth/login/index.html")]
-struct IndexPage<'a> {
-    name: &'a str,
-    title: &'a str,
+#[derive(TemplateOnce, Clone)]
+#[template(path = "panel/add-site-key/index.html")]
+pub struct IndexPage<'a> {
+    pub name: &'a str,
+    pub title: &'a str,
 }
+
+const TITLE: &str = "Add Site Key";
 
 impl<'a> Default for IndexPage<'a> {
     fn default() -> Self {
         IndexPage {
             name: "mCaptcha",
-            title: "Login",
+            title: TITLE,
         }
     }
 }
 
-#[get("/login")]
-pub async fn login() -> impl Responder {
+#[get("/sitekey/add")]
+pub async fn add_sitekey() -> impl Responder {
     let body = IndexPage::default().render_once().unwrap();
     HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")

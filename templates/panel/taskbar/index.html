@@ -4,7 +4,11 @@
         -->
   <li class="task-bar__spacer"></li>
   <li class="task-bar__action">
-    <button class="main-menu__add-site">+ New Site</button>
+      <a class="task-bar__link" href="/panel/sitekey/add">
+        <button class="main-menu__add-site">
+            + New Site
+        </button>
+    </a>
   </li>
   <li class="task-bar__action">
     <img class="task-bar__icon" src="<.=
@@ -13,11 +17,14 @@
 
   <li class="task-bar__action">
     <img class="task-bar__icon" src="<.=
-    crate::FILES.get("./static/img/svg/bell.svg").unwrap() .>" alt="Notifications" />
+    crate::FILES.get("./static/img/svg/bell.svg").unwrap() .>"
+    alt="Notifications" />
   </li>
 
   <li class="task-bar__action">
+      <a href="/logout">
     <img class="task-bar__icon" src="<.=
-    crate::FILES.get("./static/img/svg/log-out.svg").unwrap() .>" alt="Profile" />
+    crate::FILES.get("./static/img/svg/log-out.svg").unwrap() .>" alt="Profile"
+    /></a>
   </li>
 </ul>

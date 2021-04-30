@@ -126,6 +126,10 @@ main {
   margin: auto 20px;
 }
 
+.task-bar__icon {
+  color: $light-text;
+}
+
 .task-bar__icon:hover {
   cursor: grab;
 }
