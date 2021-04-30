@@ -44,14 +44,6 @@
 <span id="41">41</span>
 <span id="42">42</span>
 <span id="43">43</span>
-<span id="44">44</span>
-<span id="45">45</span>
-<span id="46">46</span>
-<span id="47">47</span>
-<span id="48">48</span>
-<span id="49">49</span>
-<span id="50">50</span>
-<span id="51">51</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -75,31 +67,23 @@
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">TemplateOnce</span>, <span class="ident">Clone</span>)]</span>
 <span class="attribute">#[<span class="ident">template</span>(<span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;auth/register/index.html&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">IndexPage</span> {
-    <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">String</span>,
-    <span class="kw">pub</span> <span class="ident">title</span>: <span class="ident">String</span>,
+<span class="kw">struct</span> <span class="ident">IndexPage</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>,
+    <span class="ident">title</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>,
 }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">IndexPage</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">IndexPage</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">IndexPage</span> {
-            <span class="ident">name</span>: <span class="string">&quot;mCaptcha&quot;</span>.<span class="ident">into</span>(),
-            <span class="ident">title</span>: <span class="string">&quot;Join&quot;</span>.<span class="ident">into</span>(),
+            <span class="ident">name</span>: <span class="string">&quot;mCaptcha&quot;</span>,
+            <span class="ident">title</span>: <span class="string">&quot;Join&quot;</span>,
         }
-    }
-}
-
-<span class="kw">impl</span> <span class="ident">IndexPage</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">run</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">index</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">clone</span>().<span class="ident">render_once</span>().<span class="ident">unwrap</span>();
-
-        <span class="prelude-val">Ok</span>(<span class="ident">index</span>)
     }
 }
 
 <span class="attribute">#[<span class="ident">get</span>(<span class="string">&quot;/join&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">join</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Responder</span> {
-    <span class="kw">let</span> <span class="ident">body</span> <span class="op">=</span> <span class="ident">IndexPage</span>::<span class="ident">default</span>().<span class="ident">run</span>().<span class="ident">unwrap</span>();
+    <span class="kw">let</span> <span class="ident">body</span> <span class="op">=</span> <span class="ident">IndexPage</span>::<span class="ident">default</span>().<span class="ident">render_once</span>().<span class="ident">unwrap</span>();
     <span class="ident">HttpResponse</span>::<span class="prelude-val">Ok</span>()
         .<span class="ident">content_type</span>(<span class="string">&quot;text/html; charset=utf-8&quot;</span>)
         .<span class="ident">body</span>(<span class="ident">body</span>)

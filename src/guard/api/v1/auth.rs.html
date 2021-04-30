@@ -359,6 +359,9 @@
 <span id="356">356</span>
 <span id="357">357</span>
 <span id="358">358</span>
+<span id="359">359</span>
+<span id="360">360</span>
+<span id="361">361</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -379,6 +382,7 @@
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">borrow</span>::<span class="ident">Cow</span>;
 
 <span class="kw">use</span> <span class="ident">actix_identity</span>::<span class="ident">Identity</span>;
+<span class="kw">use</span> <span class="ident">actix_web</span>::<span class="ident">http</span>::<span class="ident">header</span>;
 <span class="kw">use</span> <span class="ident">actix_web</span>::{<span class="ident">get</span>, <span class="ident">post</span>, <span class="ident">web</span>, <span class="ident">HttpResponse</span>, <span class="ident">Responder</span>};
 <span class="kw">use</span> <span class="ident">log</span>::<span class="ident">debug</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
@@ -608,12 +612,14 @@
     <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse</span>::<span class="prelude-val">Ok</span>())
 }
 
-<span class="attribute">#[<span class="ident">post</span>(<span class="string">&quot;/api/v1/signout&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">get</span>(<span class="string">&quot;/logout&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">signout</span>(<span class="ident">id</span>: <span class="ident">Identity</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Responder</span> {
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="kw">_</span>) <span class="op">=</span> <span class="ident">id</span>.<span class="ident">identity</span>() {
         <span class="ident">id</span>.<span class="ident">forget</span>();
     }
-    <span class="ident">HttpResponse</span>::<span class="prelude-val">Ok</span>()
+    <span class="ident">HttpResponse</span>::<span class="ident">TemporaryRedirect</span>()
+        .<span class="ident">set_header</span>(<span class="ident">header</span>::<span class="ident">LOCATION</span>, <span class="string">&quot;/login&quot;</span>)
+        .<span class="ident">body</span>(<span class="string">&quot;&quot;</span>)
 }
 
 <span class="doccomment">/// Check if user is authenticated</span>
