@@ -1,11 +1,11 @@
 const ROUTES = {
   registerUser: '/join/',
 
-  loginUser: '/',
+  loginUser: '/login/',
 
   signoutUser: '/api/v1/signout',
 
-  panelHome: '/panel/',
+  panelHome: '/',
 
   docsHome: '/docs/',
 

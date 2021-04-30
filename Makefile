@@ -2,7 +2,7 @@
 default: build-frontend
 	cargo build
 
-run: build-frontend-dev
+run: build-frontend
 	cargo run
 
 dev-env:

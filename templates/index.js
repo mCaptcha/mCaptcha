@@ -8,9 +8,9 @@ import './panel/main.scss';
 
 const router = new Router();
 
-router.register('/', login.index);
+router.register('/', panel.index);
 router.register('/register', register.index);
-router.register('/panel/', panel.index);
+router.register('/login', login.index);
 router.register('/panel/layout.html/', panel.index);
 
 router.route();

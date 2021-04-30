@@ -21,16 +21,14 @@ use actix_web::{
     client::Client, error::InternalError, http::StatusCode, middleware, web::JsonConfig, App,
     HttpServer,
 };
-//use awc::Client;
 use cache_buster::Files as FileMap;
 use lazy_static::lazy_static;
 use log::info;
 
-mod data;
-mod errors;
-//mod routes;
 mod api;
+mod data;
 mod docs;
+mod errors;
 mod settings;
 mod static_assets;
 mod templates;
@@ -43,15 +41,10 @@ pub use settings::Settings;
 
 lazy_static! {
     pub static ref SETTINGS: Settings = Settings::new().unwrap();
-//    pub static ref GIT_COMMIT_HASH: String = env::var("GIT_HASH").unwrap();
-
-//    pub static ref OPEN_API_DOC: String = env::var("OPEN_API_DOCS").unwrap();
     pub static ref S: String = env::var("S").unwrap();
-
     pub static ref FILES: FileMap = FileMap::load();
     pub static ref JS: &'static str = FILES.get("./static/bundle/main.js").unwrap();
     pub static ref CSS: &'static str = FILES.get("./static/bundle/main.css").unwrap();
-
 }
 
 pub static OPEN_API_DOC: &str = env!("OPEN_API_DOCS");
@@ -80,13 +73,6 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(move || {
         let client = Client::default();
 
-        //        let captcha_api_cors = Cors::default()
-        //            .allow_any_origin()
-        //            .allowed_methods(vec!["POST"])
-        //            .allow_any_header()
-        //            .max_age(0)
-        //            .send_wildcard();
-
         App::new()
             .wrap(middleware::Logger::default())
             .wrap(get_identity_service())
@@ -98,16 +84,10 @@ async fn main() -> std::io::Result<()> {
             ))
             .configure(v1::pow::services)
             .configure(v1::services)
-            //.service(
-            //    scope("/")
-            //        .wrap(captcha_api_cors)
-            //        .configure(v1::pow::services),
-            //)
             .configure(docs::services)
             .configure(templates::services)
             .configure(static_assets::services)
             .app_data(get_json_err())
-        //    .service(Files::new("/", "./prod"))
     })
     .bind(SETTINGS.server.get_ip())
     .unwrap()
