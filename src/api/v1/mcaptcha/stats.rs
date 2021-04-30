@@ -15,23 +15,14 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-pub mod duration;
-pub mod levels;
-pub mod mcaptcha;
-pub mod stats;
+use sqlx::PgPool;
 
-pub use super::auth::is_authenticated;
-
-pub fn get_random(len: usize) -> String {
-    use std::iter;
-
-    use rand::{distributions::Alphanumeric, rngs::ThreadRng, thread_rng, Rng};
-
-    let mut rng: ThreadRng = thread_rng();
-
-    iter::repeat(())
-        .map(|()| rng.sample(Alphanumeric))
-        .map(char::from)
-        .take(len)
-        .collect::<String>()
+pub async fn fetched(key: &str, db: &PgPool) {
+    let _ = sqlx::query!(
+        "INSERT INTO mcaptcha_pow_fetched_stats 
+        (config_id) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1))",
+        &key,
+    )
+    .execute(db)
+    .await;
 }

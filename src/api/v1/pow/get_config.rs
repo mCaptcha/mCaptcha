@@ -22,6 +22,7 @@ use serde::{Deserialize, Serialize};
 
 use super::GetDurationResp;
 use super::I32Levels;
+use crate::api::v1::mcaptcha::stats::fetched;
 use crate::errors::*;
 use crate::Data;
 
@@ -64,9 +65,12 @@ pub async fn get_config(
                     init_mcaptcha(&data, &payload.key).await?;
                     let config = data
                         .captcha
-                        .get_pow(payload.key)
+                        .get_pow(payload.key.clone())
                         .await
                         .expect("mcaptcha should be initialized and ready to go");
+                    // background it. would require data::Data to be static
+                    // to satidfy lifetime
+                    fetched(&payload.key, &data.db).await;
                     Ok(HttpResponse::Ok().json(config))
                 }
             }
