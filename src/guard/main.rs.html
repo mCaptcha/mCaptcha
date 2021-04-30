@@ -118,26 +118,6 @@
 <span id="115">115</span>
 <span id="116">116</span>
 <span id="117">117</span>
-<span id="118">118</span>
-<span id="119">119</span>
-<span id="120">120</span>
-<span id="121">121</span>
-<span id="122">122</span>
-<span id="123">123</span>
-<span id="124">124</span>
-<span id="125">125</span>
-<span id="126">126</span>
-<span id="127">127</span>
-<span id="128">128</span>
-<span id="129">129</span>
-<span id="130">130</span>
-<span id="131">131</span>
-<span id="132">132</span>
-<span id="133">133</span>
-<span id="134">134</span>
-<span id="135">135</span>
-<span id="136">136</span>
-<span id="137">137</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -162,16 +142,14 @@
     <span class="ident">client</span>::<span class="ident">Client</span>, <span class="ident">error</span>::<span class="ident">InternalError</span>, <span class="ident">http</span>::<span class="ident">StatusCode</span>, <span class="ident">middleware</span>, <span class="ident">web</span>::<span class="ident">JsonConfig</span>, <span class="ident">App</span>,
     <span class="ident">HttpServer</span>,
 };
-<span class="comment">//use awc::Client;</span>
 <span class="kw">use</span> <span class="ident">cache_buster</span>::<span class="ident">Files</span> <span class="kw">as</span> <span class="ident">FileMap</span>;
 <span class="kw">use</span> <span class="ident">lazy_static</span>::<span class="ident">lazy_static</span>;
 <span class="kw">use</span> <span class="ident">log</span>::<span class="ident">info</span>;
 
-<span class="kw">mod</span> <span class="ident">data</span>;
-<span class="kw">mod</span> <span class="ident">errors</span>;
-<span class="comment">//mod routes;</span>
 <span class="kw">mod</span> <span class="ident">api</span>;
+<span class="kw">mod</span> <span class="ident">data</span>;
 <span class="kw">mod</span> <span class="ident">docs</span>;
+<span class="kw">mod</span> <span class="ident">errors</span>;
 <span class="kw">mod</span> <span class="ident">settings</span>;
 <span class="kw">mod</span> <span class="ident">static_assets</span>;
 <span class="kw">mod</span> <span class="ident">templates</span>;
@@ -184,15 +162,10 @@
 
 <span class="macro">lazy_static</span><span class="macro">!</span> {
     <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">SETTINGS</span>: <span class="ident">Settings</span> <span class="op">=</span> <span class="ident">Settings</span>::<span class="ident">new</span>().<span class="ident">unwrap</span>();
-<span class="comment">//    pub static ref GIT_COMMIT_HASH: String = env::var(&quot;GIT_HASH&quot;).unwrap();</span>
-
-<span class="comment">//    pub static ref OPEN_API_DOC: String = env::var(&quot;OPEN_API_DOCS&quot;).unwrap();</span>
     <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">S</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;S&quot;</span>).<span class="ident">unwrap</span>();
-
     <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">FILES</span>: <span class="ident">FileMap</span> <span class="op">=</span> <span class="ident">FileMap</span>::<span class="ident">load</span>();
     <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">JS</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="ident">FILES</span>.<span class="ident">get</span>(<span class="string">&quot;./static/bundle/main.js&quot;</span>).<span class="ident">unwrap</span>();
     <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">CSS</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="ident">FILES</span>.<span class="ident">get</span>(<span class="string">&quot;./static/bundle/main.css&quot;</span>).<span class="ident">unwrap</span>();
-
 }
 
 <span class="kw">pub</span> <span class="kw">static</span> <span class="ident">OPEN_API_DOC</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="macro">env</span><span class="macro">!</span>(<span class="string">&quot;OPEN_API_DOCS&quot;</span>);
@@ -221,13 +194,6 @@
     <span class="ident">HttpServer</span>::<span class="ident">new</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
         <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">Client</span>::<span class="ident">default</span>();
 
-        <span class="comment">//        let captcha_api_cors = Cors::default()</span>
-        <span class="comment">//            .allow_any_origin()</span>
-        <span class="comment">//            .allowed_methods(vec![&quot;POST&quot;])</span>
-        <span class="comment">//            .allow_any_header()</span>
-        <span class="comment">//            .max_age(0)</span>
-        <span class="comment">//            .send_wildcard();</span>
-
         <span class="ident">App</span>::<span class="ident">new</span>()
             .<span class="ident">wrap</span>(<span class="ident">middleware</span>::<span class="ident">Logger</span>::<span class="ident">default</span>())
             .<span class="ident">wrap</span>(<span class="ident">get_identity_service</span>())
@@ -239,16 +205,10 @@
             ))
             .<span class="ident">configure</span>(<span class="ident">v1</span>::<span class="ident">pow</span>::<span class="ident">services</span>)
             .<span class="ident">configure</span>(<span class="ident">v1</span>::<span class="ident">services</span>)
-            <span class="comment">//.service(</span>
-            <span class="comment">//    scope(&quot;/&quot;)</span>
-            <span class="comment">//        .wrap(captcha_api_cors)</span>
-            <span class="comment">//        .configure(v1::pow::services),</span>
-            <span class="comment">//)</span>
             .<span class="ident">configure</span>(<span class="ident">docs</span>::<span class="ident">services</span>)
             .<span class="ident">configure</span>(<span class="ident">templates</span>::<span class="ident">services</span>)
             .<span class="ident">configure</span>(<span class="ident">static_assets</span>::<span class="ident">services</span>)
             .<span class="ident">app_data</span>(<span class="ident">get_json_err</span>())
-        <span class="comment">//    .service(Files::new(&quot;/&quot;, &quot;./prod&quot;))</span>
     })
     .<span class="ident">bind</span>(<span class="ident">SETTINGS</span>.<span class="ident">server</span>.<span class="ident">get_ip</span>())
     .<span class="ident">unwrap</span>()
