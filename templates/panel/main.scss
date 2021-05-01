@@ -1,19 +1,6 @@
 @import '../reset';
 @import '../vars';
 
-* {
-  margin: 0;
-  padding: 0;
-}
-
-a {
-  text-decoration: none;
-}
-
-li {
-  list-style: none;
-}
-
 .secondary-menu {
   position: fixed;
   width: 14%;
@@ -70,16 +57,6 @@ li {
   font-size: 1rem;
 }
 
-/*
-    .secondary-menu__section-partition {
-      border-bottom: 1px solid var(--light-text);
-      margin: auto;
-      max-width: 70%;
-      list-style: none;
-      margin: 20px;
-    }
-    */
-
 .secondary-menu__item-link:hover {
   color: $green;
   cursor: grab;
@@ -94,12 +71,10 @@ li {
 }
 
 main {
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 14%;
-  bottom: 0;
+    margin-left: 14%;
+  min-height: 100%;
   background-color: $backdrop;
+  padding-bottom: 20px;
 }
 
 .task-bar {
@@ -290,11 +265,7 @@ main {
   margin-top: 10px;
 }
 
-.sitekey-form__add-level-spacer {
-  flex: 3;
-}
-
-.sitekey-form__add-level {
+.sitekey-form__add-level-button {
   background-color: $violet;
   color: white;
   padding: 5px;

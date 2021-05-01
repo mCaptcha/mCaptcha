@@ -20,8 +20,6 @@ use actix_web::web::ServiceConfig;
 mod auth;
 mod panel;
 
-pub use crate::middleware::auth::CheckLogin;
-
 pub fn services(cfg: &mut ServiceConfig) {
     cfg.service(panel::panel);
     cfg.service(panel::sitekey::add_sitekey);
@@ -36,18 +34,52 @@ mod tests {
     use actix_web::test;
 
     use super::*;
+    use crate::tests::*;
     use crate::*;
 
     #[actix_rt::test]
     async fn protected_pages_templates_work() {
-        let mut app = test::init_service(App::new().configure(services)).await;
+        const NAME: &str = "templateuser";
+        const PASSWORD: &str = "longpassword";
+        const EMAIL: &str = "templateuser@a.com";
+
+        {
+            let data = Data::new().await;
+            delete_user(NAME, &data).await;
+        }
+
+        let (data, _, signin_resp) = register_and_signin(NAME, EMAIL, PASSWORD).await;
+        let cookies = get_cookie!(signin_resp);
+
+        let mut app = test::init_service(
+            App::new()
+                .wrap(get_identity_service())
+                .configure(crate::api::v1::services)
+                .configure(services)
+                .data(data.clone()),
+        )
+        .await;
+
         let urls = vec!["/", "/sitekey/add"];
 
         for url in urls.iter() {
             let resp =
                 test::call_service(&mut app, test::TestRequest::get().uri(url).to_request()).await;
             assert_eq!(resp.status(), StatusCode::FOUND);
+
+            let authenticated_resp = test::call_service(
+                &mut app,
+                test::TestRequest::get()
+                    .uri(url)
+                    .cookie(cookies.clone())
+                    .to_request(),
+            )
+            .await;
+
+            assert_eq!(authenticated_resp.status(), StatusCode::OK);
         }
+
+        delete_user(NAME, &data).await;
     }
 
     #[actix_rt::test]

@@ -40,6 +40,8 @@ pub use data::Data;
 pub use settings::Settings;
 use static_assets::FileMap;
 
+pub use crate::middleware::auth::CheckLogin;
+
 lazy_static! {
     pub static ref SETTINGS: Settings = Settings::new().unwrap();
     pub static ref S: String = env::var("S").unwrap();

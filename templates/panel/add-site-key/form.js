@@ -15,11 +15,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-const isBlankString = (event, value, field) => {
-  if (!value.replace(/\s/g, '').length) {
-    event.preventDefault();
-    alert(`${field} can't be empty`);
-  }
+const SITE_KEY_FORM_CLASS = 'sitekey-form';
+const FORM = document.querySelector(`.${SITE_KEY_FORM_CLASS}`);
+
+export const addSubmitEventListener = () => {
+  FORM.addEventListener('submit', submit, true);
 };
 
-export default isBlankString;
+const submit = async () => {
+  alert('submited');
+  // get values
+  // check validate levels
+  // submit
+  // handle erros
+}

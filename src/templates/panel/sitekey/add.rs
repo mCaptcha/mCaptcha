@@ -18,13 +18,16 @@
 use actix_web::{get, HttpResponse, Responder};
 use sailfish::TemplateOnce;
 
-use super::CheckLogin;
+use crate::CheckLogin;
 
 #[derive(TemplateOnce, Clone)]
 #[template(path = "panel/add-site-key/index.html")]
 pub struct IndexPage<'a> {
     pub name: &'a str,
     pub title: &'a str,
+    pub levels: usize,
+    pub form_title: &'a str,
+    pub form_description: &'a str,
 }
 
 const TITLE: &str = "Add Site Key";
@@ -34,6 +37,9 @@ impl<'a> Default for IndexPage<'a> {
         IndexPage {
             name: "mCaptcha",
             title: TITLE,
+            levels: 1,
+            form_description: "",
+            form_title: "Add Site Key",
         }
     }
 }
