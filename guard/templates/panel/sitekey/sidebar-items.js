@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["TITLE",""]],"struct":[["IndexPage",""],["add_sitekey",""]]});
+initSidebarItems({"mod":[["add",""]]});
