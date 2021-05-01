@@ -6,9 +6,11 @@
   <input
     class="sitekey-form__input--add-level"
     type="number"
-    id="level2"
     id="level<.= level .>"
     name="level<.= level .>"
+	<. if level == 1 { .>
+	<.= "required" .>
+	<. } .>
     value=""
   />
   <button class="sitekey-form__add-level-button">Add Level</button>

@@ -18,17 +18,32 @@
 import ROUTES from '../../api/v1/routes';
 import VIEWS from '../../views/v1/routes';
 
-import isBlankString from '../../utils/genJsonPayload';
+import isBlankString from '../../utils/isBlankString';
 import genJsonPayload from '../../utils/genJsonPayload';
 
 //import '../forms.scss';
 
-const login = e => {
+const login = (e: Event) => {
   e.preventDefault();
-  let username = document.getElementById('username').value;
-  isBlankString(e, username, 'username');
+  InputEvent
+  const usernameElement: HTMLInputElement = <HTMLInputElement>document.getElementById('username');
+  if (usernameElement === null) {
+    console.debug("Username element is null");
+    return;
+  }
 
-  let password = document.getElementById('password').value;
+  let username = usernameElement.value;
+  isBlankString(e, username, 'username');
+//  isBlankString(e);//, username, 'username');
+
+  const passwordElement: HTMLInputElement = <HTMLInputElement>document.getElementById('password');
+  if (passwordElement === null) {
+    console.debug("Password is null");
+    return;
+  }
+
+  let password = passwordElement.value;
+
   let payload = {
     username,
     password,
@@ -45,6 +60,6 @@ const login = e => {
 };
 
 export const index = () => {
-  let form = document.getElementById('form');
+  let form = <HTMLFontElement>document.getElementById('form');
   form.addEventListener('submit', login, true);
 };

@@ -5,5 +5,7 @@ tarpaulin-report.html
 cobertura.xml
 prod/
 node_modules/
-static-assets/bundle
-static
+/static-assets/bundle
+/static
+./templates/**/*.js
+/static-assets/bundle/*

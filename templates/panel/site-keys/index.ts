@@ -15,11 +15,4 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-const isBlankString = (event, value, field) => {
-  if (!value.replace(/\s/g, '').length) {
-    event.preventDefault();
-    alert(`${field} can't be empty`);
-  }
-};
-
-export default isBlankString;
+export const index = () => {};

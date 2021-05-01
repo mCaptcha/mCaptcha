@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-const normalizeUri = uri => {
+const normalizeUri = (uri: string) => {
   if (!uri) {
     throw new Error('uri is empty');
   }
@@ -31,20 +31,23 @@ const normalizeUri = uri => {
   return uri;
 };
 
+type routeTuple = {
+  uri: string;
+  fn: () => void;
+};
+
 export class Router {
+  routes: Array<routeTuple>;
   constructor() {
     this.routes = [];
   }
 
-  register(uri, fn) {
+  register(uri: string, fn: () => void) {
     // typechecks
     if (!uri) {
       throw new Error('uri is empty');
     }
 
-    if (!fn) {
-      throw new Error('fn is empty');
-    }
     if (typeof uri !== 'string') {
       throw new TypeError('URI must be a string');
     }
@@ -63,7 +66,7 @@ export class Router {
 
     uri = normalizeUri(uri);
 
-    const route = {
+    const route: routeTuple = {
       uri,
       fn,
     };
@@ -77,7 +80,8 @@ export class Router {
       let path = window.location.pathname;
       path = normalizeUri(path);
       if (path.match(pattern)) {
-        return route.fn.call();
+        //return route.fn.call();
+        return route.fn();
       }
     });
   }

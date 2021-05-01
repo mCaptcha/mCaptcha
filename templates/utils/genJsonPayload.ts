@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-const genJsonPayload = payload => {
+const genJsonPayload = (payload: any) => {
   let value = {
     method: 'POST',
     headers: {

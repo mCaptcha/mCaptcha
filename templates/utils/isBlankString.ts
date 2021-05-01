@@ -15,17 +15,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-const SITE_KEY_FORM_CLASS = 'sitekey-form';
-const FORM = document.querySelector(`.${SITE_KEY_FORM_CLASS}`);
-
-export const addSubmitEventListener = () => {
-  FORM.addEventListener('submit', submit, true);
+const isBlankString = (event: Event|null, value: string|number, field: string) => {
+  value = value.toString();
+  if (!value.replace(/\s/g, '').length) {
+    if (event) {
+      event.preventDefault();
+    }
+    alert(`${field} can't be empty`);
+  }
 };
 
-const submit = async () => {
-  alert('submited');
-  // get values
-  // check validate levels
-  // submit
-  // handle erros
-}
+export default isBlankString;

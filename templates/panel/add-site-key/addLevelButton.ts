@@ -14,21 +14,53 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+import VALIDATE_LEVELS from './levels';
+import isBlankString from '../../utils/isBlankString';
 
 const LABEL_CONTAINER_CLASS = 'sitekey-form__add-level-flex-container';
-const ADD_LEVEL_BUTTON = 'sitekey-form__add-level-button';
 const LABEL_CLASS = 'sitekey-form__label';
-const INPUT_ID_WITHOUT_LEVEL = 'level';
-const LABEL_INNER_TEXT_WITHOUT_LEVEL = 'Level ';
+export const LABEL_INNER_TEXT_WITHOUT_LEVEL = 'Level ';
+
+export const INPUT_ID_WITHOUT_LEVEL = 'level';
 const INPUT_CLASS = 'sitekey-form__input--add-level';
+
 const ADD_LEVEL_BUTTON_INNER_TEXT = 'Add Level';
+const ADD_LEVEL_BUTTON = 'sitekey-form__add-level-button';
 
-const addLevelButtonEventHandler = e => {
-  const PREV_LEVEL_CONTAINER = e.target.parentElement;
-  e.target.remove();
-
+export const getNumLevels = () => {
   let numLevels = 0;
   document.querySelectorAll(`.${LABEL_CLASS}`).forEach(_ => numLevels++);
+  return numLevels;
+};
+
+const validateLevel = (numLevels: number) => {
+  numLevels = numLevels - 1;
+  let inputID = INPUT_ID_WITHOUT_LEVEL + numLevels.toString();
+  let filed = LABEL_INNER_TEXT_WITHOUT_LEVEL + numLevels;
+  let inputElement = <HTMLInputElement>document.getElementById(inputID);
+  let val = inputElement.value;
+  let e = null;
+  isBlankString(e, val, filed);
+  let isValid = VALIDATE_LEVELS.add(parseInt(val));
+  return isValid;
+};
+
+const addLevelButtonEventHandler = (e: Event) => {
+  let  eventTarget = <HTMLElement>e.target;
+//  if (!eventTarget) {
+//    return;
+//  }
+  const PREV_LEVEL_CONTAINER = <HTMLElement>eventTarget.parentElement;
+  let numLevels: string|number = getNumLevels();
+  let isValid = validateLevel(numLevels);
+  console.log(`[addLevelButton] isValid: ${isValid}`);
+
+  if (!isValid) {
+    return console.log('Aborting level addition');
+  }
+
+  eventTarget.remove();
+
   numLevels = numLevels.toString();
 
   let labelContainer = document.createElement('div');
@@ -63,12 +95,11 @@ const addLevelButtonEventHandler = e => {
 
   labelContainer.insertAdjacentElement('afterend', inputContainer);
 
-
   addLevelButtonAddEventListener();
 };
 
 export const addLevelButtonAddEventListener = () => {
-  let addLevelButton = document.querySelector(`.${ADD_LEVEL_BUTTON}`);
+  let addLevelButton = <HTMLElement>document.querySelector(`.${ADD_LEVEL_BUTTON}`);
   addLevelButton.addEventListener('click', addLevelButtonEventHandler);
 };
 
