@@ -7,7 +7,7 @@ module.exports = merge(common, {
   mode: 'development',
   output: {
     filename: '[name].js',
-    path: path.resolve(__dirname, 'static/bundle'),
+    path: path.resolve(__dirname, 'static-assets/bundle'),
   },
   module: {
     rules: [

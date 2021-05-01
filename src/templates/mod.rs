@@ -20,13 +20,13 @@ use actix_web::web::ServiceConfig;
 mod auth;
 mod panel;
 
-pub fn services(cfg: &mut ServiceConfig) {
-    cfg.service(auth::login::login);
-    cfg.service(auth::register::join);
+pub use crate::middleware::auth::CheckLogin;
 
-    // panel
+pub fn services(cfg: &mut ServiceConfig) {
     cfg.service(panel::panel);
     cfg.service(panel::sitekey::add_sitekey);
+    cfg.service(auth::login::login);
+    cfg.service(auth::register::join);
 }
 
 #[cfg(not(tarpaulin_include))]
@@ -39,18 +39,27 @@ mod tests {
     use crate::*;
 
     #[actix_rt::test]
-    async fn templates_work() {
+    async fn protected_pages_templates_work() {
         let mut app = test::init_service(App::new().configure(services)).await;
-        let urls = vec!["/", "/join", "/login", "/sitekey/add"];
+        let urls = vec!["/", "/sitekey/add"];
 
         for url in urls.iter() {
             let resp =
                 test::call_service(&mut app, test::TestRequest::get().uri(url).to_request()).await;
-            if url == urls.get(0).unwrap() {
-                assert_eq!(resp.status(), StatusCode::TEMPORARY_REDIRECT);
-            } else {
-                assert_eq!(resp.status(), StatusCode::OK);
-            }
+            assert_eq!(resp.status(), StatusCode::FOUND);
+        }
+    }
+
+    #[actix_rt::test]
+    async fn public_pages_tempaltes_work() {
+        let mut app = test::init_service(App::new().configure(services)).await;
+        let urls = vec!["/join", "/login"];
+
+        for url in urls.iter() {
+            let resp =
+                test::call_service(&mut app, test::TestRequest::get().uri(url).to_request()).await;
+
+            assert_eq!(resp.status(), StatusCode::OK);
         }
     }
 }

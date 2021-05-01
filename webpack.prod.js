@@ -11,7 +11,7 @@ module.exports = merge(common, {
   mode: 'production',
   output: {
     filename: '[name].js',
-    path: path.resolve(__dirname, 'static/bundle'),
+    path: path.resolve(__dirname, 'static-assets/bundle'),
   },
   optimization: {
     minimizer: [

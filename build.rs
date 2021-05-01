@@ -47,8 +47,8 @@ fn cache_bust() {
     ];
 
     let config = BusterBuilder::default()
-        .source("./static")
-        .result("./prod")
+        .source("./static-assets")
+        .result("./static")
         .mime_types(types)
         .copy(true)
         .follow_links(true)

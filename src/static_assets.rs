@@ -17,13 +17,14 @@
 
 use actix_web::body::Body;
 use actix_web::{get, web, HttpResponse, Responder};
+use cache_buster::Files;
 use mime_guess::from_path;
 use rust_embed::RustEmbed;
 
 use std::borrow::Cow;
 
 #[derive(RustEmbed)]
-#[folder = "prod/"]
+#[folder = "static/"]
 struct Asset;
 
 pub fn handle_embedded_file(path: &str) -> HttpResponse {
@@ -41,13 +42,36 @@ pub fn handle_embedded_file(path: &str) -> HttpResponse {
     }
 }
 
-#[get("/{_:.*}")]
+#[get("/static/{_:.*}")]
 async fn dist(path: web::Path<String>) -> impl Responder {
     handle_embedded_file(&path.0)
 }
 
 pub fn services(cfg: &mut web::ServiceConfig) {
     cfg.service(dist);
+}
+
+pub struct FileMap {
+    files: Files,
+}
+
+impl FileMap {
+    pub fn new() -> Self {
+        let map = include_str!("cache_buster_data.json");
+        let files = Files::new(&map);
+        Self { files }
+    }
+    pub fn get<'a>(&'a self, path: &'a str) -> Option<&'a str> {
+        // let file_path = self.files.get(path);
+        let file_path = self.files.get_full_path(path);
+
+        if file_path.is_some() {
+            let file_path = &file_path.unwrap()[1..];
+            return Some(file_path);
+        } else {
+            return None;
+        }
+    }
 }
 
 #[cfg(test)]
@@ -68,5 +92,13 @@ mod tests {
         )
         .await;
         assert_eq!(resp.status(), StatusCode::OK);
+    }
+
+    #[test]
+    fn filemap_works() {
+        let files = super::FileMap::new();
+        let css = files.get("./static-assets/bundle/main.css").unwrap();
+        println!("{}", css);
+        assert!(css.contains("/static/bundle/main"));
     }
 }

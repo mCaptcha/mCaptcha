@@ -1296,6 +1296,7 @@ dependencies = [
  "actix-http",
  "actix-identity",
  "actix-rt",
+ "actix-service",
  "actix-web",
  "argon2-creds",
  "cache-buster",

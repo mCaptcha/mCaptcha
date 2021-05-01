@@ -18,10 +18,9 @@ use std::env;
 
 use actix_identity::{CookieIdentityPolicy, IdentityService};
 use actix_web::{
-    client::Client, error::InternalError, http::StatusCode, middleware, web::JsonConfig, App,
-    HttpServer,
+    client::Client, error::InternalError, http::StatusCode, middleware as actix_middleware,
+    web::JsonConfig, App, HttpServer,
 };
-use cache_buster::Files as FileMap;
 use lazy_static::lazy_static;
 use log::info;
 
@@ -35,19 +34,18 @@ mod templates;
 #[cfg(test)]
 #[macro_use]
 mod tests;
+mod middleware;
 
 pub use data::Data;
 pub use settings::Settings;
+use static_assets::FileMap;
 
 lazy_static! {
     pub static ref SETTINGS: Settings = Settings::new().unwrap();
     pub static ref S: String = env::var("S").unwrap();
-    pub static ref FILES: FileMap = {
-        let map = include_str!("cache_buster_data.json");
-        FileMap::new(&map)
-    };
-    pub static ref JS: &'static str = FILES.get("./static/bundle/main.js").unwrap();
-    pub static ref CSS: &'static str = FILES.get("./static/bundle/main.css").unwrap();
+    pub static ref FILES: FileMap = FileMap::new();
+    pub static ref JS: &'static str = FILES.get("./static-assets/bundle/main.js").unwrap();
+    pub static ref CSS: &'static str = FILES.get("./static-assets/bundle/main.css").unwrap();
 }
 
 pub static OPEN_API_DOC: &str = env!("OPEN_API_DOCS");
@@ -77,19 +75,19 @@ async fn main() -> std::io::Result<()> {
         let client = Client::default();
 
         App::new()
-            .wrap(middleware::Logger::default())
+            .wrap(actix_middleware::Logger::default())
             .wrap(get_identity_service())
-            .wrap(middleware::Compress::default())
+            .wrap(actix_middleware::Compress::default())
             .data(data.clone())
             .data(client.clone())
-            .wrap(middleware::NormalizePath::new(
-                middleware::normalize::TrailingSlash::Trim,
+            .wrap(actix_middleware::NormalizePath::new(
+                actix_middleware::normalize::TrailingSlash::Trim,
             ))
             .configure(v1::pow::services)
             .configure(v1::services)
             .configure(docs::services)
-            .configure(templates::services)
             .configure(static_assets::services)
+            .configure(templates::services)
             .app_data(get_json_err())
     })
     .bind(SETTINGS.server.get_ip())

@@ -130,7 +130,7 @@ async fn auth_works() {
             .to_request(),
     )
     .await;
-    assert_eq!(signout_resp.status(), StatusCode::TEMPORARY_REDIRECT);
+    assert_eq!(signout_resp.status(), StatusCode::FOUND);
 }
 
 #[actix_rt::test]

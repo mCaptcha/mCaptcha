@@ -21,6 +21,7 @@ use actix_web::{get, HttpResponse, Responder};
 use sailfish::TemplateOnce;
 
 use crate::api::v1::auth::is_authenticated;
+pub use crate::middleware::auth::CheckLogin;
 
 pub mod sitekey;
 
@@ -42,7 +43,7 @@ impl<'a> Default for IndexPage<'a> {
     }
 }
 
-#[get("/")]
+#[get("/", wrap = "CheckLogin")]
 pub async fn panel(id: Identity) -> impl Responder {
     if is_authenticated(&id).is_err() {
         return HttpResponse::TemporaryRedirect()

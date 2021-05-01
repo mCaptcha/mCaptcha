@@ -28,6 +28,7 @@ actix-identity = "0.3"
 actix-http = "2.2"
 actix-rt = "1"
 actix-cors= "0.5.4"
+actix-service = "1.0.6"
 
 
 mime_guess = "2.0.3"

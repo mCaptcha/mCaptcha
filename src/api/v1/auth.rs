@@ -252,7 +252,7 @@ pub async fn signout(id: Identity) -> impl Responder {
     if let Some(_) = id.identity() {
         id.forget();
     }
-    HttpResponse::TemporaryRedirect()
+    HttpResponse::Found()
         .set_header(header::LOCATION, "/login")
         .body("")
 }
