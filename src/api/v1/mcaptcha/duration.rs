@@ -19,9 +19,9 @@ use actix_identity::Identity;
 use actix_web::{post, web, HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
 
-use super::is_authenticated;
 use crate::api::v1::mcaptcha::mcaptcha::MCaptchaDetails;
 use crate::errors::*;
+use crate::CheckLogin;
 use crate::Data;
 
 #[derive(Deserialize, Serialize)]
@@ -30,13 +30,12 @@ pub struct UpdateDuration {
     pub duration: i32,
 }
 
-#[post("/api/v1/mcaptcha/domain/token/duration/update")]
+#[post("/api/v1/mcaptcha/domain/token/duration/update", wrap = "CheckLogin")]
 pub async fn update_duration(
     payload: web::Json<UpdateDuration>,
     data: web::Data<Data>,
     id: Identity,
 ) -> ServiceResult<impl Responder> {
-    is_authenticated(&id)?;
     let username = id.identity().unwrap();
 
     if payload.duration > 0 {
@@ -69,13 +68,12 @@ pub struct GetDuration {
     pub token: String,
 }
 
-#[post("/api/v1/mcaptcha/domain/token/duration/get")]
+#[post("/api/v1/mcaptcha/domain/token/duration/get", wrap = "CheckLogin")]
 pub async fn get_duration(
     payload: web::Json<MCaptchaDetails>,
     data: web::Data<Data>,
     id: Identity,
 ) -> ServiceResult<impl Responder> {
-    is_authenticated(&id)?;
     let username = id.identity().unwrap();
 
     let duration = sqlx::query_as!(

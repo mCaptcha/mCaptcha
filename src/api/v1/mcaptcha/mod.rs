@@ -20,8 +20,6 @@ pub mod levels;
 pub mod mcaptcha;
 pub mod stats;
 
-pub use super::auth::is_authenticated;
-
 pub fn get_random(len: usize) -> String {
     use std::iter;
 

@@ -130,7 +130,9 @@ async fn auth_works() {
             .to_request(),
     )
     .await;
-    assert_eq!(signout_resp.status(), StatusCode::FOUND);
+    assert_eq!(signout_resp.status(), StatusCode::OK);
+    let headers = signout_resp.headers();
+    assert_eq!(headers.get(header::LOCATION).unwrap(), "/login");
 }
 
 #[actix_rt::test]

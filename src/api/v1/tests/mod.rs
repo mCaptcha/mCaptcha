@@ -16,3 +16,4 @@
 */
 
 mod auth;
+mod protected;

@@ -20,9 +20,9 @@ use actix_web::{post, web, HttpResponse, Responder};
 use m_captcha::{defense::Level, DefenseBuilder};
 use serde::{Deserialize, Serialize};
 
-use super::is_authenticated;
 use crate::api::v1::mcaptcha::mcaptcha::MCaptchaDetails;
 use crate::errors::*;
+use crate::CheckLogin;
 use crate::Data;
 
 #[derive(Serialize, Deserialize)]
@@ -34,13 +34,12 @@ pub struct AddLevels {
 
 // TODO try for non-existent token names
 
-#[post("/api/v1/mcaptcha/levels/add")]
+#[post("/api/v1/mcaptcha/levels/add", wrap = "CheckLogin")]
 pub async fn add_levels(
     payload: web::Json<AddLevels>,
     data: web::Data<Data>,
     id: Identity,
 ) -> ServiceResult<impl Responder> {
-    is_authenticated(&id)?;
     let mut defense = DefenseBuilder::default();
     let username = id.identity().unwrap();
 
@@ -75,13 +74,12 @@ pub async fn add_levels(
     Ok(HttpResponse::Ok())
 }
 
-#[post("/api/v1/mcaptcha/levels/update")]
+#[post("/api/v1/mcaptcha/levels/update", wrap = "CheckLogin")]
 pub async fn update_levels(
     payload: web::Json<AddLevels>,
     data: web::Data<Data>,
     id: Identity,
 ) -> ServiceResult<impl Responder> {
-    is_authenticated(&id)?;
     let username = id.identity().unwrap();
     let mut defense = DefenseBuilder::default();
 
@@ -134,13 +132,12 @@ pub async fn update_levels(
     Ok(HttpResponse::Ok())
 }
 
-#[post("/api/v1/mcaptcha/levels/delete")]
+#[post("/api/v1/mcaptcha/levels/delete", wrap = "CheckLogin")]
 pub async fn delete_levels(
     payload: web::Json<AddLevels>,
     data: web::Data<Data>,
     id: Identity,
 ) -> ServiceResult<impl Responder> {
-    is_authenticated(&id)?;
     let username = id.identity().unwrap();
 
     for level in payload.levels.iter() {
@@ -162,13 +159,12 @@ pub async fn delete_levels(
     Ok(HttpResponse::Ok())
 }
 
-#[post("/api/v1/mcaptcha/levels/get")]
+#[post("/api/v1/mcaptcha/levels/get", wrap = "CheckLogin")]
 pub async fn get_levels(
     payload: web::Json<MCaptchaDetails>,
     data: web::Data<Data>,
     id: Identity,
 ) -> ServiceResult<impl Responder> {
-    is_authenticated(&id)?;
     let username = id.identity().unwrap();
 
     let levels = get_levels_util(&payload.key, &username, &data).await?;

@@ -23,7 +23,6 @@ pub mod verify_pow;
 pub mod verify_token;
 
 pub use super::mcaptcha::duration::GetDurationResp;
-pub use super::mcaptcha::is_authenticated;
 pub use super::mcaptcha::levels::I32Levels;
 
 // middleware protected by scope

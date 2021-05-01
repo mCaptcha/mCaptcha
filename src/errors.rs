@@ -53,9 +53,6 @@ pub enum ServiceError {
     #[display(fmt = "Username not found")]
     UsernameNotFound,
 
-    #[display(fmt = "Authorization required")]
-    AuthorizationRequired,
-
     /// when the value passed contains profainity
     #[display(fmt = "Can't allow profanity in usernames")]
     ProfainityError,
@@ -117,7 +114,6 @@ impl ResponseError for ServiceError {
             ServiceError::NotAUrl => StatusCode::BAD_REQUEST,
             ServiceError::WrongPassword => StatusCode::UNAUTHORIZED,
             ServiceError::UsernameNotFound => StatusCode::NOT_FOUND,
-            ServiceError::AuthorizationRequired => StatusCode::UNAUTHORIZED,
 
             ServiceError::ProfainityError => StatusCode::BAD_REQUEST,
             ServiceError::BlacklistError => StatusCode::BAD_REQUEST,
@@ -155,18 +151,21 @@ impl From<CredsError> for ServiceError {
 }
 
 impl From<ValidationErrors> for ServiceError {
+    #[cfg(not(tarpaulin_include))]
     fn from(_: ValidationErrors) -> ServiceError {
         ServiceError::NotAnEmail
     }
 }
 
 impl From<ParseError> for ServiceError {
+    #[cfg(not(tarpaulin_include))]
     fn from(_: ParseError) -> ServiceError {
         ServiceError::NotAUrl
     }
 }
 
 impl From<CaptchaError> for ServiceError {
+    #[cfg(not(tarpaulin_include))]
     fn from(e: CaptchaError) -> ServiceError {
         ServiceError::CaptchaError(e)
     }

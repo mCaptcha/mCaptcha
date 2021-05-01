@@ -20,8 +20,9 @@ use actix_identity::Identity;
 use actix_web::{post, web, HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
 
-use super::{get_random, is_authenticated};
+use super::get_random;
 use crate::errors::*;
+use crate::CheckLogin;
 use crate::Data;
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -35,9 +36,8 @@ pub struct MCaptchaDetails {
     pub key: String,
 }
 
-#[post("/api/v1/mcaptcha/add")]
+#[post("/api/v1/mcaptcha/add", wrap = "CheckLogin")]
 pub async fn add_mcaptcha(data: web::Data<Data>, id: Identity) -> ServiceResult<impl Responder> {
-    is_authenticated(&id)?;
     let username = id.identity().unwrap();
     let mut key;
 
@@ -78,7 +78,7 @@ pub async fn add_mcaptcha(data: web::Data<Data>, id: Identity) -> ServiceResult<
     Ok(HttpResponse::Ok().json(resp))
 }
 
-#[post("/api/v1/mcaptcha/update/key")]
+#[post("/api/v1/mcaptcha/update/key", wrap = "CheckLogin")]
 pub async fn update_token(
     payload: web::Json<MCaptchaDetails>,
     data: web::Data<Data>,
@@ -86,7 +86,6 @@ pub async fn update_token(
 ) -> ServiceResult<impl Responder> {
     use std::borrow::Cow;
 
-    is_authenticated(&id)?;
     let username = id.identity().unwrap();
     let mut key;
 
@@ -132,13 +131,12 @@ async fn update_token_helper(
     Ok(())
 }
 
-#[post("/api/v1/mcaptcha/get")]
+#[post("/api/v1/mcaptcha/get", wrap = "CheckLogin")]
 pub async fn get_token(
     payload: web::Json<MCaptchaDetails>,
     data: web::Data<Data>,
     id: Identity,
 ) -> ServiceResult<impl Responder> {
-    is_authenticated(&id)?;
     let username = id.identity().unwrap();
     let res = match sqlx::query_as!(
         MCaptchaDetails,
@@ -161,13 +159,12 @@ pub async fn get_token(
     Ok(HttpResponse::Ok().json(res))
 }
 
-#[post("/api/v1/mcaptcha/delete")]
+#[post("/api/v1/mcaptcha/delete", wrap = "CheckLogin")]
 pub async fn delete_mcaptcha(
     payload: web::Json<MCaptchaDetails>,
     data: web::Data<Data>,
     id: Identity,
 ) -> ServiceResult<impl Responder> {
-    is_authenticated(&id)?;
     let username = id.identity().unwrap();
 
     sqlx::query!(

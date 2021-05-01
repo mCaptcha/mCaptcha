@@ -24,6 +24,7 @@ use serde::{Deserialize, Serialize};
 
 use super::mcaptcha::get_random;
 use crate::errors::*;
+use crate::CheckLogin;
 use crate::Data;
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -153,8 +154,6 @@ pub struct Secret {
 
 #[get("/api/v1/account/secret/")]
 pub async fn get_secret(id: Identity, data: web::Data<Data>) -> ServiceResult<impl Responder> {
-    is_authenticated(&id)?;
-
     let username = id.identity().unwrap();
 
     let secret = sqlx::query_as!(
@@ -168,13 +167,11 @@ pub async fn get_secret(id: Identity, data: web::Data<Data>) -> ServiceResult<im
     Ok(HttpResponse::Ok().json(secret))
 }
 
-#[post("/api/v1/account/secret/")]
+#[post("/api/v1/account/secret/", wrap = "CheckLogin")]
 pub async fn update_user_secret(
     id: Identity,
     data: web::Data<Data>,
 ) -> ServiceResult<impl Responder> {
-    is_authenticated(&id)?;
-
     let username = id.identity().unwrap();
 
     let mut secret;
@@ -211,7 +208,7 @@ pub struct Email {
     pub email: String,
 }
 
-#[post("/api/v1/account/email/")]
+#[post("/api/v1/account/email/", wrap = "CheckLogin")]
 pub async fn set_email(
     id: Identity,
 
@@ -219,8 +216,6 @@ pub async fn set_email(
 
     data: web::Data<Data>,
 ) -> ServiceResult<impl Responder> {
-    is_authenticated(&id)?;
-
     let username = id.identity().unwrap();
 
     data.creds.email(&payload.email)?;
@@ -247,25 +242,17 @@ pub async fn set_email(
     Ok(HttpResponse::Ok())
 }
 
-#[get("/logout")]
+#[get("/logout", wrap = "CheckLogin")]
 pub async fn signout(id: Identity) -> impl Responder {
     if let Some(_) = id.identity() {
         id.forget();
     }
-    HttpResponse::Found()
+    HttpResponse::Ok()
         .set_header(header::LOCATION, "/login")
         .body("")
 }
 
-/// Check if user is authenticated
-// TODO use middleware
-pub fn is_authenticated(id: &Identity) -> ServiceResult<()> {
-    // access request identity
-    id.identity().ok_or(ServiceError::AuthorizationRequired)?;
-    Ok(())
-}
-
-#[post("/api/v1/account/delete")]
+#[post("/api/v1/account/delete", wrap = "CheckLogin")]
 pub async fn delete_account(
     id: Identity,
     payload: web::Json<Password>,
@@ -273,8 +260,6 @@ pub async fn delete_account(
 ) -> ServiceResult<impl Responder> {
     use argon2_creds::Config;
     use sqlx::Error::RowNotFound;
-
-    is_authenticated(&id)?;
 
     let username = id.identity().unwrap();
 
