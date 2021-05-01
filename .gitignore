@@ -9,3 +9,4 @@ node_modules/
 /static
 ./templates/**/*.js
 /static-assets/bundle/*
+src/cache_buster_data.json
