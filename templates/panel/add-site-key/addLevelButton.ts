@@ -16,6 +16,7 @@
  */
 import VALIDATE_LEVELS from './levels';
 import isBlankString from '../../utils/isBlankString';
+import isNumber from '../../utils/isNumber';
 
 const LABEL_CONTAINER_CLASS = 'sitekey-form__add-level-flex-container';
 const LABEL_CLASS = 'sitekey-form__label';
@@ -38,20 +39,33 @@ const validateLevel = (numLevels: number) => {
   let inputID = INPUT_ID_WITHOUT_LEVEL + numLevels.toString();
   let filed = LABEL_INNER_TEXT_WITHOUT_LEVEL + numLevels;
   let inputElement = <HTMLInputElement>document.getElementById(inputID);
+
   let val = inputElement.value;
+  if (!isNumber(val)) {
+    return false;
+  }
+
+  let level = parseInt(val);
+  if (Number.isNaN(level)) {
+    alert('Level can contain nubers only');
+    return false;
+  }
+
   let e = null;
+  console.log(level);
+
   isBlankString(e, val, filed);
-  let isValid = VALIDATE_LEVELS.add(parseInt(val));
+  let isValid = VALIDATE_LEVELS.add(level);
   return isValid;
 };
 
 const addLevelButtonEventHandler = (e: Event) => {
-  let  eventTarget = <HTMLElement>e.target;
-//  if (!eventTarget) {
-//    return;
-//  }
+  let eventTarget = <HTMLElement>e.target;
+  //  if (!eventTarget) {
+  //    return;
+  //  }
   const PREV_LEVEL_CONTAINER = <HTMLElement>eventTarget.parentElement;
-  let numLevels: string|number = getNumLevels();
+  let numLevels: string | number = getNumLevels();
   let isValid = validateLevel(numLevels);
   console.log(`[addLevelButton] isValid: ${isValid}`);
 
@@ -99,7 +113,9 @@ const addLevelButtonEventHandler = (e: Event) => {
 };
 
 export const addLevelButtonAddEventListener = () => {
-  let addLevelButton = <HTMLElement>document.querySelector(`.${ADD_LEVEL_BUTTON}`);
+  let addLevelButton = <HTMLElement>(
+    document.querySelector(`.${ADD_LEVEL_BUTTON}`)
+  );
   addLevelButton.addEventListener('click', addLevelButtonEventHandler);
 };
 
