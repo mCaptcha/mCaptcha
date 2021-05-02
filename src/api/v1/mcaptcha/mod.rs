@@ -33,3 +33,9 @@ pub fn get_random(len: usize) -> String {
         .take(len)
         .collect::<String>()
 }
+
+pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
+    duration::services(cfg);
+    levels::services(cfg);
+    mcaptcha::services(cfg);
+}

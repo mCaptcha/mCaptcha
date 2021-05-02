@@ -68,7 +68,7 @@ pub struct AccountCheckResp {
     pub exists: bool,
 }
 
-pub fn service(cfg: &mut actix_web::web::ServiceConfig) {
+pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
     use crate::define_resource;
     use crate::V1_API_ROUTES;
 

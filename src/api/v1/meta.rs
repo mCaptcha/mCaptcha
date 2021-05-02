@@ -74,7 +74,7 @@ async fn health(data: web::Data<Data>) -> impl Responder {
     HttpResponse::Ok().json(resp_builder.build().unwrap())
 }
 
-pub fn service(cfg: &mut web::ServiceConfig) {
+pub fn services(cfg: &mut web::ServiceConfig) {
     use crate::define_resource;
     use crate::V1_API_ROUTES;
 

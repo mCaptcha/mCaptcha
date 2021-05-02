@@ -17,12 +17,11 @@
 use std::borrow::Cow;
 
 use actix_identity::Identity;
-use actix_web::{post, web, HttpResponse, Responder};
+use actix_web::{web, HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
 
 use super::get_random;
 use crate::errors::*;
-use crate::CheckLogin;
 use crate::Data;
 
 pub mod routes {
@@ -45,6 +44,38 @@ pub mod routes {
     }
 }
 
+pub fn services(cfg: &mut web::ServiceConfig) {
+    use crate::define_resource;
+    use crate::V1_API_ROUTES;
+
+    define_resource!(
+        cfg,
+        V1_API_ROUTES.mcaptcha.add,
+        Methods::ProtectPost,
+        add_mcaptcha
+    );
+    define_resource!(
+        cfg,
+        V1_API_ROUTES.mcaptcha.update_key,
+        Methods::ProtectPost,
+        update_token
+    );
+
+    define_resource!(
+        cfg,
+        V1_API_ROUTES.mcaptcha.delete,
+        Methods::ProtectPost,
+        delete_mcaptcha
+    );
+
+    define_resource!(
+        cfg,
+        V1_API_ROUTES.mcaptcha.get_token,
+        Methods::ProtectPost,
+        get_token
+    );
+}
+
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct MCaptchaID {
     pub name: Option<String>,
@@ -57,8 +88,8 @@ pub struct MCaptchaDetails {
 }
 
 // this should be called from within add levels
-#[post("/api/v1/mcaptcha/add", wrap = "CheckLogin")]
-pub async fn add_mcaptcha(data: web::Data<Data>, id: Identity) -> ServiceResult<impl Responder> {
+//#[post("/api/v1/mcaptcha/add", wrap = "CheckLogin")]
+async fn add_mcaptcha(data: web::Data<Data>, id: Identity) -> ServiceResult<impl Responder> {
     let username = id.identity().unwrap();
     let mut key;
 
@@ -99,14 +130,12 @@ pub async fn add_mcaptcha(data: web::Data<Data>, id: Identity) -> ServiceResult<
     Ok(HttpResponse::Ok().json(resp))
 }
 
-#[post("/api/v1/mcaptcha/update/key", wrap = "CheckLogin")]
-pub async fn update_token(
+//#[post("/api/v1/mcaptcha/update/key", wrap = "CheckLogin")]
+async fn update_token(
     payload: web::Json<MCaptchaDetails>,
     data: web::Data<Data>,
     id: Identity,
 ) -> ServiceResult<impl Responder> {
-    use std::borrow::Cow;
-
     let username = id.identity().unwrap();
     let mut key;
 
@@ -152,8 +181,8 @@ async fn update_token_helper(
     Ok(())
 }
 
-#[post("/api/v1/mcaptcha/get", wrap = "CheckLogin")]
-pub async fn get_token(
+//#[post("/api/v1/mcaptcha/get", wrap = "CheckLogin")]
+async fn get_token(
     payload: web::Json<MCaptchaDetails>,
     data: web::Data<Data>,
     id: Identity,
@@ -180,8 +209,8 @@ pub async fn get_token(
     Ok(HttpResponse::Ok().json(res))
 }
 
-#[post("/api/v1/mcaptcha/delete", wrap = "CheckLogin")]
-pub async fn delete_mcaptcha(
+//#[post("/api/v1/mcaptcha/delete", wrap = "CheckLogin")]
+async fn delete_mcaptcha(
     payload: web::Json<MCaptchaDetails>,
     data: web::Data<Data>,
     id: Identity,

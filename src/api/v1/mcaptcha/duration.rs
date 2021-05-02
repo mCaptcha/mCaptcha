@@ -16,12 +16,11 @@
 */
 
 use actix_identity::Identity;
-use actix_web::{post, web, HttpResponse, Responder};
+use actix_web::{web, HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
 
 use crate::api::v1::mcaptcha::mcaptcha::MCaptchaDetails;
 use crate::errors::*;
-use crate::CheckLogin;
 use crate::Data;
 
 pub mod routes {
@@ -45,8 +44,8 @@ pub struct UpdateDuration {
     pub duration: i32,
 }
 
-#[post("/api/v1/mcaptcha/domain/token/duration/update", wrap = "CheckLogin")]
-pub async fn update_duration(
+//#[post("/api/v1/mcaptcha/domain/token/duration/update", wrap = "CheckLogin")]
+async fn update_duration(
     payload: web::Json<UpdateDuration>,
     data: web::Data<Data>,
     id: Identity,
@@ -83,8 +82,8 @@ pub struct GetDuration {
     pub token: String,
 }
 
-#[post("/api/v1/mcaptcha/domain/token/duration/get", wrap = "CheckLogin")]
-pub async fn get_duration(
+//#[post("/api/v1/mcaptcha/domain/token/duration/get", wrap = "CheckLogin")]
+async fn get_duration(
     payload: web::Json<MCaptchaDetails>,
     data: web::Data<Data>,
     id: Identity,
@@ -101,6 +100,24 @@ pub async fn get_duration(
     .fetch_one(&data.db)
     .await?;
     Ok(HttpResponse::Ok().json(duration))
+}
+
+pub fn services(cfg: &mut web::ServiceConfig) {
+    use crate::define_resource;
+    use crate::V1_API_ROUTES;
+
+    define_resource!(
+        cfg,
+        V1_API_ROUTES.duration.get,
+        Methods::ProtectPost,
+        get_duration
+    );
+    define_resource!(
+        cfg,
+        V1_API_ROUTES.duration.update,
+        Methods::ProtectPost,
+        update_duration
+    );
 }
 
 #[cfg(test)]

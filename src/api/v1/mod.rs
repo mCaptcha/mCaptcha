@@ -26,28 +26,29 @@ mod routes;
 
 pub use routes::ROUTES;
 
-pub fn services(cfg: &mut ServiceConfig) {
+pub fn services(_cfg: &mut ServiceConfig) {
     // mcaptcha
-    cfg.service(mcaptcha::mcaptcha::add_mcaptcha);
-    cfg.service(mcaptcha::mcaptcha::delete_mcaptcha);
-    cfg.service(mcaptcha::mcaptcha::update_token);
-    cfg.service(mcaptcha::mcaptcha::get_token);
+    //cfg.service(mcaptcha::mcaptcha::add_mcaptcha);
+    //cfg.service(mcaptcha::mcaptcha::delete_mcaptcha);
+    //cfg.service(mcaptcha::mcaptcha::update_token);
+    //cfg.service(mcaptcha::mcaptcha::get_token);
 
     // levels
-    cfg.service(mcaptcha::levels::add_levels);
-    cfg.service(mcaptcha::levels::update_levels);
-    cfg.service(mcaptcha::levels::delete_levels);
-    cfg.service(mcaptcha::levels::get_levels);
+    //cfg.service(mcaptcha::levels::add_levels);
+    //cfg.service(mcaptcha::levels::update_levels);
+    //cfg.service(mcaptcha::levels::delete_levels);
+    //cfg.service(mcaptcha::levels::get_levels);
 
-    // duration
-    cfg.service(mcaptcha::duration::update_duration);
-    cfg.service(mcaptcha::duration::get_duration);
+    //    // duration
+    //    cfg.service(mcaptcha::duration::update_duration);
+    //    cfg.service(mcaptcha::duration::get_duration);
 }
 
 pub fn new_services(cfg: &mut ServiceConfig) {
-    meta::service(cfg);
-    auth::service(cfg);
-    account::service(cfg);
+    meta::services(cfg);
+    auth::services(cfg);
+    account::services(cfg);
+    mcaptcha::services(cfg);
 
     //define_resource!(
     //    cfg,

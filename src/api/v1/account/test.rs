@@ -53,6 +53,17 @@ async fn uname_email_exists_works() {
     .await;
     assert_eq!(resp.status(), StatusCode::OK);
 
+    // chech if get user secret works
+    let resp = test::call_service(
+        &mut app,
+        test::TestRequest::post()
+            .cookie(cookies.clone())
+            .uri(ROUTES.account.update_secret)
+            .to_request(),
+    )
+    .await;
+    assert_eq!(resp.status(), StatusCode::OK);
+
     let mut payload = AccountCheckPayload { val: NAME.into() };
 
     let user_exists_resp = test::call_service(

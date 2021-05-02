@@ -47,7 +47,7 @@ pub mod routes {
     }
 }
 
-pub fn service(cfg: &mut web::ServiceConfig) {
+pub fn services(cfg: &mut web::ServiceConfig) {
     use crate::define_resource;
     use crate::V1_API_ROUTES;
 

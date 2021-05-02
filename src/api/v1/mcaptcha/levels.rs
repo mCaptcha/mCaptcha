@@ -16,13 +16,12 @@
 */
 
 use actix_identity::Identity;
-use actix_web::{post, web, HttpResponse, Responder};
+use actix_web::{web, HttpResponse, Responder};
 use m_captcha::{defense::Level, DefenseBuilder};
 use serde::{Deserialize, Serialize};
 
 use crate::api::v1::mcaptcha::mcaptcha::MCaptchaDetails;
 use crate::errors::*;
-use crate::CheckLogin;
 use crate::Data;
 
 pub mod routes {
@@ -57,10 +56,42 @@ pub struct AddLevels {
     pub key: String,
 }
 
+pub fn services(cfg: &mut web::ServiceConfig) {
+    use crate::define_resource;
+    use crate::V1_API_ROUTES;
+
+    define_resource!(
+        cfg,
+        V1_API_ROUTES.levels.add,
+        Methods::ProtectPost,
+        add_levels
+    );
+    define_resource!(
+        cfg,
+        V1_API_ROUTES.levels.update,
+        Methods::ProtectPost,
+        update_levels
+    );
+
+    define_resource!(
+        cfg,
+        V1_API_ROUTES.levels.delete,
+        Methods::ProtectPost,
+        delete_levels
+    );
+
+    define_resource!(
+        cfg,
+        V1_API_ROUTES.levels.get,
+        Methods::ProtectPost,
+        get_levels
+    );
+}
+
 // TODO try for non-existent token names
 
-#[post("/api/v1/mcaptcha/levels/add", wrap = "CheckLogin")]
-pub async fn add_levels(
+//#[post("/api/v1/mcaptcha/levels/add", wrap = "CheckLogin")]
+async fn add_levels(
     payload: web::Json<AddLevels>,
     data: web::Data<Data>,
     id: Identity,
@@ -99,8 +130,8 @@ pub async fn add_levels(
     Ok(HttpResponse::Ok())
 }
 
-#[post("/api/v1/mcaptcha/levels/update", wrap = "CheckLogin")]
-pub async fn update_levels(
+//#[post("/api/v1/mcaptcha/levels/update", wrap = "CheckLogin")]
+async fn update_levels(
     payload: web::Json<AddLevels>,
     data: web::Data<Data>,
     id: Identity,
@@ -157,8 +188,8 @@ pub async fn update_levels(
     Ok(HttpResponse::Ok())
 }
 
-#[post("/api/v1/mcaptcha/levels/delete", wrap = "CheckLogin")]
-pub async fn delete_levels(
+//#[post("/api/v1/mcaptcha/levels/delete", wrap = "CheckLogin")]
+async fn delete_levels(
     payload: web::Json<AddLevels>,
     data: web::Data<Data>,
     id: Identity,
@@ -184,8 +215,8 @@ pub async fn delete_levels(
     Ok(HttpResponse::Ok())
 }
 
-#[post("/api/v1/mcaptcha/levels/get", wrap = "CheckLogin")]
-pub async fn get_levels(
+//#[post("/api/v1/mcaptcha/levels/get", wrap = "CheckLogin")]
+async fn get_levels(
     payload: web::Json<MCaptchaDetails>,
     data: web::Data<Data>,
     id: Identity,
