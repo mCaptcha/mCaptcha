@@ -15,29 +15,24 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-use actix_web::{get, HttpResponse, Responder};
-use sailfish::TemplateOnce;
+use super::auth::routes::Auth;
+use super::panel::routes::Panel;
+pub const ROUTES: Routes = Routes::new();
 
-#[derive(TemplateOnce, Clone)]
-#[template(path = "auth/register/index.html")]
-struct IndexPage<'a> {
-    name: &'a str,
-    title: &'a str,
+pub struct Routes {
+    pub home: &'static str,
+    pub auth: Auth,
+    pub panel: Panel,
 }
 
-impl<'a> Default for IndexPage<'a> {
-    fn default() -> Self {
-        IndexPage {
-            name: "mCaptcha",
-            title: "Join",
+impl Routes {
+    const fn new() -> Routes {
+        let panel = Panel::new();
+        let home = panel.home;
+        Routes {
+            auth: Auth::new(),
+            panel,
+            home,
         }
     }
-}
-
-#[get("/join")]
-pub async fn join() -> impl Responder {
-    let body = IndexPage::default().render_once().unwrap();
-    HttpResponse::Ok()
-        .content_type("text/html; charset=utf-8")
-        .body(body)
 }

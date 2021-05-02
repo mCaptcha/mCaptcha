@@ -15,5 +15,28 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-mod add;
-pub use add::add_sitekey;
+pub mod login;
+pub mod register;
+
+pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
+    use crate::define_resource;
+    use crate::PAGES;
+
+    define_resource!(cfg, PAGES.auth.login, Methods::Get, login::login);
+    define_resource!(cfg, PAGES.auth.join, Methods::Get, register::join);
+}
+
+pub mod routes {
+    pub struct Auth {
+        pub login: &'static str,
+        pub join: &'static str,
+    }
+    impl Auth {
+        pub const fn new() -> Auth {
+            Auth {
+                login: "/login",
+                join: "/join",
+            }
+        }
+    }
+}

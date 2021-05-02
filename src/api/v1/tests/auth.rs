@@ -125,7 +125,7 @@ async fn auth_works() {
     .await;
     assert_eq!(signout_resp.status(), StatusCode::OK);
     let headers = signout_resp.headers();
-    assert_eq!(headers.get(header::LOCATION).unwrap(), "/login")
+    assert_eq!(headers.get(header::LOCATION).unwrap(), PAGES.auth.login);
 }
 
 #[actix_rt::test]

@@ -19,16 +19,15 @@
 use std::task::{Context, Poll};
 
 use actix_identity::Identity;
-//use actix_identity::{CookieIdentityPolicy, IdentityService};
 use actix_service::{Service, Transform};
 use actix_web::dev::{ServiceRequest, ServiceResponse};
 use actix_web::{http, Error, FromRequest, HttpResponse};
 
 use futures::future::{ok, Either, Ready};
 
-pub struct CheckLogin;
+use crate::PAGES;
 
-const LOGIN_ROUTE: &str = "/login";
+pub struct CheckLogin;
 
 impl<S, B> Transform<S> for CheckLogin
 where
@@ -46,25 +45,6 @@ where
         ok(CheckLoginMiddleware { service })
     }
 }
-//
-//pub fn auto_login(req: &HttpRequest, pl: &mut dev::Payload) -> Option<()> {
-//    dbg!("login");
-//    if let Some(_) = Identity::from_request(req, pl)
-//        .into_inner()
-//        .map(|x| x.identity())
-//        .unwrap()
-//    {
-//        Some(())
-//    } else {
-//        None
-//    }
-//}
-//
-//fn not_auth(path: &str) -> bool {
-//    let paths = ["/login", "/css", "/img", "/js"];
-//    paths.iter().any(|x| path.starts_with(x))
-//}
-
 pub struct CheckLoginMiddleware<S> {
     service: S,
 }
@@ -84,9 +64,6 @@ where
     }
 
     fn call(&mut self, req: ServiceRequest) -> Self::Future {
-        //    if not_auth(req.path()) {
-        //        return Either::Left(self.service.call(req));
-        //    };
         let (r, mut pl) = req.into_parts();
 
         // TODO investigate when the bellow statement will
@@ -97,30 +74,14 @@ where
         {
             let req = ServiceRequest::from_parts(r, pl).ok().unwrap();
             Either::Left(self.service.call(req))
-        //            Some(())
         } else {
             let req = ServiceRequest::from_parts(r, pl).ok().unwrap();
             Either::Right(ok(req.into_response(
                 HttpResponse::Found()
-                    .header(http::header::LOCATION, LOGIN_ROUTE)
+                    .header(http::header::LOCATION, PAGES.auth.login)
                     .finish()
                     .into_body(),
             )))
-
-            //None
         }
-
-        //        let token = auto_login(&r, &mut pl);
-        //        let req = ServiceRequest::from_parts(r, pl).ok().unwrap();
-        //        if token.is_some() {
-        //            Either::Left(self.service.call(req))
-        //        } else {
-        //            Either::Right(ok(req.into_response(
-        //                HttpResponse::Found()
-        //                    .header(http::header::LOCATION, LOGIN_ROUTE)
-        //                    .finish()
-        //                    .into_body(),
-        //            )))
-        //        }
     }
 }

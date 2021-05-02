@@ -15,33 +15,34 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-use actix_web::{get, HttpResponse, Responder};
+use actix_web::{HttpResponse, Responder};
 use sailfish::TemplateOnce;
 
-use crate::CheckLogin;
-
-pub mod sitekey;
-
 #[derive(TemplateOnce, Clone)]
-#[template(path = "panel/index.html")]
+#[template(path = "panel/add-site-key/index.html")]
 pub struct IndexPage<'a> {
     pub name: &'a str,
     pub title: &'a str,
+    pub levels: usize,
+    pub form_title: &'a str,
+    pub form_description: &'a str,
 }
 
-const TITLE: &str = "Dashboard";
+const TITLE: &str = "Add Site Key";
 
 impl<'a> Default for IndexPage<'a> {
     fn default() -> Self {
         IndexPage {
             name: "mCaptcha",
             title: TITLE,
+            levels: 1,
+            form_description: "",
+            form_title: "Add Site Key",
         }
     }
 }
 
-#[get("/", wrap = "CheckLogin")]
-pub async fn panel() -> impl Responder {
+pub async fn add_sitekey() -> impl Responder {
     let body = IndexPage::default().render_once().unwrap();
     HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")

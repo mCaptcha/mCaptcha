@@ -19,12 +19,11 @@ use actix_web::web::ServiceConfig;
 
 mod auth;
 mod panel;
+pub mod routes;
 
 pub fn services(cfg: &mut ServiceConfig) {
-    cfg.service(panel::panel);
-    cfg.service(panel::sitekey::add_sitekey);
-    cfg.service(auth::login::login);
-    cfg.service(auth::register::join);
+    auth::services(cfg);
+    panel::services(cfg);
 }
 
 #[cfg(not(tarpaulin_include))]
@@ -60,7 +59,7 @@ mod tests {
         )
         .await;
 
-        let urls = vec!["/", "/sitekey/add"];
+        let urls = vec![PAGES.home, PAGES.panel.sitekey.add];
 
         for url in urls.iter() {
             let resp =
@@ -85,7 +84,7 @@ mod tests {
     #[actix_rt::test]
     async fn public_pages_tempaltes_work() {
         let mut app = test::init_service(App::new().configure(services)).await;
-        let urls = vec!["/join", "/login"];
+        let urls = vec![PAGES.auth.login, PAGES.auth.join];
 
         for url in urls.iter() {
             let resp =

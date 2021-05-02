@@ -15,11 +15,11 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-use actix_web::{get, HttpResponse, Responder};
+use actix_web::{HttpResponse, Responder};
 use sailfish::TemplateOnce;
 
-#[derive(Clone, TemplateOnce)]
-#[template(path = "auth/login/index.html")]
+#[derive(TemplateOnce, Clone)]
+#[template(path = "auth/register/index.html")]
 struct IndexPage<'a> {
     name: &'a str,
     title: &'a str,
@@ -29,13 +29,12 @@ impl<'a> Default for IndexPage<'a> {
     fn default() -> Self {
         IndexPage {
             name: "mCaptcha",
-            title: "Login",
+            title: "Join",
         }
     }
 }
 
-#[get("/login")]
-pub async fn login() -> impl Responder {
+pub async fn join() -> impl Responder {
     let body = IndexPage::default().render_once().unwrap();
     HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")

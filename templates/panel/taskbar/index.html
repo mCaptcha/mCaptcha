@@ -4,7 +4,7 @@
         -->
   <li class="task-bar__spacer"></li>
   <li class="task-bar__action">
-      <a class="task-bar__link" href="/sitekey/add">
+      <a class="task-bar__link" href="<.= crate::PAGES.panel.sitekey.add .>">
         <button class="main-menu__add-site">
             + New Site
         </button>
@@ -22,7 +22,7 @@
   </li>
 
   <li class="task-bar__action">
-      <a href="/logout">
+      <a href="<.= crate::V1_API_ROUTES.auth.logout .>">
     <img class="task-bar__icon" src="<.=
     crate::FILES.get("./static-assets/img/svg/log-out.svg").unwrap() .>" alt="Profile"
     /></a>

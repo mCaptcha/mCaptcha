@@ -15,14 +15,32 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-use sailfish::TemplateOnce;
-//use au
+mod add;
 
-//#[get("/")]
-//pub async fn login() -> impl Responder {
-//    let body = SignIn::default().render_once().unwrap();
-//    //        .map_err(|_| ServiceError::InternalError)?;
-//    HttpResponse::Ok()
-//        .content_type("text/html; charset=utf-8")
-//        .body(body)
-//}
+pub mod routes {
+    pub struct Sitekey {
+        pub list: &'static str,
+        pub add: &'static str,
+    }
+
+    impl Sitekey {
+        pub const fn new() -> Self {
+            Sitekey {
+                list: "/sitekey",
+                add: "/sitekey/add",
+            }
+        }
+    }
+}
+
+pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
+    use crate::define_resource;
+    use crate::PAGES;
+
+    define_resource!(
+        cfg,
+        PAGES.panel.sitekey.add,
+        Methods::ProtectGet,
+        add::add_sitekey
+    );
+}

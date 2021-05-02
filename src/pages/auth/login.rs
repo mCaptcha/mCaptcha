@@ -15,5 +15,28 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-pub mod login;
-pub mod register;
+use actix_web::{HttpResponse, Responder};
+use sailfish::TemplateOnce;
+
+#[derive(Clone, TemplateOnce)]
+#[template(path = "auth/login/index.html")]
+struct IndexPage<'a> {
+    name: &'a str,
+    title: &'a str,
+}
+
+impl<'a> Default for IndexPage<'a> {
+    fn default() -> Self {
+        IndexPage {
+            name: "mCaptcha",
+            title: "Login",
+        }
+    }
+}
+
+pub async fn login() -> impl Responder {
+    let body = IndexPage::default().render_once().unwrap();
+    HttpResponse::Ok()
+        .content_type("text/html; charset=utf-8")
+        .body(body)
+}

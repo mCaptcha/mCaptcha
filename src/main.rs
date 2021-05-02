@@ -28,9 +28,9 @@ mod api;
 mod data;
 mod docs;
 mod errors;
+mod pages;
 mod settings;
 mod static_assets;
-mod templates;
 #[macro_use]
 mod routes;
 #[cfg(test)]
@@ -40,6 +40,7 @@ mod middleware;
 
 pub use api::v1::ROUTES as V1_API_ROUTES;
 pub use data::Data;
+pub use pages::routes::ROUTES as PAGES;
 pub use settings::Settings;
 use static_assets::FileMap;
 
@@ -91,7 +92,7 @@ async fn main() -> std::io::Result<()> {
             .configure(v1::services)
             .configure(docs::services)
             .configure(static_assets::services)
-            .configure(templates::services)
+            .configure(pages::services)
             .app_data(get_json_err())
     })
     .bind(SETTINGS.server.get_ip())
