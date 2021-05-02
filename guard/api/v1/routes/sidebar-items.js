@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["ROUTES",""],["Routes",""]]});
+initSidebarItems({"constant":[["ROUTES",""]],"struct":[["Routes",""]]});

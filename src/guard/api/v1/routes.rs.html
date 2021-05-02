@@ -38,6 +38,16 @@
 <span id="35">35</span>
 <span id="36">36</span>
 <span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -56,25 +66,35 @@
 * along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
 */</span>
 
-<span class="kw">use</span> <span class="ident">lazy_static</span>::<span class="ident">lazy_static</span>;
-
 <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">account</span>::<span class="ident">routes</span>::<span class="ident">Account</span>;
 <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">auth</span>::<span class="ident">routes</span>::<span class="ident">Auth</span>;
 <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">mcaptcha</span>::<span class="ident">duration</span>::<span class="ident">routes</span>::<span class="ident">Duration</span>;
 <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">mcaptcha</span>::<span class="ident">levels</span>::<span class="ident">routes</span>::<span class="ident">Levels</span>;
 <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">mcaptcha</span>::<span class="ident">mcaptcha</span>::<span class="ident">routes</span>::<span class="ident">MCaptcha</span>;
+<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">meta</span>::<span class="ident">routes</span>::<span class="ident">Meta</span>;
 
-<span class="macro">lazy_static</span><span class="macro">!</span> {
-    <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">ROUTES</span>: <span class="ident">Routes</span> <span class="op">=</span> <span class="ident">Routes</span>::<span class="ident">default</span>();
-}
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ROUTES</span>: <span class="ident">Routes</span> <span class="op">=</span> <span class="ident">Routes</span>::<span class="ident">new</span>();
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Default</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Routes</span> {
     <span class="kw">pub</span> <span class="ident">auth</span>: <span class="ident">Auth</span>,
     <span class="kw">pub</span> <span class="ident">account</span>: <span class="ident">Account</span>,
     <span class="kw">pub</span> <span class="ident">levels</span>: <span class="ident">Levels</span>,
     <span class="kw">pub</span> <span class="ident">mcaptcha</span>: <span class="ident">MCaptcha</span>,
     <span class="kw">pub</span> <span class="ident">duration</span>: <span class="ident">Duration</span>,
+    <span class="kw">pub</span> <span class="ident">meta</span>: <span class="ident">Meta</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">Routes</span> {
+    <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Routes</span> {
+        <span class="ident">Routes</span> {
+            <span class="ident">auth</span>: <span class="ident">Auth</span>::<span class="ident">new</span>(),
+            <span class="ident">account</span>: <span class="ident">Account</span>::<span class="ident">new</span>(),
+            <span class="ident">levels</span>: <span class="ident">Levels</span>::<span class="ident">new</span>(),
+            <span class="ident">mcaptcha</span>: <span class="ident">MCaptcha</span>::<span class="ident">new</span>(),
+            <span class="ident">duration</span>: <span class="ident">Duration</span>::<span class="ident">new</span>(),
+            <span class="ident">meta</span>: <span class="ident">Meta</span>::<span class="ident">new</span>(),
+        }
+    }
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="guard"></div>
