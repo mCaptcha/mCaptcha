@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["LOGIN_ROUTE",""]],"struct":[["CheckLogin",""],["CheckLoginMiddleware",""]]});
+initSidebarItems({"struct":[["CheckLogin",""],["CheckLoginMiddleware",""]]});
