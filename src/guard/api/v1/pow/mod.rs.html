@@ -52,6 +52,25 @@
 <span id="49">49</span>
 <span id="50">50</span>
 <span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -80,29 +99,48 @@
 <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">mcaptcha</span>::<span class="ident">duration</span>::<span class="ident">GetDurationResp</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">mcaptcha</span>::<span class="ident">levels</span>::<span class="ident">I32Levels</span>;
 
-<span class="comment">// middleware protected by scope</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">services</span>(<span class="ident">cfg</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">web</span>::<span class="ident">ServiceConfig</span>) {
-    <span class="kw">let</span> <span class="ident">captcha_api_cors</span> <span class="op">=</span> <span class="ident">Cors</span>::<span class="ident">default</span>()
-        .<span class="ident">allow_any_origin</span>()
-        .<span class="ident">allowed_methods</span>(<span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;POST&quot;</span>])
-        .<span class="ident">allow_any_header</span>()
-        .<span class="ident">max_age</span>(<span class="number">0</span>)
-        .<span class="ident">send_wildcard</span>();
+    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">define_resource</span>;
+    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">V1_API_ROUTES</span>;
 
-    <span class="ident">cfg</span>.<span class="ident">service</span>(
-        <span class="ident">web</span>::<span class="ident">scope</span>(<span class="string">&quot;/api/v1/pow/&quot;</span>)
-            .<span class="ident">wrap</span>(<span class="ident">captcha_api_cors</span>)
-            .<span class="ident">configure</span>(<span class="ident">intenral_services</span>),
+    <span class="macro">define_resource</span><span class="macro">!</span>(
+        <span class="ident">cfg</span>,
+        <span class="ident">V1_API_ROUTES</span>.<span class="ident">pow</span>.<span class="ident">verify_pow</span>,
+        <span class="ident">Methods</span>::<span class="ident">CorsAllowAllPost</span>,
+        <span class="ident">verify_pow</span>::<span class="ident">verify_pow</span>
+    );
+
+    <span class="macro">define_resource</span><span class="macro">!</span>(
+        <span class="ident">cfg</span>,
+        <span class="ident">V1_API_ROUTES</span>.<span class="ident">pow</span>.<span class="ident">get_config</span>,
+        <span class="ident">Methods</span>::<span class="ident">CorsAllowAllPost</span>,
+        <span class="ident">get_config</span>::<span class="ident">get_config</span>
+    );
+
+    <span class="macro">define_resource</span><span class="macro">!</span>(
+        <span class="ident">cfg</span>,
+        <span class="ident">V1_API_ROUTES</span>.<span class="ident">pow</span>.<span class="ident">validate_captcha_token</span>,
+        <span class="ident">Methods</span>::<span class="ident">CorsAllowAllPost</span>,
+        <span class="ident">verify_token</span>::<span class="ident">validate_captcha_token</span>
     );
 }
 
-<span class="comment">// internal route aggregator, it&#39;s easy to use macros</span>
-<span class="comment">// to denote paths than having to type it out</span>
-<span class="comment">// but remember, final path = scope + macro path</span>
-<span class="kw">fn</span> <span class="ident">intenral_services</span>(<span class="ident">cfg</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">web</span>::<span class="ident">ServiceConfig</span>) {
-    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">get_config</span>::<span class="ident">get_config</span>);
-    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">verify_pow</span>::<span class="ident">verify_pow</span>);
-    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">verify_token</span>::<span class="ident">validate_captcha_token</span>);
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">routes</span> {
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PoW</span> {
+        <span class="kw">pub</span> <span class="ident">get_config</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
+        <span class="kw">pub</span> <span class="ident">verify_pow</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
+        <span class="kw">pub</span> <span class="ident">validate_captcha_token</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
+    }
+
+    <span class="kw">impl</span> <span class="ident">PoW</span> {
+        <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+            <span class="ident">PoW</span> {
+                <span class="ident">get_config</span>: <span class="string">&quot;/api/v1/pow/config&quot;</span>,
+                <span class="ident">verify_pow</span>: <span class="string">&quot;/api/v1/pow/verify&quot;</span>,
+                <span class="ident">validate_captcha_token</span>: <span class="string">&quot;/api/v1/pow/siteverify&quot;</span>,
+            }
+        }
+    }
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="guard"></div>

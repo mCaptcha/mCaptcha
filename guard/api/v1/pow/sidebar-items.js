@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["intenral_services",""],["services",""]],"mod":[["get_config",""],["verify_pow",""],["verify_token",""]]});
+initSidebarItems({"fn":[["services",""]],"mod":[["get_config",""],["routes",""],["verify_pow",""],["verify_token",""]]});

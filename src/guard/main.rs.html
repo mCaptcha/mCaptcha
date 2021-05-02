@@ -123,7 +123,6 @@
 <span id="120">120</span>
 <span id="121">121</span>
 <span id="122">122</span>
-<span id="123">123</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -215,7 +214,6 @@
             .<span class="ident">wrap</span>(<span class="ident">actix_middleware</span>::<span class="ident">NormalizePath</span>::<span class="ident">new</span>(
                 <span class="ident">actix_middleware</span>::<span class="ident">normalize</span>::<span class="ident">TrailingSlash</span>::<span class="ident">Trim</span>,
             ))
-            .<span class="ident">configure</span>(<span class="ident">v1</span>::<span class="ident">pow</span>::<span class="ident">services</span>)
             .<span class="ident">configure</span>(<span class="ident">v1</span>::<span class="ident">services</span>)
             .<span class="ident">configure</span>(<span class="ident">docs</span>::<span class="ident">services</span>)
             .<span class="ident">configure</span>(<span class="ident">static_assets</span>::<span class="ident">services</span>)

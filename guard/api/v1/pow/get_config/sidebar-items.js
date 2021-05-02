@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["init_mcaptcha",""]],"struct":[["GetConfigPayload",""],["PoWConfig",""],["get_config",""]]});
+initSidebarItems({"fn":[["get_config",""],["init_mcaptcha",""]],"struct":[["GetConfigPayload",""],["PoWConfig",""]]});

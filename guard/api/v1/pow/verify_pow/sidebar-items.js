@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["ValidationToken",""],["verify_pow",""]]});
+initSidebarItems({"fn":[["verify_pow",""]],"struct":[["ValidationToken",""]]});

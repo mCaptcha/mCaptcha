@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["CaptchaValidateResp",""],["validate_captcha_token",""]]});
+initSidebarItems({"fn":[["validate_captcha_token",""]],"struct":[["CaptchaValidateResp",""]]});
