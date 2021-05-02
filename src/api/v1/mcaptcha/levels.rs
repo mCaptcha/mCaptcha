@@ -52,7 +52,7 @@ pub mod routes {
 #[derive(Serialize, Deserialize)]
 pub struct AddLevels {
     pub levels: Vec<Level>,
-    // name is config_name
+    /// name is config_name
     pub key: String,
 }
 
@@ -90,7 +90,6 @@ pub fn services(cfg: &mut web::ServiceConfig) {
 
 // TODO try for non-existent token names
 
-//#[post("/api/v1/mcaptcha/levels/add", wrap = "CheckLogin")]
 async fn add_levels(
     payload: web::Json<AddLevels>,
     data: web::Data<Data>,
@@ -130,7 +129,6 @@ async fn add_levels(
     Ok(HttpResponse::Ok())
 }
 
-//#[post("/api/v1/mcaptcha/levels/update", wrap = "CheckLogin")]
 async fn update_levels(
     payload: web::Json<AddLevels>,
     data: web::Data<Data>,
@@ -188,7 +186,6 @@ async fn update_levels(
     Ok(HttpResponse::Ok())
 }
 
-//#[post("/api/v1/mcaptcha/levels/delete", wrap = "CheckLogin")]
 async fn delete_levels(
     payload: web::Json<AddLevels>,
     data: web::Data<Data>,
@@ -215,7 +212,6 @@ async fn delete_levels(
     Ok(HttpResponse::Ok())
 }
 
-//#[post("/api/v1/mcaptcha/levels/get", wrap = "CheckLogin")]
 async fn get_levels(
     payload: web::Json<MCaptchaDetails>,
     data: web::Data<Data>,
@@ -281,23 +277,6 @@ mod tests {
         let (data, _, signin_resp, key) = add_levels_util(NAME, PASSWORD).await;
         let cookies = get_cookie!(signin_resp);
         let mut app = get_app!(data).await;
-        /*
-
-        let add_level = AddLevels {
-            levels: levels.clone(),
-            key: key.key.clone(),
-        };
-
-        // 1. add level
-        let add_token_resp = test::call_service(
-            &mut app,
-            post_request!(&add_level, ADD_URL)
-                .cookie(cookies.clone())
-                .to_request(),
-        )
-        .await;
-        assert_eq!(add_token_resp.status(), StatusCode::OK);
-        */
 
         // 2. get level
 

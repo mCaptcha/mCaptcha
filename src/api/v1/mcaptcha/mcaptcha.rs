@@ -88,7 +88,6 @@ pub struct MCaptchaDetails {
 }
 
 // this should be called from within add levels
-//#[post("/api/v1/mcaptcha/add", wrap = "CheckLogin")]
 async fn add_mcaptcha(data: web::Data<Data>, id: Identity) -> ServiceResult<impl Responder> {
     let username = id.identity().unwrap();
     let mut key;
@@ -130,7 +129,6 @@ async fn add_mcaptcha(data: web::Data<Data>, id: Identity) -> ServiceResult<impl
     Ok(HttpResponse::Ok().json(resp))
 }
 
-//#[post("/api/v1/mcaptcha/update/key", wrap = "CheckLogin")]
 async fn update_token(
     payload: web::Json<MCaptchaDetails>,
     data: web::Data<Data>,
@@ -181,7 +179,6 @@ async fn update_token_helper(
     Ok(())
 }
 
-//#[post("/api/v1/mcaptcha/get", wrap = "CheckLogin")]
 async fn get_token(
     payload: web::Json<MCaptchaDetails>,
     data: web::Data<Data>,
@@ -209,7 +206,6 @@ async fn get_token(
     Ok(HttpResponse::Ok().json(res))
 }
 
-//#[post("/api/v1/mcaptcha/delete", wrap = "CheckLogin")]
 async fn delete_mcaptcha(
     payload: web::Json<MCaptchaDetails>,
     data: web::Data<Data>,
@@ -263,10 +259,6 @@ mod tests {
         let (data, _, signin_resp, token_key) = add_token_util(NAME, PASSWORD).await;
         let cookies = get_cookie!(signin_resp);
         let mut app = get_app!(data).await;
-
-        //        let mut domain = MCaptchaID {
-        //            name: TOKEN_NAME.into(),
-        //        };
 
         // 4. delete token
         let del_token = test::call_service(

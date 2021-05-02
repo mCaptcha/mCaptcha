@@ -22,8 +22,7 @@ use super::auth::Password;
 use crate::errors::*;
 use crate::Data;
 
-//#[post("/api/v1/account/delete", wrap = "CheckLogin")]
-pub async fn delete_account(
+async fn delete_account(
     id: Identity,
     payload: web::Json<Password>,
     data: web::Data<Data>,
@@ -57,4 +56,16 @@ pub async fn delete_account(
         Err(RowNotFound) => return Err(ServiceError::UsernameNotFound),
         Err(_) => return Err(ServiceError::InternalServerError)?,
     }
+}
+
+pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
+    use crate::define_resource;
+    use crate::V1_API_ROUTES;
+
+    define_resource!(
+        cfg,
+        V1_API_ROUTES.account.delete,
+        Methods::ProtectPost,
+        delete_account
+    );
 }

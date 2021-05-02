@@ -57,7 +57,6 @@ macro_rules! get_app {
                 ))
                 .configure(crate::api::v1::pow::services)
                 .configure(crate::api::v1::services)
-                .configure(crate::api::v1::new_services)
                 .data($data.clone()),
         )
     };

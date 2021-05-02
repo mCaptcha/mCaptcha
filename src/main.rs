@@ -90,7 +90,6 @@ async fn main() -> std::io::Result<()> {
             ))
             .configure(v1::pow::services)
             .configure(v1::services)
-            .configure(v1::new_services)
             .configure(docs::services)
             .configure(static_assets::services)
             .configure(templates::services)

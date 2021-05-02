@@ -29,7 +29,6 @@ pub struct Email {
     pub email: String,
 }
 
-//#[post("/api/v1/account/email/exists")]
 pub async fn email_exists(
     payload: web::Json<AccountCheckPayload>,
     data: web::Data<Data>,
@@ -53,9 +52,7 @@ pub async fn email_exists(
 }
 
 /// update email
-//#[post("/api/v1/account/email/", wrap = "CheckLogin")]
-//#[post("/api/v1/", wrap = "CheckLogin")]
-pub async fn set_email(
+async fn set_email(
     id: Identity,
     payload: web::Json<Email>,
     data: web::Data<Data>,
@@ -84,4 +81,23 @@ pub async fn set_email(
         };
     }
     Ok(HttpResponse::Ok())
+}
+
+pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
+    use crate::define_resource;
+    use crate::V1_API_ROUTES;
+
+    define_resource!(
+        cfg,
+        V1_API_ROUTES.account.email_exists,
+        Methods::Post,
+        email_exists
+    );
+
+    define_resource!(
+        cfg,
+        V1_API_ROUTES.account.update_email,
+        Methods::Post,
+        set_email
+    );
 }

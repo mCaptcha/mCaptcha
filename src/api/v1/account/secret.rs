@@ -29,8 +29,7 @@ pub struct Secret {
     pub secret: String,
 }
 
-//#[get("/api/v1/account/secret/", wrap = "CheckLogin")]
-pub async fn get_secret(id: Identity, data: web::Data<Data>) -> ServiceResult<impl Responder> {
+async fn get_secret(id: Identity, data: web::Data<Data>) -> ServiceResult<impl Responder> {
     let username = id.identity().unwrap();
 
     let secret = sqlx::query_as!(
@@ -44,11 +43,7 @@ pub async fn get_secret(id: Identity, data: web::Data<Data>) -> ServiceResult<im
     Ok(HttpResponse::Ok().json(secret))
 }
 
-//#[post("/api/v1/account/secret/", wrap = "CheckLogin")]
-pub async fn update_user_secret(
-    id: Identity,
-    data: web::Data<Data>,
-) -> ServiceResult<impl Responder> {
+async fn update_user_secret(id: Identity, data: web::Data<Data>) -> ServiceResult<impl Responder> {
     let username = id.identity().unwrap();
 
     let mut secret;
@@ -78,4 +73,23 @@ pub async fn update_user_secret(
         }
     }
     Ok(HttpResponse::Ok())
+}
+
+pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
+    use crate::define_resource;
+    use crate::V1_API_ROUTES;
+
+    define_resource!(
+        cfg,
+        V1_API_ROUTES.account.get_secret,
+        Methods::ProtectGet,
+        get_secret
+    );
+
+    define_resource!(
+        cfg,
+        V1_API_ROUTES.account.update_secret,
+        Methods::ProtectPost,
+        update_user_secret
+    );
 }

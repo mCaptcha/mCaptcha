@@ -75,7 +75,6 @@ pub struct Password {
     pub password: String,
 }
 
-//#[post("/api/v1/signup")]
 async fn signup(
     payload: web::Json<Register>,
     data: web::Data<Data>,
@@ -143,7 +142,6 @@ async fn signup(
     Ok(HttpResponse::Ok())
 }
 
-//#[post("/api/v1/signin")]
 async fn signin(
     id: Identity,
     payload: web::Json<Login>,
@@ -175,7 +173,6 @@ async fn signin(
     }
 }
 
-//#[get("/logout", wrap = "CheckLogin")]
 async fn signout(id: Identity) -> impl Responder {
     if let Some(_) = id.identity() {
         id.forget();

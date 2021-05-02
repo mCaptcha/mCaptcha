@@ -92,13 +92,12 @@ mod tests {
     use actix_web::{http::StatusCode, test, App};
 
     use super::*;
-    use crate::api::v1::new_services;
+    use crate::api::v1::services;
     use crate::*;
 
     #[actix_rt::test]
     async fn build_details_works() {
-        //       const GET_URI: &str = "/api/v1/meta/build";
-        let mut app = test::init_service(App::new().configure(new_services)).await;
+        let mut app = test::init_service(App::new().configure(services)).await;
 
         let resp = test::call_service(
             &mut app,
@@ -112,8 +111,6 @@ mod tests {
 
     #[actix_rt::test]
     async fn health_works() {
-        //        const GET_URI: &str = "/api/v1/meta/health";
-
         println!("{}", V1_API_ROUTES.meta.health);
         let data = Data::new().await;
         let mut app = get_app!(data).await;

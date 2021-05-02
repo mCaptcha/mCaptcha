@@ -26,7 +26,6 @@ use actix_web::{
 use argon2_creds::errors::CredsError;
 //use awc::error::SendRequestError;
 use derive_more::{Display, Error};
-use log::debug;
 use m_captcha::errors::CaptchaError;
 use serde::{Deserialize, Serialize};
 use url::ParseError;
@@ -140,7 +139,6 @@ impl ResponseError for ServiceError {
 impl From<CredsError> for ServiceError {
     #[cfg(not(tarpaulin_include))]
     fn from(e: CredsError) -> ServiceError {
-        debug!("{:?}", &e);
         match e {
             CredsError::UsernameCaseMappedError => ServiceError::UsernameCaseMappedError,
             CredsError::ProfainityError => ServiceError::ProfainityError,

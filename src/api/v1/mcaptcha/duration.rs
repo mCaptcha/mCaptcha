@@ -44,7 +44,6 @@ pub struct UpdateDuration {
     pub duration: i32,
 }
 
-//#[post("/api/v1/mcaptcha/domain/token/duration/update", wrap = "CheckLogin")]
 async fn update_duration(
     payload: web::Json<UpdateDuration>,
     data: web::Data<Data>,
@@ -82,7 +81,6 @@ pub struct GetDuration {
     pub token: String,
 }
 
-//#[post("/api/v1/mcaptcha/domain/token/duration/get", wrap = "CheckLogin")]
 async fn get_duration(
     payload: web::Json<MCaptchaDetails>,
     data: web::Data<Data>,

@@ -69,48 +69,8 @@ pub struct AccountCheckResp {
 }
 
 pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
-    use crate::define_resource;
-    use crate::V1_API_ROUTES;
-
-    define_resource!(
-        cfg,
-        V1_API_ROUTES.account.delete,
-        Methods::ProtectPost,
-        delete::delete_account
-    );
-
-    define_resource!(
-        cfg,
-        V1_API_ROUTES.account.username_exists,
-        Methods::Post,
-        username::username_exists
-    );
-
-    define_resource!(
-        cfg,
-        V1_API_ROUTES.account.email_exists,
-        Methods::Post,
-        email::email_exists
-    );
-
-    define_resource!(
-        cfg,
-        V1_API_ROUTES.account.update_email,
-        Methods::Post,
-        email::set_email
-    );
-
-    define_resource!(
-        cfg,
-        V1_API_ROUTES.account.get_secret,
-        Methods::ProtectGet,
-        secret::get_secret
-    );
-
-    define_resource!(
-        cfg,
-        V1_API_ROUTES.account.update_secret,
-        Methods::ProtectPost,
-        secret::update_user_secret
-    );
+    delete::services(cfg);
+    email::services(cfg);
+    username::services(cfg);
+    secret::services(cfg);
 }
