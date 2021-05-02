@@ -364,27 +364,6 @@
 <span id="361">361</span>
 <span id="362">362</span>
 <span id="363">363</span>
-<span id="364">364</span>
-<span id="365">365</span>
-<span id="366">366</span>
-<span id="367">367</span>
-<span id="368">368</span>
-<span id="369">369</span>
-<span id="370">370</span>
-<span id="371">371</span>
-<span id="372">372</span>
-<span id="373">373</span>
-<span id="374">374</span>
-<span id="375">375</span>
-<span id="376">376</span>
-<span id="377">377</span>
-<span id="378">378</span>
-<span id="379">379</span>
-<span id="380">380</span>
-<span id="381">381</span>
-<span id="382">382</span>
-<span id="383">383</span>
-<span id="384">384</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -440,7 +419,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AddLevels</span> {
     <span class="kw">pub</span> <span class="ident">levels</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Level</span><span class="op">&gt;</span>,
-    <span class="comment">// name is config_name</span>
+    <span class="doccomment">/// name is config_name</span>
     <span class="kw">pub</span> <span class="ident">key</span>: <span class="ident">String</span>,
 }
 
@@ -478,7 +457,6 @@
 
 <span class="comment">// TODO try for non-existent token names</span>
 
-<span class="comment">//#[post(&quot;/api/v1/mcaptcha/levels/add&quot;, wrap = &quot;CheckLogin&quot;)]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">add_levels</span>(
     <span class="ident">payload</span>: <span class="ident">web</span>::<span class="ident">Json</span><span class="op">&lt;</span><span class="ident">AddLevels</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>,
@@ -518,7 +496,6 @@
     <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse</span>::<span class="prelude-val">Ok</span>())
 }
 
-<span class="comment">//#[post(&quot;/api/v1/mcaptcha/levels/update&quot;, wrap = &quot;CheckLogin&quot;)]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_levels</span>(
     <span class="ident">payload</span>: <span class="ident">web</span>::<span class="ident">Json</span><span class="op">&lt;</span><span class="ident">AddLevels</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>,
@@ -576,7 +553,6 @@
     <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse</span>::<span class="prelude-val">Ok</span>())
 }
 
-<span class="comment">//#[post(&quot;/api/v1/mcaptcha/levels/delete&quot;, wrap = &quot;CheckLogin&quot;)]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_levels</span>(
     <span class="ident">payload</span>: <span class="ident">web</span>::<span class="ident">Json</span><span class="op">&lt;</span><span class="ident">AddLevels</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>,
@@ -603,7 +579,6 @@
     <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse</span>::<span class="prelude-val">Ok</span>())
 }
 
-<span class="comment">//#[post(&quot;/api/v1/mcaptcha/levels/get&quot;, wrap = &quot;CheckLogin&quot;)]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_levels</span>(
     <span class="ident">payload</span>: <span class="ident">web</span>::<span class="ident">Json</span><span class="op">&lt;</span><span class="ident">MCaptchaDetails</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>,
@@ -669,23 +644,6 @@
         <span class="kw">let</span> (<span class="ident">data</span>, <span class="kw">_</span>, <span class="ident">signin_resp</span>, <span class="ident">key</span>) <span class="op">=</span> <span class="ident">add_levels_util</span>(<span class="ident">NAME</span>, <span class="ident">PASSWORD</span>).<span class="kw">await</span>;
         <span class="kw">let</span> <span class="ident">cookies</span> <span class="op">=</span> <span class="macro">get_cookie</span><span class="macro">!</span>(<span class="ident">signin_resp</span>);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">app</span> <span class="op">=</span> <span class="macro">get_app</span><span class="macro">!</span>(<span class="ident">data</span>).<span class="kw">await</span>;
-        <span class="comment">/*
-
-        let add_level = AddLevels {
-            levels: levels.clone(),
-            key: key.key.clone(),
-        };
-
-        // 1. add level
-        let add_token_resp = test::call_service(
-            &amp;mut app,
-            post_request!(&amp;add_level, ADD_URL)
-                .cookie(cookies.clone())
-                .to_request(),
-        )
-        .await;
-        assert_eq!(add_token_resp.status(), StatusCode::OK);
-        */</span>
 
         <span class="comment">// 2. get level</span>
 

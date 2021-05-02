@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["email_exists",""],["set_email","update email"]],"struct":[["Email",""]]});
+initSidebarItems({"fn":[["email_exists",""],["services",""],["set_email","update email"]],"struct":[["Email",""]]});

@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["delete_account",""]]});
+initSidebarItems({"fn":[["delete_account",""],["services",""]]});

@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["username_exists",""]]});
+initSidebarItems({"fn":[["services",""],["username_exists",""]]});
