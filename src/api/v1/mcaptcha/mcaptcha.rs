@@ -25,6 +25,26 @@ use crate::errors::*;
 use crate::CheckLogin;
 use crate::Data;
 
+pub mod routes {
+    pub struct MCaptcha {
+        pub add: &'static str,
+        pub delete: &'static str,
+        pub get_token: &'static str,
+        pub update_key: &'static str,
+    }
+
+    impl Default for MCaptcha {
+        fn default() -> Self {
+            Self {
+                add: "/api/v1/mcaptcha/add",
+                update_key: "/api/v1/mcaptcha/update/key",
+                get_token: "/api/v1/mcaptcha/get",
+                delete: "/api/v1/mcaptcha/delete",
+            }
+        }
+    }
+}
+
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct MCaptchaID {
     pub name: Option<String>,
@@ -36,6 +56,7 @@ pub struct MCaptchaDetails {
     pub key: String,
 }
 
+// this should be called from within add levels
 #[post("/api/v1/mcaptcha/add", wrap = "CheckLogin")]
 pub async fn add_mcaptcha(data: web::Data<Data>, id: Identity) -> ServiceResult<impl Responder> {
     let username = id.identity().unwrap();
@@ -193,6 +214,7 @@ mod tests {
     use actix_web::test;
 
     use super::*;
+    use crate::api::v1::ROUTES;
     use crate::tests::*;
     use crate::*;
 
@@ -201,7 +223,6 @@ mod tests {
         const NAME: &str = "testusermcaptcha";
         const PASSWORD: &str = "longpassworddomain";
         const EMAIL: &str = "testusermcaptcha@a.com";
-        const DEL_URL: &str = "/api/v1/mcaptcha/delete";
 
         {
             let data = Data::new().await;
@@ -221,7 +242,7 @@ mod tests {
         // 4. delete token
         let del_token = test::call_service(
             &mut app,
-            post_request!(&token_key, DEL_URL)
+            post_request!(&token_key, ROUTES.mcaptcha.delete)
                 .cookie(cookies.clone())
                 .to_request(),
         )
@@ -234,8 +255,6 @@ mod tests {
         const NAME: &str = "updateusermcaptcha";
         const PASSWORD: &str = "longpassworddomain";
         const EMAIL: &str = "testupdateusermcaptcha@a.com";
-        const UPDATE_URL: &str = "/api/v1/mcaptcha/update/key";
-        const GET_URL: &str = "/api/v1/mcaptcha/get";
 
         {
             let data = Data::new().await;
@@ -251,7 +270,7 @@ mod tests {
         // 2. update token key
         let update_token_resp = test::call_service(
             &mut app,
-            post_request!(&token_key, UPDATE_URL)
+            post_request!(&token_key, ROUTES.mcaptcha.update_key)
                 .cookie(cookies.clone())
                 .to_request(),
         )
@@ -262,7 +281,7 @@ mod tests {
         // get token key with updated key
         let get_token_resp = test::call_service(
             &mut app,
-            post_request!(&updated_token, GET_URL)
+            post_request!(&updated_token, ROUTES.mcaptcha.get_token)
                 .cookie(cookies.clone())
                 .to_request(),
         )
@@ -277,7 +296,7 @@ mod tests {
 
         let get_nonexistent_token_resp = test::call_service(
             &mut app,
-            post_request!(&get_token_key, GET_URL)
+            post_request!(&get_token_key, ROUTES.mcaptcha.get_token)
                 .cookie(cookies.clone())
                 .to_request(),
         )

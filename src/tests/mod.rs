@@ -2,6 +2,7 @@ use actix_web::test;
 use actix_web::{
     dev::ServiceResponse,
     http::{header, StatusCode},
+    middleware as actix_middleware,
 };
 use m_captcha::defense::Level;
 use serde::Serialize;
@@ -10,6 +11,7 @@ use super::*;
 use crate::api::v1::auth::{Login, Register};
 use crate::api::v1::mcaptcha::levels::AddLevels;
 use crate::api::v1::mcaptcha::mcaptcha::MCaptchaDetails;
+use crate::api::v1::ROUTES;
 use crate::data::Data;
 use crate::errors::*;
 
@@ -50,6 +52,9 @@ macro_rules! get_app {
         test::init_service(
             App::new()
                 .wrap(get_identity_service())
+                .wrap(actix_middleware::NormalizePath::new(
+                    actix_middleware::normalize::TrailingSlash::Trim,
+                ))
                 .configure(crate::api::v1::pow::services)
                 .configure(crate::api::v1::services)
                 .data($data.clone()),
@@ -79,8 +84,11 @@ pub async fn register<'a>(name: &'a str, email: &str, password: &str) {
         confirm_password: password.into(),
         email: Some(email.into()),
     };
-    let resp =
-        test::call_service(&mut app, post_request!(&msg, "/api/v1/signup").to_request()).await;
+    let resp = test::call_service(
+        &mut app,
+        post_request!(&msg, ROUTES.auth.register).to_request(),
+    )
+    .await;
     assert_eq!(resp.status(), StatusCode::OK);
 }
 
@@ -96,7 +104,7 @@ pub async fn signin<'a>(name: &'a str, password: &str) -> (data::Data, Login, Se
     };
     let signin_resp = test::call_service(
         &mut app,
-        post_request!(&creds, "/api/v1/signin").to_request(),
+        post_request!(&creds, ROUTES.auth.login).to_request(),
     )
     .await;
     assert_eq!(signin_resp.status(), StatusCode::OK);
@@ -107,10 +115,6 @@ pub async fn add_token_util(
     name: &str,
     password: &str,
 ) -> (data::Data, Login, ServiceResponse, MCaptchaDetails) {
-    //    use crate::api::v1::mcaptcha::mcaptcha::MCaptchaID;
-
-    const ADD_URL: &str = "/api/v1/mcaptcha/add";
-
     let (data, creds, signin_resp) = signin(name, password).await;
     let cookies = get_cookie!(signin_resp);
     let mut app = get_app!(data).await;
@@ -121,7 +125,9 @@ pub async fn add_token_util(
     //    };
     let add_token_resp = test::call_service(
         &mut app,
-        post_request!(ADD_URL).cookie(cookies.clone()).to_request(),
+        post_request!(ROUTES.mcaptcha.add)
+            .cookie(cookies.clone())
+            .to_request(),
     )
     .await;
     //    let status = add_token_resp.status();
@@ -174,7 +180,6 @@ pub async fn add_levels_util(
     name: &str,
     password: &str,
 ) -> (data::Data, Login, ServiceResponse, MCaptchaDetails) {
-    const ADD_URL: &str = "/api/v1/mcaptcha/levels/add";
     let (data, creds, signin_resp, token_key) = add_token_util(name, password).await;
     let cookies = get_cookie!(signin_resp);
     let mut app = get_app!(data).await;
@@ -189,7 +194,7 @@ pub async fn add_levels_util(
     // 1. add level
     let add_token_resp = test::call_service(
         &mut app,
-        post_request!(&add_level, ADD_URL)
+        post_request!(&add_level, ROUTES.levels.add)
             .cookie(cookies.clone())
             .to_request(),
     )

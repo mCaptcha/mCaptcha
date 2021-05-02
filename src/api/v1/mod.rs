@@ -17,10 +17,14 @@
 
 use actix_web::web::ServiceConfig;
 
+pub mod account;
 pub mod auth;
 pub mod mcaptcha;
 pub mod meta;
 pub mod pow;
+mod routes;
+
+pub use routes::ROUTES;
 
 pub fn services(cfg: &mut ServiceConfig) {
     // meta
@@ -31,12 +35,14 @@ pub fn services(cfg: &mut ServiceConfig) {
     cfg.service(auth::signout);
     cfg.service(auth::signin);
     cfg.service(auth::signup);
-    cfg.service(auth::delete_account);
-    cfg.service(auth::username_exists);
-    cfg.service(auth::email_exists);
-    cfg.service(auth::get_secret);
-    cfg.service(auth::update_user_secret);
-    cfg.service(auth::set_email);
+
+    // account
+    cfg.service(account::delete_account);
+    cfg.service(account::username_exists);
+    cfg.service(account::email_exists);
+    cfg.service(account::get_secret);
+    cfg.service(account::update_user_secret);
+    cfg.service(account::set_email);
 
     // mcaptcha
     cfg.service(mcaptcha::mcaptcha::add_mcaptcha);

@@ -24,6 +24,22 @@ use crate::errors::*;
 use crate::CheckLogin;
 use crate::Data;
 
+pub mod routes {
+    pub struct Duration {
+        pub update: &'static str,
+        pub get: &'static str,
+    }
+
+    impl Default for Duration {
+        fn default() -> Self {
+            Self {
+                update: "/api/v1/mcaptcha/domain/token/duration/update",
+                get: "/api/v1/mcaptcha/domain/token/duration/get",
+            }
+        }
+    }
+}
+
 #[derive(Deserialize, Serialize)]
 pub struct UpdateDuration {
     pub key: String,
@@ -94,6 +110,7 @@ mod tests {
     use actix_web::test;
 
     use super::*;
+    use crate::api::v1::ROUTES;
     use crate::tests::*;
     use crate::*;
 
@@ -102,8 +119,6 @@ mod tests {
         const NAME: &str = "testuserduration";
         const PASSWORD: &str = "longpassworddomain";
         const EMAIL: &str = "testuserduration@a.com";
-        const GET_URL: &str = "/api/v1/mcaptcha/domain/token/duration/get";
-        const UPDATE_URL: &str = "/api/v1/mcaptcha/domain/token/duration/update";
 
         {
             let data = Data::new().await;
@@ -124,7 +139,7 @@ mod tests {
 
         let get_level_resp = test::call_service(
             &mut app,
-            post_request!(&token_key, GET_URL)
+            post_request!(&token_key, ROUTES.duration.get)
                 .cookie(cookies.clone())
                 .to_request(),
         )
@@ -137,7 +152,7 @@ mod tests {
 
         let update_duration = test::call_service(
             &mut app,
-            post_request!(&update, UPDATE_URL)
+            post_request!(&update, ROUTES.duration.update)
                 .cookie(cookies.clone())
                 .to_request(),
         )
@@ -145,7 +160,7 @@ mod tests {
         assert_eq!(update_duration.status(), StatusCode::OK);
         let get_level_resp = test::call_service(
             &mut app,
-            post_request!(&token_key, GET_URL)
+            post_request!(&token_key, ROUTES.duration.get)
                 .cookie(cookies.clone())
                 .to_request(),
         )

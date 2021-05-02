@@ -25,6 +25,31 @@ use crate::errors::*;
 use crate::CheckLogin;
 use crate::Data;
 
+pub mod routes {
+
+    pub struct Levels {
+        pub add: &'static str,
+        pub update: &'static str,
+        pub delete: &'static str,
+        pub get: &'static str,
+    }
+
+    impl Default for Levels {
+        fn default() -> Self {
+            let add = "/api/v1/mcaptcha/levels/add";
+            let update = "/api/v1/mcaptcha/levels/update";
+            let delete = "/api/v1/mcaptcha/levels/delete";
+            let get = "/api/v1/mcaptcha/levels/get";
+            Self {
+                add,
+                get,
+                update,
+                delete,
+            }
+        }
+    }
+}
+
 #[derive(Serialize, Deserialize)]
 pub struct AddLevels {
     pub levels: Vec<Level>,
@@ -206,6 +231,7 @@ mod tests {
     use actix_web::test;
 
     use super::*;
+    use crate::api::v1::ROUTES;
     use crate::tests::*;
     use crate::*;
 
@@ -214,9 +240,6 @@ mod tests {
         const NAME: &str = "testuserlevelroutes";
         const PASSWORD: &str = "longpassworddomain";
         const EMAIL: &str = "testuserlevelrouts@a.com";
-        const UPDATE_URL: &str = "/api/v1/mcaptcha/levels/update";
-        const DEL_URL: &str = "/api/v1/mcaptcha/levels/delete";
-        const GET_URL: &str = "/api/v1/mcaptcha/levels/get";
 
         {
             let data = Data::new().await;
@@ -251,7 +274,7 @@ mod tests {
 
         let get_level_resp = test::call_service(
             &mut app,
-            post_request!(&key, GET_URL)
+            post_request!(&key, ROUTES.levels.get)
                 .cookie(cookies.clone())
                 .to_request(),
         )
@@ -277,7 +300,7 @@ mod tests {
         };
         let add_token_resp = test::call_service(
             &mut app,
-            post_request!(&add_level, UPDATE_URL)
+            post_request!(&add_level, ROUTES.levels.update)
                 .cookie(cookies.clone())
                 .to_request(),
         )
@@ -285,7 +308,7 @@ mod tests {
         assert_eq!(add_token_resp.status(), StatusCode::OK);
         let get_level_resp = test::call_service(
             &mut app,
-            post_request!(&key, GET_URL)
+            post_request!(&key, ROUTES.levels.get)
                 .cookie(cookies.clone())
                 .to_request(),
         )
@@ -310,7 +333,7 @@ mod tests {
         };
         let add_token_resp = test::call_service(
             &mut app,
-            post_request!(&add_level, DEL_URL)
+            post_request!(&add_level, ROUTES.levels.delete)
                 .cookie(cookies.clone())
                 .to_request(),
         )
@@ -318,7 +341,7 @@ mod tests {
         assert_eq!(add_token_resp.status(), StatusCode::OK);
         let get_level_resp = test::call_service(
             &mut app,
-            post_request!(&key, GET_URL)
+            post_request!(&key, ROUTES.levels.get)
                 .cookie(cookies.clone())
                 .to_request(),
         )

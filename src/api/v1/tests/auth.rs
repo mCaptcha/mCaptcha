@@ -19,6 +19,7 @@ use actix_web::http::{header, StatusCode};
 use actix_web::test;
 
 use crate::api::v1::auth::*;
+use crate::api::v1::ROUTES;
 use crate::data::Data;
 use crate::errors::*;
 use crate::*;
@@ -31,9 +32,6 @@ async fn auth_works() {
     const NAME: &str = "testuser";
     const PASSWORD: &str = "longpassword";
     const EMAIL: &str = "testuser1@a.com";
-    const SIGNIN: &str = "/api/v1/signin";
-    const SIGNUP: &str = "/api/v1/signup";
-    const GET_SECRET: &str = "/api/v1/account/secret/";
 
     let mut app = get_app!(data).await;
 
@@ -46,7 +44,11 @@ async fn auth_works() {
         confirm_password: PASSWORD.into(),
         email: None,
     };
-    let resp = test::call_service(&mut app, post_request!(&msg, SIGNUP).to_request()).await;
+    let resp = test::call_service(
+        &mut app,
+        post_request!(&msg, ROUTES.auth.register).to_request(),
+    )
+    .await;
     assert_eq!(resp.status(), StatusCode::OK);
     // delete user
     delete_user(NAME, &data).await;
@@ -55,27 +57,16 @@ async fn auth_works() {
     let (_, _, signin_resp) = register_and_signin(NAME, EMAIL, PASSWORD).await;
     let cookies = get_cookie!(signin_resp);
 
-    // chech if get user secret works
-    let resp = test::call_service(
-        &mut app,
-        test::TestRequest::get()
-            .cookie(cookies.clone())
-            .uri(GET_SECRET)
-            .to_request(),
-    )
-    .await;
-    assert_eq!(resp.status(), StatusCode::OK);
-
-    // check if update user secret works
-    let resp = test::call_service(
-        &mut app,
-        test::TestRequest::post()
-            .cookie(cookies.clone())
-            .uri(GET_SECRET)
-            .to_request(),
-    )
-    .await;
-    assert_eq!(resp.status(), StatusCode::OK);
+    //    // check if update user secret works
+    //    let resp = test::call_service(
+    //        &mut app,
+    //        test::TestRequest::post()
+    //            .cookie(cookies.clone())
+    //            .uri(GET_SECRET)
+    //            .to_request(),
+    //    )
+    //    .await;
+    //    assert_eq!(resp.status(), StatusCode::OK);
 
     // 2. check if duplicate username is allowed
     let msg = Register {
@@ -87,7 +78,7 @@ async fn auth_works() {
     bad_post_req_test(
         NAME,
         PASSWORD,
-        SIGNUP,
+        ROUTES.auth.register,
         &msg,
         ServiceError::UsernameTaken,
         StatusCode::BAD_REQUEST,
@@ -102,7 +93,7 @@ async fn auth_works() {
     bad_post_req_test(
         NAME,
         PASSWORD,
-        SIGNIN,
+        ROUTES.auth.login,
         &login,
         ServiceError::UsernameNotFound,
         StatusCode::NOT_FOUND,
@@ -116,7 +107,7 @@ async fn auth_works() {
     bad_post_req_test(
         NAME,
         PASSWORD,
-        SIGNIN,
+        ROUTES.auth.login,
         &login,
         ServiceError::WrongPassword,
         StatusCode::UNAUTHORIZED,
@@ -127,60 +118,25 @@ async fn auth_works() {
     let signout_resp = test::call_service(
         &mut app,
         test::TestRequest::get()
-            .uri("/logout")
+            .uri(ROUTES.auth.logout)
             .cookie(cookies)
             .to_request(),
     )
     .await;
     assert_eq!(signout_resp.status(), StatusCode::OK);
     let headers = signout_resp.headers();
-    assert_eq!(headers.get(header::LOCATION).unwrap(), "/login");
+    assert_eq!(headers.get(header::LOCATION).unwrap(), "/login")
 }
 
 #[actix_rt::test]
-async fn email_udpate_password_validation_del_userworks() {
-    const NAME: &str = "testuser2";
+async fn serverside_password_validation_works() {
+    const NAME: &str = "testuser542";
     const PASSWORD: &str = "longpassword2";
-    const EMAIL: &str = "testuser1@a.com2";
-    const DEL_URL: &str = "/api/v1/account/delete";
-    const EMAIL_UPDATE: &str = "/api/v1/account/email/";
-    const SIGNUP: &str = "/api/v1/signup";
 
-    {
-        let data = Data::new().await;
-        delete_user(NAME, &data).await;
-    }
+    let data = Data::new().await;
+    delete_user(NAME, &data).await;
 
-    let (data, creds, signin_resp) = register_and_signin(NAME, EMAIL, PASSWORD).await;
-    let cookies = get_cookie!(signin_resp);
     let mut app = get_app!(data).await;
-
-    let email_payload = Email {
-        email: EMAIL.into(),
-    };
-    let email_update_resp = test::call_service(
-        &mut app,
-        post_request!(&email_payload, EMAIL_UPDATE)
-            .cookie(cookies.clone())
-            .to_request(),
-    )
-    .await;
-
-    assert_eq!(email_update_resp.status(), StatusCode::OK);
-
-    let payload = Password {
-        password: creds.password,
-    };
-
-    let delete_user_resp = test::call_service(
-        &mut app,
-        post_request!(&payload, DEL_URL)
-            .cookie(cookies)
-            .to_request(),
-    )
-    .await;
-
-    assert_eq!(delete_user_resp.status(), StatusCode::OK);
 
     // checking to see if server-side password validation (password == password_config)
     // works
@@ -190,77 +146,12 @@ async fn email_udpate_password_validation_del_userworks() {
         confirm_password: NAME.into(),
         email: None,
     };
-    let resp =
-        test::call_service(&mut app, post_request!(&register_msg, SIGNUP).to_request()).await;
+    let resp = test::call_service(
+        &mut app,
+        post_request!(&register_msg, ROUTES.auth.register).to_request(),
+    )
+    .await;
     assert_eq!(resp.status(), StatusCode::BAD_REQUEST);
     let txt: ErrorToResponse = test::read_body_json(resp).await;
     assert_eq!(txt.error, format!("{}", ServiceError::PasswordsDontMatch));
-}
-
-#[actix_rt::test]
-async fn uname_email_exists_works() {
-    const NAME: &str = "testuserexists";
-    const PASSWORD: &str = "longpassword2";
-    const EMAIL: &str = "testuserexists@a.com2";
-    const UNAME_CHECK: &str = "/api/v1/account/username/exists";
-    const EMAIL_CHECK: &str = "/api/v1/account/email/exists";
-
-    {
-        let data = Data::new().await;
-        delete_user(NAME, &data).await;
-    }
-
-    let (data, _, signin_resp) = register_and_signin(NAME, EMAIL, PASSWORD).await;
-    let cookies = get_cookie!(signin_resp);
-    let mut app = get_app!(data).await;
-
-    let mut payload = AccountCheckPayload { val: NAME.into() };
-
-    let user_exists_resp = test::call_service(
-        &mut app,
-        post_request!(&payload, UNAME_CHECK)
-            .cookie(cookies.clone())
-            .to_request(),
-    )
-    .await;
-    assert_eq!(user_exists_resp.status(), StatusCode::OK);
-    let mut resp: AccountCheckResp = test::read_body_json(user_exists_resp).await;
-    assert!(resp.exists);
-
-    payload.val = PASSWORD.into();
-
-    let user_doesnt_exist = test::call_service(
-        &mut app,
-        post_request!(&payload, UNAME_CHECK)
-            .cookie(cookies.clone())
-            .to_request(),
-    )
-    .await;
-    assert_eq!(user_doesnt_exist.status(), StatusCode::OK);
-    resp = test::read_body_json(user_doesnt_exist).await;
-    assert!(!resp.exists);
-
-    let email_doesnt_exist = test::call_service(
-        &mut app,
-        post_request!(&payload, EMAIL_CHECK)
-            .cookie(cookies.clone())
-            .to_request(),
-    )
-    .await;
-    assert_eq!(email_doesnt_exist.status(), StatusCode::OK);
-    resp = test::read_body_json(email_doesnt_exist).await;
-    assert!(!resp.exists);
-
-    payload.val = EMAIL.into();
-
-    let email_exist = test::call_service(
-        &mut app,
-        post_request!(&payload, EMAIL_CHECK)
-            .cookie(cookies.clone())
-            .to_request(),
-    )
-    .await;
-    assert_eq!(email_exist.status(), StatusCode::OK);
-    resp = test::read_body_json(email_exist).await;
-    assert!(resp.exists);
 }
