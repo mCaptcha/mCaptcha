@@ -60,6 +60,12 @@
 <span id="57">57</span>
 <span id="58">58</span>
 <span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -80,10 +86,14 @@
 
 <span class="kw">use</span> <span class="ident">actix_web</span>::<span class="ident">web</span>::<span class="ident">ServiceConfig</span>;
 
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">account</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">auth</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">mcaptcha</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">meta</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">pow</span>;
+<span class="kw">mod</span> <span class="ident">routes</span>;
+
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">routes</span>::<span class="ident">ROUTES</span>;
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">services</span>(<span class="ident">cfg</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ServiceConfig</span>) {
     <span class="comment">// meta</span>
@@ -94,12 +104,14 @@
     <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">auth</span>::<span class="ident">signout</span>);
     <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">auth</span>::<span class="ident">signin</span>);
     <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">auth</span>::<span class="ident">signup</span>);
-    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">auth</span>::<span class="ident">delete_account</span>);
-    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">auth</span>::<span class="ident">username_exists</span>);
-    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">auth</span>::<span class="ident">email_exists</span>);
-    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">auth</span>::<span class="ident">get_secret</span>);
-    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">auth</span>::<span class="ident">update_user_secret</span>);
-    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">auth</span>::<span class="ident">set_email</span>);
+
+    <span class="comment">// account</span>
+    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">account</span>::<span class="ident">delete_account</span>);
+    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">account</span>::<span class="ident">username_exists</span>);
+    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">account</span>::<span class="ident">email_exists</span>);
+    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">account</span>::<span class="ident">get_secret</span>);
+    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">account</span>::<span class="ident">update_user_secret</span>);
+    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">account</span>::<span class="ident">set_email</span>);
 
     <span class="comment">// mcaptcha</span>
     <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">mcaptcha</span>::<span class="ident">mcaptcha</span>::<span class="ident">add_mcaptcha</span>);

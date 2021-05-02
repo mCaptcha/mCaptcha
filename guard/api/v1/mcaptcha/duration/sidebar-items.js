@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["GetDuration",""],["GetDurationResp",""],["UpdateDuration",""],["get_duration",""],["update_duration",""]]});
+initSidebarItems({"mod":[["routes",""]],"struct":[["GetDuration",""],["GetDurationResp",""],["UpdateDuration",""],["get_duration",""],["update_duration",""]]});

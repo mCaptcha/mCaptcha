@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["services",""]],"mod":[["auth",""],["mcaptcha",""],["meta",""],["pow",""]]});
+initSidebarItems({"fn":[["services",""]],"mod":[["account",""],["auth",""],["mcaptcha",""],["meta",""],["pow",""],["routes",""]]});

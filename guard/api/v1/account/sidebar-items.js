@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["routes",""]],"struct":[["AccountCheckPayload",""],["AccountCheckResp",""],["Email",""],["Secret",""],["delete_account",""],["email_exists",""],["get_secret",""],["set_email",""],["update_user_secret",""],["username_exists",""]]});

@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["get_levels_util",""]],"struct":[["AddLevels",""],["I32Levels",""],["Levels",""],["add_levels",""],["delete_levels",""],["get_levels",""],["update_levels",""]]});
+initSidebarItems({"fn":[["get_levels_util",""]],"mod":[["routes",""]],"struct":[["AddLevels",""],["I32Levels",""],["Levels",""],["add_levels",""],["delete_levels",""],["get_levels",""],["update_levels",""]]});

@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["AccountCheckPayload",""],["AccountCheckResp",""],["Email",""],["Login",""],["Password",""],["Register",""],["Secret",""],["delete_account",""],["email_exists",""],["get_secret",""],["set_email",""],["signin",""],["signout",""],["signup",""],["update_user_secret",""],["username_exists",""]]});
+initSidebarItems({"mod":[["routes",""]],"struct":[["Login",""],["Password",""],["Register",""],["signin",""],["signout",""],["signup",""]]});
