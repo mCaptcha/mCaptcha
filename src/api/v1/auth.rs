@@ -31,6 +31,7 @@ use crate::Data;
 pub struct Register {
     pub username: String,
     pub password: String,
+    pub confirm_password: String,
     pub email: Option<String>,
 }
 
@@ -53,14 +54,12 @@ pub async fn signup(
     if !crate::SETTINGS.server.allow_registration {
         Err(ServiceError::ClosedForRegistration)?
     }
+
+    if &payload.password != &payload.confirm_password {
+        return Err(ServiceError::PasswordsDontMatch);
+    }
     let username = data.creds.username(&payload.username)?;
     let hash = data.creds.password(&payload.password)?;
-    //    let payload = payload.into_inner();
-    //    let email = payload.email.clone();
-    //    if payload.email.is_some() {
-    //        let email = email.clone().unwrap();
-    //        data.creds.email(Some(&email))?;
-    //    }
 
     if let Some(email) = &payload.email {
         data.creds.email(&email)?;

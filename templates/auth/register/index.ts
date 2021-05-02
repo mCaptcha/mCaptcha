@@ -64,6 +64,7 @@ const registerUser = async (e: Event) => {
   let payload = {
     username,
     password,
+    confirm_password: passwordCheck,
     email,
   };
 

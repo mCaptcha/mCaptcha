@@ -43,6 +43,7 @@ async fn auth_works() {
     let msg = Register {
         username: NAME.into(),
         password: PASSWORD.into(),
+        confirm_password: PASSWORD.into(),
         email: None,
     };
     let resp = test::call_service(&mut app, post_request!(&msg, SIGNUP).to_request()).await;
@@ -80,6 +81,7 @@ async fn auth_works() {
     let msg = Register {
         username: NAME.into(),
         password: PASSWORD.into(),
+        confirm_password: PASSWORD.into(),
         email: Some(EMAIL.into()),
     };
     bad_post_req_test(
@@ -136,12 +138,13 @@ async fn auth_works() {
 }
 
 #[actix_rt::test]
-async fn email_udpate_and_del_userworks() {
+async fn email_udpate_password_validation_del_userworks() {
     const NAME: &str = "testuser2";
     const PASSWORD: &str = "longpassword2";
     const EMAIL: &str = "testuser1@a.com2";
     const DEL_URL: &str = "/api/v1/account/delete";
     const EMAIL_UPDATE: &str = "/api/v1/account/email/";
+    const SIGNUP: &str = "/api/v1/signup";
 
     {
         let data = Data::new().await;
@@ -178,6 +181,20 @@ async fn email_udpate_and_del_userworks() {
     .await;
 
     assert_eq!(delete_user_resp.status(), StatusCode::OK);
+
+    // checking to see if server-side password validation (password == password_config)
+    // works
+    let register_msg = Register {
+        username: NAME.into(),
+        password: PASSWORD.into(),
+        confirm_password: NAME.into(),
+        email: None,
+    };
+    let resp =
+        test::call_service(&mut app, post_request!(&register_msg, SIGNUP).to_request()).await;
+    assert_eq!(resp.status(), StatusCode::BAD_REQUEST);
+    let txt: ErrorToResponse = test::read_body_json(resp).await;
+    assert_eq!(txt.error, format!("{}", ServiceError::PasswordsDontMatch));
 }
 
 #[actix_rt::test]

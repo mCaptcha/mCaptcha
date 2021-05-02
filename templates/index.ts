@@ -21,7 +21,7 @@ import * as login from './auth/login';
 import * as register from './auth/register';
 import * as panel from './panel/index';
 import * as addSiteKey from './panel/add-site-key/';
-//import './auth/forms.scss';
+import './auth/forms.scss';
 import './panel/main.scss';
 import VIEWS from './views/v1/routes';
 

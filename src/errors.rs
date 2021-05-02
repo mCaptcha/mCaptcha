@@ -70,6 +70,8 @@ pub enum ServiceError {
     PasswordTooShort,
     #[display(fmt = "Username too long")]
     PasswordTooLong,
+    #[display(fmt = "Passwords don't match")]
+    PasswordsDontMatch,
 
     /// when the a username is already taken
     #[display(fmt = "Username not available")]
@@ -121,6 +123,7 @@ impl ResponseError for ServiceError {
 
             ServiceError::PasswordTooShort => StatusCode::BAD_REQUEST,
             ServiceError::PasswordTooLong => StatusCode::BAD_REQUEST,
+            ServiceError::PasswordsDontMatch => StatusCode::BAD_REQUEST,
 
             ServiceError::UsernameTaken => StatusCode::BAD_REQUEST,
             ServiceError::EmailTaken => StatusCode::BAD_REQUEST,
@@ -164,8 +167,8 @@ impl From<ParseError> for ServiceError {
     }
 }
 
+#[cfg(not(tarpaulin_include))]
 impl From<CaptchaError> for ServiceError {
-    #[cfg(not(tarpaulin_include))]
     fn from(e: CaptchaError) -> ServiceError {
         ServiceError::CaptchaError(e)
     }

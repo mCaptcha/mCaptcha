@@ -76,6 +76,7 @@ pub async fn register<'a>(name: &'a str, email: &str, password: &str) {
     let msg = Register {
         username: name.into(),
         password: password.into(),
+        confirm_password: password.into(),
         email: Some(email.into()),
     };
     let resp =
