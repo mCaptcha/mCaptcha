@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["set_database_url",""],["set_from_database_url",""]],"struct":[["Captcha",""],["Database",""],["DatabaseBuilder",""],["Server",""],["Settings",""]]});
+initSidebarItems({"fn":[["check_url",""],["set_database_url",""],["set_from_database_url",""]],"struct":[["Captcha",""],["Database",""],["DatabaseBuilder",""],["Server",""],["Settings",""]]});
