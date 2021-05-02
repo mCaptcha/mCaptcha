@@ -15,7 +15,7 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-use actix_web::{post, web, HttpResponse, Responder};
+use actix_web::{web, HttpResponse, Responder};
 use m_captcha::pow::Work;
 use serde::{Deserialize, Serialize};
 
@@ -29,7 +29,6 @@ pub struct ValidationToken {
 
 // API keys are mcaptcha actor names
 
-#[post("/verify")]
 pub async fn verify_pow(
     payload: web::Json<Work>,
     data: web::Data<Data>,
@@ -55,9 +54,6 @@ mod tests {
         const NAME: &str = "powverifyusr";
         const PASSWORD: &str = "testingpas";
         const EMAIL: &str = "verifyuser@a.com";
-        const VERIFY_URL: &str = "/api/v1/pow/verify";
-        const GET_URL: &str = "/api/v1/pow/config";
-        //        const UPDATE_URL: &str = "/api/v1/mcaptcha/domain/token/duration/update";
 
         {
             let data = Data::new().await;
@@ -76,7 +72,7 @@ mod tests {
 
         let get_config_resp = test::call_service(
             &mut app,
-            post_request!(&get_config_payload, GET_URL).to_request(),
+            post_request!(&get_config_payload, V1_API_ROUTES.pow.get_config).to_request(),
         )
         .await;
         assert_eq!(get_config_resp.status(), StatusCode::OK);
@@ -97,12 +93,18 @@ mod tests {
             key: token_key.key.clone(),
         };
 
-        let pow_verify_resp =
-            test::call_service(&mut app, post_request!(&work, VERIFY_URL).to_request()).await;
+        let pow_verify_resp = test::call_service(
+            &mut app,
+            post_request!(&work, V1_API_ROUTES.pow.verify_pow).to_request(),
+        )
+        .await;
         assert_eq!(pow_verify_resp.status(), StatusCode::OK);
 
-        let string_not_found =
-            test::call_service(&mut app, post_request!(&work, VERIFY_URL).to_request()).await;
+        let string_not_found = test::call_service(
+            &mut app,
+            post_request!(&work, V1_API_ROUTES.pow.verify_pow).to_request(),
+        )
+        .await;
         assert_eq!(string_not_found.status(), StatusCode::BAD_REQUEST);
         let err: ErrorToResponse = test::read_body_json(string_not_found).await;
         assert_eq!(
@@ -113,12 +115,12 @@ mod tests {
             )
         );
 
-        let pow_config_resp = test::call_service(
-            &mut app,
-            post_request!(&get_config_payload, GET_URL).to_request(),
-        )
-        .await;
-        assert_eq!(pow_config_resp.status(), StatusCode::OK);
+        // let pow_config_resp = test::call_service(
+        //     &mut app,
+        //     post_request!(&get_config_payload, V1_API_ROUTES.pow.get_config).to_request(),
+        // )
+        // .await;
+        // assert_eq!(pow_config_resp.status(), StatusCode::OK);
         // I'm not checking for errors because changing work.result triggered
         // InssuficientDifficulty, which is possible becuase m_captcha calculates
         // difficulty with the submitted result. Besides, this endpoint is merely

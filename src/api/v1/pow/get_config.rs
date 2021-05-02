@@ -16,7 +16,7 @@
 */
 
 use actix::prelude::*;
-use actix_web::{post, web, HttpResponse, Responder};
+use actix_web::{web, HttpResponse, Responder};
 use m_captcha::{defense::LevelBuilder, master::AddSiteBuilder, DefenseBuilder, MCaptchaBuilder};
 use serde::{Deserialize, Serialize};
 
@@ -39,8 +39,6 @@ pub struct GetConfigPayload {
 
 // API keys are mcaptcha actor names
 
-#[post("/config")]
-//#[post("/pow/config")]
 pub async fn get_config(
     payload: web::Json<GetConfigPayload>,
     data: web::Data<Data>,
@@ -154,8 +152,6 @@ mod tests {
         const NAME: &str = "powusrworks";
         const PASSWORD: &str = "testingpas";
         const EMAIL: &str = "randomuser@a.com";
-        const GET_URL: &str = "/api/v1/pow/config";
-        //        const UPDATE_URL: &str = "/api/v1/mcaptcha/domain/token/duration/update";
 
         {
             let data = Data::new().await;
@@ -175,7 +171,7 @@ mod tests {
 
         let get_config_resp = test::call_service(
             &mut app,
-            post_request!(&get_config_payload, GET_URL)
+            post_request!(&get_config_payload, V1_API_ROUTES.pow.get_config)
                 .cookie(cookies.clone())
                 .to_request(),
         )

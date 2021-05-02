@@ -31,6 +31,7 @@ pub fn services(cfg: &mut ServiceConfig) {
     auth::services(cfg);
     account::services(cfg);
     mcaptcha::services(cfg);
+    pow::services(cfg);
 }
 
 #[cfg(test)]

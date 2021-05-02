@@ -25,27 +25,46 @@ pub mod verify_token;
 pub use super::mcaptcha::duration::GetDurationResp;
 pub use super::mcaptcha::levels::I32Levels;
 
-// middleware protected by scope
 pub fn services(cfg: &mut web::ServiceConfig) {
-    let captcha_api_cors = Cors::default()
-        .allow_any_origin()
-        .allowed_methods(vec!["POST"])
-        .allow_any_header()
-        .max_age(0)
-        .send_wildcard();
+    use crate::define_resource;
+    use crate::V1_API_ROUTES;
 
-    cfg.service(
-        web::scope("/api/v1/pow/")
-            .wrap(captcha_api_cors)
-            .configure(intenral_services),
+    define_resource!(
+        cfg,
+        V1_API_ROUTES.pow.verify_pow,
+        Methods::CorsAllowAllPost,
+        verify_pow::verify_pow
+    );
+
+    define_resource!(
+        cfg,
+        V1_API_ROUTES.pow.get_config,
+        Methods::CorsAllowAllPost,
+        get_config::get_config
+    );
+
+    define_resource!(
+        cfg,
+        V1_API_ROUTES.pow.validate_captcha_token,
+        Methods::CorsAllowAllPost,
+        verify_token::validate_captcha_token
     );
 }
 
-// internal route aggregator, it's easy to use macros
-// to denote paths than having to type it out
-// but remember, final path = scope + macro path
-fn intenral_services(cfg: &mut web::ServiceConfig) {
-    cfg.service(get_config::get_config);
-    cfg.service(verify_pow::verify_pow);
-    cfg.service(verify_token::validate_captcha_token);
+pub mod routes {
+    pub struct PoW {
+        pub get_config: &'static str,
+        pub verify_pow: &'static str,
+        pub validate_captcha_token: &'static str,
+    }
+
+    impl PoW {
+        pub const fn new() -> Self {
+            PoW {
+                get_config: "/api/v1/pow/config",
+                verify_pow: "/api/v1/pow/verify",
+                validate_captcha_token: "/api/v1/pow/siteverify",
+            }
+        }
+    }
 }

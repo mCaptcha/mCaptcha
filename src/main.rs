@@ -88,7 +88,6 @@ async fn main() -> std::io::Result<()> {
             .wrap(actix_middleware::NormalizePath::new(
                 actix_middleware::normalize::TrailingSlash::Trim,
             ))
-            .configure(v1::pow::services)
             .configure(v1::services)
             .configure(docs::services)
             .configure(static_assets::services)

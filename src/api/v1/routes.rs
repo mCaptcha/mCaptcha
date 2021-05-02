@@ -21,6 +21,7 @@ use super::mcaptcha::duration::routes::Duration;
 use super::mcaptcha::levels::routes::Levels;
 use super::mcaptcha::mcaptcha::routes::MCaptcha;
 use super::meta::routes::Meta;
+use super::pow::routes::PoW;
 
 pub const ROUTES: Routes = Routes::new();
 
@@ -31,6 +32,7 @@ pub struct Routes {
     pub mcaptcha: MCaptcha,
     pub duration: Duration,
     pub meta: Meta,
+    pub pow: PoW,
 }
 
 impl Routes {
@@ -42,6 +44,7 @@ impl Routes {
             mcaptcha: MCaptcha::new(),
             duration: Duration::new(),
             meta: Meta::new(),
+            pow: PoW::new(),
         }
     }
 }

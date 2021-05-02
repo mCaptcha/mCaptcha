@@ -15,7 +15,7 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-use actix_web::{post, web, HttpResponse, Responder};
+use actix_web::{web, HttpResponse, Responder};
 use m_captcha::cache::messages::VerifyCaptchaResult;
 use serde::{Deserialize, Serialize};
 
@@ -29,7 +29,6 @@ pub struct CaptchaValidateResp {
 
 // API keys are mcaptcha actor names
 
-#[post("/siteverify")]
 pub async fn validate_captcha_token(
     payload: web::Json<VerifyCaptchaResult>,
     data: web::Data<Data>,
