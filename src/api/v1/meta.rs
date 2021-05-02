@@ -15,7 +15,7 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-use actix_web::{get, web, HttpResponse, Responder};
+use actix_web::{web, HttpResponse, Responder};
 use derive_builder::Builder;
 use serde::{Deserialize, Serialize};
 
@@ -28,9 +28,24 @@ pub struct BuildDetails {
     pub git_commit_hash: &'static str,
 }
 
-#[get("/api/v1/meta/build")]
+pub mod routes {
+    pub struct Meta {
+        pub build_details: &'static str,
+        pub health: &'static str,
+    }
+
+    impl Meta {
+        pub const fn new() -> Self {
+            Self {
+                build_details: "/api/v1/meta/build",
+                health: "/api/v1/meta/health",
+            }
+        }
+    }
+}
+
 /// emmits build details of the bninary
-pub async fn build_details() -> impl Responder {
+async fn build_details() -> impl Responder {
     let build = BuildDetails {
         version: VERSION,
         git_commit_hash: &GIT_COMMIT_HASH,
@@ -44,9 +59,8 @@ pub struct Health {
     db: bool,
 }
 
-#[get("/api/v1/meta/health")]
 /// checks all components of the system
-pub async fn health(data: web::Data<Data>) -> impl Responder {
+async fn health(data: web::Data<Data>) -> impl Responder {
     use sqlx::Connection;
 
     let mut resp_builder = HealthBuilder::default();
@@ -60,33 +74,57 @@ pub async fn health(data: web::Data<Data>) -> impl Responder {
     HttpResponse::Ok().json(resp_builder.build().unwrap())
 }
 
+pub fn service(cfg: &mut web::ServiceConfig) {
+    use crate::define_resource;
+    use crate::V1_API_ROUTES;
+
+    define_resource!(
+        cfg,
+        V1_API_ROUTES.meta.build_details,
+        Methods::Get,
+        build_details
+    );
+    define_resource!(cfg, V1_API_ROUTES.meta.health, Methods::Get, health);
+}
+
 #[cfg(test)]
 mod tests {
     use actix_web::{http::StatusCode, test, App};
 
     use super::*;
-    use crate::api::v1::services as v1_services;
+    use crate::api::v1::new_services;
     use crate::*;
 
     #[actix_rt::test]
     async fn build_details_works() {
-        const GET_URI: &str = "/api/v1/meta/build";
-        let mut app = test::init_service(App::new().configure(v1_services)).await;
+        //       const GET_URI: &str = "/api/v1/meta/build";
+        let mut app = test::init_service(App::new().configure(new_services)).await;
 
-        let resp =
-            test::call_service(&mut app, test::TestRequest::get().uri(GET_URI).to_request()).await;
+        let resp = test::call_service(
+            &mut app,
+            test::TestRequest::get()
+                .uri(V1_API_ROUTES.meta.build_details)
+                .to_request(),
+        )
+        .await;
         assert_eq!(resp.status(), StatusCode::OK);
     }
 
     #[actix_rt::test]
     async fn health_works() {
-        const GET_URI: &str = "/api/v1/meta/health";
+        //        const GET_URI: &str = "/api/v1/meta/health";
 
+        println!("{}", V1_API_ROUTES.meta.health);
         let data = Data::new().await;
         let mut app = get_app!(data).await;
 
-        let resp =
-            test::call_service(&mut app, test::TestRequest::get().uri(GET_URI).to_request()).await;
+        let resp = test::call_service(
+            &mut app,
+            test::TestRequest::get()
+                .uri(V1_API_ROUTES.meta.health)
+                .to_request(),
+        )
+        .await;
         assert_eq!(resp.status(), StatusCode::OK);
 
         let health_resp: Health = test::read_body_json(resp).await;

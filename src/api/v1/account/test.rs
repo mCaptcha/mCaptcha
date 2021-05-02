@@ -18,11 +18,11 @@
 use actix_web::http::{header, StatusCode};
 use actix_web::test;
 
-use crate::api::v1::account::*;
+use super::email::*;
+use super::*;
 use crate::api::v1::auth::*;
 use crate::api::v1::ROUTES;
 use crate::data::Data;
-use crate::errors::*;
 use crate::*;
 
 use crate::tests::*;
@@ -81,7 +81,7 @@ async fn uname_email_exists_works() {
 
     let email_doesnt_exist = test::call_service(
         &mut app,
-        post_request!(&payload, ROUTES.account.email_exist)
+        post_request!(&payload, ROUTES.account.email_exists)
             .cookie(cookies.clone())
             .to_request(),
     )
@@ -94,7 +94,7 @@ async fn uname_email_exists_works() {
 
     let email_exist = test::call_service(
         &mut app,
-        post_request!(&payload, ROUTES.account.email_exist)
+        post_request!(&payload, ROUTES.account.email_exists)
             .cookie(cookies.clone())
             .to_request(),
     )
@@ -125,6 +125,7 @@ async fn email_udpate_password_validation_del_userworks() {
     let email_update_resp = test::call_service(
         &mut app,
         post_request!(&email_payload, ROUTES.account.update_email)
+            //post_request!(&email_payload, EMAIL_UPDATE)
             .cookie(cookies.clone())
             .to_request(),
     )

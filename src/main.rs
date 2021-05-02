@@ -31,11 +31,14 @@ mod errors;
 mod settings;
 mod static_assets;
 mod templates;
+#[macro_use]
+mod routes;
 #[cfg(test)]
 #[macro_use]
 mod tests;
 mod middleware;
 
+pub use api::v1::ROUTES as V1_API_ROUTES;
 pub use data::Data;
 pub use settings::Settings;
 use static_assets::FileMap;
@@ -87,6 +90,7 @@ async fn main() -> std::io::Result<()> {
             ))
             .configure(v1::pow::services)
             .configure(v1::services)
+            .configure(v1::new_services)
             .configure(docs::services)
             .configure(static_assets::services)
             .configure(templates::services)

@@ -3,7 +3,7 @@
     <img src="<.= crate::FILES.get("./static-assets/img/icon-trans.png").unwrap().>" class="form__logo" alt="" />
   <h2 class="form__brand">Join mCaptcha</h2>
 
-  <form method="POST" class="form__box" id="form">
+  <form method="POST" action="<.= crate::V1_API_ROUTES.auth.register .>  class="form__box" id="form">
     <label class="form__in-group" for="username"
       >Username
       <input

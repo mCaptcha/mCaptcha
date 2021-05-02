@@ -34,13 +34,13 @@ pub mod routes {
         pub get: &'static str,
     }
 
-    impl Default for Levels {
-        fn default() -> Self {
+    impl Levels {
+        pub const fn new() -> Levels {
             let add = "/api/v1/mcaptcha/levels/add";
             let update = "/api/v1/mcaptcha/levels/update";
             let delete = "/api/v1/mcaptcha/levels/delete";
             let get = "/api/v1/mcaptcha/levels/get";
-            Self {
+            Levels {
                 add,
                 get,
                 update,

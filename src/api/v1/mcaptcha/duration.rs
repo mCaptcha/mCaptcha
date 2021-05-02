@@ -29,10 +29,9 @@ pub mod routes {
         pub update: &'static str,
         pub get: &'static str,
     }
-
-    impl Default for Duration {
-        fn default() -> Self {
-            Self {
+    impl Duration {
+        pub const fn new() -> Duration {
+            Duration {
                 update: "/api/v1/mcaptcha/domain/token/duration/update",
                 get: "/api/v1/mcaptcha/domain/token/duration/get",
             }

@@ -27,23 +27,6 @@ mod routes;
 pub use routes::ROUTES;
 
 pub fn services(cfg: &mut ServiceConfig) {
-    // meta
-    cfg.service(meta::build_details);
-    cfg.service(meta::health);
-
-    // auth
-    cfg.service(auth::signout);
-    cfg.service(auth::signin);
-    cfg.service(auth::signup);
-
-    // account
-    cfg.service(account::delete_account);
-    cfg.service(account::username_exists);
-    cfg.service(account::email_exists);
-    cfg.service(account::get_secret);
-    cfg.service(account::update_user_secret);
-    cfg.service(account::set_email);
-
     // mcaptcha
     cfg.service(mcaptcha::mcaptcha::add_mcaptcha);
     cfg.service(mcaptcha::mcaptcha::delete_mcaptcha);
@@ -59,6 +42,70 @@ pub fn services(cfg: &mut ServiceConfig) {
     // duration
     cfg.service(mcaptcha::duration::update_duration);
     cfg.service(mcaptcha::duration::get_duration);
+}
+
+pub fn new_services(cfg: &mut ServiceConfig) {
+    meta::service(cfg);
+    auth::service(cfg);
+    account::service(cfg);
+
+    //define_resource!(
+    //    cfg,
+    //    ROUTES.meta.build_details,
+    //    Methods::Get,
+    //    meta::build_details
+    //);
+    //define_resource!(cfg, ROUTES.meta.health, Methods::Get, meta::health);
+
+    // auth
+
+    //define_resource!(cfg, ROUTES.auth.register, Methods::Post, auth::signup);
+    //define_resource!(cfg, ROUTES.auth.logout, Methods::ProtectGet, auth::signout);
+    //define_resource!(cfg, ROUTES.auth.login, Methods::Post, auth::signin);
+
+    // account
+
+    //    define_resource!(
+    //        cfg,
+    //        ROUTES.account.delete,
+    //        Methods::ProtectPost,
+    //        account::delete::delete_account
+    //    );
+    //
+    //    define_resource!(
+    //        cfg,
+    //        ROUTES.account.username_exists,
+    //        Methods::Post,
+    //        account::username::username_exists
+    //    );
+    //
+    //    define_resource!(
+    //        cfg,
+    //        ROUTES.account.email_exists,
+    //        Methods::Post,
+    //        account::email::email_exists
+    //    );
+    //
+    //    define_resource!(
+    //        cfg,
+    //        ROUTES.account.update_email,
+    //        Methods::Post,
+    //        account::email::set_email
+    //    );
+    //
+    //    define_resource!(
+    //        cfg,
+    //        ROUTES.account.get_secret,
+    //        Methods::ProtectGet,
+    //        account::secret::get_secret
+    //    );
+    //
+    //    define_resource!(
+    //        cfg,
+    //        ROUTES.account.update_secret,
+    //        Methods::ProtectPost,
+    //        account::secret::update_user_secret
+    //    );
 }
 
 #[cfg(test)]

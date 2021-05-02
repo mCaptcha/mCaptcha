@@ -33,9 +33,9 @@ pub mod routes {
         pub update_key: &'static str,
     }
 
-    impl Default for MCaptcha {
-        fn default() -> Self {
-            Self {
+    impl MCaptcha {
+        pub const fn new() -> MCaptcha {
+            MCaptcha {
                 add: "/api/v1/mcaptcha/add",
                 update_key: "/api/v1/mcaptcha/update/key",
                 get_token: "/api/v1/mcaptcha/get",

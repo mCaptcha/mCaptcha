@@ -37,15 +37,15 @@ pub mod routes {
         pub username_exists: &'static str,
     }
 
-    impl Default for Account {
-        fn default() -> Self {
+    impl Account {
+        pub const fn new() -> Account {
             let get_secret = "/api/v1/account/secret/";
             let update_secret = "/api/v1/account/secret";
             let delete = "/api/v1/account/delete";
             let email_exists = "/api/v1/account/email/exists";
             let username_exists = "/api/v1/account/username/exists";
-            let update_email = "/api/v1/account/email";
-            Self {
+            let update_email = "/api/v1/account/email/";
+            Account {
                 get_secret,
                 update_secret,
                 username_exists,
@@ -212,12 +212,11 @@ pub struct Email {
 }
 
 /// update email
-#[post("/api/v1/account/email/", wrap = "CheckLogin")]
+//#[post("/api/v1/account/email/", wrap = "CheckLogin")]
+#[post("/api/v1/", wrap = "CheckLogin")]
 pub async fn set_email(
     id: Identity,
-
     payload: web::Json<Email>,
-
     data: web::Data<Data>,
 ) -> ServiceResult<impl Responder> {
     let username = id.identity().unwrap();

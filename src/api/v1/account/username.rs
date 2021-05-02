@@ -14,34 +14,31 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+use actix_web::{web, HttpResponse, Responder};
 
-use super::account::routes::Account;
-use super::auth::routes::Auth;
-use super::mcaptcha::duration::routes::Duration;
-use super::mcaptcha::levels::routes::Levels;
-use super::mcaptcha::mcaptcha::routes::MCaptcha;
-use super::meta::routes::Meta;
+use super::{AccountCheckPayload, AccountCheckResp};
+use crate::errors::*;
+use crate::Data;
 
-pub const ROUTES: Routes = Routes::new();
+//#[post("/api/v1/account/username/exists")]
+pub async fn username_exists(
+    payload: web::Json<AccountCheckPayload>,
+    data: web::Data<Data>,
+) -> ServiceResult<impl Responder> {
+    let res = sqlx::query!(
+        "SELECT EXISTS (SELECT 1 from mcaptcha_users WHERE name = $1)",
+        &payload.val,
+    )
+    .fetch_one(&data.db)
+    .await?;
 
-pub struct Routes {
-    pub auth: Auth,
-    pub account: Account,
-    pub levels: Levels,
-    pub mcaptcha: MCaptcha,
-    pub duration: Duration,
-    pub meta: Meta,
-}
+    let mut resp = AccountCheckResp { exists: false };
 
-impl Routes {
-    const fn new() -> Routes {
-        Routes {
-            auth: Auth::new(),
-            account: Account::new(),
-            levels: Levels::new(),
-            mcaptcha: MCaptcha::new(),
-            duration: Duration::new(),
-            meta: Meta::new(),
+    if let Some(x) = res.exists {
+        if x {
+            resp.exists = true;
         }
     }
+
+    Ok(HttpResponse::Ok().json(resp))
 }

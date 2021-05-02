@@ -18,13 +18,12 @@ use std::borrow::Cow;
 
 use actix_identity::Identity;
 use actix_web::http::header;
-use actix_web::{get, post, web, HttpResponse, Responder};
+use actix_web::{web, HttpResponse, Responder};
 use log::debug;
 use serde::{Deserialize, Serialize};
 
 use super::mcaptcha::get_random;
 use crate::errors::*;
-use crate::CheckLogin;
 use crate::Data;
 
 pub mod routes {
@@ -34,18 +33,27 @@ pub mod routes {
         pub register: &'static str,
     }
 
-    impl Default for Auth {
-        fn default() -> Self {
+    impl Auth {
+        pub const fn new() -> Auth {
             let login = "/api/v1/signin";
             let logout = "/logout";
             let register = "/api/v1/signup";
-            Self {
+            Auth {
                 login,
                 logout,
                 register,
             }
         }
     }
+}
+
+pub fn service(cfg: &mut web::ServiceConfig) {
+    use crate::define_resource;
+    use crate::V1_API_ROUTES;
+
+    define_resource!(cfg, V1_API_ROUTES.auth.register, Methods::Post, signup);
+    define_resource!(cfg, V1_API_ROUTES.auth.logout, Methods::ProtectGet, signout);
+    define_resource!(cfg, V1_API_ROUTES.auth.login, Methods::Post, signin);
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -67,8 +75,8 @@ pub struct Password {
     pub password: String,
 }
 
-#[post("/api/v1/signup")]
-pub async fn signup(
+//#[post("/api/v1/signup")]
+async fn signup(
     payload: web::Json<Register>,
     data: web::Data<Data>,
 ) -> ServiceResult<impl Responder> {
@@ -135,8 +143,8 @@ pub async fn signup(
     Ok(HttpResponse::Ok())
 }
 
-#[post("/api/v1/signin")]
-pub async fn signin(
+//#[post("/api/v1/signin")]
+async fn signin(
     id: Identity,
     payload: web::Json<Login>,
     data: web::Data<Data>,
@@ -167,8 +175,8 @@ pub async fn signin(
     }
 }
 
-#[get("/logout", wrap = "CheckLogin")]
-pub async fn signout(id: Identity) -> impl Responder {
+//#[get("/logout", wrap = "CheckLogin")]
+async fn signout(id: Identity) -> impl Responder {
     if let Some(_) = id.identity() {
         id.forget();
     }
