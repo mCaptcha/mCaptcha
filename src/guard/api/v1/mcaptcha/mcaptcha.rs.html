@@ -307,6 +307,35 @@
 <span id="304">304</span>
 <span id="305">305</span>
 <span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -327,12 +356,11 @@
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">borrow</span>::<span class="ident">Cow</span>;
 
 <span class="kw">use</span> <span class="ident">actix_identity</span>::<span class="ident">Identity</span>;
-<span class="kw">use</span> <span class="ident">actix_web</span>::{<span class="ident">post</span>, <span class="ident">web</span>, <span class="ident">HttpResponse</span>, <span class="ident">Responder</span>};
+<span class="kw">use</span> <span class="ident">actix_web</span>::{<span class="ident">web</span>, <span class="ident">HttpResponse</span>, <span class="ident">Responder</span>};
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
 <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">get_random</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">errors</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">CheckLogin</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Data</span>;
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">routes</span> {
@@ -355,6 +383,38 @@
     }
 }
 
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">services</span>(<span class="ident">cfg</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">web</span>::<span class="ident">ServiceConfig</span>) {
+    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">define_resource</span>;
+    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">V1_API_ROUTES</span>;
+
+    <span class="macro">define_resource</span><span class="macro">!</span>(
+        <span class="ident">cfg</span>,
+        <span class="ident">V1_API_ROUTES</span>.<span class="ident">mcaptcha</span>.<span class="ident">add</span>,
+        <span class="ident">Methods</span>::<span class="ident">ProtectPost</span>,
+        <span class="ident">add_mcaptcha</span>
+    );
+    <span class="macro">define_resource</span><span class="macro">!</span>(
+        <span class="ident">cfg</span>,
+        <span class="ident">V1_API_ROUTES</span>.<span class="ident">mcaptcha</span>.<span class="ident">update_key</span>,
+        <span class="ident">Methods</span>::<span class="ident">ProtectPost</span>,
+        <span class="ident">update_token</span>
+    );
+
+    <span class="macro">define_resource</span><span class="macro">!</span>(
+        <span class="ident">cfg</span>,
+        <span class="ident">V1_API_ROUTES</span>.<span class="ident">mcaptcha</span>.<span class="ident">delete</span>,
+        <span class="ident">Methods</span>::<span class="ident">ProtectPost</span>,
+        <span class="ident">delete_mcaptcha</span>
+    );
+
+    <span class="macro">define_resource</span><span class="macro">!</span>(
+        <span class="ident">cfg</span>,
+        <span class="ident">V1_API_ROUTES</span>.<span class="ident">mcaptcha</span>.<span class="ident">get_token</span>,
+        <span class="ident">Methods</span>::<span class="ident">ProtectPost</span>,
+        <span class="ident">get_token</span>
+    );
+}
+
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MCaptchaID</span> {
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
@@ -367,8 +427,8 @@
 }
 
 <span class="comment">// this should be called from within add levels</span>
-<span class="attribute">#[<span class="ident">post</span>(<span class="string">&quot;/api/v1/mcaptcha/add&quot;</span>, <span class="ident">wrap</span> <span class="op">=</span> <span class="string">&quot;CheckLogin&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">add_mcaptcha</span>(<span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>, <span class="ident">id</span>: <span class="ident">Identity</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
+<span class="comment">//#[post(&quot;/api/v1/mcaptcha/add&quot;, wrap = &quot;CheckLogin&quot;)]</span>
+<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">add_mcaptcha</span>(<span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>, <span class="ident">id</span>: <span class="ident">Identity</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">username</span> <span class="op">=</span> <span class="ident">id</span>.<span class="ident">identity</span>().<span class="ident">unwrap</span>();
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">key</span>;
 
@@ -409,14 +469,12 @@
     <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse</span>::<span class="prelude-val">Ok</span>().<span class="ident">json</span>(<span class="ident">resp</span>))
 }
 
-<span class="attribute">#[<span class="ident">post</span>(<span class="string">&quot;/api/v1/mcaptcha/update/key&quot;</span>, <span class="ident">wrap</span> <span class="op">=</span> <span class="string">&quot;CheckLogin&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_token</span>(
+<span class="comment">//#[post(&quot;/api/v1/mcaptcha/update/key&quot;, wrap = &quot;CheckLogin&quot;)]</span>
+<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_token</span>(
     <span class="ident">payload</span>: <span class="ident">web</span>::<span class="ident">Json</span><span class="op">&lt;</span><span class="ident">MCaptchaDetails</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>,
     <span class="ident">id</span>: <span class="ident">Identity</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
-    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">borrow</span>::<span class="ident">Cow</span>;
-
     <span class="kw">let</span> <span class="ident">username</span> <span class="op">=</span> <span class="ident">id</span>.<span class="ident">identity</span>().<span class="ident">unwrap</span>();
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">key</span>;
 
@@ -462,8 +520,8 @@
     <span class="prelude-val">Ok</span>(())
 }
 
-<span class="attribute">#[<span class="ident">post</span>(<span class="string">&quot;/api/v1/mcaptcha/get&quot;</span>, <span class="ident">wrap</span> <span class="op">=</span> <span class="string">&quot;CheckLogin&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_token</span>(
+<span class="comment">//#[post(&quot;/api/v1/mcaptcha/get&quot;, wrap = &quot;CheckLogin&quot;)]</span>
+<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_token</span>(
     <span class="ident">payload</span>: <span class="ident">web</span>::<span class="ident">Json</span><span class="op">&lt;</span><span class="ident">MCaptchaDetails</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>,
     <span class="ident">id</span>: <span class="ident">Identity</span>,
@@ -490,8 +548,8 @@
     <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse</span>::<span class="prelude-val">Ok</span>().<span class="ident">json</span>(<span class="ident">res</span>))
 }
 
-<span class="attribute">#[<span class="ident">post</span>(<span class="string">&quot;/api/v1/mcaptcha/delete&quot;</span>, <span class="ident">wrap</span> <span class="op">=</span> <span class="string">&quot;CheckLogin&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_mcaptcha</span>(
+<span class="comment">//#[post(&quot;/api/v1/mcaptcha/delete&quot;, wrap = &quot;CheckLogin&quot;)]</span>
+<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_mcaptcha</span>(
     <span class="ident">payload</span>: <span class="ident">web</span>::<span class="ident">Json</span><span class="op">&lt;</span><span class="ident">MCaptchaDetails</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>,
     <span class="ident">id</span>: <span class="ident">Identity</span>,

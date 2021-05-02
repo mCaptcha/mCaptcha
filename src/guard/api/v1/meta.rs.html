@@ -211,7 +211,7 @@
     <span class="ident">HttpResponse</span>::<span class="prelude-val">Ok</span>().<span class="ident">json</span>(<span class="ident">resp_builder</span>.<span class="ident">build</span>().<span class="ident">unwrap</span>())
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">service</span>(<span class="ident">cfg</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">web</span>::<span class="ident">ServiceConfig</span>) {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">services</span>(<span class="ident">cfg</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">web</span>::<span class="ident">ServiceConfig</span>) {
     <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">define_resource</span>;
     <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">V1_API_ROUTES</span>;
 

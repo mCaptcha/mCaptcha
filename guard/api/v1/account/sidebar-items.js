@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["service",""]],"mod":[["delete",""],["email",""],["routes",""],["secret",""],["username",""]],"struct":[["AccountCheckPayload",""],["AccountCheckResp",""]]});
+initSidebarItems({"fn":[["services",""]],"mod":[["delete",""],["email",""],["routes",""],["secret",""],["username",""]],"struct":[["AccountCheckPayload",""],["AccountCheckResp",""]]});

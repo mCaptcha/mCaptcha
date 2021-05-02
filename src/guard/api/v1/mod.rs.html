@@ -113,6 +113,7 @@
 <span id="110">110</span>
 <span id="111">111</span>
 <span id="112">112</span>
+<span id="113">113</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -142,28 +143,29 @@
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">routes</span>::<span class="ident">ROUTES</span>;
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">services</span>(<span class="ident">cfg</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ServiceConfig</span>) {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">services</span>(<span class="ident">_cfg</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ServiceConfig</span>) {
     <span class="comment">// mcaptcha</span>
-    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">mcaptcha</span>::<span class="ident">mcaptcha</span>::<span class="ident">add_mcaptcha</span>);
-    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">mcaptcha</span>::<span class="ident">mcaptcha</span>::<span class="ident">delete_mcaptcha</span>);
-    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">mcaptcha</span>::<span class="ident">mcaptcha</span>::<span class="ident">update_token</span>);
-    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">mcaptcha</span>::<span class="ident">mcaptcha</span>::<span class="ident">get_token</span>);
+    <span class="comment">//cfg.service(mcaptcha::mcaptcha::add_mcaptcha);</span>
+    <span class="comment">//cfg.service(mcaptcha::mcaptcha::delete_mcaptcha);</span>
+    <span class="comment">//cfg.service(mcaptcha::mcaptcha::update_token);</span>
+    <span class="comment">//cfg.service(mcaptcha::mcaptcha::get_token);</span>
 
     <span class="comment">// levels</span>
-    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">mcaptcha</span>::<span class="ident">levels</span>::<span class="ident">add_levels</span>);
-    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">mcaptcha</span>::<span class="ident">levels</span>::<span class="ident">update_levels</span>);
-    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">mcaptcha</span>::<span class="ident">levels</span>::<span class="ident">delete_levels</span>);
-    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">mcaptcha</span>::<span class="ident">levels</span>::<span class="ident">get_levels</span>);
+    <span class="comment">//cfg.service(mcaptcha::levels::add_levels);</span>
+    <span class="comment">//cfg.service(mcaptcha::levels::update_levels);</span>
+    <span class="comment">//cfg.service(mcaptcha::levels::delete_levels);</span>
+    <span class="comment">//cfg.service(mcaptcha::levels::get_levels);</span>
 
-    <span class="comment">// duration</span>
-    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">mcaptcha</span>::<span class="ident">duration</span>::<span class="ident">update_duration</span>);
-    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">mcaptcha</span>::<span class="ident">duration</span>::<span class="ident">get_duration</span>);
+    <span class="comment">//    // duration</span>
+    <span class="comment">//    cfg.service(mcaptcha::duration::update_duration);</span>
+    <span class="comment">//    cfg.service(mcaptcha::duration::get_duration);</span>
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_services</span>(<span class="ident">cfg</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ServiceConfig</span>) {
-    <span class="ident">meta</span>::<span class="ident">service</span>(<span class="ident">cfg</span>);
-    <span class="ident">auth</span>::<span class="ident">service</span>(<span class="ident">cfg</span>);
-    <span class="ident">account</span>::<span class="ident">service</span>(<span class="ident">cfg</span>);
+    <span class="ident">meta</span>::<span class="ident">services</span>(<span class="ident">cfg</span>);
+    <span class="ident">auth</span>::<span class="ident">services</span>(<span class="ident">cfg</span>);
+    <span class="ident">account</span>::<span class="ident">services</span>(<span class="ident">cfg</span>);
+    <span class="ident">mcaptcha</span>::<span class="ident">services</span>(<span class="ident">cfg</span>);
 
     <span class="comment">//define_resource!(</span>
     <span class="comment">//    cfg,</span>

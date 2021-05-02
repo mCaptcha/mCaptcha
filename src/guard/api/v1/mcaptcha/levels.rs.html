@@ -354,6 +354,37 @@
 <span id="351">351</span>
 <span id="352">352</span>
 <span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
+<span id="356">356</span>
+<span id="357">357</span>
+<span id="358">358</span>
+<span id="359">359</span>
+<span id="360">360</span>
+<span id="361">361</span>
+<span id="362">362</span>
+<span id="363">363</span>
+<span id="364">364</span>
+<span id="365">365</span>
+<span id="366">366</span>
+<span id="367">367</span>
+<span id="368">368</span>
+<span id="369">369</span>
+<span id="370">370</span>
+<span id="371">371</span>
+<span id="372">372</span>
+<span id="373">373</span>
+<span id="374">374</span>
+<span id="375">375</span>
+<span id="376">376</span>
+<span id="377">377</span>
+<span id="378">378</span>
+<span id="379">379</span>
+<span id="380">380</span>
+<span id="381">381</span>
+<span id="382">382</span>
+<span id="383">383</span>
+<span id="384">384</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -373,13 +404,12 @@
 */</span>
 
 <span class="kw">use</span> <span class="ident">actix_identity</span>::<span class="ident">Identity</span>;
-<span class="kw">use</span> <span class="ident">actix_web</span>::{<span class="ident">post</span>, <span class="ident">web</span>, <span class="ident">HttpResponse</span>, <span class="ident">Responder</span>};
+<span class="kw">use</span> <span class="ident">actix_web</span>::{<span class="ident">web</span>, <span class="ident">HttpResponse</span>, <span class="ident">Responder</span>};
 <span class="kw">use</span> <span class="ident">m_captcha</span>::{<span class="ident">defense</span>::<span class="ident">Level</span>, <span class="ident">DefenseBuilder</span>};
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">api</span>::<span class="ident">v1</span>::<span class="ident">mcaptcha</span>::<span class="ident">mcaptcha</span>::<span class="ident">MCaptchaDetails</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">errors</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">CheckLogin</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Data</span>;
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">routes</span> {
@@ -414,10 +444,42 @@
     <span class="kw">pub</span> <span class="ident">key</span>: <span class="ident">String</span>,
 }
 
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">services</span>(<span class="ident">cfg</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">web</span>::<span class="ident">ServiceConfig</span>) {
+    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">define_resource</span>;
+    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">V1_API_ROUTES</span>;
+
+    <span class="macro">define_resource</span><span class="macro">!</span>(
+        <span class="ident">cfg</span>,
+        <span class="ident">V1_API_ROUTES</span>.<span class="ident">levels</span>.<span class="ident">add</span>,
+        <span class="ident">Methods</span>::<span class="ident">ProtectPost</span>,
+        <span class="ident">add_levels</span>
+    );
+    <span class="macro">define_resource</span><span class="macro">!</span>(
+        <span class="ident">cfg</span>,
+        <span class="ident">V1_API_ROUTES</span>.<span class="ident">levels</span>.<span class="ident">update</span>,
+        <span class="ident">Methods</span>::<span class="ident">ProtectPost</span>,
+        <span class="ident">update_levels</span>
+    );
+
+    <span class="macro">define_resource</span><span class="macro">!</span>(
+        <span class="ident">cfg</span>,
+        <span class="ident">V1_API_ROUTES</span>.<span class="ident">levels</span>.<span class="ident">delete</span>,
+        <span class="ident">Methods</span>::<span class="ident">ProtectPost</span>,
+        <span class="ident">delete_levels</span>
+    );
+
+    <span class="macro">define_resource</span><span class="macro">!</span>(
+        <span class="ident">cfg</span>,
+        <span class="ident">V1_API_ROUTES</span>.<span class="ident">levels</span>.<span class="ident">get</span>,
+        <span class="ident">Methods</span>::<span class="ident">ProtectPost</span>,
+        <span class="ident">get_levels</span>
+    );
+}
+
 <span class="comment">// TODO try for non-existent token names</span>
 
-<span class="attribute">#[<span class="ident">post</span>(<span class="string">&quot;/api/v1/mcaptcha/levels/add&quot;</span>, <span class="ident">wrap</span> <span class="op">=</span> <span class="string">&quot;CheckLogin&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">add_levels</span>(
+<span class="comment">//#[post(&quot;/api/v1/mcaptcha/levels/add&quot;, wrap = &quot;CheckLogin&quot;)]</span>
+<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">add_levels</span>(
     <span class="ident">payload</span>: <span class="ident">web</span>::<span class="ident">Json</span><span class="op">&lt;</span><span class="ident">AddLevels</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>,
     <span class="ident">id</span>: <span class="ident">Identity</span>,
@@ -456,8 +518,8 @@
     <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse</span>::<span class="prelude-val">Ok</span>())
 }
 
-<span class="attribute">#[<span class="ident">post</span>(<span class="string">&quot;/api/v1/mcaptcha/levels/update&quot;</span>, <span class="ident">wrap</span> <span class="op">=</span> <span class="string">&quot;CheckLogin&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_levels</span>(
+<span class="comment">//#[post(&quot;/api/v1/mcaptcha/levels/update&quot;, wrap = &quot;CheckLogin&quot;)]</span>
+<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_levels</span>(
     <span class="ident">payload</span>: <span class="ident">web</span>::<span class="ident">Json</span><span class="op">&lt;</span><span class="ident">AddLevels</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>,
     <span class="ident">id</span>: <span class="ident">Identity</span>,
@@ -514,8 +576,8 @@
     <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse</span>::<span class="prelude-val">Ok</span>())
 }
 
-<span class="attribute">#[<span class="ident">post</span>(<span class="string">&quot;/api/v1/mcaptcha/levels/delete&quot;</span>, <span class="ident">wrap</span> <span class="op">=</span> <span class="string">&quot;CheckLogin&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_levels</span>(
+<span class="comment">//#[post(&quot;/api/v1/mcaptcha/levels/delete&quot;, wrap = &quot;CheckLogin&quot;)]</span>
+<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_levels</span>(
     <span class="ident">payload</span>: <span class="ident">web</span>::<span class="ident">Json</span><span class="op">&lt;</span><span class="ident">AddLevels</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>,
     <span class="ident">id</span>: <span class="ident">Identity</span>,
@@ -541,8 +603,8 @@
     <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse</span>::<span class="prelude-val">Ok</span>())
 }
 
-<span class="attribute">#[<span class="ident">post</span>(<span class="string">&quot;/api/v1/mcaptcha/levels/get&quot;</span>, <span class="ident">wrap</span> <span class="op">=</span> <span class="string">&quot;CheckLogin&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_levels</span>(
+<span class="comment">//#[post(&quot;/api/v1/mcaptcha/levels/get&quot;, wrap = &quot;CheckLogin&quot;)]</span>
+<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_levels</span>(
     <span class="ident">payload</span>: <span class="ident">web</span>::<span class="ident">Json</span><span class="op">&lt;</span><span class="ident">MCaptchaDetails</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>,
     <span class="ident">id</span>: <span class="ident">Identity</span>,

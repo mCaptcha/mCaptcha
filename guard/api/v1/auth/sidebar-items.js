@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["service",""],["signin",""],["signout",""],["signup",""]],"mod":[["routes",""]],"struct":[["Login",""],["Password",""],["Register",""]]});
+initSidebarItems({"fn":[["services",""],["signin",""],["signout",""],["signup",""]],"mod":[["routes",""]],"struct":[["Login",""],["Password",""],["Register",""]]});
