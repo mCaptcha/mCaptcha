@@ -40,6 +40,7 @@ mod middleware;
 
 pub use api::v1::ROUTES as V1_API_ROUTES;
 pub use data::Data;
+pub use docs::DOCS;
 pub use pages::routes::ROUTES as PAGES;
 pub use settings::Settings;
 use static_assets::FileMap;

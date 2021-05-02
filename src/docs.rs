@@ -16,11 +16,39 @@
 */
 
 use actix_web::body::Body;
-use actix_web::{get, web, HttpResponse, Responder};
+use actix_web::{web, HttpResponse, Responder};
 use mime_guess::from_path;
 use rust_embed::RustEmbed;
 
 use std::borrow::Cow;
+
+pub const DOCS: routes::Docs = routes::Docs::new();
+
+pub mod routes {
+    pub struct Docs {
+        pub home: &'static str,
+        pub spec: &'static str,
+        pub assets: &'static str,
+    }
+
+    impl Docs {
+        pub const fn new() -> Self {
+            Docs {
+                home: "/docs",
+                spec: "/docs/openapi.json",
+                assets: "/docs/{_:.*}",
+            }
+        }
+    }
+}
+
+pub fn services(cfg: &mut web::ServiceConfig) {
+    use crate::define_resource;
+
+    define_resource!(cfg, DOCS.home, Methods::Get, index);
+    define_resource!(cfg, DOCS.spec, Methods::Get, spec);
+    define_resource!(cfg, DOCS.assets, Methods::Get, dist);
+}
 
 #[derive(RustEmbed)]
 #[folder = "docs/"]
@@ -41,27 +69,18 @@ pub fn handle_embedded_file(path: &str) -> HttpResponse {
     }
 }
 
-#[get("/docs/{_:.*}")]
 async fn dist(path: web::Path<String>) -> impl Responder {
     handle_embedded_file(&path.0)
 }
 
-#[get("/docs/openapi.json")]
 async fn spec() -> HttpResponse {
     HttpResponse::Ok()
         .content_type("appilcation/json")
         .body(&*crate::OPEN_API_DOC)
 }
 
-#[get("/docs")]
 async fn index() -> HttpResponse {
     handle_embedded_file("index.html")
-}
-
-pub fn services(cfg: &mut web::ServiceConfig) {
-    cfg.service(spec);
-    cfg.service(index);
-    cfg.service(dist);
 }
 
 #[cfg(test)]

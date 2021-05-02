@@ -1,4 +1,5 @@
 debug = true
+source_code = "https://github.com/mCaptcha/guard"
 
 [database]
 # This section deals with the database location and how to access it

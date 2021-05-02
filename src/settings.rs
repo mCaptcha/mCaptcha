@@ -98,6 +98,7 @@ pub struct Settings {
     pub database: Database,
     pub server: Server,
     pub pow: Captcha,
+    pub source_code: String,
 }
 
 #[cfg(not(tarpaulin_include))]
@@ -115,6 +116,8 @@ impl Settings {
 
         // TODO change PLACEHOLDER to app name
         s.merge(Environment::with_prefix("GUARD"))?;
+
+        check_url(&s);
 
         match env::var("PORT") {
             Ok(val) => {
@@ -136,6 +139,15 @@ impl Settings {
 
         s.try_into()
     }
+}
+
+#[cfg(not(tarpaulin_include))]
+fn check_url(s: &Config) {
+    let url = s
+        .get::<String>("source_code")
+        .expect("Couldn't access source_code");
+
+    Url::parse(&url).expect("Please enter a URL for source_code in settings");
 }
 
 #[cfg(not(tarpaulin_include))]
