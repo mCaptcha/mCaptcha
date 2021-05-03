@@ -1,12 +1,36 @@
-<div class="sitekey-form__add-level-flex-container">
-  <!-- insert Javascript for adding more levels as needed -->
-  <label class="sitekey-form__label" for="level<.= level .>">Level <.= level .></label>
-</div>
+<fieldset class="sitekey__level-container">
+  <legend class="sitekey__level-title">
+    Level <.= level .>
+  </legend>
+  <label class="sitekey-form__level-label" for="visitor<.= level .>"
+    >Visitor
+    <input
+      class="sitekey-form__level-input"
+      type="number"
+      name=""
+      value=""
+      id="visitor<.= level .>"
+    />
+  </label>
 
-<input
-  class="sitekey-form__input"
-  type="number"
-  name="level1"
-  id="level<.= level .>"
-  value=""
-/>
+  <label class="sitekey-form__level-label" for="difficulty<.= level .>">
+    Difficulty
+    <input
+      type="number"
+      name="difficulty"
+      class="sitekey-form__level-input"
+      value=""
+      id="difficulty<.= level .>"
+    />
+  </label>
+  <label class="sitekey-form__level-label--hidden" for="remove<.= level .>">
+    Add level
+    <input
+      class="sitekey-form__level-add-level-button"
+      type="button"
+      name="remove"
+	  id="remove<.= level .>"
+      value="Remove"
+    />
+  </label>
+</fieldset>

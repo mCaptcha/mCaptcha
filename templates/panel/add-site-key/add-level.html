@@ -1,9 +1,11 @@
-<fieldset class="sitekey-form__level">
-  <legend>Level <.= level .></legend>
-  <label class="sitekey-form__level-fieldname" for="visitor<.= level .>"
+<fieldset class="sitekey__level-container">
+  <legend class="sitekey__level-title">
+    Level <.= level .>
+  </legend>
+  <label class="sitekey-form__level-label" for="visitor<.= level .>"
     >Visitor
     <input
-      class="sitekey-form__number-filed"
+      class="sitekey-form__level-input"
       type="number"
       name=""
       value=""
@@ -11,21 +13,24 @@
     />
   </label>
 
-  <label class="sitekey-form__level-fieldname" for="difficulty<.= level .>">
+  <label class="sitekey-form__level-label" for="difficulty<.= level .>">
     Difficulty
     <input
       type="number"
       name="difficulty"
-      class="sitekey-form__number-filed"
+      class="sitekey-form__level-input"
       value=""
       id="difficulty<.= level .>"
     />
   </label>
-  <input
-    class="sitekey-form__add-level-button"
-    type="button"
-    name="add"
-    id="add"
-    value="Add"
-  />
+  <label class="sitekey-form__level-label--hidden" for="add">
+    Add level
+    <input
+      class="sitekey-form__level-add-level-button"
+      type="button"
+      name="add"
+      id="add"
+      value="Add"
+    />
+  </label>
 </fieldset>
