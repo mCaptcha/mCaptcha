@@ -14,10 +14,4 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
-const isNumber = (value: string|number) => {
-  value = value.toString();
-  return /^\d+$/.test(value);
-};
-
-export default isNumber;
+import './main.scss';

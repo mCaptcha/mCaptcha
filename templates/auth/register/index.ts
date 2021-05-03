@@ -15,7 +15,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import ROUTES from '../../api/v1/routes';
 import VIEWS from '../../views/v1/routes';
 
 import isBlankString from '../../utils/isBlankString';
@@ -23,6 +22,7 @@ import genJsonPayload from '../../utils/genJsonPayload';
 
 import userExists from './userExists';
 import {checkEmailExists} from './emailExists';
+import getFormUrl from '../../utils/getFormUrl';
 
 //import '../forms.scss';
 
@@ -33,15 +33,15 @@ const passwordElement = <HTMLInputElement>document.getElementById('password');
 const registerUser = async (e: Event) => {
   e.preventDefault();
 
-  let username = usernameElement.value;
-  isBlankString(e, username, 'username');
+  const username = usernameElement.value;
+  isBlankString(username, 'username', e);
   //isBlankString(e);//, username, 'username');
 
-  let password = passwordElement.value;
+  const password = passwordElement.value;
   const passwordCheckElement = <HTMLInputElement>(
     document.getElementById('password-check')
   );
-  let passwordCheck = passwordCheckElement.value;
+  const passwordCheck = passwordCheckElement.value;
   if (password != passwordCheck) {
     return alert("passwords don't match, check again!");
   }
@@ -61,25 +61,26 @@ const registerUser = async (e: Event) => {
     }
   }
 
-  let payload = {
+  const payload = {
     username,
     password,
     confirm_password: passwordCheck,
     email,
   };
+  const formUrl = getFormUrl(null);
 
-  let res = await fetch(ROUTES.registerUser, genJsonPayload(payload));
+  const res = await fetch(formUrl, genJsonPayload(payload));
   if (res.ok) {
     alert('success');
     window.location.assign(VIEWS.loginUser);
   } else {
-    let err = await res.json();
+    const err = await res.json();
     alert(`error: ${err.error}`);
   }
 };
 
 export const index = () => {
-  let form = <HTMLFontElement>document.getElementById('form');
+  const form = <HTMLFontElement>document.getElementById('form');
   form.addEventListener('submit', registerUser, true);
   usernameElement.addEventListener('input', userExists, false);
 };

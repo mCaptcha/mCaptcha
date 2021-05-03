@@ -16,6 +16,7 @@
 */
 
 mod add;
+mod list;
 
 pub mod routes {
     pub struct Sitekey {
@@ -42,5 +43,12 @@ pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
         PAGES.panel.sitekey.add,
         Methods::ProtectGet,
         add::add_sitekey
+    );
+
+    define_resource!(
+        cfg,
+        PAGES.panel.sitekey.list,
+        Methods::ProtectGet,
+        list::list_sitekeys
     );
 }

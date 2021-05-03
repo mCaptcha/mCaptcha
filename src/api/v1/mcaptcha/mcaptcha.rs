@@ -88,7 +88,7 @@ pub struct MCaptchaDetails {
 }
 
 // this should be called from within add levels
-async fn add_mcaptcha(data: web::Data<Data>, id: Identity) -> ServiceResult<impl Responder> {
+pub async fn add_mcaptcha_util(data: &Data, id: &Identity) -> ServiceResult<MCaptchaDetails> {
     let username = id.identity().unwrap();
     let mut key;
 
@@ -125,7 +125,12 @@ async fn add_mcaptcha(data: web::Data<Data>, id: Identity) -> ServiceResult<impl
             }
         }
     }
+    Ok(resp)
+}
 
+// this should be called from within add levels
+async fn add_mcaptcha(data: web::Data<Data>, id: Identity) -> ServiceResult<impl Responder> {
+    let resp = add_mcaptcha_util(&data, &id).await?;
     Ok(HttpResponse::Ok().json(resp))
 }
 

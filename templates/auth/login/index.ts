@@ -15,51 +15,51 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import ROUTES from '../../api/v1/routes';
 import VIEWS from '../../views/v1/routes';
 
 import isBlankString from '../../utils/isBlankString';
 import genJsonPayload from '../../utils/genJsonPayload';
+import getFormUrl from '../../utils/getFormUrl';
 
 //import '../forms.scss';
 
-const login = (e: Event) => {
+const login = async (e: Event) => {
   e.preventDefault();
-  InputEvent
-  const usernameElement: HTMLInputElement = <HTMLInputElement>document.getElementById('username');
+  const usernameElement = <HTMLInputElement>document.getElementById('username');
   if (usernameElement === null) {
-    console.debug("Username element is null");
+    console.debug('Username element is null');
     return;
   }
 
-  let username = usernameElement.value;
-  isBlankString(e, username, 'username');
-//  isBlankString(e);//, username, 'username');
+  const username = usernameElement.value;
+  isBlankString(username, 'username', e);
 
-  const passwordElement: HTMLInputElement = <HTMLInputElement>document.getElementById('password');
+  const passwordElement = <HTMLInputElement>document.getElementById('password');
   if (passwordElement === null) {
-    console.debug("Password is null");
+    console.debug('Password is null');
     return;
   }
 
-  let password = passwordElement.value;
+  const password = passwordElement.value;
 
-  let payload = {
+  const payload = {
     username,
     password,
   };
 
-  fetch(ROUTES.loginUser, genJsonPayload(payload)).then(res => {
-    if (res.ok) {
-      alert('success');
-      window.location.assign(VIEWS.panelHome);
-    } else {
-      res.json().then(err => alert(`error: ${err.error}`));
-    }
-  });
+  const formUrl = getFormUrl(null);
+
+  const res = await fetch(formUrl, genJsonPayload(payload));
+  if (res.ok) {
+    alert('success');
+    window.location.assign(VIEWS.panelHome);
+  } else {
+    const err = await res.json();
+    alert(`error: ${err.error}`);
+  }
 };
 
 export const index = () => {
-  let form = <HTMLFontElement>document.getElementById('form');
+  const form = <HTMLFontElement>document.getElementById('form');
   form.addEventListener('submit', login, true);
 };

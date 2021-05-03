@@ -123,7 +123,7 @@ async fn auth_works() {
             .to_request(),
     )
     .await;
-    assert_eq!(signout_resp.status(), StatusCode::OK);
+    assert_eq!(signout_resp.status(), StatusCode::FOUND);
     let headers = signout_resp.headers();
     assert_eq!(headers.get(header::LOCATION).unwrap(), PAGES.auth.login);
 }

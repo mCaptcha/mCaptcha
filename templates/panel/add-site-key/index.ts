@@ -15,10 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import * as addLevelButton from './addLevelButton';
-import * as addLevelForm from './form';
+import addLevelButtonAddEventListener  from './addLevelButton';
+import addSubmitEventListener from './form';
 
 export const index = () => {
-  addLevelButton.addLevelButtonAddEventListener();
-  addLevelForm.addSubmitEventListener();
+  addLevelButtonAddEventListener();
+  addSubmitEventListener();
 };

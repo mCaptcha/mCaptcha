@@ -1,8 +1,8 @@
 # WIP
-default: build-frontend
+default: frontend
 	cargo build
 
-run: build-frontend-dev
+run: frontend-dev
 	cargo run
 
 dev-env:
@@ -12,10 +12,10 @@ dev-env:
 docs:
 	cargo doc --no-deps --workspace --all-features
 
-build-frontend-dev:
+frontend-dev:
 	yarn start
 
-build-frontend:
+frontend:
 	yarn build
 
 test: migrate
@@ -27,7 +27,7 @@ xml-test-coverage: migrate
 coverage: migrate
 	cargo tarpaulin -t 1200 --out Html
 
-release: build-frontend
+release: frontend
 	cargo build --release
 
 clean:
@@ -38,12 +38,14 @@ migrate:
 	cargo run --bin tests-migrate
 
 help:
-	@echo  '  docs      	- build documentation'
-	@echo  '  run       	- run developer instance'
-	@echo  '  test 		- run unit and integration tests'
-	@echo  '  migrate   	- run database migrations'
-	@echo  '  dev-env 	- download dependencies'
-	@echo  '  clean     	- drop builds and environments'
-	@echo  '  coverage 	- build test coverage in HTML format'
-	@echo  '  xml-coverage 	- build test coverage in XML for upload to codecov'
+	@echo  '  run                     - run developer instance'
+	@echo  '  test                    - run unit and integration tests'
+	@echo  '  frontend-dev      - build static assets in dev mode'
+	@echo  '  frontend          - build static assets in prod mode'
+	@echo  '  migrate                 - run database migrations'
+	@echo  '  dev-env                 - download dependencies'
+	@echo  '  docs                    - build documentation'
+	@echo  '  clean                   - drop builds and environments'
+	@echo  '  coverage                - build test coverage in HTML format'
+	@echo  '  xml-coverage            - build test coverage in XML for upload to codecov'
 	@echo  ''

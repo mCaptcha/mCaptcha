@@ -1,0 +1,36 @@
+<fieldset class="sitekey__level-container">
+  <legend class="sitekey__level-title">
+    Level <.= level .>
+  </legend>
+  <label class="sitekey-form__level-label" for="visitor<.= level .>"
+    >Visitor
+    <input
+      class="sitekey-form__level-input"
+      type="number"
+      name=""
+      value=""
+      id="visitor<.= level .>"
+    />
+  </label>
+
+  <label class="sitekey-form__level-label" for="difficulty<.= level .>">
+    Difficulty
+    <input
+      type="number"
+      name="difficulty"
+      class="sitekey-form__level-input"
+      value=""
+      id="difficulty<.= level .>"
+    />
+  </label>
+  <label class="sitekey-form__level-label--hidden" for="add">
+    Add level
+    <input
+      class="sitekey-form__level-add-level-button"
+      type="button"
+      name="add"
+      id="add"
+      value="Add"
+    />
+  </label>
+</fieldset>

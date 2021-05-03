@@ -15,10 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-const isBlankString = (event: Event|null, value: string|number, field: string) => {
+const isBlankString = (value: string|number, field: string, event?: Event) => {
   value = value.toString();
   if (!value.replace(/\s/g, '').length) {
-    if (event) {
+    if (event !== undefined) {
       event.preventDefault();
     }
     alert(`${field} can't be empty`);

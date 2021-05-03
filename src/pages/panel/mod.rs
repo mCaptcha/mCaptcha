@@ -18,6 +18,8 @@
 use actix_web::{HttpResponse, Responder};
 use sailfish::TemplateOnce;
 
+use crate::pages::TITLE;
+
 pub mod sitekey;
 
 #[derive(TemplateOnce, Clone)]
@@ -27,13 +29,13 @@ pub struct IndexPage<'a> {
     pub title: &'a str,
 }
 
-const TITLE: &str = "Dashboard";
+const COMPONENT: &str = "Dashboard";
 
 impl<'a> Default for IndexPage<'a> {
     fn default() -> Self {
         IndexPage {
-            name: "mCaptcha",
-            title: TITLE,
+            name: TITLE,
+            title: COMPONENT,
         }
     }
 }

@@ -15,9 +15,36 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-const isNumber = (value: string|number) => {
-  value = value.toString();
-  return /^\d+$/.test(value);
-};
+@import '../../reset';
+@import '../../vars';
 
-export default isNumber;
+.help-text {
+  border-radius: 4px;
+  box-shadow: $secondary-backdrop 0px 2px 6px 0px;
+  min-width: 70%;
+  max-width: 80%;
+  min-height: 70px;
+  display: flex;
+  margin-left: 15px;
+  margin-top: 40px;
+}
+
+.help-text__serial-num {
+  display: inline-flex;
+  background-color: $violet;
+  color: $light-text;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+}
+
+.help-text__instructions {
+  display: inline-block;
+  list-style: none;
+  font-size: 19px;
+  font-weight: 500;
+  padding: 10px;
+  margin: auto;
+}

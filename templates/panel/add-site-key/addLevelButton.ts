@@ -14,124 +14,91 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import VALIDATE_LEVELS from './levels';
-import isBlankString from '../../utils/isBlankString';
-import isNumber from '../../utils/isNumber';
+import getNumLevels from './levels/getNumLevels';
+import validateLevel from './levels/validateLevel';
+import * as UpdateLevel from './levels/updateLevel';
 
-const LABEL_CONTAINER_CLASS = 'sitekey-form__add-level-flex-container';
-const LABEL_CLASS = 'sitekey-form__label';
-export const LABEL_INNER_TEXT_WITHOUT_LEVEL = 'Level ';
+const ADD_LEVEL_BUTTON = 'sitekey-form__level-add-level-button';
 
-export const INPUT_ID_WITHOUT_LEVEL = 'level';
-const INPUT_CLASS = 'sitekey-form__input--add-level';
+/**
+ * Gets executed when 'Add' Button is clicked to add levels
+ * Used to validate levels per m_captcha::defense::Defense's
+ * specifications
+ */
+const addLevel = (e: Event) => {
+  const eventTarget = <HTMLElement>e.target;
+  const PARENT = <HTMLElement>eventTarget.parentElement;
+  const FIELDSET = <HTMLElement>PARENT.parentElement;
+  const numLevels = getNumLevels();
 
-const ADD_LEVEL_BUTTON_INNER_TEXT = 'Add Level';
-const ADD_LEVEL_BUTTON = 'sitekey-form__add-level-button';
-
-export const getNumLevels = () => {
-  let numLevels = 0;
-  document.querySelectorAll(`.${LABEL_CLASS}`).forEach(_ => numLevels++);
-  return numLevels;
-};
-
-const validateLevel = (numLevels: number) => {
-  numLevels = numLevels - 1;
-  let inputID = INPUT_ID_WITHOUT_LEVEL + numLevels.toString();
-  let filed = LABEL_INNER_TEXT_WITHOUT_LEVEL + numLevels;
-  let inputElement = <HTMLInputElement>document.getElementById(inputID);
-
-  let val = inputElement.value;
-  if (!isNumber(val)) {
-    return false;
-  }
-
-  let level = parseInt(val);
-  if (Number.isNaN(level)) {
-    alert('Level can contain nubers only');
-    return false;
-  }
-
-  let e = null;
-  console.log(level);
-
-  isBlankString(e, val, filed);
-  let isValid = VALIDATE_LEVELS.add(level);
-  return isValid;
-};
-
-const addLevelButtonEventHandler = (e: Event) => {
-  let eventTarget = <HTMLElement>e.target;
-  //  if (!eventTarget) {
-  //    return;
-  //  }
-  const PREV_LEVEL_CONTAINER = <HTMLElement>eventTarget.parentElement;
-  let numLevels: string | number = getNumLevels();
-  let isValid = validateLevel(numLevels);
+  const isValid = validateLevel(numLevels);
   console.log(`[addLevelButton] isValid: ${isValid}`);
-
   if (!isValid) {
-    return console.log('Aborting level addition');
+    return console.error('Aborting level addition');
   }
 
-  eventTarget.remove();
+  PARENT.remove();
 
-  numLevels = numLevels.toString();
-
-  let labelContainer = document.createElement('div');
-  labelContainer.className = LABEL_CONTAINER_CLASS;
-
-  let inputID = INPUT_ID_WITHOUT_LEVEL + numLevels;
-  let label = document.createElement('label');
-  label.className = LABEL_CLASS;
-  label.htmlFor = inputID;
-  label.innerText = LABEL_INNER_TEXT_WITHOUT_LEVEL + numLevels;
-
-  labelContainer.appendChild(label);
-
-  PREV_LEVEL_CONTAINER.insertAdjacentElement('afterend', labelContainer);
-
-  let inputContainer = document.createElement('div');
-  inputContainer.className = LABEL_CONTAINER_CLASS;
-
-  let input = document.createElement('input');
-  input.id = inputID;
-  input.name = inputID;
-  input.type = 'text';
-  input.className = INPUT_CLASS;
-
-  inputContainer.appendChild(input);
-
-  let button = document.createElement('button');
-  button.className = ADD_LEVEL_BUTTON;
-  button.innerText = ADD_LEVEL_BUTTON_INNER_TEXT;
-
-  inputContainer.appendChild(button);
-
-  labelContainer.insertAdjacentElement('afterend', inputContainer);
+  const newLevelHTML = getHtml(numLevels + 1);
+  FIELDSET.insertAdjacentHTML('afterend', newLevelHTML);
+  UpdateLevel.register(numLevels);
 
   addLevelButtonAddEventListener();
 };
 
-export const addLevelButtonAddEventListener = () => {
+/** adds onclick event listener */
+const addLevelButtonAddEventListener = () => {
   let addLevelButton = <HTMLElement>(
     document.querySelector(`.${ADD_LEVEL_BUTTON}`)
   );
-  addLevelButton.addEventListener('click', addLevelButtonEventHandler);
+  addLevelButton.addEventListener('click', addLevel);
 };
 
-/*
- <div class="sitekey-form__add-level-flex-container">
-<label class="sitekey-form__label" for="level2">Level 2</label>
-</div>
+/**
+ * Generate HTML to be added when 'Add Level' button is clicked
+ * Check if './add-level.html` to see if this is up to date
+ */
+const getHtml = (level: number) => {
+  console.debug(`[generating HTML getHtml]level: ${level}`);
+  const HTML = `
+<fieldset class="sitekey__level-container">
+  <legend class="sitekey__level-title">
+	  Level ${level}
+  </legend>
+  <label class="sitekey-form__level-label" for="visitor${level}"
+    >Visitor
+    <input
+      class="sitekey-form__level-input"
+      type="number"
+      name=""
+      value=""
+      id="visitor${level}"
+    />
+  </label>
 
-<div class="sitekey-form__add-level-flex-container">
-<input
-  class="sitekey-form__input--add-level"
-  type="text"
-  name="level2"
-  id="level2"
-  value=""
-/>
-<button class="sitekey-form__add-level-button">Add Level</button>
-</div>
-*/
+  <label class="sitekey-form__level-label" for="difficulty${level}">
+    Difficulty
+    <input
+      type="number"
+      name="difficulty"
+      class="sitekey-form__level-input"
+      value=""
+      id="difficulty${level}"
+    />
+  </label>
+  <label class="sitekey-form__level-label--hidden" for="add">
+	  Add level
+  <input
+    class="sitekey-form__level-add-level-button"
+    type="button"
+    name="add"
+    id="add"
+    value="Add"
+  />
+  </label>
+</fieldset>
+`;
+  return HTML;
+};
+
+export default addLevelButtonAddEventListener;

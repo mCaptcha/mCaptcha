@@ -15,9 +15,29 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-const isNumber = (value: string|number) => {
-  value = value.toString();
-  return /^\d+$/.test(value);
+/** 
+ * querySelector is the the selector that will be 
+ * used to fetch elements.
+ * So when using class-names, pass in ".whatever-classname"
+ * and for ID, "#id".
+ * */
+const getFormUrl = (querySelector: null|string|HTMLFormElement) => {
+  let form;
+  if (querySelector === null) {
+    form = <HTMLFormElement>document.querySelector("form");
+  } 
+  if (querySelector === "string" || querySelector instanceof String) {
+    form = <HTMLFormElement>document.querySelector(querySelector.toString());
+  } 
+  if (querySelector instanceof HTMLFormElement) {
+      form = querySelector;
+  }
+
+  if ( form !== undefined) {
+  return form.action
+  } else {
+    throw new Error("Can't find form");
+  }
 };
 
-export default isNumber;
+export default getFormUrl;

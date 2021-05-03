@@ -15,9 +15,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-const isNumber = (value: string|number) => {
-  value = value.toString();
-  return /^\d+$/.test(value);
+import {LEVELS} from './index';
+import getLevelFields from './getLevelFields';
+
+/**
+ * Fetches level from DOM using the ID passesd and validates
+ * its contents
+ * */
+const validateLevel = (id: number) => {
+  const level = getLevelFields(id);
+
+  if (level === null) {
+    return false;
+  }
+
+  try {
+    LEVELS.add(level);
+    return true;
+  } catch (e) {
+    return false;
+  }
 };
 
-export default isNumber;
+export default validateLevel;

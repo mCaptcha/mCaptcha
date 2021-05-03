@@ -18,6 +18,8 @@
 use actix_web::{HttpResponse, Responder};
 use sailfish::TemplateOnce;
 
+use crate::pages::TITLE;
+
 #[derive(TemplateOnce, Clone)]
 #[template(path = "auth/register/index.html")]
 struct IndexPage<'a> {
@@ -28,7 +30,7 @@ struct IndexPage<'a> {
 impl<'a> Default for IndexPage<'a> {
     fn default() -> Self {
         IndexPage {
-            name: "mCaptcha",
+            name: TITLE,
             title: "Join",
         }
     }

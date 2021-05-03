@@ -15,9 +15,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-const isNumber = (value: string|number) => {
-  value = value.toString();
-  return /^\d+$/.test(value);
-};
+const LABEL_INNER_TEXT_WITHOUT_LEVEL = 'Level ';
+const INPUT_ID_WITHOUT_LEVEL = 'level';
+const LABEL_CLASS = 'sitekey-form__label';
+const VISITOR_WITHOUT_LEVEL = 'visitor';
+const DIFFICULTY_WITHOUT_LEVEL = 'difficulty';
+const LEVEL_CONTAINER_CLASS = "sitekey__level-container";
 
-export default isNumber;
+
+const CONST = {
+  LABEL_CLASS,
+  INPUT_ID_WITHOUT_LEVEL,
+  LABEL_INNER_TEXT_WITHOUT_LEVEL,
+  VISITOR_WITHOUT_LEVEL,
+  DIFFICULTY_WITHOUT_LEVEL,
+  LEVEL_CONTAINER_CLASS,
+}
+
+export default CONST;

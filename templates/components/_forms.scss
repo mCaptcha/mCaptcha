@@ -15,9 +15,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-const isNumber = (value: string|number) => {
-  value = value.toString();
-  return /^\d+$/.test(value);
-};
+@import '../vars';
 
-export default isNumber;
+@mixin form-label {
+  margin: 10px 0;
+  box-sizing: border-box;
+  width: $form-content-width;
+  justify-self: left;
+}
+
+@mixin form-input {
+  position: relative;
+  margin-top: 5px;
+  box-sizing: border-box;
+  height: 40px;
+  width: 90%;
+}

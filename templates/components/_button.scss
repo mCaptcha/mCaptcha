@@ -15,9 +15,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-const isNumber = (value: string|number) => {
-  value = value.toString();
-  return /^\d+$/.test(value);
-};
+@mixin violet-button-hover {
+  background-color: $light-violet;
+  cursor: grab;
+  transform: translateY(-5px);
+}
 
-export default isNumber;
+@mixin violet-button {
+  background-color: $violet;
+  color: $light-text;
+  border-radius: 5px;
+  border: 1px $light-grey solid;
+  padding: 5px;
+  font-size: 20px;
+  min-height: 45px;
+  width: 125px;
+}

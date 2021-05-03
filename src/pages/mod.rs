@@ -21,6 +21,8 @@ mod auth;
 mod panel;
 pub mod routes;
 
+pub const TITLE: &str = "mCaptcha";
+
 pub fn services(cfg: &mut ServiceConfig) {
     auth::services(cfg);
     panel::services(cfg);
@@ -59,7 +61,11 @@ mod tests {
         )
         .await;
 
-        let urls = vec![PAGES.home, PAGES.panel.sitekey.add];
+        let urls = vec![
+            PAGES.home,
+            PAGES.panel.sitekey.add,
+            PAGES.panel.sitekey.list,
+        ];
 
         for url in urls.iter() {
             let resp =

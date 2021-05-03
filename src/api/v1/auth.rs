@@ -177,7 +177,8 @@ async fn signout(id: Identity) -> impl Responder {
     if let Some(_) = id.identity() {
         id.forget();
     }
-    HttpResponse::Ok()
-        .set_header(header::LOCATION, "/login")
-        .body("")
+    HttpResponse::Found()
+        .header(header::LOCATION, "/login")
+        .finish()
+        .into_body()
 }

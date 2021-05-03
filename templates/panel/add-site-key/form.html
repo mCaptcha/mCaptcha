@@ -1,22 +1,22 @@
-<form class="sitekey-form" action="/something" method="post">
-  <div class="sitekey-form__title-flex-container">
-    <b class="sitekey-form__title"><.= form_title .></b>
-  </div>
-  <div class="sitekey-form__add-level-flex-container">
-    <label class="sitekey-form__label" for="description">Description</label>
-  </div>
-  <input
-    class="sitekey-form__input"
-    type="text"
-    name="description"
-    id="description"
-	required
-    value="<.= form_description .>"
-  />
+<form class="sitekey-form" action="<.= crate::V1_API_ROUTES.levels.add .>" method="post">
+	<h1 class="form__title">
+		<.= form_title .>
+	</h1>
+    <label class="sitekey-form__label" for="description">
+		Description
+	  <input
+		class="sitekey-form__input"
+		type="text"
+		name="description"
+		id="description"
+		required
+		value="<.= form_description .>"
+	  />
+	</label>
 
   <. for level in 1..=levels { .>
     <. if level == levels { .>
-    <. include!("./add-level.html"); .> 
+    <. include!("./new-add-level.html"); .> 
     <. } else { .> 
     <. include!("./existing-level.html"); .> 
     <. } .> 

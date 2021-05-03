@@ -1,204 +1,29 @@
+/*
+ * Copyright (C) 2021  Aravinth Manivannan <realaravinth@batsense.net>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 @import '../reset';
 @import '../vars';
-
-.secondary-menu {
-  position: fixed;
-  width: 14%;
-  left: 0;
-  bottom: 0;
-  top: 0;
-  right: 0;
-  height: 100%;
-  overflow: auto;
-
-  background-color: $secondary-backdrop;
-  color: $light-text;
-}
-
-.secondary-menu__heading {
-  margin: auto;
-  padding: 20px 5px;
-  display: flex;
-}
-.secondary-menu__heading:hover {
-  color: $green;
-  cursor: grab;
-}
-
-.secondary-menu__logo {
-  width: 70px;
-  display: inline-block;
-}
-
-.secondary-menu__brand-name {
-  display: inline-block;
-  margin: auto;
-  font-size: 1.5rem;
-}
-
-.secondary-menu__item {
-  margin: auto;
-  padding: 20px 25px;
-  display: flex;
-}
-
-.secondary-menu__icon {
-  filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%)
-    contrast(103%);
-  opacity: 0.8;
-  width: 1rem;
-  margin: auto;
-  margin-right: 10px;
-}
-
-.secondary-menu__item-name {
-  display: inline-block;
-  margin: auto;
-  font-size: 1rem;
-}
-
-.secondary-menu__item-link:hover {
-  color: $green;
-  cursor: grab;
-  filter: invert(58%) sepia(60%) saturate(331%) hue-rotate(76deg)
-    brightness(91%) contrast(92%);
-}
-
-.secondary-menu__item-link {
-  color: inherit;
-  width: 100%;
-  height: 100%;
-}
+@import '../components/button';
 
 main {
-    margin-left: 14%;
+  margin-left: 14%;
   min-height: 100%;
   background-color: $backdrop;
   padding-bottom: 20px;
-}
-
-.task-bar {
-  display: flex;
-  padding: 0px;
-  margin: 0px;
-  background-color: #fff;
-}
-
-.task-bar__action {
-  display: inline-block;
-  padding: 10px 0px;
-  margin: auto;
-}
-
-.task-bar__spacer {
-  min-width: 250px;
-  flex: 6;
-}
-
-.task-bar__icon {
-  opacity: 0.8;
-  width: 1.5rem;
-  margin: auto 20px;
-}
-
-.task-bar__icon {
-  color: $light-text;
-}
-
-.task-bar__icon:hover {
-  cursor: grab;
-}
-
-.main-menu {
-  display: flex;
-  flex-grow: 0;
-  padding-top: 20px;
-  padding-left: 10px;
-}
-
-.main-menu__item {
-  list-style: none;
-  background-color: #c3c3c3;
-  flex: 2;
-  text-align: center;
-  vertical-align: middle;
-  margin: auto 20px;
-  padding: 10px 0;
-}
-
-.main-menu__item--spacer {
-  list-style: none;
-  flex: 3;
-  text-align: center;
-}
-
-.main-menu__item:hover {
-  background-color: grey;
-  cursor: grab;
-}
-
-.main-menu__item:last-child {
-  padding: 0;
-  display: flex;
-  flex: 2;
-  border: none;
-  background-color: unset;
-}
-
-.main-menu__item:last-child:hover {
-  cursor: unset;
-  background-color: unset;
-}
-
-.main-menu__add-site {
-  display: inline-block;
-  background-color: $violet;
-  color: white;
-  font-weight: 500;
-  font-size: 16px;
-  padding: 10px 15px;
-
-  border-radius: 5px;
-  border: 1px grey solid;
-  min-height: 45px;
-  margin: auto;
-}
-
-.main-menu__add-site:hover {
-  background-color: $violet;
-  cursor: grab;
-  transform: translateY(-5px);
-}
-
-.help-text {
-  border-radius: 4px;
-  box-shadow: $secondary-backdrop 0px 2px 6px 0px;
-  min-width: 70%;
-  max-width: 80%;
-  min-height: 70px;
-  display: flex;
-  margin-left: 15px;
-  margin-top: 40px;
-}
-
-.help-text__serial-num {
-  display: inline-flex;
-  background-color: $violet;
-  color: $light-text;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  align-items: center;
-  justify-content: center;
-}
-
-.help-text__instructions {
-  display: inline-block;
-  list-style: none;
-  font-size: 19px;
-  font-weight: 500;
-  padding: 10px;
-  margin: auto;
 }
 
 .inner-container {
@@ -208,87 +33,4 @@ main {
   margin: 50px auto;
   border-radius: 5px;
   display: flex;
-}
-
-.sitekey-form {
-  display: flex;
-  flex-direction: column;
-  width: 90%;
-  justify-content: center;
-  align-items: center;
-  box-sizing: content-box;
-  background-color: #fff;
-  margin: auto;
-  padding-bottom: 30px;
-}
-
-.sitekey-form__title-flex-container {
-  display: flex;
-  width: 100%;
-  border-bottom: 0.1px solid $light-grey;
-}
-
-.sitekey-form__title {
-  padding-left: 10px;
-  font-size: 1rem;
-  padding: 0.75rem 1.25rem;
-}
-
-.sitekey-form__label {
-  display: block;
-  margin: 10px 0;
-  box-sizing: inherit;
-  justify-self: left;
-}
-
-.sitekey-form__input {
-  position: relative;
-  margin-top: 5px;
-  box-sizing: border-box;
-  height: 40px;
-  width: 90%;
-}
-
-.sitekey-form__input--add-level {
-  position: relative;
-  margin-top: 5px;
-  box-sizing: inherit;
-  flex: 3;
-  height: 40px;
-  margin-right: 20px;
-}
-
-.sitekey-form__add-level-flex-container {
-  display: flex;
-  box-sizing: border-box;
-  width: 90%;
-  margin-top: 10px;
-}
-
-.sitekey-form__add-level-button {
-  background-color: $violet;
-  color: white;
-  padding: 5px;
-  font-size: 16px;
-
-  border-radius: 5px;
-  border: 1px $light-grey solid;
-  height: 40px;
-  min-width: 125px;
-  margin: auto;
-}
-
-.sitekey-form__submit {
-  margin-top: 50px;
-  display: block;
-  background-color: $violet;
-  color: white;
-  padding: 5px;
-  font-size: 20px;
-
-  border-radius: 5px;
-  border: 1px $light-grey solid;
-  min-height: 45px;
-  width: 125px;
-  width: 90%;
 }

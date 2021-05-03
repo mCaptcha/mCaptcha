@@ -15,9 +15,47 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-const isNumber = (value: string|number) => {
-  value = value.toString();
-  return /^\d+$/.test(value);
-};
+@import '../../reset';
+@import '../../vars';
+@import '../../components/button';
 
-export default isNumber;
+.taskbar {
+  display: flex;
+  padding: 0px;
+  margin: 0px;
+  background-color: $white;
+}
+
+.taskbar__action {
+  display: inline-block;
+  padding: 10px 0px;
+  margin: auto;
+}
+
+.taskbar__spacer {
+  min-width: 250px;
+  flex: 6;
+}
+
+.taskbar__icon {
+  opacity: 0.8;
+  width: 1.5rem;
+  margin: auto 20px;
+}
+
+.taskbar__icon {
+  color: $light-text;
+}
+
+.taskbar__icon:hover {
+  cursor: grab;
+}
+
+.taskbar__add-site {
+  display: inline-block;
+  @include violet-button;
+}
+
+.taskbar__add-site:hover {
+  @include violet-button-hover;
+}

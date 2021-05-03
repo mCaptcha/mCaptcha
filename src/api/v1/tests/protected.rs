@@ -70,6 +70,10 @@ async fn protected_routes_work() {
         )
         .await;
 
-        assert_eq!(authenticated_resp.status(), StatusCode::OK);
+        if url == &V1_API_ROUTES.auth.logout {
+            assert_eq!(authenticated_resp.status(), StatusCode::FOUND);
+        } else {
+            assert_eq!(authenticated_resp.status(), StatusCode::OK);
+        }
     }
 }

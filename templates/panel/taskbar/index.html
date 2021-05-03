@@ -1,29 +1,29 @@
-<ul class="task-bar">
+<ul class="taskbar">
   <!--
-        <li class="task-bar__action">Brand Name</li>
+        <li class="taskbar__action">Brand Name</li>
         -->
-  <li class="task-bar__spacer"></li>
-  <li class="task-bar__action">
-      <a class="task-bar__link" href="<.= crate::PAGES.panel.sitekey.add .>">
-        <button class="main-menu__add-site">
+  <li class="taskbar__spacer"></li>
+  <li class="taskbar__action">
+      <a class="taskbar__link" href="<.= crate::PAGES.panel.sitekey.add .>">
+        <button class="taskbar__add-site">
             + New Site
         </button>
     </a>
   </li>
-  <li class="task-bar__action">
-    <img class="task-bar__icon" src="<.=
+  <li class="taskbar__action">
+    <img class="taskbar__icon" src="<.=
     crate::FILES.get("./static-assets/img/svg/moon.svg").unwrap() .>" alt="Profile" />
   </li>
 
-  <li class="task-bar__action">
-    <img class="task-bar__icon" src="<.=
+  <li class="taskbar__action">
+    <img class="taskbar__icon" src="<.=
     crate::FILES.get("./static-assets/img/svg/bell.svg").unwrap() .>"
     alt="Notifications" />
   </li>
 
-  <li class="task-bar__action">
+  <li class="taskbar__action">
       <a href="<.= crate::V1_API_ROUTES.auth.logout .>">
-    <img class="task-bar__icon" src="<.=
+    <img class="taskbar__icon" src="<.=
     crate::FILES.get("./static-assets/img/svg/log-out.svg").unwrap() .>" alt="Profile"
     /></a>
   </li>

@@ -180,7 +180,7 @@ pub async fn add_levels_util(
     name: &str,
     password: &str,
 ) -> (data::Data, Login, ServiceResponse, MCaptchaDetails) {
-    let (data, creds, signin_resp, token_key) = add_token_util(name, password).await;
+    let (data, creds, signin_resp) = signin(name, password).await;
     let cookies = get_cookie!(signin_resp);
     let mut app = get_app!(data).await;
 
@@ -188,7 +188,6 @@ pub async fn add_levels_util(
 
     let add_level = AddLevels {
         levels: levels.clone(),
-        key: token_key.key.clone(),
     };
 
     // 1. add level
@@ -200,6 +199,7 @@ pub async fn add_levels_util(
     )
     .await;
     assert_eq!(add_token_resp.status(), StatusCode::OK);
+    let token_key: MCaptchaDetails = test::read_body_json(add_token_resp).await;
 
     (data, creds, signin_resp, token_key)
 }

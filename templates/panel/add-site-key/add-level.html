@@ -1,17 +1,31 @@
-<div class="sitekey-form__add-level-flex-container">
-  <label class="sitekey-form__label" for="level2">Level <.= level .></label>
-</div>
+<fieldset class="sitekey-form__level">
+  <legend>Level <.= level .></legend>
+  <label class="sitekey-form__level-fieldname" for="visitor<.= level .>"
+    >Visitor
+    <input
+      class="sitekey-form__number-filed"
+      type="number"
+      name=""
+      value=""
+      id="visitor<.= level .>"
+    />
+  </label>
 
-<div class="sitekey-form__add-level-flex-container">
+  <label class="sitekey-form__level-fieldname" for="difficulty<.= level .>">
+    Difficulty
+    <input
+      type="number"
+      name="difficulty"
+      class="sitekey-form__number-filed"
+      value=""
+      id="difficulty<.= level .>"
+    />
+  </label>
   <input
-    class="sitekey-form__input--add-level"
-    type="number"
-    id="level<.= level .>"
-    name="level<.= level .>"
-	<. if level == 1 { .>
-	<.= "required" .>
-	<. } .>
-    value=""
+    class="sitekey-form__add-level-button"
+    type="button"
+    name="add"
+    id="add"
+    value="Add"
   />
-  <button class="sitekey-form__add-level-button">Add Level</button>
-</div>
+</fieldset>

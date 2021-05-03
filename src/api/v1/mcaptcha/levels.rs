@@ -20,6 +20,7 @@ use actix_web::{web, HttpResponse, Responder};
 use m_captcha::{defense::Level, DefenseBuilder};
 use serde::{Deserialize, Serialize};
 
+use super::mcaptcha::add_mcaptcha_util;
 use crate::api::v1::mcaptcha::mcaptcha::MCaptchaDetails;
 use crate::errors::*;
 use crate::Data;
@@ -52,8 +53,6 @@ pub mod routes {
 #[derive(Serialize, Deserialize)]
 pub struct AddLevels {
     pub levels: Vec<Level>,
-    /// name is config_name
-    pub key: String,
 }
 
 pub fn services(cfg: &mut web::ServiceConfig) {
@@ -104,6 +103,8 @@ async fn add_levels(
 
     defense.build()?;
 
+    let mcaptcha_config = add_mcaptcha_util(&data, &id).await?;
+
     for level in payload.levels.iter() {
         let difficulty_factor = level.difficulty_factor as i32;
         let visitor_threshold = level.visitor_threshold as i32;
@@ -119,18 +120,25 @@ async fn add_levels(
                     )));",
             difficulty_factor,
             visitor_threshold,
-            &payload.key,
+            &mcaptcha_config.key,
             &username,
         )
         .execute(&data.db)
         .await?;
     }
 
-    Ok(HttpResponse::Ok())
+    Ok(HttpResponse::Ok().json(mcaptcha_config))
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct UpdateLevels {
+    pub levels: Vec<Level>,
+    /// name is config_name
+    pub key: String,
 }
 
 async fn update_levels(
-    payload: web::Json<AddLevels>,
+    payload: web::Json<UpdateLevels>,
     data: web::Data<Data>,
     id: Identity,
 ) -> ServiceResult<impl Responder> {
@@ -187,7 +195,7 @@ async fn update_levels(
 }
 
 async fn delete_levels(
-    payload: web::Json<AddLevels>,
+    payload: web::Json<UpdateLevels>,
     data: web::Data<Data>,
     id: Identity,
 ) -> ServiceResult<impl Responder> {
@@ -304,7 +312,7 @@ mod tests {
             visitor_threshold: 5000,
         };
         let levels = vec![l1, l2];
-        let add_level = AddLevels {
+        let add_level = UpdateLevels {
             levels: levels.clone(),
             key: key.key.clone(),
         };
@@ -337,7 +345,7 @@ mod tests {
             visitor_threshold: 5000,
         };
         let levels = vec![l1, l2];
-        let add_level = AddLevels {
+        let add_level = UpdateLevels {
             levels: levels.clone(),
             key: key.key.clone(),
         };

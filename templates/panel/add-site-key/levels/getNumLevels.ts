@@ -15,9 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-const isNumber = (value: string|number) => {
-  value = value.toString();
-  return /^\d+$/.test(value);
+import CONST from '../const';
+
+
+/** returns number of level input fields currently in DOM */
+const getNumLevels = () => {
+  let numLevels = 0;
+  document.querySelectorAll(`.${CONST.LEVEL_CONTAINER_CLASS}`).forEach(_ => numLevels++);
+  console.debug(`[getNumLevels]: numLevels: ${numLevels}`);
+  return numLevels;
 };
 
-export default isNumber;
+export default getNumLevels;
