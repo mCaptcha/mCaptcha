@@ -55,6 +55,8 @@
 <span id="52">52</span>
 <span id="53">53</span>
 <span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -80,13 +82,15 @@
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Sitekey</span> {
         <span class="kw">pub</span> <span class="ident">list</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
         <span class="kw">pub</span> <span class="ident">add</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
+        <span class="kw">pub</span> <span class="ident">view</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
     }
 
     <span class="kw">impl</span> <span class="ident">Sitekey</span> {
         <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
             <span class="ident">Sitekey</span> {
-                <span class="ident">list</span>: <span class="string">&quot;/sitekey&quot;</span>,
+                <span class="ident">list</span>: <span class="string">&quot;/sitekey/list&quot;</span>,
                 <span class="ident">add</span>: <span class="string">&quot;/sitekey/add&quot;</span>,
+                <span class="ident">view</span>: <span class="string">&quot;/sitekey/{key}/view&quot;</span>,
             }
         }
     }
