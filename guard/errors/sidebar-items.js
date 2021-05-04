@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["ServiceError",""]],"struct":[["ErrorToResponse",""]],"type":[["ServiceResult",""]]});
+initSidebarItems({"constant":[["PAGE",""]],"enum":[["PageError",""],["ServiceError",""]],"struct":[["ErrorPage",""],["ErrorToResponse",""],["INTERNAL_SERVER_ERROR",""],["UNKNOWN_ERROR",""]],"type":[["PageResult",""],["ServiceResult",""]]});

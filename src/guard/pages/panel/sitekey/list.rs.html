@@ -39,6 +39,11 @@
 <span id="36">36</span>
 <span id="37">37</span>
 <span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -57,8 +62,13 @@
 * along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
 */</span>
 
-<span class="kw">use</span> <span class="ident">actix_web</span>::{<span class="ident">HttpResponse</span>, <span class="ident">Responder</span>};
+<span class="kw">use</span> <span class="ident">actix_identity</span>::<span class="ident">Identity</span>;
+<span class="kw">use</span> <span class="ident">actix_web</span>::{<span class="ident">web</span>, <span class="ident">HttpResponse</span>, <span class="ident">Responder</span>};
 <span class="kw">use</span> <span class="ident">sailfish</span>::<span class="ident">TemplateOnce</span>;
+
+<span class="comment">//use crate::api::v1::mcaptcha::mcaptcha::MCaptchaDetails;</span>
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">errors</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Data</span>;
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">TemplateOnce</span>, <span class="ident">Clone</span>)]</span>
 <span class="attribute">#[<span class="ident">template</span>(<span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;panel/site-keys/index.html&quot;</span>)]</span>
@@ -72,11 +82,11 @@
     }
 }
 
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_sitekeys</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Responder</span> {
+<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_sitekeys</span>(<span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>, <span class="ident">id</span>: <span class="ident">Identity</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PageResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">body</span> <span class="op">=</span> <span class="ident">IndexPage</span>::<span class="ident">default</span>().<span class="ident">render_once</span>().<span class="ident">unwrap</span>();
-    <span class="ident">HttpResponse</span>::<span class="prelude-val">Ok</span>()
+    <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse</span>::<span class="prelude-val">Ok</span>()
         .<span class="ident">content_type</span>(<span class="string">&quot;text/html; charset=utf-8&quot;</span>)
-        .<span class="ident">body</span>(<span class="ident">body</span>)
+        .<span class="ident">body</span>(<span class="ident">body</span>))
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="guard"></div>

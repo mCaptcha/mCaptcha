@@ -1,3 +1,3 @@
 (function() {var implementors = {};
-implementors["guard"] = [{"text":"impl ResponseError for <a class=\"enum\" href=\"guard/errors/enum.ServiceError.html\" title=\"enum guard::errors::ServiceError\">ServiceError</a>","synthetic":false,"types":["guard::errors::ServiceError"]}];
+implementors["guard"] = [{"text":"impl ResponseError for <a class=\"enum\" href=\"guard/errors/enum.ServiceError.html\" title=\"enum guard::errors::ServiceError\">ServiceError</a>","synthetic":false,"types":["guard::errors::ServiceError"]},{"text":"impl ResponseError for <a class=\"enum\" href=\"guard/errors/enum.PageError.html\" title=\"enum guard::errors::PageError\">PageError</a>","synthetic":false,"types":["guard::errors::PageError"]}];
 if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
