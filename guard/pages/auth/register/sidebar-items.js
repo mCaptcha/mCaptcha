@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["join",""]],"struct":[["IndexPage",""]]});
+initSidebarItems({"constant":[["PAGE",""]],"fn":[["join",""]],"struct":[["INDEX",""],["IndexPage",""]]});

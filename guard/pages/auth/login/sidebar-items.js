@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["login",""]],"struct":[["IndexPage",""]]});
+initSidebarItems({"constant":[["PAGE",""]],"fn":[["login",""]],"struct":[["INDEX",""],["IndexPage",""]]});

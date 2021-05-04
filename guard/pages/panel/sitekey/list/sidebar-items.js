@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["TITLE",""]],"fn":[["list_sitekeys",""]],"struct":[["IndexPage",""]]});
+initSidebarItems({"constant":[["PAGE",""]],"fn":[["list_sitekeys",""]],"struct":[["IndexPage",""]]});

@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["TITLE",""]],"fn":[["services",""]],"mod":[["auth",""],["panel",""],["routes",""]]});
+initSidebarItems({"constant":[["NAME",""]],"fn":[["services",""]],"mod":[["auth",""],["panel",""],["routes",""]]});
