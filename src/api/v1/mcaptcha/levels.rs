@@ -53,6 +53,7 @@ pub mod routes {
 #[derive(Serialize, Deserialize)]
 pub struct AddLevels {
     pub levels: Vec<Level>,
+    pub duration: u32,
 }
 
 pub fn services(cfg: &mut web::ServiceConfig) {
@@ -103,7 +104,7 @@ async fn add_levels(
 
     defense.build()?;
 
-    let mcaptcha_config = add_mcaptcha_util(&data, &id).await?;
+    let mcaptcha_config = add_mcaptcha_util(payload.duration, &data, &id).await?;
 
     for level in payload.levels.iter() {
         let difficulty_factor = level.difficulty_factor as i32;

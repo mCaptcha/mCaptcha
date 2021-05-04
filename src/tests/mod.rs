@@ -188,6 +188,7 @@ pub async fn add_levels_util(
 
     let add_level = AddLevels {
         levels: levels.clone(),
+        duration: 30,
     };
 
     // 1. add level
