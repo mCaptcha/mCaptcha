@@ -121,6 +121,10 @@
 <span id="118">118</span>
 <span id="119">119</span>
 <span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -138,13 +142,14 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
 */</span>
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">borrow</span>::<span class="ident">Cow</span>;
 
 <span class="kw">use</span> <span class="ident">actix_web</span>::<span class="ident">body</span>::<span class="ident">Body</span>;
-<span class="kw">use</span> <span class="ident">actix_web</span>::{<span class="ident">web</span>, <span class="ident">HttpResponse</span>, <span class="ident">Responder</span>};
+<span class="kw">use</span> <span class="ident">actix_web</span>::{<span class="ident">http</span>::<span class="ident">header</span>, <span class="ident">web</span>, <span class="ident">HttpResponse</span>, <span class="ident">Responder</span>};
 <span class="kw">use</span> <span class="ident">mime_guess</span>::<span class="ident">from_path</span>;
 <span class="kw">use</span> <span class="ident">rust_embed</span>::<span class="ident">RustEmbed</span>;
 
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">borrow</span>::<span class="ident">Cow</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">CACHE_AGE</span>;
 
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DOCS</span>: <span class="ident">routes</span>::<span class="ident">Docs</span> <span class="op">=</span> <span class="ident">routes</span>::<span class="ident">Docs</span>::<span class="ident">new</span>();
 
@@ -186,6 +191,9 @@
                 <span class="ident">Cow</span>::<span class="ident">Owned</span>(<span class="ident">bytes</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bytes</span>.<span class="ident">into</span>(),
             };
             <span class="ident">HttpResponse</span>::<span class="prelude-val">Ok</span>()
+                .<span class="ident">set</span>(<span class="ident">header</span>::<span class="ident">CacheControl</span>(<span class="macro">vec</span><span class="macro">!</span>[<span class="ident">header</span>::<span class="ident">CacheDirective</span>::<span class="ident">MaxAge</span>(
+                    <span class="ident">CACHE_AGE</span>,
+                )]))
                 .<span class="ident">content_type</span>(<span class="ident">from_path</span>(<span class="ident">path</span>).<span class="ident">first_or_octet_stream</span>().<span class="ident">as_ref</span>())
                 .<span class="ident">body</span>(<span class="ident">body</span>)
         }
