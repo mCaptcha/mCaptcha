@@ -9,7 +9,7 @@
   "scripts": {
     "start": "tsc templates/index.ts && webpack --config webpack.dev.js",
     "tsc": "tsc templates/index.ts",
-    "build": "webpack --config webpack.prod.js"
+    "build": "tsc templates/index.ts && webpack --config webpack.prod.js"
   },
   "private": true,
   "devDependencies": {

@@ -40,8 +40,8 @@ migrate:
 help:
 	@echo  '  run                     - run developer instance'
 	@echo  '  test                    - run unit and integration tests'
-	@echo  '  frontend-dev      - build static assets in dev mode'
-	@echo  '  frontend          - build static assets in prod mode'
+	@echo  '  frontend-dev            - build static assets in dev mode'
+	@echo  '  frontend                - build static assets in prod mode'
 	@echo  '  migrate                 - run database migrations'
 	@echo  '  dev-env                 - download dependencies'
 	@echo  '  docs                    - build documentation'

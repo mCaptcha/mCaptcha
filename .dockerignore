@@ -1,0 +1,12 @@
+/target
+tarpaulin-report.html
+.env
+.env
+cobertura.xml
+prod/
+node_modules/
+/static-assets/bundle
+/static
+./templates/**/*.js
+/static-assets/bundle/*
+src/cache_buster_data.json
