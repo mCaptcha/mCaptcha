@@ -22,13 +22,15 @@ pub mod routes {
     pub struct Sitekey {
         pub list: &'static str,
         pub add: &'static str,
+        pub view: &'static str,
     }
 
     impl Sitekey {
         pub const fn new() -> Self {
             Sitekey {
-                list: "/sitekey",
+                list: "/sitekey/list",
                 add: "/sitekey/add",
+                view: "/sitekey/{key}/view",
             }
         }
     }

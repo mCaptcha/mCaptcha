@@ -24,9 +24,7 @@ use actix_web::{
     HttpResponse,
 };
 use argon2_creds::errors::CredsError;
-//use awc::error::SendRequestError;
 use derive_more::{Display, Error};
-use lazy_static::lazy_static;
 use m_captcha::errors::CaptchaError;
 use serde::{Deserialize, Serialize};
 use url::ParseError;

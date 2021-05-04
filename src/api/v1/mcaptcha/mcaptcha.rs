@@ -83,13 +83,15 @@ pub struct MCaptchaID {
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct MCaptchaDetails {
-    pub name: Option<String>,
+    pub name: String,
     pub key: String,
 }
 
 // this should be called from within add levels
+#[inline]
 pub async fn add_mcaptcha_util(
     duration: u32,
+    description: &str,
     data: &Data,
     id: &Identity,
 ) -> ServiceResult<MCaptchaDetails> {
@@ -102,12 +104,13 @@ pub async fn add_mcaptcha_util(
         key = get_random(32);
 
         let res = sqlx::query!(
-            "INSERT INTO mcaptcha_config 
-        (key, user_id, duration)
-        VALUES ($1, (SELECT ID FROM mcaptcha_users WHERE name = $2), $3)",
+            "INSERT INTO mcaptcha_config
+        (key, user_id, duration, name)
+        VALUES ($1, (SELECT ID FROM mcaptcha_users WHERE name = $2), $3, $4)",
             &key,
             &username,
-            duration as i32
+            duration as i32,
+            description,
         )
         .execute(&data.db)
         .await;
@@ -125,7 +128,10 @@ pub async fn add_mcaptcha_util(
             Err(e) => Err(e)?,
 
             Ok(_) => {
-                resp = MCaptchaDetails { key, name: None };
+                resp = MCaptchaDetails {
+                    key,
+                    name: description.to_owned(),
+                };
                 break;
             }
         }
@@ -133,10 +139,12 @@ pub async fn add_mcaptcha_util(
     Ok(resp)
 }
 
-// this should be called from within add levels
+// TODO deprecate this
 async fn add_mcaptcha(data: web::Data<Data>, id: Identity) -> ServiceResult<impl Responder> {
     let duration = 30;
-    let resp = add_mcaptcha_util(duration, &data, &id).await?;
+    let description = "dummy";
+
+    let resp = add_mcaptcha_util(duration, description, &data, &id).await?;
     Ok(HttpResponse::Ok().json(resp))
 }
 

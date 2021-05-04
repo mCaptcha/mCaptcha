@@ -15,18 +15,41 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-@import '../reset';
-@import '../vars';
-@import '../components/box';
+@import '../../reset';
+@import '../../vars';
+@import '../../components/box';
 
-.error-box {
+.sitekey-list__box {
   @include box;
+  padding-bottom: 0px;
 }
 
-.error-title {
+.sitekey-list__title {
   @include box-title;
 }
 
-.error-message {
-  text-align: center;
+.sitekey-list__item-container {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  border-bottom: 0.1px solid $light-grey;
+  padding: 20px;
+  color: $black-text;
+}
+
+.sitekey-list__item {
+  display: flex;
+  width: 100%;
+}
+
+.sitekey-list__item-container:hover {
+  background-color: $light-grey;
+}
+
+.sitekey-list__name {
+  flex: 3;
+}
+
+.sitekey-list__key {
+  flex: 1;
 }

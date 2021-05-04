@@ -57,6 +57,7 @@ macro_rules! get_app {
                 ))
                 .configure(crate::api::v1::pow::services)
                 .configure(crate::api::v1::services)
+                .configure(crate::pages::services)
                 .data($data.clone()),
         )
     };
@@ -189,6 +190,7 @@ pub async fn add_levels_util(
     let add_level = AddLevels {
         levels: levels.clone(),
         duration: 30,
+        description: "dummy".into(),
     };
 
     // 1. add level

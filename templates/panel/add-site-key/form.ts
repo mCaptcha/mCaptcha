@@ -53,6 +53,7 @@ const validateDescription = (e: Event) => {
   const val = inputElement.value;
   const filed = 'Description';
   isBlankString(val, filed, e);
+  return val;
 };
 
 const validateDuration = (e: Event) => {
@@ -71,7 +72,7 @@ const validateDuration = (e: Event) => {
 const submit = async (e: Event) => {
   e.preventDefault();
 
-  validateDescription(e);
+  const description = validateDescription(e);
   const duration = validateDuration(e);
 
   const formUrl = getFormUrl(FORM);
@@ -82,6 +83,7 @@ const submit = async (e: Event) => {
   const payload = {
     levels: levels,
     duration,
+    description,
   };
 
   console.debug(`[form submition] json payload: ${JSON.stringify(payload)}`);

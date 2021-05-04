@@ -17,6 +17,7 @@
 
 use actix_identity::Identity;
 use actix_web::{web, HttpResponse, Responder};
+use log::debug;
 use m_captcha::{defense::Level, DefenseBuilder};
 use serde::{Deserialize, Serialize};
 
@@ -54,6 +55,7 @@ pub mod routes {
 pub struct AddLevels {
     pub levels: Vec<Level>,
     pub duration: u32,
+    pub description: String,
 }
 
 pub fn services(cfg: &mut web::ServiceConfig) {
@@ -104,7 +106,11 @@ async fn add_levels(
 
     defense.build()?;
 
-    let mcaptcha_config = add_mcaptcha_util(payload.duration, &data, &id).await?;
+    debug!("creating config");
+    let mcaptcha_config =
+        add_mcaptcha_util(payload.duration, &payload.description, &data, &id).await?;
+
+    debug!("config created");
 
     for level in payload.levels.iter() {
         let difficulty_factor = level.difficulty_factor as i32;

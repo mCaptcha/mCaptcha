@@ -24,14 +24,14 @@ import * as addSiteKey from './panel/add-site-key/';
 
 import VIEWS from './views/v1/routes';
 
-
 import './auth/forms.scss';
 import './panel/main.scss';
 import './panel/header/sidebar/main.scss';
 import './panel/taskbar/main.scss';
 import './panel/help-banner/main.scss';
 import './panel/add-site-key/main.scss';
-
+import './panel/site-keys/main.scss';
+import './errors/main.scss';
 
 const router = new Router();
 

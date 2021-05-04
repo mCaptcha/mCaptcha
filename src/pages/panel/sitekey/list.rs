@@ -19,25 +19,92 @@ use actix_identity::Identity;
 use actix_web::{web, HttpResponse, Responder};
 use sailfish::TemplateOnce;
 
-//use crate::api::v1::mcaptcha::mcaptcha::MCaptchaDetails;
+use crate::api::v1::mcaptcha::mcaptcha::MCaptchaDetails;
 use crate::errors::*;
 use crate::Data;
 
 #[derive(TemplateOnce, Clone)]
 #[template(path = "panel/site-keys/index.html")]
-pub struct IndexPage;
+pub struct IndexPage {
+    sitekeys: SiteKeys,
+}
 
 const PAGE: &str = "SiteKeys";
 
-impl Default for IndexPage {
-    fn default() -> Self {
-        IndexPage
+impl IndexPage {
+    fn new(sitekeys: SiteKeys) -> Self {
+        IndexPage { sitekeys }
     }
 }
 
 pub async fn list_sitekeys(data: web::Data<Data>, id: Identity) -> PageResult<impl Responder> {
-    let body = IndexPage::default().render_once().unwrap();
+    let username = id.identity().unwrap();
+    let res = sqlx::query_as!(
+        MCaptchaDetails,
+        "SELECT key, name from mcaptcha_config WHERE
+        user_id = (SELECT ID FROM mcaptcha_users WHERE name = $1) ",
+        &username,
+    )
+    .fetch_all(&data.db)
+    .await?;
+
+    let body = IndexPage::new(res).render_once().unwrap();
     Ok(HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
         .body(body))
+}
+
+type SiteKeys = Vec<MCaptchaDetails>;
+
+#[cfg(test)]
+mod test {
+    use actix_web::http::StatusCode;
+    use actix_web::test;
+    use actix_web::web::Bytes;
+
+    use crate::tests::*;
+    use crate::*;
+
+    #[actix_rt::test]
+    async fn list_sitekeys_work() {
+        const NAME: &str = "listsitekeyuser";
+        const PASSWORD: &str = "longpassworddomain";
+        const EMAIL: &str = "listsitekeyuser@a.com";
+
+        {
+            let data = Data::new().await;
+            delete_user(NAME, &data).await;
+        }
+
+        register_and_signin(NAME, EMAIL, PASSWORD).await;
+        let (data, _, signin_resp, key) = add_levels_util(NAME, PASSWORD).await;
+        let cookies = get_cookie!(signin_resp);
+
+        let mut app = get_app!(data).await;
+
+        let list_sitekey_resp = test::call_service(
+            &mut app,
+            test::TestRequest::get()
+                .uri(PAGES.panel.sitekey.list)
+                .cookie(cookies.clone())
+                .to_request(),
+        )
+        .await;
+
+        assert_eq!(list_sitekey_resp.status(), StatusCode::OK);
+
+        let body: Bytes = test::read_body(list_sitekey_resp).await;
+        let body = String::from_utf8(body.to_vec()).unwrap();
+
+        //        Bytes::from(key.key)
+        //            .iter()
+        //            .for_each(|e| assert!(body.contains(e)));
+        //
+        //        Bytes::from(key.name)
+        //            .iter()
+        //            .for_each(|e| assert!(body.contains(e)));
+
+        assert!(body.contains(&key.key));
+        assert!(body.contains(&key.name));
+    }
 }
