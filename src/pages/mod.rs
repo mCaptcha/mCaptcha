@@ -18,6 +18,7 @@
 use actix_web::web::ServiceConfig;
 
 mod auth;
+pub mod errors;
 mod panel;
 pub mod routes;
 
@@ -26,6 +27,7 @@ pub const NAME: &str = "mCaptcha";
 pub fn services(cfg: &mut ServiceConfig) {
     auth::services(cfg);
     panel::services(cfg);
+    errors::services(cfg);
 }
 
 #[cfg(not(tarpaulin_include))]

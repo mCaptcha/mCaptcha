@@ -16,6 +16,7 @@
 */
 
 use super::auth::routes::Auth;
+use super::errors::routes::Errors;
 use super::panel::routes::Panel;
 pub const ROUTES: Routes = Routes::new();
 
@@ -23,6 +24,7 @@ pub struct Routes {
     pub home: &'static str,
     pub auth: Auth,
     pub panel: Panel,
+    pub errors: Errors,
 }
 
 impl Routes {
@@ -33,6 +35,7 @@ impl Routes {
             auth: Auth::new(),
             panel,
             home,
+            errors: Errors::new(),
         }
     }
 }

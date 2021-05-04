@@ -198,38 +198,6 @@ pub enum PageError {
     InternalServerError,
 }
 
-use sailfish::TemplateOnce;
-
-#[derive(Clone, TemplateOnce)]
-#[template(path = "errors/internal-server-error.html")]
-struct ErrorPage<'a> {
-    title: &'a str,
-    message: &'a str,
-}
-
-const PAGE: &str = "Error";
-
-impl<'a> ErrorPage<'a> {
-    fn new(title: &'a str, message: &'a str) -> Self {
-        ErrorPage { title, message }
-    }
-}
-
-lazy_static! {
-    static ref INTERNAL_SERVER_ERROR: String = ErrorPage::new(
-        "Internal Server Error",
-        &format!("{}", PageError::InternalServerError)
-    )
-    .render_once()
-    .unwrap();
-    static ref UNKNOWN_ERROR: String = ErrorPage::new(
-        "Server Error",
-        &format!("{}", PageError::InternalServerError)
-    )
-    .render_once()
-    .unwrap();
-}
-
 #[cfg(not(tarpaulin_include))]
 impl From<sqlx::Error> for PageError {
     #[cfg(not(tarpaulin_include))]
@@ -239,15 +207,18 @@ impl From<sqlx::Error> for PageError {
 }
 
 impl ResponseError for PageError {
-    #[cfg(not(tarpaulin_include))]
     fn error_response(&self) -> HttpResponse {
-        let body = match self.status_code() {
-            StatusCode::INTERNAL_SERVER_ERROR => &*INTERNAL_SERVER_ERROR,
-            _ => &*UNKNOWN_ERROR,
-        };
-        HttpResponseBuilder::new(self.status_code())
-            .content_type("text/html; charset=utf-8")
-            .body(body)
+        use crate::PAGES;
+        match self.status_code() {
+            StatusCode::INTERNAL_SERVER_ERROR => HttpResponse::Found()
+                .header(header::LOCATION, PAGES.errors.internal_server_error)
+                .finish()
+                .into(),
+            _ => HttpResponse::Found()
+                .header(header::LOCATION, PAGES.errors.unknown_error)
+                .finish()
+                .into(),
+        }
     }
 
     #[cfg(not(tarpaulin_include))]
@@ -264,10 +235,16 @@ pub type PageResult<V> = std::result::Result<V, PageError>;
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::PAGES;
 
     #[test]
     fn error_works() {
         let resp: HttpResponse = PageError::InternalServerError.error_response();
-        assert_eq!(resp.status(), StatusCode::INTERNAL_SERVER_ERROR);
+        assert_eq!(resp.status(), StatusCode::FOUND);
+        let headers = resp.headers();
+        assert_eq!(
+            headers.get(header::LOCATION).unwrap(),
+            PAGES.errors.internal_server_error
+        );
     }
 }
