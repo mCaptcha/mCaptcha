@@ -39,6 +39,9 @@
 <span id="36">36</span>
 <span id="37">37</span>
 <span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -58,6 +61,7 @@
 */</span>
 
 <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">auth</span>::<span class="ident">routes</span>::<span class="ident">Auth</span>;
+<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">errors</span>::<span class="ident">routes</span>::<span class="ident">Errors</span>;
 <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">panel</span>::<span class="ident">routes</span>::<span class="ident">Panel</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ROUTES</span>: <span class="ident">Routes</span> <span class="op">=</span> <span class="ident">Routes</span>::<span class="ident">new</span>();
 
@@ -65,6 +69,7 @@
     <span class="kw">pub</span> <span class="ident">home</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
     <span class="kw">pub</span> <span class="ident">auth</span>: <span class="ident">Auth</span>,
     <span class="kw">pub</span> <span class="ident">panel</span>: <span class="ident">Panel</span>,
+    <span class="kw">pub</span> <span class="ident">errors</span>: <span class="ident">Errors</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Routes</span> {
@@ -75,6 +80,7 @@
             <span class="ident">auth</span>: <span class="ident">Auth</span>::<span class="ident">new</span>(),
             <span class="ident">panel</span>,
             <span class="ident">home</span>,
+            <span class="ident">errors</span>: <span class="ident">Errors</span>::<span class="ident">new</span>(),
         }
     }
 }
