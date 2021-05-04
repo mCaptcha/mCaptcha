@@ -15,8 +15,13 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-use actix_web::{HttpResponse, Responder};
+use actix_identity::Identity;
+use actix_web::{web, HttpResponse, Responder};
 use sailfish::TemplateOnce;
+
+//use crate::api::v1::mcaptcha::mcaptcha::MCaptchaDetails;
+use crate::errors::*;
+use crate::Data;
 
 #[derive(TemplateOnce, Clone)]
 #[template(path = "panel/site-keys/index.html")]
@@ -30,9 +35,9 @@ impl Default for IndexPage {
     }
 }
 
-pub async fn list_sitekeys() -> impl Responder {
+pub async fn list_sitekeys(data: web::Data<Data>, id: Identity) -> PageResult<impl Responder> {
     let body = IndexPage::default().render_once().unwrap();
-    HttpResponse::Ok()
+    Ok(HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
-        .body(body)
+        .body(body))
 }

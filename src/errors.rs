@@ -26,6 +26,7 @@ use actix_web::{
 use argon2_creds::errors::CredsError;
 //use awc::error::SendRequestError;
 use derive_more::{Display, Error};
+use lazy_static::lazy_static;
 use m_captcha::errors::CaptchaError;
 use serde::{Deserialize, Serialize};
 use url::ParseError;
@@ -189,3 +190,84 @@ impl From<sqlx::Error> for ServiceError {
 
 #[cfg(not(tarpaulin_include))]
 pub type ServiceResult<V> = std::result::Result<V, ServiceError>;
+
+#[derive(Debug, Display, Clone, PartialEq, Error)]
+#[cfg(not(tarpaulin_include))]
+pub enum PageError {
+    #[display(fmt = "Something weng wrong: Internal server error")]
+    InternalServerError,
+}
+
+use sailfish::TemplateOnce;
+
+#[derive(Clone, TemplateOnce)]
+#[template(path = "errors/internal-server-error.html")]
+struct ErrorPage<'a> {
+    title: &'a str,
+    message: &'a str,
+}
+
+const PAGE: &str = "Error";
+
+impl<'a> ErrorPage<'a> {
+    fn new(title: &'a str, message: &'a str) -> Self {
+        ErrorPage { title, message }
+    }
+}
+
+lazy_static! {
+    static ref INTERNAL_SERVER_ERROR: String = ErrorPage::new(
+        "Internal Server Error",
+        &format!("{}", PageError::InternalServerError)
+    )
+    .render_once()
+    .unwrap();
+    static ref UNKNOWN_ERROR: String = ErrorPage::new(
+        "Server Error",
+        &format!("{}", PageError::InternalServerError)
+    )
+    .render_once()
+    .unwrap();
+}
+
+#[cfg(not(tarpaulin_include))]
+impl From<sqlx::Error> for PageError {
+    #[cfg(not(tarpaulin_include))]
+    fn from(_: sqlx::Error) -> Self {
+        PageError::InternalServerError
+    }
+}
+
+impl ResponseError for PageError {
+    #[cfg(not(tarpaulin_include))]
+    fn error_response(&self) -> HttpResponse {
+        let body = match self.status_code() {
+            StatusCode::INTERNAL_SERVER_ERROR => &*INTERNAL_SERVER_ERROR,
+            _ => &*UNKNOWN_ERROR,
+        };
+        HttpResponseBuilder::new(self.status_code())
+            .content_type("text/html; charset=utf-8")
+            .body(body)
+    }
+
+    #[cfg(not(tarpaulin_include))]
+    fn status_code(&self) -> StatusCode {
+        match self {
+            PageError::InternalServerError => StatusCode::INTERNAL_SERVER_ERROR,
+        }
+    }
+}
+
+#[cfg(not(tarpaulin_include))]
+pub type PageResult<V> = std::result::Result<V, PageError>;
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn error_works() {
+        let resp: HttpResponse = PageError::InternalServerError.error_response();
+        assert_eq!(resp.status(), StatusCode::INTERNAL_SERVER_ERROR);
+    }
+}
