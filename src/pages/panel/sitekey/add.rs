@@ -28,6 +28,7 @@ pub struct IndexPage<'a> {
     pub levels: usize,
     pub form_title: &'a str,
     pub form_description: &'a str,
+    pub form_duration: usize,
 }
 
 const COMPONENT: &str = "Add Site Key";
@@ -40,6 +41,7 @@ impl<'a> Default for IndexPage<'a> {
             levels: 1,
             form_description: "",
             form_title: "Add Site Key",
+            form_duration: 30,
         }
     }
 }

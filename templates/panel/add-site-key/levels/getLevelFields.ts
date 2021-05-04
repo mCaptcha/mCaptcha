@@ -34,11 +34,11 @@ const getLevelFields = (id: number) => {
   const visitor_threshold = parseInt(visitorElement.value);
   const difficulty_factor = parseInt(difficultyElement.value);
 
-  if (!isNumber(visitor_threshold) || Number.isNaN(visitor_threshold)) {
+  if (Number.isNaN(visitor_threshold)) {
     throw new Error('visitor can contain nubers only');
   }
 
-  if (!isNumber(difficulty_factor) || Number.isNaN(difficulty_factor)) {
+  if (Number.isNaN(difficulty_factor)) {
     throw new Error('difficulty can contain nubers only');
   }
 

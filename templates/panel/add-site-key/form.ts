@@ -15,12 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import CONST from './const';
-import getNumLevels from './levels/getNumLevels';
+import {LEVELS} from './levels';
+
 import isBlankString from '../../utils/isBlankString';
 import getFormUrl from '../../utils/getFormUrl';
 import genJsonPayload from '../../utils/genJsonPayload';
-import {LEVELS} from './levels';
+import isNumber from '../../utils/isNumber';
 
 import VIEWS from '../../views/v1/routes';
 
@@ -55,11 +55,24 @@ const validateDescription = (e: Event) => {
   isBlankString(val, filed, e);
 };
 
+const validateDuration = (e: Event) => {
+  const duartionElement = <HTMLInputElement>document.getElementById('duration');
+  const duration = parseInt(duartionElement.value);
+  if (!isNumber(duration) || Number.isNaN(duration)) {
+    throw new Error('duration can contain nubers only');
+  }
+
+  if (duration <= 0) {
+    throw new Error('duration must be greater than zero');
+  }
+  return duration;
+};
+
 const submit = async (e: Event) => {
   e.preventDefault();
 
   validateDescription(e);
-//  validateLevels(e);
+  const duration = validateDuration(e);
 
   const formUrl = getFormUrl(FORM);
 
@@ -68,6 +81,7 @@ const submit = async (e: Event) => {
 
   const payload = {
     levels: levels,
+    duration,
   };
 
   console.debug(`[form submition] json payload: ${JSON.stringify(payload)}`);

@@ -34,7 +34,7 @@ pub mod routes {
     impl Docs {
         pub const fn new() -> Self {
             Docs {
-                home: "/docs",
+                home: "/docs/",
                 spec: "/docs/openapi.json",
                 assets: "/docs/{_:.*}",
             }
