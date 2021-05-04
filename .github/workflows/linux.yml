@@ -7,7 +7,6 @@ on:
     branches:
       - master
 
-
 jobs:
   build_and_test:
     strategy:
@@ -21,7 +20,6 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-
       postgres:
         image: postgres
         env:
@@ -80,7 +78,6 @@ jobs:
         env:
           DATABASE_URL: postgres://postgres:password@localhost:5432/postgres
 
-
       - name: tests
         uses: actions-rs/cargo@v1
         timeout-minutes: 40
@@ -89,7 +86,6 @@ jobs:
           args: --all --all-features --no-fail-fast
         env:
           DATABASE_URL: postgres://postgres:password@localhost:5432/postgres
-
 
       - name: Generate coverage file
         if: matrix.version == 'stable' && (github.ref == 'refs/heads/master' || github.event_name == 'pull_request')
@@ -102,8 +98,8 @@ jobs:
           # GIT_HASH is dummy value. I guess build.rs is skipped in tarpaulin
           # execution so this value is required for preventing meta tests from
           # panicking
-          GIT_HASH: 8e77345f1597e40c2e266cb4e6dee74888918a61 
-          OPEN_API_DOCS: 8e77345f1597e40c2e266cb4e6dee74888918a61 
+          GIT_HASH: 8e77345f1597e40c2e266cb4e6dee74888918a61
+          OPEN_API_DOCS: 8e77345f1597e40c2e266cb4e6dee74888918a61
           CACHE_BUSTER_FILE_MAP: '{"map":{"./static/bundle/main.js":"./prod/bundle/main.1417115E59909BE0A01040A45A398ADB09D928DF89CCF038FA44B14850442096.js"},"base_dir":"./prod"}'
 
       - name: Upload to Codecov
@@ -120,8 +116,8 @@ jobs:
           args: --no-deps --workspace --all-features
         env:
           DATABASE_URL: postgres://postgres:password@localhost:5432/postgres
-          GIT_HASH: 8e77345f1597e40c2e266cb4e6dee74888918a61  # dummy value
-          OPEN_API_DOCS: 8e77345f1597e40c2e266cb4e6dee74888918a61 
+          GIT_HASH: 8e77345f1597e40c2e266cb4e6dee74888918a61 # dummy value
+          OPEN_API_DOCS: 8e77345f1597e40c2e266cb4e6dee74888918a61
 
       - name: Deploy to GitHub Pages
         if: matrix.version == 'stable' && (github.repository == 'mCaptcha/guard')

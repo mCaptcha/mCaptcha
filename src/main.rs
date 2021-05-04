@@ -61,8 +61,9 @@ pub static VERSION: &str = env!("CARGO_PKG_VERSION");
 pub static PKG_NAME: &str = env!("CARGO_PKG_NAME");
 pub static PKG_DESCRIPTION: &str = env!("CARGO_PKG_DESCRIPTION");
 pub static PKG_HOMEPAGE: &str = env!("CARGO_PKG_HOMEPAGE");
-
 pub static VERIFICATION_PATH: &str = "mcaptchaVerificationChallenge.json";
+
+pub const CACHE_AGE: u32 = 365 * 24 * 3600;
 
 #[cfg(not(tarpaulin_include))]
 #[actix_web::main]

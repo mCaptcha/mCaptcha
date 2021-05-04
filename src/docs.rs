@@ -14,13 +14,14 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+use std::borrow::Cow;
 
 use actix_web::body::Body;
-use actix_web::{web, HttpResponse, Responder};
+use actix_web::{http::header, web, HttpResponse, Responder};
 use mime_guess::from_path;
 use rust_embed::RustEmbed;
 
-use std::borrow::Cow;
+use crate::CACHE_AGE;
 
 pub const DOCS: routes::Docs = routes::Docs::new();
 
@@ -62,6 +63,9 @@ pub fn handle_embedded_file(path: &str) -> HttpResponse {
                 Cow::Owned(bytes) => bytes.into(),
             };
             HttpResponse::Ok()
+                .set(header::CacheControl(vec![header::CacheDirective::MaxAge(
+                    CACHE_AGE,
+                )]))
                 .content_type(from_path(path).first_or_octet_stream().as_ref())
                 .body(body)
         }
