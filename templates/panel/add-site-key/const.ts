@@ -16,20 +16,33 @@
  */
 
 const LABEL_INNER_TEXT_WITHOUT_LEVEL = 'Level ';
+const LABEL_CLASS = 'sitekey-form__level-label';
+
 const INPUT_ID_WITHOUT_LEVEL = 'level';
-const LABEL_CLASS = 'sitekey-form__label';
+const LEVEL_INPUT_CLASS = 'sitekey-form__level-input';
+
 const VISITOR_WITHOUT_LEVEL = 'visitor';
 const DIFFICULTY_WITHOUT_LEVEL = 'difficulty';
-const LEVEL_CONTAINER_CLASS = "sitekey__level-container";
 
+const LEVEL_CONTAINER_CLASS = 'sitekey__level-container';
+const LEVEL_FIELDSET_ID_WITHOUT_LEVEL = 'level-group-';
+const LEGEND_CLASS = 'sitekey__level-title';
+
+const REMOVE_LEVEL_BUTTON_ID_WITHOUT_LEVEL = 'remove-level';
+const REMOVE_LEVEL_LABEL_TEXT = "Remove Level";
 
 const CONST = {
   LABEL_CLASS,
   INPUT_ID_WITHOUT_LEVEL,
+  LEVEL_INPUT_CLASS,
   LABEL_INNER_TEXT_WITHOUT_LEVEL,
   VISITOR_WITHOUT_LEVEL,
   DIFFICULTY_WITHOUT_LEVEL,
   LEVEL_CONTAINER_CLASS,
-}
+  LEVEL_FIELDSET_ID_WITHOUT_LEVEL,
+  LEGEND_CLASS,
+  REMOVE_LEVEL_BUTTON_ID_WITHOUT_LEVEL,
+  REMOVE_LEVEL_LABEL_TEXT,
+};
 
 export default CONST;

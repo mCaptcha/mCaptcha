@@ -92,23 +92,29 @@ mod tests {
     use crate::*;
 
     #[actix_rt::test]
-    async fn docs_work() {
-        const INDEX: &str = "/docs";
-        const FILE: &str = "/docs/favicon-32x32.png";
-        const SPEC: &str = "/docs/openapi.json";
+    async fn docs_works() {
+        const FILE: &str = "favicon-32x32.png";
 
         let mut app = test::init_service(App::new().configure(services)).await;
 
-        let resp =
-            test::call_service(&mut app, test::TestRequest::get().uri(INDEX).to_request()).await;
+        let resp = test::call_service(
+            &mut app,
+            test::TestRequest::get().uri(DOCS.home).to_request(),
+        )
+        .await;
         assert_eq!(resp.status(), StatusCode::OK);
 
-        let resp =
-            test::call_service(&mut app, test::TestRequest::get().uri(FILE).to_request()).await;
+        let resp = test::call_service(
+            &mut app,
+            test::TestRequest::get().uri(DOCS.spec).to_request(),
+        )
+        .await;
         assert_eq!(resp.status(), StatusCode::OK);
 
+        let uri = format!("{}{}", DOCS.home, FILE);
+
         let resp =
-            test::call_service(&mut app, test::TestRequest::get().uri(SPEC).to_request()).await;
+            test::call_service(&mut app, test::TestRequest::get().uri(&uri).to_request()).await;
         assert_eq!(resp.status(), StatusCode::OK);
     }
 }

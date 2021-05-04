@@ -14,9 +14,15 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import getNumLevels from './levels/getNumLevels';
 import validateLevel from './levels/validateLevel';
+import getNumLevels from './levels/getNumLevels';
+import  {LEVELS} from './levels/';
 import * as UpdateLevel from './levels/updateLevel';
+import {
+  getRemoveButtonHTML,
+  addRemoveLevelButtonEventListener,
+} from './removeLevelButton';
+import CONST from './const';
 
 const ADD_LEVEL_BUTTON = 'sitekey-form__level-add-level-button';
 
@@ -27,21 +33,27 @@ const ADD_LEVEL_BUTTON = 'sitekey-form__level-add-level-button';
  */
 const addLevel = (e: Event) => {
   const eventTarget = <HTMLElement>e.target;
-  const PARENT = <HTMLElement>eventTarget.parentElement;
+  const PARENT = <HTMLLabelElement>eventTarget.parentElement;
   const FIELDSET = <HTMLElement>PARENT.parentElement;
-  const numLevels = getNumLevels();
+  const onScreenLevel = getNumLevels();
 
-  const isValid = validateLevel(numLevels);
+  const isValid = validateLevel(onScreenLevel);
   console.log(`[addLevelButton] isValid: ${isValid}`);
   if (!isValid) {
     return console.error('Aborting level addition');
   }
 
-  PARENT.remove();
+  eventTarget.remove();
+  PARENT.innerHTML = getRemoveButtonHTML(onScreenLevel);
+  PARENT.htmlFor = `${CONST.REMOVE_LEVEL_BUTTON_ID_WITHOUT_LEVEL}${onScreenLevel}`;
+  //FIELDSET.innerHTML += getRemoveButtonHTML(numLevels);
+  addRemoveLevelButtonEventListener(onScreenLevel);
 
-  const newLevelHTML = getHtml(numLevels + 1);
+  //PARENT.remove();
+
+  const newLevelHTML = getHtml(onScreenLevel + 1);
   FIELDSET.insertAdjacentHTML('afterend', newLevelHTML);
-  UpdateLevel.register(numLevels);
+  UpdateLevel.register(onScreenLevel);
 
   addLevelButtonAddEventListener();
 };
@@ -60,8 +72,9 @@ const addLevelButtonAddEventListener = () => {
  */
 const getHtml = (level: number) => {
   console.debug(`[generating HTML getHtml]level: ${level}`);
+
   const HTML = `
-<fieldset class="sitekey__level-container">
+<fieldset class="sitekey__level-container" id="level-group-${level}">
   <legend class="sitekey__level-title">
 	  Level ${level}
   </legend>

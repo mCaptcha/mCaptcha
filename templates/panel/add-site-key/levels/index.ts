@@ -15,6 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import getNumLevels from './getNumLevels';
+
 /** Datatype represenging an mCaptcha level */
 export type Level = {
   difficulty_factor: number;
@@ -24,9 +26,13 @@ export type Level = {
 /** Datatype representing a collection of mCaptcha levels */
 class Levels {
   levels: Array<Level>;
+  numOnScreen: number;
+  numRecoreded: number;
 
   constructor() {
     this.levels = [];
+    this.numRecoreded = 0;
+    this.numOnScreen = getNumLevels();
   }
 
   add = (newLevel: Level) => {
@@ -66,6 +72,8 @@ class Levels {
       throw new Error(msg);
     } else {
       this.levels.push(newLevel);
+      this.numOnScreen += 1;
+      this.numRecoreded += 1;
     }
   };
 
@@ -79,6 +87,16 @@ export const LEVELS = (function() {
   return {
     /** get levels */
     getLevels: () => levels.get(),
+    /**
+     * get levels displayed on screen.
+     * This includes the one with add level button
+     * */
+    getOnScreen: () => levels.numOnScreen,
+    /**
+     * get levels recorded using LEVELS
+     * This excludes the one with add level button
+     * */
+    getRecored: () => levels.numRecoreded,
 
     /** add new level */
     add: (newLevel: Level) => levels.add(newLevel),
@@ -96,6 +114,47 @@ export const LEVELS = (function() {
             tmpLevel.add(levels.levels[i]);
           }
         }
+        levels.levels = tmpLevel.levels;
+        console.log(`post update:`);
+        LEVELS.print();
+        return true;
+      } catch (e) {
+        console.log(e);
+        return false;
+      }
+    },
+
+    print: () =>
+      levels.levels.forEach(level =>
+        console.debug(
+          `difficulty_factor: ${level.difficulty_factor} visitor ${level.visitor_threshold}`,
+        ),
+      ),
+
+    /** remove level */
+    remove: (id: number) => {
+      console.debug(`[LEVELS] received order to remove ${id} element`);
+
+      const tmpLevel = new Levels();
+
+      id -= 1;
+      try {
+        for (let i = 0; i < levels.levels.length; i++) {
+          if (id != i) {
+            tmpLevel.add(levels.levels[i]);
+          } else {
+            console.debug(`[LEVELS] removing ${i} element`);
+            const rmElement = levels.levels[i];
+            console.debug(
+              `[LEVELS] removing element: 
+              difficulty_factor: ${rmElement.difficulty_factor} 
+              visitor_threshold: ${rmElement.visitor_threshold}`,
+            );
+          }
+        }
+        levels.levels = tmpLevel.levels;
+        console.debug('Post remove:');
+        LEVELS.print();
         return true;
       } catch (e) {
         console.log(e);
