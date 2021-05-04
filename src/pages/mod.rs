@@ -21,7 +21,7 @@ mod auth;
 mod panel;
 pub mod routes;
 
-pub const TITLE: &str = "mCaptcha";
+pub const NAME: &str = "mCaptcha";
 
 pub fn services(cfg: &mut ServiceConfig) {
     auth::services(cfg);

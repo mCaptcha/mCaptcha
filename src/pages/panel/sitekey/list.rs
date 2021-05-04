@@ -20,19 +20,13 @@ use sailfish::TemplateOnce;
 
 #[derive(TemplateOnce, Clone)]
 #[template(path = "panel/site-keys/index.html")]
-pub struct IndexPage<'a> {
-    pub name: &'a str,
-    pub title: &'a str,
-}
+pub struct IndexPage;
 
-const TITLE: &str = "Add Site Key";
+const PAGE: &str = "SiteKeys";
 
-impl<'a> Default for IndexPage<'a> {
+impl Default for IndexPage {
     fn default() -> Self {
-        IndexPage {
-            name: "mCaptcha",
-            title: TITLE,
-        }
+        IndexPage
     }
 }
 

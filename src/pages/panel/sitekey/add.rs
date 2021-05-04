@@ -16,39 +16,37 @@
 */
 
 use actix_web::{HttpResponse, Responder};
+use lazy_static::lazy_static;
 use sailfish::TemplateOnce;
 
-use crate::pages::TITLE;
+const PAGE: &str = "Add Sitekey";
+
+lazy_static! {
+    static ref INDEX: String = IndexPage::default().render_once().unwrap();
+}
 
 #[derive(TemplateOnce, Clone)]
 #[template(path = "panel/add-site-key/index.html")]
 pub struct IndexPage<'a> {
-    pub name: &'a str,
-    pub title: &'a str,
     pub levels: usize,
     pub form_title: &'a str,
     pub form_description: &'a str,
     pub form_duration: usize,
 }
 
-const COMPONENT: &str = "Add Site Key";
-
 impl<'a> Default for IndexPage<'a> {
     fn default() -> Self {
         IndexPage {
-            name: TITLE,
-            title: COMPONENT,
             levels: 1,
             form_description: "",
-            form_title: "Add Site Key",
+            form_title: PAGE,
             form_duration: 30,
         }
     }
 }
 
 pub async fn add_sitekey() -> impl Responder {
-    let body = IndexPage::default().render_once().unwrap();
     HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
-        .body(body)
+        .body(&*INDEX)
 }

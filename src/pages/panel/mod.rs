@@ -16,28 +16,25 @@
 */
 
 use actix_web::{HttpResponse, Responder};
+use lazy_static::lazy_static;
 use sailfish::TemplateOnce;
-
-use crate::pages::TITLE;
 
 pub mod sitekey;
 
 #[derive(TemplateOnce, Clone)]
 #[template(path = "panel/index.html")]
-pub struct IndexPage<'a> {
-    pub name: &'a str,
-    pub title: &'a str,
+pub struct IndexPage;
+
+const PAGE: &str = "Dashboard";
+
+impl Default for IndexPage {
+    fn default() -> Self {
+        IndexPage
+    }
 }
 
-const COMPONENT: &str = "Dashboard";
-
-impl<'a> Default for IndexPage<'a> {
-    fn default() -> Self {
-        IndexPage {
-            name: TITLE,
-            title: COMPONENT,
-        }
-    }
+lazy_static! {
+    static ref INDEX: String = IndexPage::default().render_once().unwrap();
 }
 
 pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
@@ -49,10 +46,9 @@ pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
 }
 
 async fn panel() -> impl Responder {
-    let body = IndexPage::default().render_once().unwrap();
     HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
-        .body(body)
+        .body(&*INDEX)
 }
 
 pub mod routes {

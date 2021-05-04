@@ -16,29 +16,27 @@
 */
 
 use actix_web::{HttpResponse, Responder};
+use lazy_static::lazy_static;
 use sailfish::TemplateOnce;
 
-use crate::pages::TITLE;
-
-#[derive(TemplateOnce, Clone)]
+#[derive(Clone, TemplateOnce)]
 #[template(path = "auth/register/index.html")]
-struct IndexPage<'a> {
-    name: &'a str,
-    title: &'a str,
-}
+struct IndexPage;
 
-impl<'a> Default for IndexPage<'a> {
+const PAGE: &str = "Join";
+
+impl Default for IndexPage {
     fn default() -> Self {
-        IndexPage {
-            name: TITLE,
-            title: "Join",
-        }
+        IndexPage
     }
 }
 
+lazy_static! {
+    static ref INDEX: String = IndexPage::default().render_once().unwrap();
+}
+
 pub async fn join() -> impl Responder {
-    let body = IndexPage::default().render_once().unwrap();
     HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
-        .body(body)
+        .body(&*INDEX)
 }
