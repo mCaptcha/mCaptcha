@@ -15,10 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-@import '../../reset';
-@import '../../vars';
-@import '../../components/button';
-@import '../../components/forms';
+@import '../../../reset';
+@import '../../../vars';
+@import '../../../components/button';
+@import '../../../components/forms';
 
 .sitekey-form {
   display: flex;

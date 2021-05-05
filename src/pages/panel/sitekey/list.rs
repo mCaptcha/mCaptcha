@@ -24,7 +24,7 @@ use crate::errors::*;
 use crate::Data;
 
 #[derive(TemplateOnce, Clone)]
-#[template(path = "panel/site-keys/index.html")]
+#[template(path = "panel/sitekey/list/index.html")]
 pub struct IndexPage {
     sitekeys: SiteKeys,
 }

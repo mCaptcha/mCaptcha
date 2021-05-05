@@ -37,18 +37,18 @@ lazy_static! {
     static ref INDEX: String = IndexPage::default().render_once().unwrap();
 }
 
+async fn panel() -> impl Responder {
+    HttpResponse::Ok()
+        .content_type("text/html; charset=utf-8")
+        .body(&*INDEX)
+}
+
 pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
     use crate::define_resource;
     use crate::PAGES;
 
     define_resource!(cfg, PAGES.panel.home, Methods::ProtectGet, panel);
     sitekey::services(cfg);
-}
-
-async fn panel() -> impl Responder {
-    HttpResponse::Ok()
-        .content_type("text/html; charset=utf-8")
-        .body(&*INDEX)
 }
 
 pub mod routes {

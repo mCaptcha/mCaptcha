@@ -20,7 +20,7 @@ import {Router} from './router';
 import * as login from './auth/login';
 import * as register from './auth/register';
 import * as panel from './panel/index';
-import * as addSiteKey from './panel/add-site-key/';
+import * as addSiteKey from './panel/sitekey/add/';
 
 import VIEWS from './views/v1/routes';
 
@@ -29,8 +29,9 @@ import './panel/main.scss';
 import './panel/header/sidebar/main.scss';
 import './panel/taskbar/main.scss';
 import './panel/help-banner/main.scss';
-import './panel/add-site-key/main.scss';
-import './panel/site-keys/main.scss';
+import './panel/sitekey/add/main.scss';
+import './panel/sitekey/list/main.scss';
+
 import './errors/main.scss';
 
 const router = new Router();
@@ -41,3 +42,6 @@ router.register(VIEWS.loginUser, login.index);
 router.register(VIEWS.addSiteKey, addSiteKey.index);
 
 router.route();
+
+
+

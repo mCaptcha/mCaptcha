@@ -15,9 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-@import '../../reset';
-@import '../../vars';
-@import '../../components/box';
+@import '../../../reset';
+@import '../../../vars';
+@import '../../../components/box';
 
 .sitekey-list__box {
   @include box;
