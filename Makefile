@@ -13,7 +13,7 @@ docs:
 	cargo doc --no-deps --workspace --all-features
 
 frontend-dev:
-	yarn start
+	yarn build
 
 frontend:
 	yarn build

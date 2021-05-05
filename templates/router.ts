@@ -15,6 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+/** Removes trailing slashed from URI */
 const normalizeUri = (uri: string) => {
   if (!uri) {
     throw new Error('uri is empty');
@@ -31,17 +32,28 @@ const normalizeUri = (uri: string) => {
   return uri;
 };
 
+/** URI<-> Fn mapping type */
 type routeTuple = {
   uri: string;
   fn: () => void;
 };
 
+/** 
+ * Router that selectively executes fucntions
+ * based on window.location.pathname 
+ * */
 export class Router {
   routes: Array<routeTuple>;
   constructor() {
     this.routes = [];
   }
 
+  /** 
+   * registers a route-function pair with Router 
+   * @param {string} uri - route to be registered
+   * @param {function} fn: - function to be registered when window.locatin.path
+   * matches uri
+   * */
   register(uri: string, fn: () => void) {
     // typechecks
     if (!uri) {
@@ -73,12 +85,15 @@ export class Router {
     this.routes.push(route);
   }
 
+  /**
+   * executes registered function with route
+   * matches window.pathname.location
+   * */
   route() {
     this.routes.forEach(route => {
       // normalize for trailing slash
-      let pattern = new RegExp(`^${route.uri}$`);
-      let path = window.location.pathname;
-      path = normalizeUri(path);
+      const pattern = new RegExp(`^${route.uri}$`);
+      const path = normalizeUri(window.location.pathname);
       if (path.match(pattern)) {
         //return route.fn.call();
         return route.fn();

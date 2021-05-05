@@ -51,7 +51,7 @@ lazy_static! {
     pub static ref SETTINGS: Settings = Settings::new().unwrap();
     pub static ref S: String = env::var("S").unwrap();
     pub static ref FILES: FileMap = FileMap::new();
-    pub static ref JS: &'static str = FILES.get("./static-assets/bundle/main.js").unwrap();
+    pub static ref JS: &'static str = FILES.get("./static-assets/bundle/bundle.js").unwrap();
     pub static ref CSS: &'static str = FILES.get("./static-assets/bundle/main.css").unwrap();
 }
 

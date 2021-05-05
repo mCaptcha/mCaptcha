@@ -42,6 +42,3 @@ router.register(VIEWS.loginUser, login.index);
 router.register(VIEWS.addSiteKey, addSiteKey.index);
 
 router.route();
-
-
-
