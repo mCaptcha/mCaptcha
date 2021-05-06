@@ -1,5 +1,41 @@
 {
-    "compilerOptions": {
-        "sourceMap": true
-    }
+  "compilerOptions": {
+    "incremental": true,
+    "target": "es5",
+    "module": "es6",
+    "allowJs": false,
+    "sourceMap": true,
+    "outDir": "./static-assets/bundle",
+    "rootDir": "./templates/",
+    "removeComments": true,
+    "moduleResolution": "node",
+
+    //"strict": true,
+    "noImplicitAny": true,
+    //"strictNullChecks": true,
+    //"strictFunctionTypes": true,
+    //"strictBindCallApply": true,
+    //"strictPropertyInitialization": true,
+    //"noImplicitThis": true,
+    //"alwaysStrict": true,
+
+    //"noUnusedLocals": true,
+    //"noUnusedParameters": true,
+    //"noImplicitReturns": true,
+    //"noFallthroughCasesInSwitch": true,
+    //"noUncheckedIndexedAccess": true,
+    //"noPropertyAccessFromIndexSignature": true,
+
+    "esModuleInterop": true,
+
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "exclude": [
+    "node_modules",
+    "static",
+    "docs",
+    "jest.config.ts",
+    "**/*.test.ts"
+  ]
 }
