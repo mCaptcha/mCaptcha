@@ -19,6 +19,80 @@ import {Level} from './levels/index';
 import CONST from './const';
 import addLevelButtonAddEventListener from './addLevelButton';
 
+export const level1: Level = {
+  difficulty_factor: 200,
+  visitor_threshold: 500,
+};
+
+export const level1diffErr: Level = {
+  difficulty_factor: 100,
+  visitor_threshold: 600,
+};
+
+export const level1visErr: Level = {
+  difficulty_factor: 600,
+  visitor_threshold: 400,
+};
+
+export const level2: Level = {
+  difficulty_factor: 400,
+  visitor_threshold: 700,
+};
+
+/** add level to DOM by filling add level form and clicking "Add" button */
+export const addLevel = (visitor: number, diff: number) => {
+  fillAddLevel(visitor, diff);
+  const addLevelButton = <HTMLElement>(
+    document.querySelector(`.${CONST.ADD_LEVEL_BUTTON}`)
+  );
+  addLevelButton.click();
+};
+
+/** Fill add level form without clicking add button */
+export const fillAddLevel = (visitor: number|string, diff: number|string) => {
+  addLevelButtonAddEventListener();
+
+  const level = getNumLevels();
+  const visitorField = <HTMLInputElement>(
+    document.getElementById(`${CONST.VISITOR_WITHOUT_LEVEL}${level}`)
+  );
+  visitorField.value = visitor.toString();
+
+  const diffField = <HTMLInputElement>(
+    document.getElementById(`${CONST.DIFFICULTY_WITHOUT_LEVEL}${level}`)
+  );
+  diffField.value = diff.toString();
+};
+
+/** Fill add level form without clicking add button */
+export const editLevel = (level: number, visitor?: number, diff?: number) => {
+  if (visitor !== undefined) {
+    const visitorField = <HTMLInputElement>(
+      document.getElementById(`${CONST.VISITOR_WITHOUT_LEVEL}${level}`)
+    );
+    visitorField.value = visitor.toString();
+  }
+
+  if (diff !== undefined) {
+    const diffField = <HTMLInputElement>(
+      document.getElementById(`${CONST.DIFFICULTY_WITHOUT_LEVEL}${level}`)
+    );
+    diffField.value = diff.toString();
+  }
+};
+
+/** Fill description in add level form */
+export const fillDescription = (description: string) => {
+  const inputElement = <HTMLInputElement>document.getElementById('description');
+  inputElement.value = description;
+};
+
+/** Fill duration in add level form */
+export const fillDuration = (duration: number | string) => {
+  const inputElement = <HTMLInputElement>document.getElementById('duration');
+  inputElement.value = duration.toString();
+};
+
 export const getAddForm = () => `
 <form class="sitekey-form" action="/api/v1/mcaptcha/levels/add" method="post">
   <h1 class="form__title">
@@ -89,65 +163,3 @@ export const getAddForm = () => `
   <button class="sitekey-form__submit" type="submit">Submit</button>
 </form>
 `;
-
-/** add level to DOM by filling add level form and clicking "Add" button */
-export const addLevel = (visitor: number, diff: number) => {
-  fillAddLevel(visitor, diff);
-  const addLevelButton = <HTMLElement>(
-    document.querySelector(`.${CONST.ADD_LEVEL_BUTTON}`)
-  );
-  addLevelButton.click();
-};
-
-/** Fill add level form without clicking add button */
-export const fillAddLevel = (visitor: number, diff: number) => {
-  addLevelButtonAddEventListener();
-
-  const level = getNumLevels();
-  const visitorField = <HTMLInputElement>(
-    document.getElementById(`${CONST.VISITOR_WITHOUT_LEVEL}${level}`)
-  );
-  visitorField.value = visitor.toString();
-
-  const diffField = <HTMLInputElement>(
-    document.getElementById(`${CONST.DIFFICULTY_WITHOUT_LEVEL}${level}`)
-  );
-  diffField.value = diff.toString();
-};
-
-/** Fill add level form without clicking add button */
-export const editLevel = (level: number, visitor?: number, diff?: number) => {
-  if (visitor !== undefined) {
-    const visitorField = <HTMLInputElement>(
-      document.getElementById(`${CONST.VISITOR_WITHOUT_LEVEL}${level}`)
-    );
-    visitorField.value = visitor.toString();
-  }
-
-  if (diff !== undefined) {
-    const diffField = <HTMLInputElement>(
-      document.getElementById(`${CONST.DIFFICULTY_WITHOUT_LEVEL}${level}`)
-    );
-    diffField.value = diff.toString();
-  }
-};
-
-export const level1: Level = {
-  difficulty_factor: 200,
-  visitor_threshold: 500,
-};
-
-export const level1diffErr: Level = {
-  difficulty_factor: 100,
-  visitor_threshold: 600,
-};
-
-export const level1visErr: Level = {
-  difficulty_factor: 600,
-  visitor_threshold: 400,
-};
-
-export const level2: Level = {
-  difficulty_factor: 400,
-  visitor_threshold: 700,
-};

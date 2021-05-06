@@ -17,19 +17,16 @@
 
 /** Removes trailing slashed from URI */
 const normalizeUri = (uri: string) => {
-  if (typeof uri == 'string') {
-    if (uri.trim().length == 0) {
-      throw new Error('uri is empty');
-    }
-
-    let uriLength = uri.length;
-    if (uri[uriLength - 1] == '/') {
-      uri = uri.slice(0, uriLength - 1);
-    }
-    return uri;
-  } else {
-    throw new TypeError(`Only strings are permitted in URI`);
+  uri = uri.trim();
+  if (uri.length == 0) {
+    throw new Error('uri is empty');
   }
+
+  let uriLength = uri.length;
+  if (uri[uriLength - 1] == '/') {
+    uri = uri.slice(0, uriLength - 1);
+  }
+  return uri;
 };
 
 /** URI<-> Fn mapping type */
@@ -55,28 +52,17 @@ export class Router {
    * matches uri
    * */
   register(uri: string, fn: () => void) {
-    // typechecks
-    if (uri.trim().length == 0) {
-      throw new Error('uri is empty');
-    }
-
-    if (typeof uri !== 'string') {
-      throw new TypeError('URI must be a string');
-    }
-
-    if (typeof fn !== 'function') {
-      throw new TypeError('a callback fn must be provided');
-    }
-
     uri = normalizeUri(uri);
 
-    if (this.routes.find(route => {
-      if (route.uri == uri) {
-        return true;
-      }
-    })) {
-        throw new Error('URI exists');
-    };
+    if (
+      this.routes.find(route => {
+        if (route.uri == uri) {
+          return true;
+        }
+      })
+    ) {
+      throw new Error('URI exists');
+    }
 
     const route: routeTuple = {
       uri,
@@ -92,11 +78,19 @@ export class Router {
   route() {
     const path = normalizeUri(window.location.pathname);
 
+    let fn: () => void | undefined;
+
     this.routes.forEach(route => {
       const pattern = new RegExp(`^${route.uri}$`);
       if (path.match(pattern)) {
-        return route.fn();
+       fn =  route.fn;
       }
     });
+
+    if (fn === undefined) {
+    throw new Error("Route isn't registered");
+    }
+
+    return fn();
   }
 }

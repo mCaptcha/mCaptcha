@@ -15,40 +15,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import getLevelFields from './getLevelFields';
-import {
-  getAddForm,
-  level1,
-  level2,
-  fillAddLevel,
-  addLevel,
-} from '../setupTests';
+import validateDescription from './validateDescription';
+import {getAddForm, fillDescription} from '../setupTests';
 
 document.body.innerHTML = getAddForm();
 
-const visNumErr = 'visitor can contain nubers only';
-const diffNumErr = 'difficulty can contain nubers only';
+const emptyErr = "can't be empty";
 
-it('get levels fields works', () => {
-  addLevel(level1.visitor_threshold, level1.difficulty_factor);
-  expect(getLevelFields(1)).toEqual(level1);
-
-  // NaN visitor
+it('validateDescription workds', () => {
   try {
-    fillAddLevel('test', level2.difficulty_factor);
-    getLevelFields(2);
+    const event = new Event('submit');
+    validateDescription(event);
   } catch (e) {
-    expect(e.message).toBe(visNumErr);
+    expect(e.message).toContain(emptyErr);
   }
 
-  // Nan difficulty_factor
-  try {
-    fillAddLevel(level2.visitor_threshold, 'fooasdads');
-    getLevelFields(2);
-  } catch (e) {
-    expect(e.message).toBe(diffNumErr);
-  }
-
-  addLevel(level2.visitor_threshold, level2.difficulty_factor);
-  expect(getLevelFields(2)).toEqual(level2);
+  // fill and validate
+  fillDescription('testing');
+  const event = new Event('submit');
+  validateDescription(event);
 });

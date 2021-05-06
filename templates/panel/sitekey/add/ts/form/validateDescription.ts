@@ -15,26 +15,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import getFormUrl from './getFormUrl';
-import {getLoginFormHtml} from '../setUpTests';
+import isBlankString from '../../../../../utils/isBlankString';
 
-'use strict';
+const validateDescription = (e: Event) => {
+  const inputElement = <HTMLInputElement>document.getElementById('description');
+  const val = inputElement.value;
+  const filed = 'Description';
+  isBlankString(val, filed, e);
+  return val;
+};
 
-const formClassName = 'form__box';
-const formURL = '/api/v1/signin';
-
-document.body.innerHTML = getLoginFormHtml();
-
-const form = document.querySelector('form');
-form.action = formURL;
-form.className = formClassName;
-
-it('getFromUrl workds', () => {
-  const name = `.${formClassName}`;
-  expect(getFormUrl(name)).toContain(formURL);
-
-  const form = <HTMLFormElement>document.querySelector('form');
-  expect(getFormUrl(form)).toContain(formURL);
-
-  expect(getFormUrl()).toContain(formURL);
-});
+export default validateDescription;

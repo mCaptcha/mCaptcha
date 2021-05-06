@@ -31,6 +31,10 @@ const settingsRoute = '/settings/';
 const settingsResult = 'hello from settings';
 const settings = () => (result.result = settingsResult);
 
+const UriExistsErr = 'URI exists';
+const emptyUriErr = 'uri is empty';
+const unregisteredRouteErr = "Route isn't registered";
+
 const router = new Router();
 router.register(panelRoute, panel);
 router.register(settingsRoute, settings);
@@ -43,9 +47,25 @@ it('checks if Router works', () => {
   router.route();
   expect(result.result).toBe(panelResult);
 
+  // duplicate URI registration
   try {
     router.register(settingsRoute, settings);
   } catch (e) {
-    expect(e.message).toBe('URI exists');
+    expect(e.message).toBe(UriExistsErr);
+  }
+
+  // empty URI registration
+  try {
+    router.register('      ', settings);
+  } catch (e) {
+    expect(e.message).toBe(emptyUriErr);
+  }
+
+  // routing to unregistered route
+  try {
+    window.history.pushState({}, `Page Doesn't Exist`, `/page/doesnt/exist`);
+    router.route();
+  } catch (e) {
+    expect(e.message).toBe(unregisteredRouteErr);
   }
 });
