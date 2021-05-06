@@ -15,17 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-@import '../../reset';
-@import '../../vars';
-@import '../../components/button';
-@import '../../components/inner-container';
-@import '../../components/main';
-
-.panel-main {
-  @include main;
-  margin-left: 14%;
-}
-
-.inner-container {
-  @include inner-container;
+@mixin inner-container {
+  display: flex;
+  box-sizing: border-box;
+  max-width: 50%;
+  margin: 50px auto;
+  border-radius: 5px;
 }

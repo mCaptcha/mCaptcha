@@ -17,15 +17,46 @@
 
 @import '../../reset';
 @import '../../vars';
-@import '../../components/button';
 @import '../../components/inner-container';
 @import '../../components/main';
 
-.panel-main {
-  @include main;
-  margin-left: 14%;
+body {
+  background-color: $backdrop;
 }
 
-.inner-container {
+.auth-inner-container {
   @include inner-container;
+  flex-direction: column;
+  margin: 0px, auto;
+  width: $auth-content-width;
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+.auth-main {
+  @include main;
+  align-items: center;
+}
+
+.auth__logo {
+  width: 190px;
+  display: block;
+  margin: auto;
+  position: relative;
+  transform: translate(0%, -40.9%);
+}
+
+.auth__secondary-action__banner {
+  display: block;
+  margin: auto;
+  text-align: center;
+  width: 80%;
+  margin: 20px auto auto auto;
+}
+
+.auth__secondary-action__link {
+  text-decoration: none;
+  color: rgb(3, 102, 214);
 }

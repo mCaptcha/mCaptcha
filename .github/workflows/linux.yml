@@ -42,6 +42,7 @@ jobs:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
+            node_modules
             target
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 

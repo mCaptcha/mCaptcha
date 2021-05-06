@@ -14,18 +14,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+@import '../vars';
 
-@import '../../reset';
-@import '../../vars';
-@import '../../components/button';
-@import '../../components/inner-container';
-@import '../../components/main';
-
-.panel-main {
-  @include main;
-  margin-left: 14%;
-}
-
-.inner-container {
-  @include inner-container;
+@mixin main {
+  min-height: 100%;
+  background-color: $backdrop;
+  padding-bottom: 20px;
 }

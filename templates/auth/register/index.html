@@ -1,13 +1,24 @@
 <. include!("../../components/headers.html"); .>
-<div class="form-container">
-    <img src="<.= crate::FILES.get("./static-assets/img/icon-trans.png").unwrap().>" class="form__logo" alt="" />
-  <h2 class="form__brand">Join mCaptcha</h2>
+<main class="auth-main">
+  <div class="auth-inner-container">
 
-  <form method="POST" action="<.= crate::V1_API_ROUTES.auth.register .>"  class="form__box" id="form">
-    <label class="form__in-group" for="username"
+    <img src="<.=
+    crate::FILES.get("./static-assets/img/icon-trans.png").unwrap().>"
+    class="auth__logo" alt="mcaptcha logo" />
+
+
+  <form
+	  method="POST"
+	  action="<.= crate::V1_API_ROUTES.auth.register .>"
+	  class="sitekey-form" id="form">
+	<h1 class="form__title">
+      Join mCaptcah
+    </h1>
+
+    <label class="sitekey-form__label" for="username"
       >Username
       <input
-        class="form__in-field"
+        class="sitekey-form__input"
         id="username"
         type="text"
         name="username"
@@ -17,10 +28,10 @@
       />
     </label>
 
-    <label class="form__in-group" for="username"
+    <label  class="sitekey-form__label" for="username"
       >Email(optional)
       <input
-        class="form__in-field"
+        class="sitekey-form__input"
         id="email"
         type="email"
         name="email"
@@ -28,10 +39,10 @@
       />
     </label>
 
-    <label for="password" class="form__in-group"
-      >Password
+    <label   class="sitekey-form__label"  for="password" 
+		>Password
       <input
-        class="form__in-field"
+        class="sitekey-form__input"
         type="password"
         id="password"
         name="password"
@@ -40,10 +51,10 @@
       />
     </label>
 
-    <label for="password" class="form__in-group"
+    <label for="password" class="sitekey-form__label" 
       >Re-enter Password
       <input
-        class="form__in-field"
+        class="sitekey-form__input"
         type="password"
         id="password-check"
         name="password-check"
@@ -51,13 +62,11 @@
         required
       />
     </label>
-        <input type="submit" class="form__submit-button" value="Sign up" />
+        <input type="submit" class="sitekey-form__submit" value="Sign up" />
   </form>
-  <div class="form__secondary-action">
-    <p class="form__secondary-action__banner">
+    <p class="auth__secondary-action__banner">
       Already have an account?
-      <a href="<.= crate::PAGES.auth.login .>" class="form__secondary-action__link">Log in</a>
+      <a href="<.= crate::PAGES.auth.login .>" class="auth__secondary-action__link">Log in</a>
     </p>
-  </div>
 </div>
 <. include!("../../components/footers.html"); .>

@@ -1,45 +1,54 @@
 <. include!("../../components/headers.html"); .>
-<div class="form-container">
-    <img src="<.= crate::FILES.get("./static-assets/img/icon-trans.png").unwrap().>" class="form__logo" alt="" />
-  <h2 class="form__brand">Sign in to mCaptcha</h2>
+<main class="auth-main">
+  <div class="auth-inner-container">
 
-  <form method="POST" action="<.= crate::V1_API_ROUTES.auth.login .>" class="form__box" id="form">
-    <label class="form__in-group" for="username"
-      >Username
+    <img src="<.=
+    crate::FILES.get("./static-assets/img/icon-trans.png").unwrap().>"
+    class="auth__logo" alt="mcaptcha logo" />
+
+  <form
+    class="sitekey-form"
+    method="POST"
+    action="<.= crate::V1_API_ROUTES.auth.login .>"
+    id="form"
+  >
+    <h1 class="form__title">
+      Signin to mCaptcha
+    </h1>
+    <label class="sitekey-form__label" for="username">
+      Username
       <input
-        class="form__in-field"
-        id="username"
+        class="sitekey-form__input"
         type="text"
         name="username"
-        required=""
-        autofocus="true"
+        id="username"
+        required
       />
     </label>
 
-    <label for="password" class="form__in-group"
-      >Password
+    <label class="sitekey-form__label" for="duration">
+      Password
       <input
-        class="form__in-field"
+        class="sitekey-form__input"
         type="password"
-        id="password"
         name="password"
-        required=""
+        id="password"
+        required
       />
-      <!--
-          <a class="form__pw-recovery" -href="/recovert/password"
-            >Forgot password?</a
-          >
-          -->
     </label>
-        <input type="submit" class="form__submit-button" value="Sign in" />
+
+    <input type="submit" class="sitekey-form__submit" value="Sign in" />
   </form>
-  <div class="form__secondary-action">
-    <p class="form__secondary-action__banner">
+    <p class="auth__secondary-action__banner">
       New to mCaptcha?
-      <a href="<.= crate::PAGES.auth.join .>" class="form__secondary-action__link"
-        >Create account</a
-      >
+      <a 
+		  href="<.= crate::PAGES.auth.join .>"
+		  class="auth__secondary-action__link">
+		  Create an account
+	  </a>
     </p>
   </div>
-</div>
+
+</main>
+
 <. include!("../../components/footers.html"); .>

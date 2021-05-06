@@ -83,12 +83,12 @@ export class Router {
     this.routes.forEach(route => {
       const pattern = new RegExp(`^${route.uri}$`);
       if (path.match(pattern)) {
-       fn =  route.fn;
+        fn = route.fn;
       }
     });
 
     if (fn === undefined) {
-    throw new Error("Route isn't registered");
+      throw new Error("Route isn't registered");
     }
 
     return fn();

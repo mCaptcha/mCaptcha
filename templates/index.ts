@@ -24,7 +24,7 @@ import * as addSiteKey from './panel/sitekey/add/ts';
 
 import VIEWS from './views/v1/routes';
 
-import './auth/css/forms.scss';
+import './auth/css/main.scss';
 import './panel/css/main.scss';
 import './panel/header/sidebar/main.scss';
 import './panel/taskbar/main.scss';
