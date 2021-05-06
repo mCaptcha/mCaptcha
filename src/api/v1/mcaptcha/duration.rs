@@ -140,7 +140,7 @@ mod tests {
         }
 
         register_and_signin(NAME, EMAIL, PASSWORD).await;
-        let (data, _, signin_resp, token_key) = add_token_util(NAME, PASSWORD).await;
+        let (data, _, signin_resp, token_key) = add_levels_util(NAME, PASSWORD).await;
         let cookies = get_cookie!(signin_resp);
         let mut app = get_app!(data).await;
 

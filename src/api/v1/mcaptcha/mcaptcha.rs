@@ -26,7 +26,6 @@ use crate::Data;
 
 pub mod routes {
     pub struct MCaptcha {
-        pub add: &'static str,
         pub delete: &'static str,
         pub get_token: &'static str,
         pub update_key: &'static str,
@@ -35,7 +34,6 @@ pub mod routes {
     impl MCaptcha {
         pub const fn new() -> MCaptcha {
             MCaptcha {
-                add: "/api/v1/mcaptcha/add",
                 update_key: "/api/v1/mcaptcha/update/key",
                 get_token: "/api/v1/mcaptcha/get",
                 delete: "/api/v1/mcaptcha/delete",
@@ -48,12 +46,6 @@ pub fn services(cfg: &mut web::ServiceConfig) {
     use crate::define_resource;
     use crate::V1_API_ROUTES;
 
-    define_resource!(
-        cfg,
-        V1_API_ROUTES.mcaptcha.add,
-        Methods::ProtectPost,
-        add_mcaptcha
-    );
     define_resource!(
         cfg,
         V1_API_ROUTES.mcaptcha.update_key,
@@ -137,15 +129,6 @@ pub async fn add_mcaptcha_util(
         }
     }
     Ok(resp)
-}
-
-// TODO deprecate this
-async fn add_mcaptcha(data: web::Data<Data>, id: Identity) -> ServiceResult<impl Responder> {
-    let duration = 30;
-    let description = "dummy";
-
-    let resp = add_mcaptcha_util(duration, description, &data, &id).await?;
-    Ok(HttpResponse::Ok().json(resp))
 }
 
 async fn update_token(
@@ -275,7 +258,7 @@ mod tests {
 
         // 1. add mcaptcha token
         register_and_signin(NAME, EMAIL, PASSWORD).await;
-        let (data, _, signin_resp, token_key) = add_token_util(NAME, PASSWORD).await;
+        let (data, _, signin_resp, token_key) = add_levels_util(NAME, PASSWORD).await;
         let cookies = get_cookie!(signin_resp);
         let mut app = get_app!(data).await;
 
@@ -303,7 +286,7 @@ mod tests {
 
         // 1. add mcaptcha token
         register_and_signin(NAME, EMAIL, PASSWORD).await;
-        let (data, _, signin_resp, token_key) = add_token_util(NAME, PASSWORD).await;
+        let (data, _, signin_resp, token_key) = add_levels_util(NAME, PASSWORD).await;
         let cookies = get_cookie!(signin_resp);
         let mut app = get_app!(data).await;
 

@@ -112,37 +112,6 @@ pub async fn signin<'a>(name: &'a str, password: &str) -> (data::Data, Login, Se
     (data, creds, signin_resp)
 }
 
-pub async fn add_token_util(
-    name: &str,
-    password: &str,
-) -> (data::Data, Login, ServiceResponse, MCaptchaDetails) {
-    let (data, creds, signin_resp) = signin(name, password).await;
-    let cookies = get_cookie!(signin_resp);
-    let mut app = get_app!(data).await;
-
-    //    // 1. add mcaptcha token
-    //    let domain = MCaptchaID {
-    //        name: token_name.into(),
-    //    };
-    let add_token_resp = test::call_service(
-        &mut app,
-        post_request!(ROUTES.mcaptcha.add)
-            .cookie(cookies.clone())
-            .to_request(),
-    )
-    .await;
-    //    let status = add_token_resp.status();
-    //    let txt: errortoresponse = test::read_body_json(add_token_resp).await;
-    //    println!("{:?}", txt.error);
-    //
-    assert_eq!(add_token_resp.status(), StatusCode::OK);
-    let token_key: MCaptchaDetails = test::read_body_json(add_token_resp).await;
-
-    //    assert_eq!(status, StatusCode::OK);
-
-    (data, creds, signin_resp, token_key)
-}
-
 /// pub duplicate test
 pub async fn bad_post_req_test<T: Serialize>(
     name: &str,

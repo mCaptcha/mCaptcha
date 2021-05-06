@@ -23,7 +23,6 @@ use url::Url;
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct Server {
-    // TODO yet to be configured
     pub allow_registration: bool,
     pub port: u32,
     pub domain: String,
@@ -43,15 +42,6 @@ impl Server {
     pub fn get_ip(&self) -> String {
         format!("{}:{}", self.ip, self.port)
     }
-
-    //fn check_url_prefix(&mut self) {
-    //    if let Some(prefix) = self.url_prefix.clone() {
-    //        self.url_prefix = Some(prefix.trim().into());
-    //        if prefix.trim().is_empty() {
-    //            self.url_prefix = None;
-    //        }
-    //    }
-    //}
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -67,10 +57,6 @@ struct DatabaseBuilder {
 impl DatabaseBuilder {
     #[cfg(not(tarpaulin_include))]
     fn extract_database_url(url: &Url) -> Self {
-        //        if url.scheme() != "postgres" || url.scheme() != "postgresql" {
-        //            panic!("URL must be postgres://url, url found: {}", url.scheme());
-        //        } else {
-
         debug!("Databse name: {}", url.path());
         let mut path = url.path().split("/");
         path.next();
@@ -114,7 +100,6 @@ impl Settings {
         // merging default config from file
         s.merge(File::with_name("./config/default.toml"))?;
 
-        // TODO change PLACEHOLDER to app name
         s.merge(Environment::with_prefix("GUARD"))?;
 
         check_url(&s);
