@@ -35,19 +35,17 @@ const router = new Router();
 router.register(panelRoute, panel);
 router.register(settingsRoute, settings);
 
-test('error checking in router works', () => {
-  try {
-    router.register(settingsRoute, settings);
-  } catch (e) {
-    expect(e.message).toBe('URI exists');
-  }
-});
-
-test('checks if Router works', () => {
+it('checks if Router works', () => {
   window.history.pushState({}, 'Settings', settingsRoute);
   router.route();
   expect(result.result).toBe(settingsResult);
   window.history.pushState({}, 'Panel', panelRoute);
   router.route();
   expect(result.result).toBe(panelResult);
+
+  try {
+    router.register(settingsRoute, settings);
+  } catch (e) {
+    expect(e.message).toBe('URI exists');
+  }
 });

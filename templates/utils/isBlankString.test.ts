@@ -15,15 +15,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-const genJsonPayload = (payload: any) => {
-  const value = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(payload),
-  };
-  return value;
-};
+import isBlankString from './isBlankString';
 
-export default genJsonPayload;
+'use strict';
+
+delete window.alert;
+
+window.alert = (x: any) => console.log(x);
+
+it('getFromUrl workds', () => {
+  expect(isBlankString('test', 'username')).toBe(false);
+  try {
+    isBlankString('  ', 'username');
+  } catch (e) {
+    expect(e.message).toContain(`can't be empty`);
+  }
+});

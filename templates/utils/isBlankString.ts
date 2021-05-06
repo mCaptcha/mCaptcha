@@ -21,8 +21,11 @@ const isBlankString = (value: string|number, field: string, event?: Event) => {
     if (event !== undefined) {
       event.preventDefault();
     }
-    alert(`${field} can't be empty`);
+    const msg = `${field} can't be empty`;
+    alert(msg);
+    throw new  Error(msg);
   }
+  return false;
 };
 
 export default isBlankString;
