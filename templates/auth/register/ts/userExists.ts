@@ -15,46 +15,30 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import ROUTES from '../../api/v1/routes';
+import ROUTES from '../../../api/v1/routes';
 
-import genJsonPayload from '../../utils/genJsonPayload';
+import genJsonPayload from '../../../utils/genJsonPayload';
 
-//export const checkUsernameExists = async () => {
-async function userExists() {
-  let username = <HTMLInputElement>document.getElementById('username');
-  let val = username.value;
-  let payload = {
+const userExists = async () => {
+  const username = <HTMLInputElement>document.getElementById('username');
+  const val = username.value;
+  const payload = {
     val,
   };
 
-  //  return fetch(ROUTES.usernameExists, genJsonPayload(payload)).then(res => {
-  //    if (res.ok) {
-  //      res.json().then(data => {
-  //        if (data.exists) {
-  //          username.className += ' form__in-field--warn';
-  //          alert('Username taken');
-  //        }
-  //        return data.exists;
-  //      });
-  //    } else {
-  //      res.json().then(err => alert(`error: ${err.error}`));
-  //    }
-  //  });
-  //
-
-  let res = await fetch(ROUTES.usernameExists, genJsonPayload(payload));
+  const res = await fetch(ROUTES.usernameExists, genJsonPayload(payload));
   if (res.ok) {
-    let data = await res.json();
+    const data = await res.json();
     if (data.exists) {
       username.className += ' form__in-field--warn';
       alert('Username taken');
     }
     return data.exists;
   } else {
-    let err = await res.json();
+    const err = await res.json();
     alert(`error: ${err.error}`);
   }
   return false;
-}
+};
 
 export default userExists;

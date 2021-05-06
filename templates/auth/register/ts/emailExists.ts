@@ -15,46 +15,30 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import ROUTES from '../../api/v1/routes';
+import ROUTES from '../../../api/v1/routes';
 
-import genJsonPayload from '../../utils/genJsonPayload';
+import genJsonPayload from '../../../utils/genJsonPayload';
 
-const checkEmailExists = async () => {
-  let email = <HTMLInputElement>document.getElementById('email');
-  let val = email.value;
-  let payload = {
+const emailExists = async () => {
+  const email = <HTMLInputElement>document.getElementById('email');
+  const val = email.value;
+  const payload = {
     val,
   };
 
-  //  return fetch(ROUTES.emailExists, genJsonPayload(payload)).then(res => {
-  //    if (res.ok) {
-  //      res.json().then(data => {
-  //        if (data.exists) {
-  //          console.log(email.className);
-  //          email.className += ' form__in-field--warn';
-  //          alert('Email taken');
-  //        }
-  //
-  //        return data.exists;
-  //      });
-  //    } else {
-  //      res.json().then(err => alert(`error: ${err.error}`));
-  //    }
-  //  });
-  //
-
-  let res = await fetch(ROUTES.emailExists, genJsonPayload(payload));
+  const res = await fetch(ROUTES.emailExists, genJsonPayload(payload));
   if (res.ok) {
-    let data = await res.json();
+    const data = await res.json();
     if (data.exists) {
       email.className += ' form__in-field--warn';
       alert('Email taken');
+      return data.exists;
     }
     return data.exists;
   } else {
-    let err = await res.json();
+    const err = await res.json();
     alert(`error: ${err.error}`);
   }
 };
 
-export {checkEmailExists};
+export default emailExists;

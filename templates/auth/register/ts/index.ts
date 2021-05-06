@@ -15,14 +15,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import VIEWS from '../../views/v1/routes';
+import VIEWS from '../../../views/v1/routes';
 
-import isBlankString from '../../utils/isBlankString';
-import genJsonPayload from '../../utils/genJsonPayload';
+import isBlankString from '../../../utils/isBlankString';
+import genJsonPayload from '../../../utils/genJsonPayload';
 
 import userExists from './userExists';
-import {checkEmailExists} from './emailExists';
-import getFormUrl from '../../utils/getFormUrl';
+import emailExists from './emailExists';
+import getFormUrl from '../../../utils/getFormUrl';
 
 //import '../forms.scss';
 
@@ -55,7 +55,7 @@ const registerUser = async (e: Event) => {
   if (!email.replace(/\s/g, '').length) {
     email = null;
   } else {
-    exists = await checkEmailExists();
+    exists = await emailExists();
     if (exists) {
       return;
     }

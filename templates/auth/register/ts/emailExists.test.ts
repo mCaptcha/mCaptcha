@@ -15,26 +15,28 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import getFormUrl from './getFormUrl';
-import {getLoginFormHtml} from '../setUpTests';
+import fetchMock from 'jest-fetch-mock';
 
-'use strict';
+import emailExists from './emailExists';
 
-const formClassName = 'form__box';
-const formURL = '/api/v1/signin';
+import {mockAlert, getRegistrationFormHtml} from '../../../setUpTests';
 
-document.body.innerHTML = getLoginFormHtml();
+fetchMock.enableMocks();
+mockAlert();
 
-const form = document.querySelector('form');
-form.action = formURL;
-form.className = formClassName;
+beforeEach(() => {
+  fetchMock.resetMocks();
+});
 
-it('getFromUrl workds', () => {
-  const name = `.${formClassName}`;
-  expect(getFormUrl(name)).toContain(formURL);
+it('finds exchange', async () => {
+  fetchMock.mockResponseOnce(JSON.stringify({exists: true}));
 
-  const form = <HTMLFormElement>document.querySelector('form');
-  expect(getFormUrl(form)).toContain(formURL);
+  document.body.innerHTML = getRegistrationFormHtml();
+  const emailField = <HTMLInputElement>document.getElementById('email');
+  emailField.setAttribute('value', 'test@a.com');
 
-  expect(getFormUrl()).toContain(formURL);
+  expect(await emailExists()).toBe(true);
+
+  fetchMock.mockResponseOnce(JSON.stringify({exists: false}));
+  expect(await emailExists()).toBe(false);
 });

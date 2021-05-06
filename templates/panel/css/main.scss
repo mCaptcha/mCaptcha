@@ -15,26 +15,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import getFormUrl from './getFormUrl';
-import {getLoginFormHtml} from '../setUpTests';
+@import '../../reset';
+@import '../../vars';
+@import '../../components/button';
 
-'use strict';
+main {
+  margin-left: 14%;
+  min-height: 100%;
+  background-color: $backdrop;
+  padding-bottom: 20px;
+}
 
-const formClassName = 'form__box';
-const formURL = '/api/v1/signin';
-
-document.body.innerHTML = getLoginFormHtml();
-
-const form = document.querySelector('form');
-form.action = formURL;
-form.className = formClassName;
-
-it('getFromUrl workds', () => {
-  const name = `.${formClassName}`;
-  expect(getFormUrl(name)).toContain(formURL);
-
-  const form = <HTMLFormElement>document.querySelector('form');
-  expect(getFormUrl(form)).toContain(formURL);
-
-  expect(getFormUrl()).toContain(formURL);
-});
+.inner-container {
+  display: flex;
+  box-sizing: border-box;
+  max-width: 50%;
+  margin: 50px auto;
+  border-radius: 5px;
+  display: flex;
+}

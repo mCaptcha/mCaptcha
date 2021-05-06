@@ -17,20 +17,20 @@
 
 import {Router} from './router';
 
-import * as login from './auth/login';
-import * as register from './auth/register';
-import * as panel from './panel/index';
-import * as addSiteKey from './panel/sitekey/add/';
+import * as login from './auth/login/ts/';
+import * as register from './auth/register/ts/';
+import * as panel from './panel/ts/index';
+import * as addSiteKey from './panel/sitekey/add/ts';
 
 import VIEWS from './views/v1/routes';
 
-import './auth/forms.scss';
-import './panel/main.scss';
+import './auth/css/forms.scss';
+import './panel/css/main.scss';
 import './panel/header/sidebar/main.scss';
 import './panel/taskbar/main.scss';
 import './panel/help-banner/main.scss';
-import './panel/sitekey/add/main.scss';
-import './panel/sitekey/list/main.scss';
+import './panel/sitekey/add/css/main.scss';
+import './panel/sitekey/list/css/main.scss';
 
 import './errors/main.scss';
 

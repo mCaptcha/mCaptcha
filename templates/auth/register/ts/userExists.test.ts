@@ -15,22 +15,27 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-@import '../reset';
-@import '../vars';
-@import '../components/button';
+import fetchMock from 'jest-fetch-mock';
 
-main {
-  margin-left: 14%;
-  min-height: 100%;
-  background-color: $backdrop;
-  padding-bottom: 20px;
-}
+import userExists from './userExists';
 
-.inner-container {
-  display: flex;
-  box-sizing: border-box;
-  max-width: 50%;
-  margin: 50px auto;
-  border-radius: 5px;
-  display: flex;
-}
+import {mockAlert, getLoginFormHtml} from '../../../setUpTests';
+
+fetchMock.enableMocks();
+mockAlert();
+
+beforeEach(() => {
+  fetchMock.resetMocks();
+});
+
+it('finds exchange', async () => {
+  fetchMock.mockResponseOnce(JSON.stringify({exists: true}));
+
+  document.body.innerHTML = getLoginFormHtml();
+  const usernameField = <HTMLInputElement>document.querySelector('#username');
+  usernameField.value = 'test';
+  expect(await userExists()).toBe(true);
+
+  fetchMock.mockResponseOnce(JSON.stringify({exists: false}));
+  expect(await userExists()).toBe(false);
+});

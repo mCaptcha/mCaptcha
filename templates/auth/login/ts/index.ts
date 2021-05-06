@@ -15,11 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import VIEWS from '../../views/v1/routes';
+import VIEWS from '../../../views/v1/routes';
 
-import isBlankString from '../../utils/isBlankString';
-import genJsonPayload from '../../utils/genJsonPayload';
-import getFormUrl from '../../utils/getFormUrl';
+import isBlankString from '../../../utils/isBlankString';
+import genJsonPayload from '../../../utils/genJsonPayload';
+import getFormUrl from '../../../utils/getFormUrl';
 
 //import '../forms.scss';
 

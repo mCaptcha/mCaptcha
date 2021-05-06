@@ -17,12 +17,12 @@
 
 import {LEVELS} from './levels';
 
-import isBlankString from '../../../utils/isBlankString';
-import getFormUrl from '../../../utils/getFormUrl';
-import genJsonPayload from '../../../utils/genJsonPayload';
-import isNumber from '../../../utils/isNumber';
+import isBlankString from '../../../../utils/isBlankString';
+import getFormUrl from '../../../../utils/getFormUrl';
+import genJsonPayload from '../../../../utils/genJsonPayload';
+import isNumber from '../../../../utils/isNumber';
 
-import VIEWS from '../../../views/v1/routes';
+import VIEWS from '../../../../views/v1/routes';
 
 const SITE_KEY_FORM_CLASS = 'sitekey-form';
 const FORM = <HTMLFormElement>document.querySelector(`.${SITE_KEY_FORM_CLASS}`);

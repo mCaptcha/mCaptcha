@@ -16,12 +16,11 @@
  */
 
 import isBlankString from './isBlankString';
+import {mockAlert} from '../setUpTests';
 
 'use strict';
 
-delete window.alert;
-
-window.alert = (x: any) => console.log(x);
+mockAlert();
 
 it('getFromUrl workds', () => {
   expect(isBlankString('test', 'username')).toBe(false);
