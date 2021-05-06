@@ -15,8 +15,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import getNumLevels from './getNumLevels';
-
 /** Datatype represenging an mCaptcha level */
 export type Level = {
   difficulty_factor: number;
@@ -26,13 +24,9 @@ export type Level = {
 /** Datatype representing a collection of mCaptcha levels */
 class Levels {
   levels: Array<Level>;
-  numOnScreen: number;
-  numRecoreded: number;
 
   constructor() {
     this.levels = [];
-    this.numRecoreded = 0;
-    this.numOnScreen = getNumLevels();
   }
 
   add = (newLevel: Level) => {
@@ -42,7 +36,7 @@ class Levels {
     }
 
     if (newLevel.visitor_threshold <= 0) {
-      throw new Error('Visitors must be graeter than zero');
+      throw new Error('Visitors must be greater than zero');
     }
 
     if (this.levels.length == 0) {
@@ -53,28 +47,19 @@ class Levels {
     let msg;
     let count = 1;
 
-    const validate = (level: Level, newLevel: Level) => {
+    this.levels.forEach(level => {
       if (level.visitor_threshold >= newLevel.visitor_threshold) {
-        msg = `Level: ${newLevel} visitor count has to greater than previous levels. See ${count}`;
-        return true;
+        const msg = `Level: ${newLevel} visitor count has to greater than previous levels. See ${count}`;
+        throw new Error(msg);
+      } else if (level.difficulty_factor >= newLevel.difficulty_factor) {
+        const msg = `Level ${this.levels.length} difficulty has to greater than previous levels See ${count}`;
+        throw new Error(msg);
+      } else {
+        count++;
       }
+    });
 
-      if (level.difficulty_factor >= newLevel.difficulty_factor) {
-        msg = `Level ${this.levels.length} difficulty has to greater than previous levels See ${count}`;
-        return true;
-      }
-      count++;
-      return false;
-    };
-
-    if (this.levels.find(level => validate(level, newLevel))) {
-      alert(msg);
-      throw new Error(msg);
-    } else {
-      this.levels.push(newLevel);
-      this.numOnScreen += 1;
-      this.numRecoreded += 1;
-    }
+    this.levels.push(newLevel);
   };
 
   get = () => this.levels;
@@ -87,16 +72,6 @@ export const LEVELS = (function() {
   return {
     /** get levels */
     getLevels: () => levels.get(),
-    /**
-     * get levels displayed on screen.
-     * This includes the one with add level button
-     * */
-    getOnScreen: () => levels.numOnScreen,
-    /**
-     * get levels recorded using LEVELS
-     * This excludes the one with add level button
-     * */
-    getRecored: () => levels.numRecoreded,
 
     /** add new level */
     add: (newLevel: Level) => levels.add(newLevel),

@@ -15,15 +15,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import getLevelFields from './getLevelFields';
-import {getAddForm, level1, level2, addLevel} from '../setupTests';
+import validateLevel from './validateLevel';
+import {getAddForm, level1, fillAddLevel} from '../setupTests';
 
 document.body.innerHTML = getAddForm();
 
-it('get levels fields works', () => {
-  addLevel(level1.visitor_threshold, level1.difficulty_factor);
-  expect(getLevelFields(1)).toEqual(level1);
+it('validate levels fields works', () => {
+  // null error
+  expect(validateLevel(1)).toEqual(false);
 
-  addLevel(level2.visitor_threshold, level2.difficulty_factor);
-  expect(getLevelFields(2)).toEqual(level2);
+  fillAddLevel(level1.visitor_threshold, level1.difficulty_factor);
+  expect(validateLevel(1)).toEqual(true);
+
+  // zero visitor error
+  fillAddLevel(0, level1.difficulty_factor);
+  expect(validateLevel(1)).toEqual(false);
+
+  // zero difficulty error
+  fillAddLevel(level1.visitor_threshold, 0);
+  expect(validateLevel(1)).toEqual(false);
 });

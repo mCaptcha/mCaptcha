@@ -17,7 +17,6 @@
 
 import getNumLevels from './getNumLevels';
 import {getAddForm, addLevel} from '../setupTests';
-//import CONST from '../const';
 
 document.body.innerHTML = getAddForm();
 

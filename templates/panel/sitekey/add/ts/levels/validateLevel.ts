@@ -23,13 +23,8 @@ import getLevelFields from './getLevelFields';
  * its contents
  * */
 const validateLevel = (id: number) => {
-  const level = getLevelFields(id);
-
-  if (level === null) {
-    return false;
-  }
-
   try {
+    const level = getLevelFields(id);
     LEVELS.add(level);
     return true;
   } catch (e) {

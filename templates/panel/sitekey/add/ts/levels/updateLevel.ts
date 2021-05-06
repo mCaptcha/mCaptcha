@@ -27,16 +27,12 @@ const updateLevel = (e: Event) => {
 
   let level;
   if (id.includes(CONST.VISITOR_WITHOUT_LEVEL)) {
-    level = id.slice(CONST.VISITOR_WITHOUT_LEVEL.length);
-  } else if (id.includes(CONST.DIFFICULTY_WITHOUT_LEVEL)) {
-    level = id.slice(CONST.DIFFICULTY_WITHOUT_LEVEL.length);
-  } else {
-    throw new Error(
-      'update event was triggered by some element other than difficulty or visitor',
-    );
+    level = parseInt(id.slice(CONST.VISITOR_WITHOUT_LEVEL.length));
+  }
+  if (id.includes(CONST.DIFFICULTY_WITHOUT_LEVEL)) {
+    level = parseInt(id.slice(CONST.DIFFICULTY_WITHOUT_LEVEL.length));
   }
 
-  level = parseInt(level);
   if (Number.isNaN(level)) {
     console.error(`[updateLevel.ts] level # computed is not correct, got NaN`);
   }
