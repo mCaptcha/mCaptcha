@@ -67,7 +67,7 @@ const registerUser = async (e: Event) => {
     confirm_password: passwordCheck,
     email,
   };
-  const formUrl = getFormUrl(null);
+  const formUrl = getFormUrl();
 
   const res = await fetch(formUrl, genJsonPayload(payload));
   if (res.ok) {

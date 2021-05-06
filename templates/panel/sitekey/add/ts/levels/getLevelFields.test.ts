@@ -15,20 +15,28 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import CONST from '../const';
+import getLevelFields from './getLevelFields';
+import {getAddForm, addLevel} from '../setupTests';
+import {Level} from './index';
+//import CONST from '../const';
 
-import {mockAlert} from '../../../../../setUpTests';
+document.body.innerHTML = getAddForm();
 
-mockAlert();
-
-/** returns number of level input fields currently in DOM */
-const getNumLevels = () => {
-  let numLevels = 0;
-  document
-    .querySelectorAll(`.${CONST.LEVEL_CONTAINER_CLASS}`)
-    .forEach(_ => numLevels++);
-  console.debug(`[getNumLevels]: numLevels: ${numLevels}`);
-  return numLevels;
+const level1: Level = {
+  difficulty_factor: 200,
+  visitor_threshold: 500,
 };
 
-export default getNumLevels;
+const level2: Level = {
+  difficulty_factor: 400,
+  visitor_threshold: 700,
+};
+
+it('get levels fields works', () => {
+  addLevel(level1.visitor_threshold, level1.difficulty_factor);
+  console.log(document.body.innerHTML);
+  expect(getLevelFields(1)).toEqual(level1);
+
+  addLevel(level2.visitor_threshold, level2.difficulty_factor);
+  expect(getLevelFields(2)).toEqual(level2);
+});

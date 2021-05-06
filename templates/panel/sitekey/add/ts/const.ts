@@ -31,6 +31,8 @@ const LEGEND_CLASS = 'sitekey__level-title';
 const REMOVE_LEVEL_BUTTON_ID_WITHOUT_LEVEL = 'remove-level';
 const REMOVE_LEVEL_LABEL_TEXT = "Remove Level";
 
+const ADD_LEVEL_BUTTON = 'sitekey-form__level-add-level-button';
+
 const CONST = {
   LABEL_CLASS,
   INPUT_ID_WITHOUT_LEVEL,
@@ -43,6 +45,7 @@ const CONST = {
   LEGEND_CLASS,
   REMOVE_LEVEL_BUTTON_ID_WITHOUT_LEVEL,
   REMOVE_LEVEL_LABEL_TEXT,
+  ADD_LEVEL_BUTTON,
 };
 
 export default CONST;

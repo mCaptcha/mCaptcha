@@ -90,8 +90,8 @@ pub fn services(cfg: &mut web::ServiceConfig) {
     );
 }
 
-// TODO try for non-existent token names
-
+// TODO redo mcaptcha table to include levels as json field
+// so that the whole thing can be added/udpaed in a single stroke
 async fn add_levels(
     payload: web::Json<AddLevels>,
     data: web::Data<Data>,

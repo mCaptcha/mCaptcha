@@ -24,7 +24,6 @@ import {
 } from './removeLevelButton';
 import CONST from './const';
 
-const ADD_LEVEL_BUTTON = 'sitekey-form__level-add-level-button';
 
 /**
  * Gets executed when 'Add' Button is clicked to add levels
@@ -60,8 +59,8 @@ const addLevel = (e: Event) => {
 
 /** adds onclick event listener */
 const addLevelButtonAddEventListener = () => {
-  let addLevelButton = <HTMLElement>(
-    document.querySelector(`.${ADD_LEVEL_BUTTON}`)
+  const addLevelButton = <HTMLElement>(
+    document.querySelector(`.${CONST.ADD_LEVEL_BUTTON}`)
   );
   addLevelButton.addEventListener('click', addLevel);
 };

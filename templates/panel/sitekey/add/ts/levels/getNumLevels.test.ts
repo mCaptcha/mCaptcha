@@ -15,20 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import CONST from '../const';
+import getNumLevels from './getNumLevels';
+import {getAddForm, addLevel} from '../setupTests';
+//import CONST from '../const';
 
-import {mockAlert} from '../../../../../setUpTests';
+document.body.innerHTML = getAddForm();
 
-mockAlert();
-
-/** returns number of level input fields currently in DOM */
-const getNumLevels = () => {
-  let numLevels = 0;
-  document
-    .querySelectorAll(`.${CONST.LEVEL_CONTAINER_CLASS}`)
-    .forEach(_ => numLevels++);
-  console.debug(`[getNumLevels]: numLevels: ${numLevels}`);
-  return numLevels;
-};
-
-export default getNumLevels;
+it('get num levels works', () => {
+  expect(getNumLevels()).toBe(1);
+  addLevel(2, 4);
+  expect(getNumLevels()).toBe(2);
+  addLevel(4, 9);
+  expect(getNumLevels()).toBe(3);
+});

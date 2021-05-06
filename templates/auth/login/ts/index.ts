@@ -47,7 +47,7 @@ const login = async (e: Event) => {
     password,
   };
 
-  const formUrl = getFormUrl(null);
+  const formUrl = getFormUrl();
 
   const res = await fetch(formUrl, genJsonPayload(payload));
   if (res.ok) {
