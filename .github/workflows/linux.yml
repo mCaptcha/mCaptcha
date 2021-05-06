@@ -108,8 +108,8 @@ jobs:
       - name: Upload to Codecov
         if: matrix.version == 'stable' && (github.ref == 'refs/heads/master' || github.event_name == 'pull_request')
         uses: codecov/codecov-action@v1
-        with:
-          files: cobertura.xml, ./coverage/clover.xml
+        #        with:
+        #          files: cobertura.xml, ./coverage/clover.xml
 
       - name: generate documentation
         if: matrix.version == 'stable' && (github.repository == 'mCaptcha/guard')

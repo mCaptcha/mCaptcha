@@ -27,13 +27,21 @@ const panelResult = 'hello from panel';
 const panelRoute = '/panel';
 const panel = () => (result.result = panelResult);
 
-const settingsRoute = '/settings';
+const settingsRoute = '/settings/';
 const settingsResult = 'hello from settings';
 const settings = () => (result.result = settingsResult);
 
 const router = new Router();
 router.register(panelRoute, panel);
 router.register(settingsRoute, settings);
+
+test('error checking in router works', () => {
+  try {
+    router.register(settingsRoute, settings);
+  } catch (e) {
+    expect(e.message).toBe('URI exists');
+  }
+});
 
 test('checks if Router works', () => {
   window.history.pushState({}, 'Settings', settingsRoute);

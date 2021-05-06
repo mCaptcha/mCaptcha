@@ -28,7 +28,7 @@ const normalizeUri = (uri: string) => {
     }
     return uri;
   } else {
-    throw new TypeError(`${typeof uri} ${uri}`);
+    throw new TypeError(`Only strings are permitted in URI`);
   }
 };
 
@@ -68,15 +68,15 @@ export class Router {
       throw new TypeError('a callback fn must be provided');
     }
 
-    this.routes.forEach(route => {
-      if (route.uri == uri) {
-        throw new Error(
-          `URI exists. provided URI: ${uri}, registered config: ${route}`,
-        );
-      }
-    });
-
     uri = normalizeUri(uri);
+
+    if (this.routes.find(route => {
+      if (route.uri == uri) {
+        return true;
+      }
+    })) {
+        throw new Error('URI exists');
+    };
 
     const route: routeTuple = {
       uri,
