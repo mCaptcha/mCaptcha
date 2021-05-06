@@ -17,19 +17,19 @@
 
 /** Removes trailing slashed from URI */
 const normalizeUri = (uri: string) => {
-  if (!uri) {
-    throw new Error('uri is empty');
-  }
+  if (typeof uri == 'string') {
+    if (uri.trim().length == 0) {
+      throw new Error('uri is empty');
+    }
 
-  if (typeof uri !== 'string') {
-    throw new TypeError('URI must be a string');
+    let uriLength = uri.length;
+    if (uri[uriLength - 1] == '/') {
+      uri = uri.slice(0, uriLength - 1);
+    }
+    return uri;
+  } else {
+    throw new TypeError(`${typeof uri} ${uri}`);
   }
-
-  let uriLength = uri.length;
-  if (uri[uriLength - 1] == '/') {
-    uri = uri.slice(0, uriLength - 1);
-  }
-  return uri;
 };
 
 /** URI<-> Fn mapping type */
@@ -38,9 +38,9 @@ type routeTuple = {
   fn: () => void;
 };
 
-/** 
+/**
  * Router that selectively executes fucntions
- * based on window.location.pathname 
+ * based on window.location.pathname
  * */
 export class Router {
   routes: Array<routeTuple>;
@@ -48,15 +48,15 @@ export class Router {
     this.routes = [];
   }
 
-  /** 
-   * registers a route-function pair with Router 
+  /**
+   * registers a route-function pair with Router
    * @param {string} uri - route to be registered
    * @param {function} fn: - function to be registered when window.locatin.path
    * matches uri
    * */
   register(uri: string, fn: () => void) {
     // typechecks
-    if (!uri) {
+    if (uri.trim().length == 0) {
       throw new Error('uri is empty');
     }
 
@@ -90,12 +90,11 @@ export class Router {
    * matches window.pathname.location
    * */
   route() {
+    const path = normalizeUri(window.location.pathname);
+
     this.routes.forEach(route => {
-      // normalize for trailing slash
       const pattern = new RegExp(`^${route.uri}$`);
-      const path = normalizeUri(window.location.pathname);
       if (path.match(pattern)) {
-        //return route.fn.call();
         return route.fn();
       }
     });

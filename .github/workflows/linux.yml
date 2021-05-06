@@ -47,11 +47,16 @@ jobs:
 
       - uses: actions/setup-node@v2
         with:
-          node-version: '12.x'
+          node-version: '14.x'
 
-      - run: yarn install
+      - name: Install JavaScript Dependencies
+        run: yarn install
 
-      - run: yarn build
+      - name: Build Frontend
+        run: yarn build
+
+      - name: Run the tests
+        run: yarn test -- --coverage
 
       - name: Install ${{ matrix.version }}
         uses: actions-rs/toolchain@v1

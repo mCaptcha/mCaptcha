@@ -10,3 +10,4 @@ node_modules/
 ./templates/**/*.js
 /static-assets/bundle/*
 src/cache_buster_data.json
+coverage
