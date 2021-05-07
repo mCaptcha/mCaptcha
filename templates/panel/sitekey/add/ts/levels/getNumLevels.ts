@@ -17,10 +17,6 @@
 
 import CONST from '../const';
 
-import {mockAlert} from '../../../../../setUpTests';
-
-mockAlert();
-
 /** returns number of level input fields currently in DOM */
 const getNumLevels = () => {
   let numLevels = 0;

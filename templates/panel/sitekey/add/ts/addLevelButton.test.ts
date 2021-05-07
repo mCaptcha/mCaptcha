@@ -1,0 +1,191 @@
+/*
+ * Copyright (C) 2021  Aravinth Manivannan <realaravinth@batsense.net>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+import getNumLevels from './levels/getNumLevels';
+import {getAddForm, addLevel} from './setupTests';
+
+document.body.innerHTML = getAddForm();
+
+it('addLevelButton works', () => {
+  expect(getNumLevels()).toBe(1);
+  // add a level
+  addLevel(2, 4);
+  expect(getNumLevels()).toBe(2);
+
+  // try to add duplicate level
+  addLevel(2, 4);
+  expect(getNumLevels()).toBe(2);
+
+  // try to add negative parameters
+  addLevel(-4, -9);
+  expect(getNumLevels()).toBe(2);
+
+  // add second level
+  addLevel(4, 9);
+  expect(getNumLevels()).toBe(3);
+
+  let a = document.body.innerHTML;
+
+  expect(trim(a)).toBe(trim(finalHtml()));
+});
+
+const trim = (s: string) => s.replace(/\s/g, '');
+
+const finalHtml = () => {
+  return `
+<form class="sitekey-form" action="/api/v1/mcaptcha/levels/add" method="post">
+  <h1 class="form__title">
+    Add Sitekey
+  </h1>
+  <label class="sitekey-form__label" for="description">
+    Description
+    <input
+      class="sitekey-form__input"
+      type="text"
+      name="description"
+      id="description"
+      required=""
+      value=""
+    >
+  </label>
+
+  <label class="sitekey-form__label" for="duration">
+    Cooldown Duratoin(in seconds)
+    <input
+      class="sitekey-form__input"
+      type="number"
+      name="duration"
+      id="duration"
+      min="0"
+      required=""
+      value="30"
+    >
+  </label>
+
+  <fieldset class="sitekey__level-container" id="level-group-1">
+    <legend class="sitekey__level-title">
+      Level 1
+    </legend>
+    <label class="sitekey-form__level-label" for="visitor1"
+      >Visitor
+      <input
+        class="sitekey-form__level-input"
+        type="number"
+        name="visitor1"
+        value=""
+        id="visitor1"
+      >
+    </label>
+
+    <label class="sitekey-form__level-label" for="difficulty1">
+      Difficulty
+      <input
+        type="number"
+        name="difficulty1"
+        class="sitekey-form__level-input"
+        value=""
+        id="difficulty1"
+      >
+    </label>
+    <label class="sitekey-form__level-label--hidden" for="remove-level1">
+      Remove Level
+      <input
+        class="sitekey-form__level-remove-level-button"
+        type="button"
+        name="remove-level1"
+        id="remove-level1"
+        value="x"
+      >
+    </label>
+  </fieldset>
+  <fieldset class="sitekey__level-container" id="level-group-2">
+    <legend class="sitekey__level-title">
+      Level 2
+    </legend>
+    <label class="sitekey-form__level-label" for="visitor2"
+      >Visitor
+      <input
+        class="sitekey-form__level-input"
+        type="number"
+        name="visitor2"
+        value=""
+        id="visitor2"
+      >
+    </label>
+
+    <label class="sitekey-form__level-label" for="difficulty2">
+      Difficulty
+      <input
+        type="number"
+        name="difficulty2"
+        class="sitekey-form__level-input"
+        value=""
+        id="difficulty2"
+      >
+    </label>
+    <label class="sitekey-form__level-label--hidden" for="remove-level2">
+      Remove Level
+      <input
+        class="sitekey-form__level-remove-level-button"
+        type="button"
+        name="remove-level2"
+        id="remove-level2"
+        value="x"
+      >
+    </label>
+  </fieldset>
+  <fieldset class="sitekey__level-container" id="level-group-3">
+    <legend class="sitekey__level-title">
+      Level 3
+    </legend>
+    <label class="sitekey-form__level-label" for="visitor3"
+      >Visitor
+      <input
+        class="sitekey-form__level-input"
+        type="number"
+        name="visitor3"
+        value=""
+        id="visitor3"
+      >
+    </label>
+
+    <label class="sitekey-form__level-label" for="difficulty3">
+      Difficulty
+      <input
+        type="number"
+        name="difficulty3"
+        class="sitekey-form__level-input"
+        value=""
+        id="difficulty3"
+      >
+    </label>
+    <label class="sitekey-form__level-label--hidden" for="add">
+      Add level
+      <input
+        class="sitekey-form__level-add-level-button"
+        type="button"
+        name="add"
+        id="add"
+        value="Add"
+      >
+    </label>
+  </fieldset>
+
+  <button class="sitekey-form__submit" type="submit">Submit</button>
+</form>
+  `;
+};

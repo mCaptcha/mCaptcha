@@ -36,6 +36,7 @@
     "static",
     "docs",
     "jest.config.ts",
-    "**/*.test.ts"
+    "**/*.test.ts",
+    "tmp"
   ]
 }

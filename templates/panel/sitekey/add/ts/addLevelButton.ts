@@ -16,7 +16,6 @@
  */
 import validateLevel from './levels/validateLevel';
 import getNumLevels from './levels/getNumLevels';
-import  {LEVELS} from './levels/';
 import * as UpdateLevel from './levels/updateLevel';
 import {
   getRemoveButtonHTML,
@@ -82,7 +81,7 @@ const getHtml = (level: number) => {
     <input
       class="sitekey-form__level-input"
       type="number"
-      name=""
+      name="visitor${level}"
       value=""
       id="visitor${level}"
     />
@@ -92,7 +91,7 @@ const getHtml = (level: number) => {
     Difficulty
     <input
       type="number"
-      name="difficulty"
+      name="difficulty${level}"
       class="sitekey-form__level-input"
       value=""
       id="difficulty${level}"

@@ -17,6 +17,9 @@
 
 import validateDescription from './validateDescription';
 import {getAddForm, fillDescription} from '../setupTests';
+import {mockAlert} from '../../../../../setUpTests';
+
+mockAlert();
 
 document.body.innerHTML = getAddForm();
 

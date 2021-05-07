@@ -132,7 +132,7 @@ export const getAddForm = () => `
       <input
         class="sitekey-form__level-input"
         type="number"
-        name=""
+        name="visitor1"
         value=""
         id="visitor1"
       />
@@ -142,7 +142,7 @@ export const getAddForm = () => `
       Difficulty
       <input
         type="number"
-        name="difficulty"
+        name="difficulty1"
         class="sitekey-form__level-input"
         value=""
         id="difficulty1"
