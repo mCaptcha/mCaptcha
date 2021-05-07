@@ -18,9 +18,11 @@
 import {Level} from './index';
 import CONST from '../const';
 
+import log from '../../../../../logger';
+
 /** Fetches level from DOM using the ID passesd and validates */
 const getLevelFields = (id: number) => {
-  console.log(`[getLevelFields]: id: ${id}`);
+  log.debug(`[getLevelFields]: id: ${id}`);
   const visitorID = CONST.VISITOR_WITHOUT_LEVEL + id.toString();
   const difficultyID = CONST.DIFFICULTY_WITHOUT_LEVEL + id.toString();
 
@@ -45,7 +47,7 @@ const getLevelFields = (id: number) => {
     visitor_threshold,
   };
 
-  console.debug(
+  log.debug(
     `[getLevelFields.ts] visitor: ${visitor_threshold} difficulty: ${difficulty_factor}`,
   );
 

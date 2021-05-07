@@ -23,6 +23,8 @@ import {
 } from './removeLevelButton';
 import CONST from './const';
 
+import log from '../../../../logger';
+
 
 /**
  * Gets executed when 'Add' Button is clicked to add levels
@@ -36,16 +38,15 @@ const addLevel = (e: Event) => {
   const onScreenLevel = getNumLevels();
 
   const isValid = validateLevel(onScreenLevel);
-  console.log(`[addLevelButton] isValid: ${isValid}`);
+  log.debug(`[addLevelButton] isValid: ${isValid}`);
   if (!isValid) {
-    return console.error('Aborting level addition');
+    return log.error('Aborting level addition');
   }
 
   eventTarget.remove();
   PARENT.innerHTML = getRemoveButtonHTML(onScreenLevel);
   PARENT.htmlFor = `${CONST.REMOVE_LEVEL_BUTTON_ID_WITHOUT_LEVEL}${onScreenLevel}`;
   //FIELDSET.innerHTML += getRemoveButtonHTML(numLevels);
-  addRemoveLevelButtonEventListener(onScreenLevel);
 
   //PARENT.remove();
 
@@ -53,6 +54,7 @@ const addLevel = (e: Event) => {
   FIELDSET.insertAdjacentHTML('afterend', newLevelHTML);
   UpdateLevel.register(onScreenLevel);
 
+  addRemoveLevelButtonEventListener(onScreenLevel);
   addLevelButtonAddEventListener();
 };
 
@@ -69,7 +71,7 @@ const addLevelButtonAddEventListener = () => {
  * Check if './add-level.html` to see if this is up to date
  */
 const getHtml = (level: number) => {
-  console.debug(`[generating HTML getHtml]level: ${level}`);
+  log.debug(`[generating HTML getHtml]level: ${level}`);
 
   const HTML = `
 <fieldset class="sitekey__level-container" id="level-group-${level}">
@@ -82,7 +84,6 @@ const getHtml = (level: number) => {
       class="sitekey-form__level-input"
       type="number"
       name="visitor${level}"
-      value=""
       id="visitor${level}"
     />
   </label>
@@ -93,7 +94,6 @@ const getHtml = (level: number) => {
       type="number"
       name="difficulty${level}"
       class="sitekey-form__level-input"
-      value=""
       id="difficulty${level}"
     />
   </label>

@@ -15,6 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import log from '../../../../../logger';
+
 /** Datatype represenging an mCaptcha level */
 export type Level = {
   difficulty_factor: number;
@@ -30,7 +32,7 @@ class Levels {
   }
 
   add = (newLevel: Level) => {
-    console.debug(`[levels/index.ts] levels lenght: ${this.levels.length}`);
+    log.debug(`[levels/index.ts] levels lenght: ${this.levels.length}`);
     if (newLevel.difficulty_factor <= 0) {
       throw new Error('Difficulty must be greater than zero');
     }
@@ -44,7 +46,6 @@ class Levels {
       return true;
     }
 
-    let msg;
     let count = 1;
 
     this.levels.forEach(level => {
@@ -90,25 +91,25 @@ export const LEVELS = (function() {
           }
         }
         levels.levels = tmpLevel.levels;
-        console.log(`post update:`);
+        log.debug(`post update:`);
         LEVELS.print();
         return true;
       } catch (e) {
-        console.log(e);
+        log.debug(e);
         return false;
       }
     },
 
     print: () =>
       levels.levels.forEach(level =>
-        console.debug(
+        log.debug(
           `difficulty_factor: ${level.difficulty_factor} visitor ${level.visitor_threshold}`,
         ),
       ),
 
     /** remove level */
     remove: (id: number) => {
-      console.debug(`[LEVELS] received order to remove ${id} element`);
+      log.debug(`[LEVELS] received order to remove ${id} element`);
 
       const tmpLevel = new Levels();
 
@@ -118,9 +119,9 @@ export const LEVELS = (function() {
           if (id != i) {
             tmpLevel.add(levels.levels[i]);
           } else {
-            console.debug(`[LEVELS] removing ${i} element`);
+            log.debug(`[LEVELS] removing ${i} element`);
             const rmElement = levels.levels[i];
-            console.debug(
+            log.debug(
               `[LEVELS] removing element: 
               difficulty_factor: ${rmElement.difficulty_factor} 
               visitor_threshold: ${rmElement.visitor_threshold}`,
@@ -128,11 +129,11 @@ export const LEVELS = (function() {
           }
         }
         levels.levels = tmpLevel.levels;
-        console.debug('Post remove:');
+        log.debug('Post remove:');
         LEVELS.print();
         return true;
       } catch (e) {
-        console.log(e);
+        log.debug(e);
         return false;
       }
     },

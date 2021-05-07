@@ -21,6 +21,8 @@ import * as login from './auth/login/ts/';
 import * as register from './auth/register/ts/';
 import * as panel from './panel/ts/index';
 import * as addSiteKey from './panel/sitekey/add/ts';
+import {MODE} from './logger';
+import log from './logger';
 
 import VIEWS from './views/v1/routes';
 
@@ -33,6 +35,8 @@ import './panel/sitekey/add/css/main.scss';
 import './panel/sitekey/list/css/main.scss';
 
 import './errors/main.scss';
+
+log.setMode(MODE.production);
 
 const router = new Router();
 

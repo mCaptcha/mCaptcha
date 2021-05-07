@@ -1,51 +1,3 @@
-/*
- * Copyright (C) 2021  Aravinth Manivannan <realaravinth@batsense.net>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
-
-import getNumLevels from './levels/getNumLevels';
-import {getAddForm, trim, addLevel} from './setupTests';
-
-document.body.innerHTML = getAddForm();
-
-it('addLevelButton works', () => {
-  expect(getNumLevels()).toBe(1);
-  // add a level
-  addLevel(2, 4);
-  expect(getNumLevels()).toBe(2);
-
-  // try to add duplicate level
-  addLevel(2, 4);
-  expect(getNumLevels()).toBe(2);
-
-  // try to add negative parameters
-  addLevel(-4, -9);
-  expect(getNumLevels()).toBe(2);
-
-  // add second level
-  addLevel(4, 9);
-  expect(getNumLevels()).toBe(3);
-
-  let a = document.body.innerHTML;
-
-  expect(trim(a)).toBe(trim(finalHtml()));
-});
-
-
-const finalHtml = () => {
-  return `
 <form class="sitekey-form" action="/api/v1/mcaptcha/levels/add" method="post">
   <h1 class="form__title">
     Add Sitekey
@@ -58,7 +10,7 @@ const finalHtml = () => {
       name="description"
       id="description"
       required=""
-      
+      value=""
     >
   </label>
 
@@ -85,7 +37,7 @@ const finalHtml = () => {
         class="sitekey-form__level-input"
         type="number"
         name="visitor1"
-        
+        value=""
         id="visitor1"
       >
     </label>
@@ -96,7 +48,7 @@ const finalHtml = () => {
         type="number"
         name="difficulty1"
         class="sitekey-form__level-input"
-        
+        value=""
         id="difficulty1"
       >
     </label>
@@ -121,7 +73,7 @@ const finalHtml = () => {
         class="sitekey-form__level-input"
         type="number"
         name="visitor2"
-        
+        value=""
         id="visitor2"
       >
     </label>
@@ -132,7 +84,7 @@ const finalHtml = () => {
         type="number"
         name="difficulty2"
         class="sitekey-form__level-input"
-        
+        value=""
         id="difficulty2"
       >
     </label>
@@ -157,7 +109,7 @@ const finalHtml = () => {
         class="sitekey-form__level-input"
         type="number"
         name="visitor3"
-        
+        value=""
         id="visitor3"
       >
     </label>
@@ -168,8 +120,116 @@ const finalHtml = () => {
         type="number"
         name="difficulty3"
         class="sitekey-form__level-input"
-        
+        value=""
         id="difficulty3"
+      >
+    </label>
+    <label class="sitekey-form__level-label--hidden" for="remove-level3">
+      Remove Level
+      <input
+        class="sitekey-form__level-remove-level-button"
+        type="button"
+        name="remove-level3"
+        id="remove-level3"
+        value="x"
+      >
+    </label>
+  </fieldset>
+  <fieldset class="sitekey__level-container" id="level-group-4">
+    <legend class="sitekey__level-title">
+      Level 4
+    </legend>
+    <label class="sitekey-form__level-label" for="visitor4"
+      >Visitor
+      <input
+        class="sitekey-form__level-input"
+        type="number"
+        name="visitor4"
+        value=""
+        id="visitor4"
+      >
+    </label>
+
+    <label class="sitekey-form__level-label" for="difficulty4">
+      Difficulty
+      <input
+        type="number"
+        name="difficulty4"
+        class="sitekey-form__level-input"
+        value=""
+        id="difficulty4"
+      >
+    </label>
+    <label class="sitekey-form__level-label--hidden" for="remove-level4">
+      Remove Level
+      <input
+        class="sitekey-form__level-remove-level-button"
+        type="button"
+        name="remove-level4"
+        id="remove-level4"
+        value="x"
+      >
+    </label>
+  </fieldset>
+  <fieldset class="sitekey__level-container" id="level-group-5">
+    <legend class="sitekey__level-title">
+      Level 5
+    </legend>
+    <label class="sitekey-form__level-label" for="visitor5"
+      >Visitor
+      <input
+        class="sitekey-form__level-input"
+        type="number"
+        name="visitor5"
+        value=""
+        id="visitor5"
+      >
+    </label>
+
+    <label class="sitekey-form__level-label" for="difficulty5">
+      Difficulty
+      <input
+        type="number"
+        name="difficulty5"
+        class="sitekey-form__level-input"
+        value=""
+        id="difficulty5"
+      >
+    </label>
+    <label class="sitekey-form__level-label--hidden" for="remove-level5">
+      Remove Level
+      <input
+        class="sitekey-form__level-remove-level-button"
+        type="button"
+        name="remove-level5"
+        id="remove-level5"
+        value="x"
+      >
+    </label>
+  </fieldset>
+  <fieldset class="sitekey__level-container" id="level-group-6">
+    <legend class="sitekey__level-title">
+      Level 6
+    </legend>
+    <label class="sitekey-form__level-label" for="visitor6"
+      >Visitor
+      <input
+        class="sitekey-form__level-input"
+        type="number"
+        name="visitor6"
+        value=""
+        id="visitor6"
+      >
+    </label>
+
+    <label class="sitekey-form__level-label" for="difficulty6">
+      Difficulty
+      <input
+        type="number"
+        name="difficulty6"
+        class="sitekey-form__level-input"
+        value=""
+        id="difficulty6"
       >
     </label>
     <label class="sitekey-form__level-label--hidden" for="add">
@@ -186,5 +246,3 @@ const finalHtml = () => {
 
   <button class="sitekey-form__submit" type="submit">Submit</button>
 </form>
-  `;
-};

@@ -14,24 +14,44 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import {mode, MODE} from './env';
 
 /** Conditional logger singleton */
-export const log = (function() {
+const log = (function() {
+  let mode = MODE.production;
   return {
-    /** get levels */
+    /** console.error() wrapper */
     debug: (data: any) => {
+      if (mode == MODE.none) {
+        return;
+      }
       if (mode == MODE.development) {
         console.debug(data);
       }
     },
 
+    /** console.error() wrapper */
     error: (data: any) => {
       console.error(data);
     },
 
+    /** console.log() wrapper */
     log: (data: any) => {
+      if (mode == MODE.none) {
+        return;
+      }
+
       console.log(data);
     },
+
+    /** set logging mode */
+    setMode: (newMode: MODE) => (mode = newMode),
   };
 })();
+
+export const enum MODE {
+  production,
+  development,
+  none,
+}
+
+export default log;

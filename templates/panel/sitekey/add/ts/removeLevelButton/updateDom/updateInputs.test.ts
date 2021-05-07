@@ -14,164 +14,52 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import getNumLevels from './levels/getNumLevels';
-import {Level} from './levels/index';
-import CONST from './const';
-import addLevelButtonAddEventListener from './addLevelButton';
 
-/** get rid of all whitespaces, useful when comparing DOM states */
-export const trim = (s: string) => s.replace(/\s/g, '');
+import getNumLevels from '../../levels/getNumLevels';
+import {getAddForm, trim} from '../../setupTests';
+import updateInputs from './updateInputs';
+import CONST from '../../const';
 
-export const level1: Level = {
-  difficulty_factor: 200,
-  visitor_threshold: 500,
-};
+import log from '../../../../../../logger';
+import {MODE} from '../../../../../../logger';
 
-export const level1diffErr: Level = {
-  difficulty_factor: 100,
-  visitor_threshold: 600,
-};
+import {setupAddlevels} from './setupTests';
 
-export const level1visErr: Level = {
-  difficulty_factor: 600,
-  visitor_threshold: 400,
-};
+document.body.innerHTML = getAddForm();
 
-export const level2: Level = {
-  difficulty_factor: 400,
-  visitor_threshold: 700,
-};
+log.setMode(MODE.none);
 
-/** add level to DOM by filling add level form and clicking "Add" button */
-export const addLevel = (visitor: number, diff: number) => {
-  fillAddLevel(visitor, diff);
-  const addLevelButton = <HTMLElement>(
-    document.querySelector(`.${CONST.ADD_LEVEL_BUTTON}`)
+it('addLevelButton works', () => {
+  setupAddlevels();
+  // removing level  2
+  const level = 2;
+  const levelGroup = document.querySelector(
+    `#${CONST.LEVEL_FIELDSET_ID_WITHOUT_LEVEL}${level}`,
   );
-  addLevelButton.click();
-};
 
-/** Fill add level form without clicking add button */
-export const fillAddLevel = (
-  visitor: number | string,
-  diff: number | string,
-) => {
-  addLevelButtonAddEventListener();
+  const newLevel = 20;
 
-  const level = getNumLevels();
-  const visitorField = <HTMLInputElement>(
-    document.getElementById(`${CONST.VISITOR_WITHOUT_LEVEL}${level}`)
+  updateInputs(levelGroup, newLevel);
+
+  const inputs = <NodeListOf<HTMLInputElement>>(
+    levelGroup.querySelectorAll(`.${CONST.LEVEL_INPUT_CLASS}`)
   );
-  visitorField.value = visitor.toString();
+  inputs.forEach(input => {
+    if (input.id.includes(CONST.VISITOR_WITHOUT_LEVEL)) {
+      expect(input.id).toBe(`${CONST.VISITOR_WITHOUT_LEVEL}${newLevel}`);
+      console.log("checking visitor");
+    } else {
+      //    if (input.id.includes(CONST.DIFFICULTY_WITHOUT_LEVEL)) {
+      console.log("checking difficulty");
+      expect(input.id).toBe(`${CONST.DIFFICULTY_WITHOUT_LEVEL}${newLevel}`);
+    }
+  });
 
-  const diffField = <HTMLInputElement>(
-    document.getElementById(`${CONST.DIFFICULTY_WITHOUT_LEVEL}${level}`)
-  );
-  diffField.value = diff.toString();
-};
-
-/** Fill add level form without clicking add button */
-export const editLevel = (level: number, visitor?: number, diff?: number) => {
-  if (visitor !== undefined) {
-    const visitorField = <HTMLInputElement>(
-      document.getElementById(`${CONST.VISITOR_WITHOUT_LEVEL}${level}`)
-    );
-    visitorField.value = visitor.toString();
-  }
-
-  if (diff !== undefined) {
-    const diffField = <HTMLInputElement>(
-      document.getElementById(`${CONST.DIFFICULTY_WITHOUT_LEVEL}${level}`)
-    );
-    diffField.value = diff.toString();
-  }
-};
-
-/** Fill description in add level form */
-export const fillDescription = (description: string) => {
-  const inputElement = <HTMLInputElement>document.getElementById('description');
-  inputElement.value = description;
-};
-
-/** Fill duration in add level form */
-export const fillDuration = (duration: number | string) => {
-  const inputElement = <HTMLInputElement>document.getElementById('duration');
-  inputElement.value = duration.toString();
-};
-
-export const getAddForm = () => `
-<form class="sitekey-form" action="/api/v1/mcaptcha/levels/add" method="post">
-  <h1 class="form__title">
-    Add Sitekey
-  </h1>
-  <label class="sitekey-form__label" for="description">
-    Description
-    <input
-      class="sitekey-form__input"
-      type="text"
-      name="description"
-      id="description"
-      required=""
-      
-    />
-  </label>
-
-  <label class="sitekey-form__label" for="duration">
-    Cooldown Duratoin(in seconds)
-    <input
-      class="sitekey-form__input"
-      type="number"
-      name="duration"
-      id="duration"
-      min="0"
-      required=""
-      value="30"
-    />
-  </label>
-
-  <fieldset class="sitekey__level-container" id="level-group-1">
-    <legend class="sitekey__level-title">
-      Level 1
-    </legend>
-    <label class="sitekey-form__level-label" for="visitor1"
-      >Visitor
-      <input
-        class="sitekey-form__level-input"
-        type="number"
-        name="visitor1"
-        
-        id="visitor1"
-      />
-    </label>
-
-    <label class="sitekey-form__level-label" for="difficulty1">
-      Difficulty
-      <input
-        type="number"
-        name="difficulty1"
-        class="sitekey-form__level-input"
-        
-        id="difficulty1"
-      />
-    </label>
-    <label class="sitekey-form__level-label--hidden" for="add">
-      Add level
-      <input
-        class="sitekey-form__level-add-level-button"
-        type="button"
-        name="add"
-        id="add"
-        value="Add"
-      />
-    </label>
-  </fieldset>
-
-  <button class="sitekey-form__submit" type="submit">Submit</button>
-</form>
-`;
+  expect(trim(document.body.innerHTML)).toBe(trim(update()));
+});
 
 /** get initial form to test remove button functionality */
-export const getRemoveButtonHTMLForm = () => {
+export const update = () => {
   return `
 <form class="sitekey-form" action="/api/v1/mcaptcha/levels/add" method="post">
   <h1 class="form__title">
@@ -247,9 +135,9 @@ export const getRemoveButtonHTMLForm = () => {
       <input
         class="sitekey-form__level-input"
         type="number"
-        name="visitor2"
+        name="visitor20"
         
-        id="visitor2"
+        id="visitor20"
       >
     </label>
 
@@ -257,10 +145,10 @@ export const getRemoveButtonHTMLForm = () => {
       Difficulty
       <input
         type="number"
-        name="difficulty2"
+        name="difficulty20"
         class="sitekey-form__level-input"
         
-        id="difficulty2"
+        id="difficulty20"
       >
     </label>
     <label class="sitekey-form__level-label--hidden" for="remove-level2">

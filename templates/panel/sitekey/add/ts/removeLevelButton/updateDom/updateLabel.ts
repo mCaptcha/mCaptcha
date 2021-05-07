@@ -14,19 +14,25 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+import CONST from '../../const';
+import log from '../../../../../../logger';
 
-import CONST from '../const';
+const updateLabel = (levelGroup: Element, newLevel: number) => {
+  // rename labels
+  const labels = <NodeListOf<HTMLLabelElement>>(
+    levelGroup.querySelectorAll(`.${CONST.LABEL_CLASS}`)
+  );
+  log.log(labels);
+  labels.forEach(label => {
+    log.log(`${label.htmlFor}`);
+    if (label.htmlFor.includes(CONST.VISITOR_WITHOUT_LEVEL)) {
+      label.htmlFor = `${CONST.VISITOR_WITHOUT_LEVEL}${newLevel}`;
+    }
 
-import log from '../../../../../logger';
-
-/** returns number of level input fields currently in DOM */
-const getNumLevels = () => {
-  let numLevels = 0;
-  document
-    .querySelectorAll(`.${CONST.LEVEL_CONTAINER_CLASS}`)
-    .forEach(_ => numLevels++);
-  log.debug(`[getNumLevels]: numLevels: ${numLevels}`);
-  return numLevels;
+    if (label.htmlFor.includes(CONST.DIFFICULTY_WITHOUT_LEVEL)) {
+      label.htmlFor = `${CONST.DIFFICULTY_WITHOUT_LEVEL}${newLevel}`;
+    }
+  });
 };
 
-export default getNumLevels;
+export default updateLabel;
