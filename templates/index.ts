@@ -27,6 +27,7 @@ import log from './logger';
 import VIEWS from './views/v1/routes';
 
 import './auth/css/main.scss';
+import './components/details.scss';
 import './panel/css/main.scss';
 import './panel/header/sidebar/main.scss';
 import './panel/taskbar/main.scss';

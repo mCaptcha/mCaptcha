@@ -14,16 +14,31 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+@import '../_vars.scss';
 
-$green: #5cad66;
-$violet: #800080;
-$light-violet: #993299;
-$backdrop: #f0f0f0;
-$light-text: rgba(255, 255, 255, 0.87);
-$secondary-backdrop: #2b2c30;
-$light-grey: rgba(0, 0, 0, 0.125);
-$white: #fff;
-$form-content-width: 90%;
-$black-text: #000;
-$auth-content-width: 30%;
-$blue-link: rgb(3, 102, 214);
+.details {
+  list-style: none;
+  position: absolute;
+  bottom: 0px;
+  box-sizing: border-box;
+  width: 95%;
+  display: flex;
+  font-size: 14px;
+  margin: auto;
+}
+
+.details__dummy-filler {
+  flex: 10;
+}
+
+.details__item {
+  margin: auto 10px;
+}
+
+.details__item:first-child {
+  flex: 4;
+}
+
+.details__link {
+  color: $blue-link;
+}

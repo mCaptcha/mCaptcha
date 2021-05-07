@@ -25,6 +25,9 @@ pub struct Routes {
     pub auth: Auth,
     pub panel: Panel,
     pub errors: Errors,
+    pub about: &'static str,
+    pub thanks: &'static str,
+    pub donate: &'static str,
 }
 
 impl Routes {
@@ -36,6 +39,9 @@ impl Routes {
             panel,
             home,
             errors: Errors::new(),
+            about: "/aboubt",
+            thanks: "/thanks",
+            donate: "/donat",
         }
     }
 }
