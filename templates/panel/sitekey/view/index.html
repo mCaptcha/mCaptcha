@@ -1,0 +1,51 @@
+<. include!("../../../components/headers.html"); .> <.
+include!("../../header/index.html"); .>
+
+<main class="panel-main">
+  <. include!("../../taskbar/index.html"); .> <.
+  include!("../../help-banner/index.html"); .>
+  <!-- Main content container -->
+  <div class="inner-container">
+    <!-- Main menu/ important actions roaster -->
+          
+<form class="sitekey-form" action="<.= crate::V1_API_ROUTES.levels.add .>" method="post">
+	<h1 class="form__title">
+		Sitekey: <.= name .>
+	</h1>
+    <label class="sitekey-form__label" for="description">
+		Description
+	  <input
+		class="sitekey-form__input"
+		type="text"
+		name="description"
+		id="description"
+		required
+		<. if name.trim().len() > 0 { .>
+		value="<.= name .>"
+		<. } .>
+	  />
+	</label>
+
+    <label class="sitekey-form__label" for="duration">
+		Cooldown Duratoin(in seconds)
+	  <input
+		class="sitekey-form__input"
+		type="number"
+		name="duration"
+		id="duration"
+		min=0
+		required
+		value="<.= duration .>"
+	  />
+	</label>
+
+
+  <. for (count, level) in levels.iter().enumerate() { .>
+    <. include!("./existing-level.html"); .> 
+  <. } .>
+
+</form>
+  </div>
+  <!-- end of container -->
+</main>
+<. include!("../../../components/footers.html"); .>

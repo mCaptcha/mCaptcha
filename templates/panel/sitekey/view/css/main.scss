@@ -1,0 +1,55 @@
+/*
+ * Copyright (C) 2021  Aravinth Manivannan <realaravinth@batsense.net>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+@import '../../../../reset';
+@import '../../../../vars';
+@import '../../../../components/box';
+
+.sitekey-list__box {
+  @include box;
+  padding-bottom: 0px;
+}
+
+.sitekey-list__title {
+  @include box-title;
+}
+
+.sitekey-list__item-container {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  border-bottom: 0.1px solid $light-grey;
+  padding: 20px;
+  color: $black-text;
+}
+
+.sitekey-list__item {
+  display: flex;
+  width: 100%;
+}
+
+.sitekey-list__item-container:hover {
+  background-color: $light-grey;
+}
+
+.sitekey-list__name {
+  flex: 3;
+}
+
+.sitekey-list__key {
+  flex: 1;
+}
