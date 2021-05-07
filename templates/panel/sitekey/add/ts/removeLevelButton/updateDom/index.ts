@@ -20,6 +20,8 @@ import log from '../../../../../../logger';
 
 import updateLabels from './updateLabel';
 import updateInputs from './updateInputs';
+import updateRemoveButton from './updateRemoveButton';
+import updateLevelGroup from './updateLevelGroup';
 
 /**
  * update level number on fieldset legends and their ids too
@@ -61,9 +63,14 @@ const updateLevelNumbersOnDOM = (id: number) => {
     // rename inputs
     updateInputs(levelGroup, newLevel);
 
-    // TODO change remove button ID as well
+    if (i != numLevels) {
+      // update remove button
+      updateRemoveButton(levelGroup, newLevel);
+    }
 
-    levelGroup.id = `${CONST.LEVEL_FIELDSET_ID_WITHOUT_LEVEL}${newLevel}`;
+    // update levelGroup's ID
+    updateLevelGroup(levelGroup, newLevel);
+    // TODO change remove button ID as well
 
     /* TODO
      * change field set ID

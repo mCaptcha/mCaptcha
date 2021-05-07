@@ -72,7 +72,7 @@ export const getRemoveButtonHTML = (level: number) => {
   const HTML = `
   ${CONST.REMOVE_LEVEL_LABEL_TEXT}
   <input
-    class="sitekey-form__level-remove-level-button"
+    class="${CONST.REMOVE_LEVEL_BUTTON_CLASS}"
     type="button"
     name="${CONST.REMOVE_LEVEL_BUTTON_ID_WITHOUT_LEVEL}${level}"
     id="${CONST.REMOVE_LEVEL_BUTTON_ID_WITHOUT_LEVEL}${level}"

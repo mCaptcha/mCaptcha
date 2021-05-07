@@ -49,44 +49,17 @@ log.setMode(MODE.none);
 it('addLevelButton works', () => {
   setUp();
 
-  //  for (let i = 1; i < 4; i++) {
-  //    const l1 = <HTMLButtonElement>(
-  //      document.getElementById(
-  //        `${CONST.REMOVE_LEVEL_BUTTON_ID_WITHOUT_LEVEL}${1}`,
-  //      )
-  //    );
-  //
-  //    const expecting = 4 - i;
-  //    const currentLevels = getNumLevels();
-  //    log.log(
-  //      `current iteration: ${i}. expecting val: ${expecting} got: ${currentLevels}`,
-  //    );
-  //
-  //    l1.click();
-  //    expect(currentLevels).toBe(expecting);
-  //
-  //
-  //  }
+  for (let i = 1; i < 4; i++) {
+    const l1 = <HTMLButtonElement>(
+      document.getElementById(
+        `${CONST.REMOVE_LEVEL_BUTTON_ID_WITHOUT_LEVEL}${1}`,
+      )
+    );
 
-  let a = document.body.innerHTML;
-  expect(trim(a)).toBe(trim(getRemoveButtonHTMLForm()));
+    const expecting = 4 - i;
 
-  const l1 = <HTMLButtonElement>(
-    document.getElementById(`${CONST.REMOVE_LEVEL_BUTTON_ID_WITHOUT_LEVEL}${1}`)
-  );
-
-  const expecting = 4 - 1;
-  const currentLevels = getNumLevels();
-  log.log(
-    `current iteration: ${1}. expecting val: ${expecting} got: ${currentLevels}`,
-  );
-
-  l1.click();
-
-  a = document.body.innerHTML;
-  //console.log(a);
-  //  expect(currentLevels).toBe(expecting);
-  //document.body.innerHTML;
-  //  expect(trim(a)).toBe(trim(getRemoveButtonHTMLForm()));
-  //
+    l1.click();
+    const currentLevels = getNumLevels();
+    expect(currentLevels).toBe(expecting);
+  }
 });

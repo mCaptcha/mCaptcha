@@ -29,6 +29,7 @@ const LEVEL_FIELDSET_ID_WITHOUT_LEVEL = 'level-group-';
 const LEGEND_CLASS = 'sitekey__level-title';
 
 const REMOVE_LEVEL_BUTTON_ID_WITHOUT_LEVEL = 'remove-level';
+const REMOVE_LEVEL_BUTTON_CLASS = 'sitekey-form__level-remove-level-button';
 const REMOVE_LEVEL_LABEL_TEXT = 'Remove Level';
 const REMOVE_LEVEL_LABEL_CLASS = 'sitekey-form__level-label--hidden';
 
@@ -48,6 +49,7 @@ const CONST = {
   REMOVE_LEVEL_LABEL_CLASS,
   REMOVE_LEVEL_BUTTON_ID_WITHOUT_LEVEL,
   REMOVE_LEVEL_LABEL_TEXT,
+  REMOVE_LEVEL_BUTTON_CLASS,
 };
 
 export default CONST;

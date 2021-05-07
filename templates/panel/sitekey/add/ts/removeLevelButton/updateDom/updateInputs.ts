@@ -17,6 +17,7 @@
 import CONST from '../../const';
 import log from '../../../../../../logger';
 
+/** update input IDs with new level */
 const updateInput = (levelGroup: Element, newLevel: number) => {
   const inputs = <NodeListOf<HTMLInputElement>>(
     levelGroup.querySelectorAll(`.${CONST.LEVEL_INPUT_CLASS}`)
