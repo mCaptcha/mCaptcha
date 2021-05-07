@@ -29,13 +29,13 @@ const updateInput = (levelGroup: Element, newLevel: number) => {
       const id = `${CONST.VISITOR_WITHOUT_LEVEL}${newLevel}`;
       input.id = id;
       input.name = id;
-    }
-
-    if (input.id.includes(CONST.DIFFICULTY_WITHOUT_LEVEL)) {
+    } else if (input.id.includes(CONST.DIFFICULTY_WITHOUT_LEVEL)) {
       log.log('changing difficulty input');
       const id = `${CONST.DIFFICULTY_WITHOUT_LEVEL}${newLevel}`;
       input.id = id;
       input.name = id;
+    } else {
+      throw new Error('Did you add an extra input to DOM?');
     }
   });
 };

@@ -17,22 +17,31 @@
 import CONST from '../../const';
 import log from '../../../../../../logger';
 
-const updateLabel = (levelGroup: Element, newLevel: number) => {
+const updateLabels = (levelGroup: Element, newLevel: number) => {
   // rename labels
   const labels = <NodeListOf<HTMLLabelElement>>(
-    levelGroup.querySelectorAll(`.${CONST.LABEL_CLASS}`)
+    levelGroup.querySelectorAll(`label`)
   );
   log.log(labels);
   labels.forEach(label => {
     log.log(`${label.htmlFor}`);
-    if (label.htmlFor.includes(CONST.VISITOR_WITHOUT_LEVEL)) {
+    const currentFor = label.htmlFor;
+    if (currentFor.includes(CONST.VISITOR_WITHOUT_LEVEL)) {
       label.htmlFor = `${CONST.VISITOR_WITHOUT_LEVEL}${newLevel}`;
-    }
-
-    if (label.htmlFor.includes(CONST.DIFFICULTY_WITHOUT_LEVEL)) {
+    } else if (currentFor.includes(CONST.DIFFICULTY_WITHOUT_LEVEL)) {
       label.htmlFor = `${CONST.DIFFICULTY_WITHOUT_LEVEL}${newLevel}`;
+    } else if (
+      currentFor.includes(CONST.REMOVE_LEVEL_BUTTON_ID_WITHOUT_LEVEL)
+    ) {
+      label.htmlFor = `${CONST.REMOVE_LEVEL_BUTTON_ID_WITHOUT_LEVEL}${newLevel}`;
+    } else {
+      if (currentFor != 'add') {
+        throw new Error(
+          `Did you add an extra label to DOM? Found label with for: ${currentFor}`,
+        );
+      }
     }
   });
 };
 
-export default updateLabel;
+export default updateLabels;

@@ -18,7 +18,7 @@ import getNumLevels from '../../levels/getNumLevels';
 import CONST from '../../const';
 import log from '../../../../../../logger';
 
-import updateLabel from './updateLabel';
+import updateLabels from './updateLabel';
 import updateInputs from './updateInputs';
 
 /**
@@ -56,7 +56,7 @@ const updateLevelNumbersOnDOM = (id: number) => {
     )[0].innerText = `Level ${newLevel}`;
 
     // rename labels
-    updateLabel(levelGroup, newLevel);
+    updateLabels(levelGroup, newLevel);
 
     // rename inputs
     updateInputs(levelGroup, newLevel);
