@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["main",""]],"mod":[["data",""],["settings",""]],"struct":[["Data",""],["SETTINGS",""],["Settings",""]]});
+initSidebarItems({"fn":[["build",""],["cache_bust",""],["main",""]],"mod":[["data",""],["settings",""]],"struct":[["Data",""],["SETTINGS",""],["Settings",""]]});
