@@ -65,6 +65,8 @@ rand = "0.8"
 
 sailfish = "0.3.2"
 
+mime = "0.3.16"
+
 [build-dependencies]
 serde_yaml = "0.8.17"
 serde_json = "1"

@@ -35,7 +35,7 @@ pub mod routes {
     impl Docs {
         pub const fn new() -> Self {
             Docs {
-                home: "/docs/",
+                home: "/docs",
                 spec: "/docs/openapi.json",
                 assets: "/docs/{_:.*}",
             }
@@ -84,6 +84,7 @@ async fn spec() -> HttpResponse {
 }
 
 async fn index() -> HttpResponse {
+    println!("getting index");
     handle_embedded_file("index.html")
 }
 
