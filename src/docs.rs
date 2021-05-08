@@ -35,7 +35,7 @@ pub mod routes {
     impl Docs {
         pub const fn new() -> Self {
             Docs {
-                home: "/docs",
+                home: "/docs/",
                 spec: "/docs/openapi.json",
                 assets: "/docs/{_:.*}",
             }
@@ -45,8 +45,7 @@ pub mod routes {
 
 pub fn services(cfg: &mut web::ServiceConfig) {
     use crate::define_resource;
-
-    define_resource!(cfg, DOCS.home, Methods::Get, index);
+    define_resource!(cfg, &DOCS.home[0..DOCS.home.len() - 1], Methods::Get, index);
     define_resource!(cfg, DOCS.spec, Methods::Get, spec);
     define_resource!(cfg, DOCS.assets, Methods::Get, dist);
 }
@@ -100,7 +99,14 @@ mod tests {
     async fn docs_works() {
         const FILE: &str = "favicon-32x32.png";
 
-        let mut app = test::init_service(App::new().configure(services)).await;
+        let mut app = test::init_service(
+            App::new()
+                .wrap(actix_middleware::NormalizePath::new(
+                    actix_middleware::normalize::TrailingSlash::Trim,
+                ))
+                .configure(services),
+        )
+        .await;
 
         let resp = test::call_service(
             &mut app,
