@@ -14,11 +14,13 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+//! PoW success token module
 
 use actix_web::{web, HttpResponse, Responder};
 use m_captcha::cache::messages::VerifyCaptchaResult;
 use serde::{Deserialize, Serialize};
 
+use super::record_confirm;
 use crate::errors::*;
 use crate::Data;
 
@@ -29,16 +31,19 @@ pub struct CaptchaValidateResp {
 
 // API keys are mcaptcha actor names
 
+/// route hander that validates a PoW solution token
 pub async fn validate_captcha_token(
     payload: web::Json<VerifyCaptchaResult>,
     data: web::Data<Data>,
 ) -> ServiceResult<impl Responder> {
+    let key = payload.key.clone();
     let res = data
         .captcha
         .validate_verification_tokens(payload.into_inner())
         .await?;
     let payload = CaptchaValidateResp { valid: res };
-    println!("{:?}", &payload);
+    record_confirm(&key, &data.db).await;
+    //println!("{:?}", &payload);
     Ok(HttpResponse::Ok().json(payload))
 }
 

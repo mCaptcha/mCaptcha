@@ -24,6 +24,7 @@ pub mod verify_token;
 
 pub use super::mcaptcha::duration::GetDurationResp;
 pub use super::mcaptcha::levels::I32Levels;
+use crate::api::v1::mcaptcha::stats::*;
 
 pub fn services(cfg: &mut web::ServiceConfig) {
     use crate::define_resource;

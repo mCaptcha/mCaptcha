@@ -20,9 +20,9 @@ use actix_web::{web, HttpResponse, Responder};
 use m_captcha::{defense::LevelBuilder, master::AddSiteBuilder, DefenseBuilder, MCaptchaBuilder};
 use serde::{Deserialize, Serialize};
 
+use super::record_fetch;
 use super::GetDurationResp;
 use super::I32Levels;
-use crate::api::v1::mcaptcha::stats::fetched;
 use crate::errors::*;
 use crate::Data;
 
@@ -39,6 +39,7 @@ pub struct GetConfigPayload {
 
 // API keys are mcaptcha actor names
 
+/// get PoW configuration for an mcaptcha key
 pub async fn get_config(
     payload: web::Json<GetConfigPayload>,
     data: web::Data<Data>,
@@ -68,7 +69,7 @@ pub async fn get_config(
                         .expect("mcaptcha should be initialized and ready to go");
                     // background it. would require data::Data to be static
                     // to satidfy lifetime
-                    fetched(&payload.key, &data.db).await;
+                    record_fetch(&payload.key, &data.db).await;
                     Ok(HttpResponse::Ok().json(config))
                 }
             }
@@ -78,7 +79,10 @@ pub async fn get_config(
         None => Err(ServiceError::TokenNotFound),
     }
 }
-
+/// Call this when [MCaptcha][m_captcha::MCaptcha] is not in master.
+///
+/// This fn gets mcaptcha config from database, builds [Defense][m_captcha::Defense],
+/// creates [MCaptcha][m_captcha::MCaptcha] and adds it to [Master][m_captcha::Defense]
 async fn init_mcaptcha(data: &Data, key: &str) -> ServiceResult<()> {
     // get levels
     let levels_fut = sqlx::query_as!(

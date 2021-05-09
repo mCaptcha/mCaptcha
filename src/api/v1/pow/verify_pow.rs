@@ -14,26 +14,34 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+//! PoW Verification module
 
 use actix_web::{web, HttpResponse, Responder};
 use m_captcha::pow::Work;
 use serde::{Deserialize, Serialize};
 
+use super::record_solve;
 use crate::errors::*;
 use crate::Data;
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
+/// validation token that clients receive as proof for submiting
+/// valid PoW
 pub struct ValidationToken {
     pub token: String,
 }
 
 // API keys are mcaptcha actor names
 
+/// route handler that verifies PoW and issues a solution token
+/// if verification is successful
 pub async fn verify_pow(
     payload: web::Json<Work>,
     data: web::Data<Data>,
 ) -> ServiceResult<impl Responder> {
+    let key = payload.key.clone();
     let res = data.captcha.verify_pow(payload.into_inner()).await?;
+    record_solve(&key, &data.db).await;
     let payload = ValidationToken { token: res };
     Ok(HttpResponse::Ok().json(payload))
 }

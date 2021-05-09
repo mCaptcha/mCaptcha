@@ -17,9 +17,35 @@
 
 use sqlx::PgPool;
 
-pub async fn fetched(key: &str, db: &PgPool) {
+/// record PoWConfig fetches
+#[inline]
+pub async fn record_fetch(key: &str, db: &PgPool) {
     let _ = sqlx::query!(
         "INSERT INTO mcaptcha_pow_fetched_stats 
+        (config_id) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1))",
+        &key,
+    )
+    .execute(db)
+    .await;
+}
+
+/// record PoWConfig solves
+#[inline]
+pub async fn record_solve(key: &str, db: &PgPool) {
+    let _ = sqlx::query!(
+        "INSERT INTO mcaptcha_pow_solved_stats 
+        (config_id) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1))",
+        &key,
+    )
+    .execute(db)
+    .await;
+}
+
+/// record PoWConfig confirms
+#[inline]
+pub async fn record_confirm(key: &str, db: &PgPool) {
+    let _ = sqlx::query!(
+        "INSERT INTO mcaptcha_pow_confirmed_stats 
         (config_id) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1))",
         &key,
     )
