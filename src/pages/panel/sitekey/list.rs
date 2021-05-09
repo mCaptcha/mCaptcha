@@ -37,7 +37,17 @@ impl IndexPage {
     }
 }
 
+/// render a list of all sitekeys that a user has
 pub async fn list_sitekeys(data: web::Data<Data>, id: Identity) -> PageResult<impl Responder> {
+    let res = get_list_sitekeys(&data, &id).await?;
+    let body = IndexPage::new(res).render_once().unwrap();
+    Ok(HttpResponse::Ok()
+        .content_type("text/html; charset=utf-8")
+        .body(body))
+}
+
+/// utility function to get a list of all sitekeys that a user owns
+pub async fn get_list_sitekeys(data: &Data, id: &Identity) -> PageResult<SiteKeys> {
     let username = id.identity().unwrap();
     let res = sqlx::query_as!(
         MCaptchaDetails,
@@ -47,14 +57,10 @@ pub async fn list_sitekeys(data: web::Data<Data>, id: Identity) -> PageResult<im
     )
     .fetch_all(&data.db)
     .await?;
-
-    let body = IndexPage::new(res).render_once().unwrap();
-    Ok(HttpResponse::Ok()
-        .content_type("text/html; charset=utf-8")
-        .body(body))
+    Ok(res)
 }
 
-type SiteKeys = Vec<MCaptchaDetails>;
+pub type SiteKeys = Vec<MCaptchaDetails>;
 
 #[cfg(test)]
 mod test {

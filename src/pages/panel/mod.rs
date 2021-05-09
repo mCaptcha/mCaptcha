@@ -15,32 +15,36 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-use actix_web::{HttpResponse, Responder};
-use lazy_static::lazy_static;
+use actix_identity::Identity;
+use actix_web::{web, HttpResponse, Responder};
 use sailfish::TemplateOnce;
 
 pub mod sitekey;
 
+use crate::errors::PageResult;
+use crate::Data;
+use sitekey::list::{get_list_sitekeys, SiteKeys};
+
 #[derive(TemplateOnce, Clone)]
 #[template(path = "panel/index.html")]
-pub struct IndexPage;
+pub struct IndexPage {
+    sitekeys: SiteKeys,
+}
 
-const PAGE: &str = "Dashboard";
-
-impl Default for IndexPage {
-    fn default() -> Self {
-        IndexPage
+impl IndexPage {
+    fn new(sitekeys: SiteKeys) -> Self {
+        IndexPage { sitekeys }
     }
 }
 
-lazy_static! {
-    static ref INDEX: String = IndexPage::default().render_once().unwrap();
-}
+const PAGE: &str = "Dashboard";
 
-async fn panel() -> impl Responder {
-    HttpResponse::Ok()
+async fn panel(data: web::Data<Data>, id: Identity) -> PageResult<impl Responder> {
+    let sitekeys = get_list_sitekeys(&data, &id).await?;
+    let body = IndexPage::new(sitekeys).render_once().unwrap();
+    Ok(HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
-        .body(&*INDEX)
+        .body(body))
 }
 
 pub fn services(cfg: &mut actix_web::web::ServiceConfig) {

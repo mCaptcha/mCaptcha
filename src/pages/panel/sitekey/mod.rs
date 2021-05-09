@@ -16,7 +16,7 @@
 */
 
 mod add;
-mod list;
+pub mod list;
 mod view;
 
 pub mod routes {
