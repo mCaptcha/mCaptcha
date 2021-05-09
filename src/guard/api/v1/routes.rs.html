@@ -51,6 +51,9 @@
 <span id="48">48</span>
 <span id="49">49</span>
 <span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -75,6 +78,7 @@
 <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">mcaptcha</span>::<span class="ident">levels</span>::<span class="ident">routes</span>::<span class="ident">Levels</span>;
 <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">mcaptcha</span>::<span class="ident">mcaptcha</span>::<span class="ident">routes</span>::<span class="ident">MCaptcha</span>;
 <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">meta</span>::<span class="ident">routes</span>::<span class="ident">Meta</span>;
+<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">notifications</span>::<span class="ident">routes</span>::<span class="ident">Notifications</span>;
 <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">pow</span>::<span class="ident">routes</span>::<span class="ident">PoW</span>;
 
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ROUTES</span>: <span class="ident">Routes</span> <span class="op">=</span> <span class="ident">Routes</span>::<span class="ident">new</span>();
@@ -87,6 +91,7 @@
     <span class="kw">pub</span> <span class="ident">duration</span>: <span class="ident">Duration</span>,
     <span class="kw">pub</span> <span class="ident">meta</span>: <span class="ident">Meta</span>,
     <span class="kw">pub</span> <span class="ident">pow</span>: <span class="ident">PoW</span>,
+    <span class="kw">pub</span> <span class="ident">notifications</span>: <span class="ident">Notifications</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Routes</span> {
@@ -99,6 +104,7 @@
             <span class="ident">duration</span>: <span class="ident">Duration</span>::<span class="ident">new</span>(),
             <span class="ident">meta</span>: <span class="ident">Meta</span>::<span class="ident">new</span>(),
             <span class="ident">pow</span>: <span class="ident">PoW</span>::<span class="ident">new</span>(),
+            <span class="ident">notifications</span>: <span class="ident">Notifications</span>::<span class="ident">new</span>(),
         }
     }
 }

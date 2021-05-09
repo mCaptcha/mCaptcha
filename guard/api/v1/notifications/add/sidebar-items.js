@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["add_notification","route handler that adds a notification message"]],"struct":[["AddNotification",""]]});
