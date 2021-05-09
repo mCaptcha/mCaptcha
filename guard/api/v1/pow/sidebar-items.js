@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["services",""]],"mod":[["get_config",""],["routes",""],["verify_pow",""],["verify_token",""]]});
+initSidebarItems({"fn":[["services",""]],"mod":[["get_config",""],["routes",""],["verify_pow","PoW Verification module"],["verify_token","PoW success token module"]]});

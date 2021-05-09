@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["validate_captcha_token",""]],"struct":[["CaptchaValidateResp",""]]});
+initSidebarItems({"fn":[["validate_captcha_token","route hander that validates a PoW solution token"]],"struct":[["CaptchaValidateResp",""]]});
