@@ -25,7 +25,6 @@ import CONST from './const';
 
 import log from '../../../../logger';
 
-
 /**
  * Gets executed when 'Add' Button is clicked to add levels
  * Used to validate levels per m_captcha::defense::Defense's
@@ -43,19 +42,24 @@ const addLevel = (e: Event) => {
     return log.error('Aborting level addition');
   }
 
-  eventTarget.remove();
-  PARENT.innerHTML = getRemoveButtonHTML(onScreenLevel);
-  PARENT.htmlFor = `${CONST.REMOVE_LEVEL_BUTTON_ID_WITHOUT_LEVEL}${onScreenLevel}`;
+  // eventTarget.remove();
+  FIELDSET.replaceChild(getRemoveButtonHTML(onScreenLevel), PARENT);
+
+  //  PARENT.appendChild(  PARENT.htmlFor = `${CONST.REMOVE_LEVEL_BUTTON_ID_WITHOUT_LEVEL}${onScreenLevel}`;
   //FIELDSET.innerHTML += getRemoveButtonHTML(numLevels);
 
   //PARENT.remove();
 
-  const newLevelHTML = getHtml(onScreenLevel + 1);
-  FIELDSET.insertAdjacentHTML('afterend', newLevelHTML);
+  const newLevelElement = getHtml(onScreenLevel + 1);
+  FIELDSET.insertAdjacentElement('afterend', newLevelElement);
   UpdateLevel.register(onScreenLevel);
 
   addRemoveLevelButtonEventListener(onScreenLevel);
   addLevelButtonAddEventListener();
+  const main = document.querySelector('body');
+  const style = main.style.display;
+  main.style.display = 'none';
+  main.style.display = style;
 };
 
 /** adds onclick event listener */
@@ -73,43 +77,64 @@ const addLevelButtonAddEventListener = () => {
 const getHtml = (level: number) => {
   log.debug(`[generating HTML getHtml]level: ${level}`);
 
-  const HTML = `
-<fieldset class="sitekey__level-container" id="level-group-${level}">
-  <legend class="sitekey__level-title">
-	  Level ${level}
-  </legend>
-  <label class="sitekey-form__level-label" for="visitor${level}"
-    >Visitor
-    <input
-      class="sitekey-form__level-input"
-      type="number"
-      name="visitor${level}"
-      id="visitor${level}"
-    />
-  </label>
+  const fieldset = document.createElement('fieldset'); //  new HTMLFieldSetElement();
+  fieldset.className = CONST.LEVEL_CONTAINER_CLASS;
+  fieldset.id = `${CONST.LEVEL_FIELDSET_ID_WITHOUT_LEVEL}${level}`;
 
-  <label class="sitekey-form__level-label" for="difficulty${level}">
-    Difficulty
-    <input
-      type="number"
-      name="difficulty${level}"
-      class="sitekey-form__level-input"
-      id="difficulty${level}"
-    />
-  </label>
-  <label class="sitekey-form__level-label--hidden" for="add">
-	  Add level
-  <input
-    class="sitekey-form__level-add-level-button"
-    type="button"
-    name="add"
-    id="add"
-    value="Add"
-  />
-  </label>
-</fieldset>
-`;
-  return HTML;
+  const legend = document.createElement('legend'); // new HTMLLegendElement();
+  legend.className = CONST.LEGEND_CLASS;
+  const legendText = document.createTextNode(`Level ${level}`);
+  legend.appendChild(legendText);
+
+  fieldset.appendChild(legend);
+
+  const vistitorLabel = document.createElement('label'); //document.createElement('label');
+  vistitorLabel.className = CONST.LABEL_CLASS;
+  const visitorText = document.createTextNode('Visitor');
+  vistitorLabel.appendChild(visitorText);
+  const visitor = document.createElement('input'); //document.createElement('input');
+  const visitorId = `${CONST.VISITOR_WITHOUT_LEVEL}${level}`;
+  visitor.className = CONST.LEVEL_INPUT_CLASS;
+  visitor.type = 'number';
+  visitor.name = visitorId;
+  visitor.id = visitorId;
+  vistitorLabel.htmlFor = visitorId;
+  vistitorLabel.appendChild(visitor);
+
+  fieldset.appendChild(vistitorLabel);
+
+  const difficultyLabel = document.createElement('label');
+  difficultyLabel.className = CONST.LABEL_CLASS;
+  const difficultyText = document.createTextNode('Difficulty');
+  difficultyLabel.appendChild(difficultyText);
+  const difficulty = document.createElement('input');
+  const difficultyID = `${CONST.DIFFICULTY_WITHOUT_LEVEL}${level}`;
+  difficulty.type = 'number';
+  difficulty.name = difficultyID;
+  difficulty.className = CONST.LEVEL_INPUT_CLASS;
+  difficulty.id = difficultyID;
+  difficultyLabel.htmlFor = difficultyID;
+  difficultyLabel.appendChild(difficulty);
+
+  fieldset.appendChild(difficultyLabel);
+
+  const addLevelLabel = document.createElement('label');
+  addLevelLabel.className = CONST.REMOVE_LEVEL_LABEL_CLASS;
+  const addLevel = document.createElement('input');
+  addLevel.className = CONST.ADD_LEVEL_BUTTON;
+  addLevel.type = 'button';
+  const addLevelButtonID = 'add';
+  addLevel.name = addLevelButtonID;
+  addLevel.id = addLevelButtonID;
+  addLevelLabel.htmlFor = addLevelButtonID;
+  const addText = document.createTextNode('Add level');
+  addLevelLabel.appendChild(addText);
+  addLevel.value = 'Add';
+  addLevelLabel.appendChild(addLevel);
+
+  fieldset.appendChild(addLevelLabel);
+
+  return fieldset;
 };
 
 export default addLevelButtonAddEventListener;

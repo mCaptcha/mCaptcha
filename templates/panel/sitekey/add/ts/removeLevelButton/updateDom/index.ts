@@ -53,9 +53,11 @@ const updateLevelNumbersOnDOM = (id: number) => {
     }
 
     // rename legend
+    const legendText = document.createTextNode(`Level ${newLevel}`);
     levelGroup.getElementsByTagName(
       'legend',
-    )[0].innerText = `Level ${newLevel}`;
+    )[0].appendChild(legendText);
+
 
     // rename labels
     updateLabels(levelGroup, newLevel);

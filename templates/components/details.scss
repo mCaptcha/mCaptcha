@@ -18,25 +18,18 @@
 
 .details {
   list-style: none;
-  position: absolute;
+  position: relative;
   bottom: 0px;
   box-sizing: border-box;
   width: 95%;
   display: flex;
   font-size: 14px;
   margin: auto;
-}
-
-.details__dummy-filler {
-  flex: 10;
+  background-color: $backdrop;
 }
 
 .details__item {
   margin: auto 10px;
-}
-
-.details__item:first-child {
-  flex: 4;
 }
 
 .details__link {

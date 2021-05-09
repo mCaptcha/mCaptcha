@@ -15,7 +15,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import getNumLevels from '../../levels/getNumLevels';
 import {getAddForm, trim} from '../../setupTests';
 import updateInputs from './updateInputs';
 import CONST from '../../const';
@@ -29,7 +28,7 @@ document.body.innerHTML = getAddForm();
 
 log.setMode(MODE.none);
 
-it('addLevelButton works', () => {
+it('updateInputs works', () => {
   setupAddlevels();
   // removing level  2
   const level = 2;

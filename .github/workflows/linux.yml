@@ -1,4 +1,4 @@
-name: CI (Linux)
+name: Check Build
 
 on:
   pull_request:

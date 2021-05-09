@@ -36,7 +36,9 @@ const updateInput = (levelGroup: Element, newLevel: number) => {
       input.id = id;
       input.name = id;
     } else {
-      throw new Error('Did you add an extra input to DOM?');
+      if (input.id != 'add') {
+        throw new Error(`Did you add an extra input to DOM? ${input.id} ${input.className} ${input.name}`);
+      }
     }
   });
 };

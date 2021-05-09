@@ -15,16 +15,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-@import '../../../reset';
-@import '../../../vars';
+@import '../../reset';
+@import '../../vars';
 
 .secondary-menu {
-  position: fixed;
-  width: 14%;
-  left: 0;
-  bottom: 0;
-  top: 0;
-  right: 0;
+ // position: fixed;
+ // width: 14%;
+ // left: 0;
+ // bottom: 0;
+ // top: 0;
+ // right: 0;
+
   height: 100%;
   overflow: auto;
 

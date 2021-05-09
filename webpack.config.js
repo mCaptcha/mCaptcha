@@ -4,9 +4,9 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 module.exports = {
-  //devtool: 'inline-source-map',
-  //mode: ''development,
-  mode: 'production',
+  devtool: 'inline-source-map',
+  mode: 'development',
+  //mode: 'production',
   entry: './templates/index.ts',
   output: {
     filename: 'bundle.js',

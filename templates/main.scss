@@ -15,16 +15,50 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-@import '../../reset';
-@import '../../vars';
-@import '../../components/button';
-@import '../../components/inner-container';
-@import '../../components/main';
-
-.panel-main {
-  @include main;
+// creadits: https://codepen.io/rachelandrew/pen/MmOvPr/?editors=1100
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  grid-template-rows: 1fr 6fr 1fr;
 }
 
-.inner-container {
-  @include inner-container;
+h1,
+p {
+  margin: 0 0 1em 0;
 }
+
+/* no grid support? check this out later */
+/*
+.sidebar {
+  float: left;
+  width: 19.1489%;
+}
+
+.content {
+  float: right;
+  width: 79.7872%;
+}
+*/
+
+/* make a grid */
+header,
+footer {
+  grid-column: 2 / 5;
+  /* needed for the floated layout */
+  clear: both;
+}
+
+nav {
+  grid-row: 1/ 4;
+  /* needed for the floated layout */
+  clear: both;
+}
+
+/* We need to set the widths used on floated items back to auto, and remove the bottom margin as when we have grid we have gaps.
+ * @supports (display: grid) {
+  .wrapper > * {
+    width: auto;
+    margin: 0;
+  }
+}
+ */

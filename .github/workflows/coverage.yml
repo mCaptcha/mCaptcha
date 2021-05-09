@@ -1,4 +1,4 @@
-name: CI (Linux)
+name: Coverage
 
 on:
   pull_request:
@@ -51,6 +51,9 @@ jobs:
 
       - name: Install JavaScript Dependencies
         run: yarn install
+
+      - name: Build frontend
+        run: yarn build
 
       - name: Run the tests
         run: yarn test

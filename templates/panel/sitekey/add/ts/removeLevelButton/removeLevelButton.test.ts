@@ -46,7 +46,7 @@ const setUp = () => {
 
 log.setMode(MODE.none);
 
-it('addLevelButton works', () => {
+it('removeLevelButton works', () => {
   setUp();
 
   for (let i = 1; i < 4; i++) {

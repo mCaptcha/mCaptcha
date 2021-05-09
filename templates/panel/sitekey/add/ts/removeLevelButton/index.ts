@@ -69,16 +69,21 @@ export const addRemoveLevelButtonEventListenerAll = () => {
  */
 export const getRemoveButtonHTML = (level: number) => {
   log.log(`[generating HTML getHtml]level: ${level}`);
-  const HTML = `
-  ${CONST.REMOVE_LEVEL_LABEL_TEXT}
-  <input
-    class="${CONST.REMOVE_LEVEL_BUTTON_CLASS}"
-    type="button"
-    name="${CONST.REMOVE_LEVEL_BUTTON_ID_WITHOUT_LEVEL}${level}"
-    id="${CONST.REMOVE_LEVEL_BUTTON_ID_WITHOUT_LEVEL}${level}"
-    value="x"
-  />
-</fieldset>
-`;
-  return HTML;
+
+  const btn = document.createElement('input');
+  btn.className = CONST.REMOVE_LEVEL_BUTTON_CLASS;
+  btn.type = 'button';
+  const id = `${CONST.REMOVE_LEVEL_BUTTON_ID_WITHOUT_LEVEL}${level}`;
+  btn.name = id;
+  btn.id = id;
+  btn.value = 'x';
+
+  const removeLabel = document.createElement('label');
+  removeLabel.className = CONST.REMOVE_LEVEL_LABEL_CLASS;
+  const removeLabelText = document.createTextNode('RemoveLevel');
+  removeLabel.appendChild(removeLabelText);
+  removeLabel.appendChild(btn);
+  removeLabel.htmlFor = id;
+
+  return removeLabel;
 };

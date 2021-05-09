@@ -26,11 +26,12 @@ import log from './logger';
 
 import VIEWS from './views/v1/routes';
 
+import './main.scss';
 import './auth/css/main.scss';
 import './components/details.scss';
 import './panel/css/main.scss';
-import './panel/header/sidebar/main.scss';
-import './panel/taskbar/main.scss';
+import './panel/navbar/main.scss';
+import './panel/header/taskbar/main.scss';
 import './panel/help-banner/main.scss';
 import './panel/sitekey/add/css/main.scss';
 import './panel/sitekey/list/css/main.scss';
@@ -46,4 +47,8 @@ router.register(VIEWS.registerUser, register.index);
 router.register(VIEWS.loginUser, login.index);
 router.register(VIEWS.addSiteKey, addSiteKey.index);
 
-router.route();
+try {
+  router.route();
+} catch (e) {
+  console.log(e);
+}

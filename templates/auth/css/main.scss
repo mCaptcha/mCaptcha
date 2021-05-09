@@ -27,7 +27,7 @@ body {
 .auth-inner-container {
   @include inner-container;
   flex-direction: column;
-  margin: 0px, auto;
+  margin: auto;
   width: $auth-content-width;
   top: 50%;
   left: 50%;
