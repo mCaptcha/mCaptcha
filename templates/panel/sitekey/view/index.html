@@ -1,8 +1,9 @@
 <. include!("../../../components/headers.html"); .> 
 <. include!("../../navbar/index.html"); .>
+<div class="tmp-layout">
 <. include!("../../header/index.html"); .>
 <main class="panel-main">
-  include!("../../help-banner/index.html"); .>
+  <. include!("../../help-banner/index.html"); .>
   <!-- Main content container -->
   <div class="inner-container">
     <!-- Main menu/ important actions roaster -->
@@ -14,6 +15,7 @@
     <label class="sitekey-form__label" for="description">
 		Description
 	  <input
+		readonly="readonly"
 		class="sitekey-form__input"
 		type="text"
 		name="description"
@@ -28,6 +30,7 @@
     <label class="sitekey-form__label" for="duration">
 		Cooldown Duratoin(in seconds)
 	  <input
+		readonly="readonly"
 		class="sitekey-form__input"
 		type="number"
 		name="duration"
