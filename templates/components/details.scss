@@ -16,16 +16,30 @@
  */
 @import '../_vars.scss';
 
+$footer-font-size: 14px;
+
+.details__container {
+  display: flex;
+  font-size: $footer-font-size;
+  //  margin-left: auto;
+}
+
+.details__copyright {
+  flex: 2;
+  font-size: $footer-font-size;
+}
+
 .details {
   list-style: none;
-  position: relative;
   bottom: 0px;
   box-sizing: border-box;
-  width: 95%;
   display: flex;
   font-size: 14px;
-  margin: auto;
   background-color: $backdrop;
+
+  //position: relative;
+  // width: 95%;
+  //margin: auto;
 }
 
 .details__item {

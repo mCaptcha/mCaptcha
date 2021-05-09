@@ -33,6 +33,12 @@
   color: $light-text;
 }
 
+.secondary-menu__lsit{
+	position: fixed;
+	top: 0;
+	bottom: 0;
+}
+
 .secondary-menu__heading {
   margin: auto;
   padding: 20px 5px;
