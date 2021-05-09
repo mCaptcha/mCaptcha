@@ -21,6 +21,7 @@ pub mod account;
 pub mod auth;
 pub mod mcaptcha;
 pub mod meta;
+mod notifications;
 pub mod pow;
 mod routes;
 
@@ -31,6 +32,7 @@ pub fn services(cfg: &mut ServiceConfig) {
     auth::services(cfg);
     account::services(cfg);
     mcaptcha::services(cfg);
+    notifications::services(cfg);
     pow::services(cfg);
 }
 

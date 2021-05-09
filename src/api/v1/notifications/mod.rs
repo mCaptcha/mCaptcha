@@ -15,33 +15,35 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-use super::auth::routes::Auth;
-use super::errors::routes::Errors;
-use super::panel::routes::Panel;
-pub const ROUTES: Routes = Routes::new();
+mod add;
 
-pub struct Routes {
-    pub home: &'static str,
-    pub auth: Auth,
-    pub panel: Panel,
-    pub errors: Errors,
-    pub about: &'static str,
-    pub thanks: &'static str,
-    pub donate: &'static str,
-}
+pub mod routes {
 
-impl Routes {
-    const fn new() -> Routes {
-        let panel = Panel::new();
-        let home = panel.home;
-        Routes {
-            auth: Auth::new(),
-            panel,
-            home,
-            errors: Errors::new(),
-            about: "/about",
-            thanks: "/thanks",
-            donate: "/donate",
+    pub struct Notifications {
+        pub add: &'static str,
+        pub mark_read: &'static str,
+        pub get: &'static str,
+    }
+
+    impl Notifications {
+        pub const fn new() -> Notifications {
+            Notifications {
+                add: "/api/v1/notifications/add",
+                mark_read: "/api/v1/notifications/read/",
+                get: "/api/v1/notifications/get/",
+            }
         }
     }
+}
+
+pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
+    use crate::define_resource;
+    use crate::V1_API_ROUTES;
+
+    define_resource!(
+        cfg,
+        V1_API_ROUTES.notifications.add,
+        Methods::ProtectPost,
+        add::add_notification
+    );
 }
