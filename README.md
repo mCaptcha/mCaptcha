@@ -4,27 +4,74 @@
     <strong>Back-end component of mCaptcha</strong>
   </p>
 
-[![Documentation](https://img.shields.io/badge/docs-master-blue)](https://mcaptcha.github.io/guard/guard/)
+[![Documentation](https://img.shields.io/badge/docs-master-blue?style=flat-square)](https://mcaptcha.github.io/guard/guard/)
 ![CI (Linux)](<https://github.com/mCaptcha/guard/workflows/CI%20(Linux)/badge.svg>)
-[![dependency status](https://deps.rs/repo/github/mCaptcha/guard/status.svg)](https://deps.rs/repo/github/mCaptcha/guard)
-[![codecov](https://codecov.io/gh/mCaptcha/guard/branch/master/graph/badge.svg)](https://codecov.io/gh/mCaptcha/guard)
+[![dependency status](https://deps.rs/repo/github/mCaptcha/guard/status.svg?style=flat-square)](https://deps.rs/repo/github/mCaptcha/guard)
+[![codecov](https://codecov.io/gh/mCaptcha/guard/branch/master/graph/badge.svg?style=flat-square)](https://codecov.io/gh/mCaptcha/guard)
 <br />
-[![AGPL License](https://img.shields.io/badge/license-AGPL-blue.svg)](http://www.gnu.org/licenses/agpl-3.0)
+[![AGPL License](https://img.shields.io/badge/license-AGPL-blue.svg?style=flat-square)](http://www.gnu.org/licenses/agpl-3.0)
+[![Chat](https://img.shields.io/badge/matrix-+mcaptcha:matrix.batsense.net-purple?style=flat-square)](https://matrix.to/#/+mcaptcha:matrix.batsense.net)
+
+**STATUS: ACTIVE DEVELOPMENT**
 
 </div>
 
 </div>
 
-Guard is the back-end component of [mCaptcha](https://mcaptcha.org)
+Guard is the back-end component of the [mCaptcha](https://mcaptcha.org)
 system.
 
-**STATUS: UNUSABLE BUT ACTIVE DEVELOPMENT**
+---
 
-### Development:
+mCaptcha uses SHA256 based proof-of-work(PoW) to rate limit users.
+
+When a user wants to do something on an mCaptcha-protected website,
+
+1. they will have to generate proof-of-work(a bunch of math that will takes
+   time to compute) and submit it to mCaptcha.
+
+2. We'll validate the proof:
+
+   - **if validation is unsuccessful**, they will be prevented from
+     accessing their target website
+   - **if validation is successful**, read on,
+
+3. They will be issued a token that they should submit along
+   with their request/form submission to the target website.
+
+4. The target website should validate the user-submitted token with mCaptcha
+   before processing the user's request.
+
+The whole process is automated from the user's POV. All they have to do
+is click on a button to initiate the process.
+
+mCaptcha makes interacting with websites (computationally)expensive for
+the user. A well-behaving user will experience a slight delay(no delay
+when under moderate load to 2s when under attack; PoW difficulty is
+variable) but if someone wants to hammer your site, they will have to do
+more work to send requests than your server will have to do to respond
+to their request.
+
+## Why use mCaptcha?
+
+- **Free software, privacy focused**
+- **Seamless UX** - No more annoying CAPTCHAs!
+- **IP address independent:** your users are behind a NAT? We got you covered!
+- **Automatic bot throttling:**
+- **Resistant to replay attacks:** proof-of-work configurations have
+  short lifetimes(30s) and can be used only once. If a user submits a
+  PoW to an already used configuration or an expired one, their proof
+  will be rejected.
+
+## Demo
+
+Coming soon...
+
+## Development:
 
 See [DEVELOPMENT.md](./DEVELOPMENT.md)
 
-### How to build
+## How to build
 
 - Install Cargo using [rustup](https://rustup.rs/) with:
 
@@ -44,7 +91,7 @@ $ git clone https://github.com/mCaptcha/guard
 $ cd guard && cargo build
 ```
 
-### Configuration:
+## Configuration:
 
 Guard is highly configurable.
 Configuration is applied/merged in the following order:
@@ -52,15 +99,15 @@ Configuration is applied/merged in the following order:
 1. `config/default.toml`
 2. environment variables.
 
-#### Setup
+### Setup
 
-##### Environment variables:
+#### Environment variables:
 
 Setting environment variables are optional. The configuration files have
 all the necessary parameters listed. By setting environment variables,
 you will be overriding the values set in the configuration files.
 
-###### Database:
+##### Database:
 
 | Name                      | Value                                  |
 | ------------------------- | -------------------------------------- |
@@ -71,7 +118,7 @@ you will be overriding the values set in the configuration files.
 | `GUARD_DATEBASE_USERNAME` | Postgres username                      |
 | `GUARD_DATEBASE_POOL`     | Postgres database connection pool size |
 
-###### Server:
+##### Server:
 
 | Name                                | Value                                               |
 | ----------------------------------- | --------------------------------------------------- |
