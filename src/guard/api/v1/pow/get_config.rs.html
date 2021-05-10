@@ -188,6 +188,8 @@
 <span id="185">185</span>
 <span id="186">186</span>
 <span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -208,7 +210,9 @@
 
 <span class="kw">use</span> <span class="ident">actix</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">actix_web</span>::{<span class="ident">web</span>, <span class="ident">HttpResponse</span>, <span class="ident">Responder</span>};
-<span class="kw">use</span> <span class="ident">m_captcha</span>::{<span class="ident">defense</span>::<span class="ident">LevelBuilder</span>, <span class="ident">master</span>::<span class="ident">AddSiteBuilder</span>, <span class="ident">DefenseBuilder</span>, <span class="ident">MCaptchaBuilder</span>};
+<span class="kw">use</span> <span class="ident">m_captcha</span>::{
+    <span class="ident">defense</span>::<span class="ident">LevelBuilder</span>, <span class="ident">master</span>::<span class="ident">AddSiteBuilder</span>, <span class="ident">DefenseBuilder</span>, <span class="ident">MCaptchaBuilder</span>,
+};
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
 <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">record_fetch</span>;

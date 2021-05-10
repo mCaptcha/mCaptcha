@@ -379,6 +379,10 @@
 <span id="376">376</span>
 <span id="377">377</span>
 <span id="378">378</span>
+<span id="379">379</span>
+<span id="380">380</span>
+<span id="381">381</span>
+<span id="382">382</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -632,7 +636,11 @@
     <span class="kw">pub</span> <span class="ident">visitor_threshold</span>: <span class="ident">i32</span>,
 }
 
-<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_levels_util</span>(<span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="ident">Data</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">I32Levels</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_levels_util</span>(
+    <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
+    <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
+    <span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="ident">Data</span>,
+) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">I32Levels</span><span class="op">&gt;</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">levels</span> <span class="op">=</span> <span class="ident">sqlx</span>::<span class="macro">query_as</span><span class="macro">!</span>(
         <span class="ident">I32Levels</span>,
         <span class="string">&quot;SELECT difficulty_factor, visitor_threshold FROM mcaptcha_levels  WHERE

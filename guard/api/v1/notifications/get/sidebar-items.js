@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["get_notification","route handler that gets all unread notifications"]],"struct":[["Notification",""],["NotificationResp",""]]});
