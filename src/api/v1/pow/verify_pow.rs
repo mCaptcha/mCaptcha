@@ -80,7 +80,8 @@ mod tests {
 
         let get_config_resp = test::call_service(
             &mut app,
-            post_request!(&get_config_payload, V1_API_ROUTES.pow.get_config).to_request(),
+            post_request!(&get_config_payload, V1_API_ROUTES.pow.get_config)
+                .to_request(),
         )
         .await;
         assert_eq!(get_config_resp.status(), StatusCode::OK);
@@ -119,7 +120,9 @@ mod tests {
             err.error,
             format!(
                 "{}",
-                ServiceError::CaptchaError(m_captcha::errors::CaptchaError::StringNotFound)
+                ServiceError::CaptchaError(
+                    m_captcha::errors::CaptchaError::StringNotFound
+                )
             )
         );
 

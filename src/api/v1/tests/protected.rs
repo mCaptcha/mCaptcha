@@ -58,7 +58,8 @@ async fn protected_routes_work() {
 
     for url in get_protected_urls.iter() {
         let resp =
-            test::call_service(&mut app, test::TestRequest::get().uri(url).to_request()).await;
+            test::call_service(&mut app, test::TestRequest::get().uri(url).to_request())
+                .await;
         assert_eq!(resp.status(), StatusCode::FOUND);
 
         let authenticated_resp = test::call_service(

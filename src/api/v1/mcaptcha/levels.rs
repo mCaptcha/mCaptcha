@@ -250,7 +250,11 @@ pub struct I32Levels {
     pub visitor_threshold: i32,
 }
 
-async fn get_levels_util(key: &str, username: &str, data: &Data) -> ServiceResult<Vec<I32Levels>> {
+async fn get_levels_util(
+    key: &str,
+    username: &str,
+    data: &Data,
+) -> ServiceResult<Vec<I32Levels>> {
     let levels = sqlx::query_as!(
         I32Levels,
         "SELECT difficulty_factor, visitor_threshold FROM mcaptcha_levels  WHERE

@@ -127,7 +127,8 @@ mod tests {
         )
         .await;
         assert_eq!(validate_client_token.status(), StatusCode::OK);
-        let resp: CaptchaValidateResp = test::read_body_json(validate_client_token).await;
+        let resp: CaptchaValidateResp =
+            test::read_body_json(validate_client_token).await;
         assert!(resp.valid);
 
         // string not found

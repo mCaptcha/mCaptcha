@@ -38,7 +38,10 @@ impl IndexPage {
 }
 
 /// render a list of all sitekeys that a user has
-pub async fn list_sitekeys(data: web::Data<Data>, id: Identity) -> PageResult<impl Responder> {
+pub async fn list_sitekeys(
+    data: web::Data<Data>,
+    id: Identity,
+) -> PageResult<impl Responder> {
     let res = get_list_sitekeys(&data, &id).await?;
     let body = IndexPage::new(res).render_once().unwrap();
     Ok(HttpResponse::Ok()

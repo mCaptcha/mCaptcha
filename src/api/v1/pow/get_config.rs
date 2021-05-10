@@ -17,7 +17,9 @@
 
 use actix::prelude::*;
 use actix_web::{web, HttpResponse, Responder};
-use m_captcha::{defense::LevelBuilder, master::AddSiteBuilder, DefenseBuilder, MCaptchaBuilder};
+use m_captcha::{
+    defense::LevelBuilder, master::AddSiteBuilder, DefenseBuilder, MCaptchaBuilder,
+};
 use serde::{Deserialize, Serialize};
 
 use super::record_fetch;

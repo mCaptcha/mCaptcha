@@ -94,7 +94,10 @@ pub async fn register<'a>(name: &'a str, email: &str, password: &str) {
 }
 
 /// signin util
-pub async fn signin<'a>(name: &'a str, password: &str) -> (data::Data, Login, ServiceResponse) {
+pub async fn signin<'a>(
+    name: &'a str,
+    password: &str,
+) -> (data::Data, Login, ServiceResponse) {
     let data = Data::new().await;
     let mut app = get_app!(data).await;
 

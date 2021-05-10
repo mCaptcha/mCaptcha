@@ -18,8 +18,8 @@ use std::env;
 
 use actix_identity::{CookieIdentityPolicy, IdentityService};
 use actix_web::{
-    client::Client, error::InternalError, http::StatusCode, middleware as actix_middleware,
-    web::JsonConfig, App, HttpServer,
+    client::Client, error::InternalError, http::StatusCode,
+    middleware as actix_middleware, web::JsonConfig, App, HttpServer,
 };
 use lazy_static::lazy_static;
 use log::info;
@@ -51,8 +51,10 @@ lazy_static! {
     pub static ref SETTINGS: Settings = Settings::new().unwrap();
     pub static ref S: String = env::var("S").unwrap();
     pub static ref FILES: FileMap = FileMap::new();
-    pub static ref JS: &'static str = FILES.get("./static-assets/bundle/bundle.js").unwrap();
-    pub static ref CSS: &'static str = FILES.get("./static-assets/bundle/main.css").unwrap();
+    pub static ref JS: &'static str =
+        FILES.get("./static-assets/bundle/bundle.js").unwrap();
+    pub static ref CSS: &'static str =
+        FILES.get("./static-assets/bundle/main.css").unwrap();
 }
 
 pub static OPEN_API_DOC: &str = env!("OPEN_API_DOCS");
@@ -61,7 +63,6 @@ pub static VERSION: &str = env!("CARGO_PKG_VERSION");
 pub static PKG_NAME: &str = env!("CARGO_PKG_NAME");
 pub static PKG_DESCRIPTION: &str = env!("CARGO_PKG_DESCRIPTION");
 pub static PKG_HOMEPAGE: &str = env!("CARGO_PKG_HOMEPAGE");
-pub static VERIFICATION_PATH: &str = "mcaptchaVerificationChallenge.json";
 
 pub const CACHE_AGE: u32 = 365 * 24 * 3600;
 

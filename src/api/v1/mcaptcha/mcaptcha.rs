@@ -299,7 +299,8 @@ mod tests {
         )
         .await;
         assert_eq!(update_token_resp.status(), StatusCode::OK);
-        let updated_token: MCaptchaDetails = test::read_body_json(update_token_resp).await;
+        let updated_token: MCaptchaDetails =
+            test::read_body_json(update_token_resp).await;
 
         // get token key with updated key
         let get_token_resp = test::call_service(
@@ -312,7 +313,8 @@ mod tests {
         assert_eq!(get_token_resp.status(), StatusCode::OK);
 
         // check if they match
-        let mut get_token_key: MCaptchaDetails = test::read_body_json(get_token_resp).await;
+        let mut get_token_key: MCaptchaDetails =
+            test::read_body_json(get_token_resp).await;
         assert_eq!(get_token_key.key, updated_token.key);
 
         get_token_key.key = "nonexistent".into();

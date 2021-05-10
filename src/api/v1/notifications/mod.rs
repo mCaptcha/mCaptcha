@@ -16,6 +16,7 @@
 */
 
 mod add;
+mod get;
 
 pub mod routes {
 
@@ -30,7 +31,7 @@ pub mod routes {
             Notifications {
                 add: "/api/v1/notifications/add",
                 mark_read: "/api/v1/notifications/read/",
-                get: "/api/v1/notifications/get/",
+                get: "/api/v1/notifications/get",
             }
         }
     }
@@ -45,5 +46,12 @@ pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
         V1_API_ROUTES.notifications.add,
         Methods::ProtectPost,
         add::add_notification
+    );
+
+    define_resource!(
+        cfg,
+        V1_API_ROUTES.notifications.get,
+        Methods::ProtectGet,
+        get::get_notification
     );
 }

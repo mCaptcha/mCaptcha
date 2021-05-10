@@ -70,8 +70,11 @@ mod tests {
         ];
 
         for url in urls.iter() {
-            let resp =
-                test::call_service(&mut app, test::TestRequest::get().uri(url).to_request()).await;
+            let resp = test::call_service(
+                &mut app,
+                test::TestRequest::get().uri(url).to_request(),
+            )
+            .await;
             assert_eq!(resp.status(), StatusCode::FOUND);
 
             let authenticated_resp = test::call_service(
@@ -95,8 +98,11 @@ mod tests {
         let urls = vec![PAGES.auth.login, PAGES.auth.join];
 
         for url in urls.iter() {
-            let resp =
-                test::call_service(&mut app, test::TestRequest::get().uri(url).to_request()).await;
+            let resp = test::call_service(
+                &mut app,
+                test::TestRequest::get().uri(url).to_request(),
+            )
+            .await;
 
             assert_eq!(resp.status(), StatusCode::OK);
         }

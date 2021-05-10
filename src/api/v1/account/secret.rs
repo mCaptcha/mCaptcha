@@ -29,7 +29,10 @@ pub struct Secret {
     pub secret: String,
 }
 
-async fn get_secret(id: Identity, data: web::Data<Data>) -> ServiceResult<impl Responder> {
+async fn get_secret(
+    id: Identity,
+    data: web::Data<Data>,
+) -> ServiceResult<impl Responder> {
     let username = id.identity().unwrap();
 
     let secret = sqlx::query_as!(
@@ -43,7 +46,10 @@ async fn get_secret(id: Identity, data: web::Data<Data>) -> ServiceResult<impl R
     Ok(HttpResponse::Ok().json(secret))
 }
 
-async fn update_user_secret(id: Identity, data: web::Data<Data>) -> ServiceResult<impl Responder> {
+async fn update_user_secret(
+    id: Identity,
+    data: web::Data<Data>,
+) -> ServiceResult<impl Responder> {
     let username = id.identity().unwrap();
 
     let mut secret;
