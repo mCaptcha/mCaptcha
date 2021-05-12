@@ -1,6 +1,31 @@
 # Development Setup
 
-## Setting up development environment
+## To quickly make changes:
+
+We have a docker-compose config that you can use to quickly spin up dev
+environment.
+
+From the root of the repo, run:
+
+```bash
+$ docker-compose -d up
+```
+
+### Logs from docker:
+
+- Logs from database and web server as they are generated:
+
+```bash
+$ docker-compose logs -f
+```
+
+- from just webserver:
+
+```bash
+$ docker-compose logs -f guard
+```
+
+## Setting up elaborate development environment
 
 ### Toolchain
 
@@ -13,7 +38,7 @@ You'll have to install before you can start writing code.
 $ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
 
-2. Install Node:
+2. Install Node `v14.16.0`:
    Please refer to [official instructions](https://nodejs.org/en/download/)
 
 3. Install yarn:

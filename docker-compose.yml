@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+  guard:
+    build: .
+    ports:
+      - 7000:7000
+    environment:
+      DATABASE_URL: postgres://postgres:password@postgres:5432/postgres
+      RUST_LOG: debug
+
+  postgres:
+    image: postgres:13.2
+    #ports: 5432:5432
+    volumes:
+      - mcaptcha-guard-data:/var/lib/postgresql/
+    environment:
+      POSTGRES_PASSWORD: password
+      PGDATA: /var/lib/postgresql/data/guard/
+
+
+volumes:
+  mcaptcha-guard-data:

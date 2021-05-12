@@ -65,7 +65,15 @@ to their request.
 
 ## Demo
 
-Coming soon...
+Clone the repo and run the following from the root of the repo:
+
+```bash
+$ docker-compose -d up
+```
+
+It takes a while to build the image so please be patient :)
+
+A hosted demo server is in the works...
 
 ## Development:
 
