@@ -96,8 +96,10 @@ $ cd guard && cargo build
 Guard is highly configurable.
 Configuration is applied/merged in the following order:
 
-1. `config/default.toml`
-2. environment variables.
+1. path to configuration file passed in via `GUARD_CONFIG`
+2. `./config/default.toml`
+3. `/etc/guard/config.toml`
+4. environment variables.
 
 ### Setup
 
@@ -125,3 +127,4 @@ you will be overriding the values set in the configuration files.
 | `GUARD_SERVER_PORT` (or) `PORT`\*\* | The port on which you want wagon to listen to       |
 | `GUARD_SERVER_IP`                   | The IP address on which you want wagon to listen to |
 | `GUARD_SERVER_STATIC_FILES_DIR`     | Path to directory containing static files           |
+| `GUARD_CONFIG`                      | Path to config file                                 |

@@ -15,6 +15,7 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 use std::env;
+use std::path::Path;
 
 use config::{Config, ConfigError, Environment, File};
 use log::debug;
@@ -97,8 +98,19 @@ impl Settings {
         s.set_default("database.pool", 2.to_string())
             .expect("Couldn't get the number of CPUs");
 
-        // merging default config from file
-        s.merge(File::with_name("./config/default.toml"))?;
+        const CURRENT_DIR: &str = "./config/default.toml";
+        const ETC: &str = "/etc/guard/config.toml";
+
+        if let Ok(path) = env::var("GUARD_CONFIG") {
+            s.merge(File::with_name(&path))?;
+        } else if Path::new(CURRENT_DIR).exists() {
+            // merging default config from file
+            s.merge(File::with_name(CURRENT_DIR))?;
+        } else if Path::new(ETC).exists() {
+            s.merge(File::with_name(ETC))?;
+        } else {
+            log::warn!("configuration file not found");
+        }
 
         s.merge(Environment::with_prefix("GUARD"))?;
 
@@ -122,7 +134,10 @@ impl Settings {
 
         set_database_url(&mut s);
 
-        s.try_into()
+        match s.try_into() {
+            Ok(val) => Ok(val),
+            Err(e) => Err(ConfigError::Message(format!("\n\nError: {}. If it says missing fields, then please refer to https://github.com/mCaptcha/guard#configuration to learn more about how guard reads configuration\n\n", e)))?,
+        }
     }
 }
 
