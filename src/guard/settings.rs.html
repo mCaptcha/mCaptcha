@@ -318,7 +318,7 @@
             <span class="ident">log</span>::<span class="macro">warn</span><span class="macro">!</span>(<span class="string">&quot;configuration file not found&quot;</span>);
         }
 
-        <span class="ident">s</span>.<span class="ident">merge</span>(<span class="ident">Environment</span>::<span class="ident">with_prefix</span>(<span class="string">&quot;GUARD&quot;</span>))<span class="question-mark">?</span>;
+        <span class="ident">s</span>.<span class="ident">merge</span>(<span class="ident">Environment</span>::<span class="ident">with_prefix</span>(<span class="string">&quot;GUARD&quot;</span>).<span class="ident">separator</span>(<span class="string">&quot;_&quot;</span>))<span class="question-mark">?</span>;
 
         <span class="ident">check_url</span>(<span class="kw-2">&amp;</span><span class="ident">s</span>);
 
