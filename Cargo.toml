@@ -37,7 +37,7 @@ cache-buster = { version = "0.2.0", git = "https://github.com/realaravinth/cache
 
 futures = "0.3.14"
 
-sqlx = { version = "0.4.0", features = [ "runtime-actix-rustls", "postgres", "time" ] }
+sqlx = { version = "0.4.0", features = [ "runtime-actix-rustls", "postgres", "time", "offline" ] }
 argon2-creds = { version = "0.2", git = "https://github.com/realaravinth/argon2-creds", commit = "61f2d1d" }
 
 config = "0.11"

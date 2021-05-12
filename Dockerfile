@@ -1,30 +1,31 @@
-FROM node:10.24 as frontend
-
-COPY . /build-frontend
-
-FROM debian:buster
+FROM node:14.16.0 as frontend
 
 LABEL org.opencontainers.image.source https://github.com/mCaptcha/guard
 
-RUN set -ex; \
-    apt-get update; \
-    DEBIAN_FRONTEND=noninteractive \
-    apt-get install -y --no-install-recommends yarnpkg npm ca-certificates make libssl-dev; \
-    rm -rf /var/lib/apt/lists/*
+WORKDIR /src
+COPY package.json yarn.lock ./
+RUN yarn install
+COPY . .
+# RUN set -ex; \
+#     apt-get update; \
+#     DEBIAN_FRONTEND=noninteractive \
+#     apt-get install -y --no-install-recommends yarnpkg npm ca-certificates make libssl-dev; \
+#     rm -rf /var/lib/apt/lists/*
+# RUN pwd
+RUN yarn build
 
-
-WORKDIR /build-frontend
+FROM rust:latest as rust
+COPY --from=frontend /src /src
+WORKDIR /src
 RUN pwd
-RUN cd /build-frontend && npm install
-RUN cd /build-frontend && npm build
+RUN ls
+RUN cargo build --release 
 
-
-FROM rust:latest as build
-WORKDIR /
-COPY --from=0 /build-frontend /src
-RUN cargo install --path /src
+FROM debian:buster
 RUN useradd -ms /bin/bash -u 1001 guard
 WORKDIR /home/guard
+COPY --from=rust /src/target/release/guard /home/guard/app/
+COPY --from=rust /src/config /home/guard/app/
 USER guard
-EXPOSE 7000
-ENTRYPOINT [ "/usr/local/cargo/bin/guard" ]
+WORKDIR /home/guard/app
+CMD [ "/home/guard/app/guard" ]

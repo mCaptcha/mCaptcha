@@ -28,11 +28,11 @@ use super::I32Levels;
 use crate::errors::*;
 use crate::Data;
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct PoWConfig {
-    pub name: String,
-    pub domain: String,
-}
+//#[derive(Clone, Debug, Deserialize, Serialize)]
+//pub struct PoWConfig {
+//    pub name: String,
+//    pub domain: String,
+//}
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct GetConfigPayload {
