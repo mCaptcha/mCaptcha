@@ -112,7 +112,7 @@ impl Settings {
             log::warn!("configuration file not found");
         }
 
-        s.merge(Environment::with_prefix("GUARD"))?;
+        s.merge(Environment::with_prefix("GUARD").separator("_"))?;
 
         check_url(&s);
 
