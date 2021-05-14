@@ -29,6 +29,7 @@ import VIEWS from './views/v1/routes';
 import './main.scss';
 import './auth/css/main.scss';
 import './components/details.scss';
+import './components/showPassword/main.scss';
 import './panel/css/main.scss';
 import './panel/navbar/main.scss';
 import './panel/header/taskbar/main.scss';

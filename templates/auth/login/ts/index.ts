@@ -20,6 +20,7 @@ import VIEWS from '../../../views/v1/routes';
 import isBlankString from '../../../utils/isBlankString';
 import genJsonPayload from '../../../utils/genJsonPayload';
 import getFormUrl from '../../../utils/getFormUrl';
+import registerShowPassword from '../../../components/showPassword';
 
 //import '../forms.scss';
 
@@ -62,4 +63,5 @@ const login = async (e: Event) => {
 export const index = () => {
   const form = <HTMLFontElement>document.getElementById('form');
   form.addEventListener('submit', login, true);
+  registerShowPassword();
 };

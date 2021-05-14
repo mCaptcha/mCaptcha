@@ -15,19 +15,30 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-$green: #5cad66;
-$violet: #800080;
-$light-violet: #993299;
-$backdrop: #f0f0f0;
-$light-text: rgba(255, 255, 255, 0.87);
-$secondary-backdrop: #2b2c30;
-$light-grey: rgba(0, 0, 0, 0.125);
-$white: #fff;
-$black-text: #000;
+@import '../../vars';
 
-$auth-content-width: 30%;
+$img-height: 0.69;
 
-$blue-link: rgb(3, 102, 214);
+@mixin show-password-img {
+  display: block;
+  width: #{$form-input-height * $img-height};
+}
 
-$form-content-width: 90%;
-$form-input-height: 40px;
+.show-password--show {
+  @include show-password-img;
+}
+
+.show-password--hide {
+  @include show-password-img;
+  display: none;
+}
+
+.show-password-container {
+  position: absolute;
+  right: 40px;
+  margin-top: #{$form-input-height * $img-height / 2.5};
+}
+
+.show-password-container:hover {
+  cursor: pointer;
+}

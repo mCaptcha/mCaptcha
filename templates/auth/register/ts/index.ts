@@ -23,6 +23,7 @@ import genJsonPayload from '../../../utils/genJsonPayload';
 import userExists from './userExists';
 import emailExists from './emailExists';
 import getFormUrl from '../../../utils/getFormUrl';
+import registerShowPassword from '../../../components/showPassword';
 
 //import '../forms.scss';
 
@@ -51,7 +52,7 @@ const registerUser = async (e: Event) => {
     return;
   }
 
-  let email: string|null = emailElement.value;
+  let email: string | null = emailElement.value;
   if (!email.replace(/\s/g, '').length) {
     email = null;
   } else {
@@ -83,4 +84,5 @@ export const index = () => {
   const form = <HTMLFontElement>document.getElementById('form');
   form.addEventListener('submit', registerUser, true);
   usernameElement.addEventListener('input', userExists, false);
+  registerShowPassword();
 };

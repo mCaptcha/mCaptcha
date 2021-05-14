@@ -17,6 +17,7 @@
 
 use actix_cors::Cors;
 use actix_web::web;
+use actix_web::*;
 
 pub mod get_config;
 pub mod verify_pow;
@@ -67,5 +68,20 @@ pub mod routes {
                 validate_captcha_token: "/api/v1/pow/siteverify",
             }
         }
+    }
+    
+}
+
+#[allow(non_camel_case_types, missing_docs)]
+pub struct post;
+impl actix_web::dev::HttpServiceFactory for post {
+    fn register(self, __config: &mut actix_web::dev::AppService) {
+        async fn post() -> impl Responder {
+            HttpResponse::Ok()
+        }
+        let __resource = actix_web::Resource::new("/test/post")
+            .guard(actix_web::guard::Post())
+            .to(post);
+        actix_web::dev::HttpServiceFactory::register(__resource, __config)
     }
 }

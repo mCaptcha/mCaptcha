@@ -13,7 +13,7 @@
 	  action="<.= crate::V1_API_ROUTES.auth.register .>"
 	  class="sitekey-form" id="form">
 	<h1 class="form__title">
-      Join mCaptcah
+      Join mCaptcha
     </h1>
 
     <label class="sitekey-form__label" for="username"
@@ -50,6 +50,8 @@
         id="password"
         required
       />
+	  <. include!("../../components/showPassword/index.html"); .>
+	
     </label>
 
     <label for="password" class="sitekey-form__label" 
@@ -62,6 +64,7 @@
         id="password-check"
         required
       />
+	  <. include!("../../components/showPassword/index.html"); .>
     </label>
         <input type="submit" class="sitekey-form__submit" value="Sign up" />
   </form>

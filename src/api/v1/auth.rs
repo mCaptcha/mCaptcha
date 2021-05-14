@@ -25,6 +25,7 @@ use serde::{Deserialize, Serialize};
 use super::mcaptcha::get_random;
 use crate::errors::*;
 use crate::Data;
+use crate::*;
 
 pub mod routes {
     pub struct Auth {
@@ -47,13 +48,17 @@ pub mod routes {
     }
 }
 
+//post!(V1_API_ROUTES.auth.register, signup);
 pub fn services(cfg: &mut web::ServiceConfig) {
-    use crate::define_resource;
-    use crate::V1_API_ROUTES;
+
+   // protect_get!(cfg, V1_API_ROUTES.auth.logout, signout);
+
+    //cfg.service(signup);
 
     define_resource!(cfg, V1_API_ROUTES.auth.register, Methods::Post, signup);
     define_resource!(cfg, V1_API_ROUTES.auth.logout, Methods::ProtectGet, signout);
     define_resource!(cfg, V1_API_ROUTES.auth.login, Methods::Post, signin);
+    //post!(cfg, V1_API_ROUTES.auth.login, signin);
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
