@@ -185,6 +185,11 @@
 <span id="182">182</span>
 <span id="183">183</span>
 <span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -213,6 +218,7 @@
 <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">mcaptcha</span>::<span class="ident">get_random</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">errors</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Data</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="kw-2">*</span>;
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">routes</span> {
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Auth</span> {
@@ -235,13 +241,17 @@
     }
 }
 
+<span class="comment">//post!(V1_API_ROUTES.auth.register, signup);</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">services</span>(<span class="ident">cfg</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">web</span>::<span class="ident">ServiceConfig</span>) {
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">define_resource</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">V1_API_ROUTES</span>;
+
+   <span class="comment">// protect_get!(cfg, V1_API_ROUTES.auth.logout, signout);</span>
+
+    <span class="comment">//cfg.service(signup);</span>
 
     <span class="macro">define_resource</span><span class="macro">!</span>(<span class="ident">cfg</span>, <span class="ident">V1_API_ROUTES</span>.<span class="ident">auth</span>.<span class="ident">register</span>, <span class="ident">Methods</span>::<span class="ident">Post</span>, <span class="ident">signup</span>);
     <span class="macro">define_resource</span><span class="macro">!</span>(<span class="ident">cfg</span>, <span class="ident">V1_API_ROUTES</span>.<span class="ident">auth</span>.<span class="ident">logout</span>, <span class="ident">Methods</span>::<span class="ident">ProtectGet</span>, <span class="ident">signout</span>);
     <span class="macro">define_resource</span><span class="macro">!</span>(<span class="ident">cfg</span>, <span class="ident">V1_API_ROUTES</span>.<span class="ident">auth</span>.<span class="ident">login</span>, <span class="ident">Methods</span>::<span class="ident">Post</span>, <span class="ident">signin</span>);
+    <span class="comment">//post!(cfg, V1_API_ROUTES.auth.login, signin);</span>
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>

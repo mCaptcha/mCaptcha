@@ -1,3 +1,3 @@
 (function() {var implementors = {};
-implementors["guard"] = [{"text":"impl HttpServiceFactory for <a class=\"struct\" href=\"guard/static_assets/struct.dist.html\" title=\"struct guard::static_assets::dist\">dist</a>","synthetic":false,"types":["guard::static_assets::dist"]}];
+implementors["guard"] = [{"text":"impl HttpServiceFactory for <a class=\"struct\" href=\"guard/api/v1/pow/struct.post.html\" title=\"struct guard::api::v1::pow::post\">post</a>","synthetic":false,"types":["guard::api::v1::pow::post"]},{"text":"impl HttpServiceFactory for <a class=\"struct\" href=\"guard/static_assets/struct.dist.html\" title=\"struct guard::static_assets::dist\">dist</a>","synthetic":false,"types":["guard::static_assets::dist"]}];
 if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
