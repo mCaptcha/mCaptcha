@@ -29,6 +29,7 @@ actix-http = "2.2"
 actix-rt = "1"
 actix-cors= "0.5.4"
 actix-service = "1.0.6"
+my-codegen = {package = "actix-web-codegen", git ="https://github.com/realaravinth/actix-web"}
 
 
 mime_guess = "2.0.3"

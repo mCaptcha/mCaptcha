@@ -281,7 +281,7 @@ dependencies = [
  "actix-threadpool",
  "actix-tls",
  "actix-utils",
- "actix-web-codegen",
+ "actix-web-codegen 0.4.0",
  "awc",
  "bytes 0.5.6",
  "derive_more",
@@ -308,6 +308,16 @@ name = "actix-web-codegen"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ad26f77093333e0e7c6ffe54ebe3582d908a104e448723eec6d43d08b07143fb"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
+name = "actix-web-codegen"
+version = "0.5.0-beta.2"
+source = "git+https://github.com/realaravinth/actix-web#b91607bfb263d101c4a33b2b9b01b2093c1713d0"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1301,6 +1311,7 @@ dependencies = [
  "actix-rt",
  "actix-service",
  "actix-web",
+ "actix-web-codegen 0.5.0-beta.2",
  "argon2-creds",
  "cache-buster",
  "config",

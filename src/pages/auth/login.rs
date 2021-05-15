@@ -18,6 +18,8 @@
 use actix_web::{HttpResponse, Responder};
 use lazy_static::lazy_static;
 use sailfish::TemplateOnce;
+use my_codegen::get;
+use crate::PAGES;
 
 #[derive(Clone, TemplateOnce)]
 #[template(path = "auth/login/index.html")]
@@ -35,7 +37,11 @@ lazy_static! {
     static ref INDEX: String = IndexPage::default().render_once().unwrap();
 }
 
+const ROUTE: &str = PAGES.auth.login;
+
+#[get(path="ROUTE")]
 pub async fn login() -> impl Responder {
+    struct Foo;
     HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
         .body(&*INDEX)

@@ -27,6 +27,8 @@ use crate::errors::*;
 use crate::Data;
 use crate::*;
 
+pub const AUTH: routes::Auth = routes::Auth::new();
+
 pub mod routes {
     pub struct Auth {
         pub login: &'static str,

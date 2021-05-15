@@ -22,7 +22,8 @@ pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
     use crate::define_resource;
     use crate::PAGES;
 
-    define_resource!(cfg, PAGES.auth.login, Methods::Get, login::login);
+    cfg.service(login::login);
+    //    define_resource!(cfg, PAGES.auth.login, Methods::Get, login::login);
     define_resource!(cfg, PAGES.auth.join, Methods::Get, register::join);
 }
 
