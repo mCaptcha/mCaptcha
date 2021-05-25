@@ -38,27 +38,7 @@ pub mod routes {
 }
 
 pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
-    use crate::define_resource;
-    use crate::PAGES;
-
-    define_resource!(
-        cfg,
-        PAGES.panel.sitekey.add,
-        Methods::ProtectGet,
-        add::add_sitekey
-    );
-
-    define_resource!(
-        cfg,
-        PAGES.panel.sitekey.list,
-        Methods::ProtectGet,
-        list::list_sitekeys
-    );
-
-    define_resource!(
-        cfg,
-        PAGES.panel.sitekey.view,
-        Methods::ProtectGet,
-        view::view_sitekey
-    );
+    cfg.service(add::add_sitekey);
+    cfg.service(list::list_sitekeys);
+    cfg.service(view::view_sitekey);
 }

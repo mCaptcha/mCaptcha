@@ -37,11 +37,8 @@ lazy_static! {
     static ref INDEX: String = IndexPage::default().render_once().unwrap();
 }
 
-const ROUTE: &str = PAGES.auth.login;
-
-#[get(path="ROUTE")]
+#[get(path="PAGES.auth.login")]
 pub async fn login() -> impl Responder {
-    struct Foo;
     HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
         .body(&*INDEX)

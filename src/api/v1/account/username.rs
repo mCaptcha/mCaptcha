@@ -20,6 +20,7 @@ use super::{AccountCheckPayload, AccountCheckResp};
 use crate::errors::*;
 use crate::Data;
 
+#[my_codegen::post(path="crate::V1_API_ROUTES.account.username_exists")]
 async fn username_exists(
     payload: web::Json<AccountCheckPayload>,
     data: web::Data<Data>,
@@ -43,13 +44,5 @@ async fn username_exists(
 }
 
 pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
-    use crate::define_resource;
-    use crate::V1_API_ROUTES;
-
-    define_resource!(
-        cfg,
-        V1_API_ROUTES.account.username_exists,
-        Methods::Post,
-        username_exists
-    );
+    cfg.service(username_exists);
 }

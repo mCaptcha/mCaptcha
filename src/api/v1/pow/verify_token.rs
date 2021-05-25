@@ -23,6 +23,7 @@ use serde::{Deserialize, Serialize};
 use super::record_confirm;
 use crate::errors::*;
 use crate::Data;
+use crate::V1_API_ROUTES;
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct CaptchaValidateResp {
@@ -32,6 +33,7 @@ pub struct CaptchaValidateResp {
 // API keys are mcaptcha actor names
 
 /// route hander that validates a PoW solution token
+#[my_codegen::post(path = "V1_API_ROUTES.pow.validate_captcha_token.strip_prefix(V1_API_ROUTES.pow.scope).unwrap()")]
 pub async fn validate_captcha_token(
     payload: web::Json<VerifyCaptchaResult>,
     data: web::Data<Data>,

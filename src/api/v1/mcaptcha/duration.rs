@@ -44,6 +44,7 @@ pub struct UpdateDuration {
     pub duration: i32,
 }
 
+#[my_codegen::post(path="crate::V1_API_ROUTES.duration.update", wrap="crate::CheckLogin")]
 async fn update_duration(
     payload: web::Json<UpdateDuration>,
     data: web::Data<Data>,
@@ -81,6 +82,7 @@ pub struct GetDuration {
     pub token: String,
 }
 
+#[my_codegen::post(path="crate::V1_API_ROUTES.duration.get", wrap="crate::CheckLogin")]
 async fn get_duration(
     payload: web::Json<MCaptchaDetails>,
     data: web::Data<Data>,
@@ -101,21 +103,23 @@ async fn get_duration(
 }
 
 pub fn services(cfg: &mut web::ServiceConfig) {
-    use crate::define_resource;
-    use crate::V1_API_ROUTES;
-
-    define_resource!(
-        cfg,
-        V1_API_ROUTES.duration.get,
-        Methods::ProtectPost,
-        get_duration
-    );
-    define_resource!(
-        cfg,
-        V1_API_ROUTES.duration.update,
-        Methods::ProtectPost,
-        update_duration
-    );
+    cfg.service(get_duration);
+    cfg.service(update_duration);
+//    use crate::define_resource;
+//    use crate::V1_API_ROUTES;
+//
+//    define_resource!(
+//        cfg,
+//        V1_API_ROUTES.duration.get,
+//        Methods::ProtectPost,
+//        get_duration
+//    );
+//    define_resource!(
+//        cfg,
+//        V1_API_ROUTES.duration.update,
+//        Methods::ProtectPost,
+//        update_duration
+//    );
 }
 
 #[cfg(test)]

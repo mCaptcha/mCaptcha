@@ -19,12 +19,8 @@ pub mod login;
 pub mod register;
 
 pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
-    use crate::define_resource;
-    use crate::PAGES;
-
     cfg.service(login::login);
-    //    define_resource!(cfg, PAGES.auth.login, Methods::Get, login::login);
-    define_resource!(cfg, PAGES.auth.join, Methods::Get, register::join);
+    cfg.service(register::join);
 }
 
 pub mod routes {

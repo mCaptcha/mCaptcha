@@ -38,6 +38,7 @@ impl IndexPage {
 }
 
 /// render a list of all sitekeys that a user has
+#[my_codegen::get(path = "crate::PAGES.panel.sitekey.list", wrap = "crate::CheckLogin")]
 pub async fn list_sitekeys(
     data: web::Data<Data>,
     id: Identity,

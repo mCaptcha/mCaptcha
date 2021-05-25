@@ -29,6 +29,7 @@ pub struct Secret {
     pub secret: String,
 }
 
+#[my_codegen::get(path="crate::V1_API_ROUTES.account.get_secret", wrap="crate::CheckLogin")]
 async fn get_secret(
     id: Identity,
     data: web::Data<Data>,
@@ -46,6 +47,7 @@ async fn get_secret(
     Ok(HttpResponse::Ok().json(secret))
 }
 
+#[my_codegen::post(path="crate::V1_API_ROUTES.account.update_secret", wrap="crate::CheckLogin")]
 async fn update_user_secret(
     id: Identity,
     data: web::Data<Data>,
@@ -82,20 +84,6 @@ async fn update_user_secret(
 }
 
 pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
-    use crate::define_resource;
-    use crate::V1_API_ROUTES;
-
-    define_resource!(
-        cfg,
-        V1_API_ROUTES.account.get_secret,
-        Methods::ProtectGet,
-        get_secret
-    );
-
-    define_resource!(
-        cfg,
-        V1_API_ROUTES.account.update_secret,
-        Methods::ProtectPost,
-        update_user_secret
-    );
+    cfg.service(get_secret);
+    cfg.service(update_user_secret);
 }

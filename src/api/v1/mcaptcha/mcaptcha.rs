@@ -43,29 +43,9 @@ pub mod routes {
 }
 
 pub fn services(cfg: &mut web::ServiceConfig) {
-    use crate::define_resource;
-    use crate::V1_API_ROUTES;
-
-    define_resource!(
-        cfg,
-        V1_API_ROUTES.mcaptcha.update_key,
-        Methods::ProtectPost,
-        update_token
-    );
-
-    define_resource!(
-        cfg,
-        V1_API_ROUTES.mcaptcha.delete,
-        Methods::ProtectPost,
-        delete_mcaptcha
-    );
-
-    define_resource!(
-        cfg,
-        V1_API_ROUTES.mcaptcha.get_token,
-        Methods::ProtectPost,
-        get_token
-    );
+    cfg.service(update_token);
+    cfg.service(delete_mcaptcha);
+    cfg.service(get_token);
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -131,6 +111,7 @@ pub async fn add_mcaptcha_util(
     Ok(resp)
 }
 
+#[my_codegen::post(path="crate::V1_API_ROUTES.mcaptcha.update_key", wrap="crate::CheckLogin")]
 async fn update_token(
     payload: web::Json<MCaptchaDetails>,
     data: web::Data<Data>,
@@ -181,6 +162,7 @@ async fn update_token_helper(
     Ok(())
 }
 
+#[my_codegen::post(path="crate::V1_API_ROUTES.mcaptcha.get_token", wrap="crate::CheckLogin")]
 async fn get_token(
     payload: web::Json<MCaptchaDetails>,
     data: web::Data<Data>,
@@ -208,6 +190,7 @@ async fn get_token(
     Ok(HttpResponse::Ok().json(res))
 }
 
+#[my_codegen::post(path="crate::V1_API_ROUTES.mcaptcha.delete", wrap="crate::CheckLogin")]
 async fn delete_mcaptcha(
     payload: web::Json<MCaptchaDetails>,
     data: web::Data<Data>,

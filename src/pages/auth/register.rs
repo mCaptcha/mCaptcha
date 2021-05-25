@@ -35,6 +35,7 @@ lazy_static! {
     static ref INDEX: String = IndexPage::default().render_once().unwrap();
 }
 
+#[my_codegen::get(path = "crate::PAGES.auth.join")]
 pub async fn join() -> impl Responder {
     HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")

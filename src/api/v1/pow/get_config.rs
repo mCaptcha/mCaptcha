@@ -27,6 +27,7 @@ use super::GetDurationResp;
 use super::I32Levels;
 use crate::errors::*;
 use crate::Data;
+use crate::V1_API_ROUTES;
 
 //#[derive(Clone, Debug, Deserialize, Serialize)]
 //pub struct PoWConfig {
@@ -42,6 +43,7 @@ pub struct GetConfigPayload {
 // API keys are mcaptcha actor names
 
 /// get PoW configuration for an mcaptcha key
+#[my_codegen::post(path = "V1_API_ROUTES.pow.get_config.strip_prefix(V1_API_ROUTES.pow.scope).unwrap()")]
 pub async fn get_config(
     payload: web::Json<GetConfigPayload>,
     data: web::Data<Data>,
@@ -80,6 +82,7 @@ pub async fn get_config(
         Some(false) => Err(ServiceError::TokenNotFound),
         None => Err(ServiceError::TokenNotFound),
     }
+    
 }
 /// Call this when [MCaptcha][m_captcha::MCaptcha] is not in master.
 ///

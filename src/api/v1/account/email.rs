@@ -29,6 +29,7 @@ pub struct Email {
     pub email: String,
 }
 
+#[my_codegen::post(path="crate::V1_API_ROUTES.account.email_exists")]
 pub async fn email_exists(
     payload: web::Json<AccountCheckPayload>,
     data: web::Data<Data>,
@@ -52,6 +53,7 @@ pub async fn email_exists(
 }
 
 /// update email
+#[my_codegen::post(path="crate::V1_API_ROUTES.account.update_email", wrap="crate::CheckLogin")]
 async fn set_email(
     id: Identity,
     payload: web::Json<Email>,
@@ -84,20 +86,22 @@ async fn set_email(
 }
 
 pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
-    use crate::define_resource;
-    use crate::V1_API_ROUTES;
-
-    define_resource!(
-        cfg,
-        V1_API_ROUTES.account.email_exists,
-        Methods::Post,
-        email_exists
-    );
-
-    define_resource!(
-        cfg,
-        V1_API_ROUTES.account.update_email,
-        Methods::Post,
-        set_email
-    );
+    cfg.service(email_exists);
+    cfg.service(set_email);
+//    use crate::define_resource;
+//    use crate::V1_API_ROUTES;
+//
+//    define_resource!(
+//        cfg,
+//        V1_API_ROUTES.account.email_exists,
+//        Methods::Post,
+//        email_exists
+//    );
+//
+//    define_resource!(
+//        cfg,
+//        V1_API_ROUTES.account.update_email,
+//        Methods::Post,
+//        set_email
+//    );
 }

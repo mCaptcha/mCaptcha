@@ -30,6 +30,7 @@ pub struct AddNotification {
 }
 
 /// route handler that adds a notification message
+#[my_codegen::post(path="crate::V1_API_ROUTES.notifications.add", wrap="crate::CheckLogin")]
 pub async fn add_notification(
     payload: web::Json<AddNotification>,
     data: web::Data<Data>,

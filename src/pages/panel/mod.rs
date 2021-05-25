@@ -39,6 +39,7 @@ impl IndexPage {
 
 const PAGE: &str = "Dashboard";
 
+#[my_codegen::get(path = "crate::PAGES.panel.home", wrap = "crate::CheckLogin")]
 async fn panel(data: web::Data<Data>, id: Identity) -> PageResult<impl Responder> {
     let sitekeys = get_list_sitekeys(&data, &id).await?;
     let body = IndexPage::new(sitekeys).render_once().unwrap();
@@ -48,10 +49,7 @@ async fn panel(data: web::Data<Data>, id: Identity) -> PageResult<impl Responder
 }
 
 pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
-    use crate::define_resource;
-    use crate::PAGES;
-
-    define_resource!(cfg, PAGES.panel.home, Methods::ProtectGet, panel);
+    cfg.service(panel);
     sitekey::services(cfg);
 }
 

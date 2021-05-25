@@ -59,39 +59,15 @@ pub struct AddLevels {
 }
 
 pub fn services(cfg: &mut web::ServiceConfig) {
-    use crate::define_resource;
-    use crate::V1_API_ROUTES;
-
-    define_resource!(
-        cfg,
-        V1_API_ROUTES.levels.add,
-        Methods::ProtectPost,
-        add_levels
-    );
-    define_resource!(
-        cfg,
-        V1_API_ROUTES.levels.update,
-        Methods::ProtectPost,
-        update_levels
-    );
-
-    define_resource!(
-        cfg,
-        V1_API_ROUTES.levels.delete,
-        Methods::ProtectPost,
-        delete_levels
-    );
-
-    define_resource!(
-        cfg,
-        V1_API_ROUTES.levels.get,
-        Methods::ProtectPost,
-        get_levels
-    );
+    cfg.service(add_levels);
+    cfg.service(update_levels);
+    cfg.service(delete_levels);
+    cfg.service(get_levels);
 }
 
 // TODO redo mcaptcha table to include levels as json field
 // so that the whole thing can be added/udpaed in a single stroke
+#[my_codegen::post(path="crate::V1_API_ROUTES.levels.add", wrap="crate::CheckLogin")]
 async fn add_levels(
     payload: web::Json<AddLevels>,
     data: web::Data<Data>,
@@ -144,6 +120,7 @@ pub struct UpdateLevels {
     pub key: String,
 }
 
+#[my_codegen::post(path="crate::V1_API_ROUTES.levels.update", wrap="crate::CheckLogin")]
 async fn update_levels(
     payload: web::Json<UpdateLevels>,
     data: web::Data<Data>,
@@ -201,6 +178,7 @@ async fn update_levels(
     Ok(HttpResponse::Ok())
 }
 
+#[my_codegen::post(path="crate::V1_API_ROUTES.levels.delete", wrap="crate::CheckLogin")]
 async fn delete_levels(
     payload: web::Json<UpdateLevels>,
     data: web::Data<Data>,
@@ -227,6 +205,7 @@ async fn delete_levels(
     Ok(HttpResponse::Ok())
 }
 
+#[my_codegen::post(path="crate::V1_API_ROUTES.levels.get", wrap="crate::CheckLogin")]
 async fn get_levels(
     payload: web::Json<MCaptchaDetails>,
     data: web::Data<Data>,

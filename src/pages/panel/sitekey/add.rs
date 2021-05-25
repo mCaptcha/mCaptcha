@@ -45,6 +45,7 @@ impl<'a> Default for IndexPage<'a> {
     }
 }
 
+#[my_codegen::get(path = "crate::PAGES.panel.sitekey.add", wrap = "crate::CheckLogin")]
 pub async fn add_sitekey() -> impl Responder {
     HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")

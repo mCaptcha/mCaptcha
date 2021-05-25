@@ -38,20 +38,6 @@ pub mod routes {
 }
 
 pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
-    use crate::define_resource;
-    use crate::V1_API_ROUTES;
-
-    define_resource!(
-        cfg,
-        V1_API_ROUTES.notifications.add,
-        Methods::ProtectPost,
-        add::add_notification
-    );
-
-    define_resource!(
-        cfg,
-        V1_API_ROUTES.notifications.get,
-        Methods::ProtectGet,
-        get::get_notification
-    );
+    cfg.service(add::add_notification);
+    cfg.service(get::get_notification);
 }
