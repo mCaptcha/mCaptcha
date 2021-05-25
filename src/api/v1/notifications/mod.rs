@@ -17,6 +17,7 @@
 
 mod add;
 mod get;
+mod mark_read;
 
 pub mod routes {
 
@@ -30,7 +31,7 @@ pub mod routes {
         pub const fn new() -> Notifications {
             Notifications {
                 add: "/api/v1/notifications/add",
-                mark_read: "/api/v1/notifications/read/",
+                mark_read: "/api/v1/notifications/read",
                 get: "/api/v1/notifications/get",
             }
         }
@@ -40,4 +41,5 @@ pub mod routes {
 pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
     cfg.service(add::add_notification);
     cfg.service(get::get_notification);
+    cfg.service(mark_read::mark_read);
 }
