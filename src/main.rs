@@ -54,7 +54,9 @@ lazy_static! {
     pub static ref JS: &'static str =
         FILES.get("./static-assets/bundle/bundle.js").unwrap();
     pub static ref CSS: &'static str =
-        FILES.get("./static-assets/bundle/main.css").unwrap();
+        FILES.get("./static-assets/bundle/bundle.css").unwrap();
+    pub static ref MOBILE_CSS: &'static str =
+        FILES.get("./static-assets/bundle/mobile.css").unwrap();
 }
 
 pub static OPEN_API_DOC: &str = env!("OPEN_API_DOCS");

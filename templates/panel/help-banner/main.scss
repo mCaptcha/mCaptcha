@@ -29,8 +29,7 @@
   margin-top: 40px;
 }
 
-.help-text__serial-num {
-  display: inline-flex;
+li.help-text__instructions::marker {
   background-color: $violet;
   color: $light-text;
   width: 30px;
@@ -41,8 +40,6 @@
 }
 
 .help-text__instructions {
-  display: inline-block;
-  list-style: none;
   font-size: 19px;
   font-weight: 500;
   padding: 10px;

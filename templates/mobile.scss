@@ -15,20 +15,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-$green: #5cad66;
-$violet: #800080;
-$light-violet: #993299;
-$backdrop: #f0f0f0;
-$light-text: rgba(255, 255, 255, 0.87);
-$secondary-backdrop: #2b2c30;
-$light-grey: rgba(0, 0, 0, 0.125);
-$white: #fff;
-$black-text: #000;
+html {
+    overflow-x: hidden;
+}
 
-$auth-content-width: 30%;
-$auth-content-width-mobile: 80%;
-
-$blue-link: rgb(3, 102, 214);
-
-$form-content-width: 90%;
-$form-input-height: 40px;
+// creadits: https://codepen.io/rachelandrew/pen/MmOvPr/?editors=1100
+.layout {
+	display: block;
+	max-width: 100vw;
+	width: 100%;
+	overflow-x: hidden;
+}

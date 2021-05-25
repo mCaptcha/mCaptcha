@@ -15,20 +15,30 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-$green: #5cad66;
-$violet: #800080;
-$light-violet: #993299;
-$backdrop: #f0f0f0;
-$light-text: rgba(255, 255, 255, 0.87);
-$secondary-backdrop: #2b2c30;
-$light-grey: rgba(0, 0, 0, 0.125);
-$white: #fff;
-$black-text: #000;
+@import '../../reset';
+@import '../../vars';
+@import '../../components/inner-container';
+@import '../../components/main';
 
-$auth-content-width: 30%;
-$auth-content-width-mobile: 80%;
+body {
+  background-color: $backdrop;
+}
 
-$blue-link: rgb(3, 102, 214);
+.auth-inner-container {
+  @include inner-container;
+  display: block;
+  max-width: $auth-content-width-mobile;
+  margin: auto;
+  width: $auth-content-width-mobile;
+  position: static;
+  transform: translate(0, 0);
+}
 
-$form-content-width: 90%;
-$form-input-height: 40px;
+.auth__secondary-action__banner {
+  margin: 5px auto auto;
+  width: 90%;
+}
+
+.auth__logo {
+  width: 120px;
+}

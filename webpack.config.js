@@ -3,13 +3,19 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
+const mobileCss = (new MiniCssExtractPlugin().options.filename = 'mobile.css');
+const mainCss = (new MiniCssExtractPlugin().options.filename = 'main.css');
+
 module.exports = {
   devtool: 'inline-source-map',
   mode: 'development',
   //mode: 'production',
-  entry: './templates/index.ts',
+  entry: {
+    bundle:  './templates/index.ts',
+    mobile: './templates/mobile.ts',
+  },
   output: {
-    filename: 'bundle.js',
+    filename: '[name].js',
     path: path.resolve(__dirname, './static-assets/bundle/'),
   },
   module: {
@@ -32,6 +38,7 @@ module.exports = {
           },
         ],
       },
+
     ],
   },
   resolve: {

@@ -1,7 +1,19 @@
 </main>
-<. include!("./details-footers.html"); .>
+<. include!("./details-footer/index.html"); .>
 </div>
-</body>
-<link rel="stylesheet" href="<.= &*crate::CSS .>" type="text/css" media="all">
+  <link
+    rel="stylesheet"
+    media="all"
+    type="text/css"
+    href="<.= &*crate::CSS .>" 
+  />
+
+  <link
+    rel="stylesheet"
+    media="screen and (max-width: 768px)"
+    type="text/css"
+    href="<.= &*crate::MOBILE_CSS .>" 
+  />
 <script src="<.= &*crate::JS .>"></script>
+</body>
 </html>
