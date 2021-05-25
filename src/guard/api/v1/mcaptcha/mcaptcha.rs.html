@@ -315,23 +315,6 @@
 <span id="312">312</span>
 <span id="313">313</span>
 <span id="314">314</span>
-<span id="315">315</span>
-<span id="316">316</span>
-<span id="317">317</span>
-<span id="318">318</span>
-<span id="319">319</span>
-<span id="320">320</span>
-<span id="321">321</span>
-<span id="322">322</span>
-<span id="323">323</span>
-<span id="324">324</span>
-<span id="325">325</span>
-<span id="326">326</span>
-<span id="327">327</span>
-<span id="328">328</span>
-<span id="329">329</span>
-<span id="330">330</span>
-<span id="331">331</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -378,29 +361,9 @@
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">services</span>(<span class="ident">cfg</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">web</span>::<span class="ident">ServiceConfig</span>) {
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">define_resource</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">V1_API_ROUTES</span>;
-
-    <span class="macro">define_resource</span><span class="macro">!</span>(
-        <span class="ident">cfg</span>,
-        <span class="ident">V1_API_ROUTES</span>.<span class="ident">mcaptcha</span>.<span class="ident">update_key</span>,
-        <span class="ident">Methods</span>::<span class="ident">ProtectPost</span>,
-        <span class="ident">update_token</span>
-    );
-
-    <span class="macro">define_resource</span><span class="macro">!</span>(
-        <span class="ident">cfg</span>,
-        <span class="ident">V1_API_ROUTES</span>.<span class="ident">mcaptcha</span>.<span class="ident">delete</span>,
-        <span class="ident">Methods</span>::<span class="ident">ProtectPost</span>,
-        <span class="ident">delete_mcaptcha</span>
-    );
-
-    <span class="macro">define_resource</span><span class="macro">!</span>(
-        <span class="ident">cfg</span>,
-        <span class="ident">V1_API_ROUTES</span>.<span class="ident">mcaptcha</span>.<span class="ident">get_token</span>,
-        <span class="ident">Methods</span>::<span class="ident">ProtectPost</span>,
-        <span class="ident">get_token</span>
-    );
+    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">update_token</span>);
+    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">delete_mcaptcha</span>);
+    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">get_token</span>);
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
@@ -466,6 +429,7 @@
     <span class="prelude-val">Ok</span>(<span class="ident">resp</span>)
 }
 
+<span class="attribute">#[<span class="ident">my_codegen</span>::<span class="ident">post</span>(<span class="ident">path</span><span class="op">=</span><span class="string">&quot;crate::V1_API_ROUTES.mcaptcha.update_key&quot;</span>, <span class="ident">wrap</span><span class="op">=</span><span class="string">&quot;crate::CheckLogin&quot;</span>)]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_token</span>(
     <span class="ident">payload</span>: <span class="ident">web</span>::<span class="ident">Json</span><span class="op">&lt;</span><span class="ident">MCaptchaDetails</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>,
@@ -516,6 +480,7 @@
     <span class="prelude-val">Ok</span>(())
 }
 
+<span class="attribute">#[<span class="ident">my_codegen</span>::<span class="ident">post</span>(<span class="ident">path</span><span class="op">=</span><span class="string">&quot;crate::V1_API_ROUTES.mcaptcha.get_token&quot;</span>, <span class="ident">wrap</span><span class="op">=</span><span class="string">&quot;crate::CheckLogin&quot;</span>)]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_token</span>(
     <span class="ident">payload</span>: <span class="ident">web</span>::<span class="ident">Json</span><span class="op">&lt;</span><span class="ident">MCaptchaDetails</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>,
@@ -543,6 +508,7 @@
     <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse</span>::<span class="prelude-val">Ok</span>().<span class="ident">json</span>(<span class="ident">res</span>))
 }
 
+<span class="attribute">#[<span class="ident">my_codegen</span>::<span class="ident">post</span>(<span class="ident">path</span><span class="op">=</span><span class="string">&quot;crate::V1_API_ROUTES.mcaptcha.delete&quot;</span>, <span class="ident">wrap</span><span class="op">=</span><span class="string">&quot;crate::CheckLogin&quot;</span>)]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_mcaptcha</span>(
     <span class="ident">payload</span>: <span class="ident">web</span>::<span class="ident">Json</span><span class="op">&lt;</span><span class="ident">MCaptchaDetails</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>,

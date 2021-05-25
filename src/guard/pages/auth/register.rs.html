@@ -43,6 +43,7 @@
 <span id="40">40</span>
 <span id="41">41</span>
 <span id="42">42</span>
+<span id="43">43</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -81,6 +82,7 @@
     <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">INDEX</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">IndexPage</span>::<span class="ident">default</span>().<span class="ident">render_once</span>().<span class="ident">unwrap</span>();
 }
 
+<span class="attribute">#[<span class="ident">my_codegen</span>::<span class="ident">get</span>(<span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;crate::PAGES.auth.join&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">join</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Responder</span> {
     <span class="ident">HttpResponse</span>::<span class="prelude-val">Ok</span>()
         .<span class="ident">content_type</span>(<span class="string">&quot;text/html; charset=utf-8&quot;</span>)

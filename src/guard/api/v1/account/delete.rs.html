@@ -72,6 +72,8 @@
 <span id="69">69</span>
 <span id="70">70</span>
 <span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -97,6 +99,7 @@
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">errors</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Data</span>;
 
+<span class="attribute">#[<span class="ident">my_codegen</span>::<span class="ident">post</span>(<span class="ident">path</span><span class="op">=</span><span class="string">&quot;crate::V1_API_ROUTES.account.delete&quot;</span>, <span class="ident">wrap</span><span class="op">=</span><span class="string">&quot;crate::CheckLogin&quot;</span>)]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_account</span>(
     <span class="ident">id</span>: <span class="ident">Identity</span>,
     <span class="ident">payload</span>: <span class="ident">web</span>::<span class="ident">Json</span><span class="op">&lt;</span><span class="ident">Password</span><span class="op">&gt;</span>,
@@ -134,15 +137,16 @@
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">services</span>(<span class="ident">cfg</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">actix_web</span>::<span class="ident">web</span>::<span class="ident">ServiceConfig</span>) {
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">define_resource</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">V1_API_ROUTES</span>;
-
-    <span class="macro">define_resource</span><span class="macro">!</span>(
-        <span class="ident">cfg</span>,
-        <span class="ident">V1_API_ROUTES</span>.<span class="ident">account</span>.<span class="ident">delete</span>,
-        <span class="ident">Methods</span>::<span class="ident">ProtectPost</span>,
-        <span class="ident">delete_account</span>
-    );
+    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">delete_account</span>);
+<span class="comment">//    use crate::define_resource;</span>
+<span class="comment">//    use crate::V1_API_ROUTES;</span>
+<span class="comment">//</span>
+<span class="comment">//    define_resource!(</span>
+<span class="comment">//        cfg,</span>
+<span class="comment">//        V1_API_ROUTES.account.delete,</span>
+<span class="comment">//        Methods::ProtectPost,</span>
+<span class="comment">//        delete_account</span>
+<span class="comment">//    );</span>
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="guard"></div>

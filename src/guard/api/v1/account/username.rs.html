@@ -49,13 +49,6 @@
 <span id="46">46</span>
 <span id="47">47</span>
 <span id="48">48</span>
-<span id="49">49</span>
-<span id="50">50</span>
-<span id="51">51</span>
-<span id="52">52</span>
-<span id="53">53</span>
-<span id="54">54</span>
-<span id="55">55</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -79,6 +72,7 @@
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">errors</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Data</span>;
 
+<span class="attribute">#[<span class="ident">my_codegen</span>::<span class="ident">post</span>(<span class="ident">path</span><span class="op">=</span><span class="string">&quot;crate::V1_API_ROUTES.account.username_exists&quot;</span>)]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">username_exists</span>(
     <span class="ident">payload</span>: <span class="ident">web</span>::<span class="ident">Json</span><span class="op">&lt;</span><span class="ident">AccountCheckPayload</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>,
@@ -102,15 +96,7 @@
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">services</span>(<span class="ident">cfg</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">actix_web</span>::<span class="ident">web</span>::<span class="ident">ServiceConfig</span>) {
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">define_resource</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">V1_API_ROUTES</span>;
-
-    <span class="macro">define_resource</span><span class="macro">!</span>(
-        <span class="ident">cfg</span>,
-        <span class="ident">V1_API_ROUTES</span>.<span class="ident">account</span>.<span class="ident">username_exists</span>,
-        <span class="ident">Methods</span>::<span class="ident">Post</span>,
-        <span class="ident">username_exists</span>
-    );
+    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">username_exists</span>);
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="guard"></div>

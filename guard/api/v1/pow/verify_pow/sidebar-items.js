@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["verify_pow","route handler that verifies PoW and issues a solution token if verification is successful"]],"struct":[["ValidationToken","validation token that clients receive as proof for submiting valid PoW"]]});
+initSidebarItems({"struct":[["ValidationToken","validation token that clients receive as proof for submiting valid PoW"],["verify_pow","route handler that verifies PoW and issues a solution token if verification is successful"]]});

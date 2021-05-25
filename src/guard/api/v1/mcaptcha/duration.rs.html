@@ -187,6 +187,10 @@
 <span id="184">184</span>
 <span id="185">185</span>
 <span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -234,6 +238,7 @@
     <span class="kw">pub</span> <span class="ident">duration</span>: <span class="ident">i32</span>,
 }
 
+<span class="attribute">#[<span class="ident">my_codegen</span>::<span class="ident">post</span>(<span class="ident">path</span><span class="op">=</span><span class="string">&quot;crate::V1_API_ROUTES.duration.update&quot;</span>, <span class="ident">wrap</span><span class="op">=</span><span class="string">&quot;crate::CheckLogin&quot;</span>)]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_duration</span>(
     <span class="ident">payload</span>: <span class="ident">web</span>::<span class="ident">Json</span><span class="op">&lt;</span><span class="ident">UpdateDuration</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>,
@@ -271,6 +276,7 @@
     <span class="kw">pub</span> <span class="ident">token</span>: <span class="ident">String</span>,
 }
 
+<span class="attribute">#[<span class="ident">my_codegen</span>::<span class="ident">post</span>(<span class="ident">path</span><span class="op">=</span><span class="string">&quot;crate::V1_API_ROUTES.duration.get&quot;</span>, <span class="ident">wrap</span><span class="op">=</span><span class="string">&quot;crate::CheckLogin&quot;</span>)]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_duration</span>(
     <span class="ident">payload</span>: <span class="ident">web</span>::<span class="ident">Json</span><span class="op">&lt;</span><span class="ident">MCaptchaDetails</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>,
@@ -291,21 +297,23 @@
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">services</span>(<span class="ident">cfg</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">web</span>::<span class="ident">ServiceConfig</span>) {
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">define_resource</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">V1_API_ROUTES</span>;
-
-    <span class="macro">define_resource</span><span class="macro">!</span>(
-        <span class="ident">cfg</span>,
-        <span class="ident">V1_API_ROUTES</span>.<span class="ident">duration</span>.<span class="ident">get</span>,
-        <span class="ident">Methods</span>::<span class="ident">ProtectPost</span>,
-        <span class="ident">get_duration</span>
-    );
-    <span class="macro">define_resource</span><span class="macro">!</span>(
-        <span class="ident">cfg</span>,
-        <span class="ident">V1_API_ROUTES</span>.<span class="ident">duration</span>.<span class="ident">update</span>,
-        <span class="ident">Methods</span>::<span class="ident">ProtectPost</span>,
-        <span class="ident">update_duration</span>
-    );
+    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">get_duration</span>);
+    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">update_duration</span>);
+<span class="comment">//    use crate::define_resource;</span>
+<span class="comment">//    use crate::V1_API_ROUTES;</span>
+<span class="comment">//</span>
+<span class="comment">//    define_resource!(</span>
+<span class="comment">//        cfg,</span>
+<span class="comment">//        V1_API_ROUTES.duration.get,</span>
+<span class="comment">//        Methods::ProtectPost,</span>
+<span class="comment">//        get_duration</span>
+<span class="comment">//    );</span>
+<span class="comment">//    define_resource!(</span>
+<span class="comment">//        cfg,</span>
+<span class="comment">//        V1_API_ROUTES.duration.update,</span>
+<span class="comment">//        Methods::ProtectPost,</span>
+<span class="comment">//        update_duration</span>
+<span class="comment">//    );</span>
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
