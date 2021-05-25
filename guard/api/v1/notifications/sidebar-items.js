@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["services",""]],"mod":[["add",""],["get",""],["routes",""]]});
+initSidebarItems({"fn":[["services",""]],"mod":[["add",""],["get",""],["mark_read",""],["routes",""]]});
