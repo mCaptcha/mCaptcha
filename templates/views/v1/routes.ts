@@ -21,7 +21,7 @@ const ROUTES = {
   signoutUser: '/api/v1/signout',
   panelHome: '/',
   docsHome: '/docs/',
-  listSitekey: '/sitekey/view',
+  listSitekey: (key: string) => `/sitekey/view/${key}`,
   addSiteKey: '/sitekey/add',
 };
 
