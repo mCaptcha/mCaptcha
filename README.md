@@ -65,6 +65,21 @@ to their request.
 
 ## Demo
 
+### Demo servers are available at:
+
+- https://demo.mcaptcha.org/
+- https://demo2.mcaptcha.org/ (runs on a Raspberry Pi!)
+
+> Core functionality is working but it's still very much
+> work-in-progress. Since we don't have a stable release yet, hosted
+> demo servers might be a few versions behind `master`. Please check footer for
+> build commit.
+
+Feel free to provide bogus information while signing up(project under
+development, database frequently wiped).
+
+### Self-hosted:
+
 Clone the repo and run the following from the root of the repo:
 
 ```bash
