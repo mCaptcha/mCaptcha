@@ -52,6 +52,19 @@
       "nullable": []
     }
   },
+  "2b319a202bb983d5f28979d1e371f399125da1122fbda36a5a55b75b9c743451": {
+    "query": "--  mark a notification as read\nUPDATE mcaptcha_notifications\n    SET read = TRUE\nWHERE \n    mcaptcha_notifications.id = $1\nAND\n    mcaptcha_notifications.rx = (\n        SELECT\n            id\n        FROM\n            mcaptcha_users\n        WHERE\n        name = $2\n    );\n",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Int4",
+          "Text"
+        ]
+      },
+      "nullable": []
+    }
+  },
   "307245aaf5b0d692448b80358d6916aa50c507b35e724d66c9b16a16b60e1b38": {
     "query": "INSERT INTO mcaptcha_config\n        (key, user_id, duration, name)\n        VALUES ($1, (SELECT ID FROM mcaptcha_users WHERE name = $2), $3, $4)",
     "describe": {
