@@ -1,0 +1,2 @@
+[target.aarch64-unknown-linux-musl]
+image = "realaravinth/cross:aarch64-unknown-linux-musl-postgres"

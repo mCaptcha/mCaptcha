@@ -15,11 +15,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import './mobile.scss';
-import './auth/css/mobile.scss';
-import './components/details-footer/mobile.scss';
-import './panel/css/mobile.scss';
-import './panel/header/taskbar/mobile.scss';
-import './panel/navbar/mobile.scss';
-import './panel/help-banner/mobile.scss';
-import './panel/sitekey/add/css/mobile.scss';
+.sitekey__level-container {
+  flex-direction: column;
+}
+
+.sitekey-form__level-input {
+  width: 100%;
+}
+
+.sitekey-form__level-label--hidden {
+  width: 100%;
+}
+
+.sitekey-form__level-add-level-button {
+  margin: auto;
+}
+
+.sitekey-form__add-level-btn-spacer {
+  display: none;
+}
+
+.sitekey-form__level-label {
+  width: 100%;
+}

@@ -85,6 +85,11 @@
   flex: 2;
 }
 
+
+.sitekey-form__add-level-btn-spacer {
+  color: $white;
+}
+
 .sitekey-form__level-add-level-button {
   @include violet-button;
 }
