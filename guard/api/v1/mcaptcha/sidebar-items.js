@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["get_random",""],["services",""]],"mod":[["duration",""],["levels",""],["mcaptcha",""],["stats",""]]});
+initSidebarItems({"fn":[["get_random",""],["services",""]],"mod":[["duration",""],["levels",""],["mcaptcha",""]]});

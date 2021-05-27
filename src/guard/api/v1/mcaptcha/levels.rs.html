@@ -362,6 +362,12 @@
 <span id="359">359</span>
 <span id="360">360</span>
 <span id="361">361</span>
+<span id="362">362</span>
+<span id="363">363</span>
+<span id="364">364</span>
+<span id="365">365</span>
+<span id="366">366</span>
+<span id="367">367</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -432,7 +438,7 @@
 
 <span class="comment">// TODO redo mcaptcha table to include levels as json field</span>
 <span class="comment">// so that the whole thing can be added/udpaed in a single stroke</span>
-<span class="attribute">#[<span class="ident">my_codegen</span>::<span class="ident">post</span>(<span class="ident">path</span><span class="op">=</span><span class="string">&quot;crate::V1_API_ROUTES.levels.add&quot;</span>, <span class="ident">wrap</span><span class="op">=</span><span class="string">&quot;crate::CheckLogin&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">my_codegen</span>::<span class="ident">post</span>(<span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;crate::V1_API_ROUTES.levels.add&quot;</span>, <span class="ident">wrap</span> <span class="op">=</span> <span class="string">&quot;crate::CheckLogin&quot;</span>)]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">add_levels</span>(
     <span class="ident">payload</span>: <span class="ident">web</span>::<span class="ident">Json</span><span class="op">&lt;</span><span class="ident">AddLevels</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>,
@@ -485,7 +491,10 @@
     <span class="kw">pub</span> <span class="ident">key</span>: <span class="ident">String</span>,
 }
 
-<span class="attribute">#[<span class="ident">my_codegen</span>::<span class="ident">post</span>(<span class="ident">path</span><span class="op">=</span><span class="string">&quot;crate::V1_API_ROUTES.levels.update&quot;</span>, <span class="ident">wrap</span><span class="op">=</span><span class="string">&quot;crate::CheckLogin&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">my_codegen</span>::<span class="ident">post</span>(
+    <span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;crate::V1_API_ROUTES.levels.update&quot;</span>,
+    <span class="ident">wrap</span> <span class="op">=</span> <span class="string">&quot;crate::CheckLogin&quot;</span>
+)]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_levels</span>(
     <span class="ident">payload</span>: <span class="ident">web</span>::<span class="ident">Json</span><span class="op">&lt;</span><span class="ident">UpdateLevels</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>,
@@ -543,7 +552,10 @@
     <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse</span>::<span class="prelude-val">Ok</span>())
 }
 
-<span class="attribute">#[<span class="ident">my_codegen</span>::<span class="ident">post</span>(<span class="ident">path</span><span class="op">=</span><span class="string">&quot;crate::V1_API_ROUTES.levels.delete&quot;</span>, <span class="ident">wrap</span><span class="op">=</span><span class="string">&quot;crate::CheckLogin&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">my_codegen</span>::<span class="ident">post</span>(
+    <span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;crate::V1_API_ROUTES.levels.delete&quot;</span>,
+    <span class="ident">wrap</span> <span class="op">=</span> <span class="string">&quot;crate::CheckLogin&quot;</span>
+)]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_levels</span>(
     <span class="ident">payload</span>: <span class="ident">web</span>::<span class="ident">Json</span><span class="op">&lt;</span><span class="ident">UpdateLevels</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>,
@@ -570,7 +582,7 @@
     <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse</span>::<span class="prelude-val">Ok</span>())
 }
 
-<span class="attribute">#[<span class="ident">my_codegen</span>::<span class="ident">post</span>(<span class="ident">path</span><span class="op">=</span><span class="string">&quot;crate::V1_API_ROUTES.levels.get&quot;</span>, <span class="ident">wrap</span><span class="op">=</span><span class="string">&quot;crate::CheckLogin&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">my_codegen</span>::<span class="ident">post</span>(<span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;crate::V1_API_ROUTES.levels.get&quot;</span>, <span class="ident">wrap</span> <span class="op">=</span> <span class="string">&quot;crate::CheckLogin&quot;</span>)]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_levels</span>(
     <span class="ident">payload</span>: <span class="ident">web</span>::<span class="ident">Json</span><span class="op">&lt;</span><span class="ident">MCaptchaDetails</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>,

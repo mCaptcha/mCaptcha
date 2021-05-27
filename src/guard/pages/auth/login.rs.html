@@ -64,11 +64,11 @@
 * along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
 */</span>
 
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">PAGES</span>;
 <span class="kw">use</span> <span class="ident">actix_web</span>::{<span class="ident">HttpResponse</span>, <span class="ident">Responder</span>};
 <span class="kw">use</span> <span class="ident">lazy_static</span>::<span class="ident">lazy_static</span>;
-<span class="kw">use</span> <span class="ident">sailfish</span>::<span class="ident">TemplateOnce</span>;
 <span class="kw">use</span> <span class="ident">my_codegen</span>::<span class="ident">get</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">PAGES</span>;
+<span class="kw">use</span> <span class="ident">sailfish</span>::<span class="ident">TemplateOnce</span>;
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">TemplateOnce</span>)]</span>
 <span class="attribute">#[<span class="ident">template</span>(<span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;auth/login/index.html&quot;</span>)]</span>
@@ -86,7 +86,7 @@
     <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">INDEX</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">IndexPage</span>::<span class="ident">default</span>().<span class="ident">render_once</span>().<span class="ident">unwrap</span>();
 }
 
-<span class="attribute">#[<span class="ident">get</span>(<span class="ident">path</span><span class="op">=</span><span class="string">&quot;PAGES.auth.login&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">get</span>(<span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;PAGES.auth.login&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">login</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Responder</span> {
     <span class="ident">HttpResponse</span>::<span class="prelude-val">Ok</span>()
         .<span class="ident">content_type</span>(<span class="string">&quot;text/html; charset=utf-8&quot;</span>)

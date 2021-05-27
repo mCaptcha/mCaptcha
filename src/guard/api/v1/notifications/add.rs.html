@@ -104,6 +104,9 @@
 <span id="101">101</span>
 <span id="102">102</span>
 <span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -137,7 +140,10 @@
 }
 
 <span class="doccomment">/// route handler that adds a notification message</span>
-<span class="attribute">#[<span class="ident">my_codegen</span>::<span class="ident">post</span>(<span class="ident">path</span><span class="op">=</span><span class="string">&quot;crate::V1_API_ROUTES.notifications.add&quot;</span>, <span class="ident">wrap</span><span class="op">=</span><span class="string">&quot;crate::CheckLogin&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">my_codegen</span>::<span class="ident">post</span>(
+    <span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;crate::V1_API_ROUTES.notifications.add&quot;</span>,
+    <span class="ident">wrap</span> <span class="op">=</span> <span class="string">&quot;crate::CheckLogin&quot;</span>
+)]</span>
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">add_notification</span>(
     <span class="ident">payload</span>: <span class="ident">web</span>::<span class="ident">Json</span><span class="op">&lt;</span><span class="ident">AddNotification</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>,

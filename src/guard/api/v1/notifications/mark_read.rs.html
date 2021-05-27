@@ -156,7 +156,6 @@
 <span id="153">153</span>
 <span id="154">154</span>
 <span id="155">155</span>
-<span id="156">156</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -197,7 +196,10 @@
 }
 
 <span class="doccomment">/// route handler that marks a notification read</span>
-<span class="attribute">#[<span class="ident">my_codegen</span>::<span class="ident">post</span>(<span class="ident">path</span><span class="op">=</span><span class="string">&quot;crate::V1_API_ROUTES.notifications.mark_read&quot;</span>, <span class="ident">wrap</span><span class="op">=</span><span class="string">&quot;crate::CheckLogin&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">my_codegen</span>::<span class="ident">post</span>(
+    <span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;crate::V1_API_ROUTES.notifications.mark_read&quot;</span>,
+    <span class="ident">wrap</span> <span class="op">=</span> <span class="string">&quot;crate::CheckLogin&quot;</span>
+)]</span>
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">mark_read</span>(
     <span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>,
     <span class="ident">payload</span>: <span class="ident">web</span>::<span class="ident">Json</span><span class="op">&lt;</span><span class="ident">MarkReadReq</span><span class="op">&gt;</span>,
@@ -227,7 +229,6 @@
     <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">api</span>::<span class="ident">v1</span>::<span class="ident">notifications</span>::<span class="ident">add</span>::<span class="ident">AddNotification</span>;
     <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">tests</span>::<span class="kw-2">*</span>;
     <span class="kw">use</span> <span class="kw">crate</span>::<span class="kw-2">*</span>;
-
 
     <span class="attribute">#[<span class="ident">actix_rt</span>::<span class="ident">test</span>]</span>
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">notification_mark_read_works</span>() {
@@ -285,7 +286,6 @@
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">notification</span>.<span class="ident">message</span>, <span class="ident">MESSAGE</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">notification</span>.<span class="ident">heading</span>, <span class="ident">HEADING</span>);
 
-
         <span class="kw">let</span> <span class="ident">mark_read_payload</span> <span class="op">=</span> <span class="ident">MarkReadReq</span> {
             <span class="ident">id</span>: <span class="ident">notification</span>.<span class="ident">id</span>.<span class="ident">clone</span>(),
         };
@@ -297,7 +297,6 @@
         )
         .<span class="kw">await</span>;
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">mark_read_resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode</span>::<span class="ident">OK</span>);
-
 
         <span class="kw">let</span> <span class="ident">get_notifications_resp</span> <span class="op">=</span> <span class="ident">test</span>::<span class="ident">call_service</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">app</span>,
@@ -311,7 +310,6 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">notifications</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">NotificationResp</span><span class="op">&gt;</span> <span class="op">=</span>
             <span class="ident">test</span>::<span class="ident">read_body_json</span>(<span class="ident">get_notifications_resp</span>).<span class="kw">await</span>;
         <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">notifications</span>.<span class="ident">pop</span>().<span class="ident">is_none</span>());
-
     }
 }
 </pre></div>

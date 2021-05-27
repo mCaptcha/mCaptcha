@@ -72,7 +72,7 @@
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">errors</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Data</span>;
 
-<span class="attribute">#[<span class="ident">my_codegen</span>::<span class="ident">post</span>(<span class="ident">path</span><span class="op">=</span><span class="string">&quot;crate::V1_API_ROUTES.account.username_exists&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">my_codegen</span>::<span class="ident">post</span>(<span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;crate::V1_API_ROUTES.account.username_exists&quot;</span>)]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">username_exists</span>(
     <span class="ident">payload</span>: <span class="ident">web</span>::<span class="ident">Json</span><span class="op">&lt;</span><span class="ident">AccountCheckPayload</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>,

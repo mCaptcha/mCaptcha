@@ -144,6 +144,8 @@
 <span id="141">141</span>
 <span id="142">142</span>
 <span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -167,8 +169,8 @@
 <span class="kw">use</span> <span class="ident">m_captcha</span>::<span class="ident">pow</span>::<span class="ident">Work</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
-<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">record_solve</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">errors</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">stats</span>::<span class="ident">record</span>::<span class="ident">record_solve</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Data</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">V1_API_ROUTES</span>;
 
@@ -183,7 +185,9 @@
 
 <span class="doccomment">/// route handler that verifies PoW and issues a solution token</span>
 <span class="doccomment">/// if verification is successful</span>
-<span class="attribute">#[<span class="ident">my_codegen</span>::<span class="ident">post</span>(<span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;V1_API_ROUTES.pow.verify_pow.strip_prefix(V1_API_ROUTES.pow.scope).unwrap()&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">my_codegen</span>::<span class="ident">post</span>(
+    <span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;V1_API_ROUTES.pow.verify_pow.strip_prefix(V1_API_ROUTES.pow.scope).unwrap()&quot;</span>
+)]</span>
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">verify_pow</span>(
     <span class="ident">payload</span>: <span class="ident">web</span>::<span class="ident">Json</span><span class="op">&lt;</span><span class="ident">Work</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>,

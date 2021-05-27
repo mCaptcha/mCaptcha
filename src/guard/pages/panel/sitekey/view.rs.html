@@ -142,6 +142,14 @@
 <span id="139">139</span>
 <span id="140">140</span>
 <span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -162,9 +170,11 @@
 
 <span class="kw">use</span> <span class="ident">actix_identity</span>::<span class="ident">Identity</span>;
 <span class="kw">use</span> <span class="ident">actix_web</span>::{<span class="ident">web</span>, <span class="ident">HttpResponse</span>, <span class="ident">Responder</span>};
+<span class="kw">use</span> <span class="ident">futures</span>::{<span class="ident">future</span>::<span class="ident">TryFutureExt</span>, <span class="ident">try_join</span>};
 <span class="kw">use</span> <span class="ident">sailfish</span>::<span class="ident">TemplateOnce</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">errors</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">stats</span>::<span class="ident">fetch</span>::<span class="ident">Stats</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Data</span>;
 
 <span class="kw">const</span> <span class="ident">PAGE</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;SiteKeys&quot;</span>;
@@ -220,13 +230,19 @@
     .<span class="ident">fetch_one</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>.<span class="ident">db</span>)
     .<span class="kw">await</span><span class="question-mark">?</span>;
 
-    <span class="kw">let</span> <span class="ident">levels</span> <span class="op">=</span> <span class="ident">sqlx</span>::<span class="macro">query_as</span><span class="macro">!</span>(
+    <span class="kw">let</span> <span class="ident">levels_fut</span> <span class="op">=</span> <span class="ident">sqlx</span>::<span class="macro">query_as</span><span class="macro">!</span>(
         <span class="ident">Level</span>,
-        <span class="string">&quot;SELECT difficulty_factor, visitor_threshold from mcaptcha_levels WHERE config_id = $1&quot;</span>,
+        <span class="string">&quot;SELECT 
+            difficulty_factor, visitor_threshold 
+        FROM 
+            mcaptcha_levels 
+        WHERE config_id = $1&quot;</span>,
         <span class="kw-2">&amp;</span><span class="ident">config</span>.<span class="ident">config_id</span>
     )
     .<span class="ident">fetch_all</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>.<span class="ident">db</span>)
-    .<span class="kw">await</span><span class="question-mark">?</span>;
+    .<span class="ident">err_into</span>();
+
+    <span class="kw">let</span> (<span class="ident">stats</span>, <span class="ident">levels</span>) <span class="op">=</span> <span class="macro">try_join</span><span class="macro">!</span>(<span class="ident">Stats</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>, <span class="kw-2">&amp;</span><span class="ident">data</span>.<span class="ident">db</span>), <span class="ident">levels_fut</span>)<span class="question-mark">?</span>;
 
     <span class="kw">let</span> <span class="ident">body</span> <span class="op">=</span> <span class="ident">IndexPage</span>::<span class="ident">new</span>(<span class="ident">config</span>, <span class="ident">levels</span>).<span class="ident">render_once</span>().<span class="ident">unwrap</span>();
     <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse</span>::<span class="prelude-val">Ok</span>()
