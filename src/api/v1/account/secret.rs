@@ -29,7 +29,10 @@ pub struct Secret {
     pub secret: String,
 }
 
-#[my_codegen::get(path="crate::V1_API_ROUTES.account.get_secret", wrap="crate::CheckLogin")]
+#[my_codegen::get(
+    path = "crate::V1_API_ROUTES.account.get_secret",
+    wrap = "crate::CheckLogin"
+)]
 async fn get_secret(
     id: Identity,
     data: web::Data<Data>,
@@ -47,7 +50,10 @@ async fn get_secret(
     Ok(HttpResponse::Ok().json(secret))
 }
 
-#[my_codegen::post(path="crate::V1_API_ROUTES.account.update_secret", wrap="crate::CheckLogin")]
+#[my_codegen::post(
+    path = "crate::V1_API_ROUTES.account.update_secret",
+    wrap = "crate::CheckLogin"
+)]
 async fn update_user_secret(
     id: Identity,
     data: web::Data<Data>,

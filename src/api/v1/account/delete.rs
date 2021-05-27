@@ -22,7 +22,10 @@ use super::auth::Password;
 use crate::errors::*;
 use crate::Data;
 
-#[my_codegen::post(path="crate::V1_API_ROUTES.account.delete", wrap="crate::CheckLogin")]
+#[my_codegen::post(
+    path = "crate::V1_API_ROUTES.account.delete",
+    wrap = "crate::CheckLogin"
+)]
 async fn delete_account(
     id: Identity,
     payload: web::Json<Password>,
@@ -61,13 +64,13 @@ async fn delete_account(
 
 pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
     cfg.service(delete_account);
-//    use crate::define_resource;
-//    use crate::V1_API_ROUTES;
-//
-//    define_resource!(
-//        cfg,
-//        V1_API_ROUTES.account.delete,
-//        Methods::ProtectPost,
-//        delete_account
-//    );
+    //    use crate::define_resource;
+    //    use crate::V1_API_ROUTES;
+    //
+    //    define_resource!(
+    //        cfg,
+    //        V1_API_ROUTES.account.delete,
+    //        Methods::ProtectPost,
+    //        delete_account
+    //    );
 }

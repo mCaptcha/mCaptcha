@@ -48,16 +48,15 @@ pub mod routes {
 }
 
 pub fn services(cfg: &mut web::ServiceConfig) {
-
-   // protect_get!(cfg, V1_API_ROUTES.auth.logout, signout);
+    // protect_get!(cfg, V1_API_ROUTES.auth.logout, signout);
 
     cfg.service(signup);
     cfg.service(signin);
     cfg.service(signout);
 
-//    define_resource!(cfg, V1_API_ROUTES.auth.register, Methods::Post, signup);
-//    define_resource!(cfg, V1_API_ROUTES.auth.logout, Methods::ProtectGet, signout);
-//    define_resource!(cfg, V1_API_ROUTES.auth.login, Methods::Post, signin);
+    //    define_resource!(cfg, V1_API_ROUTES.auth.register, Methods::Post, signup);
+    //    define_resource!(cfg, V1_API_ROUTES.auth.logout, Methods::ProtectGet, signout);
+    //    define_resource!(cfg, V1_API_ROUTES.auth.login, Methods::Post, signin);
     //post!(cfg, V1_API_ROUTES.auth.login, signin);
 }
 
@@ -80,7 +79,7 @@ pub struct Password {
     pub password: String,
 }
 
-#[my_codegen::post(path="crate::V1_API_ROUTES.auth.register")]
+#[my_codegen::post(path = "crate::V1_API_ROUTES.auth.register")]
 async fn signup(
     payload: web::Json<Register>,
     data: web::Data<Data>,
@@ -126,7 +125,8 @@ async fn signup(
             .execute(&data.db)
             .await;
         }
-        if res.is_ok() { break;
+        if res.is_ok() {
+            break;
         } else {
             if let Err(sqlx::Error::Database(err)) = res {
                 if err.code() == Some(Cow::from("23505")) {
@@ -147,7 +147,7 @@ async fn signup(
     Ok(HttpResponse::Ok())
 }
 
-#[my_codegen::post(path="crate::V1_API_ROUTES.auth.login")]
+#[my_codegen::post(path = "crate::V1_API_ROUTES.auth.login")]
 async fn signin(
     id: Identity,
     payload: web::Json<Login>,
@@ -179,7 +179,7 @@ async fn signin(
     }
 }
 
-#[my_codegen::get(path="crate::V1_API_ROUTES.auth.logout", wrap="crate::CheckLogin")]
+#[my_codegen::get(path = "crate::V1_API_ROUTES.auth.logout", wrap = "crate::CheckLogin")]
 async fn signout(id: Identity) -> impl Responder {
     if let Some(_) = id.identity() {
         id.forget();

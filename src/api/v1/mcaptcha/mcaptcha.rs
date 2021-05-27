@@ -111,7 +111,10 @@ pub async fn add_mcaptcha_util(
     Ok(resp)
 }
 
-#[my_codegen::post(path="crate::V1_API_ROUTES.mcaptcha.update_key", wrap="crate::CheckLogin")]
+#[my_codegen::post(
+    path = "crate::V1_API_ROUTES.mcaptcha.update_key",
+    wrap = "crate::CheckLogin"
+)]
 async fn update_token(
     payload: web::Json<MCaptchaDetails>,
     data: web::Data<Data>,
@@ -162,7 +165,10 @@ async fn update_token_helper(
     Ok(())
 }
 
-#[my_codegen::post(path="crate::V1_API_ROUTES.mcaptcha.get_token", wrap="crate::CheckLogin")]
+#[my_codegen::post(
+    path = "crate::V1_API_ROUTES.mcaptcha.get_token",
+    wrap = "crate::CheckLogin"
+)]
 async fn get_token(
     payload: web::Json<MCaptchaDetails>,
     data: web::Data<Data>,
@@ -190,7 +196,10 @@ async fn get_token(
     Ok(HttpResponse::Ok().json(res))
 }
 
-#[my_codegen::post(path="crate::V1_API_ROUTES.mcaptcha.delete", wrap="crate::CheckLogin")]
+#[my_codegen::post(
+    path = "crate::V1_API_ROUTES.mcaptcha.delete",
+    wrap = "crate::CheckLogin"
+)]
 async fn delete_mcaptcha(
     payload: web::Json<MCaptchaDetails>,
     data: web::Data<Data>,

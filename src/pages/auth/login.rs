@@ -15,11 +15,11 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+use crate::PAGES;
 use actix_web::{HttpResponse, Responder};
 use lazy_static::lazy_static;
-use sailfish::TemplateOnce;
 use my_codegen::get;
-use crate::PAGES;
+use sailfish::TemplateOnce;
 
 #[derive(Clone, TemplateOnce)]
 #[template(path = "auth/login/index.html")]
@@ -37,7 +37,7 @@ lazy_static! {
     static ref INDEX: String = IndexPage::default().render_once().unwrap();
 }
 
-#[get(path="PAGES.auth.login")]
+#[get(path = "PAGES.auth.login")]
 pub async fn login() -> impl Responder {
     HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")

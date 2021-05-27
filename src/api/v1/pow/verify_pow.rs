@@ -20,8 +20,8 @@ use actix_web::{web, HttpResponse, Responder};
 use m_captcha::pow::Work;
 use serde::{Deserialize, Serialize};
 
-use super::record_solve;
 use crate::errors::*;
+use crate::stats::record::record_solve;
 use crate::Data;
 use crate::V1_API_ROUTES;
 
@@ -36,7 +36,9 @@ pub struct ValidationToken {
 
 /// route handler that verifies PoW and issues a solution token
 /// if verification is successful
-#[my_codegen::post(path = "V1_API_ROUTES.pow.verify_pow.strip_prefix(V1_API_ROUTES.pow.scope).unwrap()")]
+#[my_codegen::post(
+    path = "V1_API_ROUTES.pow.verify_pow.strip_prefix(V1_API_ROUTES.pow.scope).unwrap()"
+)]
 pub async fn verify_pow(
     payload: web::Json<Work>,
     data: web::Data<Data>,

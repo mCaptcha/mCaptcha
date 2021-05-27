@@ -14,32 +14,6 @@
       "nullable": []
     }
   },
-  "0612bd9e6b89ff4bf09be0936bf2262cde3967a54fa103ff09a591f7539d063d": {
-    "query": "SELECT difficulty_factor, visitor_threshold from mcaptcha_levels WHERE config_id = $1",
-    "describe": {
-      "columns": [
-        {
-          "ordinal": 0,
-          "name": "difficulty_factor",
-          "type_info": "Int4"
-        },
-        {
-          "ordinal": 1,
-          "name": "visitor_threshold",
-          "type_info": "Int4"
-        }
-      ],
-      "parameters": {
-        "Left": [
-          "Int4"
-        ]
-      },
-      "nullable": [
-        false,
-        false
-      ]
-    }
-  },
   "1be6274d5cc6d16f38285b8a62c9f66e8c3014cd403bc599598e911023bfeedb": {
     "query": "INSERT INTO mcaptcha_pow_fetched_stats \n        (config_id) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1))",
     "describe": {
@@ -170,6 +144,26 @@
       },
       "nullable": [
         null
+      ]
+    }
+  },
+  "4dc1b6d8ae3b92ebff45f683951c087244f9614ed0e95b75578f0d1346887224": {
+    "query": "SELECT fetched_at FROM mcaptcha_pow_fetched_stats WHERE config_id = \n        (SELECT config_id FROM mcaptcha_config where key = $1)",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "fetched_at",
+          "type_info": "Timestamptz"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false
       ]
     }
   },
@@ -355,6 +349,32 @@
       "nullable": []
     }
   },
+  "a1f1e5693dad5c04b85f97d1de9c68b584a1ca99436e61f7c93f2a5acf8fb55f": {
+    "query": "SELECT \n            difficulty_factor, visitor_threshold \n        FROM \n            mcaptcha_levels \n        WHERE config_id = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "difficulty_factor",
+          "type_info": "Int4"
+        },
+        {
+          "ordinal": 1,
+          "name": "visitor_threshold",
+          "type_info": "Int4"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Int4"
+        ]
+      },
+      "nullable": [
+        false,
+        false
+      ]
+    }
+  },
   "aa9a21fd88c106fe6c4b75a724b202b7bdda66eb9c5fd91780113e2c3ea82719": {
     "query": "SELECT difficulty_factor, visitor_threshold FROM mcaptcha_levels  WHERE\n            config_id = (\n                SELECT config_id FROM mcaptcha_config WHERE key = ($1)\n                AND user_id = (SELECT ID from mcaptcha_users WHERE name = $2)\n                );",
     "describe": {
@@ -501,6 +521,26 @@
       ]
     }
   },
+  "daebbef26cf04fdc46226304d028528e121a9847c07139d7d3a56a0e7c165879": {
+    "query": "SELECT solved_at FROM mcaptcha_pow_solved_stats WHERE config_id = \n        (SELECT config_id FROM mcaptcha_config where key = $1)",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "solved_at",
+          "type_info": "Timestamptz"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false
+      ]
+    }
+  },
   "dcf0d4f9d803dcb1d6f775899f79595f9c78d46633e0ec822303284430df7a3d": {
     "query": "-- gets all unread notifications a user has\nSELECT \n    mcaptcha_notifications.id,\n    mcaptcha_notifications.heading,\n    mcaptcha_notifications.message,\n    mcaptcha_notifications.received,\n    mcaptcha_users.name\nFROM\n    mcaptcha_notifications \nINNER JOIN \n    mcaptcha_users \nON \n    mcaptcha_notifications.tx = mcaptcha_users.id\nWHERE \n    mcaptcha_notifications.rx = (\n        SELECT \n            id \n        FROM \n            mcaptcha_users\n        WHERE\n            name = $1\n        )\nAND \n    mcaptcha_notifications.read IS NULL;\n",
     "describe": {
@@ -578,6 +618,26 @@
         ]
       },
       "nullable": []
+    }
+  },
+  "fb15883459af48b0f6f1eee5d47641db8fa0875f7f21665dbc40800869e5e353": {
+    "query": "SELECT confirmed_at FROM mcaptcha_pow_confirmed_stats WHERE config_id = (\n        SELECT config_id FROM mcaptcha_config where key = $1)",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "confirmed_at",
+          "type_info": "Timestamptz"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false
+      ]
     }
   },
   "fb19fbff4265cc59450d64a8d945f0ae2ad337b97e6192837881e8b6b4c397ee": {

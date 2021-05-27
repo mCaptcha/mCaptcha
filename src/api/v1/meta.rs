@@ -45,7 +45,7 @@ pub mod routes {
 }
 
 /// emmits build details of the bninary
-#[my_codegen::get(path="crate::V1_API_ROUTES.meta.build_details")]
+#[my_codegen::get(path = "crate::V1_API_ROUTES.meta.build_details")]
 async fn build_details() -> impl Responder {
     let build = BuildDetails {
         version: VERSION,
@@ -61,7 +61,7 @@ pub struct Health {
 }
 
 /// checks all components of the system
-#[my_codegen::get(path="crate::V1_API_ROUTES.meta.health")]
+#[my_codegen::get(path = "crate::V1_API_ROUTES.meta.health")]
 async fn health(data: web::Data<Data>) -> impl Responder {
     use sqlx::Connection;
 

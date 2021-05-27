@@ -17,9 +17,11 @@
 
 use actix_identity::Identity;
 use actix_web::{web, HttpResponse, Responder};
+use futures::{future::TryFutureExt, try_join};
 use sailfish::TemplateOnce;
 
 use crate::errors::*;
+use crate::stats::fetch::Stats;
 use crate::Data;
 
 const PAGE: &str = "SiteKeys";
@@ -75,13 +77,19 @@ pub async fn view_sitekey(
     .fetch_one(&data.db)
     .await?;
 
-    let levels = sqlx::query_as!(
+    let levels_fut = sqlx::query_as!(
         Level,
-        "SELECT difficulty_factor, visitor_threshold from mcaptcha_levels WHERE config_id = $1",
+        "SELECT 
+            difficulty_factor, visitor_threshold 
+        FROM 
+            mcaptcha_levels 
+        WHERE config_id = $1",
         &config.config_id
     )
     .fetch_all(&data.db)
-    .await?;
+    .err_into();
+
+    let (stats, levels) = try_join!(Stats::new(&key, &data.db), levels_fut)?;
 
     let body = IndexPage::new(config, levels).render_once().unwrap();
     Ok(HttpResponse::Ok()

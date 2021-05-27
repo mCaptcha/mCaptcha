@@ -20,7 +20,7 @@ use super::{AccountCheckPayload, AccountCheckResp};
 use crate::errors::*;
 use crate::Data;
 
-#[my_codegen::post(path="crate::V1_API_ROUTES.account.username_exists")]
+#[my_codegen::post(path = "crate::V1_API_ROUTES.account.username_exists")]
 async fn username_exists(
     payload: web::Json<AccountCheckPayload>,
     data: web::Data<Data>,

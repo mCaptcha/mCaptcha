@@ -15,26 +15,5 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-pub mod duration;
-pub mod levels;
-pub mod mcaptcha;
-
-pub fn get_random(len: usize) -> String {
-    use std::iter;
-
-    use rand::{distributions::Alphanumeric, rngs::ThreadRng, thread_rng, Rng};
-
-    let mut rng: ThreadRng = thread_rng();
-
-    iter::repeat(())
-        .map(|()| rng.sample(Alphanumeric))
-        .map(char::from)
-        .take(len)
-        .collect::<String>()
-}
-
-pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
-    duration::services(cfg);
-    levels::services(cfg);
-    mcaptcha::services(cfg);
-}
+pub mod fetch;
+pub mod record;

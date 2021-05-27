@@ -194,6 +194,9 @@ pub type ServiceResult<V> = std::result::Result<V, ServiceError>;
 pub enum PageError {
     #[display(fmt = "Something weng wrong: Internal server error")]
     InternalServerError,
+
+    #[display(fmt = "{}", _0)]
+    ServiceError(ServiceError),
 }
 
 #[cfg(not(tarpaulin_include))]
@@ -201,6 +204,14 @@ impl From<sqlx::Error> for PageError {
     #[cfg(not(tarpaulin_include))]
     fn from(_: sqlx::Error) -> Self {
         PageError::InternalServerError
+    }
+}
+
+#[cfg(not(tarpaulin_include))]
+impl From<ServiceError> for PageError {
+    #[cfg(not(tarpaulin_include))]
+    fn from(e: ServiceError) -> Self {
+        PageError::ServiceError(e)
     }
 }
 
@@ -223,6 +234,7 @@ impl ResponseError for PageError {
     fn status_code(&self) -> StatusCode {
         match self {
             PageError::InternalServerError => StatusCode::INTERNAL_SERVER_ERROR,
+            PageError::ServiceError(e) => e.status_code(),
         }
     }
 }

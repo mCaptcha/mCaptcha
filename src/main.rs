@@ -28,15 +28,16 @@ mod api;
 mod data;
 mod docs;
 mod errors;
+mod middleware;
 mod pages;
-mod settings;
-mod static_assets;
 #[macro_use]
 mod routes;
+mod settings;
+mod static_assets;
+mod stats;
 #[cfg(test)]
 #[macro_use]
 mod tests;
-mod middleware;
 
 pub use api::v1::ROUTES as V1_API_ROUTES;
 pub use data::Data;

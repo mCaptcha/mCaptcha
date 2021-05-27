@@ -37,7 +37,10 @@ pub struct NotificationResp {
 }
 
 /// route handler that marks a notification read
-#[my_codegen::post(path="crate::V1_API_ROUTES.notifications.mark_read", wrap="crate::CheckLogin")]
+#[my_codegen::post(
+    path = "crate::V1_API_ROUTES.notifications.mark_read",
+    wrap = "crate::CheckLogin"
+)]
 pub async fn mark_read(
     data: web::Data<Data>,
     payload: web::Json<MarkReadReq>,
@@ -67,7 +70,6 @@ mod tests {
     use crate::api::v1::notifications::add::AddNotification;
     use crate::tests::*;
     use crate::*;
-
 
     #[actix_rt::test]
     async fn notification_mark_read_works() {
@@ -125,7 +127,6 @@ mod tests {
         assert_eq!(notification.message, MESSAGE);
         assert_eq!(notification.heading, HEADING);
 
-
         let mark_read_payload = MarkReadReq {
             id: notification.id.clone(),
         };
@@ -137,7 +138,6 @@ mod tests {
         )
         .await;
         assert_eq!(mark_read_resp.status(), StatusCode::OK);
-
 
         let get_notifications_resp = test::call_service(
             &mut app,
@@ -151,6 +151,5 @@ mod tests {
         let mut notifications: Vec<NotificationResp> =
             test::read_body_json(get_notifications_resp).await;
         assert!(notifications.pop().is_none());
-
     }
 }
