@@ -28,6 +28,7 @@ pub struct Routes {
     pub about: &'static str,
     pub thanks: &'static str,
     pub donate: &'static str,
+    pub security: &'static str,
 }
 
 impl Routes {
@@ -42,6 +43,7 @@ impl Routes {
             about: "/about",
             thanks: "/thanks",
             donate: "/donate",
+            security: "/security",
         }
     }
 }
