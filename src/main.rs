@@ -38,8 +38,10 @@ mod stats;
 #[cfg(test)]
 #[macro_use]
 mod tests;
+mod widget;
 
 pub use api::v1::ROUTES as V1_API_ROUTES;
+pub use widget::WIDGET_ROUTES;
 pub use data::Data;
 pub use docs::DOCS;
 pub use pages::routes::ROUTES as PAGES;
@@ -109,6 +111,7 @@ async fn main() -> std::io::Result<()> {
                 actix_middleware::normalize::TrailingSlash::Trim,
             ))
             .configure(v1::services)
+            .configure(widget::services)
             .configure(docs::services)
             .configure(static_assets::services)
             .configure(pages::services)
