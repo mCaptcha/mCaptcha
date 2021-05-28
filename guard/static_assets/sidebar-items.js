@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["handle_embedded_file",""],["services",""]],"struct":[["Asset",""],["FileMap",""],["dist",""]]});
+initSidebarItems({"fn":[["services",""]],"mod":[["filemap",""],["static_files",""]]});

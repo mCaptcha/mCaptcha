@@ -215,9 +215,9 @@
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">filemap_works</span>() {
         <span class="kw">let</span> <span class="ident">files</span> <span class="op">=</span> <span class="kw">super</span>::<span class="ident">FileMap</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="ident">css</span> <span class="op">=</span> <span class="ident">files</span>.<span class="ident">get</span>(<span class="string">&quot;./static-assets/bundle/bundle.css&quot;</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">css</span> <span class="op">=</span> <span class="ident">files</span>.<span class="ident">get</span>(<span class="string">&quot;./static-assets/bundle/main.css&quot;</span>).<span class="ident">unwrap</span>();
         <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">css</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">css</span>.<span class="ident">contains</span>(<span class="string">&quot;/static/bundle/bundle&quot;</span>));
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">css</span>.<span class="ident">contains</span>(<span class="string">&quot;/static/bundle/main&quot;</span>));
     }
 }
 </pre></div>

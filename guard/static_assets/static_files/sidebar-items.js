@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["handle_assets",""],["handle_favicons",""]],"struct":[["Asset",""],["Favicons",""],["favicons",""],["static_files",""]]});
