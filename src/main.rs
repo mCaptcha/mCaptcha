@@ -50,7 +50,7 @@ pub use crate::middleware::auth::CheckLogin;
 
 lazy_static! {
     pub static ref SETTINGS: Settings = Settings::new().unwrap();
-    pub static ref S: String = env::var("S").unwrap();
+//    pub static ref S: String = env::var("S").unwrap();
     pub static ref FILES: FileMap = FileMap::new();
     pub static ref JS: &'static str =
         FILES.get("./static-assets/bundle/bundle.js").unwrap();
@@ -58,6 +58,19 @@ lazy_static! {
         FILES.get("./static-assets/bundle/bundle.css").unwrap();
     pub static ref MOBILE_CSS: &'static str =
         FILES.get("./static-assets/bundle/mobile.css").unwrap();
+
+    /// points to source files matching build commit
+    pub static ref SOURCE_FILES_OF_INSTANCE: String = {
+        let mut url = SETTINGS.source_code.clone();
+        if url.chars().last() != Some('/') {
+            url.push('/');
+        }
+        let mut  base = url::Url::parse(&url).unwrap();
+        base =  base.join("tree/").unwrap();
+        base =  base.join(GIT_COMMIT_HASH).unwrap();
+        base.into()
+    };
+
 }
 
 pub static OPEN_API_DOC: &str = env!("OPEN_API_DOCS");
@@ -126,4 +139,18 @@ pub fn get_identity_service() -> IdentityService<CookieIdentityPolicy> {
             .domain(&SETTINGS.server.domain)
             .secure(false),
     )
+}
+
+#[cfg(test)]
+mod test {
+    #[test]
+    fn version_source_code_url_works() {
+        assert_eq!(
+            &*crate::SOURCE_FILES_OF_INSTANCE,
+            &format!(
+                "https://github.com/mCaptcha/guard/tree/{}",
+                crate::GIT_COMMIT_HASH
+            )
+        );
+    }
 }

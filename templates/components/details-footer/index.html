@@ -22,7 +22,10 @@
 		  href="<.= crate::PKG_HOMEPAGE .><.= crate::PAGES.thanks .>">Thanks</a>
     </li>
     <li class="details__item">
-      v<.= crate::VERSION .>-<.= crate::GIT_COMMIT_HASH[0..8] .>
+      <a class="details__link" 
+		 href="<.= &*crate::SOURCE_FILES_OF_INSTANCE .>">
+			  v<.= crate::VERSION .>-<.= crate::GIT_COMMIT_HASH[0..8] .>
+	  </a>
     </li>
   </ul>
 </footer>
