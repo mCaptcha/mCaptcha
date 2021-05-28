@@ -48,6 +48,21 @@ macro_rules! post_request {
 
 #[macro_export]
 macro_rules! get_app {
+    () => {
+    test::init_service(
+            App::new()
+                .wrap(get_identity_service())
+                .wrap(actix_middleware::NormalizePath::new(
+                    actix_middleware::normalize::TrailingSlash::Trim,
+                ))
+                .configure(crate::api::v1::services)
+                .configure(crate::widget::services)
+                .configure(crate::docs::services)
+                .configure(crate::pages::services)
+                .configure(crate::static_assets::services)
+        )
+
+    };
     ($data:expr) => {
         test::init_service(
             App::new()
@@ -55,9 +70,11 @@ macro_rules! get_app {
                 .wrap(actix_middleware::NormalizePath::new(
                     actix_middleware::normalize::TrailingSlash::Trim,
                 ))
-                .configure(crate::api::v1::pow::services)
                 .configure(crate::api::v1::services)
+                .configure(crate::widget::services)
+                .configure(crate::docs::services)
                 .configure(crate::pages::services)
+                .configure(crate::static_assets::services)
                 .data($data.clone()),
         )
     };
