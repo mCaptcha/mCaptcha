@@ -55,11 +55,11 @@ lazy_static! {
 //    pub static ref S: String = env::var("S").unwrap();
     pub static ref FILES: FileMap = FileMap::new();
     pub static ref JS: &'static str =
-        FILES.get("./static-assets/bundle/bundle.js").unwrap();
+        FILES.get("./static/cache/bundle/bundle.js").unwrap();
     pub static ref CSS: &'static str =
-        FILES.get("./static-assets/bundle/bundle.css").unwrap();
+        FILES.get("./static/cache/bundle/bundle.css").unwrap();
     pub static ref MOBILE_CSS: &'static str =
-        FILES.get("./static-assets/bundle/mobile.css").unwrap();
+        FILES.get("./static/cache/bundle/mobile.css").unwrap();
 
     /// points to source files matching build commit
     pub static ref SOURCE_FILES_OF_INSTANCE: String = {

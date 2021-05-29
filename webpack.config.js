@@ -16,7 +16,7 @@ module.exports = {
   },
   output: {
     filename: '[name].js',
-    path: path.resolve(__dirname, './static-assets/bundle/'),
+    path: path.resolve(__dirname, './static/cache/bundle/'),
   },
   module: {
     rules: [

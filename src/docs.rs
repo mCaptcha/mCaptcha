@@ -51,7 +51,7 @@ pub fn services(cfg: &mut web::ServiceConfig) {
 }
 
 #[derive(RustEmbed)]
-#[folder = "docs/"]
+#[folder = "static/openapi/"]
 struct Asset;
 
 pub fn handle_embedded_file(path: &str) -> HttpResponse {

@@ -25,7 +25,7 @@ use rust_embed::RustEmbed;
 use crate::CACHE_AGE;
 
 #[derive(RustEmbed)]
-#[folder = "static/"]
+#[folder = "assets/"]
 struct Asset;
 
 fn handle_assets(path: &str) -> HttpResponse {
@@ -47,7 +47,7 @@ fn handle_assets(path: &str) -> HttpResponse {
     }
 }
 
-#[get("/static/{_:.*}")]
+#[get("/assets/{_:.*}")]
 pub async fn static_files(path: web::Path<String>) -> impl Responder {
     handle_assets(&path.0)
 }
@@ -55,7 +55,7 @@ pub async fn static_files(path: web::Path<String>) -> impl Responder {
 
 
 #[derive(RustEmbed)]
-#[folder = "static-assets/favicons/"]
+#[folder = "static/favicons/"]
 struct Favicons;
 
 fn handle_favicons(path: &str) -> HttpResponse {
@@ -90,7 +90,6 @@ mod tests {
 
     use super::*;
     use crate::*;
-    use crate::tests::*;
 
     #[actix_rt::test]
     async fn static_assets_work() {
@@ -102,6 +101,18 @@ mod tests {
         )
         .await;
         assert_eq!(resp.status(), StatusCode::OK);
+
+        let resp = test::call_service(
+            &mut app,
+            test::TestRequest::get().uri(
+                crate::FILES
+                .get("./static/cache/img/icon-trans.png")
+                .unwrap()
+            ).to_request(),
+        )
+        .await;
+        assert_eq!(resp.status(), StatusCode::OK);
+
     }
 
     #[actix_rt::test]

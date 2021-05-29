@@ -72,20 +72,12 @@ pub fn services(cfg: &mut web::ServiceConfig) {
 mod test {
     use actix_web::http::StatusCode;
     use actix_web::test;
-    use actix_web::web::Bytes;
 
     use crate::*;
 
     #[actix_rt::test]
     async fn captcha_widget_route_works() {
-        let mut app  = test::init_service(
-            actix_web::App::new()
-                .wrap(get_identity_service())
-                .wrap(actix_middleware::NormalizePath::new(
-                    actix_middleware::normalize::TrailingSlash::Trim,
-                ))
-                .configure(crate::widget::services)
-        ).await;
+        let mut app  = get_app!().await;
 
 
         let list_sitekey_resp = test::call_service(
