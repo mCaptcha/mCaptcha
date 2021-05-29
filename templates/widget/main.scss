@@ -83,7 +83,7 @@
 }
 
 .widget__verification-checkbox:checked ~ .widget__verification-text--during {
-  display: non;
+  display: none;
 }
 
 .widget__verification-checkbox:checked ~ .widget__verification-text--error {

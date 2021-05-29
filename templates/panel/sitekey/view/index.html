@@ -1,4 +1,5 @@
-<. include!("../../../components/headers/index.html"); .> 
+<. include!("../../../components/headers/widget-headers.html"); .> 
+<body class="layout">
 <. include!("../../navbar/index.html"); .>
 <div class="tmp-layout">
 <. include!("../../header/index.html"); .>
@@ -10,7 +11,11 @@
           
 <form class="sitekey-form" action="<.= crate::V1_API_ROUTES.levels.add .>" method="post">
 	<h1 class="form__title">
-		Sitekey: <.= name .>
+		Sitekey: <.= name .> 
+		<a href="<.= crate::WIDGET_ROUTES.verification_widget .>/?sitekey=<.= key.>"
+    >Click here to see CAPTCHA widget in action</a> 
+
+
 	</h1>
     <label class="sitekey-form__label" for="description">
 		Description
@@ -47,6 +52,8 @@
   <. } .>
 
 </form>
+
+
   </div>
   <!-- end of container -->
 <. include!("../../../components/footers.html"); .>

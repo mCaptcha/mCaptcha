@@ -47,6 +47,20 @@ macro_rules! post_request {
 }
 
 #[macro_export]
+macro_rules! get_works {
+    ($app:expr,$route:expr ) => {
+            let list_sitekey_resp = test::call_service(
+                    &mut $app,
+                    test::TestRequest::get()
+                        .uri($route)
+                        .to_request(),
+            )
+            .await;
+            assert_eq!(list_sitekey_resp.status(), StatusCode::OK);
+    };
+}
+
+#[macro_export]
 macro_rules! get_app {
     () => {
     test::init_service(
