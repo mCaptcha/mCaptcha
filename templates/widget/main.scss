@@ -18,8 +18,8 @@
 @import '../reset';
 
 .widget__contaienr {
-  max-width: 350px;
-  max-height: 90px;
+  max-width: 300px;
+  max-height: 74px;
   display: flex;
   box-sizing: border-box;
 }
@@ -73,18 +73,19 @@
 
 .widget__mcaptcha-logo-container {
   flex: 2;
-  padding-top: 5px;
+  padding-top: 3px;
 }
 
 .widget__mcaptcha-brand-name {
-  font-size: 0.6rem;
+  font-size: 0.7rem;
+  font-weight: 600;
   margin: auto;
   text-align: center;
 }
 
 .widget__mcaptcha-logo {
   display: block;
-  width: 45px;
+  width: 35px;
   margin: auto;
 }
 
@@ -95,5 +96,5 @@
 
 .widget__mcaptcha-info-link {
   font-size: 0.5rem;
-  margin: 5px;
+  margin: 2px;
 }
