@@ -170,8 +170,8 @@
     ];
 
     <span class="kw">let</span> <span class="ident">config</span> <span class="op">=</span> <span class="ident">BusterBuilder</span>::<span class="ident">default</span>()
-        .<span class="ident">source</span>(<span class="string">&quot;./static-assets&quot;</span>)
-        .<span class="ident">result</span>(<span class="string">&quot;./static&quot;</span>)
+        .<span class="ident">source</span>(<span class="string">&quot;./static/cache&quot;</span>)
+        .<span class="ident">result</span>(<span class="string">&quot;./assets&quot;</span>)
         .<span class="ident">mime_types</span>(<span class="ident">types</span>)
         .<span class="ident">copy</span>(<span class="bool-val">true</span>)
         .<span class="ident">follow_links</span>(<span class="bool-val">true</span>)
