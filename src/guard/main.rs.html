@@ -218,11 +218,11 @@
 <span class="comment">//    pub static ref S: String = env::var(&quot;S&quot;).unwrap();</span>
     <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">FILES</span>: <span class="ident">FileMap</span> <span class="op">=</span> <span class="ident">FileMap</span>::<span class="ident">new</span>();
     <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">JS</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span>
-        <span class="ident">FILES</span>.<span class="ident">get</span>(<span class="string">&quot;./static-assets/bundle/bundle.js&quot;</span>).<span class="ident">unwrap</span>();
+        <span class="ident">FILES</span>.<span class="ident">get</span>(<span class="string">&quot;./static/cache/bundle/bundle.js&quot;</span>).<span class="ident">unwrap</span>();
     <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">CSS</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span>
-        <span class="ident">FILES</span>.<span class="ident">get</span>(<span class="string">&quot;./static-assets/bundle/bundle.css&quot;</span>).<span class="ident">unwrap</span>();
+        <span class="ident">FILES</span>.<span class="ident">get</span>(<span class="string">&quot;./static/cache/bundle/bundle.css&quot;</span>).<span class="ident">unwrap</span>();
     <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">MOBILE_CSS</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span>
-        <span class="ident">FILES</span>.<span class="ident">get</span>(<span class="string">&quot;./static-assets/bundle/mobile.css&quot;</span>).<span class="ident">unwrap</span>();
+        <span class="ident">FILES</span>.<span class="ident">get</span>(<span class="string">&quot;./static/cache/bundle/mobile.css&quot;</span>).<span class="ident">unwrap</span>();
 
     <span class="doccomment">/// points to source files matching build commit</span>
     <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">SOURCE_FILES_OF_INSTANCE</span>: <span class="ident">String</span> <span class="op">=</span> {
