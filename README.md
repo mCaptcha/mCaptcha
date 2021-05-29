@@ -5,7 +5,7 @@
   </p>
 
 [![Documentation](https://img.shields.io/badge/docs-master-blue?style=flat-square)](https://mcaptcha.github.io/guard/guard/)
-![CI (Linux)](<https://github.com/mCaptcha/guard/workflows/CI%20(Linux)/badge.svg>)
+[![Build](https://github.com/mCaptcha/guard/actions/workflows/linux.yml/badge.svg)](https://github.com/mCaptcha/guard/actions/workflows/linux.yml)
 [![dependency status](https://deps.rs/repo/github/mCaptcha/guard/status.svg?style=flat-square)](https://deps.rs/repo/github/mCaptcha/guard)
 [![codecov](https://codecov.io/gh/mCaptcha/guard/branch/master/graph/badge.svg?style=flat-square)](https://codecov.io/gh/mCaptcha/guard)
 <br />
