@@ -5,7 +5,6 @@ cobertura.xml
 prod/
 node_modules/
 /static-assets/bundle
-/static
 ./templates/**/*.js
-/static-assets/bundle/*
+/static/cache/bundle/*
 src/cache_buster_data.json
