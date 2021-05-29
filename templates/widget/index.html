@@ -16,7 +16,10 @@
 			id="widget__verification-checkbox"
 			class="widget__verification-checkbox"
 		type="checkbox" />
-        I'm not a robot
+		<span class="widget__verification-text--before">I'm not a robot</span>
+		<span class="widget__verification-text--during">Processing...</span>
+		<span class="widget__verification-text--after">Verified!</span>
+		<span class="widget__verification-text--error">Something wen't wrong</span>
       </label>
       <div class="widget__mcaptcha-details">
         <a href="<.= crate::PKG_HOMEPAGE .>" 
@@ -40,5 +43,5 @@
           </a>
         </div>
       </div>
-    </div>
+    </form>
 <.include!("./footer.html"); .>

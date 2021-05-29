@@ -16,7 +16,10 @@
  */
 import './main.scss';
 
+const PARENT = window.parent;
 const verificationContainer = <HTMLElement>(
   document.querySelector('.widget__verification-container')
 );
 verificationContainer.style.display = 'flex';
+
+//PARENT.postMessage
