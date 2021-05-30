@@ -37,9 +37,12 @@ fn handle_assets(path: &str) -> HttpResponse {
             };
 
             HttpResponse::Ok()
-                .set(header::CacheControl(vec![header::CacheDirective::MaxAge(
-                    CACHE_AGE,
-                )]))
+                .set(header::CacheControl(
+                        vec![
+                        header::CacheDirective::Public,
+                        header::CacheDirective::Extension("immutable".into(), None),
+                        header::CacheDirective::MaxAge(CACHE_AGE)
+                        ]))
                 .content_type(from_path(path).first_or_octet_stream().as_ref())
                 .body(body)
         }
@@ -67,9 +70,12 @@ fn handle_favicons(path: &str) -> HttpResponse {
             };
 
             HttpResponse::Ok()
-                .set(header::CacheControl(vec![header::CacheDirective::MaxAge(
-                    CACHE_AGE,
-                )]))
+                .set(header::CacheControl(
+                    vec![
+                        header::CacheDirective::Public,
+                        header::CacheDirective::Extension("immutable".into(), None),
+                        header::CacheDirective::MaxAge(CACHE_AGE)
+                    ]))
                 .content_type(from_path(path).first_or_octet_stream().as_ref())
                 .body(body)
         }
