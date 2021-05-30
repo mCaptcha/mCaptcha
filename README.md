@@ -90,27 +90,11 @@ It takes a while to build the image so please be patient :)
 
 ## Development:
 
-See [DEVELOPMENT.md](./DEVELOPMENT.md)
+See [HADCKING.md](./docs/HACKING.md)
 
-## How to build
+## Deployment:
 
-- Install Cargo using [rustup](https://rustup.rs/) with:
-
-```
-$ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-```
-
-- Clone the repository with:
-
-```
-$ git clone https://github.com/mCaptcha/guard
-```
-
-- Build with Cargo:
-
-```
-$ cd guard && cargo build
-```
+See [DEPLOYMENT.md](./docs/DEPLOYMET.md)
 
 ## Configuration:
 
