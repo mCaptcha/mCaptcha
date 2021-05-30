@@ -90,7 +90,7 @@ It takes a while to build the image so please be patient :)
 
 ## Development:
 
-See [HADCKING.md](./docs/HACKING.md)
+See [HACKING.md](./docs/HACKING.md)
 
 ## Deployment:
 
@@ -98,38 +98,4 @@ See [DEPLOYMENT.md](./docs/DEPLOYMET.md)
 
 ## Configuration:
 
-Guard is highly configurable.
-Configuration is applied/merged in the following order:
-
-1. path to configuration file passed in via `GUARD_CONFIG`
-2. `./config/default.toml`
-3. `/etc/guard/config.toml`
-4. environment variables.
-
-### Setup
-
-#### Environment variables:
-
-Setting environment variables are optional. The configuration files have
-all the necessary parameters listed. By setting environment variables,
-you will be overriding the values set in the configuration files.
-
-##### Database:
-
-| Name                      | Value                                  |
-| ------------------------- | -------------------------------------- |
-| `GUARD_DATEBASE_PASSWORD` | Postgres password                      |
-| `GUARD_DATEBASE_NAME`     | Postgres database name                 |
-| `GUARD_DATEBASE_PORT`     | Postgres port                          |
-| `GUARD_DATEBASE_HOSTNAME` | Postgres hostmane                      |
-| `GUARD_DATEBASE_USERNAME` | Postgres username                      |
-| `GUARD_DATEBASE_POOL`     | Postgres database connection pool size |
-
-##### Server:
-
-| Name                                | Value                                               |
-| ----------------------------------- | --------------------------------------------------- |
-| `GUARD_SERVER_PORT` (or) `PORT`\*\* | The port on which you want wagon to listen to       |
-| `GUARD_SERVER_IP`                   | The IP address on which you want wagon to listen to |
-| `GUARD_SERVER_STATIC_FILES_DIR`     | Path to directory containing static files           |
-| `GUARD_CONFIG`                      | Path to config file                                 |
+See [CONFIGURATION.md](./docs/CONFIGURATION.md)

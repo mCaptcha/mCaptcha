@@ -1,5 +1,7 @@
 # Deployment instructions:
 
+See [CONFIGURATION.md](./CONFIGURATION.md) for configuration instructions 
+
 There are three ways to deploy mCaptcha:
 
 1. Docker
