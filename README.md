@@ -56,23 +56,27 @@ to their request.
 
 ## Why use mCaptcha?
 
-- **Free software, privacy focused**
-- **Seamless UX** - No more annoying CAPTCHAs!
-- **IP address independent:** your users are behind a NAT? We got you covered!
-- **Automatic bot throttling:**
-- **Resistant to replay attacks:** proof-of-work configurations have
-  short lifetimes(30s) and can be used only once. If a user submits a
-  PoW to an already used configuration or an expired one, their proof
-  will be rejected.
+- [x] **Free software, privacy focused**
+- [x] **Seamless UX** - No more annoying CAPTCHAs!
+- [x] **No tracking:** Our CAPTCHA routes are cookie free!
+- [x] **IP address independent:** your users are behind a NAT? We got you covered!
+- [x] **Resistant to replay attacks:** proof-of-work configurations have
+      short lifetimes(30s) and can be used only once. If a user submits a
+      PoW to an already used configuration or an expired one, their proof
+      will be rejected.
 
 ## Demo
 
 ## Client-side widget:
 
-1. [Link to widget](https://demo.mcaptcha.org/widget?sitekey=RnR9SvkkB2s1W9yrQSBBViJHLvuiXKo4)
+mCaptcha's UX is super silent, solving CAPTCHAs have never been more
+easier. One click and you are on your way.
+To observe mCaptcha in action, open dev tools and
+monitor console and network activity.
 
-2. [Video]('https://github.com/mCaptcha/guard/blob/master/docs/res/widget-in-action.mp4?raw=true):
-   To observer, you need to open dev tools
+1. [Link to widget](https://demo.mcaptcha.org/widget?sitekey=RnR9SvkkB2s1W9yrQSBBViJHLvuiXKo4)(opens https://demo.mcaptcha.org)
+
+2. [Video](https://github.com/mCaptcha/guard/blob/master/docs/res/widget-in-action.mp4?raw=true):
 
 ### Demo servers are available at:
 
@@ -93,9 +97,13 @@ Clone the repo and run the following from the root of the repo:
 
 ```bash
 $ docker-compose -d up
+
 ```
 
 It takes a while to build the image so please be patient :)
+
+See [DEPLOYMENT.md](./docs/DEPLOYMET.md) detailed alternate deployment
+methods.
 
 ## Development:
 
