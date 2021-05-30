@@ -150,6 +150,12 @@
 <span id="147">147</span>
 <span id="148">148</span>
 <span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -190,9 +196,12 @@
             };
 
             <span class="ident">HttpResponse</span>::<span class="prelude-val">Ok</span>()
-                .<span class="ident">set</span>(<span class="ident">header</span>::<span class="ident">CacheControl</span>(<span class="macro">vec</span><span class="macro">!</span>[<span class="ident">header</span>::<span class="ident">CacheDirective</span>::<span class="ident">MaxAge</span>(
-                    <span class="ident">CACHE_AGE</span>,
-                )]))
+                .<span class="ident">set</span>(<span class="ident">header</span>::<span class="ident">CacheControl</span>(
+                        <span class="macro">vec</span><span class="macro">!</span>[
+                        <span class="ident">header</span>::<span class="ident">CacheDirective</span>::<span class="ident">Public</span>,
+                        <span class="ident">header</span>::<span class="ident">CacheDirective</span>::<span class="ident">Extension</span>(<span class="string">&quot;immutable&quot;</span>.<span class="ident">into</span>(), <span class="prelude-val">None</span>),
+                        <span class="ident">header</span>::<span class="ident">CacheDirective</span>::<span class="ident">MaxAge</span>(<span class="ident">CACHE_AGE</span>)
+                        ]))
                 .<span class="ident">content_type</span>(<span class="ident">from_path</span>(<span class="ident">path</span>).<span class="ident">first_or_octet_stream</span>().<span class="ident">as_ref</span>())
                 .<span class="ident">body</span>(<span class="ident">body</span>)
         }
@@ -220,9 +229,12 @@
             };
 
             <span class="ident">HttpResponse</span>::<span class="prelude-val">Ok</span>()
-                .<span class="ident">set</span>(<span class="ident">header</span>::<span class="ident">CacheControl</span>(<span class="macro">vec</span><span class="macro">!</span>[<span class="ident">header</span>::<span class="ident">CacheDirective</span>::<span class="ident">MaxAge</span>(
-                    <span class="ident">CACHE_AGE</span>,
-                )]))
+                .<span class="ident">set</span>(<span class="ident">header</span>::<span class="ident">CacheControl</span>(
+                    <span class="macro">vec</span><span class="macro">!</span>[
+                        <span class="ident">header</span>::<span class="ident">CacheDirective</span>::<span class="ident">Public</span>,
+                        <span class="ident">header</span>::<span class="ident">CacheDirective</span>::<span class="ident">Extension</span>(<span class="string">&quot;immutable&quot;</span>.<span class="ident">into</span>(), <span class="prelude-val">None</span>),
+                        <span class="ident">header</span>::<span class="ident">CacheDirective</span>::<span class="ident">MaxAge</span>(<span class="ident">CACHE_AGE</span>)
+                    ]))
                 .<span class="ident">content_type</span>(<span class="ident">from_path</span>(<span class="ident">path</span>).<span class="ident">first_or_octet_stream</span>().<span class="ident">as_ref</span>())
                 .<span class="ident">body</span>(<span class="ident">body</span>)
         }
