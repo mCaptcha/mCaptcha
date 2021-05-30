@@ -18,16 +18,10 @@
 
 </div>
 
+**Skip to [demo](#demo)**
+
 Guard is the back-end component of the [mCaptcha](https://mcaptcha.org)
 system.
-
-[mcaptcha-in-action]('./docs/res/widget-in-action.mp4)
-
-<figure class="video_container">
-  <video controls="true" allowfullscreen="true" poster="./docs/res/widget-in-action-poster.png" >
-    <source src="./docs/res/widget-in-action.mp4" type="video/mp4">
-  </video>
-</figure>
 
 ---
 
@@ -72,6 +66,13 @@ to their request.
   will be rejected.
 
 ## Demo
+
+## Client-side widget:
+
+1. [Link to widget](https://demo.mcaptcha.org/widget?sitekey=RnR9SvkkB2s1W9yrQSBBViJHLvuiXKo4)
+
+2. [Video]('https://github.com/mCaptcha/guard/blob/master/docs/res/widget-in-action.mp4?raw=true):
+   To observer, you need to open dev tools
 
 ### Demo servers are available at:
 
