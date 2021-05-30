@@ -21,6 +21,14 @@
 Guard is the back-end component of the [mCaptcha](https://mcaptcha.org)
 system.
 
+[mcaptcha-in-action]('./docs/res/widget-in-action.mp4)
+
+<figure class="video_container">
+  <video controls="true" allowfullscreen="true" poster="./docs/res/widget-in-action-poster.png" >
+    <source src="./docs/res/widget-in-action.mp4" type="video/mp4">
+  </video>
+</figure>
+
 ---
 
 mCaptcha uses SHA256 based proof-of-work(PoW) to rate limit users.
