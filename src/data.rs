@@ -45,9 +45,9 @@ impl Data {
             .expect("Unable to form database pool");
 
         let creds = ConfigBuilder::default()
-            .username_case_mapped(false)
+            .username_case_mapped(true)
             .profanity(true)
-            .blacklist(false)
+            .blacklist(true)
             .password_policy(PasswordPolicy::default())
             .build()
             .unwrap();
