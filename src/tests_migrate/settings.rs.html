@@ -305,9 +305,9 @@
             .<span class="ident">expect</span>(<span class="string">&quot;Couldn&#39;t get the number of CPUs&quot;</span>);
 
         <span class="kw">const</span> <span class="ident">CURRENT_DIR</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;./config/default.toml&quot;</span>;
-        <span class="kw">const</span> <span class="ident">ETC</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;/etc/guard/config.toml&quot;</span>;
+        <span class="kw">const</span> <span class="ident">ETC</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;/etc/mcaptcha/config.toml&quot;</span>;
 
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">path</span>) <span class="op">=</span> <span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;GUARD_CONFIG&quot;</span>) {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">path</span>) <span class="op">=</span> <span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;MCAPTCHA_CONFIG&quot;</span>) {
             <span class="ident">s</span>.<span class="ident">merge</span>(<span class="ident">File</span>::<span class="ident">with_name</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>))<span class="question-mark">?</span>;
         } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">Path</span>::<span class="ident">new</span>(<span class="ident">CURRENT_DIR</span>).<span class="ident">exists</span>() {
             <span class="comment">// merging default config from file</span>
@@ -318,7 +318,7 @@
             <span class="ident">log</span>::<span class="macro">warn</span><span class="macro">!</span>(<span class="string">&quot;configuration file not found&quot;</span>);
         }
 
-        <span class="ident">s</span>.<span class="ident">merge</span>(<span class="ident">Environment</span>::<span class="ident">with_prefix</span>(<span class="string">&quot;GUARD&quot;</span>).<span class="ident">separator</span>(<span class="string">&quot;_&quot;</span>))<span class="question-mark">?</span>;
+        <span class="ident">s</span>.<span class="ident">merge</span>(<span class="ident">Environment</span>::<span class="ident">with_prefix</span>(<span class="string">&quot;MCAPTCHA&quot;</span>).<span class="ident">separator</span>(<span class="string">&quot;_&quot;</span>))<span class="question-mark">?</span>;
 
         <span class="ident">check_url</span>(<span class="kw-2">&amp;</span><span class="ident">s</span>);
 
@@ -342,7 +342,7 @@
 
         <span class="kw">match</span> <span class="ident">s</span>.<span class="ident">try_into</span>() {
             <span class="prelude-val">Ok</span>(<span class="ident">val</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">val</span>),
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">ConfigError</span>::<span class="ident">Message</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;\n\nError: {}. If it says missing fields, then please refer to https://github.com/mCaptcha/guard#configuration to learn more about how guard reads configuration\n\n&quot;</span>, <span class="ident">e</span>)))<span class="question-mark">?</span>,
+            <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">ConfigError</span>::<span class="ident">Message</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;\n\nError: {}. If it says missing fields, then please refer to https://github.com/mCaptcha/mcaptcha#configuration to learn more about how mcaptcha reads configuration\n\n&quot;</span>, <span class="ident">e</span>)))<span class="question-mark">?</span>,
         }
     }
 }
