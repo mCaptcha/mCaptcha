@@ -1,13 +1,16 @@
 <div align="center">
-  <h1>mCaptcha Guard</h1>
+<img width="100px" alt="mcaptcha logo" src="./docs/res/icon-trans.png" />
+  <h1>mCaptcha</h1>
   <p>
-    <strong>Back-end component of mCaptcha</strong>
+    <strong>
+Proof of work based, privacy respecting CAPTCHA system with a kickass UX. 
+</strong>
   </p>
 
-[![Documentation](https://img.shields.io/badge/docs-master-blue?style=flat-square)](https://mcaptcha.github.io/guard/guard/)
-[![Build](https://github.com/mCaptcha/guard/actions/workflows/linux.yml/badge.svg)](https://github.com/mCaptcha/guard/actions/workflows/linux.yml)
-[![dependency status](https://deps.rs/repo/github/mCaptcha/guard/status.svg?style=flat-square)](https://deps.rs/repo/github/mCaptcha/guard)
-[![codecov](https://codecov.io/gh/mCaptcha/guard/branch/master/graph/badge.svg?style=flat-square)](https://codecov.io/gh/mCaptcha/guard)
+[![Documentation](https://img.shields.io/badge/docs-master-blue?style=flat-square)](https://mcaptcha.github.io/mCaptcha/mCaptcha/)
+[![Build](https://github.com/mCaptcha/mCaptcha/actions/workflows/linux.yml/badge.svg)](https://github.com/mCaptcha/mCaptcha/actions/workflows/linux.yml)
+[![dependency status](https://deps.rs/repo/github/mCaptcha/mCaptcha/status.svg?style=flat-square)](https://deps.rs/repo/github/mCaptcha/mCaptcha)
+[![codecov](https://codecov.io/gh/mCaptcha/mCaptcha/branch/master/graph/badge.svg?style=flat-square)](https://codecov.io/gh/mCaptcha/mCaptcha)
 <br />
 [![AGPL License](https://img.shields.io/badge/license-AGPL-blue.svg?style=flat-square)](http://www.gnu.org/licenses/agpl-3.0)
 [![Chat](https://img.shields.io/badge/matrix-+mcaptcha:matrix.batsense.net-purple?style=flat-square)](https://matrix.to/#/+mcaptcha:matrix.batsense.net)
@@ -20,10 +23,13 @@
 
 **Skip to [demo](#demo)**
 
-Guard is the back-end component of the [mCaptcha](https://mcaptcha.org)
-system.
+[mCaptcha](https://mcaptcha.org) is a
+Your users no longer have to interact with ridiculous image-based
+CAPTCHA system, wasting precious mental bandwidth. Instead, your
+computer will do the work for you, [see for
+yourself!](https://demo.mcaptcha.org/widget?sitekey=RnR9SvkkB2s1W9yrQSBBViJHLvuiXKo4)
 
----
+## How does it work?
 
 mCaptcha uses SHA256 based proof-of-work(PoW) to rate limit users.
 
@@ -74,9 +80,9 @@ easier. One click and you are on your way.
 To observe mCaptcha in action, open dev tools and
 monitor console and network activity.
 
-1. [Link to widget](https://demo.mcaptcha.org/widget?sitekey=RnR9SvkkB2s1W9yrQSBBViJHLvuiXKo4)(opens https://demo.mcaptcha.org)
+1. [Link to widget](https://demo.mcaptcha.org/widget?sitekey=RnR9SvkkB2s1W9yrQSBBViJHLvuiXKo4)
 
-2. [Video](https://github.com/mCaptcha/guard/blob/master/docs/res/widget-in-action.mp4?raw=true):
+2. [Video](https://github.com/mCaptcha/mCaptcha/blob/master/docs/res/widget-in-action.mp4?raw=true):
 
 ### Demo servers are available at:
 
@@ -97,7 +103,6 @@ Clone the repo and run the following from the root of the repo:
 
 ```bash
 $ docker-compose -d up
-
 ```
 
 It takes a while to build the image so please be patient :)

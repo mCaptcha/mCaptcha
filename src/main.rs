@@ -155,7 +155,7 @@ mod test {
         assert_eq!(
             &*crate::SOURCE_FILES_OF_INSTANCE,
             &format!(
-                "https://github.com/mCaptcha/guard/tree/{}",
+                "https://github.com/mCaptcha/mCaptcha/tree/{}",
                 crate::GIT_COMMIT_HASH
             )
         );

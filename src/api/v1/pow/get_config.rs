@@ -17,7 +17,7 @@
 
 use actix::prelude::*;
 use actix_web::{web, HttpResponse, Responder};
-use m_captcha::{
+use libmcaptcha::{
     defense::LevelBuilder, master::AddSiteBuilder, DefenseBuilder, MCaptchaBuilder,
 };
 use serde::{Deserialize, Serialize};
@@ -85,10 +85,10 @@ pub async fn get_config(
         None => Err(ServiceError::TokenNotFound),
     }
 }
-/// Call this when [MCaptcha][m_captcha::MCaptcha] is not in master.
+/// Call this when [MCaptcha][libmcaptcha::MCaptcha] is not in master.
 ///
-/// This fn gets mcaptcha config from database, builds [Defense][m_captcha::Defense],
-/// creates [MCaptcha][m_captcha::MCaptcha] and adds it to [Master][m_captcha::Defense]
+/// This fn gets mcaptcha config from database, builds [Defense][libmcaptcha::Defense],
+/// creates [MCaptcha][libmcaptcha::MCaptcha] and adds it to [Master][libmcaptcha::Defense]
 async fn init_mcaptcha(data: &Data, key: &str) -> ServiceResult<()> {
     // get levels
     let levels_fut = sqlx::query_as!(
@@ -151,7 +151,7 @@ async fn init_mcaptcha(data: &Data, key: &str) -> ServiceResult<()> {
 mod tests {
     use actix_web::http::{header, StatusCode};
     use actix_web::test;
-    use m_captcha::pow::PoWConfig;
+    use libmcaptcha::pow::PoWConfig;
 
     use super::*;
     use crate::tests::*;

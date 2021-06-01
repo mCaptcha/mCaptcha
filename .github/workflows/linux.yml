@@ -89,7 +89,7 @@ jobs:
           DATABASE_URL: postgres://postgres:password@localhost:5432/postgres
 
       - name: generate documentation
-        if: matrix.version == '1.51.0' && (github.repository == 'mCaptcha/guard')
+        if: matrix.version == '1.51.0' && (github.repository == 'mCaptcha/mCaptcha')
         uses: actions-rs/cargo@v1
         with:
           command: doc
@@ -100,7 +100,7 @@ jobs:
           OPEN_API_DOCS: 8e77345f1597e40c2e266cb4e6dee74888918a61
 
       - name: Deploy to GitHub Pages
-        if: matrix.version == '1.51.0' && (github.repository == 'mCaptcha/guard')
+        if: matrix.version == '1.51.0' && (github.repository == 'mCaptcha/mCaptcha')
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

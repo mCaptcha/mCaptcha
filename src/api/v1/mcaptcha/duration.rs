@@ -70,7 +70,7 @@ async fn update_duration(
     } else {
         // when mCaptcha/mCaptcha #2 is fixed, this wont be necessary
         Err(ServiceError::CaptchaError(
-            m_captcha::errors::CaptchaError::CaptchaDurationZero,
+            libmcaptcha::errors::CaptchaError::CaptchaDurationZero,
         ))
     }
 }

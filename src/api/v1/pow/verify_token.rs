@@ -17,7 +17,7 @@
 //! PoW success token module
 
 use actix_web::{web, HttpResponse, Responder};
-use m_captcha::cache::messages::VerifyCaptchaResult;
+use libmcaptcha::cache::messages::VerifyCaptchaResult;
 use serde::{Deserialize, Serialize};
 
 use crate::errors::*;
@@ -55,8 +55,8 @@ pub async fn validate_captcha_token(
 mod tests {
     use actix_web::http::{header, StatusCode};
     use actix_web::test;
-    use m_captcha::pow::PoWConfig;
-    use m_captcha::pow::Work;
+    use libmcaptcha::pow::PoWConfig;
+    use libmcaptcha::pow::Work;
 
     use super::*;
     use crate::api::v1::pow::get_config::GetConfigPayload;

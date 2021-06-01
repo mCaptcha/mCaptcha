@@ -99,9 +99,9 @@ impl Settings {
             .expect("Couldn't get the number of CPUs");
 
         const CURRENT_DIR: &str = "./config/default.toml";
-        const ETC: &str = "/etc/guard/config.toml";
+        const ETC: &str = "/etc/mcaptcha/config.toml";
 
-        if let Ok(path) = env::var("GUARD_CONFIG") {
+        if let Ok(path) = env::var("MCAPTCHA_CONFIG") {
             s.merge(File::with_name(&path))?;
         } else if Path::new(CURRENT_DIR).exists() {
             // merging default config from file
@@ -112,7 +112,7 @@ impl Settings {
             log::warn!("configuration file not found");
         }
 
-        s.merge(Environment::with_prefix("GUARD").separator("_"))?;
+        s.merge(Environment::with_prefix("MCAPTCHA").separator("_"))?;
 
         check_url(&s);
 
@@ -136,7 +136,7 @@ impl Settings {
 
         match s.try_into() {
             Ok(val) => Ok(val),
-            Err(e) => Err(ConfigError::Message(format!("\n\nError: {}. If it says missing fields, then please refer to https://github.com/mCaptcha/guard#configuration to learn more about how guard reads configuration\n\n", e)))?,
+            Err(e) => Err(ConfigError::Message(format!("\n\nError: {}. If it says missing fields, then please refer to https://github.com/mCaptcha/mcaptcha#configuration to learn more about how mcaptcha reads configuration\n\n", e)))?,
         }
     }
 }

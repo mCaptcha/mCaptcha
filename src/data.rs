@@ -17,7 +17,7 @@
 
 use actix::prelude::*;
 use argon2_creds::{Config, ConfigBuilder, PasswordPolicy};
-use m_captcha::{
+use libmcaptcha::{
     cache::HashCache,
     master::Master,
     pow::ConfigBuilder as PoWConfigBuilder,

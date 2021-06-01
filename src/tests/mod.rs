@@ -4,7 +4,7 @@ use actix_web::{
     http::{header, StatusCode},
     middleware as actix_middleware,
 };
-use m_captcha::defense::Level;
+use libmcaptcha::defense::Level;
 use serde::Serialize;
 
 use super::*;

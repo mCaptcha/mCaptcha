@@ -22,7 +22,7 @@ $ docker-compose logs -f
 - from just webserver:
 
 ```bash
-$ docker-compose logs -f guard
+$ docker-compose logs -f mcaptcha
 ```
 
 ## Setting up elaborate development environment
@@ -88,7 +88,7 @@ $ docker start mcaptcha-postgres
 4. Set configurations:
 
 ```bash
-$ cd guard # your copy of https://github.com/mCaptcha/guard
+$ cd mcaptcha # your copy of https://github.com/mCaptcha/mcaptcha
 $ echo 'export DATABASE_URL="postgres://postgres:password@localhost:5432/postgres"' > .env
 ```
 
@@ -103,7 +103,7 @@ $ echo 'export DATABASE_URL="postgres://postgres:password@localhost:5432/postgre
 However, this project ships with a utility to run migrations!
 
 ```bash
-$ cd guard # your copy of https://github.com/mCaptcha/guard
+$ cd mcaptcha # your copy of https://github.com/mCaptcha/mcaptcha
 $ cargo run --bin tests-migrate
 ```
 
@@ -114,14 +114,14 @@ That's it, you are all set!
 ### Compile:
 
 ```bash
-$ cd guard # your copy of https://github.com/mCaptcha/guard
+$ cd mcaptcha # your copy of https://github.com/mCaptcha/mcaptcha
 $ make
 ```
 
 ### Additional commands:
 
 ```bash
-➜  guard git:(master) ✗ make help
+➜  mcaptcha git:(master) ✗ make help
   docs      	- build documentation
   run       	- run developer instance
   test 		- run unit and integration tests

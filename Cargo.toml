@@ -1,20 +1,20 @@
 [package]
-name = "guard"
+name = "mcaptcha"
 version = "0.1.0"
 description = "mCaptcha - a PoW-based CAPTCHA system"
 homepage = "https://mcaptcha.org"
-repository = "https://github.com/mCaptcha/guard"
+repository = "https://github.com/mCaptcha/mCaptcha"
 documentation = "https://mcaptcha.org/docs/"
 license = "AGPLv3 or later version"
 authors = ["realaravinth <realaravinth@batsense.net>"]
 edition = "2018"
-default-run = "guard"
+default-run = "mcaptcha"
 build = "build.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [[bin]]
-name = "guard"
+name = "mcaptcha"
 path = "./src/main.rs"
 
 [[bin]]
@@ -39,8 +39,7 @@ cache-buster = { version = "0.2.0", git = "https://github.com/realaravinth/cache
 futures = "0.3.14"
 
 sqlx = { version = "0.4.0", features = [ "runtime-actix-rustls", "postgres", "time", "offline" ] }
-argon2-creds = { version = "0.2", git = "https://github.com/realaravinth/argon2-creds", commit = "61f2d1d" }
-
+argon2-creds = { version = "0.2.1", git = "https://github.com/realaravinth/argon2-creds"}
 config = "0.11"
 validator = { version = "0.13", features = ["derive"]}
 
@@ -60,7 +59,7 @@ lazy_static = "1.4"
 
 
 # m_captcha = { version = "0.1.2", git = "https://github.com/mCaptcha/mCaptcha" }
-m_captcha = { branch = "master", git = "https://github.com/mCaptcha/mCaptcha" }
+libmcaptcha = { branch = "master", git = "https://github.com/mCaptcha/libmcaptcha" }
 
 rand = "0.8"
 

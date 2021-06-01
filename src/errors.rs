@@ -25,7 +25,7 @@ use actix_web::{
 };
 use argon2_creds::errors::CredsError;
 use derive_more::{Display, Error};
-use m_captcha::errors::CaptchaError;
+use libmcaptcha::errors::CaptchaError;
 use serde::{Deserialize, Serialize};
 use url::ParseError;
 use validator::ValidationErrors;

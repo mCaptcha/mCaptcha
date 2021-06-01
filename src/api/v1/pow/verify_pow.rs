@@ -17,7 +17,7 @@
 //! PoW Verification module
 
 use actix_web::{web, HttpResponse, Responder};
-use m_captcha::pow::Work;
+use libmcaptcha::pow::Work;
 use serde::{Deserialize, Serialize};
 
 use crate::errors::*;
@@ -54,7 +54,7 @@ pub async fn verify_pow(
 mod tests {
     use actix_web::http::{header, StatusCode};
     use actix_web::test;
-    use m_captcha::pow::PoWConfig;
+    use libmcaptcha::pow::PoWConfig;
 
     use super::*;
     use crate::api::v1::pow::get_config::GetConfigPayload;
@@ -125,7 +125,7 @@ mod tests {
             format!(
                 "{}",
                 ServiceError::CaptchaError(
-                    m_captcha::errors::CaptchaError::StringNotFound
+                    libmcaptcha::errors::CaptchaError::StringNotFound
                 )
             )
         );
@@ -137,9 +137,9 @@ mod tests {
         // .await;
         // assert_eq!(pow_config_resp.status(), StatusCode::OK);
         // I'm not checking for errors because changing work.result triggered
-        // InssuficientDifficulty, which is possible becuase m_captcha calculates
+        // InssuficientDifficulty, which is possible becuase libmcaptcha calculates
         // difficulty with the submitted result. Besides, this endpoint is merely
-        // propagating errors from m_captcha and m_captcha has tests covering the
+        // propagating errors from libmcaptcha and libmcaptcha has tests covering the
         // pow aspects ¯\_(ツ)_/¯
     }
 }

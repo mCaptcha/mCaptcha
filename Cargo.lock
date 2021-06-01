@@ -439,7 +439,7 @@ dependencies = [
 [[package]]
 name = "argon2-creds"
 version = "0.2.1"
-source = "git+https://github.com/realaravinth/argon2-creds#11b490b78c1b4693607b47124e1c0e4718f290f4"
+source = "git+https://github.com/realaravinth/argon2-creds#bc5949a86cdc7e57a54deb08ed65bae978163f71"
 dependencies = [
  "ammonia",
  "derive_builder 0.10.2",
@@ -618,9 +618,9 @@ checksum = "b4ae4235e6dac0694637c763029ecea1a2ec9e4e06ec2729bd21ba4d9c863eb7"
 
 [[package]]
 name = "bumpalo"
-version = "3.6.1"
+version = "3.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "63396b8a4b9de3f4fdfb320ab6080762242f66a8ef174c49d8e19b674db4cdbe"
+checksum = "9c59e7af012c713f529e7a3ee57ce9b31ddd858d4b512923602f74608b009631"
 
 [[package]]
 name = "byteorder"
@@ -820,17 +820,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "06ed27e177f16d65f0f0c22a213e17c696ace5dd64b14258b52f9417ccb52db4"
 dependencies = [
  "cfg-if 1.0.0",
- "crossbeam-utils 0.8.4",
+ "crossbeam-utils 0.8.5",
 ]
 
 [[package]]
 name = "crossbeam-queue"
-version = "0.3.1"
+version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0f6cb3c7f5b8e51bc3ebb73a2327ad4abdbd119dc13223f14f961d2f38486756"
+checksum = "9b10ddc024425c88c2ad148c1b0fd53f4c6d38db9697c9f1588381212fa657c9"
 dependencies = [
  "cfg-if 1.0.0",
- "crossbeam-utils 0.8.4",
+ "crossbeam-utils 0.8.5",
 ]
 
 [[package]]
@@ -846,11 +846,10 @@ dependencies = [
 
 [[package]]
 name = "crossbeam-utils"
-version = "0.8.4"
+version = "0.8.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4feb231f0d4d6af81aed15928e58ecf5816aa62a2393e2c82f46973e92a9a278"
+checksum = "d82cfc11ce7f2c3faef78d8a684447b40d503d9681acebed6cb728d45940c4db"
 dependencies = [
- "autocfg",
  "cfg-if 1.0.0",
  "lazy_static",
 ]
@@ -1306,43 +1305,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "guard"
-version = "0.1.0"
-dependencies = [
- "actix",
- "actix-cors",
- "actix-http",
- "actix-identity",
- "actix-rt",
- "actix-service",
- "actix-web",
- "actix-web-codegen 0.5.0-beta.2",
- "argon2-creds",
- "cache-buster",
- "config",
- "derive_builder 0.10.2",
- "derive_more",
- "futures",
- "lazy_static",
- "log",
- "m_captcha",
- "mime",
- "mime_guess",
- "pow_sha256",
- "pretty_env_logger",
- "rand 0.8.3",
- "rust-embed",
- "sailfish",
- "serde 1.0.126",
- "serde_json",
- "serde_yaml",
- "sqlx",
- "url",
- "validator",
- "yaml-rust",
-]
-
-[[package]]
 name = "h2"
 version = "0.2.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1605,9 +1567,25 @@ dependencies = [
 
 [[package]]
 name = "libc"
-version = "0.2.94"
+version = "0.2.95"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "18794a8ad5b29321f790b55d93dfba91e125cb1a9edbd4f8e3150acc771c1a5e"
+checksum = "789da6d93f1b866ffe175afc5322a4d76c038605a1c3319bb57b06967ca98a36"
+
+[[package]]
+name = "libmcaptcha"
+version = "0.1.3"
+source = "git+https://github.com/mCaptcha/libmcaptcha?branch=master#b5cb68af4831047acbf6cd039ec411ea1755181c"
+dependencies = [
+ "actix",
+ "derive_builder 0.9.0",
+ "derive_more",
+ "log",
+ "pow_sha256",
+ "pretty_env_logger",
+ "rand 0.8.3",
+ "serde 1.0.126",
+ "serde_json",
+]
 
 [[package]]
 name = "linked-hash-map"
@@ -1640,22 +1618,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "31e24f1ad8321ca0e8a1e0ac13f23cb668e6f5466c2c57319f6a5cf1cc8e3b1c"
 dependencies = [
  "linked-hash-map",
-]
-
-[[package]]
-name = "m_captcha"
-version = "0.1.3"
-source = "git+https://github.com/mCaptcha/mCaptcha?branch=master#8f0f0daf1e1cb36c848cada1c24dc3799d1e31b4"
-dependencies = [
- "actix",
- "derive_builder 0.9.0",
- "derive_more",
- "log",
- "pow_sha256",
- "pretty_env_logger",
- "rand 0.8.3",
- "serde 1.0.126",
- "serde_json",
 ]
 
 [[package]]
@@ -1713,6 +1675,43 @@ name = "maybe-uninit"
 version = "2.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "60302e4db3a61da70c0cb7991976248362f30319e88850c487b9b95bbf059e00"
+
+[[package]]
+name = "mcaptcha"
+version = "0.1.0"
+dependencies = [
+ "actix",
+ "actix-cors",
+ "actix-http",
+ "actix-identity",
+ "actix-rt",
+ "actix-service",
+ "actix-web",
+ "actix-web-codegen 0.5.0-beta.2",
+ "argon2-creds",
+ "cache-buster",
+ "config",
+ "derive_builder 0.10.2",
+ "derive_more",
+ "futures",
+ "lazy_static",
+ "libmcaptcha",
+ "log",
+ "mime",
+ "mime_guess",
+ "pow_sha256",
+ "pretty_env_logger",
+ "rand 0.8.3",
+ "rust-embed",
+ "sailfish",
+ "serde 1.0.126",
+ "serde_json",
+ "serde_yaml",
+ "sqlx",
+ "url",
+ "validator",
+ "yaml-rust",
+]
 
 [[package]]
 name = "md-5"
@@ -2347,7 +2346,7 @@ dependencies = [
  "base64 0.13.0",
  "blake2b_simd",
  "constant_time_eq",
- "crossbeam-utils 0.8.4",
+ "crossbeam-utils 0.8.5",
 ]
 
 [[package]]
@@ -2701,7 +2700,7 @@ dependencies = [
  "crc",
  "crossbeam-channel 0.5.1",
  "crossbeam-queue",
- "crossbeam-utils 0.8.4",
+ "crossbeam-utils 0.8.5",
  "either",
  "futures-channel",
  "futures-core",
@@ -3189,9 +3188,9 @@ dependencies = [
 
 [[package]]
 name = "unicode-normalization"
-version = "0.1.17"
+version = "0.1.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "07fbfce1c8a97d547e8b5334978438d9d6ec8c20e38f56d4a4374d181493eaef"
+checksum = "33717dca7ac877f497014e10d73f3acf948c342bee31b5ca7892faf94ccc6b49"
 dependencies = [
  "tinyvec",
 ]

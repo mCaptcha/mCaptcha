@@ -15,7 +15,7 @@ NOTE: We'll publish pre-built images once we reach `alpha`.
 1. Build image:
 
 ```bash
-$ cd guard && docker build -t mcaptcha/guard:latest .
+$ cd mcaptcha && docker build -t mcaptcha/mcaptcha:latest .
 ```
 
 2. Set configuration in [configuration file](../config/default.toml)
@@ -29,13 +29,13 @@ docker run -p <host-machine-port>:<port-in-configuration-file> \
 	--add-host=database:<database-ip-addrss> \
 	-e RUST_LOG=debug \
 	-e DATABASE_URL="postgres://<db-user>:<db-password>@database:<db-port>/<db-name>" \
-	mcaptcha/guard:latest
+	mcaptcha/mcaptcha:latest
 ```
 
 If you don't have a Postgres instance running, you can either install
 one using a package manager or launch one with docker. A [docker-compose
 configuration]('../docker-compose.yml) is available that will launch both
-a database instance guard instance.
+a database instance mcaptcha instance.
 
 ## With docker-compose
 
@@ -56,7 +56,7 @@ the future.
 
 ### 1. Install postgres if you don't have it already.
 
-### 2. Create new user for running `guard`:
+### 2. Create new user for running `mcaptcha`:
 
 ```bash
 $ sudo useradd -b /srv -m -s /usr/bin/zsh mcaptcha
@@ -71,9 +71,9 @@ postgres=#  CREATE USER mcaptcha WITH PASSWORD 'my super long password and yes y
 $  createdb -O mcaptcha mcaptcha # create db 'mcaptcha' with 'mcaptcha' as owner
 ```
 
-### 4. Build `guard`:
+### 4. Build `mcaptcha`:
 
-To build `guard`, you need the following dependencies:
+To build `mcaptcha`, you need the following dependencies:
 
 1. rust
 2. node(`v14.16.0`)
@@ -102,14 +102,14 @@ $ make dev-env && \
 ### 5. Install package:
 
 ```bash
-$ sudo cp ./target/release/guard /usr/bin/ && \
-	mkdir sudo /etc/guard && \
-	sudo cp config/default.toml /etc/guard/config.toml
+$ sudo cp ./target/release/mcaptcha /usr/bin/ && \
+	mkdir sudo /etc/mcaptcha && \
+	sudo cp config/default.toml /etc/mcaptcha/config.toml
 ```
 
 ### 6. Systemd service configuration:
 
-1. Copy the following to `/etc/systemd/system/guard.service`:
+1. Copy the following to `/etc/systemd/system/mcaptcha.service`:
 
 ```systemd
 [Unit]
@@ -118,7 +118,7 @@ Description=mCaptcha: a CAPTCHA system that gives attackers a run for their mone
 [Service]
 Type=simple
 User=mcaptcha
-ExecStart=/usr/bin/guard
+ExecStart=/usr/bin/mcaptcha
 Restart=on-failure
 RestartSec=1
 SuccessExitStatus=3 4
@@ -142,6 +142,6 @@ WantedBy=multi-user.target
 2. Enable service:
 ```bash
 $ sudo systemctl daemon-reload && \
-	sudo systemctl enable guard && \ # Auto startup during boot
-	sudo systemctl start guard
+	sudo systemctl enable mcaptcha && \ # Auto startup during boot
+	sudo systemctl start mcaptcha
 ``
