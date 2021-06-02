@@ -120,9 +120,9 @@
             .<span class="ident">expect</span>(<span class="string">&quot;Unable to form database pool&quot;</span>);
 
         <span class="kw">let</span> <span class="ident">creds</span> <span class="op">=</span> <span class="ident">ConfigBuilder</span>::<span class="ident">default</span>()
-            .<span class="ident">username_case_mapped</span>(<span class="bool-val">false</span>)
+            .<span class="ident">username_case_mapped</span>(<span class="bool-val">true</span>)
             .<span class="ident">profanity</span>(<span class="bool-val">true</span>)
-            .<span class="ident">blacklist</span>(<span class="bool-val">false</span>)
+            .<span class="ident">blacklist</span>(<span class="bool-val">true</span>)
             .<span class="ident">password_policy</span>(<span class="ident">PasswordPolicy</span>::<span class="ident">default</span>())
             .<span class="ident">build</span>()
             .<span class="ident">unwrap</span>();
