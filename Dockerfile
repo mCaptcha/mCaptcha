@@ -1,6 +1,6 @@
 FROM node:14.16.0 as frontend
 
-LABEL org.opencontainers.image.source https://github.com/mCaptcha/guard
+LABEL org.opencontainers.image.source https://github.com/mCaptcha/mCaptcha
 
 WORKDIR /src
 COPY package.json yarn.lock ./
@@ -14,9 +14,9 @@ WORKDIR /src
 RUN cargo build --release 
 
 FROM debian:buster
-RUN useradd -ms /bin/bash -u 1001 guard
-WORKDIR /home/guard
-COPY --from=rust /src/target/release/guard /usr/local/bin/
-COPY --from=rust /src/config/default.toml /etc/guard/config.toml
-USER guard
-CMD [ "/usr/local/bin/guard" ]
+RUN useradd -ms /bin/bash -u 1001 mcaptcha
+WORKDIR /home/mcaptcha
+COPY --from=rust /src/target/release/mcaptcha /usr/local/bin/
+COPY --from=rust /src/config/default.toml /etc/mcaptcha/config.toml
+USER mcaptcha
+CMD [ "/usr/local/bin/mcaptcha" ]
