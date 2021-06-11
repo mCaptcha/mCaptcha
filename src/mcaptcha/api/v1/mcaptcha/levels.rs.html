@@ -385,17 +385,16 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
 */</span>
-
 <span class="kw">use</span> <span class="ident">actix_identity</span>::<span class="ident">Identity</span>;
 <span class="kw">use</span> <span class="ident">actix_web</span>::{<span class="ident">web</span>, <span class="ident">HttpResponse</span>, <span class="ident">Responder</span>};
-<span class="kw">use</span> <span class="ident">log</span>::<span class="ident">debug</span>;
 <span class="kw">use</span> <span class="ident">libmcaptcha</span>::{<span class="ident">defense</span>::<span class="ident">Level</span>, <span class="ident">DefenseBuilder</span>};
+<span class="kw">use</span> <span class="ident">log</span>::<span class="ident">debug</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
 <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">mcaptcha</span>::<span class="ident">add_mcaptcha_util</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">api</span>::<span class="ident">v1</span>::<span class="ident">mcaptcha</span>::<span class="ident">mcaptcha</span>::<span class="ident">MCaptchaDetails</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">errors</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Data</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">AppData</span>;
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">routes</span> {
 
@@ -441,7 +440,7 @@
 <span class="attribute">#[<span class="ident">my_codegen</span>::<span class="ident">post</span>(<span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;crate::V1_API_ROUTES.levels.add&quot;</span>, <span class="ident">wrap</span> <span class="op">=</span> <span class="string">&quot;crate::CheckLogin&quot;</span>)]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">add_levels</span>(
     <span class="ident">payload</span>: <span class="ident">web</span>::<span class="ident">Json</span><span class="op">&lt;</span><span class="ident">AddLevels</span><span class="op">&gt;</span>,
-    <span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>,
+    <span class="ident">data</span>: <span class="ident">AppData</span>,
     <span class="ident">id</span>: <span class="ident">Identity</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">defense</span> <span class="op">=</span> <span class="ident">DefenseBuilder</span>::<span class="ident">default</span>();
@@ -497,7 +496,7 @@
 )]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_levels</span>(
     <span class="ident">payload</span>: <span class="ident">web</span>::<span class="ident">Json</span><span class="op">&lt;</span><span class="ident">UpdateLevels</span><span class="op">&gt;</span>,
-    <span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>,
+    <span class="ident">data</span>: <span class="ident">AppData</span>,
     <span class="ident">id</span>: <span class="ident">Identity</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">username</span> <span class="op">=</span> <span class="ident">id</span>.<span class="ident">identity</span>().<span class="ident">unwrap</span>();
@@ -558,7 +557,7 @@
 )]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_levels</span>(
     <span class="ident">payload</span>: <span class="ident">web</span>::<span class="ident">Json</span><span class="op">&lt;</span><span class="ident">UpdateLevels</span><span class="op">&gt;</span>,
-    <span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>,
+    <span class="ident">data</span>: <span class="ident">AppData</span>,
     <span class="ident">id</span>: <span class="ident">Identity</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">username</span> <span class="op">=</span> <span class="ident">id</span>.<span class="ident">identity</span>().<span class="ident">unwrap</span>();
@@ -585,7 +584,7 @@
 <span class="attribute">#[<span class="ident">my_codegen</span>::<span class="ident">post</span>(<span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;crate::V1_API_ROUTES.levels.get&quot;</span>, <span class="ident">wrap</span> <span class="op">=</span> <span class="string">&quot;crate::CheckLogin&quot;</span>)]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_levels</span>(
     <span class="ident">payload</span>: <span class="ident">web</span>::<span class="ident">Json</span><span class="op">&lt;</span><span class="ident">MCaptchaDetails</span><span class="op">&gt;</span>,
-    <span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>,
+    <span class="ident">data</span>: <span class="ident">AppData</span>,
     <span class="ident">id</span>: <span class="ident">Identity</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">username</span> <span class="op">=</span> <span class="ident">id</span>.<span class="ident">identity</span>().<span class="ident">unwrap</span>();
@@ -609,7 +608,7 @@
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_levels_util</span>(
     <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
     <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    <span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="ident">Data</span>,
+    <span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="ident">AppData</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">I32Levels</span><span class="op">&gt;</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">levels</span> <span class="op">=</span> <span class="ident">sqlx</span>::<span class="macro">query_as</span><span class="macro">!</span>(
         <span class="ident">I32Levels</span>,
@@ -634,6 +633,7 @@
 
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
     <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">api</span>::<span class="ident">v1</span>::<span class="ident">ROUTES</span>;
+    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">data</span>::<span class="ident">Data</span>;
     <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">tests</span>::<span class="kw-2">*</span>;
     <span class="kw">use</span> <span class="kw">crate</span>::<span class="kw-2">*</span>;
 

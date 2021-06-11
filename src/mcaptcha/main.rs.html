@@ -164,6 +164,8 @@
 <span id="161">161</span>
 <span id="162">162</span>
 <span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
  * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -182,6 +184,7 @@
  * along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
  */</span>
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">env</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
 
 <span class="kw">use</span> <span class="ident">actix_identity</span>::{<span class="ident">CookieIdentityPolicy</span>, <span class="ident">IdentityService</span>};
 <span class="kw">use</span> <span class="ident">actix_web</span>::{
@@ -207,13 +210,13 @@
 <span class="kw">mod</span> <span class="ident">tests</span>;
 <span class="kw">mod</span> <span class="ident">widget</span>;
 
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">data</span>::<span class="ident">Data</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">api</span>::<span class="ident">v1</span>::<span class="ident">ROUTES</span> <span class="kw">as</span> <span class="ident">V1_API_ROUTES</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">widget</span>::<span class="ident">WIDGET_ROUTES</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">data</span>::<span class="ident">Data</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">docs</span>::<span class="ident">DOCS</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">pages</span>::<span class="ident">routes</span>::<span class="ident">ROUTES</span> <span class="kw">as</span> <span class="ident">PAGES</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">settings</span>::<span class="ident">Settings</span>;
 <span class="kw">use</span> <span class="ident">static_assets</span>::<span class="ident">FileMap</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">widget</span>::<span class="ident">WIDGET_ROUTES</span>;
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">middleware</span>::<span class="ident">auth</span>::<span class="ident">CheckLogin</span>;
 
@@ -255,6 +258,8 @@
 
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CACHE_AGE</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">604800</span>;
 
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">AppData</span> <span class="op">=</span> <span class="ident">actix_web</span>::<span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">data</span>::<span class="ident">Data</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
 <span class="attribute">#[<span class="ident">actix_web</span>::<span class="ident">main</span>]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">main</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std</span>::<span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
@@ -268,7 +273,6 @@
 
     <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">Data</span>::<span class="ident">new</span>().<span class="kw">await</span>;
     <span class="ident">sqlx</span>::<span class="macro">migrate</span><span class="macro">!</span>(<span class="string">&quot;./migrations/&quot;</span>).<span class="ident">run</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>.<span class="ident">db</span>).<span class="kw">await</span>.<span class="ident">unwrap</span>();
-
     <span class="ident">HttpServer</span>::<span class="ident">new</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
         <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">Client</span>::<span class="ident">default</span>();
 

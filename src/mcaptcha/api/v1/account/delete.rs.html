@@ -100,7 +100,7 @@
 
 <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">auth</span>::<span class="ident">Password</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">errors</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Data</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">AppData</span>;
 
 <span class="attribute">#[<span class="ident">my_codegen</span>::<span class="ident">post</span>(
     <span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;crate::V1_API_ROUTES.account.delete&quot;</span>,
@@ -109,7 +109,7 @@
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_account</span>(
     <span class="ident">id</span>: <span class="ident">Identity</span>,
     <span class="ident">payload</span>: <span class="ident">web</span>::<span class="ident">Json</span><span class="op">&lt;</span><span class="ident">Password</span><span class="op">&gt;</span>,
-    <span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>,
+    <span class="ident">data</span>: <span class="ident">AppData</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
     <span class="kw">use</span> <span class="ident">argon2_creds</span>::<span class="ident">Config</span>;
     <span class="kw">use</span> <span class="ident">sqlx</span>::<span class="ident">Error</span>::<span class="ident">RowNotFound</span>;

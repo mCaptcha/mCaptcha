@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Data",""]]});
+initSidebarItems({"enum":[["SystemGroup",""]],"struct":[["Data",""]]});

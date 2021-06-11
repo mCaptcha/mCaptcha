@@ -147,7 +147,7 @@
 <span class="kw">use</span> <span class="ident">derive_builder</span>::<span class="ident">Builder</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Data</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">AppData</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">GIT_COMMIT_HASH</span>, <span class="ident">VERSION</span>};
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Deserialize</span>, <span class="ident">Builder</span>, <span class="ident">Serialize</span>)]</span>
@@ -190,7 +190,7 @@
 
 <span class="doccomment">/// checks all components of the system</span>
 <span class="attribute">#[<span class="ident">my_codegen</span>::<span class="ident">get</span>(<span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;crate::V1_API_ROUTES.meta.health&quot;</span>)]</span>
-<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">health</span>(<span class="ident">data</span>: <span class="ident">web</span>::<span class="ident">Data</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Responder</span> {
+<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">health</span>(<span class="ident">data</span>: <span class="ident">AppData</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Responder</span> {
     <span class="kw">use</span> <span class="ident">sqlx</span>::<span class="ident">Connection</span>;
 
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">resp_builder</span> <span class="op">=</span> <span class="ident">HealthBuilder</span>::<span class="ident">default</span>();
