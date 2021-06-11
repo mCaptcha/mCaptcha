@@ -15,9 +15,9 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+pub mod captcha;
 pub mod duration;
 pub mod levels;
-pub mod mcaptcha;
 
 pub fn get_random(len: usize) -> String {
     use std::iter;
@@ -36,5 +36,5 @@ pub fn get_random(len: usize) -> String {
 pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
     duration::services(cfg);
     levels::services(cfg);
-    mcaptcha::services(cfg);
+    captcha::services(cfg);
 }

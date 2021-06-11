@@ -94,10 +94,10 @@ pub async fn add_mcaptcha_util(
                 {
                     continue;
                 } else {
-                    Err(sqlx::Error::Database(err))?;
+                    return Err(sqlx::Error::Database(err).into());
                 }
             }
-            Err(e) => Err(e)?,
+            Err(e) => return Err(e.into()),
 
             Ok(_) => {
                 resp = MCaptchaDetails {
@@ -128,15 +128,13 @@ async fn update_token(
         let res = update_token_helper(&key, &payload.key, &username, &data).await;
         if res.is_ok() {
             break;
-        } else {
-            if let Err(sqlx::Error::Database(err)) = res {
-                if err.code() == Some(Cow::from("23505")) {
-                    continue;
-                } else {
-                    Err(sqlx::Error::Database(err))?;
-                }
-            };
-        }
+        } else if let Err(sqlx::Error::Database(err)) = res {
+            if err.code() == Some(Cow::from("23505")) {
+                continue;
+            } else {
+                return Err(sqlx::Error::Database(err).into());
+            }
+        };
     }
 
     let resp = MCaptchaDetails {

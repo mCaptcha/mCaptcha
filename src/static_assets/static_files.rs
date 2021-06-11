@@ -99,7 +99,7 @@ mod tests {
 
         let resp = test::call_service(
             &mut app,
-            test::TestRequest::get().uri(&*crate::JS).to_request(),
+            test::TestRequest::get().uri(*crate::JS).to_request(),
         )
         .await;
         assert_eq!(resp.status(), StatusCode::OK);
@@ -107,7 +107,7 @@ mod tests {
         let resp = test::call_service(
             &mut app,
             test::TestRequest::get()
-                .uri(&*crate::VERIFICATIN_WIDGET_JS)
+                .uri(*crate::VERIFICATIN_WIDGET_JS)
                 .to_request(),
         )
         .await;
@@ -116,7 +116,7 @@ mod tests {
         let resp = test::call_service(
             &mut app,
             test::TestRequest::get()
-                .uri(&*crate::VERIFICATIN_WIDGET_CSS)
+                .uri(*crate::VERIFICATIN_WIDGET_CSS)
                 .to_request(),
         )
         .await;

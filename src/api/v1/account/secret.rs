@@ -71,16 +71,14 @@ async fn update_user_secret(
         .await;
         if res.is_ok() {
             break;
-        } else {
-            if let Err(sqlx::Error::Database(err)) = res {
-                if err.code() == Some(Cow::from("23505"))
-                    && err.message().contains("mcaptcha_users_secret_key")
-                {
-                    continue;
-                } else {
-                    Err(sqlx::Error::Database(err))?;
-                }
-            };
+        } else if let Err(sqlx::Error::Database(err)) = res {
+            if err.code() == Some(Cow::from("23505"))
+                && err.message().contains("mcaptcha_users_secret_key")
+            {
+                continue;
+            } else {
+                return Err(sqlx::Error::Database(err).into());
+            }
         }
     }
     Ok(HttpResponse::Ok())

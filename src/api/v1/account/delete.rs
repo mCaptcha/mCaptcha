@@ -58,7 +58,7 @@ async fn delete_account(
             }
         }
         Err(RowNotFound) => return Err(ServiceError::UsernameNotFound),
-        Err(_) => return Err(ServiceError::InternalServerError)?,
+        Err(_) => return Err(ServiceError::InternalServerError),
     }
 }
 

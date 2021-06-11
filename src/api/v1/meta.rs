@@ -49,7 +49,7 @@ pub mod routes {
 async fn build_details() -> impl Responder {
     let build = BuildDetails {
         version: VERSION,
-        git_commit_hash: &GIT_COMMIT_HASH,
+        git_commit_hash: GIT_COMMIT_HASH,
     };
     HttpResponse::Ok().json(build)
 }
@@ -68,7 +68,7 @@ async fn health(data: AppData) -> impl Responder {
     let mut resp_builder = HealthBuilder::default();
     resp_builder.db(false);
     if let Ok(mut con) = data.db.acquire().await {
-        if let Ok(_) = con.ping().await {
+        if con.ping().await.is_ok() {
             resp_builder.db(true);
         }
     };

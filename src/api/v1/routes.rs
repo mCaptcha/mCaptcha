@@ -17,9 +17,9 @@
 
 use super::account::routes::Account;
 use super::auth::routes::Auth;
+use super::mcaptcha::captcha::routes::MCaptcha;
 use super::mcaptcha::duration::routes::Duration;
 use super::mcaptcha::levels::routes::Levels;
-use super::mcaptcha::mcaptcha::routes::MCaptcha;
 use super::meta::routes::Meta;
 use super::notifications::routes::Notifications;
 use super::pow::routes::PoW;

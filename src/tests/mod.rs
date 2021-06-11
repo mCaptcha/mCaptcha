@@ -11,8 +11,8 @@ use serde::Serialize;
 
 use super::*;
 use crate::api::v1::auth::{Login, Register};
+use crate::api::v1::mcaptcha::captcha::MCaptchaDetails;
 use crate::api::v1::mcaptcha::levels::AddLevels;
-use crate::api::v1::mcaptcha::mcaptcha::MCaptchaDetails;
 use crate::api::v1::ROUTES;
 use crate::data::Data;
 use crate::errors::*;
@@ -95,8 +95,8 @@ macro_rules! get_app {
 }
 
 /// register and signin utility
-pub async fn register_and_signin<'a>(
-    name: &'a str,
+pub async fn register_and_signin(
+    name: &str,
     email: &str,
     password: &str,
 ) -> (Arc<data::Data>, Login, ServiceResponse) {
@@ -105,7 +105,7 @@ pub async fn register_and_signin<'a>(
 }
 
 /// register utility
-pub async fn register<'a>(name: &'a str, email: &str, password: &str) {
+pub async fn register(name: &str, email: &str, password: &str) {
     let data = Data::new().await;
     let mut app = get_app!(data).await;
 
@@ -125,10 +125,7 @@ pub async fn register<'a>(name: &'a str, email: &str, password: &str) {
 }
 
 /// signin util
-pub async fn signin<'a>(
-    name: &'a str,
-    password: &str,
-) -> (Arc<Data>, Login, ServiceResponse) {
+pub async fn signin(name: &str, password: &str) -> (Arc<Data>, Login, ServiceResponse) {
     let data = Data::new().await;
     let mut app = get_app!(data.clone()).await;
 

@@ -19,7 +19,7 @@ use actix_identity::Identity;
 use actix_web::{HttpResponse, Responder};
 use sailfish::TemplateOnce;
 
-use crate::api::v1::mcaptcha::mcaptcha::MCaptchaDetails;
+use crate::api::v1::mcaptcha::captcha::MCaptchaDetails;
 use crate::errors::*;
 use crate::AppData;
 

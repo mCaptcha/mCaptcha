@@ -28,8 +28,8 @@ use crate::AppData;
 
 pub mod routes {
     pub struct Auth {
-        pub login: &'static str,
         pub logout: &'static str,
+        pub login: &'static str,
         pub register: &'static str,
     }
 
@@ -39,8 +39,8 @@ pub mod routes {
             let logout = "/logout";
             let register = "/api/v1/signup";
             Auth {
-                login,
                 logout,
+                login,
                 register,
             }
         }
@@ -48,16 +48,9 @@ pub mod routes {
 }
 
 pub fn services(cfg: &mut web::ServiceConfig) {
-    // protect_get!(cfg, V1_API_ROUTES.auth.logout, signout);
-
     cfg.service(signup);
     cfg.service(signin);
     cfg.service(signout);
-
-    //    define_resource!(cfg, V1_API_ROUTES.auth.register, Methods::Post, signup);
-    //    define_resource!(cfg, V1_API_ROUTES.auth.logout, Methods::ProtectGet, signout);
-    //    define_resource!(cfg, V1_API_ROUTES.auth.login, Methods::Post, signin);
-    //post!(cfg, V1_API_ROUTES.auth.login, signin);
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -85,10 +78,10 @@ async fn signup(
     data: AppData,
 ) -> ServiceResult<impl Responder> {
     if !crate::SETTINGS.server.allow_registration {
-        Err(ServiceError::ClosedForRegistration)?
+        return Err(ServiceError::ClosedForRegistration);
     }
 
-    if &payload.password != &payload.confirm_password {
+    if payload.password != payload.confirm_password {
         return Err(ServiceError::PasswordsDontMatch);
     }
     let username = data.creds.username(&payload.username)?;
@@ -127,22 +120,20 @@ async fn signup(
         }
         if res.is_ok() {
             break;
-        } else {
-            if let Err(sqlx::Error::Database(err)) = res {
-                if err.code() == Some(Cow::from("23505")) {
-                    let msg = err.message();
-                    if msg.contains("mcaptcha_users_name_key") {
-                        Err(ServiceError::UsernameTaken)?;
-                    } else if msg.contains("mcaptcha_users_secret_key") {
-                        continue;
-                    } else {
-                        Err(ServiceError::InternalServerError)?;
-                    }
+        } else if let Err(sqlx::Error::Database(err)) = res {
+            if err.code() == Some(Cow::from("23505")) {
+                let msg = err.message();
+                if msg.contains("mcaptcha_users_name_key") {
+                    return Err(ServiceError::UsernameTaken);
+                } else if msg.contains("mcaptcha_users_secret_key") {
+                    continue;
                 } else {
-                    Err(sqlx::Error::Database(err))?;
+                    return Err(ServiceError::InternalServerError);
                 }
-            };
-        }
+            } else {
+                return Err(sqlx::Error::Database(err).into());
+            }
+        };
     }
     Ok(HttpResponse::Ok())
 }
@@ -174,14 +165,14 @@ async fn signin(
                 Err(ServiceError::WrongPassword)
             }
         }
-        Err(RowNotFound) => return Err(ServiceError::UsernameNotFound),
-        Err(_) => return Err(ServiceError::InternalServerError)?,
+        Err(RowNotFound) => Err(ServiceError::UsernameNotFound),
+        Err(_) => Err(ServiceError::InternalServerError),
     }
 }
 
 #[my_codegen::get(path = "crate::V1_API_ROUTES.auth.logout", wrap = "crate::CheckLogin")]
 async fn signout(id: Identity) -> impl Responder {
-    if let Some(_) = id.identity() {
+    if id.identity().is_some() {
         id.forget();
     }
     HttpResponse::Found()

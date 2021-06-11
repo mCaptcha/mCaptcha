@@ -221,12 +221,10 @@ impl ResponseError for PageError {
         match self.status_code() {
             StatusCode::INTERNAL_SERVER_ERROR => HttpResponse::Found()
                 .header(header::LOCATION, PAGES.errors.internal_server_error)
-                .finish()
-                .into(),
+                .finish(),
             _ => HttpResponse::Found()
                 .header(header::LOCATION, PAGES.errors.unknown_error)
-                .finish()
-                .into(),
+                .finish(),
         }
     }
 

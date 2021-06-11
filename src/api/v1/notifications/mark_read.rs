@@ -128,7 +128,7 @@ mod tests {
         assert_eq!(notification.heading, HEADING);
 
         let mark_read_payload = MarkReadReq {
-            id: notification.id.clone(),
+            id: notification.id,
         };
         let mark_read_resp = test::call_service(
             &mut app,

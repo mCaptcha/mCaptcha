@@ -19,8 +19,8 @@ use std::sync::Arc;
 
 use actix_identity::{CookieIdentityPolicy, IdentityService};
 use actix_web::{
-    client::Client, error::InternalError, http::StatusCode,
-    middleware as actix_middleware, web::JsonConfig, App, HttpServer,
+    error::InternalError, http::StatusCode, middleware as actix_middleware,
+    web::JsonConfig, App, HttpServer,
 };
 use lazy_static::lazy_static;
 use log::info;
@@ -69,7 +69,7 @@ lazy_static! {
     /// points to source files matching build commit
     pub static ref SOURCE_FILES_OF_INSTANCE: String = {
         let mut url = SETTINGS.source_code.clone();
-        if url.chars().last() != Some('/') {
+        if !url.ends_with('/') {
             url.push('/');
         }
         let mut  base = url::Url::parse(&url).unwrap();
@@ -95,7 +95,6 @@ pub type AppData = actix_web::web::Data<Arc<crate::data::Data>>;
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     use api::v1;
-    use docs;
     pretty_env_logger::init();
     info!(
         "{}: {}.\nFor more information, see: {}\nBuild info:\nVersion: {} commit: {}",
@@ -105,14 +104,11 @@ async fn main() -> std::io::Result<()> {
     let data = Data::new().await;
     sqlx::migrate!("./migrations/").run(&data.db).await.unwrap();
     HttpServer::new(move || {
-        let client = Client::default();
-
         App::new()
             .wrap(actix_middleware::Logger::default())
             .wrap(get_identity_service())
             .wrap(actix_middleware::Compress::default())
             .data(data.clone())
-            .data(client.clone())
             .wrap(actix_middleware::NormalizePath::new(
                 actix_middleware::normalize::TrailingSlash::Trim,
             ))

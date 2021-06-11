@@ -19,7 +19,7 @@ use actix_identity::Identity;
 use actix_web::{web, HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
 
-use crate::api::v1::mcaptcha::mcaptcha::MCaptchaDetails;
+use crate::api::v1::mcaptcha::captcha::MCaptchaDetails;
 use crate::errors::*;
 use crate::AppData;
 

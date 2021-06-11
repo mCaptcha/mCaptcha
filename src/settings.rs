@@ -59,7 +59,7 @@ impl DatabaseBuilder {
     #[cfg(not(tarpaulin_include))]
     fn extract_database_url(url: &Url) -> Self {
         debug!("Databse name: {}", url.path());
-        let mut path = url.path().split("/");
+        let mut path = url.path().split('/');
         path.next();
         let name = path.next().expect("no database name").to_string();
         DatabaseBuilder {
@@ -143,7 +143,7 @@ impl Settings {
 
         match s.try_into() {
             Ok(val) => Ok(val),
-            Err(e) => Err(ConfigError::Message(format!("\n\nError: {}. If it says missing fields, then please refer to https://github.com/mCaptcha/mcaptcha#configuration to learn more about how mcaptcha reads configuration\n\n", e)))?,
+            Err(e) => Err(ConfigError::Message(format!("\n\nError: {}. If it says missing fields, then please refer to https://github.com/mCaptcha/mcaptcha#configuration to learn more about how mcaptcha reads configuration\n\n", e))),
         }
     }
 }

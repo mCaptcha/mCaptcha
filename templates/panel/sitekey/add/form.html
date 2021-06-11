@@ -10,7 +10,7 @@
 		name="description"
 		id="description"
 		required
-		<. if form_description.trim().len() > 0 { .>
+		<. if !form_description.trim().is_empty() { .>
 		value="<.= form_description .>"
 		<. } .>
 	  />

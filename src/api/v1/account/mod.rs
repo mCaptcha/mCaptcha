@@ -32,8 +32,8 @@ pub mod routes {
     pub struct Account {
         pub delete: &'static str,
         pub email_exists: &'static str,
-        pub update_email: &'static str,
         pub get_secret: &'static str,
+        pub update_email: &'static str,
         pub update_secret: &'static str,
         pub username_exists: &'static str,
     }
@@ -47,12 +47,13 @@ pub mod routes {
             let username_exists = "/api/v1/account/username/exists";
             let update_email = "/api/v1/account/email/update";
             Account {
-                get_secret,
-                update_secret,
-                username_exists,
-                update_email,
                 delete,
                 email_exists,
+
+                get_secret,
+                update_email,
+                update_secret,
+                username_exists,
             }
         }
     }

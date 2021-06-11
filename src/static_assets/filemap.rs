@@ -21,21 +21,15 @@ pub struct FileMap {
 }
 
 impl FileMap {
+    #[allow(clippy::new_without_default)]
     pub fn new() -> Self {
         let map = include_str!("../cache_buster_data.json");
         let files = Files::new(&map);
         Self { files }
     }
     pub fn get<'a>(&'a self, path: &'a str) -> Option<&'a str> {
-        // let file_path = self.files.get(path);
         let file_path = self.files.get_full_path(path);
-
-        if file_path.is_some() {
-            let file_path = &file_path.unwrap()[1..];
-            return Some(file_path);
-        } else {
-            return None;
-        }
+        file_path.map(|file_path| &file_path[1..])
     }
 }
 

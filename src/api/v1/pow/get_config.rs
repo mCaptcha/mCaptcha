@@ -193,8 +193,8 @@ mod tests {
                 .to_request(),
         )
         .await;
-        //        assert_eq!(get_config_resp.status(), StatusCode::OK);
-        //        let config: PoWConfig = test::read_body_json(get_config_resp).await;
-        //        assert_eq!(config.difficulty_factor, L1.difficulty_factor);
+        assert_eq!(get_config_resp.status(), StatusCode::OK);
+        let config: PoWConfig = test::read_body_json(get_config_resp).await;
+        assert_eq!(config.difficulty_factor, L1.difficulty_factor);
     }
 }

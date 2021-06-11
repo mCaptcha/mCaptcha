@@ -26,7 +26,7 @@
 		name="description"
 		id="description"
 		required
-		<. if name.trim().len() > 0 { .>
+		<. if !name.trim().is_empty() { .>
 		value="<.= name .>"
 		<. } .>
 	  />

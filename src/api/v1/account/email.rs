@@ -74,14 +74,14 @@ async fn set_email(
     )
     .execute(&data.db)
     .await;
-    if !res.is_ok() {
+    if res.is_err() {
         if let Err(sqlx::Error::Database(err)) = res {
             if err.code() == Some(Cow::from("23505"))
                 && err.message().contains("mcaptcha_users_email_key")
             {
-                Err(ServiceError::EmailTaken)?
+                return Err(ServiceError::EmailTaken);
             } else {
-                Err(sqlx::Error::Database(err))?
+                return Err(sqlx::Error::Database(err).into());
             }
         };
     }

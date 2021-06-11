@@ -20,8 +20,8 @@ use libmcaptcha::{defense::Level, DefenseBuilder};
 use log::debug;
 use serde::{Deserialize, Serialize};
 
-use super::mcaptcha::add_mcaptcha_util;
-use crate::api::v1::mcaptcha::mcaptcha::MCaptchaDetails;
+use super::captcha::add_mcaptcha_util;
+use super::captcha::MCaptchaDetails;
 use crate::errors::*;
 use crate::AppData;
 
@@ -29,9 +29,9 @@ pub mod routes {
 
     pub struct Levels {
         pub add: &'static str,
-        pub update: &'static str,
         pub delete: &'static str,
         pub get: &'static str,
+        pub update: &'static str,
     }
 
     impl Levels {
@@ -42,9 +42,9 @@ pub mod routes {
             let get = "/api/v1/mcaptcha/levels/get";
             Levels {
                 add,
+                delete,
                 get,
                 update,
-                delete,
             }
         }
     }
@@ -76,7 +76,7 @@ async fn add_levels(
     let username = id.identity().unwrap();
 
     for level in payload.levels.iter() {
-        defense.add_level(level.clone())?;
+        defense.add_level(*level)?;
     }
 
     defense.build()?;
@@ -132,7 +132,7 @@ async fn update_levels(
     let mut defense = DefenseBuilder::default();
 
     for level in payload.levels.iter() {
-        defense.add_level(level.clone())?;
+        defense.add_level(*level)?;
     }
 
     // I feel this is necessary as both difficulty factor _and_ visitor threshold of a
