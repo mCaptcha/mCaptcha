@@ -45,6 +45,9 @@ jobs:
             target
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
+      - name: run mcaptcha cache redis instance
+        run: docker run -d -p 6379:6379 mcaptcha/cache
+
       - uses: actions/setup-node@v2
         with:
           node-version: '14.x'
@@ -64,9 +67,6 @@ jobs:
           toolchain: ${{ matrix.version }}-x86_64-unknown-linux-gnu
           profile: minimal
           override: true
-
-      - name: run mcaptcha cache redis instance
-        run: docker run -d -p 6379:6379 mcaptcha/cache
 
       - name: Run migrations
         uses: actions-rs/cargo@v1

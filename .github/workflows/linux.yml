@@ -50,6 +50,9 @@ jobs:
         with:
           node-version: '14.x'
 
+      - name: run mcaptcha cache redis instance
+        run: docker run -d -p 6379:6379 mcaptcha/cache
+
       - name: Install JavaScript Dependencies
         run: yarn install
 
@@ -78,9 +81,6 @@ jobs:
           args: --all --bins --examples --tests
         env:
           DATABASE_URL: postgres://postgres:password@localhost:5432/postgres
-
-      - name: run mcaptcha cache redis instance
-        run: docker run -d -p 6379:6379 mcaptcha/cache
 
       - name: tests
         uses: actions-rs/cargo@v1

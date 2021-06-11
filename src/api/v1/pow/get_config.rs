@@ -64,7 +64,6 @@ pub async fn get_config(
     let payload = payload.into_inner();
     match res.exists {
         Some(true) => {
-            ();
             match data.captcha.get_pow(payload.key.clone()).await {
                 Some(config) => Ok(HttpResponse::Ok().json(config)),
                 None => {
