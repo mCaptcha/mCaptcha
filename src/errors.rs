@@ -30,7 +30,7 @@ use serde::{Deserialize, Serialize};
 use url::ParseError;
 use validator::ValidationErrors;
 
-#[derive(Debug, Display, Clone, PartialEq, Error)]
+#[derive(Debug, Display, PartialEq, Error)]
 #[cfg(not(tarpaulin_include))]
 pub enum ServiceError {
     #[display(fmt = "internal server error")]
@@ -189,7 +189,7 @@ impl From<sqlx::Error> for ServiceError {
 #[cfg(not(tarpaulin_include))]
 pub type ServiceResult<V> = std::result::Result<V, ServiceError>;
 
-#[derive(Debug, Display, Clone, PartialEq, Error)]
+#[derive(Debug, Display, PartialEq, Error)]
 #[cfg(not(tarpaulin_include))]
 pub enum PageError {
     #[display(fmt = "Something weng wrong: Internal server error")]

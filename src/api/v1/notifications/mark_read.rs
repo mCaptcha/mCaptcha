@@ -20,7 +20,7 @@ use actix_web::{web, HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
 
 use crate::errors::*;
-use crate::Data;
+use crate::AppData;
 
 #[derive(Deserialize, Serialize)]
 pub struct MarkReadReq {
@@ -42,7 +42,7 @@ pub struct NotificationResp {
     wrap = "crate::CheckLogin"
 )]
 pub async fn mark_read(
-    data: web::Data<Data>,
+    data: AppData,
     payload: web::Json<MarkReadReq>,
     id: Identity,
 ) -> ServiceResult<impl Responder> {

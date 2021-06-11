@@ -20,7 +20,7 @@ use actix_web::{web, HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
 
 use crate::errors::*;
-use crate::Data;
+use crate::AppData;
 
 #[derive(Serialize, Deserialize)]
 pub struct AddNotification {
@@ -36,7 +36,7 @@ pub struct AddNotification {
 )]
 pub async fn add_notification(
     payload: web::Json<AddNotification>,
-    data: web::Data<Data>,
+    data: AppData,
     id: Identity,
 ) -> ServiceResult<impl Responder> {
     let sender = id.identity().unwrap();

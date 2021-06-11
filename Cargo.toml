@@ -59,7 +59,8 @@ lazy_static = "1.4"
 
 
 # m_captcha = { version = "0.1.2", git = "https://github.com/mCaptcha/mCaptcha" }
-libmcaptcha = { branch = "master", git = "https://github.com/mCaptcha/libmcaptcha" }
+libmcaptcha = { branch = "master", git = "https://github.com/mCaptcha/libmcaptcha", features = ["full"] }
+#libmcaptcha = { path = "../libmcaptcha", features = ["full"]}
 
 rand = "0.8"
 

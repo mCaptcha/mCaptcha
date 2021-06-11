@@ -19,7 +19,7 @@ use actix_web::{web, HttpResponse, Responder};
 use derive_builder::Builder;
 use serde::{Deserialize, Serialize};
 
-use crate::Data;
+use crate::AppData;
 use crate::{GIT_COMMIT_HASH, VERSION};
 
 #[derive(Clone, Debug, Deserialize, Builder, Serialize)]
@@ -62,7 +62,7 @@ pub struct Health {
 
 /// checks all components of the system
 #[my_codegen::get(path = "crate::V1_API_ROUTES.meta.health")]
-async fn health(data: web::Data<Data>) -> impl Responder {
+async fn health(data: AppData) -> impl Responder {
     use sqlx::Connection;
 
     let mut resp_builder = HealthBuilder::default();

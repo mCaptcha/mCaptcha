@@ -24,7 +24,7 @@ use serde::{Deserialize, Serialize};
 
 use super::mcaptcha::get_random;
 use crate::errors::*;
-use crate::Data;
+use crate::AppData;
 
 pub mod routes {
     pub struct Auth {
@@ -82,7 +82,7 @@ pub struct Password {
 #[my_codegen::post(path = "crate::V1_API_ROUTES.auth.register")]
 async fn signup(
     payload: web::Json<Register>,
-    data: web::Data<Data>,
+    data: AppData,
 ) -> ServiceResult<impl Responder> {
     if !crate::SETTINGS.server.allow_registration {
         Err(ServiceError::ClosedForRegistration)?
@@ -151,7 +151,7 @@ async fn signup(
 async fn signin(
     id: Identity,
     payload: web::Json<Login>,
-    data: web::Data<Data>,
+    data: AppData,
 ) -> ServiceResult<impl Responder> {
     use argon2_creds::Config;
     use sqlx::Error::RowNotFound;

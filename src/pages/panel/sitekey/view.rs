@@ -22,7 +22,7 @@ use sailfish::TemplateOnce;
 
 use crate::errors::*;
 use crate::stats::fetch::Stats;
-use crate::Data;
+use crate::AppData;
 
 const PAGE: &str = "SiteKeys";
 
@@ -62,7 +62,7 @@ impl IndexPage {
 #[my_codegen::get(path = "crate::PAGES.panel.sitekey.view", wrap = "crate::CheckLogin")]
 pub async fn view_sitekey(
     path: web::Path<String>,
-    data: web::Data<Data>,
+    data: AppData,
     id: Identity,
 ) -> PageResult<impl Responder> {
     let username = id.identity().unwrap();
@@ -91,7 +91,7 @@ pub async fn view_sitekey(
     .fetch_all(&data.db)
     .err_into();
 
-    let (stats, levels) = try_join!(Stats::new(&key, &data.db), levels_fut)?;
+    let (_stats, levels) = try_join!(Stats::new(&key, &data.db), levels_fut)?;
 
     let body = IndexPage::new(config, levels, key).render_once().unwrap();
     Ok(HttpResponse::Ok()

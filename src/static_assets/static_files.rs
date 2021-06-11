@@ -37,12 +37,11 @@ fn handle_assets(path: &str) -> HttpResponse {
             };
 
             HttpResponse::Ok()
-                .set(header::CacheControl(
-                        vec![
-                        header::CacheDirective::Public,
-                        header::CacheDirective::Extension("immutable".into(), None),
-                        header::CacheDirective::MaxAge(CACHE_AGE)
-                        ]))
+                .set(header::CacheControl(vec![
+                    header::CacheDirective::Public,
+                    header::CacheDirective::Extension("immutable".into(), None),
+                    header::CacheDirective::MaxAge(CACHE_AGE),
+                ]))
                 .content_type(from_path(path).first_or_octet_stream().as_ref())
                 .body(body)
         }
@@ -54,8 +53,6 @@ fn handle_assets(path: &str) -> HttpResponse {
 pub async fn static_files(path: web::Path<String>) -> impl Responder {
     handle_assets(&path.0)
 }
-
-
 
 #[derive(RustEmbed)]
 #[folder = "static/favicons/"]
@@ -70,12 +67,11 @@ fn handle_favicons(path: &str) -> HttpResponse {
             };
 
             HttpResponse::Ok()
-                .set(header::CacheControl(
-                    vec![
-                        header::CacheDirective::Public,
-                        header::CacheDirective::Extension("immutable".into(), None),
-                        header::CacheDirective::MaxAge(CACHE_AGE)
-                    ]))
+                .set(header::CacheControl(vec![
+                    header::CacheDirective::Public,
+                    header::CacheDirective::Extension("immutable".into(), None),
+                    header::CacheDirective::MaxAge(CACHE_AGE),
+                ]))
                 .content_type(from_path(path).first_or_octet_stream().as_ref())
                 .body(body)
         }
@@ -110,34 +106,38 @@ mod tests {
 
         let resp = test::call_service(
             &mut app,
-            test::TestRequest::get().uri(&*crate::VERIFICATIN_WIDGET_JS).to_request(),
+            test::TestRequest::get()
+                .uri(&*crate::VERIFICATIN_WIDGET_JS)
+                .to_request(),
         )
         .await;
         assert_eq!(resp.status(), StatusCode::OK);
 
         let resp = test::call_service(
             &mut app,
-            test::TestRequest::get().uri(&*crate::VERIFICATIN_WIDGET_CSS).to_request(),
+            test::TestRequest::get()
+                .uri(&*crate::VERIFICATIN_WIDGET_CSS)
+                .to_request(),
         )
         .await;
         assert_eq!(resp.status(), StatusCode::OK);
 
         let resp = test::call_service(
             &mut app,
-            test::TestRequest::get().uri(
-                crate::FILES
-                .get("./static/cache/img/icon-trans.png")
-                .unwrap()
-            ).to_request(),
+            test::TestRequest::get()
+                .uri(
+                    crate::FILES
+                        .get("./static/cache/img/icon-trans.png")
+                        .unwrap(),
+                )
+                .to_request(),
         )
         .await;
         assert_eq!(resp.status(), StatusCode::OK);
-
     }
 
     #[actix_rt::test]
     async fn favicons_work() {
-
         assert!(Favicons::get("favicon.ico").is_some());
 
         //let mut app = test::init_service(App::new().configure(services)).await;
@@ -149,7 +149,5 @@ mod tests {
         )
         .await;
         assert_eq!(resp.status(), StatusCode::OK);
-
     }
-
 }

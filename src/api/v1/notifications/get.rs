@@ -16,12 +16,12 @@
 */
 
 use actix_identity::Identity;
-use actix_web::{web, HttpResponse, Responder};
+use actix_web::{HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
 use sqlx::types::time::OffsetDateTime;
 
 use crate::errors::*;
-use crate::Data;
+use crate::AppData;
 
 pub struct Notification {
     pub name: String,
@@ -57,7 +57,7 @@ impl From<Notification> for NotificationResp {
     wrap = "crate::CheckLogin"
 )]
 pub async fn get_notification(
-    data: web::Data<Data>,
+    data: AppData,
     id: Identity,
 ) -> ServiceResult<impl Responder> {
     let receiver = id.identity().unwrap();

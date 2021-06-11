@@ -22,7 +22,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::errors::*;
 use crate::stats::record::record_confirm;
-use crate::Data;
+use crate::AppData;
 use crate::V1_API_ROUTES;
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -38,7 +38,7 @@ pub struct CaptchaValidateResp {
 )]
 pub async fn validate_captcha_token(
     payload: web::Json<VerifyCaptchaResult>,
-    data: web::Data<Data>,
+    data: AppData,
 ) -> ServiceResult<impl Responder> {
     let key = payload.key.clone();
     let res = data

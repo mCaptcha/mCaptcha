@@ -16,12 +16,12 @@
 */
 
 use actix_identity::Identity;
-use actix_web::{web, HttpResponse, Responder};
+use actix_web::{HttpResponse, Responder};
 use sailfish::TemplateOnce;
 
 use crate::api::v1::mcaptcha::mcaptcha::MCaptchaDetails;
 use crate::errors::*;
-use crate::Data;
+use crate::AppData;
 
 #[derive(TemplateOnce, Clone)]
 #[template(path = "panel/sitekey/list/index.html")]
@@ -39,10 +39,7 @@ impl IndexPage {
 
 /// render a list of all sitekeys that a user has
 #[my_codegen::get(path = "crate::PAGES.panel.sitekey.list", wrap = "crate::CheckLogin")]
-pub async fn list_sitekeys(
-    data: web::Data<Data>,
-    id: Identity,
-) -> PageResult<impl Responder> {
+pub async fn list_sitekeys(data: AppData, id: Identity) -> PageResult<impl Responder> {
     let res = get_list_sitekeys(&data, &id).await?;
     let body = IndexPage::new(res).render_once().unwrap();
     Ok(HttpResponse::Ok()
@@ -51,7 +48,7 @@ pub async fn list_sitekeys(
 }
 
 /// utility function to get a list of all sitekeys that a user owns
-pub async fn get_list_sitekeys(data: &Data, id: &Identity) -> PageResult<SiteKeys> {
+pub async fn get_list_sitekeys(data: &AppData, id: &Identity) -> PageResult<SiteKeys> {
     let username = id.identity().unwrap();
     let res = sqlx::query_as!(
         MCaptchaDetails,

@@ -22,7 +22,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::errors::*;
 use crate::stats::record::record_solve;
-use crate::Data;
+use crate::AppData;
 use crate::V1_API_ROUTES;
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -41,7 +41,7 @@ pub struct ValidationToken {
 )]
 pub async fn verify_pow(
     payload: web::Json<Work>,
-    data: web::Data<Data>,
+    data: AppData,
 ) -> ServiceResult<impl Responder> {
     let key = payload.key.clone();
     let res = data.captcha.verify_pow(payload.into_inner()).await?;
@@ -120,15 +120,7 @@ mod tests {
         .await;
         assert_eq!(string_not_found.status(), StatusCode::BAD_REQUEST);
         let err: ErrorToResponse = test::read_body_json(string_not_found).await;
-        assert_eq!(
-            err.error,
-            format!(
-                "{}",
-                ServiceError::CaptchaError(
-                    libmcaptcha::errors::CaptchaError::StringNotFound
-                )
-            )
-        );
+        assert_eq!(err.error, "Challenge: not found");
 
         // let pow_config_resp = test::call_service(
         //     &mut app,

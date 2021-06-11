@@ -20,7 +20,7 @@ use actix_web::{web, HttpResponse, Responder};
 
 use super::auth::Password;
 use crate::errors::*;
-use crate::Data;
+use crate::AppData;
 
 #[my_codegen::post(
     path = "crate::V1_API_ROUTES.account.delete",
@@ -29,7 +29,7 @@ use crate::Data;
 async fn delete_account(
     id: Identity,
     payload: web::Json<Password>,
-    data: web::Data<Data>,
+    data: AppData,
 ) -> ServiceResult<impl Responder> {
     use argon2_creds::Config;
     use sqlx::Error::RowNotFound;

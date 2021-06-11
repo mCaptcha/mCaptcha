@@ -21,7 +21,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::api::v1::mcaptcha::mcaptcha::MCaptchaDetails;
 use crate::errors::*;
-use crate::Data;
+use crate::AppData;
 
 pub mod routes {
     pub struct Duration {
@@ -50,7 +50,7 @@ pub struct UpdateDuration {
 )]
 async fn update_duration(
     payload: web::Json<UpdateDuration>,
-    data: web::Data<Data>,
+    data: AppData,
     id: Identity,
 ) -> ServiceResult<impl Responder> {
     let username = id.identity().unwrap();
@@ -91,7 +91,7 @@ pub struct GetDuration {
 )]
 async fn get_duration(
     payload: web::Json<MCaptchaDetails>,
-    data: web::Data<Data>,
+    data: AppData,
     id: Identity,
 ) -> ServiceResult<impl Responder> {
     let username = id.identity().unwrap();

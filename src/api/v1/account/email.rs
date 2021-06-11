@@ -22,7 +22,7 @@ use serde::{Deserialize, Serialize};
 
 use super::{AccountCheckPayload, AccountCheckResp};
 use crate::errors::*;
-use crate::Data;
+use crate::AppData;
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Email {
@@ -32,7 +32,7 @@ pub struct Email {
 #[my_codegen::post(path = "crate::V1_API_ROUTES.account.email_exists")]
 pub async fn email_exists(
     payload: web::Json<AccountCheckPayload>,
-    data: web::Data<Data>,
+    data: AppData,
 ) -> ServiceResult<impl Responder> {
     let res = sqlx::query!(
         "SELECT EXISTS (SELECT 1 from mcaptcha_users WHERE email = $1)",
@@ -60,7 +60,7 @@ pub async fn email_exists(
 async fn set_email(
     id: Identity,
     payload: web::Json<Email>,
-    data: web::Data<Data>,
+    data: AppData,
 ) -> ServiceResult<impl Responder> {
     let username = id.identity().unwrap();
 
@@ -91,20 +91,4 @@ async fn set_email(
 pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
     cfg.service(email_exists);
     cfg.service(set_email);
-    //    use crate::define_resource;
-    //    use crate::V1_API_ROUTES;
-    //
-    //    define_resource!(
-    //        cfg,
-    //        V1_API_ROUTES.account.email_exists,
-    //        Methods::Post,
-    //        email_exists
-    //    );
-    //
-    //    define_resource!(
-    //        cfg,
-    //        V1_API_ROUTES.account.update_email,
-    //        Methods::Post,
-    //        set_email
-    //    );
 }

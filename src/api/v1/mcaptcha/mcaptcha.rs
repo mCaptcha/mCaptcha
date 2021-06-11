@@ -22,7 +22,7 @@ use serde::{Deserialize, Serialize};
 
 use super::get_random;
 use crate::errors::*;
-use crate::Data;
+use crate::AppData;
 
 pub mod routes {
     pub struct MCaptcha {
@@ -64,7 +64,7 @@ pub struct MCaptchaDetails {
 pub async fn add_mcaptcha_util(
     duration: u32,
     description: &str,
-    data: &Data,
+    data: &AppData,
     id: &Identity,
 ) -> ServiceResult<MCaptchaDetails> {
     let username = id.identity().unwrap();
@@ -117,7 +117,7 @@ pub async fn add_mcaptcha_util(
 )]
 async fn update_token(
     payload: web::Json<MCaptchaDetails>,
-    data: web::Data<Data>,
+    data: AppData,
     id: Identity,
 ) -> ServiceResult<impl Responder> {
     let username = id.identity().unwrap();
@@ -151,7 +151,7 @@ async fn update_token_helper(
     key: &str,
     old_key: &str,
     username: &str,
-    data: &Data,
+    data: &AppData,
 ) -> Result<(), sqlx::Error> {
     sqlx::query!(
         "UPDATE mcaptcha_config SET key = $1 
@@ -171,7 +171,7 @@ async fn update_token_helper(
 )]
 async fn get_token(
     payload: web::Json<MCaptchaDetails>,
-    data: web::Data<Data>,
+    data: AppData,
     id: Identity,
 ) -> ServiceResult<impl Responder> {
     let username = id.identity().unwrap();
@@ -202,7 +202,7 @@ async fn get_token(
 )]
 async fn delete_mcaptcha(
     payload: web::Json<MCaptchaDetails>,
-    data: web::Data<Data>,
+    data: AppData,
     id: Identity,
 ) -> ServiceResult<impl Responder> {
     let username = id.identity().unwrap();

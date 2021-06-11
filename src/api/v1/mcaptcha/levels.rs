@@ -14,17 +14,16 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-
 use actix_identity::Identity;
 use actix_web::{web, HttpResponse, Responder};
-use log::debug;
 use libmcaptcha::{defense::Level, DefenseBuilder};
+use log::debug;
 use serde::{Deserialize, Serialize};
 
 use super::mcaptcha::add_mcaptcha_util;
 use crate::api::v1::mcaptcha::mcaptcha::MCaptchaDetails;
 use crate::errors::*;
-use crate::Data;
+use crate::AppData;
 
 pub mod routes {
 
@@ -70,7 +69,7 @@ pub fn services(cfg: &mut web::ServiceConfig) {
 #[my_codegen::post(path = "crate::V1_API_ROUTES.levels.add", wrap = "crate::CheckLogin")]
 async fn add_levels(
     payload: web::Json<AddLevels>,
-    data: web::Data<Data>,
+    data: AppData,
     id: Identity,
 ) -> ServiceResult<impl Responder> {
     let mut defense = DefenseBuilder::default();
@@ -126,7 +125,7 @@ pub struct UpdateLevels {
 )]
 async fn update_levels(
     payload: web::Json<UpdateLevels>,
-    data: web::Data<Data>,
+    data: AppData,
     id: Identity,
 ) -> ServiceResult<impl Responder> {
     let username = id.identity().unwrap();
@@ -187,7 +186,7 @@ async fn update_levels(
 )]
 async fn delete_levels(
     payload: web::Json<UpdateLevels>,
-    data: web::Data<Data>,
+    data: AppData,
     id: Identity,
 ) -> ServiceResult<impl Responder> {
     let username = id.identity().unwrap();
@@ -214,7 +213,7 @@ async fn delete_levels(
 #[my_codegen::post(path = "crate::V1_API_ROUTES.levels.get", wrap = "crate::CheckLogin")]
 async fn get_levels(
     payload: web::Json<MCaptchaDetails>,
-    data: web::Data<Data>,
+    data: AppData,
     id: Identity,
 ) -> ServiceResult<impl Responder> {
     let username = id.identity().unwrap();
@@ -238,7 +237,7 @@ pub struct I32Levels {
 async fn get_levels_util(
     key: &str,
     username: &str,
-    data: &Data,
+    data: &AppData,
 ) -> ServiceResult<Vec<I32Levels>> {
     let levels = sqlx::query_as!(
         I32Levels,
@@ -263,6 +262,7 @@ mod tests {
 
     use super::*;
     use crate::api::v1::ROUTES;
+    use crate::data::Data;
     use crate::tests::*;
     use crate::*;
 

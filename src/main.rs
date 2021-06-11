@@ -15,6 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 use std::env;
+use std::sync::Arc;
 
 use actix_identity::{CookieIdentityPolicy, IdentityService};
 use actix_web::{
@@ -40,13 +41,13 @@ mod stats;
 mod tests;
 mod widget;
 
+pub use crate::data::Data;
 pub use api::v1::ROUTES as V1_API_ROUTES;
-pub use widget::WIDGET_ROUTES;
-pub use data::Data;
 pub use docs::DOCS;
 pub use pages::routes::ROUTES as PAGES;
 pub use settings::Settings;
 use static_assets::FileMap;
+pub use widget::WIDGET_ROUTES;
 
 pub use crate::middleware::auth::CheckLogin;
 
@@ -88,6 +89,8 @@ pub static PKG_HOMEPAGE: &str = env!("CARGO_PKG_HOMEPAGE");
 
 pub const CACHE_AGE: u32 = 604800;
 
+pub type AppData = actix_web::web::Data<Arc<crate::data::Data>>;
+
 #[cfg(not(tarpaulin_include))]
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -101,7 +104,6 @@ async fn main() -> std::io::Result<()> {
 
     let data = Data::new().await;
     sqlx::migrate!("./migrations/").run(&data.db).await.unwrap();
-
     HttpServer::new(move || {
         let client = Client::default();
 

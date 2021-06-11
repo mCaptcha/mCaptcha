@@ -17,12 +17,12 @@
 use std::borrow::Cow;
 
 use actix_identity::Identity;
-use actix_web::{web, HttpResponse, Responder};
+use actix_web::{HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
 
 use crate::api::v1::mcaptcha::get_random;
 use crate::errors::*;
-use crate::Data;
+use crate::AppData;
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Secret {
@@ -33,10 +33,7 @@ pub struct Secret {
     path = "crate::V1_API_ROUTES.account.get_secret",
     wrap = "crate::CheckLogin"
 )]
-async fn get_secret(
-    id: Identity,
-    data: web::Data<Data>,
-) -> ServiceResult<impl Responder> {
+async fn get_secret(id: Identity, data: AppData) -> ServiceResult<impl Responder> {
     let username = id.identity().unwrap();
 
     let secret = sqlx::query_as!(
@@ -56,7 +53,7 @@ async fn get_secret(
 )]
 async fn update_user_secret(
     id: Identity,
-    data: web::Data<Data>,
+    data: AppData,
 ) -> ServiceResult<impl Responder> {
     let username = id.identity().unwrap();
 

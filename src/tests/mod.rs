@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use actix_web::test;
 use actix_web::{
     dev::ServiceResponse,
@@ -49,21 +51,19 @@ macro_rules! post_request {
 #[macro_export]
 macro_rules! get_works {
     ($app:expr,$route:expr ) => {
-            let list_sitekey_resp = test::call_service(
-                    &mut $app,
-                    test::TestRequest::get()
-                        .uri($route)
-                        .to_request(),
-            )
-            .await;
-            assert_eq!(list_sitekey_resp.status(), StatusCode::OK);
+        let list_sitekey_resp = test::call_service(
+            &mut $app,
+            test::TestRequest::get().uri($route).to_request(),
+        )
+        .await;
+        assert_eq!(list_sitekey_resp.status(), StatusCode::OK);
     };
 }
 
 #[macro_export]
 macro_rules! get_app {
     () => {
-    test::init_service(
+        test::init_service(
             App::new()
                 .wrap(get_identity_service())
                 .wrap(actix_middleware::NormalizePath::new(
@@ -73,9 +73,8 @@ macro_rules! get_app {
                 .configure(crate::widget::services)
                 .configure(crate::docs::services)
                 .configure(crate::pages::services)
-                .configure(crate::static_assets::services)
+                .configure(crate::static_assets::services),
         )
-
     };
     ($data:expr) => {
         test::init_service(
@@ -89,6 +88,7 @@ macro_rules! get_app {
                 .configure(crate::docs::services)
                 .configure(crate::pages::services)
                 .configure(crate::static_assets::services)
+                //.data(std::sync::Arc::new(crate::data::Data::new().await))
                 .data($data.clone()),
         )
     };
@@ -99,7 +99,7 @@ pub async fn register_and_signin<'a>(
     name: &'a str,
     email: &str,
     password: &str,
-) -> (data::Data, Login, ServiceResponse) {
+) -> (Arc<data::Data>, Login, ServiceResponse) {
     register(name, email, password).await;
     signin(name, password).await
 }
@@ -128,9 +128,9 @@ pub async fn register<'a>(name: &'a str, email: &str, password: &str) {
 pub async fn signin<'a>(
     name: &'a str,
     password: &str,
-) -> (data::Data, Login, ServiceResponse) {
+) -> (Arc<Data>, Login, ServiceResponse) {
     let data = Data::new().await;
-    let mut app = get_app!(data).await;
+    let mut app = get_app!(data.clone()).await;
 
     // 2. signin
     let creds = Login {
@@ -183,7 +183,7 @@ pub const L2: Level = Level {
 pub async fn add_levels_util(
     name: &str,
     password: &str,
-) -> (data::Data, Login, ServiceResponse, MCaptchaDetails) {
+) -> (Arc<data::Data>, Login, ServiceResponse, MCaptchaDetails) {
     let (data, creds, signin_resp) = signin(name, password).await;
     let cookies = get_cookie!(signin_resp);
     let mut app = get_app!(data).await;

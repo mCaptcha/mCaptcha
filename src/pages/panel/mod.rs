@@ -16,13 +16,13 @@
 */
 
 use actix_identity::Identity;
-use actix_web::{web, HttpResponse, Responder};
+use actix_web::{HttpResponse, Responder};
 use sailfish::TemplateOnce;
 
 pub mod sitekey;
 
 use crate::errors::PageResult;
-use crate::Data;
+use crate::AppData;
 use sitekey::list::{get_list_sitekeys, SiteKeys};
 
 #[derive(TemplateOnce, Clone)]
@@ -40,7 +40,7 @@ impl IndexPage {
 const PAGE: &str = "Dashboard";
 
 #[my_codegen::get(path = "crate::PAGES.panel.home", wrap = "crate::CheckLogin")]
-async fn panel(data: web::Data<Data>, id: Identity) -> PageResult<impl Responder> {
+async fn panel(data: AppData, id: Identity) -> PageResult<impl Responder> {
     let sitekeys = get_list_sitekeys(&data, &id).await?;
     let body = IndexPage::new(sitekeys).render_once().unwrap();
     Ok(HttpResponse::Ok()

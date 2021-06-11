@@ -80,9 +80,16 @@ pub struct Database {
 }
 
 #[derive(Debug, Clone, Deserialize)]
+pub struct Redis {
+    pub url: String,
+    pub pool: u32,
+}
+
+#[derive(Debug, Clone, Deserialize)]
 pub struct Settings {
     pub debug: bool,
     pub database: Database,
+    pub redis: Option<Redis>,
     pub server: Server,
     pub pow: Captcha,
     pub source_code: String,

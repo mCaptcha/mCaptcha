@@ -18,12 +18,12 @@ use actix_web::{web, HttpResponse, Responder};
 
 use super::{AccountCheckPayload, AccountCheckResp};
 use crate::errors::*;
-use crate::Data;
+use crate::AppData;
 
 #[my_codegen::post(path = "crate::V1_API_ROUTES.account.username_exists")]
 async fn username_exists(
     payload: web::Json<AccountCheckPayload>,
-    data: web::Data<Data>,
+    data: AppData,
 ) -> ServiceResult<impl Responder> {
     let res = sqlx::query!(
         "SELECT EXISTS (SELECT 1 from mcaptcha_users WHERE name = $1)",

@@ -18,15 +18,12 @@ use std::borrow::Cow;
 
 use actix_web::body::Body;
 use actix_web::{get, http::header, web, HttpResponse, Responder};
+use lazy_static::lazy_static;
 use mime_guess::from_path;
 use rust_embed::RustEmbed;
-use lazy_static::lazy_static;
 use sailfish::TemplateOnce;
 
 use crate::errors::*;
-
-
-
 
 pub const WIDGET_ROUTES: routes::Widget = routes::Widget::new();
 
@@ -39,7 +36,7 @@ pub mod routes {
 
     impl Widget {
         pub const fn new() -> Self {
-            Widget { 
+            Widget {
                 verification_widget: "/widget",
                 js: "/widget/bundle.js",
                 wasm: "/widget/1476099975f2b060264c.module.wasm",
@@ -47,8 +44,6 @@ pub mod routes {
         }
     }
 }
-
-
 
 #[derive(TemplateOnce, Clone)]
 #[template(path = "widget/index.html")]
@@ -58,7 +53,7 @@ const PAGE: &str = "mCaptcha CAPTCHA verification";
 
 impl IndexPage {
     fn new() -> Self {
-        IndexPage { }
+        IndexPage {}
     }
 }
 
@@ -67,7 +62,7 @@ lazy_static! {
 }
 
 /// render a client side widget for CAPTCHA verification
-#[my_codegen::get(path = "crate::WIDGET_ROUTES.verification_widget")]//, wrap = "crate::CheckLogin")]
+#[my_codegen::get(path = "crate::WIDGET_ROUTES.verification_widget")] //, wrap = "crate::CheckLogin")]
 async fn show_widget() -> PageResult<impl Responder> {
     Ok(HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
@@ -97,9 +92,6 @@ fn handle_widget_assets(path: &str) -> HttpResponse {
     }
 }
 
-
-
-
 #[get("/widget/{_:.*}")]
 pub async fn widget_assets(path: web::Path<String>) -> impl Responder {
     handle_widget_assets(&path.0)
@@ -119,20 +111,18 @@ mod test {
 
     #[actix_rt::test]
     async fn captcha_widget_route_works() {
-
-        let mut app  = get_app!().await;
-//            let list_sitekey_resp = test::call_service(
-//                    &mut app,
-//                    test::TestRequest::get()
-//                        .uri(crate::WIDGET_ROUTES.verification_widget)
-//                        .to_request(),
-//            )
-//            .await;
-//            assert_eq!(list_sitekey_resp.status(), StatusCode::OK);
+        let mut app = get_app!().await;
+        //            let list_sitekey_resp = test::call_service(
+        //                    &mut app,
+        //                    test::TestRequest::get()
+        //                        .uri(crate::WIDGET_ROUTES.verification_widget)
+        //                        .to_request(),
+        //            )
+        //            .await;
+        //            assert_eq!(list_sitekey_resp.status(), StatusCode::OK);
 
         get_works!(app, crate::WIDGET_ROUTES.verification_widget);
         get_works!(app, crate::WIDGET_ROUTES.js);
         get_works!(app, crate::WIDGET_ROUTES.wasm);
-        
     }
 }
