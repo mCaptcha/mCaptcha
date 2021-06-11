@@ -397,9 +397,9 @@
                 .<span class="ident">to_request</span>(),
         )
         .<span class="kw">await</span>;
-        <span class="comment">//        assert_eq!(get_config_resp.status(), StatusCode::OK);</span>
-        <span class="comment">//        let config: PoWConfig = test::read_body_json(get_config_resp).await;</span>
-        <span class="comment">//        assert_eq!(config.difficulty_factor, L1.difficulty_factor);</span>
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">get_config_resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode</span>::<span class="ident">OK</span>);
+        <span class="kw">let</span> <span class="ident">config</span>: <span class="ident">PoWConfig</span> <span class="op">=</span> <span class="ident">test</span>::<span class="ident">read_body_json</span>(<span class="ident">get_config_resp</span>).<span class="kw">await</span>;
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">config</span>.<span class="ident">difficulty_factor</span>, <span class="ident">L1</span>.<span class="ident">difficulty_factor</span>);
     }
 }
 </pre></div>

@@ -391,8 +391,8 @@
 <span class="kw">use</span> <span class="ident">log</span>::<span class="ident">debug</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
-<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">mcaptcha</span>::<span class="ident">add_mcaptcha_util</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">api</span>::<span class="ident">v1</span>::<span class="ident">mcaptcha</span>::<span class="ident">mcaptcha</span>::<span class="ident">MCaptchaDetails</span>;
+<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">captcha</span>::<span class="ident">add_mcaptcha_util</span>;
+<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">captcha</span>::<span class="ident">MCaptchaDetails</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">errors</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">AppData</span>;
 
@@ -400,9 +400,9 @@
 
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Levels</span> {
         <span class="kw">pub</span> <span class="ident">add</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
-        <span class="kw">pub</span> <span class="ident">update</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
         <span class="kw">pub</span> <span class="ident">delete</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
         <span class="kw">pub</span> <span class="ident">get</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
+        <span class="kw">pub</span> <span class="ident">update</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
     }
 
     <span class="kw">impl</span> <span class="ident">Levels</span> {
@@ -413,9 +413,9 @@
             <span class="kw">let</span> <span class="ident">get</span> <span class="op">=</span> <span class="string">&quot;/api/v1/mcaptcha/levels/get&quot;</span>;
             <span class="ident">Levels</span> {
                 <span class="ident">add</span>,
+                <span class="ident">delete</span>,
                 <span class="ident">get</span>,
                 <span class="ident">update</span>,
-                <span class="ident">delete</span>,
             }
         }
     }
@@ -447,7 +447,7 @@
     <span class="kw">let</span> <span class="ident">username</span> <span class="op">=</span> <span class="ident">id</span>.<span class="ident">identity</span>().<span class="ident">unwrap</span>();
 
     <span class="kw">for</span> <span class="ident">level</span> <span class="kw">in</span> <span class="ident">payload</span>.<span class="ident">levels</span>.<span class="ident">iter</span>() {
-        <span class="ident">defense</span>.<span class="ident">add_level</span>(<span class="ident">level</span>.<span class="ident">clone</span>())<span class="question-mark">?</span>;
+        <span class="ident">defense</span>.<span class="ident">add_level</span>(<span class="kw-2">*</span><span class="ident">level</span>)<span class="question-mark">?</span>;
     }
 
     <span class="ident">defense</span>.<span class="ident">build</span>()<span class="question-mark">?</span>;
@@ -503,7 +503,7 @@
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">defense</span> <span class="op">=</span> <span class="ident">DefenseBuilder</span>::<span class="ident">default</span>();
 
     <span class="kw">for</span> <span class="ident">level</span> <span class="kw">in</span> <span class="ident">payload</span>.<span class="ident">levels</span>.<span class="ident">iter</span>() {
-        <span class="ident">defense</span>.<span class="ident">add_level</span>(<span class="ident">level</span>.<span class="ident">clone</span>())<span class="question-mark">?</span>;
+        <span class="ident">defense</span>.<span class="ident">add_level</span>(<span class="kw-2">*</span><span class="ident">level</span>)<span class="question-mark">?</span>;
     }
 
     <span class="comment">// I feel this is necessary as both difficulty factor _and_ visitor threshold of a</span>

@@ -172,14 +172,14 @@
     )
     .<span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>.<span class="ident">db</span>)
     .<span class="kw">await</span>;
-    <span class="kw">if</span> <span class="op">!</span><span class="ident">res</span>.<span class="ident">is_ok</span>() {
+    <span class="kw">if</span> <span class="ident">res</span>.<span class="ident">is_err</span>() {
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">sqlx</span>::<span class="ident">Error</span>::<span class="ident">Database</span>(<span class="ident">err</span>)) <span class="op">=</span> <span class="ident">res</span> {
             <span class="kw">if</span> <span class="ident">err</span>.<span class="ident">code</span>() <span class="op">=</span><span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">Cow</span>::<span class="ident">from</span>(<span class="string">&quot;23505&quot;</span>))
                 <span class="op">&amp;&amp;</span> <span class="ident">err</span>.<span class="ident">message</span>().<span class="ident">contains</span>(<span class="string">&quot;mcaptcha_users_email_key&quot;</span>)
             {
-                <span class="prelude-val">Err</span>(<span class="ident">ServiceError</span>::<span class="ident">EmailTaken</span>)<span class="question-mark">?</span>
+                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ServiceError</span>::<span class="ident">EmailTaken</span>);
             } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">sqlx</span>::<span class="ident">Error</span>::<span class="ident">Database</span>(<span class="ident">err</span>))<span class="question-mark">?</span>
+                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">sqlx</span>::<span class="ident">Error</span>::<span class="ident">Database</span>(<span class="ident">err</span>).<span class="ident">into</span>());
             }
         };
     }

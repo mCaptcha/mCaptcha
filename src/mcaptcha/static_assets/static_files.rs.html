@@ -256,7 +256,7 @@
 
         <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">test</span>::<span class="ident">call_service</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">app</span>,
-            <span class="ident">test</span>::<span class="ident">TestRequest</span>::<span class="ident">get</span>().<span class="ident">uri</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw">crate</span>::<span class="ident">JS</span>).<span class="ident">to_request</span>(),
+            <span class="ident">test</span>::<span class="ident">TestRequest</span>::<span class="ident">get</span>().<span class="ident">uri</span>(<span class="kw-2">*</span><span class="kw">crate</span>::<span class="ident">JS</span>).<span class="ident">to_request</span>(),
         )
         .<span class="kw">await</span>;
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode</span>::<span class="ident">OK</span>);
@@ -264,7 +264,7 @@
         <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">test</span>::<span class="ident">call_service</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">app</span>,
             <span class="ident">test</span>::<span class="ident">TestRequest</span>::<span class="ident">get</span>()
-                .<span class="ident">uri</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw">crate</span>::<span class="ident">VERIFICATIN_WIDGET_JS</span>)
+                .<span class="ident">uri</span>(<span class="kw-2">*</span><span class="kw">crate</span>::<span class="ident">VERIFICATIN_WIDGET_JS</span>)
                 .<span class="ident">to_request</span>(),
         )
         .<span class="kw">await</span>;
@@ -273,7 +273,7 @@
         <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">test</span>::<span class="ident">call_service</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">app</span>,
             <span class="ident">test</span>::<span class="ident">TestRequest</span>::<span class="ident">get</span>()
-                .<span class="ident">uri</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw">crate</span>::<span class="ident">VERIFICATIN_WIDGET_CSS</span>)
+                .<span class="ident">uri</span>(<span class="kw-2">*</span><span class="kw">crate</span>::<span class="ident">VERIFICATIN_WIDGET_CSS</span>)
                 .<span class="ident">to_request</span>(),
         )
         .<span class="kw">await</span>;
