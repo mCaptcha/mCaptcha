@@ -46,5 +46,5 @@ pool = 4
 # port = "5432"
 # username = "batman"
 # password = "somereallycomplicatedBatmanpassword"
-url = "redis://127.0.0.1:6370"
+url = "redis://127.0.0.1"
 pool = 4

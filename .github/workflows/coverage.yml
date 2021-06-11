@@ -32,6 +32,10 @@ jobs:
           --health-retries 5
         ports:
           - 5432:5432
+      mcaptcha-redis:
+        image: mcaptcha/cache
+        ports:
+          - 6379:6379
 
     steps:
       - uses: actions/checkout@v2
@@ -44,9 +48,6 @@ jobs:
             node_modules
             target
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-
-      - name: run mcaptcha cache redis instance
-        run: docker run -d -p 6379:6379 mcaptcha/cache
 
       - uses: actions/setup-node@v2
         with:
