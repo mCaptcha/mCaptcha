@@ -65,6 +65,9 @@ jobs:
           profile: minimal
           override: true
 
+      - name: run mcaptcha cache redis instance
+        run: docker run -d -p 6379:6379 mcaptcha/cache
+
       - name: Run migrations
         uses: actions-rs/cargo@v1
         with:
