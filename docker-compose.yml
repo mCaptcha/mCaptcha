@@ -6,7 +6,8 @@ services:
     ports:
       - 7000:7000
     environment:
-      DATABASE_URL: postgres://postgres:<enter-password>@postgres:5432/postgres # set password at placeholder
+      DATABASE_URL: postgres://postgres:password@postgres:5432/postgres # set password at placeholder
+      MCAPTCHA_REDIS_URL: redis://mcaptcha-redis/
       RUST_LOG: debug
 
   postgres:
@@ -14,8 +15,11 @@ services:
     volumes:
       - mcaptcha-data:/var/lib/postgresql/
     environment:
-      POSTGRES_PASSWORD: # enter password
+      POSTGRES_PASSWORD: password # change password
       PGDATA: /var/lib/postgresql/data/mcaptcha/
+
+  mcaptcha-redis:
+    image: mcaptcha/cache:latest
 
 volumes:
   mcaptcha-data:
