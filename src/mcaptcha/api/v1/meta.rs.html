@@ -151,11 +151,6 @@
 <span id="148">148</span>
 <span id="149">149</span>
 <span id="150">150</span>
-<span id="151">151</span>
-<span id="152">152</span>
-<span id="153">153</span>
-<span id="154">154</span>
-<span id="155">155</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -176,12 +171,12 @@
 
 <span class="kw">use</span> <span class="ident">actix_web</span>::{<span class="ident">web</span>, <span class="ident">HttpResponse</span>, <span class="ident">Responder</span>};
 <span class="kw">use</span> <span class="ident">derive_builder</span>::<span class="ident">Builder</span>;
-<span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 <span class="kw">use</span> <span class="ident">libmcaptcha</span>::<span class="ident">redis</span>::{<span class="ident">Redis</span>, <span class="ident">RedisConfig</span>};
+<span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">data</span>::<span class="ident">SystemGroup</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">AppData</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">GIT_COMMIT_HASH</span>, <span class="ident">VERSION</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">data</span>::<span class="ident">SystemGroup</span>;
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Deserialize</span>, <span class="ident">Builder</span>, <span class="ident">Serialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BuildDetails</span> {
@@ -223,7 +218,7 @@
     <span class="ident">redis</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
 }
 
-<span class="kw">impl</span>  <span class="ident">Health</span> {
+<span class="kw">impl</span> <span class="ident">Health</span> {
     <span class="kw">fn</span> <span class="ident">is_redis</span>(<span class="ident">redis</span>: <span class="kw-2">&amp;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="ident">redis</span>.<span class="ident">is_none</span>()
     }
@@ -236,9 +231,7 @@
 
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">resp_builder</span> <span class="op">=</span> <span class="ident">HealthBuilder</span>::<span class="ident">default</span>();
     <span class="ident">resp_builder</span>.<span class="ident">db</span>(<span class="bool-val">false</span>);
-    <span class="kw">if</span> <span class="ident">resp_builder</span>.<span class="ident">redis</span>.<span class="ident">is_none</span>() {
-        <span class="comment">//</span>
-    };
+    <span class="ident">resp_builder</span>.<span class="ident">redis</span> <span class="op">=</span> <span class="prelude-val">None</span>;
 
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="kw-2">mut</span> <span class="ident">con</span>) <span class="op">=</span> <span class="ident">data</span>.<span class="ident">db</span>.<span class="ident">acquire</span>().<span class="kw">await</span> {
         <span class="kw">if</span> <span class="ident">con</span>.<span class="ident">ping</span>().<span class="kw">await</span>.<span class="ident">is_ok</span>() {
@@ -246,21 +239,18 @@
         }
     };
 
-    <span class="kw">match</span> <span class="ident">data</span>.<span class="ident">captcha</span> {
-        <span class="ident">SystemGroup</span>::<span class="ident">Redis</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
-            <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Redis</span>::<span class="ident">new</span>(<span class="ident">RedisConfig</span>::<span class="ident">Single</span>(<span class="kw">crate</span>::<span class="ident">SETTINGS</span>.<span class="ident">redis</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>().<span class="ident">url</span>.<span class="ident">clone</span>())).<span class="kw">await</span>.<span class="ident">unwrap</span>();
-            <span class="kw">let</span>  <span class="ident">status</span> <span class="op">=</span> <span class="ident">r</span>.<span class="ident">get_client</span>().<span class="ident">ping</span>().<span class="kw">await</span>;
+    <span class="kw">if</span> <span class="kw">let</span> <span class="ident">SystemGroup</span>::<span class="ident">Redis</span>(<span class="kw">_</span>) <span class="op">=</span> <span class="ident">data</span>.<span class="ident">captcha</span> {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">r</span>) <span class="op">=</span> <span class="ident">Redis</span>::<span class="ident">new</span>(<span class="ident">RedisConfig</span>::<span class="ident">Single</span>(
+            <span class="kw">crate</span>::<span class="ident">SETTINGS</span>.<span class="ident">redis</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>().<span class="ident">url</span>.<span class="ident">clone</span>(),
+        ))
+        .<span class="kw">await</span>
+        {
+            <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="ident">r</span>.<span class="ident">get_client</span>().<span class="ident">ping</span>().<span class="kw">await</span>;
             <span class="ident">resp_builder</span>.<span class="ident">redis</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="prelude-val">Some</span>(<span class="ident">status</span>));
-
-
-<span class="comment">//            unimplemented!(&quot;GET PING FROM REDIS&quot;)</span>
-            <span class="comment">//redis.get</span>
-
-        },
-        <span class="ident">SystemGroup</span>::<span class="ident">Embedded</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
-            <span class="ident">resp_builder</span>.<span class="ident">redis</span> <span class="op">=</span> <span class="prelude-val">None</span>;
-        },
-    }
+        } <span class="kw">else</span> {
+            <span class="ident">resp_builder</span>.<span class="ident">redis</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="prelude-val">Some</span>(<span class="bool-val">false</span>));
+        }
+    };
 
     <span class="ident">HttpResponse</span>::<span class="prelude-val">Ok</span>().<span class="ident">json</span>(<span class="ident">resp_builder</span>.<span class="ident">build</span>().<span class="ident">unwrap</span>())
 }
