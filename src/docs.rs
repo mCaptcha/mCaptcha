@@ -83,7 +83,6 @@ async fn spec() -> HttpResponse {
 }
 
 async fn index() -> HttpResponse {
-    println!("getting index");
     handle_embedded_file("index.html")
 }
 

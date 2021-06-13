@@ -1,6 +1,6 @@
 # Deployment instructions:
 
-See [CONFIGURATION.md](./CONFIGURATION.md) for configuration instructions 
+See [CONFIGURATION.md](./CONFIGURATION.md) for configuration instructions
 
 There are three ways to deploy mCaptcha:
 
@@ -71,6 +71,11 @@ postgres=#  CREATE USER mcaptcha WITH PASSWORD 'my super long password and yes y
 $  createdb -O mcaptcha mcaptcha # create db 'mcaptcha' with 'mcaptcha' as owner
 ```
 
+### 4. Install and load [`mCaptcha/cache`](https://github.com/mCaptcha/cache) module:
+
+See [`mCaptcha/cache`](https://github.com/mCaptcha/cache) for more
+details.
+
 ### 4. Build `mcaptcha`:
 
 To build `mcaptcha`, you need the following dependencies:
@@ -140,8 +145,10 @@ WantedBy=multi-user.target
 ```
 
 2. Enable service:
+
 ```bash
 $ sudo systemctl daemon-reload && \
 	sudo systemctl enable mcaptcha && \ # Auto startup during boot
 	sudo systemctl start mcaptcha
 ``
+```
