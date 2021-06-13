@@ -120,7 +120,7 @@ dependencies = [
  "serde_urlencoded",
  "sha-1",
  "slab",
- "time 0.2.26",
+ "time 0.2.27",
 ]
 
 [[package]]
@@ -134,7 +134,7 @@ dependencies = [
  "futures-util",
  "serde 1.0.126",
  "serde_json",
- "time 0.2.26",
+ "time 0.2.27",
 ]
 
 [[package]]
@@ -300,7 +300,7 @@ dependencies = [
  "serde_json",
  "serde_urlencoded",
  "socket2 0.3.19",
- "time 0.2.26",
+ "time 0.2.27",
  "tinyvec",
  "url",
 ]
@@ -923,7 +923,7 @@ dependencies = [
  "percent-encoding",
  "rand 0.8.3",
  "sha2",
- "time 0.2.26",
+ "time 0.2.27",
  "version_check",
 ]
 
@@ -1805,7 +1805,7 @@ checksum = "12b8adadd720df158f4d70dfe7ccc6adb0472d7c55ca83445f6a5ab3e36f8fb6"
 [[package]]
 name = "libmcaptcha"
 version = "0.1.4"
-source = "git+https://github.com/mCaptcha/libmcaptcha?branch=master#3db009977ae4144b0a3f71dbb310f62f11c31893"
+source = "git+https://github.com/mCaptcha/libmcaptcha?branch=master#52b7ebe4ca1263ad163ef6f36dcfaaa69610e637"
 dependencies = [
  "actix",
  "derive_builder 0.9.0",
@@ -3012,7 +3012,7 @@ dependencies = [
  "sqlx-rt",
  "stringprep",
  "thiserror",
- "time 0.2.26",
+ "time 0.2.27",
  "url",
  "webpki",
  "webpki-roots",
@@ -3251,9 +3251,9 @@ dependencies = [
 
 [[package]]
 name = "time"
-version = "0.2.26"
+version = "0.2.27"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "08a8cbfbf47955132d0202d1662f49b2423ae35862aee471f3ba4b133358f372"
+checksum = "4752a97f8eebd6854ff91f1c1824cd6160626ac4bd44287f7f4ea2035a02a242"
 dependencies = [
  "const_fn",
  "libc",
@@ -3276,9 +3276,9 @@ dependencies = [
 
 [[package]]
 name = "time-macros-impl"
-version = "0.1.1"
+version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e5c3be1edfad6027c69f5491cf4cb310d1a71ecd6af742788c6ff8bced86b8fa"
+checksum = "fd3c141a1b43194f3f56a1411225df8646c55781d5f26db825b3d98507eb482f"
 dependencies = [
  "proc-macro-hack",
  "proc-macro2",

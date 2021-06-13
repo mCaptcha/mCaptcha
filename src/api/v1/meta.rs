@@ -17,12 +17,12 @@
 
 use actix_web::{web, HttpResponse, Responder};
 use derive_builder::Builder;
-use serde::{Deserialize, Serialize};
 use libmcaptcha::redis::{Redis, RedisConfig};
+use serde::{Deserialize, Serialize};
 
+use crate::data::SystemGroup;
 use crate::AppData;
 use crate::{GIT_COMMIT_HASH, VERSION};
-use crate::data::SystemGroup;
 
 #[derive(Clone, Debug, Deserialize, Builder, Serialize)]
 pub struct BuildDetails {
@@ -64,7 +64,7 @@ pub struct Health {
     redis: Option<bool>,
 }
 
-impl  Health {
+impl Health {
     fn is_redis(redis: &Option<bool>) -> bool {
         redis.is_none()
     }
@@ -77,9 +77,7 @@ async fn health(data: AppData) -> impl Responder {
 
     let mut resp_builder = HealthBuilder::default();
     resp_builder.db(false);
-    if resp_builder.redis.is_none() {
-        //
-    };
+    resp_builder.redis = None;
 
     if let Ok(mut con) = data.db.acquire().await {
         if con.ping().await.is_ok() {
@@ -87,21 +85,18 @@ async fn health(data: AppData) -> impl Responder {
         }
     };
 
-    match data.captcha {
-        SystemGroup::Redis(_) => {
-            let r = Redis::new(RedisConfig::Single(crate::SETTINGS.redis.as_ref().unwrap().url.clone())).await.unwrap();
-            let  status = r.get_client().ping().await;
+    if let SystemGroup::Redis(_) = data.captcha {
+        if let Ok(r) = Redis::new(RedisConfig::Single(
+            crate::SETTINGS.redis.as_ref().unwrap().url.clone(),
+        ))
+        .await
+        {
+            let status = r.get_client().ping().await;
             resp_builder.redis = Some(Some(status));
-
-
-//            unimplemented!("GET PING FROM REDIS")
-            //redis.get
-
-        },
-        SystemGroup::Embedded(_) => {
-            resp_builder.redis = None;
-        },
-    }
+        } else {
+            resp_builder.redis = Some(Some(false));
+        }
+    };
 
     HttpResponse::Ok().json(resp_builder.build().unwrap())
 }
