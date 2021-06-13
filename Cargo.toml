@@ -39,7 +39,7 @@ cache-buster = { version = "0.2.0", git = "https://github.com/realaravinth/cache
 futures = "0.3.14"
 
 sqlx = { version = "0.4.0", features = [ "runtime-actix-rustls", "postgres", "time", "offline" ] }
-argon2-creds = { version = "0.2.1", git = "https://github.com/realaravinth/argon2-creds"}
+argon2-creds = { branch = "master", git = "https://github.com/realaravinth/argon2-creds"}
 config = "0.11"
 validator = { version = "0.13", features = ["derive"]}
 

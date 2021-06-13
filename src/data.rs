@@ -108,6 +108,10 @@ impl Data {
             .build()
             .unwrap();
 
+        log::info!("Initializing credential manager");
+        creds.init();
+        log::info!("Initialized credential manager");
+
         let data = match &SETTINGS.redis {
             Some(val) => {
                 let master = RedisMaster::new(RedisConfig::Single(val.url.clone()))

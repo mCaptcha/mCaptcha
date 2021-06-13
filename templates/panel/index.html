@@ -6,6 +6,16 @@
   <. include!("./help-banner/index.html"); .>
   <div class="inner-container">
 
+      <. if sitekeys.is_empty() { .>
+    <ul class="sitekey-list__box">
+        <p> 
+            It looks like you don't have any sitekeys. Click 
+                <a href="<.= crate::PAGES.panel.sitekey.add .>">here></a> to add new sitekey.
+        </p>
+    </ul>
+
+
+      <.} else {.>
     <ul class="sitekey-list__box">
       <h1 class="sitekey-list__title">Your Sitekeys</h1>
       <. for sitekey in sitekeys.iter() { .>
@@ -24,6 +34,7 @@
       <. } .>
     </ul>
 
+      <.}.>
 
   </div>
 <. include!("../components/footers.html"); .>
