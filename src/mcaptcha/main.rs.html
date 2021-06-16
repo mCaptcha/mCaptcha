@@ -162,6 +162,10 @@
 <span id="159">159</span>
 <span id="160">160</span>
 <span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
  * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -271,6 +275,10 @@
     <span class="ident">HttpServer</span>::<span class="ident">new</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
         <span class="ident">App</span>::<span class="ident">new</span>()
             .<span class="ident">wrap</span>(<span class="ident">actix_middleware</span>::<span class="ident">Logger</span>::<span class="ident">default</span>())
+            .<span class="ident">wrap</span>(
+                <span class="ident">actix_middleware</span>::<span class="ident">DefaultHeaders</span>::<span class="ident">new</span>()
+                    .<span class="ident">header</span>(<span class="string">&quot;Permissions-Policy&quot;</span>, <span class="string">&quot;interest-cohort=()&quot;</span>),
+            )
             .<span class="ident">wrap</span>(<span class="ident">get_identity_service</span>())
             .<span class="ident">wrap</span>(<span class="ident">actix_middleware</span>::<span class="ident">Compress</span>::<span class="ident">default</span>())
             .<span class="ident">data</span>(<span class="ident">data</span>.<span class="ident">clone</span>())
