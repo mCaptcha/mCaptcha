@@ -30,6 +30,7 @@ mod data;
 mod docs;
 mod errors;
 mod middleware;
+#[macro_use]
 mod pages;
 #[macro_use]
 mod routes;

@@ -18,7 +18,7 @@
 use actix_web::http::{header, StatusCode};
 use actix_web::test;
 
-use crate::api::v1::auth::*;
+use crate::api::v1::auth::runners::{Login, Register};
 use crate::api::v1::ROUTES;
 use crate::data::Data;
 use crate::errors::*;
@@ -57,17 +57,6 @@ async fn auth_works() {
     let (_, _, signin_resp) = register_and_signin(NAME, EMAIL, PASSWORD).await;
     let cookies = get_cookie!(signin_resp);
 
-    //    // check if update user secret works
-    //    let resp = test::call_service(
-    //        &mut app,
-    //        test::TestRequest::post()
-    //            .cookie(cookies.clone())
-    //            .uri(GET_SECRET)
-    //            .to_request(),
-    //    )
-    //    .await;
-    //    assert_eq!(resp.status(), StatusCode::OK);
-
     // 2. check if duplicate username is allowed
     let msg = Register {
         username: NAME.into(),
@@ -86,7 +75,7 @@ async fn auth_works() {
     .await;
 
     // 3. sigining in with non-existent user
-    let mut login = Login {
+    let mut creds = Login {
         username: "nonexistantuser".into(),
         password: msg.password.clone(),
     };
@@ -94,21 +83,36 @@ async fn auth_works() {
         NAME,
         PASSWORD,
         ROUTES.auth.login,
-        &login,
+        &creds,
         ServiceError::UsernameNotFound,
         StatusCode::NOT_FOUND,
     )
     .await;
 
+    let resp = test::call_service(
+        &mut app,
+        post_request!(&creds, PAGES.auth.login).to_request(),
+    )
+    .await;
+    assert_eq!(resp.status(), StatusCode::NOT_FOUND);
+
+    creds.username = NAME.into();
+    let resp = test::call_service(
+        &mut app,
+        post_request!(&creds, PAGES.auth.login).to_request(),
+    )
+    .await;
+    assert_eq!(resp.status(), StatusCode::OK);
+
     // 4. trying to signin with wrong password
-    login.username = NAME.into();
-    login.password = NAME.into();
+    creds.username = NAME.into();
+    creds.password = NAME.into();
 
     bad_post_req_test(
         NAME,
         PASSWORD,
         ROUTES.auth.login,
-        &login,
+        &creds,
         ServiceError::WrongPassword,
         StatusCode::UNAUTHORIZED,
     )

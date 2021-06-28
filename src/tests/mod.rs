@@ -10,7 +10,7 @@ use libmcaptcha::defense::Level;
 use serde::Serialize;
 
 use super::*;
-use crate::api::v1::auth::{Login, Register};
+use crate::api::v1::auth::runners::{Login, Register};
 use crate::api::v1::mcaptcha::captcha::MCaptchaDetails;
 use crate::api::v1::mcaptcha::levels::AddLevels;
 use crate::api::v1::ROUTES;

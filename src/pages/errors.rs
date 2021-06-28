@@ -13,11 +13,36 @@
 *
 * You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-use actix_web::{web, HttpResponse, Responder};
+use actix_web::{error::ResponseError, web, HttpResponse, Responder};
 use lazy_static::lazy_static;
 use sailfish::TemplateOnce;
 
 use crate::errors::PageError;
+
+pub trait Errorable: TemplateOnce {
+    fn get_error_resp<E: ResponseError>(self, e: E) -> HttpResponse;
+}
+
+#[macro_export]
+macro_rules! ImplErrorable {
+    ($struct:ident) => {
+        impl crate::pages::errors::Errorable for $struct {
+            fn get_error_resp<E>(mut self, e: E) -> actix_web::HttpResponse
+            where
+                E: actix_web::error::ResponseError + std::fmt::Display,
+                //R: actix_web::Responder
+            {
+                self.error = Some(e.to_string());
+                let page = self.render_once().unwrap();
+                println!("status code: {}", e.status_code());
+                actix_web::dev::HttpResponseBuilder::new(e.status_code())
+                    .content_type("text/html; charset=utf-8")
+                    .body(&page)
+                    .into()
+            }
+        }
+    };
+}
 
 #[derive(Clone, TemplateOnce)]
 #[template(path = "errors/index.html")]

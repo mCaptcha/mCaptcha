@@ -15,21 +15,36 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-use crate::PAGES;
-use actix_web::{HttpResponse, Responder};
+use actix_identity::Identity;
+use actix_web::{web, HttpResponse, Responder};
 use lazy_static::lazy_static;
 use my_codegen::get;
 use sailfish::TemplateOnce;
 
+use crate::api::v1::auth::runners;
+use crate::pages::errors::Errorable;
+use crate::AppData;
+use crate::PAGES;
+
 #[derive(Clone, TemplateOnce)]
 #[template(path = "auth/login/index.html")]
-struct IndexPage;
+struct IndexPage {
+    username: Option<String>,
+    password: Option<String>,
+    error: Option<String>,
+}
+
+crate::ImplErrorable!(IndexPage);
 
 const PAGE: &str = "Login";
 
 impl Default for IndexPage {
     fn default() -> Self {
-        IndexPage
+        IndexPage {
+            username: None,
+            password: None,
+            error: None,
+        }
     }
 }
 
@@ -42,4 +57,29 @@ pub async fn login() -> impl Responder {
     HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
         .body(&*INDEX)
+}
+#[my_codegen::post(path = "PAGES.auth.login")]
+async fn login_post(
+    id: Identity,
+    payload: web::Json<runners::Login>,
+    data: AppData,
+) -> impl Responder {
+    match runners::login_runner(&payload, &data).await {
+        Ok(_) => {
+            id.remember(payload.into_inner().username);
+            HttpResponse::Ok().into()
+        }
+        Err(e) => {
+            let payload = payload.into_inner();
+            let username = Some(payload.username);
+            let password = Some(payload.password);
+
+            let page = IndexPage {
+                username,
+                password,
+                ..Default::default()
+            };
+            page.get_error_resp(e)
+        }
+    }
 }

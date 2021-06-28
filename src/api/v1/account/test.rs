@@ -20,7 +20,7 @@ use actix_web::test;
 
 use super::email::*;
 use super::*;
-use crate::api::v1::auth::*;
+use crate::api::v1::auth::runners::Password;
 use crate::api::v1::ROUTES;
 use crate::data::Data;
 use crate::*;

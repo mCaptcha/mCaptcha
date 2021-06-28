@@ -20,6 +20,7 @@ pub mod register;
 
 pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
     cfg.service(login::login);
+    cfg.service(login::login_post);
     cfg.service(register::join);
 }
 

@@ -18,7 +18,7 @@
 use actix_identity::Identity;
 use actix_web::{web, HttpResponse, Responder};
 
-use super::auth::Password;
+use super::auth::runners::Password;
 use crate::errors::*;
 use crate::AppData;
 
