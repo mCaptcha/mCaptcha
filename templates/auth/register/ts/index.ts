@@ -24,6 +24,7 @@ import userExists from './userExists';
 import emailExists from './emailExists';
 import getFormUrl from '../../../utils/getFormUrl';
 import registerShowPassword from '../../../components/showPassword';
+import createError from '../../../components/error/index';
 
 //import '../forms.scss';
 
@@ -72,11 +73,10 @@ const registerUser = async (e: Event) => {
 
   const res = await fetch(formUrl, genJsonPayload(payload));
   if (res.ok) {
-    alert('success');
     window.location.assign(VIEWS.loginUser);
   } else {
     const err = await res.json();
-    alert(`error: ${err.error}`);
+    createError(err.error);
   }
 };
 

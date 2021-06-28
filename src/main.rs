@@ -104,6 +104,9 @@ async fn main() -> std::io::Result<()> {
 
     let data = Data::new().await;
     sqlx::migrate!("./migrations/").run(&data.db).await.unwrap();
+
+    println!("Starting server on: http://{}", SETTINGS.server.get_ip());
+
     HttpServer::new(move || {
         App::new()
             .wrap(actix_middleware::Logger::default())

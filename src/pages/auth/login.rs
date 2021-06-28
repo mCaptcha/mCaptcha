@@ -29,7 +29,8 @@ const PAGE: &str = "Login";
 
 impl Default for IndexPage {
     fn default() -> Self {
-        IndexPage     }
+        IndexPage
+    }
 }
 
 lazy_static! {

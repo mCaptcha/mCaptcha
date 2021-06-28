@@ -21,6 +21,7 @@ import isBlankString from '../../../utils/isBlankString';
 import genJsonPayload from '../../../utils/genJsonPayload';
 import getFormUrl from '../../../utils/getFormUrl';
 import registerShowPassword from '../../../components/showPassword';
+import createError from '../../../components/error/index';
 
 //import '../forms.scss';
 
@@ -52,11 +53,10 @@ const login = async (e: Event) => {
 
   const res = await fetch(formUrl, genJsonPayload(payload));
   if (res.ok) {
-    alert('success');
     window.location.assign(VIEWS.panelHome);
   } else {
     const err = await res.json();
-    alert(`error: ${err.error}`);
+    createError(err.error);
   }
 };
 

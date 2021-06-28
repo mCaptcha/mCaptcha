@@ -21,6 +21,8 @@ import userExists from './userExists';
 
 import {mockAlert, getLoginFormHtml} from '../../../setUpTests';
 
+import setup from '../../../components/error/setUpTests';
+
 fetchMock.enableMocks();
 mockAlert();
 
@@ -32,6 +34,7 @@ it('finds exchange', async () => {
   fetchMock.mockResponseOnce(JSON.stringify({exists: true}));
 
   document.body.innerHTML = getLoginFormHtml();
+  document.querySelector('body').appendChild(setup());
   const usernameField = <HTMLInputElement>document.querySelector('#username');
   usernameField.value = 'test';
   expect(await userExists()).toBe(true);

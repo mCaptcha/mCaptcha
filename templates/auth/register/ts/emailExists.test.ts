@@ -21,6 +21,8 @@ import emailExists from './emailExists';
 
 import {mockAlert, getRegistrationFormHtml} from '../../../setUpTests';
 
+import setup from '../../../components/error/setUpTests';
+
 fetchMock.enableMocks();
 mockAlert();
 
@@ -32,6 +34,8 @@ it('finds exchange', async () => {
   fetchMock.mockResponseOnce(JSON.stringify({exists: true}));
 
   document.body.innerHTML = getRegistrationFormHtml();
+  document.querySelector('body').appendChild(setup());
+
   const emailField = <HTMLInputElement>document.getElementById('email');
   emailField.setAttribute('value', 'test@a.com');
 

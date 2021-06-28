@@ -14,32 +14,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+import * as e from './index';
 
-import ROUTES from '../../../api/v1/routes';
-
-import genJsonPayload from '../../../utils/genJsonPayload';
-import createError from '../../../components/error/index';
-
-const emailExists = async () => {
-  const email = <HTMLInputElement>document.getElementById('email');
-  const val = email.value;
-  const payload = {
-    val,
-  };
-
-  const res = await fetch(ROUTES.emailExists, genJsonPayload(payload));
-  if (res.ok) {
-    const data = await res.json();
-    if (data.exists) {
-      email.className += ' form__in-field--warn';
-      createError(`Email "${val}" is already used`);
-      return data.exists;
-    }
-    return data.exists;
-  } else {
-    const err = await res.json();
-    createError(err.error);
-  }
+const setup = () => {
+  let x = document.createElement('div');
+  x.id = e.ERR_CONTAINER_ID;
+  return x;
 };
 
-export default emailExists;
+export default setup;

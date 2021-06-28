@@ -18,6 +18,7 @@
 import ROUTES from '../../../api/v1/routes';
 
 import genJsonPayload from '../../../utils/genJsonPayload';
+import createError from '../../../components/error/index';
 
 const userExists = async () => {
   const username = <HTMLInputElement>document.getElementById('username');
@@ -31,12 +32,12 @@ const userExists = async () => {
     const data = await res.json();
     if (data.exists) {
       username.className += ' form__in-field--warn';
-      alert('Username taken');
+      createError(`Username "${val}" taken`);
     }
     return data.exists;
   } else {
     const err = await res.json();
-    alert(`error: ${err.error}`);
+    createError(err.error);
   }
   return false;
 };

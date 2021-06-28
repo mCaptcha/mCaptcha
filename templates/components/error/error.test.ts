@@ -18,15 +18,11 @@
 import createError from './index';
 import * as e from './index';
 
+import setup from './setUpTests';
+
 'use strict';
 
 jest.useFakeTimers();
-
-const setup = () => {
-  let x = document.createElement('div');
-  x.id = e.ERR_CONTAINER_ID;
-  return x;
-};
 
 it('checks if error boxes work', () => {
   document.body.append(setup());
