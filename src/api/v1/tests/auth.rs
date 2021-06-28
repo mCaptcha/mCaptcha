@@ -89,21 +89,6 @@ async fn auth_works() {
     )
     .await;
 
-    let resp = test::call_service(
-        &mut app,
-        post_request!(&creds, PAGES.auth.login).to_request(),
-    )
-    .await;
-    assert_eq!(resp.status(), StatusCode::NOT_FOUND);
-
-    creds.username = NAME.into();
-    let resp = test::call_service(
-        &mut app,
-        post_request!(&creds, PAGES.auth.login).to_request(),
-    )
-    .await;
-    assert_eq!(resp.status(), StatusCode::OK);
-
     // 4. trying to signin with wrong password
     creds.username = NAME.into();
     creds.password = NAME.into();
