@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["login_runner","returns Ok(()) when everything checks out and the user is authenticated. Erros otherwise"],["register_runner",""]],"struct":[["Login",""],["Password",""],["Register",""]]});
