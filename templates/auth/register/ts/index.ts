@@ -45,7 +45,7 @@ const registerUser = async (e: Event) => {
   );
   const passwordCheck = passwordCheckElement.value;
   if (password != passwordCheck) {
-    return alert("passwords don't match, check again!");
+    return createError("passwords don't match, check again!");
   }
 
   let exists = await userExists();

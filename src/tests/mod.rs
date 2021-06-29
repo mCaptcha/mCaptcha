@@ -131,7 +131,7 @@ pub async fn signin(name: &str, password: &str) -> (Arc<Data>, Login, ServiceRes
 
     // 2. signin
     let creds = Login {
-        username: name.into(),
+        login: name.into(),
         password: password.into(),
     };
     let signin_resp = test::call_service(

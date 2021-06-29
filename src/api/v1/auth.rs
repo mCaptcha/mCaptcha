@@ -19,6 +19,7 @@ use actix_identity::Identity;
 use actix_web::http::header;
 use actix_web::{web, HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
+//use futures::{future::TryFutureExt, join};
 
 use super::mcaptcha::get_random;
 use crate::errors::*;
@@ -60,7 +61,9 @@ pub mod runners {
 
     #[derive(Clone, Debug, Deserialize, Serialize)]
     pub struct Login {
-        pub username: String,
+        // login accepts both username and email under "username field"
+        // TODO update all instances where login is used
+        pub login: String,
         pub password: String,
     }
 
@@ -70,28 +73,59 @@ pub mod runners {
     }
 
     /// returns Ok(()) when everything checks out and the user is authenticated. Erros otherwise
-    pub async fn login_runner(payload: &Login, data: &AppData) -> ServiceResult<()> {
+    pub async fn login_runner(payload: Login, data: &AppData) -> ServiceResult<String> {
         use argon2_creds::Config;
         use sqlx::Error::RowNotFound;
 
-        let rec = sqlx::query_as!(
-            Password,
-            r#"SELECT password  FROM mcaptcha_users WHERE name = ($1)"#,
-            &payload.username,
-        )
-        .fetch_one(&data.db)
-        .await;
-
-        match rec {
-            Ok(s) => {
-                if Config::verify(&s.password, &payload.password)? {
-                    Ok(())
-                } else {
-                    Err(ServiceError::WrongPassword)
-                }
+        let verify = |stored: &str, received: &str| {
+            if Config::verify(&stored, &received)? {
+                Ok(())
+            } else {
+                Err(ServiceError::WrongPassword)
             }
-            Err(RowNotFound) => Err(ServiceError::UsernameNotFound),
-            Err(_) => Err(ServiceError::InternalServerError),
+        };
+
+        if payload.login.contains("@") {
+            #[derive(Clone, Debug)]
+            struct EmailLogin {
+                name: String,
+                password: String,
+            }
+
+            let email_fut = sqlx::query_as!(
+                EmailLogin,
+                r#"SELECT name, password  FROM mcaptcha_users WHERE email = ($1)"#,
+                &payload.login,
+            )
+            .fetch_one(&data.db)
+            .await;
+
+            match email_fut {
+                Ok(s) => {
+                    verify(&s.password, &payload.password)?;
+                    Ok(s.name)
+                }
+
+                Err(RowNotFound) => Err(ServiceError::AccountNotFound),
+                Err(_) => Err(ServiceError::InternalServerError),
+            }
+        } else {
+            let username_fut = sqlx::query_as!(
+                Password,
+                r#"SELECT password  FROM mcaptcha_users WHERE name = ($1)"#,
+                &payload.login,
+            )
+            .fetch_one(&data.db)
+            .await;
+
+            match username_fut {
+                Ok(s) => {
+                    verify(&s.password, &payload.password)?;
+                    Ok(payload.login)
+                }
+                Err(RowNotFound) => Err(ServiceError::AccountNotFound),
+                Err(_) => Err(ServiceError::InternalServerError),
+            }
         }
     }
 
@@ -181,8 +215,8 @@ async fn login(
     payload: web::Json<runners::Login>,
     data: AppData,
 ) -> ServiceResult<impl Responder> {
-    runners::login_runner(&payload, &data).await?;
-    id.remember(payload.into_inner().username);
+    let username = runners::login_runner(payload.into_inner(), &data).await?;
+    id.remember(username);
     Ok(HttpResponse::Ok())
 }
 

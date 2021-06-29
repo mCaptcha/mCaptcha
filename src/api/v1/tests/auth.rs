@@ -57,6 +57,9 @@ async fn auth_works() {
     let (_, _, signin_resp) = register_and_signin(NAME, EMAIL, PASSWORD).await;
     let cookies = get_cookie!(signin_resp);
 
+    // Sign in with email
+    signin(EMAIL, PASSWORD).await;
+
     // 2. check if duplicate username is allowed
     let msg = Register {
         username: NAME.into(),
@@ -76,7 +79,7 @@ async fn auth_works() {
 
     // 3. sigining in with non-existent user
     let mut creds = Login {
-        username: "nonexistantuser".into(),
+        login: "nonexistantuser".into(),
         password: msg.password.clone(),
     };
     bad_post_req_test(
@@ -84,13 +87,13 @@ async fn auth_works() {
         PASSWORD,
         ROUTES.auth.login,
         &creds,
-        ServiceError::UsernameNotFound,
+        ServiceError::AccountNotFound,
         StatusCode::NOT_FOUND,
     )
     .await;
 
     // 4. trying to signin with wrong password
-    creds.username = NAME.into();
+    creds.login = NAME.into();
     creds.password = NAME.into();
 
     bad_post_req_test(

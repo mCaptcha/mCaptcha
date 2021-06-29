@@ -441,7 +441,7 @@ dependencies = [
 [[package]]
 name = "argon2-creds"
 version = "0.2.1"
-source = "git+https://github.com/realaravinth/argon2-creds?branch=master#c899181a1bdb65134cc329f26c5dd3601d89fc45"
+source = "git+https://github.com/realaravinth/argon2-creds?branch=master#3330634832150ad2af1c31768ed3b84e69f4c8ad"
 dependencies = [
  "ammonia",
  "derive_builder 0.10.2",
