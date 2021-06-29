@@ -1,0 +1,51 @@
+/*
+ * Copyright (C) 2021  Aravinth Manivannan <realaravinth@batsense.net>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+@import '../../vars';
+
+$message-bg: #d63f3f;
+
+#err__container {
+  display: felx;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 350px;
+}
+
+.err__msg-container {
+  display: flex;
+  width: 100%;
+  color: $light-text;
+  background-color: $message-bg;
+  padding: 20px;
+  border-radius: 5px;
+  opacity: 0.9;
+}
+
+.err__close {
+  min-width: 10px;
+  min-height: 10px;
+  background-color: $message-bg;
+  margin-left: 20px;
+  border: none;
+}
+
+.err__close:hover {
+  cursor: grab;
+  width: 20px;
+  height: 20px;
+}
