@@ -27,14 +27,14 @@ import createError from '../../../components/error/index';
 
 const login = async (e: Event) => {
   e.preventDefault();
-  const usernameElement = <HTMLInputElement>document.getElementById('username');
-  if (usernameElement === null) {
-    console.debug('Username element is null');
+  const loginElement = <HTMLInputElement>document.getElementById('login');
+  if (loginElement === null) {
+    console.debug('login element element is null');
     return;
   }
 
-  const username = usernameElement.value;
-  isBlankString(username, 'username', e);
+  const login = loginElement.value;
+  isBlankString(login, 'username', e);
 
   const passwordElement = <HTMLInputElement>document.getElementById('password');
   if (passwordElement === null) {
@@ -45,7 +45,7 @@ const login = async (e: Event) => {
   const password = passwordElement.value;
 
   const payload = {
-    username,
+    login,
     password,
   };
 
