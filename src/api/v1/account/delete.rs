@@ -57,20 +57,11 @@ async fn delete_account(
                 Err(ServiceError::WrongPassword)
             }
         }
-        Err(RowNotFound) => return Err(ServiceError::UsernameNotFound),
-        Err(_) => return Err(ServiceError::InternalServerError),
+        Err(RowNotFound) => Err(ServiceError::UsernameNotFound),
+        Err(_) => Err(ServiceError::InternalServerError),
     }
 }
 
 pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
     cfg.service(delete_account);
-    //    use crate::define_resource;
-    //    use crate::V1_API_ROUTES;
-    //
-    //    define_resource!(
-    //        cfg,
-    //        V1_API_ROUTES.account.delete,
-    //        Methods::ProtectPost,
-    //        delete_account
-    //    );
 }

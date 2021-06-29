@@ -144,7 +144,7 @@ mod tests {
         assert_eq!(resp.status(), StatusCode::OK);
 
         let health_resp: Health = test::read_body_json(resp).await;
-        assert_eq!(health_resp.db, true);
+        assert!(health_resp.db);
         assert_eq!(health_resp.redis, Some(true));
     }
 }

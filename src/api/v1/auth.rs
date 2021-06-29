@@ -85,7 +85,7 @@ pub mod runners {
             }
         };
 
-        if payload.login.contains("@") {
+        if payload.login.contains('@') {
             #[derive(Clone, Debug)]
             struct EmailLogin {
                 name: String,
