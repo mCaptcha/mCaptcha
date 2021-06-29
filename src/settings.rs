@@ -38,6 +38,14 @@ pub struct Captcha {
     pub gc: u64,
 }
 
+#[derive(Debug, Clone, Deserialize)]
+pub struct Smtp {
+    pub from: String,
+    pub url: String,
+    pub username: String,
+    pub password: String,
+}
+
 impl Server {
     #[cfg(not(tarpaulin_include))]
     pub fn get_ip(&self) -> String {
@@ -93,6 +101,7 @@ pub struct Settings {
     pub server: Server,
     pub pow: Captcha,
     pub source_code: String,
+    pub smtp: Option<Smtp>,
 }
 
 #[cfg(not(tarpaulin_include))]
@@ -205,5 +214,13 @@ fn set_database_url(s: &mut Config) {
 //        settings.server.url_prefix = Some("    ".into());
 //        settings.server.check_url_prefix();
 //        assert!(settings.server.url_prefix.is_none());
+//    }
+//
+//    #[test]
+//    fn smtp_config_works() {
+//        let settings = Settings::new().unwrap();
+//        assert!(settings.smtp.is_some());
+//        assert_eq!(settings.smtp.as_ref().unwrap().password, "password");
+//        assert_eq!(settings.smtp.as_ref().unwrap().username, "admin");
 //    }
 //}

@@ -69,6 +69,14 @@ sailfish = "0.3.2"
 
 mime = "0.3.16"
 
+lettre = { version = "0.10.0-rc.3", features = [
+"builder", 
+"tokio1", 
+"tokio1-native-tls",
+"smtp-transport"
+]}
+
+
 [build-dependencies]
 serde_yaml = "0.8.17"
 serde_json = "1"

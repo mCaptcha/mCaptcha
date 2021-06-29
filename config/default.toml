@@ -48,3 +48,9 @@ pool = 4
 # password = "somereallycomplicatedBatmanpassword"
 url = "redis://127.0.0.1"
 pool = 4
+
+#[smtp]
+#from = "admin@domain.com"
+#url = "smtp.domain.com"
+#username = "admin"
+#password = "password"

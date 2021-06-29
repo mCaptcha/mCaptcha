@@ -28,6 +28,7 @@ use log::info;
 mod api;
 mod data;
 mod docs;
+//mod email;
 mod errors;
 mod middleware;
 #[macro_use]
