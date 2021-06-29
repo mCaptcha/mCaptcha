@@ -455,6 +455,32 @@
       ]
     }
   },
+  "bdf2e2781bfa2e9c81c18ef8df7230809d3b20274685a35b1c544804f2a58241": {
+    "query": "SELECT name, password  FROM mcaptcha_users WHERE email = ($1)",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "name",
+          "type_info": "Varchar"
+        },
+        {
+          "ordinal": 1,
+          "name": "password",
+          "type_info": "Text"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false
+      ]
+    }
+  },
   "ca46ec86f8fe891daf58cae9292783bd5b1c1103fef03138904e498c26831cc3": {
     "query": "DELETE FROM mcaptcha_config \n        WHERE key = ($1) AND user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2) ",
     "describe": {
