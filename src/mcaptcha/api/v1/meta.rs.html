@@ -298,7 +298,7 @@
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode</span>::<span class="ident">OK</span>);
 
         <span class="kw">let</span> <span class="ident">health_resp</span>: <span class="ident">Health</span> <span class="op">=</span> <span class="ident">test</span>::<span class="ident">read_body_json</span>(<span class="ident">resp</span>).<span class="kw">await</span>;
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">health_resp</span>.<span class="ident">db</span>, <span class="bool-val">true</span>);
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">health_resp</span>.<span class="ident">db</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">health_resp</span>.<span class="ident">redis</span>, <span class="prelude-val">Some</span>(<span class="bool-val">true</span>));
     }
 }

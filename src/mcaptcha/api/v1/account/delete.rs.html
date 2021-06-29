@@ -68,15 +68,6 @@
 <span id="65">65</span>
 <span id="66">66</span>
 <span id="67">67</span>
-<span id="68">68</span>
-<span id="69">69</span>
-<span id="70">70</span>
-<span id="71">71</span>
-<span id="72">72</span>
-<span id="73">73</span>
-<span id="74">74</span>
-<span id="75">75</span>
-<span id="76">76</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -137,22 +128,13 @@
                 <span class="prelude-val">Err</span>(<span class="ident">ServiceError</span>::<span class="ident">WrongPassword</span>)
             }
         }
-        <span class="prelude-val">Err</span>(<span class="ident">RowNotFound</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ServiceError</span>::<span class="ident">UsernameNotFound</span>),
-        <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ServiceError</span>::<span class="ident">InternalServerError</span>),
+        <span class="prelude-val">Err</span>(<span class="ident">RowNotFound</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">ServiceError</span>::<span class="ident">UsernameNotFound</span>),
+        <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">ServiceError</span>::<span class="ident">InternalServerError</span>),
     }
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">services</span>(<span class="ident">cfg</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">actix_web</span>::<span class="ident">web</span>::<span class="ident">ServiceConfig</span>) {
     <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">delete_account</span>);
-    <span class="comment">//    use crate::define_resource;</span>
-    <span class="comment">//    use crate::V1_API_ROUTES;</span>
-    <span class="comment">//</span>
-    <span class="comment">//    define_resource!(</span>
-    <span class="comment">//        cfg,</span>
-    <span class="comment">//        V1_API_ROUTES.account.delete,</span>
-    <span class="comment">//        Methods::ProtectPost,</span>
-    <span class="comment">//        delete_account</span>
-    <span class="comment">//    );</span>
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="mcaptcha"></div>
