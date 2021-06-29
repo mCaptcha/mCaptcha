@@ -21,8 +21,6 @@ export const ERR_CLOSE = 'err__close'; // class
 
 export const DEFAULT_LIFETIME = 5000;
 
-import './main.scss';
-
 const err = () => {
   let element;
   return (() => {
