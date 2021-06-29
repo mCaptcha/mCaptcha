@@ -19,6 +19,8 @@ import CONST from '../const';
 import getLevelFields from './getLevelFields';
 import {LEVELS} from './index';
 
+import createError from '../../../../../components/error';
+
 /** on-change event handler to update level */
 const updateLevel = (e: Event) => {
   const target = <HTMLInputElement>e.target;
@@ -41,7 +43,7 @@ const updateLevel = (e: Event) => {
     const updatedLevel = getLevelFields(level);
     LEVELS.update(updatedLevel, level);
   } catch (e) {
-    alert(e);
+    createError(e);
   }
 };
 

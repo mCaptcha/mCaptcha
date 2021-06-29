@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+import createError from '../components/error/';
 
 const isBlankString = (value: string|number, field: string, event?: Event) => {
   value = value.toString();
@@ -22,7 +23,7 @@ const isBlankString = (value: string|number, field: string, event?: Event) => {
       event.preventDefault();
     }
     const msg = `${field} can't be empty`;
-    alert(msg);
+    createError(msg);
     throw new  Error(msg);
   }
   return false;

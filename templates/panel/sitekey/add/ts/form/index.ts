@@ -25,6 +25,8 @@ import VIEWS from '../../../../../views/v1/routes';
 import validateDescription from './validateDescription';
 import validateDuration from './validateDuration';
 
+import createError from '../../../../../components/error';
+
 const SITE_KEY_FORM_CLASS = 'sitekey-form';
 const FORM = <HTMLFormElement>document.querySelector(`.${SITE_KEY_FORM_CLASS}`);
 
@@ -53,12 +55,11 @@ const submit = async (e: Event) => {
 
   const res = await fetch(formUrl, genJsonPayload(payload));
   if (res.ok) {
-    alert('success');
     const data = await res.json();
     window.location.assign(VIEWS.listSitekey(data.key));
   } else {
     const err = await res.json();
-    alert(`error: ${err.error}`);
+    createError(err.error);
   }
 };
 

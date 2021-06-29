@@ -19,6 +19,8 @@ import validateDescription from './validateDescription';
 import {getAddForm, fillDescription} from '../setupTests';
 import {mockAlert} from '../../../../../setUpTests';
 
+import setup from '../../../../../components/error/setUpTests';
+
 mockAlert();
 
 document.body.innerHTML = getAddForm();
@@ -26,6 +28,7 @@ document.body.innerHTML = getAddForm();
 const emptyErr = "can't be empty";
 
 it('validateDescription workds', () => {
+  document.querySelector('body').appendChild(setup());
   try {
     const event = new Event('submit');
     validateDescription(event);
