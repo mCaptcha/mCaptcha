@@ -52,6 +52,7 @@ pool = 4
 [smtp]
 from = "admin@localhost"
 reply_to = "admin@localhost"
-url = "localhost:10025"
+url = "127.0.0.1"
+port = 10025
 username = "admin"
 password = "password"

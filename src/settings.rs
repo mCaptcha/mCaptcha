@@ -45,6 +45,7 @@ pub struct Smtp {
     pub url: String,
     pub username: String,
     pub password: String,
+    pub port: u16,
 }
 
 impl Server {

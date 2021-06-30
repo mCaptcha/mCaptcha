@@ -36,6 +36,14 @@ jobs:
         image: mcaptcha/cache
         ports:
           - 6379:6379
+      smtp:
+        image: maildev/maildev
+        ports:
+          - 10025:1025
+          - 1080:1080
+        options: >-
+          --incoming-user admin
+          --incoming-pass password
 
     steps:
       - uses: actions/checkout@v2

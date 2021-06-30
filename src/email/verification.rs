@@ -102,9 +102,11 @@ mod tests {
 
     #[actix_rt::test]
     async fn email_verification_works() {
-        const TO_ADDR: &str = "Hello <newuser@localhost>";
+        const TO_ADDR: &str = "Hello <realaravinth@localhost>";
         const VERIFICATION_LINK: &str = "https://localhost";
         let data = Data::new().await;
-        verification(&data, TO_ADDR, VERIFICATION_LINK).await.unwrap();
+        verification(&data, TO_ADDR, VERIFICATION_LINK)
+            .await
+            .unwrap();
     }
 }

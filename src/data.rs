@@ -19,6 +19,7 @@ use std::sync::Arc;
 
 use actix::prelude::*;
 use argon2_creds::{Config, ConfigBuilder, PasswordPolicy};
+use lettre::transport::smtp::authentication::Mechanism;
 use lettre::{
     transport::smtp::authentication::Credentials, AsyncSmtpTransport, Tokio1Executor,
 };
@@ -159,7 +160,7 @@ impl Data {
             .unwrap();
 
         log::info!("Initializing credential manager");
-        creds.init();
+        //creds.init();
         log::info!("Initialized credential manager");
 
         let data = Data {
@@ -177,10 +178,21 @@ impl Data {
             let creds =
                 Credentials::new(smtp.username.to_string(), smtp.password.to_string()); // "smtp_username".to_string(), "smtp_password".to_string());
 
-            let mailer: Mailer = AsyncSmtpTransport::<Tokio1Executor>::relay(&smtp.url) //"smtp.gmail.com")
-                .unwrap()
-                .credentials(creds)
-                .build();
+            let mailer: Mailer =
+                AsyncSmtpTransport::<Tokio1Executor>::builder_dangerous(&smtp.url)
+                    .port(smtp.port)
+                    .credentials(creds)
+                    .authentication(vec![
+                        Mechanism::Login,
+                        Mechanism::Xoauth2,
+                        Mechanism::Plain,
+                    ])
+                    .build();
+
+            //            let mailer: Mailer = AsyncSmtpTransport::<Tokio1Executor>::relay(&smtp.url) //"smtp.gmail.com")
+            //                .unwrap()
+            //                .credentials(creds)
+            //                .build();
             Some(mailer)
         } else {
             None
