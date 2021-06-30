@@ -42,10 +42,9 @@ jobs:
         ports:
           - 10025:1025
           - 1080:1080
-        options: >-
-          --incoming-user admin
-          --incoming-pass password
-
+        env:
+          MAILDEV_INCOMING_USER: admin
+          MAILDEV_INCOMING_PASS: password
 
     steps:
       - uses: actions/checkout@v2
