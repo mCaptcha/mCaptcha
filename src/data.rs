@@ -14,10 +14,14 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+//! App data: redis cache, database connections, etc.
 use std::sync::Arc;
 
 use actix::prelude::*;
 use argon2_creds::{Config, ConfigBuilder, PasswordPolicy};
+use lettre::{
+    transport::smtp::authentication::Credentials, AsyncSmtpTransport, Tokio1Executor,
+};
 use libmcaptcha::cache::hashcache::HashCache;
 use libmcaptcha::cache::redis::RedisCache;
 use libmcaptcha::master::redis::master::Master as RedisMaster;
@@ -39,12 +43,9 @@ use sqlx::PgPool;
 
 use crate::SETTINGS;
 
-pub struct Data {
-    pub db: PgPool,
-    pub creds: Config,
-    pub captcha: SystemGroup,
-}
-
+/// Represents mCaptcha cache and master system.
+/// When Redis is configured, [SystemGroup::Redis] is used and
+/// in its absense, [SystemGroup::Embedded] is used
 pub enum SystemGroup {
     Embedded(System<HashCache, EmbeddedMaster>),
     Redis(System<RedisCache, RedisMaster>),
@@ -78,21 +79,70 @@ impl SystemGroup {
         }
     }
 
-    //    /// utility function to AddSite
-    //    pub async fn add_site(
-    //        &self,
-    //        msg: AddSite,
-    //    ) -> CaptchaResult<()> {
-    //        match self {
-    //            Self::Embedded(val) => val.master.send(msg).await?,
-    //            Self::Redis(val) => val.master.send(msg).await?,
-    //        };
-    //        Ok(())
-    //    }
+    //        /// utility function to AddSite
+    //        pub async fn add_site(
+    //            &self,
+    //            msg: AddSite,
+    //        ) -> CaptchaResult<()> {
+    //            match self {
+    //                Self::Embedded(val) => val.master.send(msg).await?,
+    //                Self::Redis(val) => val.master.send(msg).await?,
+    //            };
+    //            Ok(())
+    //        }
+
+    fn new_system<A: Save, B: MasterTrait>(m: Addr<B>, c: Addr<A>) -> System<A, B> {
+        let pow = PoWConfigBuilder::default()
+            .salt(SETTINGS.pow.salt.clone())
+            .build()
+            .unwrap();
+
+        SystemBuilder::default().pow(pow).cache(c).master(m).build()
+    }
+
+    // read settings, if Redis is configured then produce a Redis mCaptcha cache
+    // based SystemGroup
+    async fn new() -> Self {
+        match &SETTINGS.redis {
+            Some(val) => {
+                let master = RedisMaster::new(RedisConfig::Single(val.url.clone()))
+                    .await
+                    .unwrap()
+                    .start();
+                let cache = RedisCache::new(RedisConfig::Single(val.url.clone()))
+                    .await
+                    .unwrap()
+                    .start();
+                let captcha = Self::new_system(master, cache);
+
+                SystemGroup::Redis(captcha)
+            }
+            None => {
+                let master = EmbeddedMaster::new(SETTINGS.pow.gc).start();
+                let cache = HashCache::default().start();
+                let captcha = Self::new_system(master, cache);
+
+                SystemGroup::Embedded(captcha)
+            }
+        }
+    }
+}
+
+/// App data
+pub struct Data {
+    /// databse pool
+    pub db: PgPool,
+    /// credential management configuration
+    pub creds: Config,
+    /// mCaptcha system: Redis cache, etc.
+    pub captcha: SystemGroup,
+    /// email client
+    pub mailer: Option<Mailer>,
 }
 
 impl Data {
     #[cfg(not(tarpaulin_include))]
+    /// create new instance of app data
     pub async fn new() -> Arc<Self> {
         let db = PgPoolOptions::new()
             .max_connections(SETTINGS.database.pool)
@@ -112,46 +162,31 @@ impl Data {
         creds.init();
         log::info!("Initialized credential manager");
 
-        let data = match &SETTINGS.redis {
-            Some(val) => {
-                let master = RedisMaster::new(RedisConfig::Single(val.url.clone()))
-                    .await
-                    .unwrap()
-                    .start();
-                let cache = RedisCache::new(RedisConfig::Single(val.url.clone()))
-                    .await
-                    .unwrap()
-                    .start();
-                let captcha = Self::new_system(master, cache);
-
-                Data {
-                    creds,
-                    db,
-                    captcha: SystemGroup::Redis(captcha),
-                }
-            }
-            None => {
-                let master = EmbeddedMaster::new(SETTINGS.pow.gc).start();
-                let cache = HashCache::default().start();
-                let captcha = Self::new_system(master, cache);
-
-                Data {
-                    creds,
-                    db,
-                    captcha: SystemGroup::Embedded(captcha),
-                }
-            }
+        let data = Data {
+            creds,
+            db,
+            captcha: SystemGroup::new().await,
+            mailer: Self::get_mailer(),
         };
 
         Arc::new(data)
     }
 
-    fn new_system<A: Save, B: MasterTrait>(m: Addr<B>, c: Addr<A>) -> System<A, B> {
-        let pow = PoWConfigBuilder::default()
-            .salt(SETTINGS.pow.salt.clone())
-            .build()
-            .unwrap();
+    fn get_mailer() -> Option<Mailer> {
+        if let Some(smtp) = SETTINGS.smtp.as_ref() {
+            let creds =
+                Credentials::new(smtp.username.to_string(), smtp.password.to_string()); // "smtp_username".to_string(), "smtp_password".to_string());
 
-        SystemBuilder::default().pow(pow).cache(c).master(m).build()
+            let mailer: Mailer = AsyncSmtpTransport::<Tokio1Executor>::relay(&smtp.url) //"smtp.gmail.com")
+                .unwrap()
+                .credentials(creds)
+                .build();
+            Some(mailer)
+        } else {
+            None
+        }
     }
 }
+
+/// Mailer data type AsyncSmtpTransport<Tokio1Executor>
+pub type Mailer = AsyncSmtpTransport<Tokio1Executor>;
