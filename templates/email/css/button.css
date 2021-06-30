@@ -1,0 +1,15 @@
+.button:hover {
+  background-color: #993299;
+  cursor: grab;
+  transform: translateY(-5px);
+}
+
+.button {
+  background-color: #800080;
+  color: rgba(255, 255, 255, 0.87);
+  border-radius: 5px;
+  border: 1px rgba(0, 0, 0, 0.125) solid;
+  padding: 10px;
+  font-size: 20px;
+  min-height: 45px;
+}
