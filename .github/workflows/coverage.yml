@@ -86,7 +86,7 @@ jobs:
           DATABASE_URL: postgres://postgres:password@localhost:5432/postgres
 
       - name: Generate coverage file
-        if: matrix.version == '1.51.0' && (github.ref == 'refs/heads/master' || github.event_name == 'pull_request')
+        if: matrix.version == 'stable' && (github.ref == 'refs/heads/master' || github.event_name == 'pull_request')
         uses: actions-rs/tarpaulin@v0.1
         with:
           version: '0.15.0'
