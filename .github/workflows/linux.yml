@@ -13,7 +13,8 @@ jobs:
       fail-fast: false
       matrix:
         version:
-          - 1.51.0
+          #- 1.51.0
+          - stable
             #  - nightly
 
     name: ${{ matrix.version }} - x86_64-unknown-linux-gnu
