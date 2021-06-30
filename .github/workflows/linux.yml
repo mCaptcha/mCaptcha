@@ -38,14 +38,14 @@ jobs:
         image: mcaptcha/cache
         ports:
           - 6379:6379
-      smtp:
-        image: maildev/maildev
-        ports:
-          - 10025:1025
-          - 1080:1080
-        env:
-          MAILDEV_INCOMING_USER: admin
-          MAILDEV_INCOMING_PASS: password
+            #      smtp:
+            #        image: maildev/maildev
+            #        ports:
+            #          - 10025:1025
+            #          - 1080:1080
+            #        env:
+            #          MAILDEV_INCOMING_USER: admin
+            #          MAILDEV_INCOMING_PASS: password
 
     steps:
       - uses: actions/checkout@v2
@@ -62,6 +62,9 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '14.x'
+
+      - name: start smtp server
+        run:  docker run -d -p 1080:1080 -p 10025:1025  maildev/maildev --incoming-user admin --incoming-pass password
 
       - name: Install JavaScript Dependencies
         run: yarn install
