@@ -62,9 +62,9 @@ pub fn handle_embedded_file(path: &str) -> HttpResponse {
                 Cow::Owned(bytes) => bytes.into(),
             };
             HttpResponse::Ok()
-                .insert_header(header::CacheControl(vec![header::CacheDirective::MaxAge(
-                    CACHE_AGE,
-                )]))
+                .insert_header(header::CacheControl(vec![
+                    header::CacheDirective::MaxAge(CACHE_AGE),
+                ]))
                 .content_type(from_path(path).first_or_octet_stream().as_ref())
                 .body(body)
         }

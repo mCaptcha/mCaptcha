@@ -54,7 +54,6 @@ mod tests {
         let (data, _, signin_resp) = register_and_signin(NAME, EMAIL, PASSWORD).await;
         let cookies = get_cookie!(signin_resp);
 
-
         let mut app = get_app!(data).await;
 
         let urls = vec![
