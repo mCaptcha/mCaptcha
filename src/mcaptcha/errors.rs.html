@@ -1,7 +1,7 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/errors.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>errors.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/errors.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>errors.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../mcaptcha/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
-                <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../mcaptcha/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
+                <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -262,6 +262,40 @@
 <span id="259">259</span>
 <span id="260">260</span>
 <span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -280,20 +314,30 @@
 * along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
 */</span>
 
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">convert</span>::<span class="ident">From</span>;
+<span class="kw">use</span> <span class="ident">std::convert::From</span>;
 
 <span class="kw">use</span> <span class="ident">actix_web</span>::{
-    <span class="ident">dev</span>::<span class="ident">HttpResponseBuilder</span>,
-    <span class="ident">error</span>::<span class="ident">ResponseError</span>,
+    <span class="ident">dev::BaseHttpResponseBuilder</span> <span class="kw">as</span> <span class="ident">HttpResponseBuilder</span>,
+    <span class="ident">error::ResponseError</span>,
     <span class="ident">http</span>::{<span class="ident">header</span>, <span class="ident">StatusCode</span>},
     <span class="ident">HttpResponse</span>,
 };
-<span class="kw">use</span> <span class="ident">argon2_creds</span>::<span class="ident">errors</span>::<span class="ident">CredsError</span>;
+<span class="kw">use</span> <span class="ident">argon2_creds::errors::CredsError</span>;
 <span class="kw">use</span> <span class="ident">derive_more</span>::{<span class="ident">Display</span>, <span class="ident">Error</span>};
-<span class="kw">use</span> <span class="ident">libmcaptcha</span>::<span class="ident">errors</span>::<span class="ident">CaptchaError</span>;
+<span class="kw">use</span> <span class="ident">lettre::transport::smtp::Error</span> <span class="kw">as</span> <span class="ident">SmtpError</span>;
+<span class="kw">use</span> <span class="ident">libmcaptcha::errors::CaptchaError</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
-<span class="kw">use</span> <span class="ident">url</span>::<span class="ident">ParseError</span>;
-<span class="kw">use</span> <span class="ident">validator</span>::<span class="ident">ValidationErrors</span>;
+<span class="kw">use</span> <span class="ident">url::ParseError</span>;
+<span class="kw">use</span> <span class="ident">validator::ValidationErrors</span>;
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Display</span>, <span class="ident">Error</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SmtpErrorWrapper</span>(<span class="ident">SmtpError</span>);
+
+<span class="kw">impl</span> <span class="ident">std::cmp::PartialEq</span> <span class="kw">for</span> <span class="ident">SmtpErrorWrapper</span> {
+    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="number">0</span>.<span class="ident">status</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">other</span>.<span class="number">0</span>.<span class="ident">status</span>()
+    }
+}
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Display</span>, <span class="ident">PartialEq</span>, <span class="ident">Error</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
@@ -346,6 +390,10 @@
     <span class="attribute">#[<span class="ident">display</span>(<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;Email not available&quot;</span>)]</span>
     <span class="ident">EmailTaken</span>,
 
+    <span class="doccomment">/// Unable to send email</span>
+    <span class="attribute">#[<span class="ident">display</span>(<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;Unable to send email, contact admin&quot;</span>)]</span>
+    <span class="ident">UnableToSendEmail</span>(<span class="ident">SmtpErrorWrapper</span>),
+
     <span class="doccomment">/// when the a token name is already taken</span>
     <span class="doccomment">/// token not found</span>
     <span class="attribute">#[<span class="ident">display</span>(<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;Token not found. Is token registered?&quot;</span>)]</span>
@@ -365,40 +413,52 @@
 <span class="kw">impl</span> <span class="ident">ResponseError</span> <span class="kw">for</span> <span class="ident">ServiceError</span> {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
     <span class="kw">fn</span> <span class="ident">error_response</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HttpResponse</span> {
-        <span class="ident">HttpResponseBuilder</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">status_code</span>())
-            .<span class="ident">set_header</span>(<span class="ident">header</span>::<span class="ident">CONTENT_TYPE</span>, <span class="string">&quot;application/json; charset=UTF-8&quot;</span>)
-            .<span class="ident">json</span>(<span class="ident">ErrorToResponse</span> {
-                <span class="ident">error</span>: <span class="self">self</span>.<span class="ident">to_string</span>(),
-            })
+        <span class="ident">HttpResponseBuilder::new</span>(<span class="self">self</span>.<span class="ident">status_code</span>())
+            .<span class="ident">append_header</span>((<span class="ident">header::CONTENT_TYPE</span>, <span class="string">&quot;application/json; charset=UTF-8&quot;</span>))
+            .<span class="ident">body</span>(
+                <span class="ident">serde_json::to_string</span>(<span class="kw-2">&amp;</span><span class="ident">ErrorToResponse</span> {
+                    <span class="ident">error</span>: <span class="self">self</span>.<span class="ident">to_string</span>(),
+                })
+                .<span class="ident">unwrap</span>(),
+            )
+            .<span class="ident">into</span>()
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
     <span class="kw">fn</span> <span class="ident">status_code</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StatusCode</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">ServiceError</span>::<span class="ident">ClosedForRegistration</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode</span>::<span class="ident">FORBIDDEN</span>,
-            <span class="ident">ServiceError</span>::<span class="ident">InternalServerError</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode</span>::<span class="ident">INTERNAL_SERVER_ERROR</span>,
-            <span class="ident">ServiceError</span>::<span class="ident">NotAnEmail</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode</span>::<span class="ident">BAD_REQUEST</span>,
-            <span class="ident">ServiceError</span>::<span class="ident">NotAUrl</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode</span>::<span class="ident">BAD_REQUEST</span>,
-            <span class="ident">ServiceError</span>::<span class="ident">WrongPassword</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode</span>::<span class="ident">UNAUTHORIZED</span>,
-            <span class="ident">ServiceError</span>::<span class="ident">UsernameNotFound</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode</span>::<span class="ident">NOT_FOUND</span>,
-            <span class="ident">ServiceError</span>::<span class="ident">AccountNotFound</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode</span>::<span class="ident">NOT_FOUND</span>,
+            <span class="ident">ServiceError::ClosedForRegistration</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode::FORBIDDEN</span>,
+            <span class="ident">ServiceError::InternalServerError</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode::INTERNAL_SERVER_ERROR</span>,
+            <span class="ident">ServiceError::NotAnEmail</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode::BAD_REQUEST</span>,
+            <span class="ident">ServiceError::NotAUrl</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode::BAD_REQUEST</span>,
+            <span class="ident">ServiceError::WrongPassword</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode::UNAUTHORIZED</span>,
+            <span class="ident">ServiceError::UsernameNotFound</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode::NOT_FOUND</span>,
+            <span class="ident">ServiceError::AccountNotFound</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode::NOT_FOUND</span>,
 
-            <span class="ident">ServiceError</span>::<span class="ident">ProfainityError</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode</span>::<span class="ident">BAD_REQUEST</span>,
-            <span class="ident">ServiceError</span>::<span class="ident">BlacklistError</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode</span>::<span class="ident">BAD_REQUEST</span>,
-            <span class="ident">ServiceError</span>::<span class="ident">UsernameCaseMappedError</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode</span>::<span class="ident">BAD_REQUEST</span>,
+            <span class="ident">ServiceError::ProfainityError</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode::BAD_REQUEST</span>,
+            <span class="ident">ServiceError::BlacklistError</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode::BAD_REQUEST</span>,
+            <span class="ident">ServiceError::UsernameCaseMappedError</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode::BAD_REQUEST</span>,
 
-            <span class="ident">ServiceError</span>::<span class="ident">PasswordTooShort</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode</span>::<span class="ident">BAD_REQUEST</span>,
-            <span class="ident">ServiceError</span>::<span class="ident">PasswordTooLong</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode</span>::<span class="ident">BAD_REQUEST</span>,
-            <span class="ident">ServiceError</span>::<span class="ident">PasswordsDontMatch</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode</span>::<span class="ident">BAD_REQUEST</span>,
+            <span class="ident">ServiceError::PasswordTooShort</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode::BAD_REQUEST</span>,
+            <span class="ident">ServiceError::PasswordTooLong</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode::BAD_REQUEST</span>,
+            <span class="ident">ServiceError::PasswordsDontMatch</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode::BAD_REQUEST</span>,
 
-            <span class="ident">ServiceError</span>::<span class="ident">UsernameTaken</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode</span>::<span class="ident">BAD_REQUEST</span>,
-            <span class="ident">ServiceError</span>::<span class="ident">EmailTaken</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode</span>::<span class="ident">BAD_REQUEST</span>,
+            <span class="ident">ServiceError::UsernameTaken</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode::BAD_REQUEST</span>,
+            <span class="ident">ServiceError::EmailTaken</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode::BAD_REQUEST</span>,
 
-            <span class="ident">ServiceError</span>::<span class="ident">TokenNotFound</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode</span>::<span class="ident">NOT_FOUND</span>,
-            <span class="ident">ServiceError</span>::<span class="ident">CaptchaError</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="ident">e</span> {
-                <span class="ident">CaptchaError</span>::<span class="ident">MailboxError</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode</span>::<span class="ident">INTERNAL_SERVER_ERROR</span>,
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode</span>::<span class="ident">BAD_REQUEST</span>,
-            },
+            <span class="ident">ServiceError::TokenNotFound</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode::NOT_FOUND</span>,
+            <span class="ident">ServiceError::CaptchaError</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="macro">log::error!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">e</span>);
+                <span class="kw">match</span> <span class="ident">e</span> {
+                    <span class="ident">CaptchaError::MailboxError</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode::INTERNAL_SERVER_ERROR</span>,
+                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode::BAD_REQUEST</span>,
+                }
+            }
+
+            <span class="ident">ServiceError::UnableToSendEmail</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="macro">log::error!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">e</span>.<span class="number">0</span>);
+                <span class="ident">StatusCode::INTERNAL_SERVER_ERROR</span>
+            }
         }
     }
 }
@@ -407,13 +467,13 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">CredsError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceError</span> {
         <span class="kw">match</span> <span class="ident">e</span> {
-            <span class="ident">CredsError</span>::<span class="ident">UsernameCaseMappedError</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ServiceError</span>::<span class="ident">UsernameCaseMappedError</span>,
-            <span class="ident">CredsError</span>::<span class="ident">ProfainityError</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ServiceError</span>::<span class="ident">ProfainityError</span>,
-            <span class="ident">CredsError</span>::<span class="ident">BlacklistError</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ServiceError</span>::<span class="ident">BlacklistError</span>,
-            <span class="ident">CredsError</span>::<span class="ident">NotAnEmail</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ServiceError</span>::<span class="ident">NotAnEmail</span>,
-            <span class="ident">CredsError</span>::<span class="ident">Argon2Error</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ServiceError</span>::<span class="ident">InternalServerError</span>,
-            <span class="ident">CredsError</span>::<span class="ident">PasswordTooLong</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ServiceError</span>::<span class="ident">PasswordTooLong</span>,
-            <span class="ident">CredsError</span>::<span class="ident">PasswordTooShort</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ServiceError</span>::<span class="ident">PasswordTooShort</span>,
+            <span class="ident">CredsError::UsernameCaseMappedError</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ServiceError::UsernameCaseMappedError</span>,
+            <span class="ident">CredsError::ProfainityError</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ServiceError::ProfainityError</span>,
+            <span class="ident">CredsError::BlacklistError</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ServiceError::BlacklistError</span>,
+            <span class="ident">CredsError::NotAnEmail</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ServiceError::NotAnEmail</span>,
+            <span class="ident">CredsError::Argon2Error</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ServiceError::InternalServerError</span>,
+            <span class="ident">CredsError::PasswordTooLong</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ServiceError::PasswordTooLong</span>,
+            <span class="ident">CredsError::PasswordTooShort</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ServiceError::PasswordTooShort</span>,
         }
     }
 }
@@ -421,41 +481,49 @@
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">ValidationErrors</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ServiceError</span> {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="kw">_</span>: <span class="ident">ValidationErrors</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceError</span> {
-        <span class="ident">ServiceError</span>::<span class="ident">NotAnEmail</span>
+        <span class="ident">ServiceError::NotAnEmail</span>
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">ParseError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ServiceError</span> {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="kw">_</span>: <span class="ident">ParseError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceError</span> {
-        <span class="ident">ServiceError</span>::<span class="ident">NotAUrl</span>
+        <span class="ident">ServiceError::NotAUrl</span>
     }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">CaptchaError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ServiceError</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">CaptchaError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceError</span> {
-        <span class="ident">ServiceError</span>::<span class="ident">CaptchaError</span>(<span class="ident">e</span>)
+        <span class="ident">ServiceError::CaptchaError</span>(<span class="ident">e</span>)
     }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">sqlx</span>::<span class="ident">Error</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ServiceError</span> {
+<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">sqlx::Error</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ServiceError</span> {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">sqlx</span>::<span class="ident">Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">use</span> <span class="ident">sqlx</span>::<span class="ident">error</span>::<span class="ident">Error</span>;
-        <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">borrow</span>::<span class="ident">Cow</span>;
-        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Error</span>::<span class="ident">Database</span>(<span class="ident">err</span>) <span class="op">=</span> <span class="ident">e</span> {
-            <span class="kw">if</span> <span class="ident">err</span>.<span class="ident">code</span>() <span class="op">=</span><span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">Cow</span>::<span class="ident">from</span>(<span class="string">&quot;23505&quot;</span>)) {
-                <span class="kw">return</span> <span class="ident">ServiceError</span>::<span class="ident">UsernameTaken</span>;
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">sqlx::Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="kw">use</span> <span class="ident">sqlx::error::Error</span>;
+        <span class="kw">use</span> <span class="ident">std::borrow::Cow</span>;
+        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Error::Database</span>(<span class="ident">err</span>) <span class="op">=</span> <span class="ident">e</span> {
+            <span class="kw">if</span> <span class="ident">err</span>.<span class="ident">code</span>() <span class="op">=</span><span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">Cow::from</span>(<span class="string">&quot;23505&quot;</span>)) {
+                <span class="kw">return</span> <span class="ident">ServiceError::UsernameTaken</span>;
             }
         }
-        <span class="ident">ServiceError</span>::<span class="ident">InternalServerError</span>
+        <span class="ident">ServiceError::InternalServerError</span>
     }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">result</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">V</span>, <span class="ident">ServiceError</span><span class="op">&gt;</span>;
+<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">SmtpError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ServiceError</span> {
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">SmtpError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="ident">ServiceError::UnableToSendEmail</span>(<span class="ident">SmtpErrorWrapper</span>(<span class="ident">e</span>))
+    }
+}
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">std::result::Result</span><span class="op">&lt;</span><span class="ident">V</span>, <span class="ident">ServiceError</span><span class="op">&gt;</span>;
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Display</span>, <span class="ident">PartialEq</span>, <span class="ident">Error</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
@@ -468,10 +536,10 @@
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">sqlx</span>::<span class="ident">Error</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PageError</span> {
+<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">sqlx::Error</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PageError</span> {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="kw">_</span>: <span class="ident">sqlx</span>::<span class="ident">Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">PageError</span>::<span class="ident">InternalServerError</span>
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="kw">_</span>: <span class="ident">sqlx::Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="ident">PageError::InternalServerError</span>
     }
 }
 
@@ -479,19 +547,19 @@
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">ServiceError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PageError</span> {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">ServiceError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">PageError</span>::<span class="ident">ServiceError</span>(<span class="ident">e</span>)
+        <span class="ident">PageError::ServiceError</span>(<span class="ident">e</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">ResponseError</span> <span class="kw">for</span> <span class="ident">PageError</span> {
     <span class="kw">fn</span> <span class="ident">error_response</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HttpResponse</span> {
-        <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">PAGES</span>;
+        <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::PAGES</span>;
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">status_code</span>() {
-            <span class="ident">StatusCode</span>::<span class="ident">INTERNAL_SERVER_ERROR</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HttpResponse</span>::<span class="ident">Found</span>()
-                .<span class="ident">header</span>(<span class="ident">header</span>::<span class="ident">LOCATION</span>, <span class="ident">PAGES</span>.<span class="ident">errors</span>.<span class="ident">internal_server_error</span>)
+            <span class="ident">StatusCode::INTERNAL_SERVER_ERROR</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HttpResponse::Found</span>()
+                .<span class="ident">append_header</span>((<span class="ident">header::LOCATION</span>, <span class="ident">PAGES</span>.<span class="ident">errors</span>.<span class="ident">internal_server_error</span>))
                 .<span class="ident">finish</span>(),
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HttpResponse</span>::<span class="ident">Found</span>()
-                .<span class="ident">header</span>(<span class="ident">header</span>::<span class="ident">LOCATION</span>, <span class="ident">PAGES</span>.<span class="ident">errors</span>.<span class="ident">unknown_error</span>)
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HttpResponse::Found</span>()
+                .<span class="ident">append_header</span>((<span class="ident">header::LOCATION</span>, <span class="ident">PAGES</span>.<span class="ident">errors</span>.<span class="ident">unknown_error</span>))
                 .<span class="ident">finish</span>(),
         }
     }
@@ -499,31 +567,31 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
     <span class="kw">fn</span> <span class="ident">status_code</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StatusCode</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">PageError</span>::<span class="ident">InternalServerError</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode</span>::<span class="ident">INTERNAL_SERVER_ERROR</span>,
-            <span class="ident">PageError</span>::<span class="ident">ServiceError</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">e</span>.<span class="ident">status_code</span>(),
+            <span class="ident">PageError::InternalServerError</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode::INTERNAL_SERVER_ERROR</span>,
+            <span class="ident">PageError::ServiceError</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">e</span>.<span class="ident">status_code</span>(),
         }
     }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PageResult</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">result</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">V</span>, <span class="ident">PageError</span><span class="op">&gt;</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PageResult</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">std::result::Result</span><span class="op">&lt;</span><span class="ident">V</span>, <span class="ident">PageError</span><span class="op">&gt;</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">PAGES</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::PAGES</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">error_works</span>() {
-        <span class="kw">let</span> <span class="ident">resp</span>: <span class="ident">HttpResponse</span> <span class="op">=</span> <span class="ident">PageError</span>::<span class="ident">InternalServerError</span>.<span class="ident">error_response</span>();
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode</span>::<span class="ident">FOUND</span>);
+        <span class="kw">let</span> <span class="ident">resp</span>: <span class="ident">HttpResponse</span> <span class="op">=</span> <span class="ident">PageError::InternalServerError</span>.<span class="ident">error_response</span>();
+        <span class="macro">assert_eq!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::FOUND</span>);
         <span class="kw">let</span> <span class="ident">headers</span> <span class="op">=</span> <span class="ident">resp</span>.<span class="ident">headers</span>();
-        <span class="macro">assert_eq</span><span class="macro">!</span>(
-            <span class="ident">headers</span>.<span class="ident">get</span>(<span class="ident">header</span>::<span class="ident">LOCATION</span>).<span class="ident">unwrap</span>(),
+        <span class="macro">assert_eq!</span>(
+            <span class="ident">headers</span>.<span class="ident">get</span>(<span class="ident">header::LOCATION</span>).<span class="ident">unwrap</span>(),
             <span class="ident">PAGES</span>.<span class="ident">errors</span>.<span class="ident">internal_server_error</span>
         );
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="mcaptcha"></div>
-    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="mcaptcha" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
+    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script></body></html>

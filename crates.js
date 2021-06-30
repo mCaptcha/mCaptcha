@@ -1,0 +1,1 @@
+window.ALL_CRATES = ["mcaptcha","tests_migrate"];
