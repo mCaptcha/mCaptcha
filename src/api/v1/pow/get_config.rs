@@ -161,7 +161,7 @@ mod tests {
 
     #[test]
     fn feature() {
-        actix_rt::System::new("trest")
+        actix_rt::System::new()
             .block_on(async move { get_pow_config_works().await });
     }
 

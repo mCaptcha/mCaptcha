@@ -49,8 +49,9 @@ pool = 4
 url = "redis://127.0.0.1"
 pool = 4
 
-#[smtp]
-#from = "admin@domain.com"
-#url = "smtp.domain.com"
-#username = "admin"
-#password = "password"
+[smtp]
+from = "admin@localhost"
+reply_to = "admin@localhost"
+url = "localhost:10025"
+username = "admin"
+password = "password"

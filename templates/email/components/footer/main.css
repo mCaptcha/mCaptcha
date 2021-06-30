@@ -1,0 +1,38 @@
+.details__container {
+  display: flex;
+  font-size: 14px;
+  flex-direction: column;
+}
+
+.details__copyright {
+  font-size: 14px;
+  flex: 2;
+}
+
+.details {
+  list-style: none;
+  bottom: 0px;
+  box-sizing: border-box;
+  display: flex;
+  font-size: 14px;
+  margin: auto;
+  padding: 0;
+}
+
+.details__item {
+  margin: auto 10px;
+  list-style: none;
+  flex: 1;
+}
+
+.details__link {
+  color: rgb(3, 102, 214);
+}
+
+.details__row1 {
+  display: flex;
+}
+
+.details__row1 > .details {
+  flex: 1;
+}

@@ -62,7 +62,7 @@ pub fn handle_embedded_file(path: &str) -> HttpResponse {
                 Cow::Owned(bytes) => bytes.into(),
             };
             HttpResponse::Ok()
-                .set(header::CacheControl(vec![header::CacheDirective::MaxAge(
+                .insert_header(header::CacheControl(vec![header::CacheDirective::MaxAge(
                     CACHE_AGE,
                 )]))
                 .content_type(from_path(path).first_or_octet_stream().as_ref())
@@ -73,7 +73,7 @@ pub fn handle_embedded_file(path: &str) -> HttpResponse {
 }
 
 async fn dist(path: web::Path<String>) -> impl Responder {
-    handle_embedded_file(&path.0)
+    handle_embedded_file(&path)
 }
 
 async fn spec() -> HttpResponse {
@@ -101,7 +101,7 @@ mod tests {
         let mut app = test::init_service(
             App::new()
                 .wrap(actix_middleware::NormalizePath::new(
-                    actix_middleware::normalize::TrailingSlash::Trim,
+                    actix_middleware::TrailingSlash::Trim,
                 ))
                 .configure(services),
         )

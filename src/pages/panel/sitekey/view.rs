@@ -66,7 +66,7 @@ pub async fn view_sitekey(
     id: Identity,
 ) -> PageResult<impl Responder> {
     let username = id.identity().unwrap();
-    let key = path.0;
+    let key = path.into_inner();
 
     let config = sqlx::query_as!(
         McaptchaConfig,

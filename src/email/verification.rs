@@ -19,57 +19,92 @@ use lettre::{
     message::{header, MultiPart, SinglePart},
     AsyncTransport, Message,
 };
+use sailfish::TemplateOnce;
 
-use crate::AppData;
+use crate::errors::*;
+use crate::Data;
 use crate::SETTINGS;
 
-// The html we want to send.
-const HTML: &str = r#"<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello from Lettre!</title>
-</head>
-<body>
-    <div style="display: flex; flex-direction: column; align-items: center;">
-        <h2 style="font-family: Arial, Helvetica, sans-serif;">Hello from Lettre!</h2>
-        <h4 style="font-family: Arial, Helvetica, sans-serif;">A mailer library for Rust</h4>
-    </div>
-</body>
-</html>"#;
+const PAGE: &str = "Login";
 
-async fn verification(data: &AppData) {
+#[derive(Clone, TemplateOnce)]
+#[template(path = "email/verification/index.html")]
+struct IndexPage<'a> {
+    verification_link: &'a str,
+}
+
+impl<'a> IndexPage<'a> {
+    fn new(verification_link: &'a str) -> Self {
+        Self { verification_link }
+    }
+}
+
+async fn verification(
+    data: &Data,
+    to: &str,
+    verification_link: &str,
+) -> ServiceResult<()> {
     if let Some(smtp) = SETTINGS.smtp.as_ref() {
         let from = format!("mCaptcha Admin <{}>", smtp.from);
+        let reply_to = format!("mCaptcha Admin <{}>", smtp.reply_to);
         const SUBJECT: &str = "[mCaptcha] Please verify your email";
+
+        let plain_text = format!(
+            "
+Welcome to mCaptcha!
+
+Please verify your email address to continue.
+
+VERIFICATION LINK: {}
+
+Please ignore this email if you weren't expecting it.
+
+With best regards,
+Admin
+instance: {}
+project website: {}",
+            verification_link,
+            SETTINGS.server.domain,
+            crate::PKG_HOMEPAGE
+        );
+
+        let html = IndexPage::new(verification_link).render_once().unwrap();
 
         let email = Message::builder()
             .from(from.parse().unwrap())
-            .reply_to("Yuin <yuin@domain.tld>".parse().unwrap())
-            .to("Hei <hei@domain.tld>".parse().unwrap())
+            .reply_to(reply_to.parse().unwrap())
+            .to(to.parse().unwrap())
             .subject(SUBJECT)
             .multipart(
                 MultiPart::alternative() // This is composed of two parts.
                     .singlepart(
                         SinglePart::builder()
                             .header(header::ContentType::TEXT_PLAIN)
-                            .body(String::from(
-                                "Hello from Lettre! A mailer library for Rust",
-                            )), // Every message should have a plain text fallback.
+                            .body(plain_text), // Every message should have a plain text fallback.
                     )
                     .singlepart(
                         SinglePart::builder()
                             .header(header::ContentType::TEXT_HTML)
-                            .body(String::from(HTML)),
+                            .body(html),
                     ),
             )
             .unwrap();
 
         // unwrap is OK as SETTINGS.smtp is check at the start
-        match data.mailer.as_ref().unwrap().send(email).await {
-            Ok(_) => println!("Email sent successfully!"),
-            Err(e) => panic!("Could not send email: {:?}", e),
-        }
+        data.mailer.as_ref().unwrap().send(email).await?;
+    }
+    Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[actix_rt::test]
+    async fn email_verification_works() {
+        const TO_ADDR: &str = "Hello <newuser@localhost>";
+        const VERIFICATION_LINK: &str = "https://localhost";
+        let data = Data::new().await;
+        verification(&data, TO_ADDR, VERIFICATION_LINK).await.unwrap();
     }
 }

@@ -82,7 +82,7 @@ fn handle_widget_assets(path: &str) -> HttpResponse {
             };
 
             HttpResponse::Ok()
-                .set(header::CacheControl(vec![header::CacheDirective::MaxAge(
+                .insert_header(header::CacheControl(vec![header::CacheDirective::MaxAge(
                     crate::CACHE_AGE,
                 )]))
                 .content_type(from_path(path).first_or_octet_stream().as_ref())
@@ -94,7 +94,7 @@ fn handle_widget_assets(path: &str) -> HttpResponse {
 
 #[get("/widget/{_:.*}")]
 pub async fn widget_assets(path: web::Path<String>) -> impl Responder {
-    handle_widget_assets(&path.0)
+    handle_widget_assets(&path)
 }
 
 pub fn services(cfg: &mut web::ServiceConfig) {

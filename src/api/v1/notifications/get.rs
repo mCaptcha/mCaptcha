@@ -24,11 +24,11 @@ use crate::errors::*;
 use crate::AppData;
 
 pub struct Notification {
-    pub name: String,
-    pub heading: String,
-    pub message: String,
-    pub received: OffsetDateTime,
-    pub id: i32,
+    pub name: Option<String>,
+    pub heading: Option<String>,
+    pub message: Option<String>,
+    pub received: Option<OffsetDateTime>,
+    pub id: Option<i32>,
 }
 
 #[derive(Deserialize, Serialize)]
@@ -43,11 +43,11 @@ pub struct NotificationResp {
 impl From<Notification> for NotificationResp {
     fn from(n: Notification) -> Self {
         NotificationResp {
-            name: n.name,
-            heading: n.heading,
-            received: n.received.unix_timestamp(),
-            id: n.id,
-            message: n.message,
+            name: n.name.unwrap(),
+            heading: n.heading.unwrap(),
+            received: n.received.unwrap().unix_timestamp(),
+            id: n.id.unwrap(),
+            message: n.message.unwrap(),
         }
     }
 }

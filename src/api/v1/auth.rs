@@ -226,7 +226,6 @@ async fn signout(id: Identity) -> impl Responder {
         id.forget();
     }
     HttpResponse::Found()
-        .header(header::LOCATION, "/login")
+        .append_header((header::LOCATION, "/login"))
         .finish()
-        .into_body()
 }

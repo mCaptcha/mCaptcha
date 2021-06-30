@@ -37,7 +37,7 @@ fn handle_assets(path: &str) -> HttpResponse {
             };
 
             HttpResponse::Ok()
-                .set(header::CacheControl(vec![
+                .insert_header(header::CacheControl(vec![
                     header::CacheDirective::Public,
                     header::CacheDirective::Extension("immutable".into(), None),
                     header::CacheDirective::MaxAge(CACHE_AGE),
@@ -51,7 +51,7 @@ fn handle_assets(path: &str) -> HttpResponse {
 
 #[get("/assets/{_:.*}")]
 pub async fn static_files(path: web::Path<String>) -> impl Responder {
-    handle_assets(&path.0)
+    handle_assets(&path)
 }
 
 #[derive(RustEmbed)]
@@ -67,7 +67,7 @@ fn handle_favicons(path: &str) -> HttpResponse {
             };
 
             HttpResponse::Ok()
-                .set(header::CacheControl(vec![
+                .insert_header(header::CacheControl(vec![
                     header::CacheDirective::Public,
                     header::CacheDirective::Extension("immutable".into(), None),
                     header::CacheDirective::MaxAge(CACHE_AGE),
@@ -82,7 +82,7 @@ fn handle_favicons(path: &str) -> HttpResponse {
 #[get("/{file}")]
 pub async fn favicons(path: web::Path<String>) -> impl Responder {
     debug!("searching favicons");
-    handle_favicons(&path.0)
+    handle_favicons(&path)
 }
 
 #[cfg(test)]

@@ -50,7 +50,7 @@ lazy_static! {
 }
 
 async fn error(path: web::Path<usize>) -> impl Responder {
-    let resp = match path.0 {
+    let resp = match path.into_inner() {
         500 => HttpResponse::InternalServerError()
             .content_type("text/html; charset=utf-8")
             .body(&*INTERNAL_SERVER_ERROR_BODY),

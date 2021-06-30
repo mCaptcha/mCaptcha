@@ -105,6 +105,7 @@ async fn main() -> std::io::Result<()> {
 
     let data = Data::new().await;
     sqlx::migrate!("./migrations/").run(&data.db).await.unwrap();
+    let data = actix_web::web::Data::new(data);
 
     println!("Starting server on: http://{}", SETTINGS.server.get_ip());
 
@@ -117,9 +118,9 @@ async fn main() -> std::io::Result<()> {
             )
             .wrap(get_identity_service())
             .wrap(actix_middleware::Compress::default())
-            .data(data.clone())
+            .app_data(data.clone())
             .wrap(actix_middleware::NormalizePath::new(
-                actix_middleware::normalize::TrailingSlash::Trim,
+                actix_middleware::TrailingSlash::Trim,
             ))
             .configure(v1::services)
             .configure(widget::services)
@@ -149,7 +150,7 @@ pub fn get_identity_service() -> IdentityService<CookieIdentityPolicy> {
         CookieIdentityPolicy::new(cookie_secret.as_bytes())
             .name("Authorization")
             //TODO change cookie age
-            .max_age(216000)
+            .max_age_secs(216000)
             .domain(&SETTINGS.server.domain)
             .secure(false),
     )

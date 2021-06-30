@@ -41,6 +41,7 @@ pub struct Captcha {
 #[derive(Debug, Clone, Deserialize)]
 pub struct Smtp {
     pub from: String,
+    pub reply_to: String,
     pub url: String,
     pub username: String,
     pub password: String,

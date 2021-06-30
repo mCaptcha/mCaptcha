@@ -18,17 +18,27 @@
 use std::convert::From;
 
 use actix_web::{
-    dev::HttpResponseBuilder,
+    dev::BaseHttpResponseBuilder as HttpResponseBuilder,
     error::ResponseError,
     http::{header, StatusCode},
     HttpResponse,
 };
 use argon2_creds::errors::CredsError;
 use derive_more::{Display, Error};
+use lettre::transport::smtp::Error as SmtpError;
 use libmcaptcha::errors::CaptchaError;
 use serde::{Deserialize, Serialize};
 use url::ParseError;
 use validator::ValidationErrors;
+
+#[derive(Debug, Display, Error)]
+pub struct SmtpErrorWrapper(SmtpError);
+
+impl std::cmp::PartialEq for SmtpErrorWrapper {
+    fn eq(&self, other: &Self) -> bool {
+        self.0.status() == other.0.status()
+    }
+}
 
 #[derive(Debug, Display, PartialEq, Error)]
 #[cfg(not(tarpaulin_include))]
@@ -81,6 +91,10 @@ pub enum ServiceError {
     #[display(fmt = "Email not available")]
     EmailTaken,
 
+    /// Unable to send email
+    #[display(fmt = "Unable to send email, contact admin")]
+    UnableToSendEmail(SmtpErrorWrapper),
+
     /// when the a token name is already taken
     /// token not found
     #[display(fmt = "Token not found. Is token registered?")]
@@ -101,10 +115,14 @@ impl ResponseError for ServiceError {
     #[cfg(not(tarpaulin_include))]
     fn error_response(&self) -> HttpResponse {
         HttpResponseBuilder::new(self.status_code())
-            .set_header(header::CONTENT_TYPE, "application/json; charset=UTF-8")
-            .json(ErrorToResponse {
-                error: self.to_string(),
-            })
+            .append_header((header::CONTENT_TYPE, "application/json; charset=UTF-8"))
+            .body(
+                serde_json::to_string(&ErrorToResponse {
+                    error: self.to_string(),
+                })
+                .unwrap(),
+            )
+            .into()
     }
 
     #[cfg(not(tarpaulin_include))]
@@ -130,10 +148,18 @@ impl ResponseError for ServiceError {
             ServiceError::EmailTaken => StatusCode::BAD_REQUEST,
 
             ServiceError::TokenNotFound => StatusCode::NOT_FOUND,
-            ServiceError::CaptchaError(e) => match e {
-                CaptchaError::MailboxError => StatusCode::INTERNAL_SERVER_ERROR,
-                _ => StatusCode::BAD_REQUEST,
-            },
+            ServiceError::CaptchaError(e) => {
+                log::error!("{}", e);
+                match e {
+                    CaptchaError::MailboxError => StatusCode::INTERNAL_SERVER_ERROR,
+                    _ => StatusCode::BAD_REQUEST,
+                }
+            }
+
+            ServiceError::UnableToSendEmail(e) => {
+                log::error!("{}", e.0);
+                StatusCode::INTERNAL_SERVER_ERROR
+            }
         }
     }
 }
@@ -190,6 +216,14 @@ impl From<sqlx::Error> for ServiceError {
 }
 
 #[cfg(not(tarpaulin_include))]
+impl From<SmtpError> for ServiceError {
+    #[cfg(not(tarpaulin_include))]
+    fn from(e: SmtpError) -> Self {
+        ServiceError::UnableToSendEmail(SmtpErrorWrapper(e))
+    }
+}
+
+#[cfg(not(tarpaulin_include))]
 pub type ServiceResult<V> = std::result::Result<V, ServiceError>;
 
 #[derive(Debug, Display, PartialEq, Error)]
@@ -223,10 +257,10 @@ impl ResponseError for PageError {
         use crate::PAGES;
         match self.status_code() {
             StatusCode::INTERNAL_SERVER_ERROR => HttpResponse::Found()
-                .header(header::LOCATION, PAGES.errors.internal_server_error)
+                .append_header((header::LOCATION, PAGES.errors.internal_server_error))
                 .finish(),
             _ => HttpResponse::Found()
-                .header(header::LOCATION, PAGES.errors.unknown_error)
+                .append_header((header::LOCATION, PAGES.errors.unknown_error))
                 .finish(),
         }
     }

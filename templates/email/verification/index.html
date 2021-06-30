@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><.= PAGE .> | <.= crate::pages::NAME .></title>
+    <style type="text/css" media="screen">
+         <. include!("../components/footer/main.css"); .>
+         <. include!("../css/base.css"); .>
+         <. include!("../css/message-text.css"); .>
+      <. include!("./css/verification__link.css"); .>;
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>
+        Welcome to mCaptcha!
+      </h1>
+      <p class="message__text">
+        Please verify your email address to continue.
+      </p>
+      <button class="button">
+        Click here to verify
+      </button>
+
+      <p class="message__text">
+        If you were not able to see the verification button, click the following
+        link:
+      </p>
+
+      <a
+        class="verification__link"
+        href="<.= verification_link .>"
+        target="_blank"
+        ><.= verification_link .></a
+      >
+
+      <p class="message__text">
+        The link expires in 15 minutes. Please ignore this email if you weren't
+        expecting it.
+      </p>
+
+      <p class="message__text">
+        With best regards,<br />
+        Admin<br />
+      </p>
+      <. include!("../components/footer/index.html"); .>
+    </div>
+  </body>
+</html>

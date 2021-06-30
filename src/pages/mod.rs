@@ -54,14 +54,8 @@ mod tests {
         let (data, _, signin_resp) = register_and_signin(NAME, EMAIL, PASSWORD).await;
         let cookies = get_cookie!(signin_resp);
 
-        let mut app = test::init_service(
-            App::new()
-                .wrap(get_identity_service())
-                .configure(crate::api::v1::services)
-                .configure(services)
-                .data(data.clone()),
-        )
-        .await;
+
+        let mut app = get_app!(data).await;
 
         let urls = vec![
             PAGES.home,
