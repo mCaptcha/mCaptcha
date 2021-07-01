@@ -100,6 +100,8 @@ project website: {}",
 mod tests {
     use super::*;
 
+    use awc::Client;
+
     #[actix_rt::test]
     async fn email_verification_works() {
         const TO_ADDR: &str = "Hello <realaravinth@localhost>";
@@ -108,5 +110,21 @@ mod tests {
         verification(&data, TO_ADDR, VERIFICATION_LINK)
             .await
             .unwrap();
+
+        let client = Client::default();
+        let mut resp = client.get("http://localhost:1080/email")
+            .send()
+            .await
+            .unwrap();
+        let data: serde_json::Value = resp.json().await.unwrap();
+        let data = &data[0];
+        let smtp = SETTINGS.smtp.as_ref().unwrap();
+
+        let from_addr = &data["headers"]["from"];["address"];
+
+        assert!(from_addr.to_string().contains(&smtp.from));
+
+        let body = &data["html"];
+        assert!(body.to_string().contains(VERIFICATION_LINK));
     }
 }

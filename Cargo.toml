@@ -89,6 +89,7 @@ mime = "0.3.16"
 
 [dev-dependencies]
 pow_sha256 = { version = "0.2.1", git = "https://github.com/mcaptcha/pow_sha256" }
+awc = "3.0.0-beta.7"
 
 
 [target.x86_64-unknown-linux-musl]
