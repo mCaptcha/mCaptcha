@@ -1,0 +1,28 @@
+<. include!("../../components/headers/index.html"); .>
+<div class="tmp-layout">
+<main class="auth-main">
+  <div class="auth-inner-container">
+
+    <img src="<.=
+    crate::FILES.get("./static/cache/img/icon-trans.png").unwrap().>"
+    class="auth__logo" alt="mcaptcha logo" />
+
+  <div
+    class="sitekey-form"
+  >
+    <h1 class="form__title">
+      Please verify your email address to continue
+    </h1>
+      An email has been sent to 
+
+  </div>
+    <p class="auth__secondary-action__banner">
+      New to mCaptcha?
+      <a 
+		  href="<.= crate::PAGES.auth.join .>"
+		  class="auth__secondary-action__link">
+		  Create an account
+	  </a>
+    </p>
+  </div>
+<. include!("../../components/footers.html"); .>

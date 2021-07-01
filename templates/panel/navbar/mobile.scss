@@ -14,11 +14,61 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+@import '../../vars';
 
 .secondary-menu {
   display: block;
 }
 
-.secondary-menu__lsit {
-  position: sticky;
+.secondary-menu__list {
+  //  position: sticky;
+  height: 0px;
+  overflow: hidden;
+}
+
+.nav__hamburger-menu {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  padding: 13px;
+}
+
+.nav__hamburger-menu:hover {
+  cursor: grab;
+}
+
+.nav__hamburger-menu:hover > span {
+  color: $green;
+}
+
+.nav__hamburger-menu > span {
+  display: block;
+  width: 25px;
+  height: 10px;
+  border-top: 2px solid #eee;
+}
+
+.secondary-menu__logo {
+  width: 40px;
+  height: 40px;
+}
+
+.secondary-menu__heading {
+  padding: 10px 5px;
+}
+
+.secondary-menu__brand-name {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.nav-toggle:not(:checked) ~ .secondary-menu__list {
+  height: 0px;
+  //  overflow-y: hidden;
+  //  max-height: 100%;
+}
+
+.nav-toggle:checked ~ .secondary-menu__list {
+  height: 100%;
+  overflow-y: auto;
 }

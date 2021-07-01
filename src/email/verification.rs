@@ -112,7 +112,8 @@ mod tests {
             .unwrap();
 
         let client = Client::default();
-        let mut resp = client.get("http://localhost:1080/email")
+        let mut resp = client
+            .get("http://localhost:1080/email")
             .send()
             .await
             .unwrap();
@@ -120,7 +121,8 @@ mod tests {
         let data = &data[0];
         let smtp = SETTINGS.smtp.as_ref().unwrap();
 
-        let from_addr = &data["headers"]["from"];["address"];
+        let from_addr = &data["headers"]["from"];
+        ["address"];
 
         assert!(from_addr.to_string().contains(&smtp.from));
 

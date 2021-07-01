@@ -19,28 +19,39 @@
 @import '../../vars';
 
 .secondary-menu {
- // position: fixed;
- // width: 14%;
- // left: 0;
- // bottom: 0;
- // top: 0;
- // right: 0;
+  // position: fixed;
+  // width: 14%;
+  // left: 0;
+  // bottom: 0;
+  // top: 0;
+  // right: 0;
 
-  height: 100%;
-  overflow: auto;
+  //height: 100%;
+  //overflow: auto;
+  display: flex;
+  flex-direction: column;
 
   background-color: $secondary-backdrop;
   color: $light-text;
 }
 
-.secondary-menu__lsit{
-	position: fixed;
-	top: 0;
-	bottom: 0;
+.nav-toggle {
+  display: none;
+}
+
+.nav__hamburger-menu {
+  display: none;
+}
+
+.secondary-menu__list {
+  // position: fixed;
+  // top: 0;
+  // bottom: 0;
+  height: 100%;
 }
 
 .secondary-menu__heading {
-  margin: auto;
+  //  margin: auto;
   padding: 20px 5px;
   display: flex;
 }

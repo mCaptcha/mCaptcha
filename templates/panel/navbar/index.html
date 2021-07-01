@@ -1,12 +1,18 @@
 <nav class="secondary-menu">
-  <ul class="secondary-menu__lsit">
-    <li class="secondary-menu__heading">
-      <img class="secondary-menu__logo" src="<.= crate::FILES.get("./static/cache/img/icon-trans.png").unwrap() .>" alt="Logo" />
-      <div class="secondary-menu__brand-name">
-        mCaptcha
-      </div>
-    </li>
-
+	<input type="checkbox" class="nav-toggle" id="nav-toggle" >
+  <div class="secondary-menu__heading">
+    <img class="secondary-menu__logo" src="<.= crate::FILES.get("./static/cache/img/icon-trans.png").unwrap() .>" alt="Logo" />
+    <div class="secondary-menu__brand-name">
+      mCaptcha
+    </div>
+	<label class="nav__hamburger-menu"for="nav-toggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </label>
+  </div>
+  <ul class="secondary-menu__list">
+    
     <!--
           <li class="secondary-menu__section-partition"></li>
           -->

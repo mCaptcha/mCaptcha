@@ -20,9 +20,16 @@
       <p class="message__text">
         Please verify your email address to continue.
       </p>
-      <button class="button">
-        Click here to verify
-      </button>
+      <form
+        action="<.= verification_link .>"
+        method="get"
+        accept-charset="utf-8"
+		class="verification__form"
+      >
+        <button type="submit" class="button">
+          Click here to verify
+        </button>
+      </form>
 
       <p class="message__text">
         If you were not able to see the verification button, click the following

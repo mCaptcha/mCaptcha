@@ -16,6 +16,7 @@
 */
 //! App data: redis cache, database connections, etc.
 use std::sync::Arc;
+use std::thread;
 
 use actix::prelude::*;
 use argon2_creds::{Config, ConfigBuilder, PasswordPolicy};
@@ -145,12 +146,6 @@ impl Data {
     #[cfg(not(tarpaulin_include))]
     /// create new instance of app data
     pub async fn new() -> Arc<Self> {
-        let db = PgPoolOptions::new()
-            .max_connections(SETTINGS.database.pool)
-            .connect(&SETTINGS.database.url)
-            .await
-            .expect("Unable to form database pool");
-
         let creds = ConfigBuilder::default()
             .username_case_mapped(true)
             .profanity(true)
@@ -159,9 +154,19 @@ impl Data {
             .build()
             .unwrap();
 
-        log::info!("Initializing credential manager");
-        //creds.init();
-        log::info!("Initialized credential manager");
+        let c = creds.clone();
+
+        let init = thread::spawn(move || {
+            log::info!("Initializing credential manager");
+            c.init();
+            log::info!("Initialized credential manager");
+        });
+
+        let db = PgPoolOptions::new()
+            .max_connections(SETTINGS.database.pool)
+            .connect(&SETTINGS.database.url)
+            .await
+            .expect("Unable to form database pool");
 
         let data = Data {
             creds,
@@ -169,6 +174,8 @@ impl Data {
             captcha: SystemGroup::new().await,
             mailer: Self::get_mailer(),
         };
+
+        init.join().unwrap();
 
         Arc::new(data)
     }
