@@ -38,7 +38,7 @@ my-codegen = {package = "actix-web-codegen", git ="https://github.com/realaravin
 
 mime_guess = "2.0.3"
 rust-embed = "5.9.0"
-cache-buster = { version = "0.2.0", git = "https://github.com/realaravinth/cache-buster" }
+cache-buster = { git = "https://github.com/realaravinth/cache-buster" }
 
 futures = "0.3.15"
 

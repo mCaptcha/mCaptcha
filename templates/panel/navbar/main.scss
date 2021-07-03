@@ -71,6 +71,10 @@
   font-size: 1.5rem;
 }
 
+.secondary-menu__brand-name:visited {
+  color: $light-text;
+}
+
 .secondary-menu__item {
   margin: auto;
   list-style: none;
