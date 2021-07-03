@@ -90,7 +90,6 @@ project website: {}",
             )
             .unwrap();
 
-        // unwrap is OK as SETTINGS.smtp is check at the start
         data.mailer.as_ref().unwrap().send(email).await?;
     }
     Ok(())

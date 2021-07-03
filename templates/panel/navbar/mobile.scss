@@ -72,3 +72,8 @@
   height: 100%;
   overflow-y: auto;
 }
+
+.secondary-menu__brand-name:hover {
+  color: $light-text;
+  cursor: grab;
+}
