@@ -132,7 +132,6 @@
 <span id="129">129</span>
 <span id="130">130</span>
 <span id="131">131</span>
-<span id="132">132</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -226,7 +225,6 @@ project website: {}&quot;</span>,
             )
             .<span class="ident">unwrap</span>();
 
-        <span class="comment">// unwrap is OK as SETTINGS.smtp is check at the start</span>
         <span class="ident">data</span>.<span class="ident">mailer</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>().<span class="ident">send</span>(<span class="ident">email</span>).<span class="kw">await</span><span class="question-mark">?</span>;
     }
     <span class="prelude-val">Ok</span>(())
