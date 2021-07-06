@@ -11,7 +11,7 @@ module.exports = {
   entry: {
     bundle: './templates/index.ts',
     mobile: './templates/mobile.ts',
-    verificationWidget: './templates/widget/index.ts',
+    verificationWidget: './templates/widget/js/index.ts',
   },
   output: {
     filename: '[name].js',
@@ -45,10 +45,10 @@ module.exports = {
 
   plugins: [
     new MiniCssExtractPlugin(),
-//    new WasmPackPlugin({
-//      crateDirectory: __dirname,
-//      outName: "pow.wasm",
-//    }),
+    //    new WasmPackPlugin({
+    //      crateDirectory: __dirname,
+    //      outName: "pow.wasm",
+    //    }),
   ],
   optimization: {
     minimizer: [
@@ -57,13 +57,13 @@ module.exports = {
       new CssMinimizerPlugin(),
     ],
   },
-//  experiments: {
-//    //  executeModule: true,
-//    //  outputModule: true,
-//    //syncWebAssembly: true,
-//    //  topLevelAwait: true,
-//    asyncWebAssembly: true,
-//    //  layers: true,
-//    //  lazyCompilation: true,
-//  },
+  experiments: {
+    //  executeModule: true,
+    //  outputModule: true,
+    //syncWebAssembly: true,
+    //  topLevelAwait: true,
+    asyncWebAssembly: true,
+    //  layers: true,
+    //  lazyCompilation: true,
+  },
 };

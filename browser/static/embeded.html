@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>mcaptcha demo form</title>
+  </head>
+  <body>
+    <div class="">
+      <!-- BEGIN: ReCAPTCHA implementation example. -->
+      <div
+        id="recaptcha-demo"
+        class="g-recaptcha"
+        data-sitekey="6Le-wvkSAAAAAPBMRTvw0Q4Muexq9bi0DJwx_mJ-"
+        data-callback="onSuccess"
+        data-action="action"
+      >
+        <div style="width: 304px; height: 78px;">
+          <div>
+            <iframe
+              title="mCaptcha"
+              src="http://localhost:7000/widget"
+              role="presentation"
+              name="a-i3v5fjryp9h"
+              scrolling="no"
+              sandbox="allow-scripts"
+              width="304"
+              height="78"
+              frameborder="0"
+            ></iframe>
+<!--              sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox allow-storage-access-by-user-activation" -->
+          </div>
+          <textarea
+            id="g-recaptcha-response"
+            name="g-recaptcha-response"
+            class="g-recaptcha-response"
+            style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none; --darkreader-inline-border-top:#48443c; --darkreader-inline-border-right:#48443c; --darkreader-inline-border-bottom:#48443c; --darkreader-inline-border-left:#48443c;"
+            data-darkreader-inline-border-top=""
+            data-darkreader-inline-border-right=""
+            data-darkreader-inline-border-bottom=""
+            data-darkreader-inline-border-left=""
+          ></textarea>
+        </div>
+        <iframe style="display: none;"></iframe>
+      </div>
+      </script>
+    </div>
+  </body>
+</html>

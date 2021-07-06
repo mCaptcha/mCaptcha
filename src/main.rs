@@ -63,6 +63,7 @@ lazy_static! {
         FILES.get("./static/cache/bundle/bundle.css").unwrap();
     pub static ref MOBILE_CSS: &'static str =
         FILES.get("./static/cache/bundle/mobile.css").unwrap();
+
     pub static ref VERIFICATIN_WIDGET_JS: &'static str =
         FILES.get("./static/cache/bundle/verificationWidget.js").unwrap();
     pub static ref VERIFICATIN_WIDGET_CSS: &'static str =

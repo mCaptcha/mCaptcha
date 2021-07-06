@@ -38,14 +38,6 @@ jobs:
         image: mcaptcha/cache
         ports:
           - 6379:6379
-            #      smtp:
-            #        image: maildev/maildev
-            #        ports:
-            #          - 10025:1025
-            #          - 1080:1080
-            #        env:
-            #          MAILDEV_INCOMING_USER: admin
-            #          MAILDEV_INCOMING_PASS: password
 
     steps:
       - uses: actions/checkout@v2
@@ -64,13 +56,7 @@ jobs:
           node-version: '14.x'
 
       - name: start smtp server
-        run:  docker run -d -p 1080:1080 -p 10025:1025  maildev/maildev --incoming-user admin --incoming-pass password
-
-      - name: Install JavaScript Dependencies
-        run: yarn install
-
-      - name: Build Frontend
-        run: yarn build
+        run: docker run -d -p 1080:1080 -p 10025:1025  maildev/maildev --incoming-user admin --incoming-pass password
 
       - name: Install ${{ matrix.version }}
         uses: actions-rs/toolchain@v1
@@ -79,37 +65,27 @@ jobs:
           profile: minimal
           override: true
 
+      - name: Install wasm-pack
+        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+
       - name: Run migrations
-        uses: actions-rs/cargo@v1
-        with:
-          command: run
-          args: --bin tests-migrate
+        run: make migrations
         env:
           DATABASE_URL: postgres://postgres:password@localhost:5432/postgres
 
-      - name: check build
-        uses: actions-rs/cargo@v1
-        with:
-          command: check
-          args: --all --bins --examples --tests
+      - name: build
+        run: make
         env:
           DATABASE_URL: postgres://postgres:password@localhost:5432/postgres
 
-      - name: tests
-        uses: actions-rs/cargo@v1
-        timeout-minutes: 40
-        with:
-          command: test
-          args: --all --all-features --no-fail-fast
+      - name: run tests
+        run: make test
         env:
           DATABASE_URL: postgres://postgres:password@localhost:5432/postgres
 
       - name: generate documentation
         if: matrix.version == 'stable' && (github.repository == 'mCaptcha/mCaptcha')
-        uses: actions-rs/cargo@v1
-        with:
-          command: doc
-          args: --no-deps --workspace --all-features
+        run: make doc
         env:
           DATABASE_URL: postgres://postgres:password@localhost:5432/postgres
           GIT_HASH: 8e77345f1597e40c2e266cb4e6dee74888918a61 # dummy value

@@ -226,6 +226,6 @@ async fn signout(id: Identity) -> impl Responder {
         id.forget();
     }
     HttpResponse::Found()
-        .append_header((header::LOCATION, "/login"))
+        .append_header((header::LOCATION, crate::PAGES.auth.login))
         .finish()
 }

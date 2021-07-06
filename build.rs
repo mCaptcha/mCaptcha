@@ -37,20 +37,24 @@ fn main() {
 }
 
 fn cache_bust() {
-    let types = vec![
-        mime::IMAGE_PNG,
-        mime::IMAGE_SVG,
-        mime::IMAGE_JPEG,
-        mime::IMAGE_GIF,
-        mime::APPLICATION_JAVASCRIPT,
-        mime::TEXT_CSS,
-    ];
+    //    until APPLICATION_WASM gets added to mime crate
+    //    PR: https://github.com/hyperium/mime/pull/138
+    //    let types = vec![
+    //        mime::IMAGE_PNG,
+    //        mime::IMAGE_SVG,
+    //        mime::IMAGE_JPEG,
+    //        mime::IMAGE_GIF,
+    //        mime::APPLICATION_JAVASCRIPT,
+    //        mime::TEXT_CSS,
+    //    ];
+
+    let no_hash = vec!["bundle/6b88f6ccf97567b46745.module.wasm"];
 
     let config = BusterBuilder::default()
         .source("./static/cache")
         .result("./assets")
-        .mime_types(types)
         .copy(true)
+        .no_hash(no_hash)
         .follow_links(true)
         .build()
         .unwrap();
