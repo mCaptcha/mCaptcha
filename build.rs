@@ -48,7 +48,7 @@ fn cache_bust() {
     //        mime::TEXT_CSS,
     //    ];
 
-    let no_hash = vec!["bundle/6b88f6ccf97567b46745.module.wasm"];
+    let no_hash = vec!["bundle/f3c927fe82899094538e.module.wasm"];
 
     let config = BusterBuilder::default()
         .source("./static/cache")
