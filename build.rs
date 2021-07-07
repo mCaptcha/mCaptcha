@@ -15,7 +15,7 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-use cache_buster::BusterBuilder;
+use cache_buster::{BusterBuilder, NoHashCategory};
 use std::process::Command;
 
 fn main() {
@@ -48,7 +48,7 @@ fn cache_bust() {
     //        mime::TEXT_CSS,
     //    ];
 
-    let no_hash = vec!["bundle/f3c927fe82899094538e.module.wasm"];
+    let no_hash = vec![NoHashCategory::FileExtentions(vec!["wasm"])];
 
     let config = BusterBuilder::default()
         .source("./static/cache")

@@ -35,6 +35,17 @@ jobs:
           toolchain: stable
           components: clippy
           override: true
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14.x'
+
+      - name: Install wasm-pack
+        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+
+      - name: Build frontend
+        run: make frontend
+
       - name: Check with Clippy
         uses: actions-rs/clippy-check@v1
         with:

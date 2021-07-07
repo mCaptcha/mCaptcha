@@ -579,7 +579,7 @@ dependencies = [
 [[package]]
 name = "cache-buster"
 version = "0.2.0"
-source = "git+https://github.com/realaravinth/cache-buster#e75ac689d2155092b90d1421ec05ec84c6917350"
+source = "git+https://github.com/realaravinth/cache-buster#3cf8828ab80b72037d23f5ce12b5879e44534da3"
 dependencies = [
  "data-encoding",
  "derive_builder",
@@ -3009,9 +3009,9 @@ checksum = "cda74da7e1a664f795bb1f8a87ec406fb89a02522cf6e50620d016add6dbbf5c"
 
 [[package]]
 name = "tokio"
-version = "1.8.0"
+version = "1.8.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "570c2eb13b3ab38208130eccd41be92520388791207fde783bda7c1e8ace28d4"
+checksum = "98c8b05dc14c75ea83d63dd391100353789f5f24b8b3866542a5e85c8be8e985"
 dependencies = [
  "autocfg",
  "bytes",
@@ -3049,9 +3049,9 @@ dependencies = [
 
 [[package]]
 name = "tokio-stream"
-version = "0.1.6"
+version = "0.1.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f8864d706fdb3cc0843a49647ac892720dac98a6eeb818b77190592cf4994066"
+checksum = "7b2f3f698253f03119ac0102beaa64f67a67e08074d03a22d18784104543727f"
 dependencies = [
  "futures-core",
  "pin-project-lite",
