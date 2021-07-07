@@ -579,7 +579,7 @@ dependencies = [
 [[package]]
 name = "cache-buster"
 version = "0.2.0"
-source = "git+https://github.com/realaravinth/cache-buster#3cf8828ab80b72037d23f5ce12b5879e44534da3"
+source = "git+https://github.com/realaravinth/cache-buster#8e630d8e4574e2f42d616e4daba425ba33859e59"
 dependencies = [
  "data-encoding",
  "derive_builder",

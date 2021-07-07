@@ -78,6 +78,9 @@ jobs:
         env:
           DATABASE_URL: postgres://postgres:password@localhost:5432/postgres
 
+      - name: build frontend
+        run: make frontend
+
       - name: run tests
         run: make test
         env:
