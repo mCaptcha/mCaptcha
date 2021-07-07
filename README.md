@@ -23,10 +23,10 @@ Proof of work based, privacy respecting CAPTCHA system with a kickass UX.
 
 **Skip to [demo](#demo)**
 
-[mCaptcha](https://mcaptcha.org) is a
-Your users no longer have to interact with ridiculous image-based
-CAPTCHA system, wasting precious mental bandwidth. Instead, your
-computer will do the work for you, [see for
+[mCaptcha](https://mcaptcha.org) is a privacy respecting, _free_ CAPTCHA
+system with a kickass UX. Your users no longer have to interact with
+ridiculous image-based CAPTCHA system, wasting precious mental
+bandwidth. Instead, your computer will do the work for you, [see for
 yourself!](https://demo.mcaptcha.org/widget?sitekey=RnR9SvkkB2s1W9yrQSBBViJHLvuiXKo4)
 
 ## How does it work?
