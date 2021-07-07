@@ -18,7 +18,7 @@ frontend:
 	yarn install
 	yarn build
 
-test: migrations
+test: migrate
 	cd browser && wasm-pack test --release --headless --chrome
 	cd browser &&  wasm-pack test --release --headless --firefox
 	cargo test --all --all-features --no-fail-fast
@@ -34,11 +34,11 @@ a:
 b:
 	${MAKE} a
 
-xml-test-coverage: migrations
+xml-test-coverage: migrate
 	cd browser && cargo tarpaulin -t 1200 --out Xml
 	cargo tarpaulin -t 1200 --out Xml
 
-coverage: migrations
+coverage: migrate
 	cd browser && cargo tarpaulin -t 1200 --out Html
 	cargo tarpaulin -t 1200 --out Html
 
@@ -56,7 +56,7 @@ docker-publish: docker-build
 	docker push mcaptcha/mcaptcha:master 
 	docker push mcaptcha/mcaptcha:latest
 
-migrations:
+migrate:
 	cargo run --bin tests-migrate
 
 help:
@@ -68,7 +68,7 @@ help:
 	@echo  '  doc                     - build documentation'
 	@echo  '  frontend                - build static assets in prod mode'
 	@echo  '  frontend-test           - run frontend tests'
-	@echo  '  migrations              - run database migrations'
+	@echo  '  migrate                 - run database migrations'
 	@echo  '  run                     - run developer instance'
 	@echo  '  test                    - run unit and integration tests'
 	@echo  '  xml-coverage            - build test coverage in XML for upload to codecov'

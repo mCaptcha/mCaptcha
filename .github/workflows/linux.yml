@@ -69,7 +69,7 @@ jobs:
         run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 
       - name: Run migrations
-        run: make migrations
+        run: make migrate
         env:
           DATABASE_URL: postgres://postgres:password@localhost:5432/postgres
 
