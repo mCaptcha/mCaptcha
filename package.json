@@ -29,5 +29,8 @@
     "webpack": "^5.0.0",
     "webpack-cli": "^4.6.0",
     "webpack-dev-server": "^3.1.14"
+  },
+  "dependencies": {
+    "mcaptcha-browser": "./browser/pkg/"
   }
 }

@@ -51,7 +51,7 @@ fn cache_bust() {
     let no_hash = vec![NoHashCategory::FileExtentions(vec!["wasm"])];
 
     let config = BusterBuilder::default()
-        .source("./static/cache")
+        .source("./static/cache/")
         .result("./assets")
         .copy(true)
         .no_hash(no_hash)

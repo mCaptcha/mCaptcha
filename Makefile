@@ -3,6 +3,7 @@ default: frontend
 
 clean:
 	cargo clean
+	rm -rf browser/pkg || true
 	rm ./src/cache_buster_data.json || true
 	rm -rf ./static/cache/bundle || true
 	rm -rf ./assets || true
@@ -48,7 +49,8 @@ run: frontend
 	cargo run
 
 test: frontend-test frontend
-	tree assets || true
+	echo 'static/' && tree static || true
+	echo 'tree/' && tree assets || true
 	cargo test --all-features --no-fail-fast
 
 xml-test-coverage: migrate
