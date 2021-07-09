@@ -46,7 +46,7 @@ async fn verification(
 ) -> ServiceResult<()> {
     if let Some(smtp) = SETTINGS.smtp.as_ref() {
         let from = format!("mCaptcha Admin <{}>", smtp.from);
-        let reply_to = format!("mCaptcha Admin <{}>", smtp.reply_to);
+        let reply_to = format!("mCaptcha Admin <{}>", smtp.reply);
         const SUBJECT: &str = "[mCaptcha] Please verify your email";
 
         let plain_text = format!(

@@ -62,3 +62,14 @@ domain
 | ------------------- | --------------------------------------------------------------------------------------- |
 | `MCAPTCHA_POW_SALT` | Salt has to be long and random                                                          |
 | `MCAPTCHA_POW_GC`   | Garbage collection duration in seconds, requires tuning but 30 is a good starting point |
+
+### SMTP
+
+| Name                     | Value                                           |
+| ------------------------ | ----------------------------------------------- |
+| `MCAPTCHA_SMTP_FROM`     | email address from which the email will be sent |
+| `MCAPTCHA_SMTP_REPLY_TO` | email address to which reply can be sent        |
+| `MCAPTCHA_URL`           | SMTP server URL                                 |
+| `MCAPTCHA_SMTP_PORT`     | SMTP server port                                |
+| `MCAPTCHA_SMTP_USERNAME` | SMTP username                                   |
+| `MCAPTCHA_SMTP_PASSWORD` | SMTP password                                   |

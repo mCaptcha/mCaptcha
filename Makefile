@@ -45,11 +45,7 @@ release: frontend
 run: frontend
 	cargo run
 
-test: migrate
-	cd browser && wasm-pack test --release --headless --chrome
-	cd browser &&  wasm-pack test --release --headless --firefox
-	${MAKE} frontend-test
-	${MAKE} frontend
+test: frontend-test frontend migrate
 	cargo test --all --all-features --no-fail-fast
 
 xml-test-coverage: migrate

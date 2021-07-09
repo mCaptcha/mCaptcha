@@ -51,7 +51,7 @@ pool = 4
 
 [smtp]
 from = "admin@localhost"
-reply_to = "admin@localhost"
+reply = "admin@localhost"
 url = "127.0.0.1"
 port = 10025
 username = "admin"
