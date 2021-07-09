@@ -83,12 +83,12 @@ lazy_static! {
 
 }
 
-pub static OPEN_API_DOC: &str = env!("OPEN_API_DOCS");
-pub static GIT_COMMIT_HASH: &str = env!("GIT_HASH");
-pub static VERSION: &str = env!("CARGO_PKG_VERSION");
-pub static PKG_NAME: &str = env!("CARGO_PKG_NAME");
-pub static PKG_DESCRIPTION: &str = env!("CARGO_PKG_DESCRIPTION");
-pub static PKG_HOMEPAGE: &str = env!("CARGO_PKG_HOMEPAGE");
+pub const OPEN_API_DOC: &str = env!("OPEN_API_DOCS");
+pub const GIT_COMMIT_HASH: &str = env!("GIT_HASH");
+pub const VERSION: &str = env!("CARGO_PKG_VERSION");
+pub const PKG_NAME: &str = env!("CARGO_PKG_NAME");
+pub const PKG_DESCRIPTION: &str = env!("CARGO_PKG_DESCRIPTION");
+pub const PKG_HOMEPAGE: &str = env!("CARGO_PKG_HOMEPAGE");
 
 pub const CACHE_AGE: u32 = 604800;
 

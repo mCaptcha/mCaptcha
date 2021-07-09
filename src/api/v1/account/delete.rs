@@ -44,14 +44,13 @@ async fn delete_account(
     .fetch_one(&data.db)
     .await;
 
-    id.forget();
-
     match rec {
         Ok(s) => {
             if Config::verify(&s.password, &payload.password)? {
                 sqlx::query!("DELETE FROM mcaptcha_users WHERE name = ($1)", &username)
                     .execute(&data.db)
                     .await?;
+                id.forget();
                 Ok(HttpResponse::Ok())
             } else {
                 Err(ServiceError::WrongPassword)
