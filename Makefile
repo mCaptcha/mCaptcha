@@ -5,6 +5,7 @@ clean:
 	cargo clean
 	rm ./src/cache_buster_data.json || true
 	rm -rf ./static/cache/bundle || true
+	rm -rf ./assets || true
 
 coverage: migrate
 	cd browser && cargo tarpaulin -t 1200 --out Html
@@ -34,6 +35,7 @@ frontend:
 frontend-test:
 	cd browser && wasm-pack test --release --headless --chrome
 	cd browser &&  wasm-pack test --release --headless --firefox
+	cd browser && cargo test
 	yarn test
 
 migrate:
@@ -45,8 +47,9 @@ release: frontend
 run: frontend
 	cargo run
 
-test: frontend-test frontend migrate
-	cargo test --all --all-features --no-fail-fast
+test: frontend-test frontend
+	tree assets || true
+	cargo test --all-features --no-fail-fast
 
 xml-test-coverage: migrate
 	cd browser && cargo tarpaulin -t 1200 --out Xml
