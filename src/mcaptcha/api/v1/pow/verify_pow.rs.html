@@ -215,7 +215,7 @@
 
         <span class="ident">register_and_signin</span>(<span class="ident">NAME</span>, <span class="ident">EMAIL</span>, <span class="ident">PASSWORD</span>).<span class="kw">await</span>;
         <span class="kw">let</span> (<span class="ident">data</span>, <span class="kw">_</span>, <span class="ident">_signin_resp</span>, <span class="ident">token_key</span>) <span class="op">=</span> <span class="ident">add_levels_util</span>(<span class="ident">NAME</span>, <span class="ident">PASSWORD</span>).<span class="kw">await</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">app</span> <span class="op">=</span> <span class="macro">get_app!</span>(<span class="ident">data</span>).<span class="kw">await</span>;
+        <span class="kw">let</span> <span class="ident">app</span> <span class="op">=</span> <span class="macro">get_app!</span>(<span class="ident">data</span>).<span class="kw">await</span>;
 
         <span class="kw">let</span> <span class="ident">get_config_payload</span> <span class="op">=</span> <span class="ident">GetConfigPayload</span> {
             <span class="ident">key</span>: <span class="ident">token_key</span>.<span class="ident">key</span>.<span class="ident">clone</span>(),
@@ -224,7 +224,7 @@
         <span class="comment">// update and check changes</span>
 
         <span class="kw">let</span> <span class="ident">get_config_resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">app</span>,
+            <span class="kw-2">&amp;</span><span class="ident">app</span>,
             <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span><span class="ident">get_config_payload</span>, <span class="ident">V1_API_ROUTES</span>.<span class="ident">pow</span>.<span class="ident">get_config</span>)
                 .<span class="ident">to_request</span>(),
         )
@@ -248,14 +248,14 @@
         };
 
         <span class="kw">let</span> <span class="ident">pow_verify_resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">app</span>,
+            <span class="kw-2">&amp;</span><span class="ident">app</span>,
             <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span><span class="ident">work</span>, <span class="ident">V1_API_ROUTES</span>.<span class="ident">pow</span>.<span class="ident">verify_pow</span>).<span class="ident">to_request</span>(),
         )
         .<span class="kw">await</span>;
         <span class="macro">assert_eq!</span>(<span class="ident">pow_verify_resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::OK</span>);
 
         <span class="kw">let</span> <span class="ident">string_not_found</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">app</span>,
+            <span class="kw-2">&amp;</span><span class="ident">app</span>,
             <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span><span class="ident">work</span>, <span class="ident">V1_API_ROUTES</span>.<span class="ident">pow</span>.<span class="ident">verify_pow</span>).<span class="ident">to_request</span>(),
         )
         .<span class="kw">await</span>;
@@ -264,7 +264,7 @@
         <span class="macro">assert_eq!</span>(<span class="ident">err</span>.<span class="ident">error</span>, <span class="string">&quot;Challenge: not found&quot;</span>);
 
         <span class="comment">// let pow_config_resp = test::call_service(</span>
-        <span class="comment">//     &amp;mut app,</span>
+        <span class="comment">//     &amp;app,</span>
         <span class="comment">//     post_request!(&amp;get_config_payload, V1_API_ROUTES.pow.get_config).to_request(),</span>
         <span class="comment">// )</span>
         <span class="comment">// .await;</span>

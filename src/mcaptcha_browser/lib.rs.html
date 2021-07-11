@@ -152,9 +152,6 @@
 <span id="149">149</span>
 <span id="150">150</span>
 <span id="151">151</span>
-<span id="152">152</span>
-<span id="153">153</span>
-<span id="154">154</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
  * mCaptcha is a PoW based DoS protection software.
@@ -186,35 +183,33 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! generate proof-of-work</span>
 <span class="doccomment">//! ```rust</span>
-<span class="doccomment">//! fn main() {</span>
-<span class="doccomment">//!    use mcaptcha_browser::*;</span>
-<span class="doccomment">//!    use pow_sha256::*;</span>
+<span class="doccomment">//!  use mcaptcha_browser::*;</span>
+<span class="doccomment">//!  use pow_sha256::*;</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//!    // salt using which PoW should be computed</span>
-<span class="doccomment">//!    const SALT: &amp;str = &quot;yrandomsaltisnotlongenoug&quot;;</span>
-<span class="doccomment">//!    // one-time phrase over which PoW should be computed</span>
-<span class="doccomment">//!    const PHRASE: &amp;str = &quot;ironmansucks&quot;;</span>
-<span class="doccomment">//!    // and the difficulty factor</span>
-<span class="doccomment">//!    const DIFFICULTY: u32 = 1000;</span>
+<span class="doccomment">//!  // salt using which PoW should be computed</span>
+<span class="doccomment">//!  const SALT: &amp;str = &quot;yrandomsaltisnotlongenoug&quot;;</span>
+<span class="doccomment">//!  // one-time phrase over which PoW should be computed</span>
+<span class="doccomment">//!  const PHRASE: &amp;str = &quot;ironmansucks&quot;;</span>
+<span class="doccomment">//!  // and the difficulty factor</span>
+<span class="doccomment">//!  const DIFFICULTY: u32 = 1000;</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//!    // currently gen_pow() returns a JSON formated string to better communicate</span>
-<span class="doccomment">//!    // with JavaScript. See [PoW&lt;T&gt;][pow_sha256::PoW] for schema</span>
-<span class="doccomment">//!    let serialised_work = gen_pow(SALT.into(), PHRASE.into(), DIFFICULTY);</span>
+<span class="doccomment">//!  // currently gen_pow() returns a JSON formated string to better communicate</span>
+<span class="doccomment">//!  // with JavaScript. See [PoW&lt;T&gt;][pow_sha256::PoW] for schema</span>
+<span class="doccomment">//!  let serialised_work = gen_pow(SALT.into(), PHRASE.into(), DIFFICULTY);</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//!    let work: Work = serde_json::from_str(&amp;serialised_work).unwrap();</span>
+<span class="doccomment">//!  let work: Work = serde_json::from_str(&amp;serialised_work).unwrap();</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//!    let work = PoWBuilder::default()</span>
-<span class="doccomment">//!        .result(work.result)</span>
-<span class="doccomment">//!        .nonce(work.nonce)</span>
-<span class="doccomment">//!        .build()</span>
-<span class="doccomment">//!        .unwrap();</span>
+<span class="doccomment">//!  let work = PoWBuilder::default()</span>
+<span class="doccomment">//!      .result(work.result)</span>
+<span class="doccomment">//!      .nonce(work.nonce)</span>
+<span class="doccomment">//!      .build()</span>
+<span class="doccomment">//!      .unwrap();</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//!    let config = ConfigBuilder::default().salt(SALT.into()).build().unwrap();</span>
-<span class="doccomment">//!    assert!(config.is_valid_proof(&amp;work, &amp;PHRASE.to_string()));</span>
-<span class="doccomment">//!    assert!(config.is_sufficient_difficulty(&amp;work, DIFFICULTY));</span>
-<span class="doccomment">//! }</span>
+<span class="doccomment">//!  let config = ConfigBuilder::default().salt(SALT.into()).build().unwrap();</span>
+<span class="doccomment">//!  assert!(config.is_valid_proof(&amp;work, &amp;PHRASE.to_string()));</span>
+<span class="doccomment">//!  assert!(config.is_sufficient_difficulty(&amp;work, DIFFICULTY));</span>
 <span class="doccomment">//! ```</span>
 
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
@@ -282,8 +277,7 @@
     <span class="kw">let</span> <span class="ident">work</span> <span class="op">=</span> <span class="ident">config</span>.<span class="ident">prove_work</span>(<span class="kw-2">&amp;</span><span class="ident">phrase</span>, <span class="ident">difficulty_factor</span>).<span class="ident">unwrap</span>();
     <span class="kw">let</span> <span class="ident">work</span>: <span class="ident">Work</span> <span class="op">=</span> <span class="ident">work</span>.<span class="ident">into</span>();
 
-    <span class="kw">let</span> <span class="ident">payload</span> <span class="op">=</span> <span class="ident">serde_json::to_string</span>(<span class="kw-2">&amp;</span><span class="ident">work</span>).<span class="ident">unwrap</span>();
-    <span class="ident">payload</span>
+    <span class="ident">serde_json::to_string</span>(<span class="kw-2">&amp;</span><span class="ident">work</span>).<span class="ident">unwrap</span>()
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>

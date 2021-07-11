@@ -196,7 +196,7 @@
         <span class="ident">register_and_signin</span>(<span class="ident">NAME2</span>, <span class="ident">EMAIL2</span>, <span class="ident">PASSWORD</span>).<span class="kw">await</span>;
         <span class="kw">let</span> (<span class="ident">data</span>, <span class="ident">_creds</span>, <span class="ident">signin_resp</span>) <span class="op">=</span> <span class="ident">signin</span>(<span class="ident">NAME1</span>, <span class="ident">PASSWORD</span>).<span class="kw">await</span>;
         <span class="kw">let</span> <span class="ident">cookies</span> <span class="op">=</span> <span class="macro">get_cookie!</span>(<span class="ident">signin_resp</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">app</span> <span class="op">=</span> <span class="macro">get_app!</span>(<span class="ident">data</span>).<span class="kw">await</span>;
+        <span class="kw">let</span> <span class="ident">app</span> <span class="op">=</span> <span class="macro">get_app!</span>(<span class="ident">data</span>).<span class="kw">await</span>;
 
         <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="ident">AddNotification</span> {
             <span class="ident">to</span>: <span class="ident">NAME2</span>.<span class="ident">into</span>(),
@@ -205,7 +205,7 @@
         };
 
         <span class="kw">let</span> <span class="ident">send_notification_resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">app</span>,
+            <span class="kw-2">&amp;</span><span class="ident">app</span>,
             <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span><span class="ident">msg</span>, <span class="ident">V1_API_ROUTES</span>.<span class="ident">notifications</span>.<span class="ident">add</span>)
                 .<span class="ident">cookie</span>(<span class="ident">cookies</span>.<span class="ident">clone</span>())
                 .<span class="ident">to_request</span>(),

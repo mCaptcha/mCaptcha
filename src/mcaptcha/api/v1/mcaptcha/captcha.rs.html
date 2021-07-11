@@ -575,11 +575,11 @@
         <span class="ident">register_and_signin</span>(<span class="ident">NAME</span>, <span class="ident">EMAIL</span>, <span class="ident">PASSWORD</span>).<span class="kw">await</span>;
         <span class="kw">let</span> (<span class="ident">data</span>, <span class="kw">_</span>, <span class="ident">signin_resp</span>, <span class="ident">token_key</span>) <span class="op">=</span> <span class="ident">add_levels_util</span>(<span class="ident">NAME</span>, <span class="ident">PASSWORD</span>).<span class="kw">await</span>;
         <span class="kw">let</span> <span class="ident">cookies</span> <span class="op">=</span> <span class="macro">get_cookie!</span>(<span class="ident">signin_resp</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">app</span> <span class="op">=</span> <span class="macro">get_app!</span>(<span class="ident">data</span>).<span class="kw">await</span>;
+        <span class="kw">let</span> <span class="ident">app</span> <span class="op">=</span> <span class="macro">get_app!</span>(<span class="ident">data</span>).<span class="kw">await</span>;
 
         <span class="comment">// 4. delete token</span>
         <span class="kw">let</span> <span class="ident">del_token</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">app</span>,
+            <span class="kw-2">&amp;</span><span class="ident">app</span>,
             <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span><span class="ident">token_key</span>, <span class="ident">ROUTES</span>.<span class="ident">mcaptcha</span>.<span class="ident">delete</span>)
                 .<span class="ident">cookie</span>(<span class="ident">cookies</span>.<span class="ident">clone</span>())
                 .<span class="ident">to_request</span>(),
@@ -603,11 +603,11 @@
         <span class="ident">register_and_signin</span>(<span class="ident">NAME</span>, <span class="ident">EMAIL</span>, <span class="ident">PASSWORD</span>).<span class="kw">await</span>;
         <span class="kw">let</span> (<span class="ident">data</span>, <span class="kw">_</span>, <span class="ident">signin_resp</span>, <span class="ident">token_key</span>) <span class="op">=</span> <span class="ident">add_levels_util</span>(<span class="ident">NAME</span>, <span class="ident">PASSWORD</span>).<span class="kw">await</span>;
         <span class="kw">let</span> <span class="ident">cookies</span> <span class="op">=</span> <span class="macro">get_cookie!</span>(<span class="ident">signin_resp</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">app</span> <span class="op">=</span> <span class="macro">get_app!</span>(<span class="ident">data</span>).<span class="kw">await</span>;
+        <span class="kw">let</span> <span class="ident">app</span> <span class="op">=</span> <span class="macro">get_app!</span>(<span class="ident">data</span>).<span class="kw">await</span>;
 
         <span class="comment">// 2. update token key</span>
         <span class="kw">let</span> <span class="ident">update_token_resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">app</span>,
+            <span class="kw-2">&amp;</span><span class="ident">app</span>,
             <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span><span class="ident">token_key</span>, <span class="ident">ROUTES</span>.<span class="ident">mcaptcha</span>.<span class="ident">update_key</span>)
                 .<span class="ident">cookie</span>(<span class="ident">cookies</span>.<span class="ident">clone</span>())
                 .<span class="ident">to_request</span>(),
@@ -619,7 +619,7 @@
 
         <span class="comment">// get token key with updated key</span>
         <span class="kw">let</span> <span class="ident">get_token_resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">app</span>,
+            <span class="kw-2">&amp;</span><span class="ident">app</span>,
             <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span><span class="ident">updated_token</span>, <span class="ident">ROUTES</span>.<span class="ident">mcaptcha</span>.<span class="ident">get_token</span>)
                 .<span class="ident">cookie</span>(<span class="ident">cookies</span>.<span class="ident">clone</span>())
                 .<span class="ident">to_request</span>(),
@@ -635,7 +635,7 @@
         <span class="ident">get_token_key</span>.<span class="ident">key</span> <span class="op">=</span> <span class="string">&quot;nonexistent&quot;</span>.<span class="ident">into</span>();
 
         <span class="kw">let</span> <span class="ident">get_nonexistent_token_resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">app</span>,
+            <span class="kw-2">&amp;</span><span class="ident">app</span>,
             <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span><span class="ident">get_token_key</span>, <span class="ident">ROUTES</span>.<span class="ident">mcaptcha</span>.<span class="ident">get_token</span>)
                 .<span class="ident">cookie</span>(<span class="ident">cookies</span>.<span class="ident">clone</span>())
                 .<span class="ident">to_request</span>(),

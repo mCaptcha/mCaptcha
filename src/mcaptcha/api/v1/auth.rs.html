@@ -232,6 +232,8 @@
 <span id="229">229</span>
 <span id="230">230</span>
 <span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -416,6 +418,8 @@
                     <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="ident">err</span>.<span class="ident">message</span>();
                     <span class="kw">if</span> <span class="ident">msg</span>.<span class="ident">contains</span>(<span class="string">&quot;mcaptcha_users_name_key&quot;</span>) {
                         <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ServiceError::UsernameTaken</span>);
+                    } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">msg</span>.<span class="ident">contains</span>(<span class="string">&quot;mcaptcha_users_email_key&quot;</span>) {
+                        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ServiceError::EmailTaken</span>);
                     } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">msg</span>.<span class="ident">contains</span>(<span class="string">&quot;mcaptcha_users_secret_key&quot;</span>) {
                         <span class="kw">continue</span>;
                     } <span class="kw">else</span> {

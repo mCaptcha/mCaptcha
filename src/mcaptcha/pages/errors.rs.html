@@ -215,10 +215,10 @@
 
     <span class="attribute">#[<span class="ident">actix_rt::test</span>]</span>
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">error_pages_work</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">app</span> <span class="op">=</span> <span class="ident">test::init_service</span>(<span class="ident">App::new</span>().<span class="ident">configure</span>(<span class="ident">services</span>)).<span class="kw">await</span>;
+        <span class="kw">let</span> <span class="ident">app</span> <span class="op">=</span> <span class="ident">test::init_service</span>(<span class="ident">App::new</span>().<span class="ident">configure</span>(<span class="ident">services</span>)).<span class="kw">await</span>;
 
         <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">app</span>,
+            <span class="kw-2">&amp;</span><span class="ident">app</span>,
             <span class="ident">test::TestRequest::get</span>()
                 .<span class="ident">uri</span>(<span class="ident">PAGES</span>.<span class="ident">errors</span>.<span class="ident">internal_server_error</span>)
                 .<span class="ident">to_request</span>(),
@@ -227,7 +227,7 @@
         <span class="macro">assert_eq!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::INTERNAL_SERVER_ERROR</span>);
 
         <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">app</span>,
+            <span class="kw-2">&amp;</span><span class="ident">app</span>,
             <span class="ident">test::TestRequest::get</span>()
                 .<span class="ident">uri</span>(<span class="ident">PAGES</span>.<span class="ident">errors</span>.<span class="ident">unknown_error</span>)
                 .<span class="ident">to_request</span>(),

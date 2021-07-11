@@ -270,10 +270,10 @@
 
     <span class="attribute">#[<span class="ident">actix_rt::test</span>]</span>
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">build_details_works</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">app</span> <span class="op">=</span> <span class="ident">test::init_service</span>(<span class="ident">App::new</span>().<span class="ident">configure</span>(<span class="ident">services</span>)).<span class="kw">await</span>;
+        <span class="kw">let</span> <span class="ident">app</span> <span class="op">=</span> <span class="ident">test::init_service</span>(<span class="ident">App::new</span>().<span class="ident">configure</span>(<span class="ident">services</span>)).<span class="kw">await</span>;
 
         <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">app</span>,
+            <span class="kw-2">&amp;</span><span class="ident">app</span>,
             <span class="ident">test::TestRequest::get</span>()
                 .<span class="ident">uri</span>(<span class="ident">V1_API_ROUTES</span>.<span class="ident">meta</span>.<span class="ident">build_details</span>)
                 .<span class="ident">to_request</span>(),
@@ -286,10 +286,10 @@
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">health_works</span>() {
         <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">V1_API_ROUTES</span>.<span class="ident">meta</span>.<span class="ident">health</span>);
         <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">Data::new</span>().<span class="kw">await</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">app</span> <span class="op">=</span> <span class="macro">get_app!</span>(<span class="ident">data</span>).<span class="kw">await</span>;
+        <span class="kw">let</span> <span class="ident">app</span> <span class="op">=</span> <span class="macro">get_app!</span>(<span class="ident">data</span>).<span class="kw">await</span>;
 
         <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">app</span>,
+            <span class="kw-2">&amp;</span><span class="ident">app</span>,
             <span class="ident">test::TestRequest::get</span>()
                 .<span class="ident">uri</span>(<span class="ident">V1_API_ROUTES</span>.<span class="ident">meta</span>.<span class="ident">health</span>)
                 .<span class="ident">to_request</span>(),

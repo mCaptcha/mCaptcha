@@ -252,17 +252,17 @@
 
     <span class="attribute">#[<span class="ident">actix_rt::test</span>]</span>
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">static_assets_work</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">app</span> <span class="op">=</span> <span class="macro">get_app!</span>().<span class="kw">await</span>;
+        <span class="kw">let</span> <span class="ident">app</span> <span class="op">=</span> <span class="macro">get_app!</span>().<span class="kw">await</span>;
 
         <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">app</span>,
+            <span class="kw-2">&amp;</span><span class="ident">app</span>,
             <span class="ident">test::TestRequest::get</span>().<span class="ident">uri</span>(<span class="kw-2">*</span><span class="kw">crate</span><span class="ident">::JS</span>).<span class="ident">to_request</span>(),
         )
         .<span class="kw">await</span>;
         <span class="macro">assert_eq!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::OK</span>);
 
         <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">app</span>,
+            <span class="kw-2">&amp;</span><span class="ident">app</span>,
             <span class="ident">test::TestRequest::get</span>()
                 .<span class="ident">uri</span>(<span class="kw-2">*</span><span class="kw">crate</span><span class="ident">::VERIFICATIN_WIDGET_JS</span>)
                 .<span class="ident">to_request</span>(),
@@ -271,7 +271,7 @@
         <span class="macro">assert_eq!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::OK</span>);
 
         <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">app</span>,
+            <span class="kw-2">&amp;</span><span class="ident">app</span>,
             <span class="ident">test::TestRequest::get</span>()
                 .<span class="ident">uri</span>(<span class="kw-2">*</span><span class="kw">crate</span><span class="ident">::VERIFICATIN_WIDGET_CSS</span>)
                 .<span class="ident">to_request</span>(),
@@ -280,7 +280,7 @@
         <span class="macro">assert_eq!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::OK</span>);
 
         <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">app</span>,
+            <span class="kw-2">&amp;</span><span class="ident">app</span>,
             <span class="ident">test::TestRequest::get</span>()
                 .<span class="ident">uri</span>(
                     <span class="kw">crate</span><span class="ident">::FILES</span>
@@ -297,11 +297,11 @@
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">favicons_work</span>() {
         <span class="macro">assert!</span>(<span class="ident">Favicons::get</span>(<span class="string">&quot;favicon.ico&quot;</span>).<span class="ident">is_some</span>());
 
-        <span class="comment">//let mut app = test::init_service(App::new().configure(services)).await;</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">app</span> <span class="op">=</span> <span class="macro">get_app!</span>().<span class="kw">await</span>;
+        <span class="comment">//let app = test::init_service(App::new().configure(services)).await;</span>
+        <span class="kw">let</span> <span class="ident">app</span> <span class="op">=</span> <span class="macro">get_app!</span>().<span class="kw">await</span>;
 
         <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">app</span>,
+            <span class="kw-2">&amp;</span><span class="ident">app</span>,
             <span class="ident">test::TestRequest::get</span>().<span class="ident">uri</span>(<span class="string">&quot;/favicon.ico&quot;</span>).<span class="ident">to_request</span>(),
         )
         .<span class="kw">await</span>;

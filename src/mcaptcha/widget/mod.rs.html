@@ -160,7 +160,7 @@
 
     <span class="attribute">#[<span class="ident">actix_rt::test</span>]</span>
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">captcha_widget_route_works</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">app</span> <span class="op">=</span> <span class="macro">get_app!</span>().<span class="kw">await</span>;
+        <span class="kw">let</span> <span class="ident">app</span> <span class="op">=</span> <span class="macro">get_app!</span>().<span class="kw">await</span>;
         <span class="macro">get_works!</span>(<span class="ident">app</span>, <span class="kw">crate</span><span class="ident">::WIDGET_ROUTES</span>.<span class="ident">verification_widget</span>);
     }
 }

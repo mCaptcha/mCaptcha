@@ -252,7 +252,7 @@
         <span class="kw">let</span> (<span class="ident">_data</span>, <span class="ident">_creds2</span>, <span class="ident">signin_resp2</span>) <span class="op">=</span> <span class="ident">signin</span>(<span class="ident">NAME2</span>, <span class="ident">PASSWORD</span>).<span class="kw">await</span>;
         <span class="kw">let</span> <span class="ident">cookies</span> <span class="op">=</span> <span class="macro">get_cookie!</span>(<span class="ident">signin_resp</span>);
         <span class="kw">let</span> <span class="ident">cookies2</span> <span class="op">=</span> <span class="macro">get_cookie!</span>(<span class="ident">signin_resp2</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">app</span> <span class="op">=</span> <span class="macro">get_app!</span>(<span class="ident">data</span>).<span class="kw">await</span>;
+        <span class="kw">let</span> <span class="ident">app</span> <span class="op">=</span> <span class="macro">get_app!</span>(<span class="ident">data</span>).<span class="kw">await</span>;
 
         <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="ident">AddNotification</span> {
             <span class="ident">to</span>: <span class="ident">NAME2</span>.<span class="ident">into</span>(),
@@ -261,7 +261,7 @@
         };
 
         <span class="kw">let</span> <span class="ident">send_notification_resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">app</span>,
+            <span class="kw-2">&amp;</span><span class="ident">app</span>,
             <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span><span class="ident">msg</span>, <span class="ident">V1_API_ROUTES</span>.<span class="ident">notifications</span>.<span class="ident">add</span>)
                 .<span class="ident">cookie</span>(<span class="ident">cookies</span>.<span class="ident">clone</span>())
                 .<span class="ident">to_request</span>(),
@@ -270,7 +270,7 @@
         <span class="macro">assert_eq!</span>(<span class="ident">send_notification_resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::OK</span>);
 
         <span class="kw">let</span> <span class="ident">get_notifications_resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">app</span>,
+            <span class="kw-2">&amp;</span><span class="ident">app</span>,
             <span class="ident">test::TestRequest::get</span>()
                 .<span class="ident">uri</span>(<span class="ident">V1_API_ROUTES</span>.<span class="ident">notifications</span>.<span class="ident">get</span>)
                 .<span class="ident">cookie</span>(<span class="ident">cookies2</span>.<span class="ident">clone</span>())
@@ -290,7 +290,7 @@
             <span class="ident">id</span>: <span class="ident">notification</span>.<span class="ident">id</span>,
         };
         <span class="kw">let</span> <span class="ident">mark_read_resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">app</span>,
+            <span class="kw-2">&amp;</span><span class="ident">app</span>,
             <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span><span class="ident">mark_read_payload</span>, <span class="ident">V1_API_ROUTES</span>.<span class="ident">notifications</span>.<span class="ident">mark_read</span>)
                 .<span class="ident">cookie</span>(<span class="ident">cookies2</span>.<span class="ident">clone</span>())
                 .<span class="ident">to_request</span>(),
@@ -299,7 +299,7 @@
         <span class="macro">assert_eq!</span>(<span class="ident">mark_read_resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::OK</span>);
 
         <span class="kw">let</span> <span class="ident">get_notifications_resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">app</span>,
+            <span class="kw-2">&amp;</span><span class="ident">app</span>,
             <span class="ident">test::TestRequest::get</span>()
                 .<span class="ident">uri</span>(<span class="ident">V1_API_ROUTES</span>.<span class="ident">notifications</span>.<span class="ident">get</span>)
                 .<span class="ident">cookie</span>(<span class="ident">cookies2</span>.<span class="ident">clone</span>())
