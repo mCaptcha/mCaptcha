@@ -1,1 +1,1 @@
-window.ALL_CRATES = ["mcaptcha","tests_migrate"];
+window.ALL_CRATES = ["mcaptcha","mcaptcha_browser","tests_migrate"];

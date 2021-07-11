@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["PAGE",""],["WIDGET_ROUTES",""]],"fn":[["handle_widget_assets",""],["services",""]],"mod":[["routes",""]],"struct":[["INDEX_PAGE",""],["IndexPage",""],["WidgetAssets",""],["show_widget","render a client side widget for CAPTCHA verification"],["widget_assets",""]]});
+initSidebarItems({"constant":[["PAGE",""],["WIDGET_ROUTES",""]],"fn":[["services","widget services"]],"mod":[["routes",""]],"struct":[["INDEX_PAGE",""],["IndexPage",""],["show_widget","render a client side widget for CAPTCHA verification"]]});

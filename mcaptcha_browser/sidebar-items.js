@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["__wasm_bindgen_generated_gen_pow","generate proof-of-work"],["gen_pow","generate proof-of-work"]],"struct":[["Work",""]]});

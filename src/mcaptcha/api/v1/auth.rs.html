@@ -461,7 +461,7 @@
         <span class="ident">id</span>.<span class="ident">forget</span>();
     }
     <span class="ident">HttpResponse::Found</span>()
-        .<span class="ident">append_header</span>((<span class="ident">header::LOCATION</span>, <span class="string">&quot;/login&quot;</span>))
+        .<span class="ident">append_header</span>((<span class="ident">header::LOCATION</span>, <span class="kw">crate</span><span class="ident">::PAGES</span>.<span class="ident">auth</span>.<span class="ident">login</span>))
         .<span class="ident">finish</span>()
 }
 </pre></div>
