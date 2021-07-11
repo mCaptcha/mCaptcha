@@ -177,7 +177,7 @@ mod tests {
         register_and_signin(NAME, EMAIL, PASSWORD).await;
         let (data, _, signin_resp, token_key) = add_levels_util(NAME, PASSWORD).await;
         let cookies = get_cookie!(signin_resp);
-        let mut app = get_app!(data).await;
+        let app = get_app!(data).await;
 
         let get_config_payload = GetConfigPayload {
             key: token_key.key.clone(),
@@ -186,7 +186,7 @@ mod tests {
         // update and check changes
 
         let get_config_resp = test::call_service(
-            &mut app,
+            &app,
             post_request!(&get_config_payload, V1_API_ROUTES.pow.get_config)
                 .cookie(cookies.clone())
                 .to_request(),

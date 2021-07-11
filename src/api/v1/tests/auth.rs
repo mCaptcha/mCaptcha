@@ -33,7 +33,7 @@ async fn auth_works() {
     const PASSWORD: &str = "longpassword";
     const EMAIL: &str = "testuser1@a.com";
 
-    let mut app = get_app!(data).await;
+    let app = get_app!(data).await;
 
     delete_user(NAME, &data).await;
 
@@ -45,7 +45,7 @@ async fn auth_works() {
         email: None,
     };
     let resp = test::call_service(
-        &mut app,
+        &app,
         post_request!(&msg, ROUTES.auth.register).to_request(),
     )
     .await;
@@ -108,7 +108,7 @@ async fn auth_works() {
 
     // 5. signout
     let signout_resp = test::call_service(
-        &mut app,
+        &app,
         test::TestRequest::get()
             .uri(ROUTES.auth.logout)
             .cookie(cookies)
@@ -128,7 +128,7 @@ async fn serverside_password_validation_works() {
     let data = Data::new().await;
     delete_user(NAME, &data).await;
 
-    let mut app = get_app!(data).await;
+    let app = get_app!(data).await;
 
     // checking to see if server-side password validation (password == password_config)
     // works
@@ -139,7 +139,7 @@ async fn serverside_password_validation_works() {
         email: None,
     };
     let resp = test::call_service(
-        &mut app,
+        &app,
         post_request!(&register_msg, ROUTES.auth.register).to_request(),
     )
     .await;

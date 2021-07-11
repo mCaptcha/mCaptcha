@@ -98,7 +98,7 @@ mod tests {
     async fn docs_works() {
         const FILE: &str = "favicon-32x32.png";
 
-        let mut app = test::init_service(
+        let app = test::init_service(
             App::new()
                 .wrap(actix_middleware::NormalizePath::new(
                     actix_middleware::TrailingSlash::Trim,
@@ -108,14 +108,14 @@ mod tests {
         .await;
 
         let resp = test::call_service(
-            &mut app,
+            &app,
             test::TestRequest::get().uri(DOCS.home).to_request(),
         )
         .await;
         assert_eq!(resp.status(), StatusCode::OK);
 
         let resp = test::call_service(
-            &mut app,
+            &app,
             test::TestRequest::get().uri(DOCS.spec).to_request(),
         )
         .await;
@@ -124,7 +124,7 @@ mod tests {
         let uri = format!("{}{}", DOCS.home, FILE);
 
         let resp = test::call_service(
-            &mut app,
+            &app,
             test::TestRequest::get().uri(&uri).to_request(),
         )
         .await;

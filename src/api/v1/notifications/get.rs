@@ -114,7 +114,7 @@ mod tests {
         let (_data, _creds2, signin_resp2) = signin(NAME2, PASSWORD).await;
         let cookies = get_cookie!(signin_resp);
         let cookies2 = get_cookie!(signin_resp2);
-        let mut app = get_app!(data).await;
+        let app = get_app!(data).await;
 
         let msg = AddNotification {
             to: NAME2.into(),
@@ -123,7 +123,7 @@ mod tests {
         };
 
         let send_notification_resp = test::call_service(
-            &mut app,
+            &app,
             post_request!(&msg, V1_API_ROUTES.notifications.add)
                 .cookie(cookies.clone())
                 .to_request(),
@@ -132,7 +132,7 @@ mod tests {
         assert_eq!(send_notification_resp.status(), StatusCode::OK);
 
         let get_notifications_resp = test::call_service(
-            &mut app,
+            &app,
             test::TestRequest::get()
                 .uri(V1_API_ROUTES.notifications.get)
                 .cookie(cookies2.clone())

@@ -95,17 +95,17 @@ mod tests {
 
     #[actix_rt::test]
     async fn static_assets_work() {
-        let mut app = get_app!().await;
+        let app = get_app!().await;
 
         let resp = test::call_service(
-            &mut app,
+            &app,
             test::TestRequest::get().uri(*crate::JS).to_request(),
         )
         .await;
         assert_eq!(resp.status(), StatusCode::OK);
 
         let resp = test::call_service(
-            &mut app,
+            &app,
             test::TestRequest::get()
                 .uri(*crate::VERIFICATIN_WIDGET_JS)
                 .to_request(),
@@ -114,7 +114,7 @@ mod tests {
         assert_eq!(resp.status(), StatusCode::OK);
 
         let resp = test::call_service(
-            &mut app,
+            &app,
             test::TestRequest::get()
                 .uri(*crate::VERIFICATIN_WIDGET_CSS)
                 .to_request(),
@@ -123,7 +123,7 @@ mod tests {
         assert_eq!(resp.status(), StatusCode::OK);
 
         let resp = test::call_service(
-            &mut app,
+            &app,
             test::TestRequest::get()
                 .uri(
                     crate::FILES
@@ -140,11 +140,11 @@ mod tests {
     async fn favicons_work() {
         assert!(Favicons::get("favicon.ico").is_some());
 
-        //let mut app = test::init_service(App::new().configure(services)).await;
-        let mut app = get_app!().await;
+        //let app = test::init_service(App::new().configure(services)).await;
+        let app = get_app!().await;
 
         let resp = test::call_service(
-            &mut app,
+            &app,
             test::TestRequest::get().uri("/favicon.ico").to_request(),
         )
         .await;

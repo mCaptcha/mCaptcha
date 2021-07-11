@@ -74,7 +74,7 @@ mod tests {
 
         register_and_signin(NAME, EMAIL, PASSWORD).await;
         let (data, _, _signin_resp, token_key) = add_levels_util(NAME, PASSWORD).await;
-        let mut app = get_app!(data).await;
+        let app = get_app!(data).await;
 
         let get_config_payload = GetConfigPayload {
             key: token_key.key.clone(),
@@ -83,7 +83,7 @@ mod tests {
         // update and check changes
 
         let get_config_resp = test::call_service(
-            &mut app,
+            &app,
             post_request!(&get_config_payload, V1_API_ROUTES.pow.get_config)
                 .to_request(),
         )
@@ -107,14 +107,14 @@ mod tests {
         };
 
         let pow_verify_resp = test::call_service(
-            &mut app,
+            &app,
             post_request!(&work, V1_API_ROUTES.pow.verify_pow).to_request(),
         )
         .await;
         assert_eq!(pow_verify_resp.status(), StatusCode::OK);
 
         let string_not_found = test::call_service(
-            &mut app,
+            &app,
             post_request!(&work, V1_API_ROUTES.pow.verify_pow).to_request(),
         )
         .await;
@@ -123,7 +123,7 @@ mod tests {
         assert_eq!(err.error, "Challenge: not found");
 
         // let pow_config_resp = test::call_service(
-        //     &mut app,
+        //     &app,
         //     post_request!(&get_config_payload, V1_API_ROUTES.pow.get_config).to_request(),
         // )
         // .await;

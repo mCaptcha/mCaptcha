@@ -94,10 +94,10 @@ mod tests {
 
     #[actix_rt::test]
     async fn error_pages_work() {
-        let mut app = test::init_service(App::new().configure(services)).await;
+        let app = test::init_service(App::new().configure(services)).await;
 
         let resp = test::call_service(
-            &mut app,
+            &app,
             test::TestRequest::get()
                 .uri(PAGES.errors.internal_server_error)
                 .to_request(),
@@ -106,7 +106,7 @@ mod tests {
         assert_eq!(resp.status(), StatusCode::INTERNAL_SERVER_ERROR);
 
         let resp = test::call_service(
-            &mut app,
+            &app,
             test::TestRequest::get()
                 .uri(PAGES.errors.unknown_error)
                 .to_request(),

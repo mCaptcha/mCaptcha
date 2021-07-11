@@ -52,7 +52,7 @@ macro_rules! post_request {
 macro_rules! get_works {
     ($app:expr,$route:expr ) => {
         let list_sitekey_resp = test::call_service(
-            &mut $app,
+            &$app,
             test::TestRequest::get().uri($route).to_request(),
         )
         .await;
@@ -107,7 +107,7 @@ pub async fn register_and_signin(
 /// register utility
 pub async fn register(name: &str, email: &str, password: &str) {
     let data = Data::new().await;
-    let mut app = get_app!(data).await;
+    let app = get_app!(data).await;
 
     // 1. Register
     let msg = Register {
@@ -117,7 +117,7 @@ pub async fn register(name: &str, email: &str, password: &str) {
         email: Some(email.into()),
     };
     let resp = test::call_service(
-        &mut app,
+        &app,
         post_request!(&msg, ROUTES.auth.register).to_request(),
     )
     .await;
@@ -127,7 +127,7 @@ pub async fn register(name: &str, email: &str, password: &str) {
 /// signin util
 pub async fn signin(name: &str, password: &str) -> (Arc<Data>, Login, ServiceResponse) {
     let data = Data::new().await;
-    let mut app = get_app!(data.clone()).await;
+    let app = get_app!(data.clone()).await;
 
     // 2. signin
     let creds = Login {
@@ -135,7 +135,7 @@ pub async fn signin(name: &str, password: &str) -> (Arc<Data>, Login, ServiceRes
         password: password.into(),
     };
     let signin_resp = test::call_service(
-        &mut app,
+        &app,
         post_request!(&creds, ROUTES.auth.login).to_request(),
     )
     .await;
@@ -154,10 +154,10 @@ pub async fn bad_post_req_test<T: Serialize>(
 ) {
     let (data, _, signin_resp) = signin(name, password).await;
     let cookies = get_cookie!(signin_resp);
-    let mut app = get_app!(data).await;
+    let app = get_app!(data).await;
 
     let dup_token_resp = test::call_service(
-        &mut app,
+        &app,
         post_request!(&payload, url)
             .cookie(cookies.clone())
             .to_request(),
@@ -183,7 +183,7 @@ pub async fn add_levels_util(
 ) -> (Arc<data::Data>, Login, ServiceResponse, MCaptchaDetails) {
     let (data, creds, signin_resp) = signin(name, password).await;
     let cookies = get_cookie!(signin_resp);
-    let mut app = get_app!(data).await;
+    let app = get_app!(data).await;
 
     let levels = vec![L1, L2];
 
@@ -195,7 +195,7 @@ pub async fn add_levels_util(
 
     // 1. add level
     let add_token_resp = test::call_service(
-        &mut app,
+        &app,
         post_request!(&add_level, ROUTES.levels.add)
             .cookie(cookies.clone())
             .to_request(),

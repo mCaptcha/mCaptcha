@@ -152,7 +152,7 @@ mod tests {
         register_and_signin(NAME, EMAIL, PASSWORD).await;
         let (data, _, signin_resp, token_key) = add_levels_util(NAME, PASSWORD).await;
         let cookies = get_cookie!(signin_resp);
-        let mut app = get_app!(data).await;
+        let app = get_app!(data).await;
 
         let update = UpdateDuration {
             key: token_key.key.clone(),
@@ -162,7 +162,7 @@ mod tests {
         // check default
 
         let get_level_resp = test::call_service(
-            &mut app,
+            &app,
             post_request!(&token_key, ROUTES.duration.get)
                 .cookie(cookies.clone())
                 .to_request(),
@@ -175,7 +175,7 @@ mod tests {
         // update and check changes
 
         let update_duration = test::call_service(
-            &mut app,
+            &app,
             post_request!(&update, ROUTES.duration.update)
                 .cookie(cookies.clone())
                 .to_request(),
@@ -183,7 +183,7 @@ mod tests {
         .await;
         assert_eq!(update_duration.status(), StatusCode::OK);
         let get_level_resp = test::call_service(
-            &mut app,
+            &app,
             post_request!(&token_key, ROUTES.duration.get)
                 .cookie(cookies.clone())
                 .to_request(),

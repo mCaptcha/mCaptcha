@@ -121,7 +121,6 @@ mod tests {
         let smtp = SETTINGS.smtp.as_ref().unwrap();
 
         let from_addr = &data["headers"]["from"];
-        ["address"];
 
         assert!(from_addr.to_string().contains(&smtp.from));
 

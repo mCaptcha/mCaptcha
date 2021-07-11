@@ -40,11 +40,11 @@ async fn uname_email_exists_works() {
 
     let (data, _, signin_resp) = register_and_signin(NAME, EMAIL, PASSWORD).await;
     let cookies = get_cookie!(signin_resp);
-    let mut app = get_app!(data).await;
+    let app = get_app!(data).await;
 
     // chech if get user secret works
     let resp = test::call_service(
-        &mut app,
+        &app,
         test::TestRequest::get()
             .cookie(cookies.clone())
             .uri(ROUTES.account.get_secret)
@@ -55,7 +55,7 @@ async fn uname_email_exists_works() {
 
     // chech if get user secret works
     let resp = test::call_service(
-        &mut app,
+        &app,
         test::TestRequest::post()
             .cookie(cookies.clone())
             .uri(ROUTES.account.update_secret)
@@ -67,7 +67,7 @@ async fn uname_email_exists_works() {
     let mut payload = AccountCheckPayload { val: NAME.into() };
 
     let user_exists_resp = test::call_service(
-        &mut app,
+        &app,
         post_request!(&payload, ROUTES.account.username_exists)
             .cookie(cookies.clone())
             .to_request(),
@@ -80,7 +80,7 @@ async fn uname_email_exists_works() {
     payload.val = PASSWORD.into();
 
     let user_doesnt_exist = test::call_service(
-        &mut app,
+        &app,
         post_request!(&payload, ROUTES.account.username_exists)
             .cookie(cookies.clone())
             .to_request(),
@@ -91,7 +91,7 @@ async fn uname_email_exists_works() {
     assert!(!resp.exists);
 
     let email_doesnt_exist = test::call_service(
-        &mut app,
+        &app,
         post_request!(&payload, ROUTES.account.email_exists)
             .cookie(cookies.clone())
             .to_request(),
@@ -104,7 +104,7 @@ async fn uname_email_exists_works() {
     payload.val = EMAIL.into();
 
     let email_exist = test::call_service(
-        &mut app,
+        &app,
         post_request!(&payload, ROUTES.account.email_exists)
             .cookie(cookies.clone())
             .to_request(),
@@ -128,13 +128,13 @@ async fn email_udpate_password_validation_del_userworks() {
 
     let (data, creds, signin_resp) = register_and_signin(NAME, EMAIL, PASSWORD).await;
     let cookies = get_cookie!(signin_resp);
-    let mut app = get_app!(data).await;
+    let app = get_app!(data).await;
 
     let email_payload = Email {
         email: EMAIL.into(),
     };
     let email_update_resp = test::call_service(
-        &mut app,
+        &app,
         post_request!(&email_payload, ROUTES.account.update_email)
             //post_request!(&email_payload, EMAIL_UPDATE)
             .cookie(cookies.clone())
@@ -149,7 +149,7 @@ async fn email_udpate_password_validation_del_userworks() {
     };
 
     let delete_user_resp = test::call_service(
-        &mut app,
+        &app,
         post_request!(&payload, ROUTES.account.delete)
             .cookie(cookies)
             .to_request(),

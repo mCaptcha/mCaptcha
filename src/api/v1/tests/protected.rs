@@ -54,16 +54,16 @@ async fn protected_routes_work() {
 
     let (data, _, signin_resp) = register_and_signin(NAME, EMAIL, PASSWORD).await;
     let cookies = get_cookie!(signin_resp);
-    let mut app = get_app!(data).await;
+    let app = get_app!(data).await;
 
     for url in get_protected_urls.iter() {
         let resp =
-            test::call_service(&mut app, test::TestRequest::get().uri(url).to_request())
+            test::call_service(&app, test::TestRequest::get().uri(url).to_request())
                 .await;
         assert_eq!(resp.status(), StatusCode::FOUND);
 
         let authenticated_resp = test::call_service(
-            &mut app,
+            &app,
             test::TestRequest::get()
                 .uri(url)
                 .cookie(cookies.clone())

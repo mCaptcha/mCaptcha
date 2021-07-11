@@ -181,6 +181,8 @@ pub mod runners {
                     let msg = err.message();
                     if msg.contains("mcaptcha_users_name_key") {
                         return Err(ServiceError::UsernameTaken);
+                    } else if msg.contains("mcaptcha_users_email_key") {
+                        return Err(ServiceError::EmailTaken);
                     } else if msg.contains("mcaptcha_users_secret_key") {
                         continue;
                     } else {

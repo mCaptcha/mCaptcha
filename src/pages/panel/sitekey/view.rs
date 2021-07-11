@@ -123,12 +123,12 @@ mod test {
         let (data, _, signin_resp, key) = add_levels_util(NAME, PASSWORD).await;
         let cookies = get_cookie!(signin_resp);
 
-        let mut app = get_app!(data).await;
+        let app = get_app!(data).await;
 
         let url = format!("/sitekey/{}/view", &key.key);
 
         let list_sitekey_resp = test::call_service(
-            &mut app,
+            &app,
             test::TestRequest::get()
                 .uri(&url)
                 .cookie(cookies.clone())

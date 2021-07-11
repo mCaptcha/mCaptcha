@@ -75,7 +75,7 @@ mod test {
 
     #[actix_rt::test]
     async fn captcha_widget_route_works() {
-        let mut app = get_app!().await;
+        let app = get_app!().await;
         get_works!(app, crate::WIDGET_ROUTES.verification_widget);
     }
 }

@@ -280,14 +280,14 @@ mod tests {
         register_and_signin(NAME, EMAIL, PASSWORD).await;
         let (data, _, signin_resp, key) = add_levels_util(NAME, PASSWORD).await;
         let cookies = get_cookie!(signin_resp);
-        let mut app = get_app!(data).await;
+        let app = get_app!(data).await;
 
         // 2. get level
 
         let levels = vec![L1, L2];
 
         let get_level_resp = test::call_service(
-            &mut app,
+            &app,
             post_request!(&key, ROUTES.levels.get)
                 .cookie(cookies.clone())
                 .to_request(),
@@ -313,7 +313,7 @@ mod tests {
             key: key.key.clone(),
         };
         let add_token_resp = test::call_service(
-            &mut app,
+            &app,
             post_request!(&add_level, ROUTES.levels.update)
                 .cookie(cookies.clone())
                 .to_request(),
@@ -321,7 +321,7 @@ mod tests {
         .await;
         assert_eq!(add_token_resp.status(), StatusCode::OK);
         let get_level_resp = test::call_service(
-            &mut app,
+            &app,
             post_request!(&key, ROUTES.levels.get)
                 .cookie(cookies.clone())
                 .to_request(),
@@ -346,7 +346,7 @@ mod tests {
             key: key.key.clone(),
         };
         let add_token_resp = test::call_service(
-            &mut app,
+            &app,
             post_request!(&add_level, ROUTES.levels.delete)
                 .cookie(cookies.clone())
                 .to_request(),
@@ -354,7 +354,7 @@ mod tests {
         .await;
         assert_eq!(add_token_resp.status(), StatusCode::OK);
         let get_level_resp = test::call_service(
-            &mut app,
+            &app,
             post_request!(&key, ROUTES.levels.get)
                 .cookie(cookies.clone())
                 .to_request(),

@@ -250,11 +250,11 @@ mod tests {
         register_and_signin(NAME, EMAIL, PASSWORD).await;
         let (data, _, signin_resp, token_key) = add_levels_util(NAME, PASSWORD).await;
         let cookies = get_cookie!(signin_resp);
-        let mut app = get_app!(data).await;
+        let app = get_app!(data).await;
 
         // 4. delete token
         let del_token = test::call_service(
-            &mut app,
+            &app,
             post_request!(&token_key, ROUTES.mcaptcha.delete)
                 .cookie(cookies.clone())
                 .to_request(),
@@ -278,11 +278,11 @@ mod tests {
         register_and_signin(NAME, EMAIL, PASSWORD).await;
         let (data, _, signin_resp, token_key) = add_levels_util(NAME, PASSWORD).await;
         let cookies = get_cookie!(signin_resp);
-        let mut app = get_app!(data).await;
+        let app = get_app!(data).await;
 
         // 2. update token key
         let update_token_resp = test::call_service(
-            &mut app,
+            &app,
             post_request!(&token_key, ROUTES.mcaptcha.update_key)
                 .cookie(cookies.clone())
                 .to_request(),
@@ -294,7 +294,7 @@ mod tests {
 
         // get token key with updated key
         let get_token_resp = test::call_service(
-            &mut app,
+            &app,
             post_request!(&updated_token, ROUTES.mcaptcha.get_token)
                 .cookie(cookies.clone())
                 .to_request(),
@@ -310,7 +310,7 @@ mod tests {
         get_token_key.key = "nonexistent".into();
 
         let get_nonexistent_token_resp = test::call_service(
-            &mut app,
+            &app,
             post_request!(&get_token_key, ROUTES.mcaptcha.get_token)
                 .cookie(cookies.clone())
                 .to_request(),

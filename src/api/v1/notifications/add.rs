@@ -86,7 +86,7 @@ mod tests {
         register_and_signin(NAME2, EMAIL2, PASSWORD).await;
         let (data, _creds, signin_resp) = signin(NAME1, PASSWORD).await;
         let cookies = get_cookie!(signin_resp);
-        let mut app = get_app!(data).await;
+        let app = get_app!(data).await;
 
         let msg = AddNotification {
             to: NAME2.into(),
@@ -95,7 +95,7 @@ mod tests {
         };
 
         let send_notification_resp = test::call_service(
-            &mut app,
+            &app,
             post_request!(&msg, V1_API_ROUTES.notifications.add)
                 .cookie(cookies.clone())
                 .to_request(),
