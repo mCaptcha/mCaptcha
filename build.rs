@@ -48,6 +48,7 @@ fn cache_bust() {
     //        mime::TEXT_CSS,
     //    ];
 
+    println!("cargo:rerun-if-changed=static/cache");
     let no_hash = vec![NoHashCategory::FileExtentions(vec!["wasm"])];
 
     let config = BusterBuilder::default()
