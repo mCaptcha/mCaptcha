@@ -123,11 +123,9 @@ mod tests {
 
         let uri = format!("{}{}", DOCS.home, FILE);
 
-        let resp = test::call_service(
-            &app,
-            test::TestRequest::get().uri(&uri).to_request(),
-        )
-        .await;
+        let resp =
+            test::call_service(&app, test::TestRequest::get().uri(&uri).to_request())
+                .await;
         assert_eq!(resp.status(), StatusCode::OK);
     }
 }

@@ -1,0 +1,24 @@
+<. include!("../../components/headers/index.html"); .> 
+<. include!("../navbar/index.html"); .>
+<div class="tmp-layout">
+<. include!("../header/index.html"); .>
+
+<main class="panel-main">
+  <!-- Main content container -->
+  <div class="inner-container">
+    <!-- Main menu/ important actions roaster -->
+
+    <ul class="sitekey-list__box">
+      <h1 class="sitekey-list__title">Your Notifications</h1>
+      <. for notification in n.iter() { .>
+        <li class="sitekey-list__item">
+            <h3><.= notification.heading .> </h3>
+            <p>From: <.= notification.name .> </p>
+            <p>Received: <.= notification.received .> </p>
+            <p>Message: <.= notification.message .> </p>
+      <. } .>
+    </ul>
+
+  </div>
+  <!-- end of container -->
+<. include!("../../components/footers.html"); .>

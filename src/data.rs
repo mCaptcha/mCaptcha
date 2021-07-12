@@ -143,17 +143,19 @@ pub struct Data {
 }
 
 impl Data {
-    #[cfg(not(tarpaulin_include))]
-    /// create new instance of app data
-    pub async fn new() -> Arc<Self> {
-        let creds = ConfigBuilder::default()
+    pub fn get_creds() -> Config {
+        ConfigBuilder::default()
             .username_case_mapped(true)
             .profanity(true)
             .blacklist(true)
             .password_policy(PasswordPolicy::default())
             .build()
-            .unwrap();
-
+            .unwrap()
+    }
+    #[cfg(not(tarpaulin_include))]
+    /// create new instance of app data
+    pub async fn new() -> Arc<Self> {
+        let creds = Self::get_creds();
         let c = creds.clone();
 
         let init = thread::spawn(move || {

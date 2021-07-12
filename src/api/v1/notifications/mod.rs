@@ -15,9 +15,9 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-mod add;
-mod get;
-mod mark_read;
+pub mod add;
+pub mod get;
+pub mod mark_read;
 
 pub mod routes {
 

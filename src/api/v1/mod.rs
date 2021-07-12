@@ -21,7 +21,7 @@ pub mod account;
 pub mod auth;
 pub mod mcaptcha;
 pub mod meta;
-mod notifications;
+pub mod notifications;
 pub mod pow;
 mod routes;
 

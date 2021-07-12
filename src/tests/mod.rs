@@ -51,11 +51,9 @@ macro_rules! post_request {
 #[macro_export]
 macro_rules! get_works {
     ($app:expr,$route:expr ) => {
-        let list_sitekey_resp = test::call_service(
-            &$app,
-            test::TestRequest::get().uri($route).to_request(),
-        )
-        .await;
+        let list_sitekey_resp =
+            test::call_service(&$app, test::TestRequest::get().uri($route).to_request())
+                .await;
         assert_eq!(list_sitekey_resp.status(), StatusCode::OK);
     };
 }
@@ -116,11 +114,9 @@ pub async fn register(name: &str, email: &str, password: &str) {
         confirm_password: password.into(),
         email: Some(email.into()),
     };
-    let resp = test::call_service(
-        &app,
-        post_request!(&msg, ROUTES.auth.register).to_request(),
-    )
-    .await;
+    let resp =
+        test::call_service(&app, post_request!(&msg, ROUTES.auth.register).to_request())
+            .await;
     assert_eq!(resp.status(), StatusCode::OK);
 }
 
@@ -134,11 +130,9 @@ pub async fn signin(name: &str, password: &str) -> (Arc<Data>, Login, ServiceRes
         login: name.into(),
         password: password.into(),
     };
-    let signin_resp = test::call_service(
-        &app,
-        post_request!(&creds, ROUTES.auth.login).to_request(),
-    )
-    .await;
+    let signin_resp =
+        test::call_service(&app, post_request!(&creds, ROUTES.auth.login).to_request())
+            .await;
     assert_eq!(signin_resp.status(), StatusCode::OK);
     (data, creds, signin_resp)
 }

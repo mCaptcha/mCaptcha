@@ -19,6 +19,7 @@ use actix_identity::Identity;
 use actix_web::{HttpResponse, Responder};
 use sailfish::TemplateOnce;
 
+mod notifications;
 pub mod sitekey;
 
 use crate::errors::PageResult;
@@ -51,6 +52,7 @@ async fn panel(data: AppData, id: Identity) -> PageResult<impl Responder> {
 pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
     cfg.service(panel);
     sitekey::services(cfg);
+    cfg.service(notifications::notifications);
 }
 
 pub mod routes {
@@ -58,6 +60,7 @@ pub mod routes {
     pub struct Panel {
         pub home: &'static str,
         pub sitekey: Sitekey,
+        pub notifications: &'static str,
     }
 
     impl Panel {
@@ -65,6 +68,7 @@ pub mod routes {
             Panel {
                 home: "/",
                 sitekey: Sitekey::new(),
+                notifications: "/notifications",
             }
         }
     }

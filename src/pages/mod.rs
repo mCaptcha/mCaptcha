@@ -60,14 +60,13 @@ mod tests {
             PAGES.home,
             PAGES.panel.sitekey.add,
             PAGES.panel.sitekey.list,
+            PAGES.panel.notifications,
         ];
 
         for url in urls.iter() {
-            let resp = test::call_service(
-                &app,
-                test::TestRequest::get().uri(url).to_request(),
-            )
-            .await;
+            let resp =
+                test::call_service(&app, test::TestRequest::get().uri(url).to_request())
+                    .await;
             assert_eq!(resp.status(), StatusCode::FOUND);
 
             let authenticated_resp = test::call_service(
@@ -91,11 +90,9 @@ mod tests {
         let urls = vec![PAGES.auth.login, PAGES.auth.join];
 
         for url in urls.iter() {
-            let resp = test::call_service(
-                &app,
-                test::TestRequest::get().uri(url).to_request(),
-            )
-            .await;
+            let resp =
+                test::call_service(&app, test::TestRequest::get().uri(url).to_request())
+                    .await;
 
             assert_eq!(resp.status(), StatusCode::OK);
         }

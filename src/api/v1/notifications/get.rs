@@ -63,23 +63,37 @@ pub async fn get_notification(
     let receiver = id.identity().unwrap();
     // TODO handle error where payload.to doesnt exist
 
-    let mut notifications = sqlx::query_file_as!(
-        Notification,
-        "src/api/v1/notifications/get_all_unread.sql",
-        &receiver
-    )
-    .fetch_all(&data.db)
-    .await?;
-
-    let resp: Vec<NotificationResp> = notifications
-        .drain(0..)
-        .map(|x| {
-            let y: NotificationResp = x.into();
-            y
-        })
-        .collect();
+    let resp = runner::get_notification(&data, &receiver).await?;
 
     Ok(HttpResponse::Ok().json(resp))
+}
+
+pub mod runner {
+    use super::*;
+    pub async fn get_notification(
+        data: &AppData,
+        receiver: &str,
+    ) -> ServiceResult<Vec<NotificationResp>> {
+        // TODO handle error where payload.to doesnt exist
+
+        let mut notifications = sqlx::query_file_as!(
+            Notification,
+            "src/api/v1/notifications/get_all_unread.sql",
+            &receiver
+        )
+        .fetch_all(&data.db)
+        .await?;
+
+        let resp = notifications
+            .drain(0..)
+            .map(|x| {
+                let y: NotificationResp = x.into();
+                y
+            })
+            .collect();
+
+        Ok(resp)
+    }
 }
 
 #[cfg(test)]

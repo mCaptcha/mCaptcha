@@ -107,6 +107,21 @@
       ]
     }
   },
+  "45d9e9fb6344fe3a18c2529d50c935d3837bfe25c96595beb6970d6067720578": {
+    "query": "insert into mcaptcha_users \n        (name , password, email, secret) values ($1, $2, $3, $4)",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Text",
+          "Varchar",
+          "Varchar"
+        ]
+      },
+      "nullable": []
+    }
+  },
   "47fa50aecfb1499b0a18fa9299643017a1a8d69d4e9980032e0d8f745465d14f": {
     "query": "SELECT EXISTS (SELECT 1 from mcaptcha_users WHERE email = $1)",
     "describe": {
@@ -501,21 +516,6 @@
       "parameters": {
         "Left": [
           "Text"
-        ]
-      },
-      "nullable": []
-    }
-  },
-  "d64ed8a42ff8d8ff0db5a409c9d2ea7d61ea43c90e548a29a3a5a47679dbcd4b": {
-    "query": "INSERT INTO mcaptcha_users \n        (name , password, email, secret) VALUES ($1, $2, $3, $4)",
-    "describe": {
-      "columns": [],
-      "parameters": {
-        "Left": [
-          "Varchar",
-          "Text",
-          "Varchar",
-          "Varchar"
         ]
       },
       "nullable": []

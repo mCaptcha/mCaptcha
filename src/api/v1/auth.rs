@@ -154,8 +154,8 @@ pub mod runners {
             let res;
             if let Some(email) = &payload.email {
                 res = sqlx::query!(
-                    "INSERT INTO mcaptcha_users 
-        (name , password, email, secret) VALUES ($1, $2, $3, $4)",
+                    "insert into mcaptcha_users 
+        (name , password, email, secret) values ($1, $2, $3, $4)",
                     &username,
                     &hash,
                     &email,
@@ -182,7 +182,7 @@ pub mod runners {
                     if msg.contains("mcaptcha_users_name_key") {
                         return Err(ServiceError::UsernameTaken);
                     } else if msg.contains("mcaptcha_users_email_key") {
-                        return Err(ServiceError::EmailTaken);
+                        return Err(ServiceError::UsernameTaken);
                     } else if msg.contains("mcaptcha_users_secret_key") {
                         continue;
                     } else {
