@@ -101,9 +101,6 @@
 <span id="98"> 98</span>
 <span id="99"> 99</span>
 <span id="100">100</span>
-<span id="101">101</span>
-<span id="102">102</span>
-<span id="103">103</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -167,14 +164,13 @@
             <span class="ident">PAGES</span>.<span class="ident">home</span>,
             <span class="ident">PAGES</span>.<span class="ident">panel</span>.<span class="ident">sitekey</span>.<span class="ident">add</span>,
             <span class="ident">PAGES</span>.<span class="ident">panel</span>.<span class="ident">sitekey</span>.<span class="ident">list</span>,
+            <span class="ident">PAGES</span>.<span class="ident">panel</span>.<span class="ident">notifications</span>,
         ];
 
         <span class="kw">for</span> <span class="ident">url</span> <span class="kw">in</span> <span class="ident">urls</span>.<span class="ident">iter</span>() {
-            <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-                <span class="kw-2">&amp;</span><span class="ident">app</span>,
-                <span class="ident">test::TestRequest::get</span>().<span class="ident">uri</span>(<span class="ident">url</span>).<span class="ident">to_request</span>(),
-            )
-            .<span class="kw">await</span>;
+            <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span>
+                <span class="ident">test::call_service</span>(<span class="kw-2">&amp;</span><span class="ident">app</span>, <span class="ident">test::TestRequest::get</span>().<span class="ident">uri</span>(<span class="ident">url</span>).<span class="ident">to_request</span>())
+                    .<span class="kw">await</span>;
             <span class="macro">assert_eq!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::FOUND</span>);
 
             <span class="kw">let</span> <span class="ident">authenticated_resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
@@ -198,11 +194,9 @@
         <span class="kw">let</span> <span class="ident">urls</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="ident">PAGES</span>.<span class="ident">auth</span>.<span class="ident">login</span>, <span class="ident">PAGES</span>.<span class="ident">auth</span>.<span class="ident">join</span>];
 
         <span class="kw">for</span> <span class="ident">url</span> <span class="kw">in</span> <span class="ident">urls</span>.<span class="ident">iter</span>() {
-            <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-                <span class="kw-2">&amp;</span><span class="ident">app</span>,
-                <span class="ident">test::TestRequest::get</span>().<span class="ident">uri</span>(<span class="ident">url</span>).<span class="ident">to_request</span>(),
-            )
-            .<span class="kw">await</span>;
+            <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span>
+                <span class="ident">test::call_service</span>(<span class="kw-2">&amp;</span><span class="ident">app</span>, <span class="ident">test::TestRequest::get</span>().<span class="ident">uri</span>(<span class="ident">url</span>).<span class="ident">to_request</span>())
+                    .<span class="kw">await</span>;
 
             <span class="macro">assert_eq!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::OK</span>);
         }

@@ -212,6 +212,8 @@
 <span id="209">209</span>
 <span id="210">210</span>
 <span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -358,17 +360,19 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Data</span> {
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
-    <span class="doccomment">/// create new instance of app data</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">creds</span> <span class="op">=</span> <span class="ident">ConfigBuilder::default</span>()
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_creds</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Config</span> {
+        <span class="ident">ConfigBuilder::default</span>()
             .<span class="ident">username_case_mapped</span>(<span class="bool-val">true</span>)
             .<span class="ident">profanity</span>(<span class="bool-val">true</span>)
             .<span class="ident">blacklist</span>(<span class="bool-val">true</span>)
             .<span class="ident">password_policy</span>(<span class="ident">PasswordPolicy::default</span>())
             .<span class="ident">build</span>()
-            .<span class="ident">unwrap</span>();
-
+            .<span class="ident">unwrap</span>()
+    }
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
+    <span class="doccomment">/// create new instance of app data</span>
+    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">creds</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::get_creds</span>();
         <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">creds</span>.<span class="ident">clone</span>();
 
         <span class="kw">let</span> <span class="ident">init</span> <span class="op">=</span> <span class="ident">thread::spawn</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {

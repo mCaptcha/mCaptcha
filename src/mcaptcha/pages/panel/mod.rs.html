@@ -72,6 +72,10 @@
 <span id="69">69</span>
 <span id="70">70</span>
 <span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -94,6 +98,7 @@
 <span class="kw">use</span> <span class="ident">actix_web</span>::{<span class="ident">HttpResponse</span>, <span class="ident">Responder</span>};
 <span class="kw">use</span> <span class="ident">sailfish::TemplateOnce</span>;
 
+<span class="kw">mod</span> <span class="ident">notifications</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">sitekey</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::errors::PageResult</span>;
@@ -126,6 +131,7 @@
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">services</span>(<span class="ident">cfg</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">actix_web::web::ServiceConfig</span>) {
     <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">panel</span>);
     <span class="ident">sitekey::services</span>(<span class="ident">cfg</span>);
+    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">notifications::notifications</span>);
 }
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">routes</span> {
@@ -133,6 +139,7 @@
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Panel</span> {
         <span class="kw">pub</span> <span class="ident">home</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
         <span class="kw">pub</span> <span class="ident">sitekey</span>: <span class="ident">Sitekey</span>,
+        <span class="kw">pub</span> <span class="ident">notifications</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
     }
 
     <span class="kw">impl</span> <span class="ident">Panel</span> {
@@ -140,6 +147,7 @@
             <span class="ident">Panel</span> {
                 <span class="ident">home</span>: <span class="string">&quot;/&quot;</span>,
                 <span class="ident">sitekey</span>: <span class="ident">Sitekey::new</span>(),
+                <span class="ident">notifications</span>: <span class="string">&quot;/notifications&quot;</span>,
             }
         }
     }
