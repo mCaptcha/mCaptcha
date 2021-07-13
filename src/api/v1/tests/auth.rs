@@ -59,7 +59,7 @@ async fn auth_works() {
     signin(EMAIL, PASSWORD).await;
 
     // 2. check if duplicate username is allowed
-    let msg = Register {
+    let mut msg = Register {
         username: NAME.into(),
         password: PASSWORD.into(),
         confirm_password: PASSWORD.into(),
@@ -71,6 +71,18 @@ async fn auth_works() {
         ROUTES.auth.register,
         &msg,
         ServiceError::UsernameTaken,
+        StatusCode::BAD_REQUEST,
+    )
+    .await;
+
+    let name = format!("{}dupemail", NAME);
+    msg.username = name;
+    bad_post_req_test(
+        NAME,
+        PASSWORD,
+        ROUTES.auth.register,
+        &msg,
+        ServiceError::EmailTaken,
         StatusCode::BAD_REQUEST,
     )
     .await;

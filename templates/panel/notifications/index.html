@@ -1,24 +1,36 @@
-<. include!("../../components/headers/index.html"); .> 
-<. include!("../navbar/index.html"); .>
+<. include!("../../components/headers/index.html"); .> <.
+include!("../navbar/index.html"); .>
 <div class="tmp-layout">
-<. include!("../header/index.html"); .>
-
-<main class="panel-main">
-  <!-- Main content container -->
-  <div class="inner-container">
-    <!-- Main menu/ important actions roaster -->
-
-    <ul class="sitekey-list__box">
-      <h1 class="sitekey-list__title">Your Notifications</h1>
-      <. for notification in n.iter() { .>
-        <li class="sitekey-list__item">
-            <h3><.= notification.heading .> </h3>
-            <p>From: <.= notification.name .> </p>
-            <p>Received: <.= notification.received .> </p>
-            <p>Message: <.= notification.message .> </p>
-      <. } .>
-    </ul>
-
-  </div>
-  <!-- end of container -->
-<. include!("../../components/footers.html"); .>
+  <. include!("../header/index.html"); .>
+  <main class="panel-main">
+    <!-- Main content container -->
+      <div class="inner-container">
+        <!-- Main menu/ important actions roaster -->
+        <table class="notification__table">
+          <thead class="notification__heading">
+            <th class="notification__title-text">Your Notifications</th>
+          </thead>
+          <tbody class="notification__body">
+            <. for notification in n.iter() { .>
+            <tr class="notification__item">
+              <td class="notification__mark-reak">
+                <button class="notification__mark-read-btn">tick</button>
+              </td>
+              <td>
+                <h3 class="notification__item-heading">
+                  <.= notification.heading .>
+                </h3>
+                <p class="notification__item-text"><.= notification.message .></p>
+              </td>
+              <td class="notification__sender"><.= notification.name .></td>
+              <td class="notification__received"><.= notification.received .></td>
+            </tr>
+            <. } .>
+          </tbody>
+        </table>
+      </div>
+      <!-- end of container -->
+      <. include!("../../components/footers.html"); .>
+    </div>
+  </main>
+</div>

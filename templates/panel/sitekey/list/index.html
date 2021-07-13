@@ -12,16 +12,10 @@
       <. for sitekey in sitekeys.iter() { .>
       <a href="/sitekey/<.= sitekey.key .>/view" class="sitekey-list__item-container">
         <li class="sitekey-list__item">
-
-          <span class="sitekey-list__name">
-            <.= sitekey.name .>
-          </span>
-          <span class="sitekey-list__key">
-            <.= sitekey.key .>
-          </span>
+          <span class="sitekey-list__name"><.= sitekey.name .></span>
+          <span class="sitekey-list__key"><.= sitekey.key .></span>
         </li>
       </a>
-
       <. } .>
     </ul>
   </div>
