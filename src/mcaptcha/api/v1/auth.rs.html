@@ -419,7 +419,7 @@
                     <span class="kw">if</span> <span class="ident">msg</span>.<span class="ident">contains</span>(<span class="string">&quot;mcaptcha_users_name_key&quot;</span>) {
                         <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ServiceError::UsernameTaken</span>);
                     } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">msg</span>.<span class="ident">contains</span>(<span class="string">&quot;mcaptcha_users_email_key&quot;</span>) {
-                        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ServiceError::UsernameTaken</span>);
+                        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ServiceError::EmailTaken</span>);
                     } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">msg</span>.<span class="ident">contains</span>(<span class="string">&quot;mcaptcha_users_secret_key&quot;</span>) {
                         <span class="kw">continue</span>;
                     } <span class="kw">else</span> {
