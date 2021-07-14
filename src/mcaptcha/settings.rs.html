@@ -250,7 +250,7 @@
 <span class="kw">use</span> <span class="ident">std::path::Path</span>;
 
 <span class="kw">use</span> <span class="ident">config</span>::{<span class="ident">Config</span>, <span class="ident">ConfigError</span>, <span class="ident">Environment</span>, <span class="ident">File</span>};
-<span class="kw">use</span> <span class="ident">log::debug</span>;
+<span class="kw">use</span> <span class="ident">log</span>::{<span class="ident">debug</span>, <span class="ident">warn</span>};
 <span class="kw">use</span> <span class="ident">serde::Deserialize</span>;
 <span class="kw">use</span> <span class="ident">url::Url</span>;
 
@@ -370,7 +370,7 @@
             <span class="prelude-val">Ok</span>(<span class="ident">val</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">s</span>.<span class="ident">set</span>(<span class="string">&quot;server.port&quot;</span>, <span class="ident">val</span>).<span class="ident">unwrap</span>();
             }
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">println!</span>(<span class="string">&quot;couldn&#39;t interpret PORT: {}&quot;</span>, <span class="ident">e</span>),
+            <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">warn!</span>(<span class="string">&quot;couldn&#39;t interpret PORT: {}&quot;</span>, <span class="ident">e</span>),
         }
 
         <span class="kw">match</span> <span class="ident">env::var</span>(<span class="string">&quot;DATABASE_URL&quot;</span>) {
@@ -379,7 +379,7 @@
                 <span class="kw">let</span> <span class="ident">database_conf</span> <span class="op">=</span> <span class="ident">DatabaseBuilder::extract_database_url</span>(<span class="kw-2">&amp;</span><span class="ident">url</span>);
                 <span class="ident">set_from_database_url</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">s</span>, <span class="kw-2">&amp;</span><span class="ident">database_conf</span>);
             }
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">println!</span>(<span class="string">&quot;couldn&#39;t interpret DATABASE_URL: {}&quot;</span>, <span class="ident">e</span>),
+            <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">warn!</span>(<span class="string">&quot;couldn&#39;t interpret DATABASE_URL: {}&quot;</span>, <span class="ident">e</span>),
         }
 
         <span class="ident">set_database_url</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">s</span>);

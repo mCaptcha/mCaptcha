@@ -173,6 +173,9 @@
 <span id="170">170</span>
 <span id="171">171</span>
 <span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
  * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -274,6 +277,9 @@
 <span class="attribute">#[<span class="ident">actix_web::main</span>]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">main</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std::io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">use</span> <span class="ident">api::v1</span>;
+
+    <span class="ident">env::set_var</span>(<span class="string">&quot;RUST_LOG&quot;</span>, <span class="string">&quot;info&quot;</span>);
+
     <span class="ident">pretty_env_logger::init</span>();
     <span class="macro">info!</span>(
         <span class="string">&quot;{}: {}.\nFor more information, see: {}\nBuild info:\nVersion: {} commit: {}&quot;</span>,
