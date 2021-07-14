@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["PAGE",""]],"struct":[["IndexPage",""],["notifications",""]]});
+initSidebarItems({"constant":[["DAY",""],["HOUR",""],["MINUTE",""],["PAGE",""],["WEEK",""]],"struct":[["IndexPage",""],["Notification",""],["notifications",""]]});
