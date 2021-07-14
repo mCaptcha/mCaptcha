@@ -51,6 +51,7 @@ impl From<Notification> for NotificationResp {
         }
     }
 }
+
 /// route handler that gets all unread notifications
 #[my_codegen::get(
     path = "crate::V1_API_ROUTES.notifications.get",
@@ -63,7 +64,14 @@ pub async fn get_notification(
     let receiver = id.identity().unwrap();
     // TODO handle error where payload.to doesnt exist
 
-    let resp = runner::get_notification(&data, &receiver).await?;
+    let mut notifications = runner::get_notification(&data, &receiver).await?;
+    let resp: Vec<NotificationResp> = notifications
+        .drain(0..)
+        .map(|x| {
+            let y: NotificationResp = x.into();
+            y
+        })
+        .collect();
 
     Ok(HttpResponse::Ok().json(resp))
 }
@@ -73,10 +81,10 @@ pub mod runner {
     pub async fn get_notification(
         data: &AppData,
         receiver: &str,
-    ) -> ServiceResult<Vec<NotificationResp>> {
+    ) -> ServiceResult<Vec<Notification>> {
         // TODO handle error where payload.to doesnt exist
 
-        let mut notifications = sqlx::query_file_as!(
+        let notifications = sqlx::query_file_as!(
             Notification,
             "src/api/v1/notifications/get_all_unread.sql",
             &receiver
@@ -84,15 +92,7 @@ pub mod runner {
         .fetch_all(&data.db)
         .await?;
 
-        let resp = notifications
-            .drain(0..)
-            .map(|x| {
-                let y: NotificationResp = x.into();
-                y
-            })
-            .collect();
-
-        Ok(resp)
+        Ok(notifications)
     }
 }
 

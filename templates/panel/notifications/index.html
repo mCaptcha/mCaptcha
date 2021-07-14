@@ -22,8 +22,8 @@ include!("../navbar/index.html"); .>
                 <p class="notification__item-text"><.= notification.message .></p>
 				<div class="notification-data__container">
 				  <span class="notification__sender"><.= notification.name .></span>
-				  <span>.</span>
-				  <span class="notification__received"><.= notification.received .></span>
+				  <span>&#183;</span>
+				  <span class="notification__received"><.= notification.print_date() .></span>
 				</div>
 
               </td>

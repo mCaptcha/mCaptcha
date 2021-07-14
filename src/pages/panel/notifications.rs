@@ -18,21 +18,69 @@
 use actix_identity::Identity;
 use actix_web::{HttpResponse, Responder};
 use sailfish::TemplateOnce;
+use sqlx::types::time::OffsetDateTime;
 
-use crate::api::v1::notifications::get::{runner, NotificationResp};
+use crate::api::v1::notifications::get::{self, runner};
 use crate::errors::PageResult;
 use crate::AppData;
+
+const MINUTE: i64 = 60;
+const HOUR: i64 = MINUTE * 60;
+const DAY: i64 = HOUR * 24;
+const WEEK: i64 = DAY * 7;
 
 #[derive(TemplateOnce)]
 #[template(path = "panel/notifications/index.html")]
 pub struct IndexPage {
     /// notifications
-    n: Vec<NotificationResp>,
+    n: Vec<Notification>,
 }
 
 impl IndexPage {
-    fn new(n: Vec<NotificationResp>) -> Self {
+    fn new(n: Vec<Notification>) -> Self {
         IndexPage { n }
+    }
+}
+
+pub struct Notification {
+    pub name: String,
+    pub heading: String,
+    pub message: String,
+    pub received: OffsetDateTime,
+    pub id: i32,
+}
+
+impl From<get::Notification> for Notification {
+    fn from(n: get::Notification) -> Self {
+        Notification {
+            name: n.name.unwrap(),
+            heading: n.heading.unwrap(),
+            received: n.received.unwrap(),
+            id: n.id.unwrap(),
+            message: n.message.unwrap(),
+        }
+    }
+}
+
+impl Notification {
+    pub fn print_date(&self) -> String {
+        let date = self.received;
+        let timestamp = self.received.unix_timestamp();
+        let now = OffsetDateTime::now_utc().unix_timestamp();
+
+        let difference = now - timestamp;
+
+        if difference >= 3 * WEEK {
+            date.format("%d-%m-%y")
+        } else if (DAY..(3 * WEEK)).contains(&difference) {
+            format!("{} days ago", date.hour())
+        } else if (HOUR..DAY).contains(&difference) {
+            format!("{} hours ago", date.hour())
+        } else if (MINUTE..HOUR).contains(&difference) {
+            format!("{} minutes ago", date.minute())
+        } else {
+            format!("{} seconds ago", date.second())
+        }
     }
 }
 
@@ -43,10 +91,56 @@ pub async fn notifications(data: AppData, id: Identity) -> PageResult<impl Respo
     let receiver = id.identity().unwrap();
     // TODO handle error where payload.to doesnt exist
 
-    let notifications = runner::get_notification(&data, &receiver).await?;
+    let mut notifications = runner::get_notification(&data, &receiver).await?;
+    let notifications = notifications.drain(0..).map(|x| x.into()).collect();
 
     let body = IndexPage::new(notifications).render_once().unwrap();
     Ok(HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
         .body(body))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn print_date_test() {
+        let mut n = Notification {
+            received: OffsetDateTime::now_utc(),
+            name: String::default(),
+            heading: String::default(),
+            message: String::default(),
+            id: 1,
+        };
+
+        let timestamp = n.received.unix_timestamp();
+        println!("timestamp: {}", timestamp);
+
+        // seconds test
+        assert!(n.print_date().contains("seconds ago"));
+        n.received = OffsetDateTime::from_unix_timestamp(timestamp - 5);
+        assert!(n.print_date().contains("seconds ago"));
+
+        // minutes test
+        n.received = OffsetDateTime::from_unix_timestamp(timestamp - MINUTE * 2);
+        assert!(n.print_date().contains("minutes ago"));
+        n.received = OffsetDateTime::from_unix_timestamp(timestamp - MINUTE * 56);
+        assert!(n.print_date().contains("minutes ago"));
+
+        // hours test
+        n.received = OffsetDateTime::from_unix_timestamp(timestamp - HOUR);
+        assert!(n.print_date().contains("hours ago"));
+        n.received = OffsetDateTime::from_unix_timestamp(timestamp - HOUR * 23);
+        assert!(n.print_date().contains("hours ago"));
+
+        // days test
+        n.received = OffsetDateTime::from_unix_timestamp(timestamp - 2 * WEEK);
+        assert!(n.print_date().contains("days ago"));
+
+        // date test
+        n.received = OffsetDateTime::from_unix_timestamp(timestamp - 6 * WEEK);
+        let date = n.received.format("%d-%m-%y");
+        assert!(n.print_date().contains(&date))
+    }
 }
