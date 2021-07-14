@@ -33,6 +33,7 @@ import './components/error/main.scss';
 import './components/showPassword/main.scss';
 import './panel/css/main.scss';
 import './panel/navbar/main.scss';
+import './panel/notifications/main.scss';
 import './panel/header/taskbar/main.scss';
 import './panel/help-banner/main.scss';
 import './panel/sitekey/add/css/main.scss';

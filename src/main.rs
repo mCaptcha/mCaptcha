@@ -98,6 +98,9 @@ pub type AppData = actix_web::web::Data<Arc<crate::data::Data>>;
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     use api::v1;
+
+    env::set_var("RUST_LOG", "info");
+
     pretty_env_logger::init();
     info!(
         "{}: {}.\nFor more information, see: {}\nBuild info:\nVersion: {} commit: {}",

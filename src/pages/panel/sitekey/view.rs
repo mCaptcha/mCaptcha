@@ -125,7 +125,7 @@ mod test {
 
         let app = get_app!(data).await;
 
-        let url = format!("/sitekey/{}/view", &key.key);
+        let url = format!("/sitekey/{}/", &key.key);
 
         let list_sitekey_resp = test::call_service(
             &app,

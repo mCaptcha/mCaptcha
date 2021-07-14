@@ -18,7 +18,7 @@ use std::env;
 use std::path::Path;
 
 use config::{Config, ConfigError, Environment, File};
-use log::debug;
+use log::{debug, warn};
 use serde::Deserialize;
 use url::Url;
 
@@ -138,7 +138,7 @@ impl Settings {
             Ok(val) => {
                 s.set("server.port", val).unwrap();
             }
-            Err(e) => println!("couldn't interpret PORT: {}", e),
+            Err(e) => warn!("couldn't interpret PORT: {}", e),
         }
 
         match env::var("DATABASE_URL") {
@@ -147,7 +147,7 @@ impl Settings {
                 let database_conf = DatabaseBuilder::extract_database_url(&url);
                 set_from_database_url(&mut s, &database_conf);
             }
-            Err(e) => println!("couldn't interpret DATABASE_URL: {}", e),
+            Err(e) => warn!("couldn't interpret DATABASE_URL: {}", e),
         }
 
         set_database_url(&mut s);

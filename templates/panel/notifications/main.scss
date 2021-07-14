@@ -15,14 +15,42 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-const ROUTES = {
-  registerUser: '/join/',
-  loginUser: '/login/',
-  signoutUser: '/api/v1/signout',
-  panelHome: '/',
-  docsHome: '/docs/',
-  listSitekey: (key: string) => `/sitekey/${key}/`,
-  addSiteKey: '/sitekey/add',
-};
+@import '../../vars';
 
-export default ROUTES;
+.notification__table {
+  background-color: $white;
+  width: 90%;
+}
+
+.notification__title-text {
+  padding-left: 10px;
+  font-size: 1rem;
+  padding: 0.75rem 1.25rem;
+  box-sizing: border-box;
+  text-align: left;
+  width: 100%;
+  border-bottom: 0.1px solid $light-grey;
+}
+
+.notification__mark-read-btn {
+  background: none;
+  border: none;
+  display: flex;
+  border-radius: 50px;
+}
+
+.notification__mark-read-btn:hover {
+  cursor: grab;
+  background-color: $light-grey;
+}
+
+.notification-data__container {
+	font-size: 0.7rem;
+}
+
+.notification__mark-read {
+  color: $green;
+  margin: auto;
+  filter: invert(58%) sepia(60%) saturate(331%) hue-rotate(76deg)
+    brightness(91%) contrast(92%);
+}

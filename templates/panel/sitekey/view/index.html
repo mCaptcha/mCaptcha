@@ -8,15 +8,11 @@
   <!-- Main content container -->
   <div class="inner-container">
     <!-- Main menu/ important actions roaster -->
-          
-<form class="sitekey-form" action="<.= crate::V1_API_ROUTES.levels.add .>" method="post">
-	<h1 class="form__title">
-		Sitekey: <.= name .> 
-		<a href="<.= crate::WIDGET_ROUTES.verification_widget .>/?sitekey=<.= key.>"
-    >Click here to see CAPTCHA widget in action</a> 
-
-
-	</h1>
+	<form class="sitekey-form" action="<.= crate::V1_API_ROUTES.levels.add .>" method="post">
+		<h1 class="form__title">Sitekey: <.= name .> 
+			<a href="<.= crate::WIDGET_ROUTES.verification_widget .>/?sitekey=<.= key.>"
+		>Click here to see CAPTCHA widget in action</a> 
+		</h1>
     <label class="sitekey-form__label" for="description">
 		Description
 	  <input
@@ -31,7 +27,6 @@
 		<. } .>
 	  />
 	</label>
-
     <label class="sitekey-form__label" for="duration">
 		Cooldown Duratoin(in seconds)
 	  <input

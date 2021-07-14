@@ -43,14 +43,17 @@
   opacity: 0.8;
   width: 1.5rem;
   margin: auto 20px;
-}
-
-.taskbar__icon {
+  border-radius: 50px;
   color: $light-text;
 }
 
 .taskbar__icon:hover {
   cursor: grab;
+  background-color: $light-grey;
+  color: $green;
+  background-color: $light-grey;
+  filter: invert(58%) sepia(60%) saturate(331%) hue-rotate(76deg)
+    brightness(91%) contrast(92%);
 }
 
 .taskbar__add-site {

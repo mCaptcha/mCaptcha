@@ -31,7 +31,7 @@ pub mod routes {
             Sitekey {
                 list: "/sitekey/list",
                 add: "/sitekey/add",
-                view: "/sitekey/{key}/view",
+                view: "/sitekey/{key}",
             }
         }
     }

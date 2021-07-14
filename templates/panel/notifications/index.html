@@ -8,22 +8,36 @@ include!("../navbar/index.html"); .>
         <!-- Main menu/ important actions roaster -->
         <table class="notification__table">
           <thead class="notification__heading">
-            <th class="notification__title-text">Your Notifications</th>
+            <tr>
+              <th colspan="4" class="notification__title-text">Your Notifications</th>
+            </tr>
           </thead>
           <tbody class="notification__body">
             <. for notification in n.iter() { .>
             <tr class="notification__item">
-              <td class="notification__mark-reak">
-                <button class="notification__mark-read-btn">tick</button>
-              </td>
               <td>
                 <h3 class="notification__item-heading">
                   <.= notification.heading .>
                 </h3>
                 <p class="notification__item-text"><.= notification.message .></p>
+				<div class="notification-data__container">
+				  <span class="notification__sender"><.= notification.name .></span>
+				  <span>.</span>
+				  <span class="notification__received"><.= notification.received .></span>
+				</div>
+
               </td>
-              <td class="notification__sender"><.= notification.name .></td>
-              <td class="notification__received"><.= notification.received .></td>
+			<td class="notification__mark-read-col">
+                <button class="notification__mark-read-btn">
+                  <img 
+                    class="notification__mark-read"
+                    src="<.= crate::FILES
+                         .get("./static/cache/img/svg/check.svg")
+                         .unwrap() .>"
+                    alt="Mark Read" 
+                  />
+				</button>
+              </td>
             </tr>
             <. } .>
           </tbody>
