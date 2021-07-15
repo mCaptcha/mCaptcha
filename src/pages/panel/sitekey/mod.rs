@@ -29,8 +29,8 @@ pub mod routes {
     impl Sitekey {
         pub const fn new() -> Self {
             Sitekey {
-                list: "/sitekey/list",
-                add: "/sitekey/add",
+                list: "/sitekeys",
+                add: "/sitekeys/add",
                 view: "/sitekey/{key}",
             }
         }

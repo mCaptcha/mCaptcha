@@ -15,19 +15,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-@mixin violet-button-hover {
-  background-color: $light-violet;
-  cursor: pointer;
-  transform: translateY(-5px);
-}
-
-@mixin violet-button {
-  background-color: $violet;
-  color: $light-text;
-  border-radius: 5px;
-  border: 1px $light-grey solid;
-  padding: 5px;
-  font-size: 20px;
-  min-height: 45px;
-  width: 125px;
+.sitekey-list__name {
+  min-width: 120px;
 }

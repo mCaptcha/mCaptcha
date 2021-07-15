@@ -1,6 +1,6 @@
 .button:hover {
   background-color: #993299;
-  cursor: grab;
+  cursor: pointer;
   transform: translateY(-5px);
 }
 

@@ -85,6 +85,8 @@ lettre = { version = "0.10.0-rc.3", features = [
 "smtp-transport"
 ]}
 
+openssl = { version = "0.10.29", features = ["vendored"] }
+
 
 [build-dependencies]
 serde_yaml = "0.8.17"

@@ -34,7 +34,7 @@
 }
 
 .nav__hamburger-menu:hover {
-  cursor: grab;
+  cursor: pointer;
 }
 
 .nav__hamburger-menu:hover > span {
@@ -75,5 +75,5 @@
 
 .secondary-menu__brand-name:hover {
   color: $light-text;
-  cursor: grab;
+  cursor: pointer;
 }

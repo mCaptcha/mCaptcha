@@ -18,38 +18,87 @@
 @import '../../../../reset';
 @import '../../../../vars';
 @import '../../../../components/box';
+@import '../../../../components/table/main';
 
-.sitekey-list__box {
-  @include box;
-  padding-bottom: 0px;
+.sitekey__table {
+  @include table;
+  margin: auto;
 }
 
-.sitekey-list__title {
-  @include box-title;
-}
-
-.sitekey-list__item-container {
-  display: block;
-  width: 100%;
-  box-sizing: border-box;
-  border-bottom: 0.1px solid $light-grey;
-  padding: 20px;
-  color: $black-text;
-}
-
-.sitekey-list__item {
-  display: flex;
-  width: 100%;
-}
-
-.sitekey-list__item-container:hover {
-  background-color: $light-grey;
+.sitekey__table-title-text {
+  @include table__title-text;
 }
 
 .sitekey-list__name {
-  flex: 3;
+  min-width: 450px;
 }
 
 .sitekey-list__key {
-  flex: 1;
+  width: 10px;
+}
+
+@mixin copy-icon-base {
+  margin: auto;
+  padding: 5px;
+}
+
+.sitekey__copy-icon {
+  @include copy-icon-base;
+}
+
+.sitekey__copy-icon:hover {
+  cursor: pointer;
+  filter: invert(17%) sepia(93%) saturate(5039%) hue-rotate(204deg)
+    brightness(100%) contrast(98%);
+}
+
+.sitekey__copy-done-icon {
+  @include copy-icon-base;
+  display: none;
+  filter: invert(58%) sepia(60%) saturate(331%) hue-rotate(76deg)
+    brightness(91%) contrast(92%);
+}
+
+.sitekey__key-container {
+  border-radius: 10px;
+  background: $backdrop;
+  margin: 2px;
+  padding: 5px;
+  display: flex;
+  max-width: 150px;
+  border: 0.1px solid rgba(0, 0, 0, 0.125);
+}
+
+.sitekey__widget-link {
+  border-left: 0.1px solid $light-grey;
+  margin: 5;
+  margin: auto;
+  padding-left: 20px;
+  height: 100%;
+  padding-right: 15px;
+}
+
+.sitekey-list__sitekey-link {
+  display: inline-block;
+  width: 100%;
+  text-decoration: none;
+  color: $blue-link;
+  padding: 20px;
+}
+
+.sitekey-list__sitekey-link:visited {
+  color: $blue-link;
+}
+
+.sitekey-list__sitekey-link:hover {
+  background-color: $light-grey;
+  cursor: pointer;
+}
+
+.sitekey__widget-link {
+  color: $blue-link;
+}
+
+.sitekey__widget-link:visited {
+  color: $blue-link;
 }

@@ -56,7 +56,7 @@ const submit = async (e: Event) => {
   const res = await fetch(formUrl, genJsonPayload(payload));
   if (res.ok) {
     const data = await res.json();
-    window.location.assign(VIEWS.listSitekey(data.key));
+    window.location.assign(VIEWS.viewSitekey(data.key));
   } else {
     const err = await res.json();
     createError(err.error);

@@ -15,19 +15,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-@mixin violet-button-hover {
-  background-color: $light-violet;
-  cursor: pointer;
-  transform: translateY(-5px);
+@import '../../vars';
+
+@mixin table {
+  background-color: $white;
+  width: 90%;
+  padding: 0 10px;
 }
 
-@mixin violet-button {
-  background-color: $violet;
-  color: $light-text;
-  border-radius: 5px;
-  border: 1px $light-grey solid;
-  padding: 5px;
-  font-size: 20px;
-  min-height: 45px;
-  width: 125px;
+@mixin table__title-text {
+  font-size: 1rem;
+  padding: 0.75rem 0.5rem;
+  box-sizing: border-box;
+  text-align: left;
+  width: 100%;
+  border-bottom: 0.1px solid $light-grey;
 }

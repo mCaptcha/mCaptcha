@@ -21,6 +21,7 @@ import * as login from './auth/login/ts/';
 import * as register from './auth/register/ts/';
 import * as panel from './panel/ts/index';
 import * as addSiteKey from './panel/sitekey/add/ts';
+import * as listSitekeys from './panel/sitekey/list/ts';
 import {MODE} from './logger';
 import log from './logger';
 
@@ -48,6 +49,7 @@ const router = new Router();
 router.register(VIEWS.panelHome, panel.index);
 router.register(VIEWS.registerUser, register.index);
 router.register(VIEWS.loginUser, login.index);
+router.register(VIEWS.listSitekey, listSitekeys.index);
 router.register(VIEWS.addSiteKey, addSiteKey.index);
 
 try {

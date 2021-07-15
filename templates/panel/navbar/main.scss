@@ -57,7 +57,7 @@
 }
 .secondary-menu__heading:hover {
   color: $green;
-  cursor: grab;
+  cursor: pointer;
 }
 
 .secondary-menu__logo {
@@ -99,7 +99,7 @@
 
 .secondary-menu__item-link:hover {
   color: $green;
-  cursor: grab;
+  cursor: pointer;
   filter: invert(58%) sepia(60%) saturate(331%) hue-rotate(76deg)
     brightness(91%) contrast(92%);
 }

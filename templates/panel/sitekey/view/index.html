@@ -8,47 +8,51 @@
   <!-- Main content container -->
   <div class="inner-container">
     <!-- Main menu/ important actions roaster -->
-	<form class="sitekey-form" action="<.= crate::V1_API_ROUTES.levels.add .>" method="post">
-		<h1 class="form__title">Sitekey: <.= name .> 
-			<a href="<.= crate::WIDGET_ROUTES.verification_widget .>/?sitekey=<.= key.>"
-		>Click here to see CAPTCHA widget in action</a> 
-		</h1>
-    <label class="sitekey-form__label" for="description">
-		Description
-	  <input
-		readonly="readonly"
-		class="sitekey-form__input"
-		type="text"
-		name="description"
-		id="description"
-		required
-		<. if !name.trim().is_empty() { .>
-		value="<.= name .>"
-		<. } .>
-	  />
-	</label>
-    <label class="sitekey-form__label" for="duration">
-		Cooldown Duratoin(in seconds)
-	  <input
-		readonly="readonly"
-		class="sitekey-form__input"
-		type="number"
-		name="duration"
-		id="duration"
-		min=0
-		required
-		value="<.= duration .>"
-	  />
-	</label>
+    <form class="sitekey-form" action="<.= crate::V1_API_ROUTES.levels.add .>" method="post">
+	  <h1 class="form__title">Sitekey: <.= name .> 
+        <a 
+          target="_blank"
+		  href="<.= crate::WIDGET_ROUTES.verification_widget .>/?sitekey=<.= key.>"
+        >View widget
+          <img class="sitekey-form__widget-link" 
+            src="<.= crate::FILES.get("./static/cache/img/svg/external-link.svg").unwrap() .>"
+            alt="View widget deployment" 
+          />
+        </a> 
+	  </h1>
+      <label class="sitekey-form__label" for="description">
+          Description
+        <input
+          readonly="readonly"
+          class="sitekey-form__input"
+          type="text"
+          name="description"
+          id="description"
+          required
+          <. if !name.trim().is_empty() { .>
+          value="<.= name .>"
+          <. } .>
+        />
+      </label>
+      <label class="sitekey-form__label" for="duration">
+          Cooldown Duratoin(in seconds)
+        <input
+          readonly="readonly"
+          class="sitekey-form__input"
+          type="number"
+          name="duration"
+          id="duration"
+          min=0
+          required
+          value="<.= duration .>"
+        />
+      </label>
 
+      <. for (count, level) in levels.iter().enumerate() { .>
+        <. include!("./existing-level.html"); .> 
+      <. } .>
 
-  <. for (count, level) in levels.iter().enumerate() { .>
-    <. include!("./existing-level.html"); .> 
-  <. } .>
-
-</form>
-
-
+    </form>
   </div>
   <!-- end of container -->
 <. include!("../../../components/footers.html"); .>

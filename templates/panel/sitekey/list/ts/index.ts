@@ -15,4 +15,39 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export const index = () => {};
+export const index = () => {
+  registerCopySitekey();
+};
+
+const SITEKEY_COPY_ICON = `sitekey__copy-icon`;
+const SITEKEY_COPY_DONE_ICON = `sitekey__copy-done-icon`;
+
+const registerCopySitekey = () => {
+  const icons = document.querySelectorAll(`.${SITEKEY_COPY_ICON}`);
+  icons.forEach(icon => {
+    icon.addEventListener('click', e => copySitekey(e));
+  });
+};
+
+/*
+ * Copy sitekey to clipboard
+ */
+const copySitekey = async (e: Event) => {
+  const image = <HTMLElement>e.target;
+  if (!image.classList.contains(SITEKEY_COPY_ICON)) {
+    throw new Error(
+      'This method should only be called when sitekey copy button/icon is clicked',
+    );
+  }
+  const copyDoneIcon = <HTMLElement>(
+    image.parentElement.querySelector(`.${SITEKEY_COPY_DONE_ICON}`)
+  );
+  const sitekey = image.dataset.sitekey;
+  await navigator.clipboard.writeText(sitekey);
+  image.style.display = 'none';
+  copyDoneIcon.style.display = 'block';
+  setTimeout(() => {
+    copyDoneIcon.style.display = 'none';
+    image.style.display = 'block';
+  }, 1200);
+};

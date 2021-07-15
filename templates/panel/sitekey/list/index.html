@@ -1,23 +1,53 @@
-<. include!("../../../components/headers/index.html"); .> 
-<. include!("../../navbar/index.html"); .>
+<. include!("../../../components/headers/index.html"); .> <.
+include!("../../navbar/index.html"); .>
 <div class="tmp-layout">
-<. include!("../../header/index.html"); .>
-<main class="panel-main">
-  <.include!("../../help-banner/index.html"); .>
-  <!-- Main content container -->
-  <div class="inner-container">
-    <!-- Main menu/ important actions roaster -->
-    <ul class="sitekey-list__box">
-      <h1 class="sitekey-list__title">Your Sitekeys</h1>
-      <. for sitekey in sitekeys.iter() { .>
-      <a href="/sitekey/<.= sitekey.key .>/" class="sitekey-list__item-container">
-        <li class="sitekey-list__item">
-          <span class="sitekey-list__name"><.= sitekey.name .></span>
-          <span class="sitekey-list__key"><.= sitekey.key .></span>
-        </li>
-      </a>
-      <. } .>
-    </ul>
-  </div>
-  <!-- end of container -->
-<. include!("../../../components/footers.html"); .>
+  <. include!("../../header/index.html"); .>
+  <main class="panel-main">
+    <.include!("../../help-banner/index.html"); .>
+    <!-- Main content container -->
+    <div class="inner-container">
+      <!-- Main menu/ important actions roaster -->
+      <table class="sitekey__table">
+        <thead class="sitekey__table-heading">
+          <tr>
+            <th colspan="4" class="sitekey__table-title-text">
+              Your Sitekeys
+            </th>
+          </tr>
+        </thead>
+        <tbody class="sitekey__body">
+          <. for sitekey in sitekeys.iter() { .>
+          <tr class="sitekey__item">
+            <td class="sitekey-list__name">
+              <a
+                href="/sitekey/<.= sitekey.key .>/"
+                class="sitekey-list__sitekey-link"
+              >
+                <.= sitekey.name .>
+              </a>
+            </td>
+            <td class="sitekey-list__key">
+              <div class="sitekey__key-container">
+                <img class="sitekey__copy-icon" src="<.= crate::FILES
+                .get("./static/cache/img/svg/clipboard.svg") .unwrap() .>"
+                alt="copy sitekey" data-sitekey="<.= sitekey.key .>" /> <img
+                class="sitekey__copy-done-icon" src="<.= crate::FILES
+                .get("./static/cache/img/svg/check.svg") .unwrap() .>"
+                alt="sitekey copied" data-sitekey="<.= sitekey.key .>" />
+                <a
+                  class="sitekey__widget-link"
+                  href="<.= crate::WIDGET_ROUTES.verification_widget .>/?sitekey=<.= sitekey.key .>"
+                >
+                  <.= &sitekey.key[0..5] .>
+                </a>
+              </div>
+            </td>
+          </tr>
+          <. } .>
+        </tbody>
+      </table>
+    </div>
+    <!-- end of container -->
+    <. include!("../../../components/footers.html"); .>
+  </main>
+</div>

@@ -48,10 +48,9 @@
 }
 
 .taskbar__icon:hover {
-  cursor: grab;
+  cursor: pointer;
   background-color: $light-grey;
   color: $green;
-  background-color: $light-grey;
   filter: invert(58%) sepia(60%) saturate(331%) hue-rotate(76deg)
     brightness(91%) contrast(92%);
 }
