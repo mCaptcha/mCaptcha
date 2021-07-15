@@ -2,11 +2,12 @@ default: frontend
 	cargo build
 
 clean:
-	cargo clean
-	rm -rf browser/pkg || true
-	rm ./src/cache_buster_data.json || true
-	rm -rf ./static/cache/bundle || true
-	rm -rf ./assets || true
+	@cargo clean
+	@yarn cache clean
+	@-rm -rf browser/pkg
+	@-rm ./src/cache_buster_data.json
+	@-rm -rf ./static/cache/bundle
+	@-rm -rf ./assets
 
 coverage: migrate
 	cd browser && cargo tarpaulin -t 1200 --out Html
@@ -21,10 +22,10 @@ doc:
 	cargo doc --no-deps --workspace --all-features
 	cd browser && cargo doc --no-deps --workspace --all-features
 
-docker-build:
+docker:
 	docker build -t mcaptcha/mcaptcha:master -t mcaptcha/mcaptcha:latest .
 
-docker-publish: docker-build
+docker-publish:
 	docker push mcaptcha/mcaptcha:master 
 	docker push mcaptcha/mcaptcha:latest
 
@@ -61,7 +62,7 @@ help:
 	@echo  '  clean                   - drop builds and environments'
 	@echo  '  coverage                - build test coverage in HTML format'
 	@echo  '  dev-env                 - download dependencies'
-	@echo  '  docker-build            - build docker image'
+	@echo  '  docker                  - build docker image'
 	@echo  '  docker-publish          - build and publish docker image'
 	@echo  '  doc                     - build documentation'
 	@echo  '  frontend                - build static assets in prod mode'

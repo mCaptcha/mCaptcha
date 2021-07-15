@@ -8,3 +8,7 @@ node_modules/
 ./templates/**/*.js
 /static/cache/bundle/*
 src/cache_buster_data.json
+
+browser/target
+browser/cobertura.xml
+browser/docs
