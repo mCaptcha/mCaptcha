@@ -109,7 +109,7 @@ mod test {
     use crate::*;
 
     #[actix_rt::test]
-    async fn view_sitekey_work() {
+    async fn edit_sitekey_work() {
         const NAME: &str = "editsitekeyuser";
         const PASSWORD: &str = "longpassworddomain";
         const EMAIL: &str = "editsitekeyuser@a.com";
