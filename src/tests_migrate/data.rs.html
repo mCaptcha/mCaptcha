@@ -214,6 +214,7 @@
 <span id="211">211</span>
 <span id="212">212</span>
 <span id="213">213</span>
+<span id="214">214</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -394,6 +395,7 @@
             <span class="ident">mailer</span>: <span class="self">Self</span><span class="ident">::get_mailer</span>(),
         };
 
+        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">debug_assertions</span>))]</span>
         <span class="ident">init</span>.<span class="ident">join</span>().<span class="ident">unwrap</span>();
 
         <span class="ident">Arc::new</span>(<span class="ident">data</span>)
