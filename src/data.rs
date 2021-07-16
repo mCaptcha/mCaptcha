@@ -177,6 +177,7 @@ impl Data {
             mailer: Self::get_mailer(),
         };
 
+        #[cfg(not(debug_assertions))]
         init.join().unwrap();
 
         Arc::new(data)

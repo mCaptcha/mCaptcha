@@ -27,7 +27,7 @@ const panelResult = 'hello from panel';
 const panelRoute = '/panel';
 const panel = () => (result.result = panelResult);
 
-const settingsRoute = '/settings/';
+const settingsRoute = '/sitekey/';
 const settingsResult = 'hello from settings';
 const settings = () => (result.result = settingsResult);
 
@@ -41,9 +41,9 @@ const emptyUriErr = 'uri is empty';
 const unregisteredRouteErr = "Route isn't registered";
 
 const router = new Router();
+router.register(patternRoute, pattern);
 router.register(panelRoute, panel);
 router.register(settingsRoute, settings);
-router.register(patternRoute, pattern);
 
 it('checks if Router works', () => {
   window.history.pushState({}, '', examplePatternRoute);

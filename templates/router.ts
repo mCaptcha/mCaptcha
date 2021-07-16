@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/** Removes trailing slashed from URI */
+/** Removes trailing slash from URI */
 const normalizeUri = (uri: string) => {
   uri = uri.trim();
   if (uri.length == 0) {
@@ -54,7 +54,7 @@ export class Router {
   register(uri: string, fn: () => void) {
     uri = normalizeUri(uri);
 
-    let pattern = new RegExp(`^${uri}(.*)`);
+    let pattern = new RegExp(`^${uri}$`);
 
     let patterString = pattern.toString();
     if (
@@ -83,18 +83,21 @@ export class Router {
   route() {
     const path = normalizeUri(window.location.pathname);
 
-    let fn: () => void | undefined;
+    let fn: undefined | (() => void);
 
-    this.routes.forEach(route => {
-      if (path.match(route.pattern)) {
-        fn = route.fn;
+    if (
+      this.routes.find(route => {
+        if (path.match(route.pattern)) {
+          fn = route.fn;
+          return true;
+        }
+      })
+    ) {
+      if (fn === undefined) {
+        throw new Error("Route isn't registered");
+      } else {
+        return fn();
       }
-    });
-
-    if (fn === undefined) {
-      throw new Error("Route isn't registered");
     }
-
-    return fn();
   }
 }

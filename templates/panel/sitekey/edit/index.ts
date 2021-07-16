@@ -30,8 +30,7 @@ import createError from '../../../components/error';
 
 import VIEWS from '../../../views/v1/routes';
 
-const BTN = <HTMLElement>document.querySelector('.sitekey-form__submit');
-const key = BTN.dataset.sitekey;
+const BTN_CLASS = document.querySelector('sitekey-form__submit');
 
 const submit = async (e: Event) => {
   e.preventDefault();
@@ -43,6 +42,9 @@ const submit = async (e: Event) => {
 
   const levels = LEVELS.getLevels();
   console.debug(`[form submition]: levels: ${levels}`);
+
+  const btn = <HTMLElement>document.querySelector(`${BTN_CLASS}`);
+  const key = btn.dataset.sitekey;
 
   const payload = {
     levels,

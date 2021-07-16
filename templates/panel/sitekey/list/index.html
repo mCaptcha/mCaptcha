@@ -44,6 +44,7 @@ include!("../../navbar/index.html"); .>
             </td>
             <td class="sitekey-list__key">
 				<div class="sitekey-list__edit">
+                    <. let key = format!("/sitekey/{}", &sitekey.key); .>
 					<. include!("../view/__edit-sitekey-icon.html"); .>
 				</div>
             </td>

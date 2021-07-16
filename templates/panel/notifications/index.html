@@ -14,7 +14,7 @@ include!("../navbar/index.html"); .>
           </thead>
           <tbody class="notification__body">
             <. for notification in n.iter() { .>
-            <tr class="notification__item">
+			<tr class="notification__item" id="notification__item-<.= notification.id .>">
               <td>
                 <h3 class="notification__item-heading">
                   <.= notification.heading .>
@@ -34,6 +34,7 @@ include!("../navbar/index.html"); .>
                     src="<.= crate::FILES
                          .get("./static/cache/img/svg/check.svg")
                          .unwrap() .>"
+					data-id="<.= notification.id .>"
                     alt="Mark Read" 
                   />
 				</button>

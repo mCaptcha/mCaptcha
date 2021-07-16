@@ -23,6 +23,7 @@ import * as panel from './panel/ts/index';
 import * as addSiteKey from './panel/sitekey/add/ts';
 import * as editSitekey from './panel/sitekey/edit/';
 import * as listSitekeys from './panel/sitekey/list/ts';
+import * as notidications from './panel/notifications/ts';
 import {MODE} from './logger';
 import log from './logger';
 
@@ -50,9 +51,10 @@ const router = new Router();
 router.register(VIEWS.panelHome, panel.index);
 router.register(VIEWS.registerUser, register.index);
 router.register(VIEWS.loginUser, login.index);
+router.register(VIEWS.notifications, notidications.index);
 router.register(VIEWS.listSitekey, listSitekeys.index);
 router.register(VIEWS.addSiteKey, addSiteKey.index);
-router.register(VIEWS.editSitekey("[A-Z,a-z,0-9]+"), editSitekey.index);
+router.register(VIEWS.editSitekey('[A-Z),a-z,0-9]+'), editSitekey.index);
 
 try {
   router.route();

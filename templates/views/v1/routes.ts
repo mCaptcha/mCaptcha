@@ -21,6 +21,7 @@ const ROUTES = {
   signoutUser: '/api/v1/signout',
   panelHome: '/',
   docsHome: '/docs/',
+  notifications: '/notifications',
   listSitekey: '/sitekeys/',
   viewSitekey: (key: string) => `/sitekey/${key}/`,
   editSitekey: (key: string) => `/sitekey/${key}/edit/`,
