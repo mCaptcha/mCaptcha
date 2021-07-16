@@ -45,6 +45,10 @@
 <span id="42">42</span>
 <span id="43">43</span>
 <span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -64,6 +68,7 @@
 */</span>
 
 <span class="kw">mod</span> <span class="ident">add</span>;
+<span class="kw">mod</span> <span class="ident">edit</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">list</span>;
 <span class="kw">mod</span> <span class="ident">view</span>;
 
@@ -72,6 +77,7 @@
         <span class="kw">pub</span> <span class="ident">list</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
         <span class="kw">pub</span> <span class="ident">add</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
         <span class="kw">pub</span> <span class="ident">view</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
+        <span class="kw">pub</span> <span class="ident">edit</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
     }
 
     <span class="kw">impl</span> <span class="ident">Sitekey</span> {
@@ -80,6 +86,7 @@
                 <span class="ident">list</span>: <span class="string">&quot;/sitekeys&quot;</span>,
                 <span class="ident">add</span>: <span class="string">&quot;/sitekeys/add&quot;</span>,
                 <span class="ident">view</span>: <span class="string">&quot;/sitekey/{key}&quot;</span>,
+                <span class="ident">edit</span>: <span class="string">&quot;/sitekey/{key}/edit&quot;</span>,
             }
         }
     }
@@ -89,6 +96,7 @@
     <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">add::add_sitekey</span>);
     <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">list::list_sitekeys</span>);
     <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">view::view_sitekey</span>);
+    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">edit::edit_sitekey</span>);
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="mcaptcha" data-search-index-js="../../../../../search-index.js" data-search-js="../../../../../search.js"></div>
