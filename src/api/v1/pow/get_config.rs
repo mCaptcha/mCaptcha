@@ -96,7 +96,7 @@ async fn init_mcaptcha(data: &AppData, key: &str) -> ServiceResult<()> {
         "SELECT difficulty_factor, visitor_threshold FROM mcaptcha_levels  WHERE
             config_id = (
                 SELECT config_id FROM mcaptcha_config WHERE key = ($1)
-                );",
+                ) ORDER BY difficulty_factor ASC;",
         &key,
     )
     .fetch_all(&data.db);

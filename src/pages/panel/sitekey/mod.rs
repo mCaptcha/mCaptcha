@@ -16,6 +16,7 @@
 */
 
 mod add;
+mod edit;
 pub mod list;
 mod view;
 
@@ -24,6 +25,7 @@ pub mod routes {
         pub list: &'static str,
         pub add: &'static str,
         pub view: &'static str,
+        pub edit: &'static str,
     }
 
     impl Sitekey {
@@ -32,6 +34,7 @@ pub mod routes {
                 list: "/sitekeys",
                 add: "/sitekeys/add",
                 view: "/sitekey/{key}",
+                edit: "/sitekey/{key}/edit",
             }
         }
     }
@@ -41,4 +44,5 @@ pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
     cfg.service(add::add_sitekey);
     cfg.service(list::list_sitekeys);
     cfg.service(view::view_sitekey);
+    cfg.service(edit::edit_sitekey);
 }

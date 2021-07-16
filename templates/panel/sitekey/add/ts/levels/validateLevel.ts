@@ -17,6 +17,7 @@
 
 import {LEVELS} from './index';
 import getLevelFields from './getLevelFields';
+import createError from '../../../../../components/error/';
 
 /**
  * Fetches level from DOM using the ID passesd and validates
@@ -28,6 +29,7 @@ const validateLevel = (id: number) => {
     LEVELS.add(level);
     return true;
   } catch (e) {
+    createError(e.message);
     return false;
   }
 };

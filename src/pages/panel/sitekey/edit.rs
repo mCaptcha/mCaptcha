@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 use actix_identity::Identity;
 use actix_web::{web, HttpResponse, Responder};
 use futures::{future::TryFutureExt, try_join};
@@ -38,8 +37,9 @@ struct Level {
     difficulty_factor: i32,
     visitor_threshold: i32,
 }
+
 #[derive(TemplateOnce, Clone)]
-#[template(path = "panel/sitekey/view/index.html")]
+#[template(path = "panel/sitekey/edit/index.html")]
 struct IndexPage {
     duration: u32,
     name: String,
@@ -59,8 +59,8 @@ impl IndexPage {
 }
 
 /// route handler that renders individual views for sitekeys
-#[my_codegen::get(path = "crate::PAGES.panel.sitekey.view", wrap = "crate::CheckLogin")]
-pub async fn view_sitekey(
+#[my_codegen::get(path = "crate::PAGES.panel.sitekey.edit", wrap = "crate::CheckLogin")]
+pub async fn edit_sitekey(
     path: web::Path<String>,
     data: AppData,
     id: Identity,
@@ -110,9 +110,9 @@ mod test {
 
     #[actix_rt::test]
     async fn view_sitekey_work() {
-        const NAME: &str = "viewsitekeyuser";
+        const NAME: &str = "editsitekeyuser";
         const PASSWORD: &str = "longpassworddomain";
-        const EMAIL: &str = "viewsitekeyuser@a.com";
+        const EMAIL: &str = "editsitekeyuser@a.com";
 
         {
             let data = Data::new().await;
@@ -125,7 +125,7 @@ mod test {
 
         let app = get_app!(data).await;
 
-        let url = format!("/sitekey/{}/", &key.key);
+        let url = format!("/sitekey/{}/edit", &key.key);
 
         let list_sitekey_resp = test::call_service(
             &app,

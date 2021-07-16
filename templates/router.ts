@@ -31,7 +31,7 @@ const normalizeUri = (uri: string) => {
 
 /** URI<-> Fn mapping type */
 type routeTuple = {
-  uri: string;
+  pattern: RegExp;
   fn: () => void;
 };
 
@@ -54,10 +54,15 @@ export class Router {
   register(uri: string, fn: () => void) {
     uri = normalizeUri(uri);
 
+    let pattern = new RegExp(`^${uri}(.*)`);
+
+    let patterString = pattern.toString();
     if (
       this.routes.find(route => {
-        if (route.uri == uri) {
+        if (route.pattern.toString() == patterString) {
           return true;
+        } else {
+          return false;
         }
       })
     ) {
@@ -65,7 +70,7 @@ export class Router {
     }
 
     const route: routeTuple = {
-      uri,
+      pattern,
       fn,
     };
     this.routes.push(route);
@@ -81,8 +86,7 @@ export class Router {
     let fn: () => void | undefined;
 
     this.routes.forEach(route => {
-      const pattern = new RegExp(`^${route.uri}$`);
-      if (path.match(pattern)) {
+      if (path.match(route.pattern)) {
         fn = route.fn;
       }
     });

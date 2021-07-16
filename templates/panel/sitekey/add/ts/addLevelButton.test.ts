@@ -17,8 +17,12 @@
 
 import getNumLevels from './levels/getNumLevels';
 import {getAddForm, trim, addLevel} from './setupTests';
+import setup from '../../../../components/error/setUpTests';
 
 document.body.innerHTML = getAddForm();
+document.body.appendChild(setup());
+
+jest.useFakeTimers();
 
 it('addLevelButton works', () => {
   expect(getNumLevels()).toBe(1);
@@ -26,23 +30,25 @@ it('addLevelButton works', () => {
   addLevel(2, 4);
   expect(getNumLevels()).toBe(2);
 
-  // try to add duplicate level
-  addLevel(2, 4);
-  expect(getNumLevels()).toBe(2);
 
-  // try to add negative parameters
-  addLevel(-4, -9);
-  expect(getNumLevels()).toBe(2);
-
+  
   // add second level
   addLevel(4, 9);
   expect(getNumLevels()).toBe(3);
 
   let a = document.body.innerHTML;
 
-  expect(trim(a)).toBe(trim(finalHtml()));
-});
 
+  expect(trim(a)).toBe(trim(finalHtml()));
+
+  // try to add duplicate level
+  addLevel(2, 4);
+  expect(getNumLevels()).toBe(3);
+
+  // try to add negative parameters
+  addLevel(-4, -9);
+  expect(getNumLevels()).toBe(3);
+});
 
 const finalHtml = () => {
   return `
@@ -186,5 +192,7 @@ const finalHtml = () => {
 
   <button class="sitekey-form__submit" type="submit">Submit</button>
 </form>
+<div id="err__container">
+  </div>
   `;
 };

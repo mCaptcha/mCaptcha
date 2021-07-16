@@ -27,10 +27,10 @@ import validateDuration from './validateDuration';
 
 import createError from '../../../../../components/error';
 
-const SITE_KEY_FORM_CLASS = 'sitekey-form';
-const FORM = <HTMLFormElement>document.querySelector(`.${SITE_KEY_FORM_CLASS}`);
+export const SITE_KEY_FORM_CLASS = 'sitekey-form';
+export const FORM = <HTMLFormElement>document.querySelector(`.${SITE_KEY_FORM_CLASS}`);
 
-const addSubmitEventListener = () => {
+export const addSubmitEventListener = () => {
   FORM.addEventListener('submit', submit, true);
 };
 

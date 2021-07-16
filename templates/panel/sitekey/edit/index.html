@@ -1,0 +1,12 @@
+<. const URL: &str = crate::V1_API_ROUTES.levels.update; .>
+<. const READONLY: bool = false; .>
+<. include!("../view/__form-top.html"); .>
+    <. for (count, level) in levels.iter().enumerate() { .>
+           <. include!("./existing-level.html"); .>  
+    <. } .>
+	<. let level = levels.len() + 1; .>
+	<. include!("../add/add-level.html"); .>
+  <button data-sitekey="<.= key .>" class="sitekey-form__submit" type="submit">
+    Submit
+  </button>
+<. include!("../view/__form-bottom.html"); .>

@@ -1,0 +1,36 @@
+<. let num = count + 1; .>
+<fieldset class="sitekey__level-container" id="level-group-<.= num .>">
+  <legend class="sitekey__level-title">
+    Level <.= num .>
+  </legend>
+
+  <label class="sitekey-form__level-label" for="visitor<.= num .>"
+    >Visitor
+    <input
+      class="sitekey-form__level-input"
+      type="number"
+      name="visitor<.= num .>"
+      value="<.= level.visitor_threshold .>"
+      id="visitor<.= num .>"
+    />
+  </label>
+  <label class="sitekey-form__level-label" for="difficulty<.= num .>">
+    Difficulty
+    <input
+      type="number"
+      id="difficulty<.= num .>"
+      class="sitekey-form__level-input"
+      value="<.= level.difficulty_factor .>"
+      id="difficulty<.= num .>"
+    />
+  </label>
+  <label class="sitekey-form__level-label--hidden" for="remove<.= num .>">
+    RemoveLevel
+    <input
+      class="sitekey-form__level-remove-level-button"
+      type="button"
+      id="remove-level<.= num .>"
+      id="remove-level1"
+      value="x"
+  /></label>
+</fieldset>

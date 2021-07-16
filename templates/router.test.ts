@@ -31,6 +31,11 @@ const settingsRoute = '/settings/';
 const settingsResult = 'hello from settings';
 const settings = () => (result.result = settingsResult);
 
+const patternRoute = '/sitekey/[A-Z,a-z,0-9,_]+/';
+const examplePatternRoute = '/sitekey/alksdjakdjadajkhdjahrjke234/';
+const patterResult = 'hello from pattern route';
+const pattern = () => (result.result = patterResult);
+
 const UriExistsErr = 'URI exists';
 const emptyUriErr = 'uri is empty';
 const unregisteredRouteErr = "Route isn't registered";
@@ -38,8 +43,21 @@ const unregisteredRouteErr = "Route isn't registered";
 const router = new Router();
 router.register(panelRoute, panel);
 router.register(settingsRoute, settings);
+router.register(patternRoute, pattern);
 
 it('checks if Router works', () => {
+  window.history.pushState({}, '', examplePatternRoute);
+  router.route();
+  expect(result.result).toBe(patterResult);
+
+  window.history.pushState(
+    {},
+    '',
+    examplePatternRoute.slice(0, examplePatternRoute.length - 1),
+  );
+  router.route();
+  expect(result.result).toBe(patterResult);
+
   window.history.pushState({}, 'Settings', settingsRoute);
   router.route();
   expect(result.result).toBe(settingsResult);
@@ -64,6 +82,14 @@ it('checks if Router works', () => {
   // routing to unregistered route
   try {
     window.history.pushState({}, `Page Doesn't Exist`, `/page/doesnt/exist`);
+    router.route();
+  } catch (e) {
+    expect(e.message).toBe(unregisteredRouteErr);
+  }
+
+  // routing to unregistered route
+  try {
+    window.history.pushState({}, `Page Doesn't Exist`, `/sitekey/;asd;lasdj`);
     router.route();
   } catch (e) {
     expect(e.message).toBe(unregisteredRouteErr);

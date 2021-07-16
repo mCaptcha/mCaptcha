@@ -34,11 +34,15 @@ class Levels {
   add = (newLevel: Level) => {
     log.debug(`[levels/index.ts] levels lenght: ${this.levels.length}`);
     if (newLevel.difficulty_factor <= 0) {
-      throw new Error('Difficulty must be greater than zero');
+      throw new Error(
+        `Level ${this.levels.length}'s difficulty must be greater than zero`,
+      );
     }
 
     if (newLevel.visitor_threshold <= 0) {
-      throw new Error('Visitors must be greater than zero');
+      throw new Error(
+        `Level ${this.levels.length}'s visitors must be greater than zero`,
+      );
     }
 
     if (this.levels.length == 0) {
@@ -50,10 +54,10 @@ class Levels {
 
     this.levels.forEach(level => {
       if (level.visitor_threshold >= newLevel.visitor_threshold) {
-        const msg = `Level: ${newLevel} visitor count has to greater than previous levels. See ${count}`;
+        const msg = `Level ${this.levels.length}'s visitor count should be greater than previous levels(Level ${count} is greater)`;
         throw new Error(msg);
       } else if (level.difficulty_factor >= newLevel.difficulty_factor) {
-        const msg = `Level ${this.levels.length} difficulty has to greater than previous levels See ${count}`;
+        const msg = `Level ${this.levels.length} difficulty should be greater than previous levels(Level ${count} is greater)`;
         throw new Error(msg);
       } else {
         count++;

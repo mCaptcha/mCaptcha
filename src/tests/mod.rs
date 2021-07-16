@@ -171,6 +171,16 @@ pub const L2: Level = Level {
     visitor_threshold: 500,
 };
 
+pub fn get_level_data() -> AddLevels {
+    let levels = vec![L1, L2];
+
+    AddLevels {
+        levels,
+        duration: 30,
+        description: "dummy".into(),
+    }
+}
+
 pub async fn add_levels_util(
     name: &str,
     password: &str,
@@ -179,13 +189,7 @@ pub async fn add_levels_util(
     let cookies = get_cookie!(signin_resp);
     let app = get_app!(data).await;
 
-    let levels = vec![L1, L2];
-
-    let add_level = AddLevels {
-        levels: levels.clone(),
-        duration: 30,
-        description: "dummy".into(),
-    };
+    let add_level = get_level_data();
 
     // 1. add level
     let add_token_resp = test::call_service(

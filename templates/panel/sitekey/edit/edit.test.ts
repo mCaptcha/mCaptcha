@@ -15,26 +15,36 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import validateLevel from './validateLevel';
-import {getAddForm, level1, fillAddLevel} from '../setupTests';
-import setup from '../../../../../components/error/setUpTests';
+import getNumLevels from '../add/ts/levels/getNumLevels';
+import {addLevel} from '../add/ts/setupTests';
+import setup from '../../../components/error/setUpTests';
+import * as SETUP from './setupTest';
 
-document.body.innerHTML = getAddForm();
-
+document.body.innerHTML = SETUP.EDIT_FORM;
 document.body.appendChild(setup());
 
-it('validate levels fields works', () => {
-  // null error
-  expect(validateLevel(1)).toEqual(false);
+jest.useFakeTimers();
 
-  fillAddLevel(level1.visitor_threshold, level1.difficulty_factor);
-  expect(validateLevel(1)).toEqual(true);
+it('edit sitekey works', () => {
+  expect(getNumLevels()).toBe(2);
+  // add a level
+  addLevel(5, 6);
+  expect(getNumLevels()).toBe(3);
 
-  // zero visitor error
-  fillAddLevel(0, level1.difficulty_factor);
-  expect(validateLevel(1)).toEqual(false);
+  // add second level
+  addLevel(8, 9);
+  expect(getNumLevels()).toBe(4);
 
-  // zero difficulty error
-  fillAddLevel(level1.visitor_threshold, 0);
-  expect(validateLevel(1)).toEqual(false);
+  jest.runAllTimers();
+
+  //  expect(trim(a)).toBe(trim(finalHtml()));
+
+  // try to add negative parameters
+  addLevel(-4, -9);
+  expect(getNumLevels()).toBe(4);
+
+  // try to add duplicate level
+  addLevel(6, 7);
+  expect(getNumLevels()).toBe(4);
+
 });

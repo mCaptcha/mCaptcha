@@ -18,11 +18,11 @@
 import {LEVELS, Level} from './index';
 import {level1, level1visErr, level1diffErr, level2} from '../setupTests';
 
-const visitorErr = 'visitor count has to greater than previous levels';
-const difficultyErr = 'difficulty has to greater than previous levels';
+const visitorErr = 'visitor count should be greater than previous levels';
+const difficultyErr = 'difficulty should be greater than previous levels';
 
-const zeroVisError = 'Visitors must be greater than zero';
-const zeroDiffError = 'Difficulty must be greater than zero';
+const zeroVisError = 'visitors must be greater than zero';
+const zeroDiffError = 'difficulty must be greater than zero';
 
 const zeroVis: Level = {
   difficulty_factor: 10,
@@ -71,12 +71,12 @@ it('LEVELS works', () => {
   try {
     LEVELS.add(zeroVis);
   } catch (e) {
-    expect(e.message).toEqual(zeroVisError);
+    expect(e.message).toContain(zeroVisError);
   }
   // difficulty is 0
   try {
     LEVELS.add(zeroDiff);
   } catch (e) {
-    expect(e.message).toEqual(zeroDiffError);
+    expect(e.message).toContain(zeroDiffError);
   }
 });

@@ -26,6 +26,21 @@
       "nullable": []
     }
   },
+  "238569a64d7dbd252e3b27204f207e8a8548109717b89495ddf8f9a870c7c75d": {
+    "query": "UPDATE mcaptcha_config SET name = $1, duration = $2 \n            WHERE user_id = (SELECT ID FROM mcaptcha_users WHERE name = $3)\n            AND key = $4",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int4",
+          "Text",
+          "Text"
+        ]
+      },
+      "nullable": []
+    }
+  },
   "2b319a202bb983d5f28979d1e371f399125da1122fbda36a5a55b75b9c743451": {
     "query": "--  mark a notification as read\nUPDATE mcaptcha_notifications\n    SET read = TRUE\nWHERE \n    mcaptcha_notifications.id = $1\nAND\n    mcaptcha_notifications.rx = (\n        SELECT\n            id\n        FROM\n            mcaptcha_users\n        WHERE\n        name = $2\n    );\n",
     "describe": {
@@ -162,6 +177,32 @@
       ]
     }
   },
+  "4c3a9fe30a4c6bd49ab1cb8883c4495993aa05f2991483b4f04913b2e5043a63": {
+    "query": "SELECT \n            difficulty_factor, visitor_threshold \n        FROM \n            mcaptcha_levels \n        WHERE config_id = $1 ORDER BY difficulty_factor ASC",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "difficulty_factor",
+          "type_info": "Int4"
+        },
+        {
+          "ordinal": 1,
+          "name": "visitor_threshold",
+          "type_info": "Int4"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Int4"
+        ]
+      },
+      "nullable": [
+        false,
+        false
+      ]
+    }
+  },
   "4dc1b6d8ae3b92ebff45f683951c087244f9614ed0e95b75578f0d1346887224": {
     "query": "SELECT fetched_at FROM mcaptcha_pow_fetched_stats WHERE config_id = \n        (SELECT config_id FROM mcaptcha_config where key = $1)",
     "describe": {
@@ -272,6 +313,33 @@
       ]
     }
   },
+  "717771c42737feb3f4ca13f2ab11361073ea17b55562a103f660149bf049c5c6": {
+    "query": "SELECT difficulty_factor, visitor_threshold FROM mcaptcha_levels  WHERE\n            config_id = (\n                SELECT config_id FROM mcaptcha_config WHERE key = ($1)\n                AND user_id = (SELECT ID from mcaptcha_users WHERE name = $2)\n                )\n            ORDER BY difficulty_factor ASC;",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "difficulty_factor",
+          "type_info": "Int4"
+        },
+        {
+          "ordinal": 1,
+          "name": "visitor_threshold",
+          "type_info": "Int4"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false
+      ]
+    }
+  },
   "73b9bddce90d59193430c5ec38b77ad7bc0e94bac74dcde7ab9949a86cfbddca": {
     "query": "INSERT INTO mcaptcha_pow_solved_stats \n        (config_id) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1))",
     "describe": {
@@ -364,8 +432,8 @@
       "nullable": []
     }
   },
-  "a1f1e5693dad5c04b85f97d1de9c68b584a1ca99436e61f7c93f2a5acf8fb55f": {
-    "query": "SELECT \n            difficulty_factor, visitor_threshold \n        FROM \n            mcaptcha_levels \n        WHERE config_id = $1",
+  "9753721856a47438c5e72f28fd9d149db10c48e677b4613bf3f1e8487908aac8": {
+    "query": "SELECT difficulty_factor, visitor_threshold FROM mcaptcha_levels  WHERE\n            config_id = (\n                SELECT config_id FROM mcaptcha_config WHERE key = ($1)\n                ) ORDER BY difficulty_factor ASC;",
     "describe": {
       "columns": [
         {
@@ -381,33 +449,6 @@
       ],
       "parameters": {
         "Left": [
-          "Int4"
-        ]
-      },
-      "nullable": [
-        false,
-        false
-      ]
-    }
-  },
-  "aa9a21fd88c106fe6c4b75a724b202b7bdda66eb9c5fd91780113e2c3ea82719": {
-    "query": "SELECT difficulty_factor, visitor_threshold FROM mcaptcha_levels  WHERE\n            config_id = (\n                SELECT config_id FROM mcaptcha_config WHERE key = ($1)\n                AND user_id = (SELECT ID from mcaptcha_users WHERE name = $2)\n                );",
-    "describe": {
-      "columns": [
-        {
-          "ordinal": 0,
-          "name": "difficulty_factor",
-          "type_info": "Int4"
-        },
-        {
-          "ordinal": 1,
-          "name": "visitor_threshold",
-          "type_info": "Int4"
-        }
-      ],
-      "parameters": {
-        "Left": [
-          "Text",
           "Text"
         ]
       },
@@ -519,32 +560,6 @@
         ]
       },
       "nullable": []
-    }
-  },
-  "d9a097cba4552c17b410fcb8745dd9b2eae5146f7b710006a50ae6aa2add54fa": {
-    "query": "SELECT difficulty_factor, visitor_threshold FROM mcaptcha_levels  WHERE\n            config_id = (\n                SELECT config_id FROM mcaptcha_config WHERE key = ($1)\n                );",
-    "describe": {
-      "columns": [
-        {
-          "ordinal": 0,
-          "name": "difficulty_factor",
-          "type_info": "Int4"
-        },
-        {
-          "ordinal": 1,
-          "name": "visitor_threshold",
-          "type_info": "Int4"
-        }
-      ],
-      "parameters": {
-        "Left": [
-          "Text"
-        ]
-      },
-      "nullable": [
-        false,
-        false
-      ]
     }
   },
   "daebbef26cf04fdc46226304d028528e121a9847c07139d7d3a56a0e7c165879": {
@@ -664,20 +679,6 @@
       "nullable": [
         false
       ]
-    }
-  },
-  "fb19fbff4265cc59450d64a8d945f0ae2ad337b97e6192837881e8b6b4c397ee": {
-    "query": "DELETE FROM mcaptcha_levels  WHERE \n            config_id = (\n                SELECT config_id FROM mcaptcha_config WHERE key = $1 AND\n                 user_id = (SELECT ID from mcaptcha_users WHERE name = $3)\n                ) AND difficulty_factor = ($2);",
-    "describe": {
-      "columns": [],
-      "parameters": {
-        "Left": [
-          "Text",
-          "Int4",
-          "Text"
-        ]
-      },
-      "nullable": []
     }
   }
 }

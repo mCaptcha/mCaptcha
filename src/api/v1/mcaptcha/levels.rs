@@ -16,6 +16,7 @@
 */
 use actix_identity::Identity;
 use actix_web::{web, HttpResponse, Responder};
+use futures::future::try_join_all;
 use libmcaptcha::{defense::Level, DefenseBuilder};
 use log::debug;
 use serde::{Deserialize, Serialize};
@@ -29,7 +30,7 @@ pub mod routes {
 
     pub struct Levels {
         pub add: &'static str,
-        pub delete: &'static str,
+        //        pub delete: &'static str,
         pub get: &'static str,
         pub update: &'static str,
     }
@@ -38,11 +39,11 @@ pub mod routes {
         pub const fn new() -> Levels {
             let add = "/api/v1/mcaptcha/levels/add";
             let update = "/api/v1/mcaptcha/levels/update";
-            let delete = "/api/v1/mcaptcha/levels/delete";
+            // let delete = "/api/v1/mcaptcha/levels/delete";
             let get = "/api/v1/mcaptcha/levels/get";
             Levels {
                 add,
-                delete,
+                //      delete,
                 get,
                 update,
             }
@@ -60,7 +61,6 @@ pub struct AddLevels {
 pub fn services(cfg: &mut web::ServiceConfig) {
     cfg.service(add_levels);
     cfg.service(update_levels);
-    cfg.service(delete_levels);
     cfg.service(get_levels);
 }
 
@@ -87,10 +87,12 @@ async fn add_levels(
 
     debug!("config created");
 
+    let mut futs = Vec::with_capacity(payload.levels.len());
+
     for level in payload.levels.iter() {
         let difficulty_factor = level.difficulty_factor as i32;
         let visitor_threshold = level.visitor_threshold as i32;
-        sqlx::query!(
+        let fut = sqlx::query!(
             "INSERT INTO mcaptcha_levels (
             difficulty_factor, 
             visitor_threshold,
@@ -105,9 +107,11 @@ async fn add_levels(
             &mcaptcha_config.key,
             &username,
         )
-        .execute(&data.db)
-        .await?;
+        .execute(&data.db);
+        futs.push(fut);
     }
+
+    try_join_all(futs).await?;
 
     Ok(HttpResponse::Ok().json(mcaptcha_config))
 }
@@ -115,7 +119,8 @@ async fn add_levels(
 #[derive(Serialize, Deserialize)]
 pub struct UpdateLevels {
     pub levels: Vec<Level>,
-    /// name is config_name
+    pub duration: u32,
+    pub description: String,
     pub key: String,
 }
 
@@ -140,7 +145,8 @@ async fn update_levels(
     // still, needs to be benchmarked
     defense.build()?;
 
-    sqlx::query!(
+    let mut futs = Vec::with_capacity(payload.levels.len() + 2);
+    let del_fut = sqlx::query!(
         "DELETE FROM mcaptcha_levels 
         WHERE config_id = (
             SELECT config_id FROM mcaptcha_config where key = ($1) 
@@ -151,13 +157,26 @@ async fn update_levels(
         &payload.key,
         &username
     )
-    .execute(&data.db)
-    .await?;
+    .execute(&data.db); //.await?;
+
+    let update_fut = sqlx::query!(
+        "UPDATE mcaptcha_config SET name = $1, duration = $2 
+            WHERE user_id = (SELECT ID FROM mcaptcha_users WHERE name = $3)
+            AND key = $4",
+        &payload.description,
+        payload.duration as i32,
+        &username,
+        &payload.key,
+    )
+    .execute(&data.db); //.await?;
+
+    futs.push(del_fut);
+    futs.push(update_fut);
 
     for level in payload.levels.iter() {
         let difficulty_factor = level.difficulty_factor as i32;
         let visitor_threshold = level.visitor_threshold as i32;
-        sqlx::query!(
+        let fut = sqlx::query!(
             "INSERT INTO mcaptcha_levels (
             difficulty_factor, 
             visitor_threshold,
@@ -173,40 +192,11 @@ async fn update_levels(
             &payload.key,
             &username,
         )
-        .execute(&data.db)
-        .await?;
+        .execute(&data.db); //.await?;
+        futs.push(fut);
     }
 
-    Ok(HttpResponse::Ok())
-}
-
-#[my_codegen::post(
-    path = "crate::V1_API_ROUTES.levels.delete",
-    wrap = "crate::CheckLogin"
-)]
-async fn delete_levels(
-    payload: web::Json<UpdateLevels>,
-    data: AppData,
-    id: Identity,
-) -> ServiceResult<impl Responder> {
-    let username = id.identity().unwrap();
-
-    for level in payload.levels.iter() {
-        let difficulty_factor = level.difficulty_factor as i32;
-        sqlx::query!(
-            "DELETE FROM mcaptcha_levels  WHERE 
-            config_id = (
-                SELECT config_id FROM mcaptcha_config WHERE key = $1 AND
-                 user_id = (SELECT ID from mcaptcha_users WHERE name = $3)
-                ) AND difficulty_factor = ($2);",
-            &payload.key,
-            difficulty_factor,
-            &username
-        )
-        .execute(&data.db)
-        .await?;
-    }
-
+    try_join_all(futs).await?;
     Ok(HttpResponse::Ok())
 }
 
@@ -245,7 +235,8 @@ async fn get_levels_util(
             config_id = (
                 SELECT config_id FROM mcaptcha_config WHERE key = ($1)
                 AND user_id = (SELECT ID from mcaptcha_users WHERE name = $2)
-                );",
+                )
+            ORDER BY difficulty_factor ASC;",
         key,
         &username
     )
@@ -266,6 +257,15 @@ mod tests {
     use crate::tests::*;
     use crate::*;
 
+    const L1: Level = Level {
+        difficulty_factor: 100,
+        visitor_threshold: 10,
+    };
+    const L2: Level = Level {
+        difficulty_factor: 1000,
+        visitor_threshold: 1000,
+    };
+
     #[actix_rt::test]
     async fn level_routes_work() {
         const NAME: &str = "testuserlevelroutes";
@@ -284,8 +284,7 @@ mod tests {
 
         // 2. get level
 
-        let levels = vec![L1, L2];
-
+        let add_level = get_level_data();
         let get_level_resp = test::call_service(
             &app,
             post_request!(&key, ROUTES.levels.get)
@@ -295,31 +294,28 @@ mod tests {
         .await;
         assert_eq!(get_level_resp.status(), StatusCode::OK);
         let res_levels: Vec<Level> = test::read_body_json(get_level_resp).await;
-        assert_eq!(res_levels, levels);
+        assert_eq!(res_levels, add_level.levels);
 
         // 3. update level
 
-        let l1 = Level {
-            difficulty_factor: 10,
-            visitor_threshold: 10,
-        };
-        let l2 = Level {
-            difficulty_factor: 5000,
-            visitor_threshold: 5000,
-        };
-        let levels = vec![l1, l2];
-        let add_level = UpdateLevels {
-            levels: levels.clone(),
+        let levels = vec![L1, L2];
+
+        let update_level = UpdateLevels {
             key: key.key.clone(),
+            levels: levels.clone(),
+            description: add_level.description,
+            duration: add_level.duration,
         };
+
         let add_token_resp = test::call_service(
             &app,
-            post_request!(&add_level, ROUTES.levels.update)
+            post_request!(&update_level, &ROUTES.levels.update)
                 .cookie(cookies.clone())
                 .to_request(),
         )
         .await;
         assert_eq!(add_token_resp.status(), StatusCode::OK);
+
         let get_level_resp = test::call_service(
             &app,
             post_request!(&key, ROUTES.levels.get)
@@ -330,38 +326,5 @@ mod tests {
         assert_eq!(get_level_resp.status(), StatusCode::OK);
         let res_levels: Vec<Level> = test::read_body_json(get_level_resp).await;
         assert_eq!(res_levels, levels);
-
-        // 4. delete level
-        let l1 = Level {
-            difficulty_factor: 10,
-            visitor_threshold: 10,
-        };
-        let l2 = Level {
-            difficulty_factor: 5000,
-            visitor_threshold: 5000,
-        };
-        let levels = vec![l1, l2];
-        let add_level = UpdateLevels {
-            levels: levels.clone(),
-            key: key.key.clone(),
-        };
-        let add_token_resp = test::call_service(
-            &app,
-            post_request!(&add_level, ROUTES.levels.delete)
-                .cookie(cookies.clone())
-                .to_request(),
-        )
-        .await;
-        assert_eq!(add_token_resp.status(), StatusCode::OK);
-        let get_level_resp = test::call_service(
-            &app,
-            post_request!(&key, ROUTES.levels.get)
-                .cookie(cookies.clone())
-                .to_request(),
-        )
-        .await;
-        assert_eq!(get_level_resp.status(), StatusCode::OK);
-        let res_levels: Vec<Level> = test::read_body_json(get_level_resp).await;
-        assert_eq!(res_levels, Vec::new());
     }
 }

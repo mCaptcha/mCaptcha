@@ -43,7 +43,7 @@ const updateLevel = (e: Event) => {
     const updatedLevel = getLevelFields(level);
     LEVELS.update(updatedLevel, level);
   } catch (e) {
-    createError(e);
+    createError(e.message);
   }
 };
 

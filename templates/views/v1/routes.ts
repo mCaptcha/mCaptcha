@@ -23,6 +23,7 @@ const ROUTES = {
   docsHome: '/docs/',
   listSitekey: '/sitekeys/',
   viewSitekey: (key: string) => `/sitekey/${key}/`,
+  editSitekey: (key: string) => `/sitekey/${key}/edit/`,
   addSiteKey: '/sitekeys/add',
 };
 

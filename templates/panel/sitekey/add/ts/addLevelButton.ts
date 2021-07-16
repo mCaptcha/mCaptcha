@@ -39,16 +39,11 @@ const addLevel = (e: Event) => {
   const isValid = validateLevel(onScreenLevel);
   log.debug(`[addLevelButton] isValid: ${isValid}`);
   if (!isValid) {
-    return log.error('Aborting level addition');
+    let error = `Aborting level ${onScreenLevel} addition`;
+    return log.error(error);
   }
 
-  // eventTarget.remove();
   FIELDSET.replaceChild(getRemoveButtonHTML(onScreenLevel), PARENT);
-
-  //  PARENT.appendChild(  PARENT.htmlFor = `${CONST.REMOVE_LEVEL_BUTTON_ID_WITHOUT_LEVEL}${onScreenLevel}`;
-  //FIELDSET.innerHTML += getRemoveButtonHTML(numLevels);
-
-  //PARENT.remove();
 
   const newLevelElement = getHtml(onScreenLevel + 1);
   FIELDSET.insertAdjacentElement('afterend', newLevelElement);
