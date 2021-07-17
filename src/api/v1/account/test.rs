@@ -157,7 +157,6 @@ async fn email_udpate_password_validation_del_userworks() {
         ROUTES.account.update_email,
         &email_payload,
         ServiceError::EmailTaken,
-        StatusCode::BAD_REQUEST,
     )
     .await;
 
@@ -171,7 +170,6 @@ async fn email_udpate_password_validation_del_userworks() {
         ROUTES.account.delete,
         &payload,
         ServiceError::WrongPassword,
-        StatusCode::UNAUTHORIZED,
     )
     .await;
 

@@ -170,7 +170,6 @@ mod tests {
             ROUTES.account.update_password,
             &update_password,
             ServiceError::PasswordsDontMatch,
-            StatusCode::BAD_REQUEST,
         )
         .await;
 
@@ -186,7 +185,6 @@ mod tests {
             ROUTES.account.update_password,
             &update_password,
             ServiceError::WrongPassword,
-            StatusCode::UNAUTHORIZED,
         )
         .await;
 

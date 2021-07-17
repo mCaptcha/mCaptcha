@@ -340,7 +340,6 @@ mod tests {
             ROUTES.mcaptcha.delete,
             &delete_payload,
             ServiceError::WrongPassword,
-            StatusCode::UNAUTHORIZED,
         )
         .await;
 

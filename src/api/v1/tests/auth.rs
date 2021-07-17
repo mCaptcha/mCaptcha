@@ -71,7 +71,6 @@ async fn auth_works() {
         ROUTES.auth.register,
         &msg,
         ServiceError::UsernameTaken,
-        StatusCode::BAD_REQUEST,
     )
     .await;
 
@@ -83,7 +82,6 @@ async fn auth_works() {
         ROUTES.auth.register,
         &msg,
         ServiceError::EmailTaken,
-        StatusCode::BAD_REQUEST,
     )
     .await;
 
@@ -98,7 +96,6 @@ async fn auth_works() {
         ROUTES.auth.login,
         &creds,
         ServiceError::AccountNotFound,
-        StatusCode::NOT_FOUND,
     )
     .await;
 
@@ -109,7 +106,6 @@ async fn auth_works() {
         ROUTES.auth.login,
         &creds,
         ServiceError::AccountNotFound,
-        StatusCode::NOT_FOUND,
     )
     .await;
 
@@ -123,7 +119,6 @@ async fn auth_works() {
         ROUTES.auth.login,
         &creds,
         ServiceError::WrongPassword,
-        StatusCode::UNAUTHORIZED,
     )
     .await;
 

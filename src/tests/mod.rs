@@ -3,6 +3,7 @@ use std::sync::Arc;
 use actix_web::test;
 use actix_web::{
     dev::ServiceResponse,
+    error::ResponseError,
     http::{header, StatusCode},
     middleware as actix_middleware,
 };
@@ -143,24 +144,23 @@ pub async fn bad_post_req_test<T: Serialize>(
     password: &str,
     url: &str,
     payload: &T,
-    dup_err: ServiceError,
-    s: StatusCode,
+    err: ServiceError,
 ) {
     let (data, _, signin_resp) = signin(name, password).await;
     let cookies = get_cookie!(signin_resp);
     let app = get_app!(data).await;
 
-    let dup_token_resp = test::call_service(
+    let resp = test::call_service(
         &app,
         post_request!(&payload, url)
             .cookie(cookies.clone())
             .to_request(),
     )
     .await;
-    assert_eq!(dup_token_resp.status(), s);
-    let txt: ErrorToResponse = test::read_body_json(dup_token_resp).await;
+    assert_eq!(resp.status(), err.status_code());
+    let resp_err: ErrorToResponse = test::read_body_json(resp).await;
     //println!("{}", txt.error);
-    assert_eq!(txt.error, format!("{}", dup_err));
+    assert_eq!(resp_err.error, format!("{}", err));
 }
 
 pub const L1: Level = Level {
