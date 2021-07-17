@@ -126,7 +126,7 @@
                 <span class="prelude-val">Err</span>(<span class="ident">ServiceError::WrongPassword</span>)
             }
         }
-        <span class="prelude-val">Err</span>(<span class="ident">RowNotFound</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">ServiceError::UsernameNotFound</span>),
+        <span class="prelude-val">Err</span>(<span class="ident">RowNotFound</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">ServiceError::AccountNotFound</span>),
         <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">ServiceError::InternalServerError</span>),
     }
 }

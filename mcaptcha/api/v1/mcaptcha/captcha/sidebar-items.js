@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["add_mcaptcha_util",""],["services",""],["update_token_helper",""]],"mod":[["routes",""]],"struct":[["MCaptchaDetails",""],["MCaptchaID",""],["delete_mcaptcha",""],["get_token",""],["update_token",""]]});
+initSidebarItems({"fn":[["add_mcaptcha_util",""],["services",""],["update_token_helper",""]],"mod":[["routes",""]],"struct":[["DeleteCaptcha",""],["MCaptchaDetails",""],["MCaptchaID",""],["delete_mcaptcha",""],["update_token",""]]});
