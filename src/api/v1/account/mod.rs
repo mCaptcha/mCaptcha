@@ -19,6 +19,7 @@ use serde::{Deserialize, Serialize};
 
 pub mod delete;
 pub mod email;
+pub mod password;
 pub mod secret;
 #[cfg(test)]
 pub mod test;
@@ -34,6 +35,7 @@ pub mod routes {
         pub email_exists: &'static str,
         pub get_secret: &'static str,
         pub update_email: &'static str,
+        pub update_password: &'static str,
         pub update_secret: &'static str,
         pub username_exists: &'static str,
     }
@@ -46,12 +48,13 @@ pub mod routes {
             let email_exists = "/api/v1/account/email/exists";
             let username_exists = "/api/v1/account/username/exists";
             let update_email = "/api/v1/account/email/update";
+            let update_password = "/api/v1/account/password/update";
             Account {
                 delete,
                 email_exists,
-
                 get_secret,
                 update_email,
+                update_password,
                 update_secret,
                 username_exists,
             }
@@ -74,4 +77,5 @@ pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
     email::services(cfg);
     username::services(cfg);
     secret::services(cfg);
+    password::services(cfg);
 }

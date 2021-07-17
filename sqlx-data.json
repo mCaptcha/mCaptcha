@@ -250,33 +250,6 @@
       "nullable": []
     }
   },
-  "546a37c638f7e50c94093894a0359c944b50ccb12fd4272b2d065f62a584625a": {
-    "query": "SELECT key, name from mcaptcha_config\n        WHERE key = ($1) AND user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2) ",
-    "describe": {
-      "columns": [
-        {
-          "ordinal": 0,
-          "name": "key",
-          "type_info": "Varchar"
-        },
-        {
-          "ordinal": 1,
-          "name": "name",
-          "type_info": "Varchar"
-        }
-      ],
-      "parameters": {
-        "Left": [
-          "Text",
-          "Text"
-        ]
-      },
-      "nullable": [
-        false,
-        false
-      ]
-    }
-  },
   "60081afa71dca3d10b372aabfdbc809f0cf62b33994a3bb43ea444159c6544fe": {
     "query": "INSERT INTO mcaptcha_notifications (\n              heading, message, tx, rx)\n              VALUES  (\n              $1, $2,\n                  (SELECT ID FROM mcaptcha_users WHERE name = $3),\n                  (SELECT ID FROM mcaptcha_users WHERE name = $4)\n                      );",
     "describe": {
@@ -405,6 +378,32 @@
       "nullable": []
     }
   },
+  "90608e874ec931db397dc7b357b60bc794fffec5e2eb59c0556808ea8dfef9e9": {
+    "query": "SELECT ID, password  FROM mcaptcha_users WHERE name = ($1)",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Int4"
+        },
+        {
+          "ordinal": 1,
+          "name": "password",
+          "type_info": "Text"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false
+      ]
+    }
+  },
   "931879575bb70dece5596bfae18f55a628d10627e4b6825e54642b254ca4ee64": {
     "query": "INSERT INTO mcaptcha_pow_confirmed_stats \n        (config_id) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1))",
     "describe": {
@@ -456,6 +455,19 @@
         false,
         false
       ]
+    }
+  },
+  "9c7a654aefa0a1683d9b07ff00c8edb0ee292e003c13ec99a419e563591c15e4": {
+    "query": "DELETE FROM mcaptcha_config WHERE key = ($1) AND user_id = $2;",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Int4"
+        ]
+      },
+      "nullable": []
     }
   },
   "ad23588ee4bcbb13e208460ce21e2fa9f1373893934b530b339fea10360b34a8": {
@@ -537,19 +549,6 @@
       ]
     }
   },
-  "ca46ec86f8fe891daf58cae9292783bd5b1c1103fef03138904e498c26831cc3": {
-    "query": "DELETE FROM mcaptcha_config \n        WHERE key = ($1) AND user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2) ",
-    "describe": {
-      "columns": [],
-      "parameters": {
-        "Left": [
-          "Text",
-          "Text"
-        ]
-      },
-      "nullable": []
-    }
-  },
   "ca9d5241f1234d1825f7ead391ebe9099fca776e7101ac6e1761881606def5fa": {
     "query": "DELETE FROM mcaptcha_users WHERE name = ($1)",
     "describe": {
@@ -557,6 +556,19 @@
       "parameters": {
         "Left": [
           "Text"
+        ]
+      },
+      "nullable": []
+    }
+  },
+  "d85750d86bbafeaf6f52cec3d49d708bef1a9ef85bbd9c55d63c9c27cb93223c": {
+    "query": "DELETE FROM mcaptcha_levels \n                     WHERE config_id = (\n                        SELECT config_id FROM mcaptcha_config \n                        WHERE key = $1 AND user_id = $2\n                    );",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Int4"
         ]
       },
       "nullable": []
@@ -644,6 +656,19 @@
       "nullable": [
         false
       ]
+    }
+  },
+  "e98d0614d982fe7c04d78d457c3ce79e8d4d0bcaac28c8a3edecdbc9def04ea2": {
+    "query": "UPDATE mcaptcha_users set password = $1\n        WHERE name = $2",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Text"
+        ]
+      },
+      "nullable": []
     }
   },
   "f330cb94c53d33495df94aacec7e4e91d8a920742b89a63d1c59a8ea8937c5c8": {

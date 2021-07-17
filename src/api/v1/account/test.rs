@@ -131,7 +131,7 @@ async fn email_udpate_password_validation_del_userworks() {
     }
 
     let _ = register_and_signin(NAME2, EMAIL2, PASSWORD).await;
-    let (data, creds, signin_resp) = register_and_signin(NAME, EMAIL, PASSWORD).await;
+    let (data, _creds, signin_resp) = register_and_signin(NAME, EMAIL, PASSWORD).await;
     let cookies = get_cookie!(signin_resp);
     let app = get_app!(data).await;
 
