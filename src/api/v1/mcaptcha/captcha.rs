@@ -27,7 +27,6 @@ use crate::AppData;
 pub mod routes {
     pub struct MCaptcha {
         pub delete: &'static str,
-        pub get_token: &'static str,
         pub update_key: &'static str,
     }
 
@@ -35,7 +34,6 @@ pub mod routes {
         pub const fn new() -> MCaptcha {
             MCaptcha {
                 update_key: "/api/v1/mcaptcha/update/key",
-                get_token: "/api/v1/mcaptcha/get",
                 delete: "/api/v1/mcaptcha/delete",
             }
         }
@@ -45,7 +43,6 @@ pub mod routes {
 pub fn services(cfg: &mut web::ServiceConfig) {
     cfg.service(update_token);
     cfg.service(delete_mcaptcha);
-    cfg.service(get_token);
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -163,35 +160,10 @@ async fn update_token_helper(
     Ok(())
 }
 
-#[my_codegen::post(
-    path = "crate::V1_API_ROUTES.mcaptcha.get_token",
-    wrap = "crate::CheckLogin"
-)]
-async fn get_token(
-    payload: web::Json<MCaptchaDetails>,
-    data: AppData,
-    id: Identity,
-) -> ServiceResult<impl Responder> {
-    let username = id.identity().unwrap();
-    let res = match sqlx::query_as!(
-        MCaptchaDetails,
-        "SELECT key, name from mcaptcha_config
-        WHERE key = ($1) AND user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2) ",
-        &payload.key,
-        &username,
-    )
-    .fetch_one(&data.db)
-    .await
-    {
-        Err(sqlx::Error::RowNotFound) => Err(ServiceError::TokenNotFound),
-        Ok(m) => Ok(m),
-        Err(e) => {
-            let e: ServiceError = e.into();
-            Err(e)
-        }
-    }?;
-
-    Ok(HttpResponse::Ok().json(res))
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct DeleteCaptcha {
+    pub key: String,
+    pub password: String,
 }
 
 #[my_codegen::post(
@@ -199,21 +171,58 @@ async fn get_token(
     wrap = "crate::CheckLogin"
 )]
 async fn delete_mcaptcha(
-    payload: web::Json<MCaptchaDetails>,
+    payload: web::Json<DeleteCaptcha>,
     data: AppData,
     id: Identity,
 ) -> ServiceResult<impl Responder> {
+    use argon2_creds::Config;
+    use sqlx::Error::RowNotFound;
+
     let username = id.identity().unwrap();
 
-    sqlx::query!(
-        "DELETE FROM mcaptcha_config 
-        WHERE key = ($1) AND user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2) ",
-        &payload.key,
+    struct PasswordID {
+        password: String,
+        id: i32,
+    }
+
+    let rec = sqlx::query_as!(
+        PasswordID,
+        r#"SELECT ID, password  FROM mcaptcha_users WHERE name = ($1)"#,
         &username,
     )
-    .execute(&data.db)
-    .await?;
-    Ok(HttpResponse::Ok())
+    .fetch_one(&data.db)
+    .await;
+
+    match rec {
+        Ok(rec) => {
+            if Config::verify(&rec.password, &payload.password)? {
+                sqlx::query!(
+                    "DELETE FROM mcaptcha_levels 
+                     WHERE config_id = (
+                        SELECT config_id FROM mcaptcha_config 
+                        WHERE key = $1 AND user_id = $2
+                    );",
+                    &payload.key,
+                    &rec.id,
+                )
+                .execute(&data.db)
+                .await?;
+
+                sqlx::query!(
+                    "DELETE FROM mcaptcha_config WHERE key = ($1) AND user_id = $2;",
+                    &payload.key,
+                    &rec.id,
+                )
+                .execute(&data.db)
+                .await?;
+                Ok(HttpResponse::Ok())
+            } else {
+                Err(ServiceError::WrongPassword)
+            }
+        }
+        Err(RowNotFound) => Err(ServiceError::UsernameNotFound),
+        Err(_) => Err(ServiceError::InternalServerError),
+    }
 }
 
 // Workflow:
@@ -234,34 +243,6 @@ mod tests {
     use crate::api::v1::ROUTES;
     use crate::tests::*;
     use crate::*;
-
-    #[actix_rt::test]
-    async fn add_mcaptcha_works() {
-        const NAME: &str = "testusermcaptcha";
-        const PASSWORD: &str = "longpassworddomain";
-        const EMAIL: &str = "testusermcaptcha@a.com";
-
-        {
-            let data = Data::new().await;
-            delete_user(NAME, &data).await;
-        }
-
-        // 1. add mcaptcha token
-        register_and_signin(NAME, EMAIL, PASSWORD).await;
-        let (data, _, signin_resp, token_key) = add_levels_util(NAME, PASSWORD).await;
-        let cookies = get_cookie!(signin_resp);
-        let app = get_app!(data).await;
-
-        // 4. delete token
-        let del_token = test::call_service(
-            &app,
-            post_request!(&token_key, ROUTES.mcaptcha.delete)
-                .cookie(cookies.clone())
-                .to_request(),
-        )
-        .await;
-        assert_eq!(del_token.status(), StatusCode::OK);
-    }
 
     #[actix_rt::test]
     async fn update_and_get_mcaptcha_works() {
@@ -292,30 +273,15 @@ mod tests {
         let updated_token: MCaptchaDetails =
             test::read_body_json(update_token_resp).await;
 
-        // get token key with updated key
+        // get levels with udpated key
         let get_token_resp = test::call_service(
             &app,
-            post_request!(&updated_token, ROUTES.mcaptcha.get_token)
+            post_request!(&updated_token, ROUTES.levels.get)
                 .cookie(cookies.clone())
                 .to_request(),
         )
         .await;
+        // if updated key doesn't exist in databse, a non 200 result will bereturned
         assert_eq!(get_token_resp.status(), StatusCode::OK);
-
-        // check if they match
-        let mut get_token_key: MCaptchaDetails =
-            test::read_body_json(get_token_resp).await;
-        assert_eq!(get_token_key.key, updated_token.key);
-
-        get_token_key.key = "nonexistent".into();
-
-        let get_nonexistent_token_resp = test::call_service(
-            &app,
-            post_request!(&get_token_key, ROUTES.mcaptcha.get_token)
-                .cookie(cookies.clone())
-                .to_request(),
-        )
-        .await;
-        assert_eq!(get_nonexistent_token_resp.status(), StatusCode::NOT_FOUND);
     }
 }

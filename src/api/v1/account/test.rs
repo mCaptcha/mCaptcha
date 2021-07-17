@@ -25,6 +25,7 @@ use crate::api::v1::ROUTES;
 use crate::data::Data;
 use crate::*;
 
+use crate::errors::*;
 use crate::tests::*;
 
 #[actix_rt::test]
@@ -144,17 +145,38 @@ async fn email_udpate_password_validation_del_userworks() {
 
     assert_eq!(email_update_resp.status(), StatusCode::OK);
 
-    let payload = Password {
-        password: creds.password,
+    let mut payload = Password {
+        password: NAME.into(),
     };
+    bad_post_req_test(
+        NAME,
+        PASSWORD,
+        ROUTES.account.delete,
+        &payload,
+        ServiceError::WrongPassword,
+        StatusCode::UNAUTHORIZED,
+    )
+    .await;
 
+    payload.password = PASSWORD.into();
     let delete_user_resp = test::call_service(
+        &app,
+        post_request!(&payload, ROUTES.account.delete)
+            .cookie(cookies.clone())
+            .to_request(),
+    )
+    .await;
+
+    assert_eq!(delete_user_resp.status(), StatusCode::OK);
+
+    let account_not_found_resp = test::call_service(
         &app,
         post_request!(&payload, ROUTES.account.delete)
             .cookie(cookies)
             .to_request(),
     )
     .await;
-
-    assert_eq!(delete_user_resp.status(), StatusCode::OK);
+    assert_eq!(account_not_found_resp.status(), StatusCode::NOT_FOUND);
+    let txt: ErrorToResponse = test::read_body_json(account_not_found_resp).await;
+    assert_eq!(txt.error, format!("{}", ServiceError::AccountNotFound));
 }

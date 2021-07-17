@@ -61,6 +61,7 @@ mod tests {
             PAGES.panel.sitekey.add,
             PAGES.panel.sitekey.list,
             PAGES.panel.notifications,
+            "/sitekey/test/delete",
         ];
 
         for url in urls.iter() {

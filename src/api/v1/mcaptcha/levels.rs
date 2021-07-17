@@ -30,20 +30,20 @@ pub mod routes {
 
     pub struct Levels {
         pub add: &'static str,
-        //        pub delete: &'static str,
+        pub delete: &'static str,
         pub get: &'static str,
         pub update: &'static str,
     }
 
     impl Levels {
         pub const fn new() -> Levels {
-            let add = "/api/v1/mcaptcha/levels/add";
-            let update = "/api/v1/mcaptcha/levels/update";
-            // let delete = "/api/v1/mcaptcha/levels/delete";
-            let get = "/api/v1/mcaptcha/levels/get";
+            let add = "/api/v1/mcaptcha/add";
+            let update = "/api/v1/mcaptcha/update";
+            let delete = "/api/v1/mcaptcha/delete";
+            let get = "/api/v1/mcaptcha/get";
             Levels {
                 add,
-                //      delete,
+                delete,
                 get,
                 update,
             }
@@ -252,6 +252,7 @@ mod tests {
     use actix_web::test;
 
     use super::*;
+    use crate::api::v1::mcaptcha::captcha::DeleteCaptcha;
     use crate::api::v1::ROUTES;
     use crate::data::Data;
     use crate::tests::*;
@@ -326,5 +327,32 @@ mod tests {
         assert_eq!(get_level_resp.status(), StatusCode::OK);
         let res_levels: Vec<Level> = test::read_body_json(get_level_resp).await;
         assert_eq!(res_levels, levels);
+
+        // 4. delete captcha
+        let mut delete_payload = DeleteCaptcha {
+            key: key.key,
+            password: format!("worongpass{}", PASSWORD),
+        };
+
+        bad_post_req_test(
+            NAME,
+            PASSWORD,
+            ROUTES.mcaptcha.delete,
+            &delete_payload,
+            ServiceError::WrongPassword,
+            StatusCode::UNAUTHORIZED,
+        )
+        .await;
+
+        delete_payload.password = PASSWORD.into();
+
+        let del_resp = test::call_service(
+            &app,
+            post_request!(&delete_payload, ROUTES.mcaptcha.delete)
+                .cookie(cookies.clone())
+                .to_request(),
+        )
+        .await;
+        assert_eq!(del_resp.status(), StatusCode::OK);
     }
 }

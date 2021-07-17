@@ -102,6 +102,17 @@ async fn auth_works() {
     )
     .await;
 
+    creds.login = "nonexistantuser@example.com".into();
+    bad_post_req_test(
+        NAME,
+        PASSWORD,
+        ROUTES.auth.login,
+        &creds,
+        ServiceError::AccountNotFound,
+        StatusCode::NOT_FOUND,
+    )
+    .await;
+
     // 4. trying to signin with wrong password
     creds.login = NAME.into();
     creds.password = NAME.into();

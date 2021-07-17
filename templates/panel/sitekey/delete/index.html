@@ -1,0 +1,29 @@
+<. include!("../../../components/headers/index.html"); .>
+<div class="tmp-layout">
+<main class="auth-main">
+  <div class="auth-inner-container">
+    <. include!("../../../auth/logo.html"); .>
+  <form
+    class="sitekey-form"
+    method="POST"
+    action="<.= crate::V1_API_ROUTES.auth.login .>"
+    id="form"
+  >
+    <h1 class="form__title">
+      Confirm Access
+    </h1>
+    <label class="sitekey-form__label" for="password">
+      Password
+      <input
+        class="sitekey-form__input"
+        type="password"
+        name="password"
+        id="password"
+        required
+      />
+      <. include!("../../../components/showPassword/index.html"); .>
+	</label>
+    <input type="submit" class="sitekey-form__submit" value="Confirm access" />
+  </form>
+</div>
+<. include!("../../../components/footers.html"); .>

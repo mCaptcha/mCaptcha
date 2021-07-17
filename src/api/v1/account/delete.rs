@@ -56,7 +56,7 @@ async fn delete_account(
                 Err(ServiceError::WrongPassword)
             }
         }
-        Err(RowNotFound) => Err(ServiceError::UsernameNotFound),
+        Err(RowNotFound) => Err(ServiceError::AccountNotFound),
         Err(_) => Err(ServiceError::InternalServerError),
     }
 }
