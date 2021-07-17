@@ -78,6 +78,10 @@
 <span id="75">75</span>
 <span id="76">76</span>
 <span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -100,6 +104,7 @@
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">delete</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">email</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">password</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">secret</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">test</span>;
@@ -115,6 +120,7 @@
         <span class="kw">pub</span> <span class="ident">email_exists</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
         <span class="kw">pub</span> <span class="ident">get_secret</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
         <span class="kw">pub</span> <span class="ident">update_email</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
+        <span class="kw">pub</span> <span class="ident">update_password</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
         <span class="kw">pub</span> <span class="ident">update_secret</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
         <span class="kw">pub</span> <span class="ident">username_exists</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
     }
@@ -127,12 +133,13 @@
             <span class="kw">let</span> <span class="ident">email_exists</span> <span class="op">=</span> <span class="string">&quot;/api/v1/account/email/exists&quot;</span>;
             <span class="kw">let</span> <span class="ident">username_exists</span> <span class="op">=</span> <span class="string">&quot;/api/v1/account/username/exists&quot;</span>;
             <span class="kw">let</span> <span class="ident">update_email</span> <span class="op">=</span> <span class="string">&quot;/api/v1/account/email/update&quot;</span>;
+            <span class="kw">let</span> <span class="ident">update_password</span> <span class="op">=</span> <span class="string">&quot;/api/v1/account/password/update&quot;</span>;
             <span class="ident">Account</span> {
                 <span class="ident">delete</span>,
                 <span class="ident">email_exists</span>,
-
                 <span class="ident">get_secret</span>,
                 <span class="ident">update_email</span>,
+                <span class="ident">update_password</span>,
                 <span class="ident">update_secret</span>,
                 <span class="ident">username_exists</span>,
             }
@@ -155,6 +162,7 @@
     <span class="ident">email::services</span>(<span class="ident">cfg</span>);
     <span class="ident">username::services</span>(<span class="ident">cfg</span>);
     <span class="ident">secret::services</span>(<span class="ident">cfg</span>);
+    <span class="ident">password::services</span>(<span class="ident">cfg</span>);
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="mcaptcha" data-search-index-js="../../../../../search-index.js" data-search-js="../../../../../search.js"></div>
