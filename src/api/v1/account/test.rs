@@ -121,17 +121,22 @@ async fn email_udpate_password_validation_del_userworks() {
     const NAME: &str = "testuser2";
     const PASSWORD: &str = "longpassword2";
     const EMAIL: &str = "testuser1@a.com2";
+    const NAME2: &str = "eupdauser";
+    const EMAIL2: &str = "eupdauser@a.com";
 
     {
         let data = Data::new().await;
         delete_user(NAME, &data).await;
+        delete_user(NAME2, &data).await;
     }
 
+    let _ = register_and_signin(NAME2, EMAIL2, PASSWORD).await;
     let (data, creds, signin_resp) = register_and_signin(NAME, EMAIL, PASSWORD).await;
     let cookies = get_cookie!(signin_resp);
     let app = get_app!(data).await;
 
-    let email_payload = Email {
+    // update email
+    let mut email_payload = Email {
         email: EMAIL.into(),
     };
     let email_update_resp = test::call_service(
@@ -142,9 +147,21 @@ async fn email_udpate_password_validation_del_userworks() {
             .to_request(),
     )
     .await;
-
     assert_eq!(email_update_resp.status(), StatusCode::OK);
 
+    // check duplicate email while dupate email
+    email_payload.email = EMAIL2.into();
+    bad_post_req_test(
+        NAME,
+        PASSWORD,
+        ROUTES.account.update_email,
+        &email_payload,
+        ServiceError::EmailTaken,
+        StatusCode::BAD_REQUEST,
+    )
+    .await;
+
+    // wrong password while deleteing account
     let mut payload = Password {
         password: NAME.into(),
     };
@@ -158,6 +175,7 @@ async fn email_udpate_password_validation_del_userworks() {
     )
     .await;
 
+    // delete account
     payload.password = PASSWORD.into();
     let delete_user_resp = test::call_service(
         &app,
@@ -169,6 +187,7 @@ async fn email_udpate_password_validation_del_userworks() {
 
     assert_eq!(delete_user_resp.status(), StatusCode::OK);
 
+    // try to delete an account that doesn't exist
     let account_not_found_resp = test::call_service(
         &app,
         post_request!(&payload, ROUTES.account.delete)
