@@ -288,6 +288,15 @@
 <span id="285">285</span>
 <span id="286">286</span>
 <span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -309,6 +318,7 @@
 
 <span class="kw">use</span> <span class="ident">actix_identity::Identity</span>;
 <span class="kw">use</span> <span class="ident">actix_web</span>::{<span class="ident">web</span>, <span class="ident">HttpResponse</span>, <span class="ident">Responder</span>};
+<span class="kw">use</span> <span class="ident">libmcaptcha::master::messages::RenameBuilder</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
 <span class="kw">use</span> <span class="kw">super</span><span class="ident">::get_random</span>;
@@ -425,9 +435,17 @@
         };
     }
 
+    <span class="kw">let</span> <span class="ident">payload</span> <span class="op">=</span> <span class="ident">payload</span>.<span class="ident">into_inner</span>();
+    <span class="kw">let</span> <span class="ident">rename</span> <span class="op">=</span> <span class="ident">RenameBuilder::default</span>()
+        .<span class="ident">name</span>(<span class="ident">payload</span>.<span class="ident">key</span>)
+        .<span class="ident">rename_to</span>(<span class="ident">key</span>.<span class="ident">clone</span>())
+        .<span class="ident">build</span>()
+        .<span class="ident">unwrap</span>();
+    <span class="ident">data</span>.<span class="ident">captcha</span>.<span class="ident">rename</span>(<span class="ident">rename</span>).<span class="kw">await</span><span class="question-mark">?</span>;
+
     <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">MCaptchaDetails</span> {
         <span class="ident">key</span>,
-        <span class="ident">name</span>: <span class="ident">payload</span>.<span class="ident">into_inner</span>().<span class="ident">name</span>,
+        <span class="ident">name</span>: <span class="ident">payload</span>.<span class="ident">name</span>,
     };
 
     <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse::Ok</span>().<span class="ident">json</span>(<span class="ident">resp</span>))
