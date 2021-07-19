@@ -18,6 +18,7 @@ use std::borrow::Cow;
 
 use actix_identity::Identity;
 use actix_web::{web, HttpResponse, Responder};
+use libmcaptcha::master::messages::RenameBuilder;
 use serde::{Deserialize, Serialize};
 
 use super::get_random;
@@ -134,9 +135,17 @@ async fn update_token(
         };
     }
 
+    let payload = payload.into_inner();
+    let rename = RenameBuilder::default()
+        .name(payload.key)
+        .rename_to(key.clone())
+        .build()
+        .unwrap();
+    data.captcha.rename(rename).await?;
+
     let resp = MCaptchaDetails {
         key,
-        name: payload.into_inner().name,
+        name: payload.name,
     };
 
     Ok(HttpResponse::Ok().json(resp))

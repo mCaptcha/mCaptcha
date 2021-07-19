@@ -141,10 +141,8 @@ async fn init_mcaptcha(data: &AppData, key: &str) -> ServiceResult<()> {
         .mcaptcha(mcaptcha)
         .build()
         .unwrap();
-    match &data.captcha {
-        crate::data::SystemGroup::Embedded(val) => val.master.send(msg).await.unwrap(),
-        crate::data::SystemGroup::Redis(val) => val.master.send(msg).await.unwrap(),
-    };
+
+    data.captcha.add_site(msg).await?;
 
     Ok(())
 }

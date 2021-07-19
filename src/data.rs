@@ -32,6 +32,7 @@ use libmcaptcha::{
     cache::messages::VerifyCaptchaResult,
     cache::Save,
     errors::CaptchaResult,
+    master::messages::{AddSite, Rename},
     master::{embedded::master::Master as EmbeddedMaster, Master as MasterTrait},
     pow::ConfigBuilder as PoWConfigBuilder,
     pow::PoWConfig,
@@ -81,17 +82,23 @@ impl SystemGroup {
         }
     }
 
-    //        /// utility function to AddSite
-    //        pub async fn add_site(
-    //            &self,
-    //            msg: AddSite,
-    //        ) -> CaptchaResult<()> {
-    //            match self {
-    //                Self::Embedded(val) => val.master.send(msg).await?,
-    //                Self::Redis(val) => val.master.send(msg).await?,
-    //            };
-    //            Ok(())
-    //        }
+    /// utility function to AddSite
+    pub async fn add_site(&self, msg: AddSite) -> CaptchaResult<()> {
+        match self {
+            Self::Embedded(val) => val.master.send(msg).await?,
+            Self::Redis(val) => val.master.send(msg).await?,
+        };
+        Ok(())
+    }
+
+    /// utility function to rename captcha
+    pub async fn rename(&self, msg: Rename) -> CaptchaResult<()> {
+        match self {
+            Self::Embedded(val) => val.master.send(msg).await?,
+            Self::Redis(val) => val.master.send(msg).await?,
+        };
+        Ok(())
+    }
 
     fn new_system<A: Save, B: MasterTrait>(m: Addr<B>, c: Addr<A>) -> System<A, B> {
         let pow = PoWConfigBuilder::default()
