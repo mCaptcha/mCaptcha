@@ -50,8 +50,7 @@ const hidePasswordButtons = () => {
 
 // e is click event from show password container
 export const showPassword = () => {
-  const form = document.querySelector('form');
-  const inputs = form.querySelectorAll('input');
+  const inputs = document.body.querySelectorAll('input');
 
   if (display == 'hidden') {
     display = 'show';
@@ -93,13 +92,3 @@ export const registerShowPassword = () => {
 };
 
 export default registerShowPassword;
-
-/*
- * so here's what im going to do:
- * the wrapper will be a check box and the check box will manipulate
- * show password and hide password buttons using CSS.
- *
- * There will also be an event hadler attached that will change field types of
- * parent fields only. Well, sibling maybe. Will have to see document structure
- *
- */

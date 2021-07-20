@@ -11,8 +11,7 @@
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
 *
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <https://www.gnu.org/licenses/>.
+* You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 use actix_web::web::ServiceConfig;
@@ -51,17 +50,22 @@ mod tests {
             delete_user(NAME, &data).await;
         }
 
-        let (data, _, signin_resp) = register_and_signin(NAME, EMAIL, PASSWORD).await;
+        register_and_signin(NAME, EMAIL, PASSWORD).await;
+        let (data, _, signin_resp, token_key) = add_levels_util(NAME, PASSWORD).await;
         let cookies = get_cookie!(signin_resp);
 
         let app = get_app!(data).await;
 
+        let edit_sitekey_url = format!("/sitekey/{}/edit", &token_key.key);
+        let delete_sitekey_url = format!("/sitekey/{}/delete", &token_key.key);
         let urls = vec![
             PAGES.home,
             PAGES.panel.sitekey.add,
             PAGES.panel.sitekey.list,
             PAGES.panel.notifications,
-            "/sitekey/test/delete",
+            PAGES.panel.settings,
+            &delete_sitekey_url,
+            &edit_sitekey_url,
         ];
 
         for url in urls.iter() {

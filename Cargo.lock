@@ -1457,7 +1457,7 @@ checksum = "320cfe77175da3a483efed4bc0adc1968ca050b098ce4f2f1c13a56626128790"
 [[package]]
 name = "libmcaptcha"
 version = "0.1.4"
-source = "git+https://github.com/mCaptcha/libmcaptcha?branch=master#6eac51de1035c20954752642b4fbdbf6ae3bec6d"
+source = "git+https://github.com/mCaptcha/libmcaptcha?branch=master#1d4f97f511ad851a58359ecd1737b381b61cf22e"
 dependencies = [
  "actix",
  "derive_builder",

@@ -15,19 +15,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-const ROUTES = {
-  registerUser: '/join/',
-  loginUser: '/login/',
-  signoutUser: '/api/v1/signout',
-  panelHome: '/',
-  settings: '/settings/',
-  docsHome: '/docs/',
-  notifications: '/notifications',
-  listSitekey: '/sitekeys/',
-  viewSitekey: (key: string) => `/sitekey/${key}/`,
-  editSitekey: (key: string) => `/sitekey/${key}/edit/`,
-  deleteSitekey: (key: string) => `/sitekey/${key}/delete/`,
-  addSiteKey: '/sitekeys/add',
+import registerShowPassword from '../../components/showPassword/';
+import CopyIcon from '../../components/clipboard/';
+
+const SECRET_COPY_ICON = 'settings__secret-copy';
+const SECRET_COPY_DONE_ICON = 'settings__secret-copy-done';
+
+const index = () => {
+  registerShowPassword();
+
+  const secretElement = <HTMLElement>(
+    document.querySelector(`.${SECRET_COPY_ICON}`)
+  );
+  const writeText = secretElement.dataset.secret;
+  new CopyIcon(writeText, SECRET_COPY_ICON, SECRET_COPY_DONE_ICON);
 };
 
-export default ROUTES;
+export default index;

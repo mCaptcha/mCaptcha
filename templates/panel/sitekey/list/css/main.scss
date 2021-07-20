@@ -18,6 +18,7 @@
 @import '../../../../reset';
 @import '../../../../vars';
 @import '../../../../components/box';
+@import '../../../../components/clipboard/copy';
 @import '../../../../components/table/main';
 
 .sitekey__table {
@@ -37,26 +38,17 @@
   width: 10px;
 }
 
-@mixin copy-icon-base {
-  margin: auto;
-  padding: 5px;
-}
-
 .sitekey__copy-icon {
-  @include copy-icon-base;
+  @include copy-icon;
 }
 
-.sitekey__copy-icon:hover {
-  cursor: pointer;
-  filter: invert(17%) sepia(93%) saturate(5039%) hue-rotate(204deg)
-    brightness(100%) contrast(98%);
+.sitekey__copy-icon:hover,
+.sitekey__copy-done-icon:hover {
+  @include copy-icon-hover;
 }
 
 .sitekey__copy-done-icon {
-  @include copy-icon-base;
-  display: none;
-  filter: invert(58%) sepia(60%) saturate(331%) hue-rotate(76deg)
-    brightness(91%) contrast(92%);
+  @include copy-done-icon;
 }
 
 .sitekey__key-container {

@@ -1,3 +1,8 @@
+<. const DONE_ALT: &str = "sitekey copied"; .>
+<. const DONE_CLASS: &str = "sitekey__copy-done-icon"; .>
+<. const COPY_ALT: &str = "copy sitekey"; .>
+<. const COPY_CLASS: &str = "sitekey__copy-icon"; .>
+
 <. include!("../../../components/headers/index.html"); .> <.
 include!("../../navbar/index.html"); .>
 <div class="tmp-layout">
@@ -28,12 +33,8 @@ include!("../../navbar/index.html"); .>
             </td>
             <td class="sitekey-list__key">
               <div class="sitekey__key-container">
-                <img class="sitekey__copy-icon" src="<.= crate::FILES
-                .get("./static/cache/img/svg/clipboard.svg") .unwrap() .>"
-                alt="copy sitekey" data-sitekey="<.= sitekey.key .>" /> <img
-                class="sitekey__copy-done-icon" src="<.= crate::FILES
-                .get("./static/cache/img/svg/check.svg") .unwrap() .>"
-                alt="sitekey copied" data-sitekey="<.= sitekey.key .>" />
+				<. let clipboard_data = ("sitekey", &sitekey.key); .> 
+				<. include!("../../../components/clipboard/index.html"); .>
                 <a
                   class="sitekey__widget-link"
                   href="<.= crate::WIDGET_ROUTES.verification_widget .>/?sitekey=<.= sitekey.key .>"
@@ -43,10 +44,10 @@ include!("../../navbar/index.html"); .>
               </div>
             </td>
             <td class="sitekey-list__key">
-				<div class="sitekey-list__edit">
-                    <. let key = format!("/sitekey/{}", &sitekey.key); .>
-					<. include!("../view/__edit-sitekey-icon.html"); .>
-				</div>
+              <div class="sitekey-list__edit">
+                <. let key = format!("/sitekey/{}", &sitekey.key); .>
+                <. include!("../view/__edit-sitekey-icon.html"); .>
+              </div>
             </td>
           </tr>
           <. } .>

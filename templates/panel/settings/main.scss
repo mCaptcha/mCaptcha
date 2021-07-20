@@ -15,19 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-const ROUTES = {
-  registerUser: '/join/',
-  loginUser: '/login/',
-  signoutUser: '/api/v1/signout',
-  panelHome: '/',
-  settings: '/settings/',
-  docsHome: '/docs/',
-  notifications: '/notifications',
-  listSitekey: '/sitekeys/',
-  viewSitekey: (key: string) => `/sitekey/${key}/`,
-  editSitekey: (key: string) => `/sitekey/${key}/edit/`,
-  deleteSitekey: (key: string) => `/sitekey/${key}/delete/`,
-  addSiteKey: '/sitekeys/add',
-};
+@import '../../components/clipboard/copy';
 
-export default ROUTES;
+.settings__secret-copy {
+  @include copy-icon;
+}
+
+.settings__secret-copy:hover .settings__secret-copy-done:hover {
+  @include copy-icon-hover;
+}
+
+.settings__secret-copy-done {
+  @include copy-done-icon;
+}

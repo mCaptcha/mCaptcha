@@ -1,25 +1,26 @@
 /*
-* Copyright (C) 2021  Aravinth Manivannan <realaravinth@batsense.net>
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as
-* published by the Free Software Foundation, either version 3 of the
-* License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-*
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+ * Copyright (C) 2021  Aravinth Manivannan <realaravinth@batsense.net>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 
 use actix_identity::Identity;
 use actix_web::{HttpResponse, Responder};
 use sailfish::TemplateOnce;
 
 mod notifications;
+mod settings;
 pub mod sitekey;
 
 use crate::errors::PageResult;
@@ -51,6 +52,7 @@ async fn panel(data: AppData, id: Identity) -> PageResult<impl Responder> {
 
 pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
     cfg.service(panel);
+    cfg.service(settings::settings);
     sitekey::services(cfg);
     cfg.service(notifications::notifications);
 }
@@ -61,6 +63,7 @@ pub mod routes {
         pub home: &'static str,
         pub sitekey: Sitekey,
         pub notifications: &'static str,
+        pub settings: &'static str,
     }
 
     impl Panel {
@@ -69,6 +72,7 @@ pub mod routes {
                 home: "/",
                 sitekey: Sitekey::new(),
                 notifications: "/notifications",
+                settings: "/settings",
             }
         }
     }

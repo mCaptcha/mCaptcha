@@ -30,7 +30,6 @@ pub mod routes {
 
     pub struct Levels {
         pub add: &'static str,
-        pub delete: &'static str,
         pub get: &'static str,
         pub update: &'static str,
     }
@@ -39,14 +38,8 @@ pub mod routes {
         pub const fn new() -> Levels {
             let add = "/api/v1/mcaptcha/add";
             let update = "/api/v1/mcaptcha/update";
-            let delete = "/api/v1/mcaptcha/delete";
             let get = "/api/v1/mcaptcha/get";
-            Levels {
-                add,
-                delete,
-                get,
-                update,
-            }
+            Levels { add, get, update }
         }
     }
 }

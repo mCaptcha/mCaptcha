@@ -14,6 +14,32 @@
       "nullable": []
     }
   },
+  "06699fda6b1542bf4544c0bdece91531a3020c24c9c76bcf967980e71ee25b42": {
+    "query": "SELECT email, secret  FROM mcaptcha_users WHERE name = ($1)",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "email",
+          "type_info": "Varchar"
+        },
+        {
+          "ordinal": 1,
+          "name": "secret",
+          "type_info": "Varchar"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        true,
+        false
+      ]
+    }
+  },
   "1be6274d5cc6d16f38285b8a62c9f66e8c3014cd403bc599598e911023bfeedb": {
     "query": "INSERT INTO mcaptcha_pow_fetched_stats \n        (config_id) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1))",
     "describe": {

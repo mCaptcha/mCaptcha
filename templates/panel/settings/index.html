@@ -1,0 +1,56 @@
+<. const COPY_ALT: &str = "copy secret"; .>
+<. const COPY_CLASS: &str = "settings__secret-copy"; .>
+<. const DONE_ALT: &str = "secret copied"; .>
+<. const DONE_CLASS: &str = "settings__secret-copy-done"; .>
+
+<. let clipboard_data = ("secret", &secret); .> 
+
+<. include!("../../components/headers/index.html"); .> 
+<. include!("../navbar/index.html"); .>
+<div class="tmp-layout">
+<. include!("../header/index.html"); .>
+<main class="panel-main">
+  <. include!("../help-banner/index.html"); .>
+  <!-- Main content container -->
+  <div class="inner-container">
+  <div class="sitekey-form" action="<.= crate::V1_API_ROUTES.levels.add .>" method="post">
+	<h1 class="form__title">
+		<.= PAGE .>
+	</h1>
+	<form action="<.= crate::V1_API_ROUTES.account.update_email .>" method="post">
+      <label class="sitekey-form__label" for="description">
+          Email
+        <input
+          class="sitekey-form__input"
+          type="email"
+          name="email"
+          id="email"
+          <. if let Some(email) = email { .>
+              <. if !email.trim().is_empty() { .>
+              value="<.= email .>"
+              <. } .>
+          <. } .>
+        />
+      </label>
+      <button class="sitekey-form__submit" type="submit">Update</button>
+	</form>
+
+    <label class="sitekey-form__label" for="secret">
+		Cooldown Duratoin(in seconds)
+	  <input
+		class="sitekey-form__input"
+		type="password"
+		name="secret-password"
+		id="secret"
+		value="<.= secret .>"
+	  />
+      <. include!("../../components/showPassword/index.html"); .>
+      <. include!("../../components/clipboard/index.html"); .>
+	</label>
+    <a class="settings__delete-account-link" href="<.= crate::PAGES.panel.sitekey.add .>">
+        <button class="settings__delete-account-btn" type="submit">Delete Account</button>
+    </a>
+  </div>
+  </div>
+  <!-- end of container -->
+<. include!("../../components/footers.html"); .>

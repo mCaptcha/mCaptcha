@@ -15,19 +15,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-const ROUTES = {
-  registerUser: '/join/',
-  loginUser: '/login/',
-  signoutUser: '/api/v1/signout',
-  panelHome: '/',
-  settings: '/settings/',
-  docsHome: '/docs/',
-  notifications: '/notifications',
-  listSitekey: '/sitekeys/',
-  viewSitekey: (key: string) => `/sitekey/${key}/`,
-  editSitekey: (key: string) => `/sitekey/${key}/edit/`,
-  deleteSitekey: (key: string) => `/sitekey/${key}/delete/`,
-  addSiteKey: '/sitekeys/add',
-};
+@mixin copy-icon-base {
+  margin: auto;
+  padding: 5px;
+}
 
-export default ROUTES;
+@mixin copy-icon {
+  @include copy-icon-base;
+}
+
+@mixin copy-icon-hover {
+  cursor: pointer;
+  filter: invert(17%) sepia(93%) saturate(5039%) hue-rotate(204deg)
+    brightness(100%) contrast(98%);
+}
+
+@mixin copy-done-icon {
+  @include copy-icon-base;
+  display: none;
+  filter: invert(58%) sepia(60%) saturate(331%) hue-rotate(76deg)
+    brightness(91%) contrast(92%);
+}
