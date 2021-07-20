@@ -1,12 +1,12 @@
-<. include!("../../../components/headers/index.html"); .>
+<. include!("../../components/headers/index.html"); .>
 <div class="tmp-layout">
 <main class="auth-main">
   <div class="auth-inner-container">
-    <. include!("../../../auth/logo.html"); .>
+    <. include!("../logo.html"); .>
   <form
     class="sitekey-form"
     method="POST"
-    action="<.= crate::V1_API_ROUTES.auth.login .>"
+    action="<.= url .>"
     id="form"
   >
     <h1 class="form__title">
@@ -21,9 +21,10 @@
         id="password"
         required
       />
-      <. include!("../../../components/showPassword/index.html"); .>
+      <. include!("../../components/showPassword/index.html"); .>
 	</label>
     <input type="submit" class="sitekey-form__submit" value="Confirm access" />
   </form>
 </div>
-<. include!("../../../components/footers.html"); .>
+<. include!("../../components/additional-data/index.html"); .>
+<. include!("../../components/footers.html"); .>

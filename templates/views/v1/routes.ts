@@ -25,6 +25,7 @@ const ROUTES = {
   listSitekey: '/sitekeys/',
   viewSitekey: (key: string) => `/sitekey/${key}/`,
   editSitekey: (key: string) => `/sitekey/${key}/edit/`,
+  deleteSitekey: (key: string) => `/sitekey/${key}/delete/`,
   addSiteKey: '/sitekeys/add',
 };
 

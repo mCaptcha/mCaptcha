@@ -17,6 +17,7 @@
 
 pub mod login;
 pub mod register;
+pub mod sudo;
 
 pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
     cfg.service(login::login);

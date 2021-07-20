@@ -14,44 +14,20 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-@import '../../_vars.scss';
 
-$footer-font-size: 14px;
+import additionalData from './index';
 
-.details__container {
-  display: flex;
-  font-size: $footer-font-size;
-  //  margin-left: auto;
-}
+it('sudo form works', () => {
+  try {
+    additionalData();
+  } catch (e) {
+    expect(e.message).toBe(
+      "Couldn't retrieve additional data element, is the component loaded?",
+    );
+  }
 
-.details__copyright {
-  flex: 2;
-  font-size: $footer-font-size;
-}
-
-.details {
-  list-style: none;
-  bottom: 0px;
-  box-sizing: border-box;
-  display: flex;
-  font-size: 14px;
-  background-color: $backdrop;
-
-  //position: relative;
-  // width: 95%;
-  //margin: auto;
-}
-
-.details__item {
-  margin: auto 10px;
-  list-style: none;
-}
-
-.details__link {
-  color: $blue-link;
-}
-
-.sitekey-form__delete {
-  filter: invert(12%) sepia(70%) saturate(6818%) hue-rotate(341deg)
-    brightness(82%) contrast(111%);
-}
+  const element = document.createElement('div');
+  element.id = 'additional-data';
+  document.body.appendChild(element);
+  expect(additionalData()).toBe(element);
+});

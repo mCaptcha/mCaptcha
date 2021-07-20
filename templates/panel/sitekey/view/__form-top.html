@@ -21,8 +21,16 @@
         </a> 
         <. if READONLY { .>
 			<. let key = "."; .>
-          <. include!("./__edit-sitekey-icon.html"); .>
+            <. include!("./__edit-sitekey-icon.html"); .>
+            <a href="./delete/">
+        <. } else {  .>
+            <a href="../delete/">
         <. } .>
+          <img class="sitekey-form__delete" 
+               src="<.= crate::FILES.get("./static/cache/img/svg/trash.svg").unwrap() .>"
+               alt="Delete sitekey" 
+          />
+        </a>
 	  </h1>
       <label class="sitekey-form__label" for="description">
           Description

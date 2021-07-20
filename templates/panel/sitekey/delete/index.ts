@@ -15,49 +15,31 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import {getPassword} from '../../../auth/login/ts/';
+import form from '../../../auth/sudo/';
+import additionalData from '../../../components/additional-data';
+
+import getFormUrl from '../../../utils/getFormUrl';
+import genJsonPayload from '../../../utils/genJsonPayload';
+import createError from '../../../components/error';
+
 import VIEWS from '../../../views/v1/routes';
 
-import isBlankString from '../../../utils/isBlankString';
-import genJsonPayload from '../../../utils/genJsonPayload';
-import getFormUrl from '../../../utils/getFormUrl';
-import registerShowPassword from '../../../components/showPassword';
-import createError from '../../../components/error/index';
-
-//import '../forms.scss';
-
-export const getPassword = () => {
-  const passwordElement = <HTMLInputElement>document.getElementById('password');
-  if (passwordElement === null) {
-    console.debug('Password is null');
-    return;
-  }
-
-  return passwordElement.value;
-};
-
-const login = async (e: Event) => {
+const submit = async (e: Event) => {
   e.preventDefault();
-  const loginElement = <HTMLInputElement>document.getElementById('login');
-  if (loginElement === null) {
-    console.debug('login element element is null');
-    return;
-  }
-
-  const login = loginElement.value;
-  isBlankString(login, 'username', e);
-
   const password = getPassword();
+  const key = additionalData().dataset.sitekey;
 
   const payload = {
-    login,
     password,
+    key,
   };
 
-  const formUrl = getFormUrl();
+  const formUrl = getFormUrl(form());
 
   const res = await fetch(formUrl, genJsonPayload(payload));
   if (res.ok) {
-    window.location.assign(VIEWS.panelHome);
+    window.location.assign(VIEWS.listSitekey);
   } else {
     const err = await res.json();
     createError(err.error);
@@ -65,7 +47,5 @@ const login = async (e: Event) => {
 };
 
 export const index = () => {
-  const form = <HTMLFontElement>document.getElementById('form');
-  form.addEventListener('submit', login, true);
-  registerShowPassword();
+  form().addEventListener('submit', submit, true);
 };

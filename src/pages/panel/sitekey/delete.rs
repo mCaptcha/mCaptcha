@@ -15,31 +15,21 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-use actix_web::{HttpResponse, Responder};
-use lazy_static::lazy_static;
+use actix_web::{web, HttpResponse, Responder};
 use my_codegen::get;
 use sailfish::TemplateOnce;
 
-use crate::PAGES;
-
-#[derive(Clone, TemplateOnce)]
-#[template(path = "panel/sitekey/delete/index.html")]
-struct IndexPage;
-const PAGE: &str = "Confirm Access";
-
-impl Default for IndexPage {
-    fn default() -> Self {
-        IndexPage
-    }
-}
-
-lazy_static! {
-    static ref INDEX: String = IndexPage::default().render_once().unwrap();
-}
+use crate::pages::auth::sudo::SudoPage;
+use crate::{PAGES, V1_API_ROUTES};
 
 #[get(path = "PAGES.panel.sitekey.delete", wrap = "crate::CheckLogin")]
-pub async fn delete_sitekey() -> impl Responder {
+pub async fn delete_sitekey(path: web::Path<String>) -> impl Responder {
+    let key = path.into_inner();
+    let data = vec![("sitekey", key)];
+    let page = SudoPage::new(V1_API_ROUTES.mcaptcha.delete, Some(data))
+        .render_once()
+        .unwrap();
     HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
-        .body(&*INDEX)
+        .body(&page)
 }

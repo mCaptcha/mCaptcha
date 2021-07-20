@@ -22,6 +22,7 @@ import * as register from './auth/register/ts/';
 import * as panel from './panel/ts/index';
 import * as addSiteKey from './panel/sitekey/add/ts';
 import * as editSitekey from './panel/sitekey/edit/';
+import * as deleteSitekey from './panel/sitekey/delete/';
 import * as listSitekeys from './panel/sitekey/list/ts';
 import * as notidications from './panel/notifications/ts';
 import {MODE} from './logger';
@@ -55,6 +56,7 @@ router.register(VIEWS.notifications, notidications.index);
 router.register(VIEWS.listSitekey, listSitekeys.index);
 router.register(VIEWS.addSiteKey, addSiteKey.index);
 router.register(VIEWS.editSitekey('[A-Z),a-z,0-9]+'), editSitekey.index);
+router.register(VIEWS.deleteSitekey('[A-Z),a-z,0-9]+'), deleteSitekey.index);
 
 try {
   router.route();
