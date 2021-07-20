@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["PAGE",""]],"struct":[["INDEX",""],["IndexPage",""],["delete_sitekey",""]]});
+initSidebarItems({"struct":[["delete_sitekey",""]]});
