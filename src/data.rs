@@ -32,7 +32,7 @@ use libmcaptcha::{
     cache::messages::VerifyCaptchaResult,
     cache::Save,
     errors::CaptchaResult,
-    master::messages::{AddSite, Rename},
+    master::messages::{AddSite, RemoveCaptcha, Rename},
     master::{embedded::master::Master as EmbeddedMaster, Master as MasterTrait},
     pow::ConfigBuilder as PoWConfigBuilder,
     pow::PoWConfig,
@@ -93,6 +93,15 @@ impl SystemGroup {
 
     /// utility function to rename captcha
     pub async fn rename(&self, msg: Rename) -> CaptchaResult<()> {
+        match self {
+            Self::Embedded(val) => val.master.send(msg).await?,
+            Self::Redis(val) => val.master.send(msg).await?,
+        };
+        Ok(())
+    }
+
+    /// utility function to remove captcha
+    pub async fn remove(&self, msg: RemoveCaptcha) -> CaptchaResult<()> {
         match self {
             Self::Embedded(val) => val.master.send(msg).await?,
             Self::Redis(val) => val.master.send(msg).await?,

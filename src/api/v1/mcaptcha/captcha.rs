@@ -18,7 +18,7 @@ use std::borrow::Cow;
 
 use actix_identity::Identity;
 use actix_web::{web, HttpResponse, Responder};
-use libmcaptcha::master::messages::RenameBuilder;
+use libmcaptcha::master::messages::{RemoveCaptcha, RenameBuilder};
 use serde::{Deserialize, Serialize};
 
 use super::get_random;
@@ -205,6 +205,7 @@ async fn delete_mcaptcha(
     match rec {
         Ok(rec) => {
             if Config::verify(&rec.password, &payload.password)? {
+                let payload = payload.into_inner();
                 sqlx::query!(
                     "DELETE FROM mcaptcha_levels 
                      WHERE config_id = (
@@ -224,6 +225,12 @@ async fn delete_mcaptcha(
                 )
                 .execute(&data.db)
                 .await?;
+                if let Err(err) = data.captcha.remove(RemoveCaptcha(payload.key)).await {
+                    log::error!(
+                        "Error while trying to remove captcha from cache {}",
+                        err
+                    );
+                }
                 Ok(HttpResponse::Ok())
             } else {
                 Err(ServiceError::WrongPassword)
