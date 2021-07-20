@@ -76,29 +76,34 @@
 <span id="73">73</span>
 <span id="74">74</span>
 <span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
-* Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as
-* published by the Free Software Foundation, either version 3 of the
-* License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-*
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
-*/</span>
+ * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+ */</span>
 
 <span class="kw">use</span> <span class="ident">actix_identity::Identity</span>;
 <span class="kw">use</span> <span class="ident">actix_web</span>::{<span class="ident">HttpResponse</span>, <span class="ident">Responder</span>};
 <span class="kw">use</span> <span class="ident">sailfish::TemplateOnce</span>;
 
 <span class="kw">mod</span> <span class="ident">notifications</span>;
+<span class="kw">mod</span> <span class="ident">settings</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">sitekey</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::errors::PageResult</span>;
@@ -130,6 +135,7 @@
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">services</span>(<span class="ident">cfg</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">actix_web::web::ServiceConfig</span>) {
     <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">panel</span>);
+    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">settings::settings</span>);
     <span class="ident">sitekey::services</span>(<span class="ident">cfg</span>);
     <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">notifications::notifications</span>);
 }
@@ -140,6 +146,7 @@
         <span class="kw">pub</span> <span class="ident">home</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
         <span class="kw">pub</span> <span class="ident">sitekey</span>: <span class="ident">Sitekey</span>,
         <span class="kw">pub</span> <span class="ident">notifications</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
+        <span class="kw">pub</span> <span class="ident">settings</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
     }
 
     <span class="kw">impl</span> <span class="ident">Panel</span> {
@@ -148,6 +155,7 @@
                 <span class="ident">home</span>: <span class="string">&quot;/&quot;</span>,
                 <span class="ident">sitekey</span>: <span class="ident">Sitekey::new</span>(),
                 <span class="ident">notifications</span>: <span class="string">&quot;/notifications&quot;</span>,
+                <span class="ident">settings</span>: <span class="string">&quot;/settings&quot;</span>,
             }
         }
     }

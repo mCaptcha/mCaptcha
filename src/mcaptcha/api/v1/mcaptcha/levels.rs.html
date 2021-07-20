@@ -351,13 +351,6 @@
 <span id="348">348</span>
 <span id="349">349</span>
 <span id="350">350</span>
-<span id="351">351</span>
-<span id="352">352</span>
-<span id="353">353</span>
-<span id="354">354</span>
-<span id="355">355</span>
-<span id="356">356</span>
-<span id="357">357</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -391,7 +384,6 @@
 
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Levels</span> {
         <span class="kw">pub</span> <span class="ident">add</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
-        <span class="kw">pub</span> <span class="ident">delete</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
         <span class="kw">pub</span> <span class="ident">get</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
         <span class="kw">pub</span> <span class="ident">update</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
     }
@@ -400,14 +392,8 @@
         <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Levels</span> {
             <span class="kw">let</span> <span class="ident">add</span> <span class="op">=</span> <span class="string">&quot;/api/v1/mcaptcha/add&quot;</span>;
             <span class="kw">let</span> <span class="ident">update</span> <span class="op">=</span> <span class="string">&quot;/api/v1/mcaptcha/update&quot;</span>;
-            <span class="kw">let</span> <span class="ident">delete</span> <span class="op">=</span> <span class="string">&quot;/api/v1/mcaptcha/delete&quot;</span>;
             <span class="kw">let</span> <span class="ident">get</span> <span class="op">=</span> <span class="string">&quot;/api/v1/mcaptcha/get&quot;</span>;
-            <span class="ident">Levels</span> {
-                <span class="ident">add</span>,
-                <span class="ident">delete</span>,
-                <span class="ident">get</span>,
-                <span class="ident">update</span>,
-            }
+            <span class="ident">Levels</span> { <span class="ident">add</span>, <span class="ident">get</span>, <span class="ident">update</span> }
         }
     }
 }
