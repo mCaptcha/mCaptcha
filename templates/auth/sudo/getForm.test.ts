@@ -19,13 +19,13 @@ import form from './index';
 
 it('sudo form works', () => {
   try {
-    form();
+    form.get();
   } catch (e) {
-    expect(e.message).toBe("Couldn't form element, is the component loaded?");
+    expect(e.message).toBe("Element form is undefined");
   }
 
   const element = document.createElement('form');
   element.id = 'form';
   document.body.appendChild(element);
-  expect(form()).toBe(element);
+  expect(form.get()).toBe(element);
 });
