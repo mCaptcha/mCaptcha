@@ -28,7 +28,7 @@ const index = () => {
     document.querySelector(`.${SECRET_COPY_ICON}`)
   );
   const writeText = secretElement.dataset.secret;
-  new CopyIcon(writeText, SECRET_COPY_ICON, SECRET_COPY_DONE_ICON);
+  new CopyIcon(writeText, secretElement, SECRET_COPY_DONE_ICON);
 };
 
 export default index;

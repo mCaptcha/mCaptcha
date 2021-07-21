@@ -20,13 +20,14 @@ const SITEKEY_COPY_ICON = `sitekey__copy-icon`;
 const SITEKEY_COPY_DONE_ICON = `sitekey__copy-done-icon`;
 
 export const index = () => {
-  const image = <HTMLElement>document.querySelector(`.${SITEKEY_COPY_ICON}`);
-  if (!image.classList.contains(SITEKEY_COPY_ICON)) {
-    throw new Error(
-      'This method should only be called when sitekey copy button/icon is clicked',
-    );
-  }
-  const sitekey = image.dataset.sitekey;
-
-  new CopyIcon(sitekey, SITEKEY_COPY_ICON, SITEKEY_COPY_DONE_ICON);
+  const image = document.querySelectorAll(`.${SITEKEY_COPY_ICON}`);
+  image.forEach((img: HTMLElement) => {
+    if (!img.classList.contains(SITEKEY_COPY_ICON)) {
+      throw new Error(
+        'This method should only be called when sitekey copy button/icon is clicked',
+      );
+    }
+    const sitekey = img.dataset.sitekey;
+    new CopyIcon(sitekey, img, SITEKEY_COPY_DONE_ICON);
+  });
 };

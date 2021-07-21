@@ -16,16 +16,16 @@
  */
 
 class CopyIcon {
-  copyIconClass: string;
+  copyIcon: HTMLElement;
   copyDoneIconClass: string;
   writeText: string;
 
   constructor(
     writeText: string,
-    copyIconClass: string,
+    copyIcon: HTMLElement,
     copyDoneIconClass: string,
   ) {
-    this.copyIconClass = copyIconClass;
+    this.copyIcon = copyIcon;
     this.copyDoneIconClass = copyDoneIconClass;
     this.writeText = writeText;
 
@@ -33,10 +33,7 @@ class CopyIcon {
   }
 
   __registerHandlers() {
-    const icons = document.querySelectorAll(`.${this.copyIconClass}`);
-    icons.forEach(icon => {
-      icon.addEventListener('click', e => this.copySitekey(e));
-    });
+    this.copyIcon.addEventListener('click', e => this.copySitekey(e));
   }
 
   /*
@@ -44,11 +41,6 @@ class CopyIcon {
    */
   async copySitekey(e: Event) {
     const image = <HTMLElement>e.target;
-    if (!image.classList.contains(this.copyIconClass)) {
-      throw new Error(
-        'This method should only be called when sitekey copy button/icon is clicked',
-      );
-    }
     const copyDoneIcon = <HTMLElement>(
       image.parentElement.querySelector(`.${this.copyDoneIconClass}`)
     );

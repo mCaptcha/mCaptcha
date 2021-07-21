@@ -17,69 +17,29 @@
 
 use std::fmt::Display;
 
+use sailfish::runtime::Render;
 use sailfish::TemplateOnce;
 
 #[derive(Clone, TemplateOnce)]
 #[template(path = "auth/sudo/index.html")]
-pub struct SudoPage<'a> {
+pub struct SudoPage<'a, K, V>
+where
+    K: Display + Render,
+    V: Display + Render,
+{
     url: &'a str,
-    data: Option<String>,
+    data: Option<Vec<(K, V)>>,
 }
 
 pub const PAGE: &str = "Confirm Access";
 
-impl<'a> SudoPage<'a> {
+impl<'a, K, V> SudoPage<'a, K, V>
+where
+    K: Display + Render,
+    V: Display + Render,
+{
     //pub fn new(url: &'a str, data: Option<Vec<(&'a str, &'a str)>>) -> Self {
-    pub fn new<K, V>(url: &'a str, data: Option<Vec<(K, V)>>) -> Self
-    where
-        K: Display,
-        V: Display,
-    {
-        let data = if let Some(data) = data {
-            if !data.is_empty() {
-                let mut s = String::new();
-                for (k, v) in data.iter() {
-                    s.push_str(&format!(" data-{}={}", k, v));
-                }
-                Some(s)
-            } else {
-                None
-            }
-        } else {
-            None
-        };
-
+    pub fn new(url: &'a str, data: Option<Vec<(K, V)>>) -> Self {
         Self { url, data }
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn sudo_page_works() {
-        let data = vec![
-            ("firefox", "mozilla"),
-            ("chrome", "google"),
-            ("servo", "mozilla"),
-        ];
-        assert!(SudoPage::new::<String, String>("foo", None).data.is_none());
-
-        let sudo = SudoPage::new("foo", Some(data.clone()));
-
-        data.iter().for_each(|(k, v)| {
-            assert!(
-                sudo.data.as_ref().unwrap().contains(k)
-                    && sudo.data.as_ref().unwrap().contains(v)
-            )
-        });
-
-        let data_str = " data-firefox=mozilla data-chrome=google data-servo=mozilla";
-        assert_eq!(sudo.data.as_ref().unwrap(), data_str);
-
-        assert!(SudoPage::new::<String, String>("foo", Some(Vec::default()))
-            .data
-            .is_none());
     }
 }

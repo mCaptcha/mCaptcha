@@ -1,3 +1,9 @@
-<. if data.is_some() && !data.as_ref().unwrap().is_empty() { .>
-     <div id="additional-data" <.= data.unwrap() .>></div> 
-<. } .>
+<. let data = if let Some(data) = data { .>
+<. 	if !data.is_empty() { .>
+ 		<div id='additional-data'
+<. 		for (k, v) in data.iter() { .>
+ 		data-<.= k .>=<.= v .>
+<. 		} .>
+ 		></div>
+	<. 	} .>
+<. }; .>
