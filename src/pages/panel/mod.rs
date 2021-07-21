@@ -77,5 +77,18 @@ pub mod routes {
                 settings: Settings::new(),
             }
         }
+
+        pub const fn get_sitemap() -> [&'static str; 5] {
+            const PANEL: Panel = Panel::new();
+            const S: [&str; 2] = Sitekey::get_sitemap();
+
+            [
+                PANEL.home,
+                PANEL.notifications,
+                S[0],
+                S[1],
+                Settings::get_sitemap()[0],
+            ]
+        }
     }
 }

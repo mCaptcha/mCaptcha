@@ -36,5 +36,10 @@ pub mod routes {
                 join: "/join",
             }
         }
+
+        pub const fn get_sitemap() -> [&'static str; 2] {
+            const AUTH: Auth = Auth::new();
+            [AUTH.login, AUTH.join]
+        }
     }
 }

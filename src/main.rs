@@ -84,6 +84,7 @@ lazy_static! {
 }
 
 pub const OPEN_API_DOC: &str = env!("OPEN_API_DOCS");
+pub const COMPILED_DATE: &str = env!("COMPILED_DATE");
 pub const GIT_COMMIT_HASH: &str = env!("GIT_HASH");
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
 pub const PKG_NAME: &str = env!("CARGO_PKG_NAME");

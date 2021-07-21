@@ -26,6 +26,7 @@ pub struct Routes {
     pub panel: Panel,
     pub errors: Errors,
     pub about: &'static str,
+    pub sitemap: &'static str,
     pub thanks: &'static str,
     pub donate: &'static str,
     pub security: &'static str,
@@ -42,10 +43,27 @@ impl Routes {
             home,
             errors: Errors::new(),
             about: "/about",
+            sitemap: "/sitemap.xml",
             thanks: "/thanks",
             donate: "/donate",
             security: "/security",
             privacy: "/privacy-policy",
         }
+    }
+
+    pub const fn get_sitemap() -> [&'static str; 7] {
+        let a = Auth::get_sitemap();
+        let p = Panel::get_sitemap();
+        [a[0], a[1], p[0], p[1], p[2], p[3], p[4]]
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn sitemap_works() {
+        Routes::get_sitemap();
     }
 }

@@ -37,6 +37,12 @@ pub mod routes {
                 update_secret: "/settings/secret/update",
             }
         }
+
+        pub const fn get_sitemap() -> [&'static str; 1] {
+            const S: Settings = Settings::new();
+
+            [S.home]
+        }
     }
 }
 

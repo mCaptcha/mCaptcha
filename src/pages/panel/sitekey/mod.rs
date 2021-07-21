@@ -40,6 +40,10 @@ pub mod routes {
                 delete: "/sitekey/{key}/delete",
             }
         }
+        pub const fn get_sitemap() -> [&'static str; 2] {
+            const S: Sitekey = Sitekey::new();
+            [S.list, S.add]
+        }
     }
 }
 

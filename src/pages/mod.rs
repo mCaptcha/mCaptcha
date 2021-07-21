@@ -1,18 +1,18 @@
 /*
-* Copyright (C) 2021  Aravinth Manivannan <realaravinth@batsense.net>
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as
-* published by the Free Software Foundation, either version 3 of the
-* License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-*
-* You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+ * Copyright (C) 2021  Aravinth Manivannan <realaravinth@batsense.net>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 
 use actix_web::web::ServiceConfig;
 
@@ -20,6 +20,7 @@ mod auth;
 pub mod errors;
 mod panel;
 pub mod routes;
+mod sitemap;
 
 pub const NAME: &str = "mCaptcha";
 
@@ -27,6 +28,7 @@ pub fn services(cfg: &mut ServiceConfig) {
     auth::services(cfg);
     panel::services(cfg);
     errors::services(cfg);
+    cfg.service(sitemap::sitemap);
 }
 
 #[cfg(not(tarpaulin_include))]
@@ -94,7 +96,7 @@ mod tests {
     #[actix_rt::test]
     async fn public_pages_tempaltes_work() {
         let app = test::init_service(App::new().configure(services)).await;
-        let urls = vec![PAGES.auth.login, PAGES.auth.join];
+        let urls = vec![PAGES.auth.login, PAGES.auth.join, PAGES.sitemap];
 
         for url in urls.iter() {
             let resp =

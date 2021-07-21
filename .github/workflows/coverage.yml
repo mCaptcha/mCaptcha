@@ -103,6 +103,7 @@ jobs:
           GIT_HASH: 8e77345f1597e40c2e266cb4e6dee74888918a61
           OPEN_API_DOCS: 8e77345f1597e40c2e266cb4e6dee74888918a61
           CACHE_BUSTER_FILE_MAP: '{"map":{"./static/bundle/main.js":"./prod/bundle/main.1417115E59909BE0A01040A45A398ADB09D928DF89CCF038FA44B14850442096.js"},"base_dir":"./prod"}'
+          COMPILED_DATE: "2021-07-21"
 
       - name: Upload to Codecov
         if: matrix.version == '1.51.0' && (github.ref == 'refs/heads/master' || github.event_name == 'pull_request')
