@@ -64,33 +64,33 @@
   margin: 0 10px;
 }
 
-.widget__verification-text--during {
+#widget__verification-text--during {
   display: none;
 }
 
-.widget__verification-text--after {
+#widget__verification-text--after {
   display: none;
   color: green;
 }
 
-.widget__verification-text--error {
+#widget__verification-text--error {
   display: none;
   color: red;
 }
 
-.widget__verification-checkbox:checked ~ .widget__verification-text--before {
+.widget__verification-checkbox:checked ~ #widget__verification-text--before {
   display: none;
 }
 
-.widget__verification-checkbox:checked ~ .widget__verification-text--during {
+.widget__verification-checkbox:checked ~ #widget__verification-text--during {
   display: none;
 }
 
-.widget__verification-checkbox:checked ~ .widget__verification-text--error {
+.widget__verification-checkbox:checked ~ #widget__verification-text--error {
   display: none;
 }
 
-.widget__verification-checkbox:checked ~ .widget__verification-text--after {
+.widget__verification-checkbox:checked ~ #widget__verification-text--after {
   display: block;
 }
 

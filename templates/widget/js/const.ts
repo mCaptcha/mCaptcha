@@ -8,6 +8,7 @@
  * this program. If not, see <https://spdx.org/licenses/MIT.html> for
  * MIT or <http://www.apache.org/licenses/LICENSE-2.0> for Apache.
  */
+import LazyElement from '../../utils/lazyElement';
 
 /** mcaptcha checkbox ID **/
 export const btnId = 'widget__verification-checkbox';
@@ -54,97 +55,56 @@ export const btn = () => {
 };
 
 export const messageText = () => {
-  let beforeClass = 'widget__verification-text--before';
-  let duringClass = 'widget__verification-text--during';
-  let errorClass = 'widget__verification-text--error';
-  let afterClass = 'widget__verification-text--after';
+  const beforeID = 'widget__verification-text--before';
+  const duringID = 'widget__verification-text--during';
+  const errorID = 'widget__verification-text--error';
+  const afterID = 'widget__verification-text--after';
 
-  let before: HTMLElement;
-  let after: HTMLElement;
-  let during: HTMLElement;
-  let error: HTMLElement;
+  const before = new LazyElement(beforeID);
+  const after = new LazyElement(afterID);
+  const during = new LazyElement(duringID);
+  const error = new LazyElement(errorID);
+  //  let before: HTMLElement;
+  //  let after: HTMLElement;
+  //  let during: HTMLElement;
+  //  let error: HTMLElement;
 
   /** runner fn to display HTMLElement **/
   const showMsg = (e: HTMLElement) => (e.style.display = 'block');
   /** runner fn to hide HTMLElement **/
   const hideMsg = (e: HTMLElement) => (e.style.display = 'none');
 
-  /** lazy init and get before elementt **/
-  const getBefore = () => {
-    if (before === null || before === undefined) {
-      before = <HTMLElement>document.querySelector(`.${beforeClass}`);
-      if (before === null || before === undefined) {
-        throw new Error(`before element not found)`);
-      }
-      return before;
-    }
-  };
-
-  /** lazy init and get after elementt **/
-  const getAfter = () => {
-    if (after === null || after === undefined) {
-      after = <HTMLSpanElement>document.querySelector(`.${afterClass}`);
-      if (after === null || after === undefined) {
-        throw new Error(`after element not found)`);
-      }
-    }
-
-    return after;
-  };
-
-  /** lazy init and get error elementt **/
-  const getError = () => {
-    if (error === null || error === undefined) {
-      error = <HTMLSpanElement>document.querySelector(`.${errorClass}`);
-      if (error === null || error === undefined) {
-        throw new Error(`before error not found)`);
-      }
-    }
-    return error;
-  };
-
-  /** lazy init and get during elementt **/
-  const getDuring = () => {
-    if (during === null || during === undefined) {
-      during = <HTMLSpanElement>document.querySelector(`.${duringClass}`);
-      if (during === null || during === undefined) {
-        throw new Error(`before during not found)`);
-      }
-    }
-
-    return during;
-  };
   return {
     /** display "before" message **/
     before: () => {
-      showMsg(getBefore());
-      hideMsg(getAfter());
-      hideMsg(getDuring());
-      hideMsg(getError());
+      showMsg(before.get());
+      hideMsg(after.get());
+      hideMsg(during.get());
+      hideMsg(error.get());
     },
 
     /** display "after" message **/
     after: () => {
-      hideMsg(getBefore());
-      showMsg(getAfter());
-      hideMsg(getDuring());
-      hideMsg(getError());
+      hideMsg(before.get());
+      showMsg(after.get());
+      hideMsg(during.get());
+      hideMsg(error.get());
     },
 
     /** display "during" message **/
     during: () => {
-      hideMsg(getBefore());
-      hideMsg(getAfter());
-      showMsg(getDuring());
-      hideMsg(getError());
+      hideMsg(before.get());
+      hideMsg(after.get());
+      showMsg(during.get());
+      hideMsg(error.get());
     },
 
     /** display "error" message **/
     error: () => {
-      hideMsg(getBefore());
-      hideMsg(getAfter());
-      hideMsg(getDuring());
-      showMsg(getError());
+      hideMsg(before.get());
+      hideMsg(after.get());
+      hideMsg(during.get());
+      showMsg(error.get());
     },
   };
 };

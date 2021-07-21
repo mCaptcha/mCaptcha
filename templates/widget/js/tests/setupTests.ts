@@ -18,7 +18,7 @@ checkbox.id = CONST.btnId;
 
 const getMessages = (state: string) => {
   const msg = <HTMLElement>document.createElement('span');
-  msg.className = `widget__verification-text--${state}`;
+  msg.id = `widget__verification-text--${state}`;
   return msg;
 };
 

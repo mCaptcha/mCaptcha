@@ -21,7 +21,7 @@ it('sudo form works', () => {
   try {
     form.get();
   } catch (e) {
-    expect(e.message).toBe("Element form is undefined");
+    expect(e.message).toBe('Element form is undefined');
   }
 
   const element = document.createElement('form');
