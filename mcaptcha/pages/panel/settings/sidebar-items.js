@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["PAGE",""]],"struct":[["IndexPage",""],["settings",""]]});
+initSidebarItems({"constant":[["PAGE",""]],"fn":[["services",""]],"mod":[["routes",""]],"struct":[["IndexPage",""],["delete_account",""],["settings",""],["update_secret",""]]});
