@@ -19,6 +19,7 @@ import './mobile.scss';
 import './auth/css/mobile.scss';
 import './components/details-footer/mobile.scss';
 import './panel/css/mobile.scss';
+import './panel/settings/mobile.scss';
 import './panel/header/taskbar/mobile.scss';
 import './panel/navbar/mobile.scss';
 import './panel/help-banner/mobile.scss';

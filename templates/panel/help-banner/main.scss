@@ -29,18 +29,8 @@
   margin-top: 40px;
 }
 
-li.help-text__instructions::marker {
-  background-color: $violet;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  align-items: center;
-  justify-content: center;
-}
-
 .help-text__instructions {
   font-size: 19px;
   font-weight: 500;
-  padding: 10px;
   margin: auto;
 }

@@ -15,16 +15,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-@import '../../reset';
-@import '../../vars';
-
-.help-text {
-  flex-direction: column;
-  justify-content: normal;
-  padding: 10px;
-  margin: 20px auto;
-}
-
-.help-text__instructions {
-  width: 86%;
+.settings__form {
+	margin: 10px 0;
 }

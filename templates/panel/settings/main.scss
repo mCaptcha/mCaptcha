@@ -14,17 +14,98 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 @import '../../components/clipboard/copy';
+@import '../../components/forms';
+@import '../../components/button';
 
 .settings__secret-copy {
   @include copy-icon;
 }
 
-.settings__secret-copy:hover .settings__secret-copy-done:hover {
+.settings__secret-copy:hover,
+.settings__secret-copy-done:hover {
   @include copy-icon-hover;
 }
 
 .settings__secret-copy-done {
   @include copy-done-icon;
+}
+
+.settings-form__input {
+  @include form-input;
+  width: 100%;
+}
+
+.settings-form__label {
+  @include form-label;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.settings-form__label--danger {
+  color: $red;
+}
+
+.settings__label-group {
+  display: flex;
+  width: 15%;
+  align-items: center;
+  align-content: center;
+}
+
+.settings__secret-copy-container {
+  width: 20%;
+  display: flex;
+  align-items: center;
+  align-content: center;
+}
+
+.label-text {
+  margin: auto;
+}
+
+.settings__submit-btn {
+  align-self: end;
+  display: flex;
+  text-align: center;
+  display: inline;
+  align-content: center;
+  align-items: center;
+  vertical-align: middle;
+  margin: auto 0;
+}
+
+.settings__form {
+  display: flex;
+  width: 90%;
+  flex-direction: column;
+}
+
+.settings__delete-account-icon {
+  margin: auto;
+  @include light-text-icon-filter;
+}
+
+.settings__refresh-sitekey {
+  @include light-text-icon-filter;
+  margin: auto;
+}
+
+.settings__submit-btn {
+  @include violet-button;
+  margin-top: 20px;
+}
+
+.settings__submit-btn:hover {
+  cursor: pointer;
+}
+
+.settings__submit-btn--danger {
+  @include violet-button;
+  background-color: $red;
+  width: 200px;
+  margin-top: 20px;
+  display: flex;
+  padding: 10px;
 }

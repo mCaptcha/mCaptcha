@@ -17,39 +17,71 @@
 	<h1 class="form__title">
 		<.= PAGE .>
 	</h1>
-	<form action="<.= crate::V1_API_ROUTES.account.update_email .>" method="post">
-      <label class="sitekey-form__label" for="description">
+      <form class="settings__form "
+        action="<.= crate::V1_API_ROUTES.account.update_email .>" 
+        method="post">
+        <label class="settings-form__label" for="email">
           Email
-        <input
-          class="sitekey-form__input"
-          type="email"
-          name="email"
-          id="email"
-          <. if let Some(email) = email { .>
-              <. if !email.trim().is_empty() { .>
-              value="<.= email .>"
-              <. } .>
-          <. } .>
-        />
+          <input
+            class="settings-form__input"
+            type="email"
+            name="email"
+            id="email"
+            <. if let Some(email) = email { .>
+                <. if !email.trim().is_empty() { .>
+                value="<.= email .>"
+                <. } .>
+            <. } .>
+          />
+        </label>
+        <button class="settings__submit-btn" type="submit">Update</button>
+      </form>
+
+      <form 
+        class="settings__form"
+        action="<.= crate::V1_API_ROUTES.account.update_secret .>"
+        method="post"> 
+        <label class="settings-form__label" for="secret">
+          <div class="settings__label-group">
+            Secret
+            <. include!("../../components/clipboard/index.html"); .>
+          </div>
+          <input
+            class="settings-form__input"
+            type="password"
+            name="secret-password"
+            readonly='readonly'
+            id="secret"
+            value="<.= secret .>"
+          />  
+        <. include!("../../components/showPassword/index.html"); .>
       </label>
-      <button class="sitekey-form__submit" type="submit">Update</button>
+      <button class="settings__submit-btn" type="submit">
+		Refresh
+        <img 
+          class="settings__refresh-sitekey"
+          src="<.=crate::FILES.get("./static/cache/img/svg/refresh.svg").unwrap() .>" 
+          alt="Refresh Secret"
+        />
+      </button>
 	</form>
 
-    <label class="sitekey-form__label" for="secret">
-		Cooldown Duratoin(in seconds)
-	  <input
-		class="sitekey-form__input"
-		type="password"
-		name="secret-password"
-		id="secret"
-		value="<.= secret .>"
-	  />
-      <. include!("../../components/showPassword/index.html"); .>
-      <. include!("../../components/clipboard/index.html"); .>
-	</label>
-    <a class="settings__delete-account-link" href="<.= crate::PAGES.panel.sitekey.add .>">
-        <button class="settings__delete-account-btn" type="submit">Delete Account</button>
-    </a>
+	<form 
+      class="settings__form"
+      action="<.= crate::V1_API_ROUTES.account.update_secret .>"
+      method="post">
+        <label class="settings-form__label--danger" for="delete-account">
+          <b>Delete your account</b>
+          <button id="delete-account" class="settings__submit-btn--danger" type="submit">
+            Delete Account
+            <img 
+              class="settings__delete-account-icon"
+              src="<.=crate::FILES.get("./static/cache/img/svg/trash.svg").unwrap() .>" 
+              alt="Delete Account"
+            />
+          </button>
+		</label>
+	</form>
   </div>
   </div>
   <!-- end of container -->

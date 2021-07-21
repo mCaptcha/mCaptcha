@@ -38,6 +38,8 @@ $img-width: #{$form-input-height * $img-height};
   position: relative;
   top: -#{$form-input-height * ($img-height * 1.15)};
   left: #{$form-content-width * 0.99};
+  display: block;
+  margin-bottom: -30px;
 }
 
 .show-password-container:hover {
