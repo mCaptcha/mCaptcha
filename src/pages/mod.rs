@@ -63,7 +63,9 @@ mod tests {
             PAGES.panel.sitekey.add,
             PAGES.panel.sitekey.list,
             PAGES.panel.notifications,
-            PAGES.panel.settings,
+            PAGES.panel.settings.home,
+            PAGES.panel.settings.delete_account,
+            PAGES.panel.settings.update_secret,
             &delete_sitekey_url,
             &edit_sitekey_url,
         ];

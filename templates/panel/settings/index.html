@@ -17,7 +17,7 @@
 	<h1 class="form__title">
 		<.= PAGE .>
 	</h1>
-      <form class="settings__form "
+      <form class="settings__form" id="settings__email-form"
         action="<.= crate::V1_API_ROUTES.account.update_email .>" 
         method="post">
         <label class="settings-form__label" for="email">
@@ -38,7 +38,7 @@
       </form>
 
       <form 
-        class="settings__form"
+        class="settings__form" id="settings__secret-form"
         action="<.= crate::V1_API_ROUTES.account.update_secret .>"
         method="post"> 
         <label class="settings-form__label" for="secret">
@@ -67,7 +67,7 @@
 	</form>
 
 	<form 
-      class="settings__form"
+      class="settings__form" id="settings__delete-form"
       action="<.= crate::V1_API_ROUTES.account.update_secret .>"
       method="post">
         <label class="settings-form__label--danger" for="delete-account">

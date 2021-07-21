@@ -15,21 +15,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-const ROUTES = {
-  registerUser: '/join/',
-  loginUser: '/login/',
-  signoutUser: '/api/v1/signout',
-  panelHome: '/',
-  settings: '/settings/',
-  updateSecret: '/settings/secret/update/',
-  deleteAccount: '/settings/account/delete/',
-  docsHome: '/docs/',
-  notifications: '/notifications',
-  listSitekey: '/sitekeys/',
-  viewSitekey: (key: string) => `/sitekey/${key}/`,
-  editSitekey: (key: string) => `/sitekey/${key}/edit/`,
-  deleteSitekey: (key: string) => `/sitekey/${key}/delete/`,
-  addSiteKey: '/sitekeys/add',
-};
+class LazyElement {
+  id: string;
+  element: HTMLElement;
+  constructor(id: string) {
+    this.id = id;
+  }
 
-export default ROUTES;
+  get() {
+    if (this.element === null || this.element === undefined) {
+      const element = document.getElementById(this.id);
+      if (element === null || element === undefined) {
+        throw new Error(`Element ${this.id} is undefined`);
+      } else {
+        this.element = element;
+      }
+    }
+    return this.element;
+  }
+}
+
+export default LazyElement;

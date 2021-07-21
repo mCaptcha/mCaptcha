@@ -14,21 +14,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+import LazyElement from '../../utils/lazyElement';
 
-const form = () => {
-  let element = null;
-  const ID = 'form';
+const ID = 'form';
+const FORM = new LazyElement(ID);
 
-  if (element === null) {
-    element = <HTMLFormElement>document.getElementById(ID);
-    if (element === undefined) {
-      throw new Error("Couldn't form element, is the component loaded?");
-    } else {
-      return element;
-    }
-  } else {
-    element;
-  }
-};
-
-export default form;
+export default FORM;

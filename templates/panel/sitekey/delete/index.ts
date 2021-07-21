@@ -16,7 +16,7 @@
  */
 
 import {getPassword} from '../../../auth/login/ts/';
-import form from '../../../auth/sudo/';
+import FORM from '../../../auth/sudo/';
 import additionalData from '../../../components/additional-data';
 
 import getFormUrl from '../../../utils/getFormUrl';
@@ -35,7 +35,7 @@ const submit = async (e: Event) => {
     key,
   };
 
-  const formUrl = getFormUrl(form());
+  const formUrl = getFormUrl(<HTMLFormElement>FORM.get());
 
   const res = await fetch(formUrl, genJsonPayload(payload));
   if (res.ok) {
@@ -47,5 +47,5 @@ const submit = async (e: Event) => {
 };
 
 export const index = () => {
-  form().addEventListener('submit', submit, true);
+  FORM.get().addEventListener('submit', submit, true);
 };

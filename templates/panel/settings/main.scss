@@ -97,7 +97,8 @@
   margin-top: 20px;
 }
 
-.settings__submit-btn:hover {
+.settings__submit-btn:hover,
+.settings__submit-btn--danger:hover {
   cursor: pointer;
 }
 

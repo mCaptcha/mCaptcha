@@ -15,37 +15,34 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import ROUTES from '../../../api/v1/routes';
+import {getPassword} from '../../../auth/login/ts/';
+import FORM from '../../../auth/sudo/';
 
+import getFormUrl from '../../../utils/getFormUrl';
 import genJsonPayload from '../../../utils/genJsonPayload';
-import createError from '../../../components/error/index';
+import createError from '../../../components/error';
 
-const emailExists = async (element?: HTMLInputElement) => {
-  let email;
-  if (element === undefined || element === null) {
-    email = <HTMLInputElement>document.getElementById('email');
-  } else {
-    email = element;
-  }
-  const val = email.value;
+import VIEWS from '../../../views/v1/routes';
+
+const submit = async (e: Event) => {
+  e.preventDefault();
+  const password = getPassword();
 
   const payload = {
-    val,
+    password,
   };
 
-  const res = await fetch(ROUTES.emailExists, genJsonPayload(payload));
+  const formUrl = getFormUrl(<HTMLFormElement>FORM.get());
+
+  const res = await fetch(formUrl, genJsonPayload(payload));
   if (res.ok) {
-    const data = await res.json();
-    if (data.exists) {
-      email.className += ' form__in-field--warn';
-      createError(`Email "${val}" is already used`);
-      return data.exists;
-    }
-    return data.exists;
+    window.location.assign(VIEWS.panelHome);
   } else {
     const err = await res.json();
     createError(err.error);
   }
 };
 
-export default emailExists;
+export const index = () => {
+  FORM.get().addEventListener('submit', submit, true);
+};

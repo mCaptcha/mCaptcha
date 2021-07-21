@@ -21,6 +21,8 @@ import * as login from './auth/login/ts/';
 import * as register from './auth/register/ts/';
 import * as panel from './panel/ts/index';
 import settings from './panel/settings/';
+import * as deleteAccount from './panel/settings/account/delete';
+import * as updateSecret from './panel/settings/secret/update';
 import * as addSiteKey from './panel/sitekey/add/ts';
 import * as editSitekey from './panel/sitekey/edit/';
 import * as deleteSitekey from './panel/sitekey/delete/';
@@ -53,6 +55,8 @@ const router = new Router();
 
 router.register(VIEWS.panelHome, panel.index);
 router.register(VIEWS.settings, settings);
+router.register(VIEWS.deleteAccount, deleteAccount.index);
+router.register(VIEWS.updateSecret, updateSecret.index);
 router.register(VIEWS.registerUser, register.index);
 router.register(VIEWS.loginUser, login.index);
 router.register(VIEWS.notifications, notidications.index);

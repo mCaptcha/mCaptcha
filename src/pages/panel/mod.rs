@@ -52,18 +52,20 @@ async fn panel(data: AppData, id: Identity) -> PageResult<impl Responder> {
 
 pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
     cfg.service(panel);
-    cfg.service(settings::settings);
+    settings::services(cfg);
     sitekey::services(cfg);
     cfg.service(notifications::notifications);
 }
 
 pub mod routes {
+    use super::settings::routes::Settings;
     use super::sitekey::routes::Sitekey;
+
     pub struct Panel {
         pub home: &'static str,
         pub sitekey: Sitekey,
         pub notifications: &'static str,
-        pub settings: &'static str,
+        pub settings: Settings,
     }
 
     impl Panel {
@@ -72,7 +74,7 @@ pub mod routes {
                 home: "/",
                 sitekey: Sitekey::new(),
                 notifications: "/notifications",
-                settings: "/settings",
+                settings: Settings::new(),
             }
         }
     }
