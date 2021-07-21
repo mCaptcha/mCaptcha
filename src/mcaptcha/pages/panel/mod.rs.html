@@ -82,6 +82,19 @@
 <span id="79">79</span>
 <span id="80">80</span>
 <span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
  * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -161,6 +174,19 @@
                 <span class="ident">notifications</span>: <span class="string">&quot;/notifications&quot;</span>,
                 <span class="ident">settings</span>: <span class="ident">Settings::new</span>(),
             }
+        }
+
+        <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">get_sitemap</span>() <span class="op">-</span><span class="op">&gt;</span> [<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>; <span class="number">5</span>] {
+            <span class="kw">const</span> <span class="ident">PANEL</span>: <span class="ident">Panel</span> <span class="op">=</span> <span class="ident">Panel::new</span>();
+            <span class="kw">const</span> <span class="ident">S</span>: [<span class="kw-2">&amp;</span><span class="ident">str</span>; <span class="number">2</span>] <span class="op">=</span> <span class="ident">Sitekey::get_sitemap</span>();
+
+            [
+                <span class="ident">PANEL</span>.<span class="ident">home</span>,
+                <span class="ident">PANEL</span>.<span class="ident">notifications</span>,
+                <span class="ident">S</span>[<span class="number">0</span>],
+                <span class="ident">S</span>[<span class="number">1</span>],
+                <span class="ident">Settings::get_sitemap</span>()[<span class="number">0</span>],
+            ]
         }
     }
 }

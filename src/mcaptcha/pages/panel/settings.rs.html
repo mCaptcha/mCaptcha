@@ -101,6 +101,12 @@
 <span id="98"> 98</span>
 <span id="99"> 99</span>
 <span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/*
  * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -140,6 +146,12 @@
                 <span class="ident">delete_account</span>: <span class="string">&quot;/settings/account/delete&quot;</span>,
                 <span class="ident">update_secret</span>: <span class="string">&quot;/settings/secret/update&quot;</span>,
             }
+        }
+
+        <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">get_sitemap</span>() <span class="op">-</span><span class="op">&gt;</span> [<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>; <span class="number">1</span>] {
+            <span class="kw">const</span> <span class="ident">S</span>: <span class="ident">Settings</span> <span class="op">=</span> <span class="ident">Settings::new</span>();
+
+            [<span class="ident">S</span>.<span class="ident">home</span>]
         }
     }
 }
