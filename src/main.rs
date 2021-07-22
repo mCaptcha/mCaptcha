@@ -44,6 +44,7 @@ mod tests;
 mod widget;
 
 pub use crate::data::Data;
+pub use crate::static_assets::static_files::assets::*;
 pub use api::v1::ROUTES as V1_API_ROUTES;
 pub use docs::DOCS;
 pub use pages::routes::ROUTES as PAGES;

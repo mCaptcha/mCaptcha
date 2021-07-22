@@ -1,9 +1,9 @@
-<. let data = if let Some(data) = data { .>
+<. if let Some(data) = data { .>
 <. 	if !data.is_empty() { .>
- 		<div id='additional-data'
+      <div id='additional-data'
 <. 		for (k, v) in data.iter() { .>
- 		data-<.= k .>=<.= v .>
+          data-<.= k .>=<.= v .>
 <. 		} .>
- 		></div>
-	<. 	} .>
+      ></div>
+  <. } .>
 <. }; .>

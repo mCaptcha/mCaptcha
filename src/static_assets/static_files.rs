@@ -24,6 +24,53 @@ use rust_embed::RustEmbed;
 
 use crate::CACHE_AGE;
 
+pub mod assets {
+    use lazy_static::lazy_static;
+
+    use crate::FILES;
+
+    type Img = (&'static str, &'static str);
+
+    lazy_static! {
+        pub static ref KEY: Img =
+            (FILES.get("./static/cache/img/svg/key.svg").unwrap(), "key");
+        pub static ref GITHUB: Img = (
+            FILES.get("./static/cache/img/svg/github.svg").unwrap(),
+            "Source code"
+        );
+        pub static ref HOME: Img = (
+            FILES.get("./static/cache/img/svg/home.svg").unwrap(),
+            "Home"
+        );
+        pub static ref SETTINGS_ICON: Img = (
+            FILES.get("./static/cache/img/svg/settings.svg").unwrap(),
+            "Settings"
+        );
+        pub static ref CREDIT_CARD: Img = (
+            FILES.get("./static/cache/img/svg/credit-card.svg").unwrap(),
+            "Payment"
+        );
+        pub static ref HELP_CIRCLE: Img = (
+            FILES.get("./static/cache/img/svg/help-circle.svg").unwrap(),
+            "Help"
+        );
+        pub static ref MESSAGE: Img = (
+            FILES
+                .get("./static/cache/img/svg/message-square.svg")
+                .unwrap(),
+            "Message"
+        );
+        pub static ref DOCS_ICON: Img = (
+            FILES.get("./static/cache/img/svg/file-text.svg").unwrap(),
+            "Documentation"
+        );
+        pub static ref MCAPTCHA_TRANS_ICON: Img = (
+            FILES.get("./static/cache/img/icon-trans.png").unwrap(),
+            "Logo"
+        );
+    }
+}
+
 #[derive(RustEmbed)]
 #[folder = "assets/"]
 struct Asset;
