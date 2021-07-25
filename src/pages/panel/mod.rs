@@ -66,6 +66,7 @@ pub mod routes {
         pub sitekey: Sitekey,
         pub notifications: &'static str,
         pub settings: Settings,
+        pub stats: &'static str,
     }
 
     impl Panel {
@@ -75,10 +76,11 @@ pub mod routes {
                 sitekey: Sitekey::new(),
                 notifications: "/notifications",
                 settings: Settings::new(),
+                stats: "/stats",
             }
         }
 
-        pub const fn get_sitemap() -> [&'static str; 5] {
+        pub const fn get_sitemap() -> [&'static str; 6] {
             const PANEL: Panel = Panel::new();
             const S: [&str; 2] = Sitekey::get_sitemap();
 
@@ -88,6 +90,7 @@ pub mod routes {
                 S[0],
                 S[1],
                 Settings::get_sitemap()[0],
+                PANEL.stats,
             ]
         }
     }

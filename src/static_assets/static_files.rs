@@ -68,6 +68,10 @@ pub mod assets {
             FILES.get("./static/cache/img/icon-trans.png").unwrap(),
             "Logo"
         );
+        pub static ref BAR_CHART: Img = (
+            FILES.get("./static/cache/img/svg/bar-chart.svg").unwrap(),
+            "Statistics"
+        );
     }
 }
 

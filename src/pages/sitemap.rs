@@ -26,12 +26,19 @@ use crate::PAGES;
 #[template(path = "sitemap.html")]
 struct IndexPage {
     urls: [&'static str; 7],
+    domain: &'static str,
 }
 
 impl Default for IndexPage {
     fn default() -> Self {
         let urls = Routes::get_sitemap();
-        Self { urls }
+        let domain = if crate::SETTINGS.server.domain.ends_with('/') {
+            &crate::SETTINGS.server.domain[0..crate::SETTINGS.server.domain.len() - 1]
+        } else {
+            &crate::SETTINGS.server.domain
+        };
+
+        Self { urls, domain }
     }
 }
 
