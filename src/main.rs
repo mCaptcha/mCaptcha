@@ -27,6 +27,7 @@ use log::info;
 
 mod api;
 mod data;
+mod date;
 mod docs;
 mod email;
 mod errors;

@@ -21,13 +21,9 @@ use sailfish::TemplateOnce;
 use sqlx::types::time::OffsetDateTime;
 
 use crate::api::v1::notifications::get::{self, runner};
+use crate::date::Date;
 use crate::errors::PageResult;
 use crate::AppData;
-
-const MINUTE: i64 = 60;
-const HOUR: i64 = MINUTE * 60;
-const DAY: i64 = HOUR * 24;
-const WEEK: i64 = DAY * 7;
 
 #[derive(TemplateOnce)]
 #[template(path = "panel/notifications/index.html")]
@@ -64,23 +60,7 @@ impl From<get::Notification> for Notification {
 
 impl Notification {
     pub fn print_date(&self) -> String {
-        let date = self.received;
-        let timestamp = self.received.unix_timestamp();
-        let now = OffsetDateTime::now_utc().unix_timestamp();
-
-        let difference = now - timestamp;
-
-        if difference >= 3 * WEEK {
-            date.format("%d-%m-%y")
-        } else if (DAY..(3 * WEEK)).contains(&difference) {
-            format!("{} days ago", date.hour())
-        } else if (HOUR..DAY).contains(&difference) {
-            format!("{} hours ago", date.hour())
-        } else if (MINUTE..HOUR).contains(&difference) {
-            format!("{} minutes ago", date.minute())
-        } else {
-            format!("{} seconds ago", date.second())
-        }
+        Date::format(&self.received)
     }
 }
 
@@ -103,6 +83,7 @@ pub async fn notifications(data: AppData, id: Identity) -> PageResult<impl Respo
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::date::*;
 
     #[test]
     fn print_date_test() {

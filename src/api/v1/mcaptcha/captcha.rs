@@ -23,12 +23,14 @@ use serde::{Deserialize, Serialize};
 
 use super::get_random;
 use crate::errors::*;
+use crate::stats::fetch::{Stats, StatsUnixTimestamp};
 use crate::AppData;
 
 pub mod routes {
     pub struct MCaptcha {
         pub delete: &'static str,
         pub update_key: &'static str,
+        pub stats: &'static str,
     }
 
     impl MCaptcha {
@@ -36,6 +38,7 @@ pub mod routes {
             MCaptcha {
                 update_key: "/api/v1/mcaptcha/update/key",
                 delete: "/api/v1/mcaptcha/delete",
+                stats: "/api/v1/mcaptcha/stats",
             }
         }
     }
@@ -44,6 +47,7 @@ pub mod routes {
 pub fn services(cfg: &mut web::ServiceConfig) {
     cfg.service(update_token);
     cfg.service(delete_mcaptcha);
+    cfg.service(get_stats);
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -241,6 +245,24 @@ async fn delete_mcaptcha(
     }
 }
 
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct StatsPayload {
+    pub key: String,
+}
+
+#[my_codegen::post(
+    path = "crate::V1_API_ROUTES.mcaptcha.stats",
+    wrap = "crate::CheckLogin"
+)]
+async fn get_stats(
+    payload: web::Json<StatsPayload>,
+    data: AppData,
+) -> ServiceResult<impl Responder> {
+    let stats = Stats::new(&payload.key, &data.db).await?;
+    let stats = StatsUnixTimestamp::from_stats(&stats);
+    Ok(HttpResponse::Ok().json(&stats))
+}
+
 // Workflow:
 // 1. Sign up
 // 2. Sign in
@@ -299,5 +321,17 @@ mod tests {
         .await;
         // if updated key doesn't exist in databse, a non 200 result will bereturned
         assert_eq!(get_token_resp.status(), StatusCode::OK);
+
+        // get stats
+        let paylod = StatsPayload { key: token_key.key };
+        let get_statis_resp = test::call_service(
+            &app,
+            post_request!(&paylod, ROUTES.mcaptcha.stats)
+                .cookie(cookies.clone())
+                .to_request(),
+        )
+        .await;
+        // if updated key doesn't exist in databse, a non 200 result will bereturned
+        assert_eq!(get_statis_resp.status(), StatusCode::OK);
     }
 }
