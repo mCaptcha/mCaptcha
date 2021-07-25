@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Stats",""]]});
+initSidebarItems({"mod":[["runners",""]],"struct":[["Stats",""],["StatsPayload",""],["StatsUnixTimestamp",""],["get_stats",""]]});

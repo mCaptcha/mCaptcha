@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["fetch_config_fetched","featch PoWConfig fetches"],["fetch_confirm","featch PoWConfig confirms"],["fetch_solve","featch PoWConfig solves"]]});
