@@ -27,7 +27,7 @@ Proof of work based, privacy respecting CAPTCHA system with a kickass UX.
 system with a kickass UX. Your users no longer have to interact with
 ridiculous image-based CAPTCHA system, wasting precious mental
 bandwidth. Instead, your computer will do the work for you, [see for
-yourself!](https://demo.mcaptcha.org/widget?sitekey=RnR9SvkkB2s1W9yrQSBBViJHLvuiXKo4)
+yourself!](https://demo.mcaptcha.org/widget/?sitekey=6o3p1Fx94hJRFm8g8IHBB7sv8D0em20k)
 
 ## How does it work?
 
@@ -80,7 +80,7 @@ easier. One click and you are on your way.
 To observe mCaptcha in action, open dev tools and
 monitor console and network activity.
 
-1. [Link to widget](https://demo.mcaptcha.org/widget?sitekey=RnR9SvkkB2s1W9yrQSBBViJHLvuiXKo4)
+1. [Link to widget](https://demo.mcaptcha.org/widget/?sitekey=6o3p1Fx94hJRFm8g8IHBB7sv8D0em20k)
 
 2. [Video](https://github.com/mCaptcha/mCaptcha/blob/master/docs/res/widget-in-action.mp4?raw=true):
 

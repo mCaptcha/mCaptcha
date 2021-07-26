@@ -40,6 +40,26 @@
       ]
     }
   },
+  "174457087e02e07bfe52618cc8b5525067fa1722684f37a30004074a499774ee": {
+    "query": "SELECT time FROM mcaptcha_pow_confirmed_stats WHERE config_id = (\n        SELECT config_id FROM mcaptcha_config where key = $1)",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "time",
+          "type_info": "Timestamptz"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false
+      ]
+    }
+  },
   "1be6274d5cc6d16f38285b8a62c9f66e8c3014cd403bc599598e911023bfeedb": {
     "query": "INSERT INTO mcaptcha_pow_fetched_stats \n        (config_id) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1))",
     "describe": {
@@ -229,26 +249,6 @@
       ]
     }
   },
-  "4dc1b6d8ae3b92ebff45f683951c087244f9614ed0e95b75578f0d1346887224": {
-    "query": "SELECT fetched_at FROM mcaptcha_pow_fetched_stats WHERE config_id = \n        (SELECT config_id FROM mcaptcha_config where key = $1)",
-    "describe": {
-      "columns": [
-        {
-          "ordinal": 0,
-          "name": "fetched_at",
-          "type_info": "Timestamptz"
-        }
-      ],
-      "parameters": {
-        "Left": [
-          "Text"
-        ]
-      },
-      "nullable": [
-        false
-      ]
-    }
-  },
   "507bea10c7f8417c5b1430211d0137299cd561333bf47f7b4887d0ef801d1ea4": {
     "query": "UPDATE mcaptcha_config SET key = $1 \n        WHERE key = $2 AND user_id = (SELECT ID FROM mcaptcha_users WHERE name = $3)",
     "describe": {
@@ -402,6 +402,26 @@
         ]
       },
       "nullable": []
+    }
+  },
+  "85a3482fc65dab99cd01f51411f0567d303018bbb6483a0020db33180ce12cfb": {
+    "query": "SELECT time FROM mcaptcha_pow_solved_stats WHERE config_id = \n        (SELECT config_id FROM mcaptcha_config where key = $1)",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "time",
+          "type_info": "Timestamptz"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false
+      ]
     }
   },
   "90608e874ec931db397dc7b357b60bc794fffec5e2eb59c0556808ea8dfef9e9": {
@@ -600,26 +620,6 @@
       "nullable": []
     }
   },
-  "daebbef26cf04fdc46226304d028528e121a9847c07139d7d3a56a0e7c165879": {
-    "query": "SELECT solved_at FROM mcaptcha_pow_solved_stats WHERE config_id = \n        (SELECT config_id FROM mcaptcha_config where key = $1)",
-    "describe": {
-      "columns": [
-        {
-          "ordinal": 0,
-          "name": "solved_at",
-          "type_info": "Timestamptz"
-        }
-      ],
-      "parameters": {
-        "Left": [
-          "Text"
-        ]
-      },
-      "nullable": [
-        false
-      ]
-    }
-  },
   "dcf0d4f9d803dcb1d6f775899f79595f9c78d46633e0ec822303284430df7a3d": {
     "query": "-- gets all unread notifications a user has\nSELECT \n    mcaptcha_notifications.id,\n    mcaptcha_notifications.heading,\n    mcaptcha_notifications.message,\n    mcaptcha_notifications.received,\n    mcaptcha_users.name\nFROM\n    mcaptcha_notifications \nINNER JOIN \n    mcaptcha_users \nON \n    mcaptcha_notifications.tx = mcaptcha_users.id\nWHERE \n    mcaptcha_notifications.rx = (\n        SELECT \n            id \n        FROM \n            mcaptcha_users\n        WHERE\n            name = $1\n        )\nAND \n    mcaptcha_notifications.read IS NULL;\n",
     "describe": {
@@ -712,13 +712,13 @@
       "nullable": []
     }
   },
-  "fb15883459af48b0f6f1eee5d47641db8fa0875f7f21665dbc40800869e5e353": {
-    "query": "SELECT confirmed_at FROM mcaptcha_pow_confirmed_stats WHERE config_id = (\n        SELECT config_id FROM mcaptcha_config where key = $1)",
+  "fc6b52054ea35458f597bcd3bd9a99029fca816f1e65a9e12cfd7ea4acc33838": {
+    "query": "SELECT time FROM mcaptcha_pow_fetched_stats WHERE config_id = \n        (SELECT config_id FROM mcaptcha_config where key = $1)",
     "describe": {
       "columns": [
         {
           "ordinal": 0,
-          "name": "confirmed_at",
+          "name": "time",
           "type_info": "Timestamptz"
         }
       ],

@@ -6,7 +6,8 @@
     <. } .>
 	<. let level = levels.len() + 1; .>
 	<. include!("../add/add-level.html"); .>
-  <button data-sitekey="<.= key .>" class="sitekey-form__submit" type="submit">
+  <button data-sitekey="<.= key .>" 
+	  id="sitekey-form__submit" class="sitekey-form__submit" type="submit">
     Submit
   </button>
 <. include!("../view/__form-bottom.html"); .>

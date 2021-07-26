@@ -27,10 +27,12 @@ import {LEVELS} from '../add/ts/levels';
 import getFormUrl from '../../../utils/getFormUrl';
 import genJsonPayload from '../../../utils/genJsonPayload';
 import createError from '../../../components/error';
+import LazyElement from '../../../utils/lazyElement';
 
 import VIEWS from '../../../views/v1/routes';
 
-const BTN_CLASS = document.querySelector('sitekey-form__submit');
+const BTN_ID = 'sitekey-form__submit';
+const BTN = new LazyElement(BTN_ID);
 
 const submit = async (e: Event) => {
   e.preventDefault();
@@ -43,8 +45,7 @@ const submit = async (e: Event) => {
   const levels = LEVELS.getLevels();
   console.debug(`[form submition]: levels: ${levels}`);
 
-  const btn = <HTMLElement>document.querySelector(`${BTN_CLASS}`);
-  const key = btn.dataset.sitekey;
+  const key = BTN.get().dataset.sitekey;
 
   const payload = {
     levels,
