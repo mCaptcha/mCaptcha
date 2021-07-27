@@ -16,11 +16,9 @@
  */
 use actix_identity::Identity;
 use actix_web::{web, HttpResponse, Responder};
-use futures::{future::TryFutureExt, try_join};
 use sailfish::TemplateOnce;
 
 use crate::errors::*;
-use crate::stats::fetch::Stats;
 use crate::AppData;
 
 const PAGE: &str = "SiteKeys";
@@ -79,7 +77,7 @@ pub async fn edit_sitekey(
     .fetch_one(&data.db)
     .await?;
 
-    let levels_fut = sqlx::query_as!(
+    let levels = sqlx::query_as!(
         Level,
         "SELECT 
             difficulty_factor, visitor_threshold 
@@ -89,9 +87,7 @@ pub async fn edit_sitekey(
         &config.config_id
     )
     .fetch_all(&data.db)
-    .err_into();
-
-    let (_stats, levels) = try_join!(Stats::new(&key, &data.db), levels_fut)?;
+    .await?;
 
     let body = IndexPage::new(config, levels, key).render_once().unwrap();
     Ok(HttpResponse::Ok()

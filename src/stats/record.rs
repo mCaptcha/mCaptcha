@@ -15,15 +15,18 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+use sqlx::types::time::OffsetDateTime;
 use sqlx::PgPool;
 
 /// record PoWConfig fetches
 #[inline]
 pub async fn record_fetch(key: &str, db: &PgPool) {
+    let now = OffsetDateTime::now_utc();
     let _ = sqlx::query!(
         "INSERT INTO mcaptcha_pow_fetched_stats 
-        (config_id) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1))",
+        (config_id, time) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1), $2)",
         &key,
+        &now,
     )
     .execute(db)
     .await;
@@ -32,10 +35,12 @@ pub async fn record_fetch(key: &str, db: &PgPool) {
 /// record PoWConfig solves
 #[inline]
 pub async fn record_solve(key: &str, db: &PgPool) {
+    let now = OffsetDateTime::now_utc();
     let _ = sqlx::query!(
         "INSERT INTO mcaptcha_pow_solved_stats 
-        (config_id) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1))",
+        (config_id, time) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1), $2)",
         &key,
+        &now,
     )
     .execute(db)
     .await;
@@ -44,10 +49,12 @@ pub async fn record_solve(key: &str, db: &PgPool) {
 /// record PoWConfig confirms
 #[inline]
 pub async fn record_confirm(key: &str, db: &PgPool) {
+    let now = OffsetDateTime::now_utc();
     let _ = sqlx::query!(
         "INSERT INTO mcaptcha_pow_confirmed_stats 
-        (config_id) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1))",
+        (config_id, time) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1), $2)",
         &key,
+        &now
     )
     .execute(db)
     .await;

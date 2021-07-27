@@ -4,4 +4,11 @@
       <. for (count, level) in levels.iter().enumerate() { .>
         <. include!("./existing-level.html"); .> 
       <. } .>
-<. include!("./__form-bottom.html"); .>
+<./* synchronise with "./__form-bottom.html" Lines below should break form */.>
+    </form>
+    <. include!("./stats.html"); .>
+  </div>
+  <!-- end of container -->
+
+</main>
+<. include!("../../../components/footers.html"); .>

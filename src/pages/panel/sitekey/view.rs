@@ -45,15 +45,22 @@ struct IndexPage {
     name: String,
     key: String,
     levels: Vec<Level>,
+    stats: Stats,
 }
 
 impl IndexPage {
-    fn new(config: McaptchaConfig, levels: Vec<Level>, key: String) -> Self {
+    fn new(
+        stats: Stats,
+        config: McaptchaConfig,
+        levels: Vec<Level>,
+        key: String,
+    ) -> Self {
         IndexPage {
             duration: config.duration as u32,
             name: config.name,
             levels,
             key,
+            stats,
         }
     }
 }
@@ -91,9 +98,11 @@ pub async fn view_sitekey(
     .fetch_all(&data.db)
     .err_into();
 
-    let (_stats, levels) = try_join!(Stats::new(&key, &data.db), levels_fut)?;
+    let (stats, levels) = try_join!(Stats::new(&username, &key, &data.db), levels_fut)?;
 
-    let body = IndexPage::new(config, levels, key).render_once().unwrap();
+    let body = IndexPage::new(stats, config, levels, key)
+        .render_once()
+        .unwrap();
     Ok(HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
         .body(body))

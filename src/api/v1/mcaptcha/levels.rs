@@ -139,7 +139,7 @@ async fn update_levels(
     defense.build()?;
 
     let mut futs = Vec::with_capacity(payload.levels.len() + 2);
-    let del_fut = sqlx::query!(
+    sqlx::query!(
         "DELETE FROM mcaptcha_levels 
         WHERE config_id = (
             SELECT config_id FROM mcaptcha_config where key = ($1) 
@@ -150,7 +150,8 @@ async fn update_levels(
         &payload.key,
         &username
     )
-    .execute(&data.db); //.await?;
+    .execute(&data.db)
+    .await?;
 
     let update_fut = sqlx::query!(
         "UPDATE mcaptcha_config SET name = $1, duration = $2 
@@ -163,7 +164,6 @@ async fn update_levels(
     )
     .execute(&data.db); //.await?;
 
-    futs.push(del_fut);
     futs.push(update_fut);
 
     for level in payload.levels.iter() {
@@ -291,9 +291,7 @@ mod tests {
         assert_eq!(res_levels, add_level.levels);
 
         // 3. update level
-
         let levels = vec![L1, L2];
-
         let update_level = UpdateLevels {
             key: key.key.clone(),
             levels: levels.clone(),

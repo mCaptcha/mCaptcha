@@ -27,4 +27,5 @@
 
 .inner-container {
   @include inner-container;
+  flex-direction: column;
 }

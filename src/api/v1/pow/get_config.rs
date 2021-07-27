@@ -65,7 +65,10 @@ pub async fn get_config(
     match res.exists {
         Some(true) => {
             match data.captcha.get_pow(payload.key.clone()).await {
-                Some(config) => Ok(HttpResponse::Ok().json(config)),
+                Some(config) => {
+                    record_fetch(&payload.key, &data.db).await;
+                    Ok(HttpResponse::Ok().json(config))
+                }
                 None => {
                     init_mcaptcha(&data, &payload.key).await?;
                     let config = data

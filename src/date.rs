@@ -14,10 +14,21 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+use std::fmt::Debug;
+
 use sqlx::types::time::OffsetDateTime;
 
+#[derive(Clone)]
 pub struct Date {
     pub time: OffsetDateTime,
+}
+
+impl Debug for Date {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("Date")
+            .field("time", &self.print_date())
+            .finish()
+    }
 }
 
 pub const MINUTE: i64 = 60;
@@ -45,8 +56,14 @@ impl Date {
         }
     }
 
+    /// print relative time from date
     pub fn print_date(&self) -> String {
         Self::format(&self.time)
+    }
+
+    /// print date
+    pub fn date(&self) -> String {
+        self.time.format("%F %r %z")
     }
 }
 

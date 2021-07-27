@@ -14,6 +14,19 @@
       "nullable": []
     }
   },
+  "044e2036a518de2ccac9318ccba07f7ce10e4a1c1d51d0128ea5e8cb94358ac5": {
+    "query": "INSERT INTO mcaptcha_pow_confirmed_stats \n        (config_id, time) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1), $2)",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Timestamptz"
+        ]
+      },
+      "nullable": []
+    }
+  },
   "06699fda6b1542bf4544c0bdece91531a3020c24c9c76bcf967980e71ee25b42": {
     "query": "SELECT email, secret  FROM mcaptcha_users WHERE name = ($1)",
     "describe": {
@@ -38,38 +51,6 @@
         true,
         false
       ]
-    }
-  },
-  "174457087e02e07bfe52618cc8b5525067fa1722684f37a30004074a499774ee": {
-    "query": "SELECT time FROM mcaptcha_pow_confirmed_stats WHERE config_id = (\n        SELECT config_id FROM mcaptcha_config where key = $1)",
-    "describe": {
-      "columns": [
-        {
-          "ordinal": 0,
-          "name": "time",
-          "type_info": "Timestamptz"
-        }
-      ],
-      "parameters": {
-        "Left": [
-          "Text"
-        ]
-      },
-      "nullable": [
-        false
-      ]
-    }
-  },
-  "1be6274d5cc6d16f38285b8a62c9f66e8c3014cd403bc599598e911023bfeedb": {
-    "query": "INSERT INTO mcaptcha_pow_fetched_stats \n        (config_id) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1))",
-    "describe": {
-      "columns": [],
-      "parameters": {
-        "Left": [
-          "Text"
-        ]
-      },
-      "nullable": []
     }
   },
   "238569a64d7dbd252e3b27204f207e8a8548109717b89495ddf8f9a870c7c75d": {
@@ -160,6 +141,27 @@
       ],
       "parameters": {
         "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false
+      ]
+    }
+  },
+  "4303f5c6ef98e0de9d8d3c2d781d3ffaa3dee5f7d27db831d327b26f03ba9d68": {
+    "query": "SELECT time FROM mcaptcha_pow_confirmed_stats \n            WHERE \n                config_id = (\n                    SELECT config_id FROM mcaptcha_config \n                WHERE \n                    key = $1\n                AND\n                     user_id = (\n                        SELECT \n                            ID FROM mcaptcha_users WHERE name = $2))\n                ORDER BY time DESC",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "time",
+          "type_info": "Timestamptz"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text",
           "Text"
         ]
       },
@@ -339,13 +341,14 @@
       ]
     }
   },
-  "73b9bddce90d59193430c5ec38b77ad7bc0e94bac74dcde7ab9949a86cfbddca": {
-    "query": "INSERT INTO mcaptcha_pow_solved_stats \n        (config_id) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1))",
+  "726a794f7599b78ab749d9f887f5c28db38f072b41f691bde35d23ba0dd72409": {
+    "query": "INSERT INTO mcaptcha_pow_fetched_stats \n        (config_id, time) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1), $2)",
     "describe": {
       "columns": [],
       "parameters": {
         "Left": [
-          "Text"
+          "Text",
+          "Timestamptz"
         ]
       },
       "nullable": []
@@ -404,8 +407,8 @@
       "nullable": []
     }
   },
-  "85a3482fc65dab99cd01f51411f0567d303018bbb6483a0020db33180ce12cfb": {
-    "query": "SELECT time FROM mcaptcha_pow_solved_stats WHERE config_id = \n        (SELECT config_id FROM mcaptcha_config where key = $1)",
+  "84484cb6892db29121816bc5bff5702b9e857e20aa14e79d080d78ae7593153b": {
+    "query": "SELECT time FROM mcaptcha_pow_solved_stats \n            WHERE config_id = (\n                SELECT config_id FROM mcaptcha_config \n                WHERE \n                    key = $1\n                AND\n                     user_id = (\n                        SELECT \n                            ID FROM mcaptcha_users WHERE name = $2)) \n                ORDER BY time DESC",
     "describe": {
       "columns": [
         {
@@ -416,6 +419,7 @@
       ],
       "parameters": {
         "Left": [
+          "Text",
           "Text"
         ]
       },
@@ -448,18 +452,6 @@
         false,
         false
       ]
-    }
-  },
-  "931879575bb70dece5596bfae18f55a628d10627e4b6825e54642b254ca4ee64": {
-    "query": "INSERT INTO mcaptcha_pow_confirmed_stats \n        (config_id) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1))",
-    "describe": {
-      "columns": [],
-      "parameters": {
-        "Left": [
-          "Text"
-        ]
-      },
-      "nullable": []
     }
   },
   "94901d49666b3097b1fed832966697c4a1e3937beb2bd0431df4857402a4de04": {
@@ -595,6 +587,27 @@
       ]
     }
   },
+  "c399efd5db1284dcb470c40f9b076851f77498c75a63a3b151d4a111bd3e2957": {
+    "query": "SELECT time FROM mcaptcha_pow_fetched_stats\n            WHERE \n                config_id = (\n                    SELECT \n                        config_id FROM mcaptcha_config \n                    WHERE \n                        key = $1\n                    AND\n                        user_id = (\n                        SELECT \n                            ID FROM mcaptcha_users WHERE name = $2))\n                ORDER BY time DESC",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "time",
+          "type_info": "Timestamptz"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Text"
+        ]
+      },
+      "nullable": [
+        false
+      ]
+    }
+  },
   "ca9d5241f1234d1825f7ead391ebe9099fca776e7101ac6e1761881606def5fa": {
     "query": "DELETE FROM mcaptcha_users WHERE name = ($1)",
     "describe": {
@@ -615,6 +628,19 @@
         "Left": [
           "Text",
           "Int4"
+        ]
+      },
+      "nullable": []
+    }
+  },
+  "dbe4307651d94bc6db4f1d8b2c6d076fde6280983d59593216d7765cbbdd669c": {
+    "query": "INSERT INTO mcaptcha_pow_solved_stats \n        (config_id, time) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1), $2)",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Timestamptz"
         ]
       },
       "nullable": []
@@ -710,26 +736,6 @@
         ]
       },
       "nullable": []
-    }
-  },
-  "fc6b52054ea35458f597bcd3bd9a99029fca816f1e65a9e12cfd7ea4acc33838": {
-    "query": "SELECT time FROM mcaptcha_pow_fetched_stats WHERE config_id = \n        (SELECT config_id FROM mcaptcha_config where key = $1)",
-    "describe": {
-      "columns": [
-        {
-          "ordinal": 0,
-          "name": "time",
-          "type_info": "Timestamptz"
-        }
-      ],
-      "parameters": {
-        "Left": [
-          "Text"
-        ]
-      },
-      "nullable": [
-        false
-      ]
     }
   }
 }

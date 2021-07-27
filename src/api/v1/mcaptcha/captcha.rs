@@ -257,8 +257,10 @@ pub struct StatsPayload {
 async fn get_stats(
     payload: web::Json<StatsPayload>,
     data: AppData,
+    id: Identity,
 ) -> ServiceResult<impl Responder> {
-    let stats = Stats::new(&payload.key, &data.db).await?;
+    let username = id.identity().unwrap();
+    let stats = Stats::new(&username, &payload.key, &data.db).await?;
     let stats = StatsUnixTimestamp::from_stats(&stats);
     Ok(HttpResponse::Ok().json(&stats))
 }

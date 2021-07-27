@@ -14,13 +14,11 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-use actix_web::{web, HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
 use sqlx::PgPool;
 
 use crate::date::Date;
 use crate::errors::*;
-use crate::AppData;
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct StatsUnixTimestamp {
@@ -29,6 +27,7 @@ pub struct StatsUnixTimestamp {
     pub confirms: Vec<i64>,
 }
 
+#[derive(Debug, Clone)]
 pub struct Stats {
     pub config_fetches: Vec<Date>,
     pub solves: Vec<Date>,
@@ -40,21 +39,11 @@ pub struct StatsPayload {
     pub key: String,
 }
 
-#[my_codegen::post(path = "crate::V1_API_ROUTES.auth.login", wrap = "crate::CheckLogin")]
-async fn get_stats(
-    payload: web::Json<StatsPayload>,
-    data: AppData,
-) -> ServiceResult<impl Responder> {
-    let stats = Stats::new(&payload.key, &data.db).await?;
-    let stats = StatsUnixTimestamp::from_stats(&stats);
-    Ok(HttpResponse::Ok().json(&stats))
-}
-
 impl Stats {
-    pub async fn new(key: &str, db: &PgPool) -> ServiceResult<Self> {
-        let config_fetches_fut = runners::fetch_config_fetched(key, db);
-        let solves_fut = runners::fetch_solve(key, db);
-        let confirms_fut = runners::fetch_confirm(key, db);
+    pub async fn new(user: &str, key: &str, db: &PgPool) -> ServiceResult<Self> {
+        let config_fetches_fut = runners::fetch_config_fetched(user, key, db);
+        let solves_fut = runners::fetch_solve(user, key, db);
+        let confirms_fut = runners::fetch_confirm(user, key, db);
 
         let (config_fetches, solves, confirms) =
             futures::try_join!(config_fetches_fut, solves_fut, confirms_fut)?;
@@ -99,14 +88,26 @@ pub mod runners {
     /// featch PoWConfig fetches
     #[inline]
     pub async fn fetch_config_fetched(
+        user: &str,
         key: &str,
         db: &PgPool,
     ) -> ServiceResult<Vec<Date>> {
         let records = sqlx::query_as!(
             Date,
-            "SELECT time FROM mcaptcha_pow_fetched_stats WHERE config_id = 
-        (SELECT config_id FROM mcaptcha_config where key = $1)",
+            "SELECT time FROM mcaptcha_pow_fetched_stats
+            WHERE 
+                config_id = (
+                    SELECT 
+                        config_id FROM mcaptcha_config 
+                    WHERE 
+                        key = $1
+                    AND
+                        user_id = (
+                        SELECT 
+                            ID FROM mcaptcha_users WHERE name = $2))
+                ORDER BY time DESC",
             &key,
+            &user,
         )
         .fetch_all(db)
         .await?;
@@ -116,12 +117,25 @@ pub mod runners {
 
     /// featch PoWConfig solves
     #[inline]
-    pub async fn fetch_solve(key: &str, db: &PgPool) -> ServiceResult<Vec<Date>> {
+    pub async fn fetch_solve(
+        user: &str,
+        key: &str,
+        db: &PgPool,
+    ) -> ServiceResult<Vec<Date>> {
         let records = sqlx::query_as!(
             Date,
-            "SELECT time FROM mcaptcha_pow_solved_stats WHERE config_id = 
-        (SELECT config_id FROM mcaptcha_config where key = $1)",
+            "SELECT time FROM mcaptcha_pow_solved_stats 
+            WHERE config_id = (
+                SELECT config_id FROM mcaptcha_config 
+                WHERE 
+                    key = $1
+                AND
+                     user_id = (
+                        SELECT 
+                            ID FROM mcaptcha_users WHERE name = $2)) 
+                ORDER BY time DESC",
             &key,
+            &user
         )
         .fetch_all(db)
         .await?;
@@ -131,12 +145,26 @@ pub mod runners {
 
     /// featch PoWConfig confirms
     #[inline]
-    pub async fn fetch_confirm(key: &str, db: &PgPool) -> ServiceResult<Vec<Date>> {
+    pub async fn fetch_confirm(
+        user: &str,
+        key: &str,
+        db: &PgPool,
+    ) -> ServiceResult<Vec<Date>> {
         let records = sqlx::query_as!(
             Date,
-            "SELECT time FROM mcaptcha_pow_confirmed_stats WHERE config_id = (
-        SELECT config_id FROM mcaptcha_config where key = $1)",
-            &key
+            "SELECT time FROM mcaptcha_pow_confirmed_stats 
+            WHERE 
+                config_id = (
+                    SELECT config_id FROM mcaptcha_config 
+                WHERE 
+                    key = $1
+                AND
+                     user_id = (
+                        SELECT 
+                            ID FROM mcaptcha_users WHERE name = $2))
+                ORDER BY time DESC",
+            &key,
+            &user
         )
         .fetch_all(db)
         .await?;
@@ -165,7 +193,7 @@ mod tests {
         let (_, _, _, token_key) = add_levels_util(NAME, PASSWORD).await;
         let key = token_key.key.clone();
 
-        let stats = Stats::new(&key, &data.db).await.unwrap();
+        let stats = Stats::new(&NAME, &key, &data.db).await.unwrap();
 
         assert_eq!(stats.config_fetches.len(), 0);
         assert_eq!(stats.solves.len(), 0);
@@ -177,7 +205,7 @@ mod tests {
             record_confirm(&key, &data.db)
         );
 
-        let stats = Stats::new(&key, &data.db).await.unwrap();
+        let stats = Stats::new(&NAME, &key, &data.db).await.unwrap();
 
         assert_eq!(stats.config_fetches.len(), 1);
         assert_eq!(stats.solves.len(), 1);

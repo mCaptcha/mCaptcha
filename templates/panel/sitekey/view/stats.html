@@ -1,0 +1,26 @@
+<div class="sitekey__stats-container">
+  <. let tables = [("Configuration Fetches", &stats.config_fetches), ("Proofs generated", &stats.solves), ("Grants Verified", &stats.confirms)]; .>
+  <. for table in tables.iter() { .>
+    <table class="notification__table">
+      <thead class="notification__heading">
+        <tr>
+            <th colspan="4" class="notification__title-text"><.= table.0 .></th>
+        </tr>
+      </thead>
+      <tbody class="notification__body">
+        <. for (count, val) in table.1.iter().enumerate() { .>
+          <tr class="notification__item">
+              <td>
+              <h3 class="notification__item-heading">
+                <.= count + 1 .>
+              </h3>
+            </td>
+            <td>
+                <p class="notification__item-text"><.= val.date() .></p>
+            </td>
+          </tr>
+        <. } .>
+      </tbody>
+    </table>
+  <. }; .>
+</div>
