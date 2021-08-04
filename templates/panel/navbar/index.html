@@ -38,6 +38,7 @@
         </div>
       </a>
     </li>
+    <. if crate::SETTINGS.commercial { .>
     <li class="secondary-menu__item">
       <a class="secondary-menu__item-link" href="">
         <img class="secondary-menu__icon" src="<.= crate::CREDIT_CARD.0 .>" alt="<.= crate::CREDIT_CARD.1 .>" />
@@ -46,6 +47,7 @@
         </div>
       </a>
     </li>
+    <. } .>
     <li class="secondary-menu__item">
       <a class="secondary-menu__item-link" href="">
 		  <img class="secondary-menu__icon" src="<.= crate::HELP_CIRCLE.0 .>" alt="<.= crate::HELP_CIRCLE.1 .>" />
