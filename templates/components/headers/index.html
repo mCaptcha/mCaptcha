@@ -4,5 +4,8 @@
 	<. include!("./preview-data.html"); .>
 	<. include!("./favicon.html"); .>
     <. include!("./csp.html"); .>
+    <. if crate::SETTINGS.server.proxy_has_tls { .>
+        <. include!("./https.html"); .>
+    <.  } .>
   </head>
 <body class="layout">

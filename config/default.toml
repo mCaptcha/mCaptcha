@@ -14,6 +14,10 @@ ip= "0.0.0.0"
 # enter your hostname, eg: example.com
 domain = "localhost"
 allow_registration = true
+# Set true if you have setup TLS with a reverse proxy like Nginx.
+# Does HTTPS redirect and sends additional headers that can only be used if
+# HTTPS available to improve security
+proxy_has_tls = false
 #url_prefix = ""
 
 [pow]

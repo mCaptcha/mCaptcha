@@ -30,6 +30,7 @@ pub struct Server {
     pub cookie_secret: String,
     pub ip: String,
     pub url_prefix: Option<String>,
+    pub proxy_has_tls: bool,
 }
 
 #[derive(Debug, Clone, Deserialize)]
