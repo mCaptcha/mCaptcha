@@ -72,7 +72,7 @@ impl StatsUnixTimestamp {
 
     /// featch PoWConfig confirms
     #[inline]
-    fn unix_timestamp(dates: &Vec<Date>) -> Vec<i64> {
+    fn unix_timestamp(dates: &[Date]) -> Vec<i64> {
         let mut res: Vec<i64> = Vec::with_capacity(dates.len());
 
         dates
@@ -193,7 +193,7 @@ mod tests {
         let (_, _, _, token_key) = add_levels_util(NAME, PASSWORD).await;
         let key = token_key.key.clone();
 
-        let stats = Stats::new(&NAME, &key, &data.db).await.unwrap();
+        let stats = Stats::new(NAME, &key, &data.db).await.unwrap();
 
         assert_eq!(stats.config_fetches.len(), 0);
         assert_eq!(stats.solves.len(), 0);
@@ -205,7 +205,7 @@ mod tests {
             record_confirm(&key, &data.db)
         );
 
-        let stats = Stats::new(&NAME, &key, &data.db).await.unwrap();
+        let stats = Stats::new(NAME, &key, &data.db).await.unwrap();
 
         assert_eq!(stats.config_fetches.len(), 1);
         assert_eq!(stats.solves.len(), 1);

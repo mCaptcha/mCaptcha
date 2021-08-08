@@ -301,7 +301,7 @@ mod tests {
 
         let add_token_resp = test::call_service(
             &app,
-            post_request!(&update_level, &ROUTES.levels.update)
+            post_request!(&update_level, ROUTES.levels.update)
                 .cookie(cookies.clone())
                 .to_request(),
         )

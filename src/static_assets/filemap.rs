@@ -24,7 +24,7 @@ impl FileMap {
     #[allow(clippy::new_without_default)]
     pub fn new() -> Self {
         let map = include_str!("../cache_buster_data.json");
-        let files = Files::new(&map);
+        let files = Files::new(map);
         Self { files }
     }
     pub fn get<'a>(&'a self, path: &'a str) -> Option<&'a str> {

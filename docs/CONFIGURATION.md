@@ -1,6 +1,6 @@
 # Configuration
 
-mcaptcha is highly configurable.
+mCaptcha is highly configurable.
 
 Configuration is applied/merged in the following order:
 
@@ -11,52 +11,54 @@ Configuration is applied/merged in the following order:
 
 ## Setup
 
-### Environment variables:
+### Environment variables
 
 Setting environment variables are optional. The configuration files have
 all the necessary parameters listed. By setting environment variables,
 you will be overriding the values set in the configuration files.
 
-#### Database:
+### General
+
+| Name                   | Value                                                                             |
+| ---------------------- | --------------------------------------------------------------------------------- |
+| `MCAPTCHA_CONFIG`      | Path to configuration file                                                        |
+| `MCAPTCHA_COMMERCIAL`  | Does this instance offer commercial plans? Please consider donating if it does :D |
+| `MCAPTCHA_SOURCE_CODE` | Link to the source code of this instance                                          |
+
+#### Database
 
 | Name                                 | Value                                                         |
 | ------------------------------------ | ------------------------------------------------------------- |
 | `MCAPTCHA_DATEBASE_PASSWORD`         | Postgres password                                             |
 | `MCAPTCHA_DATEBASE_NAME`             | Postgres database name                                        |
 | `MCAPTCHA_DATEBASE_PORT`             | Postgres port                                                 |
-| `MCAPTCHA_DATEBASE_HOSTNAME`         | Postgres hostmane                                             |
+| `MCAPTCHA_DATEBASE_HOSTNAME`         | Postgres hostname                                             |
 | `MCAPTCHA_DATEBASE_USERNAME`         | Postgres username                                             |
 | `MCAPTCHA_DATEBASE_POOL`             | Postgres database connection pool size                        |
 | `DATABSE_URL` (overrides above vars) | databse URL in `postgres://user:pass@host:port/dbname` format |
 
-#### Redis:
+#### Redis
 
 | Name                  | Value                      |
 | --------------------- | -------------------------- |
 | `MCAPTCHA_REDIS_URL`  | Redis URL                  |
 | `MCAPTCHA_REDIS_POOL` | Redis connection pool size |
 
-#### Server:
+#### Server
 
-| Name                                     | Value                                                  |
-| ---------------------------------------- | ------------------------------------------------------ |
-| `MCAPTCHA_SERVER_PORT`                   | The port on which you want mcaptcha to listen to       |
-| `PORT`(overrides `MCAPTCHA_SERVER_PORT`) | The port on which you want mcaptcha to listen to       |
-| `MCAPTCHA_SERVER_IP`                     | The IP address on which you want mcaptcha to listen to |
-| `MCAPTCHA_SERVER_DOMAIN`                 | Domain under which mcaptcha will be\*                  |
-| `MCAPTCHA_SERVER_COOKIE_SECRET`          | Cookie secret, must be long and random                 |
-| `MCAPTCHA_SERVER_ALLOW_REGISTRATION`     | `bool` that controls                                   |  | registration |
+| Name                                     | Value                                                                              |
+| ---------------------------------------- | ---------------------------------------------------------------------------------- |
+| `MCAPTCHA_SERVER_PORT`                   | The port on which you want mCaptcha to listen to                                   |
+| `PORT`(overrides `MCAPTCHA_SERVER_PORT`) | The port on which you want mCaptcha to listen to                                   |
+| `MCAPTCHA_SERVER_IP`                     | The IP address on which you want mCaptcha to listen to                             |
+| `MCAPTCHA_SERVER_DOMAIN`                 | Domain under which mCaptcha will be\*                                              |
+| `MCAPTCHA_SERVER_COOKIE_SECRET`          | Cookie secret, must be long and random                                             |
+| `MCAPTCHA_SERVER_ALLOW_REGISTRATION`     | `bool` that controls registration                                                  |
+| `MCAPTCHA_SERVER_PROXY_HAS_TLS`          | Is mCaptcha behind a proxy? If yes, mCaptcha can send additional headers like HSTS |
 
-\* Authentication doesn't work without `MCAPTCHA_DOMAIN` set to the correct
-domain
+\* Authentication doesn't work without `MCAPTCHA_DOMAIN` set to the correct domain
 
-### Configuration file location:
-
-| Name              | Value               |
-| ----------------- | ------------------- |
-| `MCAPTCHA_CONFIG` | Path to config file |
-
-### Proof of work:
+### Proof of work
 
 | Name                | Value                                                                                   |
 | ------------------- | --------------------------------------------------------------------------------------- |
