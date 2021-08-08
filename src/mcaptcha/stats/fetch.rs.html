@@ -294,7 +294,7 @@
 
     <span class="doccomment">/// featch PoWConfig confirms</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">unix_timestamp</span>(<span class="ident">dates</span>: <span class="kw-2">&amp;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Date</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">unix_timestamp</span>(<span class="ident">dates</span>: <span class="kw-2">&amp;</span>[<span class="ident">Date</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">res</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Vec::with_capacity</span>(<span class="ident">dates</span>.<span class="ident">len</span>());
 
         <span class="ident">dates</span>
@@ -415,7 +415,7 @@
         <span class="kw">let</span> (<span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>, <span class="ident">token_key</span>) <span class="op">=</span> <span class="ident">add_levels_util</span>(<span class="ident">NAME</span>, <span class="ident">PASSWORD</span>).<span class="kw">await</span>;
         <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">token_key</span>.<span class="ident">key</span>.<span class="ident">clone</span>();
 
-        <span class="kw">let</span> <span class="ident">stats</span> <span class="op">=</span> <span class="ident">Stats::new</span>(<span class="kw-2">&amp;</span><span class="ident">NAME</span>, <span class="kw-2">&amp;</span><span class="ident">key</span>, <span class="kw-2">&amp;</span><span class="ident">data</span>.<span class="ident">db</span>).<span class="kw">await</span>.<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">stats</span> <span class="op">=</span> <span class="ident">Stats::new</span>(<span class="ident">NAME</span>, <span class="kw-2">&amp;</span><span class="ident">key</span>, <span class="kw-2">&amp;</span><span class="ident">data</span>.<span class="ident">db</span>).<span class="kw">await</span>.<span class="ident">unwrap</span>();
 
         <span class="macro">assert_eq!</span>(<span class="ident">stats</span>.<span class="ident">config_fetches</span>.<span class="ident">len</span>(), <span class="number">0</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">stats</span>.<span class="ident">solves</span>.<span class="ident">len</span>(), <span class="number">0</span>);
@@ -427,7 +427,7 @@
             <span class="ident">record_confirm</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>, <span class="kw-2">&amp;</span><span class="ident">data</span>.<span class="ident">db</span>)
         );
 
-        <span class="kw">let</span> <span class="ident">stats</span> <span class="op">=</span> <span class="ident">Stats::new</span>(<span class="kw-2">&amp;</span><span class="ident">NAME</span>, <span class="kw-2">&amp;</span><span class="ident">key</span>, <span class="kw-2">&amp;</span><span class="ident">data</span>.<span class="ident">db</span>).<span class="kw">await</span>.<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">stats</span> <span class="op">=</span> <span class="ident">Stats::new</span>(<span class="ident">NAME</span>, <span class="kw-2">&amp;</span><span class="ident">key</span>, <span class="kw-2">&amp;</span><span class="ident">data</span>.<span class="ident">db</span>).<span class="kw">await</span>.<span class="ident">unwrap</span>();
 
         <span class="macro">assert_eq!</span>(<span class="ident">stats</span>.<span class="ident">config_fetches</span>.<span class="ident">len</span>(), <span class="number">1</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">stats</span>.<span class="ident">solves</span>.<span class="ident">len</span>(), <span class="number">1</span>);
