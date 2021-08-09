@@ -1,7 +1,7 @@
 debug = true
 source_code = "https://github.com/mCaptcha/mCaptcha"
 commercial = false
-allow_demo = false
+allow_demo = true
 allow_registration = true
 
 [server]

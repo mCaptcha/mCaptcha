@@ -1,0 +1,12 @@
+<. if crate::SETTINGS.allow_demo && crate::SETTINGS.allow_registration { .>
+  <p class="auth__demo-user__banner">
+    Try mCaptcha without joining
+    <br />
+	<span class="auth__demo-user__cred">
+      user: <.= crate::demo::DEMO_USER .>
+    </span>
+	<span class="auth__demo-user__cred">
+        password: <.= crate::demo::DEMO_PASSWORD .>
+	</span>
+  </p>
+<. } .>

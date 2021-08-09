@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 use std::time::Duration;
 
 use actix::clock::sleep;
@@ -55,6 +54,7 @@ async fn delete_demo_user(data: &AppData) -> ServiceResult<()> {
 
 pub async fn run(data: AppData, duration: Duration) -> ServiceResult<()> {
     register_demo_user(&data).await?;
+
     let fut = async move {
         loop {
             sleep(duration).await;

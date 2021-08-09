@@ -47,12 +47,22 @@ body {
   position: relative;
 }
 
-.auth__secondary-action__banner {
+@mixin auth__secondary-action__banner-base {
   display: block;
   margin: auto;
   text-align: center;
   width: 80%;
+}
+
+.auth__secondary-action__banner {
+  @include auth__secondary-action__banner-base;
   margin: 20px auto auto auto;
+}
+
+.auth__demo-user__banner {
+  @include auth__secondary-action__banner-base;
+  margin: 5px auto auto auto;
+  font-size: 0.7rem;
 }
 
 .auth__secondary-action__link {
