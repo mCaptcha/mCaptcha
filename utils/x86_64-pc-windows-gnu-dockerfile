@@ -1,1 +1,0 @@
-RUN dpkg --add-architecture arm64 &&     apt-get update &&     apt-get install --assume-yes postgresql:arm64 postgresql-devel

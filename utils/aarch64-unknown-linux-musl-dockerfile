@@ -1,6 +1,0 @@
-FROM rustembedded/cross:aarch64-unknown-linux-musl
-
-RUN dpkg --add-architecture arm64 && \
-	apt-get update && \
-	DEBIAN_FRONTEND=noninteractive \
-	apt-get install --assume-yes postgresql

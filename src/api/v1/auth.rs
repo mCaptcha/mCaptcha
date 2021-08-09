@@ -1,29 +1,33 @@
 /*
-* Copyright (C) 2021  Aravinth Manivannan <realaravinth@batsense.net>
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as
-* published by the Free Software Foundation, either version 3 of the
-* License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-*
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+ * Copyright (C) 2021  Aravinth Manivannan <realaravinth@batsense.net>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 
 use actix_identity::Identity;
 use actix_web::http::header;
 use actix_web::{web, HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
-//use futures::{future::TryFutureExt, join};
 
 use super::mcaptcha::get_random;
 use crate::errors::*;
 use crate::AppData;
+
+/// Demo username
+pub const DEMO_USER: &str = "aaronsw";
+/// Demo password
+pub const DEMO_PASSWORD: &str = "password";
 
 pub mod routes {
     pub struct Auth {
@@ -133,7 +137,7 @@ pub mod runners {
         payload: &Register,
         data: &AppData,
     ) -> ServiceResult<()> {
-        if !crate::SETTINGS.server.allow_registration {
+        if !crate::SETTINGS.allow_registration {
             return Err(ServiceError::ClosedForRegistration);
         }
 
@@ -194,6 +198,21 @@ pub mod runners {
             };
         }
         Ok(())
+    }
+
+    /// register demo user runner
+    pub async fn register_demo_user(data: &AppData) -> ServiceResult<()> {
+        let payload = runners::Register {
+            username: DEMO_USER.into(),
+            password: DEMO_PASSWORD.into(),
+            confirm_password: DEMO_PASSWORD.into(),
+            email: None,
+        };
+
+        match register_runner(&payload, data).await {
+            Err(ServiceError::UsernameTaken) | Ok(_) => Ok(()),
+            Err(e) => Err(e),
+        }
     }
 }
 

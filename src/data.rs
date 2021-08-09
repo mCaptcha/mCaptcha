@@ -10,7 +10,6 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
@@ -38,9 +37,7 @@ use libmcaptcha::{
     pow::PoWConfig,
     pow::Work,
     system::{System, SystemBuilder},
-    //    master::messages::AddSite,
 };
-
 use sqlx::postgres::PgPoolOptions;
 use sqlx::PgPool;
 

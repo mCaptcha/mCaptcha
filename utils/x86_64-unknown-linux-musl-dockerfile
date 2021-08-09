@@ -1,4 +1,0 @@
-FROM rustembedded/cross:x86_64-unknown-linux-musl
-RUN dpkg --add-architecture arm64 && \
-	apt-get update &&
-	apt-get install --assume-yes postgresql-13:x86_64

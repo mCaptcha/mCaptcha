@@ -1,6 +1,8 @@
 debug = true
 source_code = "https://github.com/mCaptcha/mCaptcha"
 commercial = false
+allow_demo = false
+allow_registration = true
 
 [server]
 # Please set a unique value, your mCaptcha instance's security depends on this being 
@@ -13,7 +15,6 @@ port = 7000
 ip= "0.0.0.0" 
 # enter your hostname, eg: example.com
 domain = "localhost"
-allow_registration = true
 # Set true if you have setup TLS with a reverse proxy like Nginx.
 # Does HTTPS redirect and sends additional headers that can only be used if
 # HTTPS available to improve security

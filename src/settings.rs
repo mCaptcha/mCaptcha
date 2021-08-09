@@ -24,7 +24,6 @@ use url::Url;
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct Server {
-    pub allow_registration: bool,
     pub port: u32,
     pub domain: String,
     pub cookie_secret: String,
@@ -106,6 +105,8 @@ pub struct Settings {
     pub pow: Captcha,
     pub source_code: String,
     pub smtp: Option<Smtp>,
+    pub allow_registration: bool,
+    pub allow_demo: bool,
 }
 
 #[cfg(not(tarpaulin_include))]

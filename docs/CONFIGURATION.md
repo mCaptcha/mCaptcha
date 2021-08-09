@@ -19,11 +19,13 @@ you will be overriding the values set in the configuration files.
 
 ### General
 
-| Name                   | Value                                                                             |
-| ---------------------- | --------------------------------------------------------------------------------- |
-| `MCAPTCHA_CONFIG`      | Path to configuration file                                                        |
-| `MCAPTCHA_COMMERCIAL`  | Does this instance offer commercial plans? Please consider donating if it does :D |
-| `MCAPTCHA_SOURCE_CODE` | Link to the source code of this instance                                          |
+| Name                          | Value                                                                                                             |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `MCAPTCHA_CONFIG`             | Path to configuration file                                                                                        |
+| `MCAPTCHA_COMMERCIAL`         | Does this instance offer commercial plans? Please consider donating if it does :D                                 |
+| `MCAPTCHA_SOURCE_CODE`        | Link to the source code of this instance                                                                          |
+| `MCAPTCHA_ALLOW_REGISTRATION` | Is registration allowed on this instance?                                                                         |
+| `MCAPTCHA_ALLOW_DEMO`         | Allow demo access to the server? If registration(previous option) is disabled then demo users will not be allowed |
 
 #### Database
 
@@ -53,7 +55,6 @@ you will be overriding the values set in the configuration files.
 | `MCAPTCHA_SERVER_IP`                     | The IP address on which you want mCaptcha to listen to                             |
 | `MCAPTCHA_SERVER_DOMAIN`                 | Domain under which mCaptcha will be\*                                              |
 | `MCAPTCHA_SERVER_COOKIE_SECRET`          | Cookie secret, must be long and random                                             |
-| `MCAPTCHA_SERVER_ALLOW_REGISTRATION`     | `bool` that controls registration                                                  |
 | `MCAPTCHA_SERVER_PROXY_HAS_TLS`          | Is mCaptcha behind a proxy? If yes, mCaptcha can send additional headers like HSTS |
 
 \* Authentication doesn't work without `MCAPTCHA_DOMAIN` set to the correct domain

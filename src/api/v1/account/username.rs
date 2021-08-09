@@ -25,22 +25,34 @@ async fn username_exists(
     payload: web::Json<AccountCheckPayload>,
     data: AppData,
 ) -> ServiceResult<impl Responder> {
-    let res = sqlx::query!(
-        "SELECT EXISTS (SELECT 1 from mcaptcha_users WHERE name = $1)",
-        &payload.val,
-    )
-    .fetch_one(&data.db)
-    .await?;
-
-    let mut resp = AccountCheckResp { exists: false };
-
-    if let Some(x) = res.exists {
-        if x {
-            resp.exists = true;
-        }
-    }
-
+    let resp = runners::username_exists(&payload, &data).await?;
     Ok(HttpResponse::Ok().json(resp))
+}
+
+pub mod runners {
+    use super::*;
+
+    pub async fn username_exists(
+        payload: &AccountCheckPayload,
+        data: &AppData,
+    ) -> ServiceResult<AccountCheckResp> {
+        let res = sqlx::query!(
+            "SELECT EXISTS (SELECT 1 from mcaptcha_users WHERE name = $1)",
+            &payload.val,
+        )
+        .fetch_one(&data.db)
+        .await?;
+
+        let mut resp = AccountCheckResp { exists: false };
+
+        if let Some(x) = res.exists {
+            if x {
+                resp.exists = true;
+            }
+        }
+
+        Ok(resp)
+    }
 }
 
 pub fn services(cfg: &mut actix_web::web::ServiceConfig) {

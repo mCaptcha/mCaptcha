@@ -1,24 +1,28 @@
 /*
-* Copyright (C) 2021  Aravinth Manivannan <realaravinth@batsense.net>
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as
-* published by the Free Software Foundation, either version 3 of the
-* License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-*
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+ * Copyright (C) 2021  Aravinth Manivannan <realaravinth@batsense.net>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 
 use actix_web::http::{header, StatusCode};
 use actix_web::test;
 
-use crate::api::v1::auth::runners::{Login, Register};
+use crate::api::v1::account::{username::runners::username_exists, AccountCheckPayload};
+use crate::api::v1::auth::{
+    runners::{register_demo_user, Login, Register},
+    DEMO_PASSWORD, DEMO_USER,
+};
 use crate::api::v1::ROUTES;
 use crate::data::Data;
 use crate::errors::*;
@@ -162,4 +166,18 @@ async fn serverside_password_validation_works() {
     assert_eq!(resp.status(), StatusCode::BAD_REQUEST);
     let txt: ErrorToResponse = test::read_body_json(resp).await;
     assert_eq!(txt.error, format!("{}", ServiceError::PasswordsDontMatch));
+}
+
+#[actix_rt::test]
+async fn demo_account() {
+    let data = AppData::new(Data::new().await);
+    let _ = register_demo_user(&data).await.unwrap();
+
+    let payload = AccountCheckPayload {
+        val: DEMO_USER.into(),
+    };
+
+    assert!(username_exists(&payload, &data).await.unwrap().exists);
+
+    signin(DEMO_USER, DEMO_PASSWORD).await;
 }
