@@ -21,6 +21,7 @@ import FORM from '../../../auth/sudo/';
 import getFormUrl from '../../../utils/getFormUrl';
 import genJsonPayload from '../../../utils/genJsonPayload';
 import createError from '../../../components/error';
+import registerShowPassword from '../../../components/showPassword';
 
 import VIEWS from '../../../views/v1/routes';
 
@@ -45,4 +46,5 @@ const submit = async (e: Event) => {
 
 export const index = () => {
   FORM.get().addEventListener('submit', submit, true);
+  registerShowPassword();
 };

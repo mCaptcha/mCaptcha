@@ -18,6 +18,7 @@
 import {getPassword} from '../../../auth/login/ts/';
 import FORM from '../../../auth/sudo/';
 import additionalData from '../../../components/additional-data';
+import registerShowPassword from '../../../components/showPassword';
 
 import getFormUrl from '../../../utils/getFormUrl';
 import genJsonPayload from '../../../utils/genJsonPayload';
@@ -48,4 +49,5 @@ const submit = async (e: Event) => {
 
 export const index = () => {
   FORM.get().addEventListener('submit', submit, true);
+  registerShowPassword();
 };
