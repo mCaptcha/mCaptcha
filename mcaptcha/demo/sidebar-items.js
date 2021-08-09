@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["DEMO_PASSWORD","Demo password"],["DEMO_USER","Demo username"]],"fn":[["delete_demo_user",""],["register_demo_user","register demo user runner"],["run",""]]});
