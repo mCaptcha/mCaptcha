@@ -2,9 +2,7 @@ use std::sync::Arc;
 
 use actix_web::test;
 use actix_web::{
-    dev::ServiceResponse,
-    error::ResponseError,
-    http::{header, StatusCode},
+    dev::ServiceResponse, error::ResponseError, http::StatusCode,
     middleware as actix_middleware,
 };
 use libmcaptcha::defense::Level;
@@ -44,7 +42,7 @@ macro_rules! post_request {
     ($serializable:expr, $uri:expr) => {
         test::TestRequest::post()
             .uri($uri)
-            .insert_header((header::CONTENT_TYPE, "application/json"))
+            .insert_header((actix_web::http::header::CONTENT_TYPE, "application/json"))
             .set_payload(serde_json::to_string($serializable).unwrap())
     };
 }

@@ -114,7 +114,7 @@ pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
 mod tests {
     use super::*;
 
-    use actix_web::http::{header, StatusCode};
+    use actix_web::http::StatusCode;
     use actix_web::test;
 
     use crate::api::v1::ROUTES;

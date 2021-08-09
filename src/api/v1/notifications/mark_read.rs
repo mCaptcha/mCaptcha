@@ -63,7 +63,7 @@ pub async fn mark_read(
 
 #[cfg(test)]
 mod tests {
-    use actix_web::http::{header, StatusCode};
+    use actix_web::http::StatusCode;
     use actix_web::test;
 
     use super::*;

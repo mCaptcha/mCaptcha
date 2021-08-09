@@ -15,7 +15,7 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-use actix_web::http::{header, StatusCode};
+use actix_web::http::StatusCode;
 use actix_web::test;
 
 use super::email::*;

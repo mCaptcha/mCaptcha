@@ -52,7 +52,7 @@ pub async fn verify_pow(
 
 #[cfg(test)]
 mod tests {
-    use actix_web::http::{header, StatusCode};
+    use actix_web::http::StatusCode;
     use actix_web::test;
     use libmcaptcha::pow::PoWConfig;
 

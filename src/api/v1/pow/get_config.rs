@@ -152,7 +152,7 @@ async fn init_mcaptcha(data: &AppData, key: &str) -> ServiceResult<()> {
 
 #[cfg(test)]
 mod tests {
-    use actix_web::http::{header, StatusCode};
+    use actix_web::http::StatusCode;
     use actix_web::test;
     use libmcaptcha::pow::PoWConfig;
 

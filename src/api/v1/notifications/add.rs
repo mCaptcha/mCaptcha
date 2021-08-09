@@ -61,7 +61,7 @@ pub async fn add_notification(
 
 #[cfg(test)]
 mod tests {
-    use actix_web::http::{header, StatusCode};
+    use actix_web::http::StatusCode;
     use actix_web::test;
 
     use super::*;

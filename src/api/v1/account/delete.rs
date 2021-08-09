@@ -47,9 +47,7 @@ async fn delete_account(
     match rec {
         Ok(s) => {
             if Config::verify(&s.password, &payload.password)? {
-                sqlx::query!("DELETE FROM mcaptcha_users WHERE name = ($1)", &username)
-                    .execute(&data.db)
-                    .await?;
+                runners::delete_user(&username, &data).await?;
                 id.forget();
                 Ok(HttpResponse::Ok())
             } else {
@@ -58,6 +56,18 @@ async fn delete_account(
         }
         Err(RowNotFound) => Err(ServiceError::AccountNotFound),
         Err(_) => Err(ServiceError::InternalServerError),
+    }
+}
+
+pub mod runners {
+
+    use super::*;
+
+    pub async fn delete_user(name: &str, data: &AppData) -> ServiceResult<()> {
+        sqlx::query!("DELETE FROM mcaptcha_users WHERE name = ($1)", name,)
+            .execute(&data.db)
+            .await?;
+        Ok(())
     }
 }
 

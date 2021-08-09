@@ -28,6 +28,7 @@ use log::info;
 mod api;
 mod data;
 mod date;
+mod demo;
 mod docs;
 mod email;
 mod errors;
@@ -100,6 +101,8 @@ pub type AppData = actix_web::web::Data<Arc<crate::data::Data>>;
 #[cfg(not(tarpaulin_include))]
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    use std::time::Duration;
+
     use api::v1;
 
     env::set_var("RUST_LOG", "info");
@@ -113,6 +116,12 @@ async fn main() -> std::io::Result<()> {
     let data = Data::new().await;
     sqlx::migrate!("./migrations/").run(&data.db).await.unwrap();
     let data = actix_web::web::Data::new(data);
+
+    if SETTINGS.allow_demo && SETTINGS.allow_registration {
+        demo::run(data.clone(), Duration::from_secs(60 * 30))
+            .await
+            .unwrap();
+    }
 
     println!("Starting server on: http://{}", SETTINGS.server.get_ip());
 

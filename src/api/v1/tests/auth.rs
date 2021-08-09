@@ -18,11 +18,7 @@
 use actix_web::http::{header, StatusCode};
 use actix_web::test;
 
-use crate::api::v1::account::{username::runners::username_exists, AccountCheckPayload};
-use crate::api::v1::auth::{
-    runners::{register_demo_user, Login, Register},
-    DEMO_PASSWORD, DEMO_USER,
-};
+use crate::api::v1::auth::runners::{Login, Register};
 use crate::api::v1::ROUTES;
 use crate::data::Data;
 use crate::errors::*;
@@ -166,18 +162,4 @@ async fn serverside_password_validation_works() {
     assert_eq!(resp.status(), StatusCode::BAD_REQUEST);
     let txt: ErrorToResponse = test::read_body_json(resp).await;
     assert_eq!(txt.error, format!("{}", ServiceError::PasswordsDontMatch));
-}
-
-#[actix_rt::test]
-async fn demo_account() {
-    let data = AppData::new(Data::new().await);
-    let _ = register_demo_user(&data).await.unwrap();
-
-    let payload = AccountCheckPayload {
-        val: DEMO_USER.into(),
-    };
-
-    assert!(username_exists(&payload, &data).await.unwrap().exists);
-
-    signin(DEMO_USER, DEMO_PASSWORD).await;
 }

@@ -24,11 +24,6 @@ use super::mcaptcha::get_random;
 use crate::errors::*;
 use crate::AppData;
 
-/// Demo username
-pub const DEMO_USER: &str = "aaronsw";
-/// Demo password
-pub const DEMO_PASSWORD: &str = "password";
-
 pub mod routes {
     pub struct Auth {
         pub logout: &'static str,
@@ -198,21 +193,6 @@ pub mod runners {
             };
         }
         Ok(())
-    }
-
-    /// register demo user runner
-    pub async fn register_demo_user(data: &AppData) -> ServiceResult<()> {
-        let payload = runners::Register {
-            username: DEMO_USER.into(),
-            password: DEMO_PASSWORD.into(),
-            confirm_password: DEMO_PASSWORD.into(),
-            email: None,
-        };
-
-        match register_runner(&payload, data).await {
-            Err(ServiceError::UsernameTaken) | Ok(_) => Ok(()),
-            Err(e) => Err(e),
-        }
     }
 }
 
