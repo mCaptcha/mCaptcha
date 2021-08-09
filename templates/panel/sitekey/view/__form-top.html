@@ -22,9 +22,9 @@
         <. if READONLY { .>
 			<. let key = "."; .>
             <. include!("./__edit-sitekey-icon.html"); .>
-            <a href="./delete/">
+			<a href="./delete/<.= key .>">
         <. } else {  .>
-            <a href="../delete/">
+		<a href="../delete/<.= key .>">
         <. } .>
           <img class="sitekey-form__delete" 
                src="<.= crate::FILES.get("./static/cache/img/svg/trash.svg").unwrap() .>"
