@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["DOCS",""]],"fn":[["dist",""],["handle_embedded_file",""],["index",""],["services",""],["spec",""]],"mod":[["routes",""]],"struct":[["Asset",""]]});
+initSidebarItems({"constant":[["DOCS",""]],"fn":[["handle_embedded_file",""],["services",""]],"mod":[["routes",""]],"struct":[["Asset",""],["dist",""],["index",""],["spec",""]]});

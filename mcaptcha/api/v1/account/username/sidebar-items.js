@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["services",""]],"mod":[["runners",""]],"struct":[["username_exists",""]]});
+initSidebarItems({"fn":[["services",""]],"mod":[["runners",""]],"struct":[["Username",""],["set_username","update username"],["username_exists",""]]});
