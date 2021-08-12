@@ -12,47 +12,51 @@ include!("../../navbar/index.html"); .>
     <!-- Main content container -->
     <div class="inner-container">
       <!-- Main menu/ important actions roaster -->
-      <table class="sitekey__table">
-        <thead class="sitekey__table-heading">
-          <tr>
-            <th colspan="4" class="sitekey__table-title-text">
-              Your Sitekeys
-            </th>
-          </tr>
-        </thead>
-        <tbody class="sitekey__body">
-          <. for sitekey in sitekeys.iter() { .>
-          <tr class="sitekey__item">
-            <td class="sitekey-list__name">
-              <a
-                href="/sitekey/<.= sitekey.key .>/"
-                class="sitekey-list__sitekey-link"
-              >
-                <.= sitekey.name .>
-              </a>
-            </td>
-            <td class="sitekey-list__key">
-              <div class="sitekey__key-container">
-				<. let clipboard_data = ("sitekey", &sitekey.key); .> 
-				<. include!("../../../components/clipboard/index.html"); .>
+      <. if sitekeys.is_empty() { .>
+        <. include!("./empty-sitekey.html"); .>
+      <.} else {.>
+        <table class="sitekey__table">
+          <thead class="sitekey__table-heading">
+            <tr>
+              <th colspan="4" class="sitekey__table-title-text">
+                Your Sitekeys
+              </th>
+            </tr>
+          </thead>
+          <tbody class="sitekey__body">
+            <. for sitekey in sitekeys.iter() { .>
+            <tr class="sitekey__item">
+              <td class="sitekey-list__name">
                 <a
-                  class="sitekey__widget-link"
-                  href="<.= crate::WIDGET_ROUTES.verification_widget .>/?sitekey=<.= sitekey.key .>"
+                  href="/sitekey/<.= sitekey.key .>/"
+                  class="sitekey-list__sitekey-link"
                 >
-                  <.= &sitekey.key[0..5] .>
+                  <.= sitekey.name .>
                 </a>
-              </div>
-            </td>
-            <td class="sitekey-list__key">
-              <div class="sitekey-list__edit">
-                <. let key = format!("/sitekey/{}", &sitekey.key); .>
-                <. include!("../view/__edit-sitekey-icon.html"); .>
-              </div>
-            </td>
-          </tr>
-          <. } .>
-        </tbody>
-      </table>
+              </td>
+              <td class="sitekey-list__key">
+                <div class="sitekey__key-container">
+                  <. let clipboard_data = ("sitekey", &sitekey.key); .> 
+                  <. include!("../../../components/clipboard/index.html"); .>
+                  <a
+                    class="sitekey__widget-link"
+                    href="<.= crate::WIDGET_ROUTES.verification_widget .>/?sitekey=<.= sitekey.key .>"
+                  >
+                    <.= &sitekey.key[0..5] .>
+                  </a>
+                </div>
+              </td>
+              <td class="sitekey-list__key">
+                <div class="sitekey-list__edit">
+                  <. let key = format!("/sitekey/{}", &sitekey.key); .>
+                  <. include!("../view/__edit-sitekey-icon.html"); .>
+                </div>
+              </td>
+            </tr>
+            <. } .>
+          </tbody>
+        </table>
+      <.}.>
     </div>
     <!-- end of container -->
     <. include!("../../../components/footers.html"); .>

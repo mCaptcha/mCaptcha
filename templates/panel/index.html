@@ -11,16 +11,8 @@ include!("./navbar/index.html"); .>
     <. include!("./help-banner/index.html"); .>
     <div class="inner-container">
       <. if sitekeys.is_empty() { .>
-      <ul class="sitekey-list__box">
-        <p>
-          It looks like you don't have any sitekeys. Click
-          <a href="<.= crate::PAGES.panel.sitekey.add .>">here</a> to add new
-          sitekey.
-        </p>
-      </ul>
-
+        <. include!("./sitekey/list/empty-sitekey.html"); .>
       <.} else {.>
-
       <table class="sitekey__table">
         <thead class="sitekey__table-heading">
           <tr>
@@ -53,16 +45,15 @@ include!("./navbar/index.html"); .>
               </div>
             </td>
             <td class="sitekey-list__key">
-				<div class="sitekey-list__edit">
-                    <. let key = format!("/sitekey/{}", &sitekey.key); .>
-					<. include!("./sitekey/view/__edit-sitekey-icon.html"); .>
-				</div>
+              <div class="sitekey-list__edit">
+                <. let key = format!("/sitekey/{}", &sitekey.key); .>
+                <. include!("./sitekey/view/__edit-sitekey-icon.html"); .>
+              </div>
             </td>
           </tr>
           <. } .>
         </tbody>
       </table>
-
       <.}.>
     </div>
     <. include!("../components/footers.html"); .>

@@ -1,14 +1,7 @@
 <ul class="taskbar">
-  <!--
-        <li class="taskbar__action">Brand Name</li>
-        -->
   <li class="taskbar__spacer"></li>
   <li class="taskbar__action">
-    <a class="taskbar__link" href="<.= crate::PAGES.panel.sitekey.add .>">
-      <button class="taskbar__add-site">
-        + New Site
-      </button>
-    </a>
+    <. include!("./new-sitekey-btn.html"); .>
   </li>
   <li class="taskbar__action">
     <img class="taskbar__icon" src="<.=
@@ -23,7 +16,6 @@
       alt="Notifications" />
     </a>
   </li>
-
   <li class="taskbar__action">
     <a href="<.= crate::V1_API_ROUTES.auth.logout .>">
       <img class="taskbar__icon" src="<.=
