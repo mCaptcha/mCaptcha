@@ -38,6 +38,7 @@ pub mod routes {
         pub update_password: &'static str,
         pub update_secret: &'static str,
         pub username_exists: &'static str,
+        pub update_username: &'static str,
     }
 
     impl Account {
@@ -47,6 +48,7 @@ pub mod routes {
             let delete = "/api/v1/account/delete";
             let email_exists = "/api/v1/account/email/exists";
             let username_exists = "/api/v1/account/username/exists";
+            let update_username = "/api/v1/account/username/update";
             let update_email = "/api/v1/account/email/update";
             let update_password = "/api/v1/account/password/update";
             Account {
@@ -57,6 +59,7 @@ pub mod routes {
                 update_password,
                 update_secret,
                 username_exists,
+                update_username,
             }
         }
     }

@@ -31,6 +31,7 @@
     "webpack-dev-server": "^3.1.14"
   },
   "dependencies": {
-    "mcaptcha-browser": "./browser/pkg/"
+    "mcaptcha-browser": "./browser/pkg/",
+    "mcaptcha-glue": "^0.1.0-alpha-1"
   }
 }

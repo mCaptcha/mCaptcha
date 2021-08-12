@@ -37,7 +37,7 @@ async fn register_demo_user(data: &AppData) -> ServiceResult<()> {
         val: DEMO_USER.into(),
     };
 
-    if !username_exists(&user_exists_payload, &data).await?.exists {
+    if !username_exists(&user_exists_payload, data).await?.exists {
         let register_payload = Register {
             username: DEMO_USER.into(),
             password: DEMO_PASSWORD.into(),

@@ -139,8 +139,8 @@ async fn main() -> std::io::Result<()> {
                 actix_middleware::TrailingSlash::Trim,
             ))
             .configure(v1::services)
-            .configure(widget::services)
             .configure(docs::services)
+            .configure(widget::services)
             .configure(pages::services)
             .configure(static_assets::services)
             .app_data(get_json_err())

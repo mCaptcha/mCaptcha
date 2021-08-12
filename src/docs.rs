@@ -1,19 +1,19 @@
 /*
-* Copyright (C) 2021  Aravinth Manivannan <realaravinth@batsense.net>
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as
-* published by the Free Software Foundation, either version 3 of the
-* License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-*
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+ * Copyright (C) 2021  Aravinth Manivannan <realaravinth@batsense.net>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 use std::borrow::Cow;
 
 use actix_web::body::Body;
@@ -44,10 +44,7 @@ pub mod routes {
 }
 
 pub fn services(cfg: &mut web::ServiceConfig) {
-    use crate::define_resource;
-    define_resource!(cfg, &DOCS.home[0..DOCS.home.len() - 1], Methods::Get, index);
-    define_resource!(cfg, DOCS.spec, Methods::Get, spec);
-    define_resource!(cfg, DOCS.assets, Methods::Get, dist);
+    cfg.service(index).service(spec).service(dist);
 }
 
 #[derive(RustEmbed)]
@@ -72,16 +69,19 @@ pub fn handle_embedded_file(path: &str) -> HttpResponse {
     }
 }
 
+#[my_codegen::get(path = "DOCS.assets")]
 async fn dist(path: web::Path<String>) -> impl Responder {
     handle_embedded_file(&path)
 }
 
+#[my_codegen::get(path = "DOCS.spec")]
 async fn spec() -> HttpResponse {
     HttpResponse::Ok()
         .content_type("appilcation/json")
         .body(&*crate::OPEN_API_DOC)
 }
 
+#[my_codegen::get(path = "&DOCS.home[0..DOCS.home.len() -1]")]
 async fn index() -> HttpResponse {
     handle_embedded_file("index.html")
 }

@@ -49,6 +49,9 @@ lazy_static! {
     .unwrap();
 }
 
+const ERROR_ROUTE: &str = "/error/{id}";
+
+#[my_codegen::get(path = "ERROR_ROUTE")]
 async fn error(path: web::Path<usize>) -> impl Responder {
     let resp = match path.into_inner() {
         500 => HttpResponse::InternalServerError()
@@ -64,9 +67,7 @@ async fn error(path: web::Path<usize>) -> impl Responder {
 }
 
 pub fn services(cfg: &mut web::ServiceConfig) {
-    use crate::define_resource;
-
-    define_resource!(cfg, "/error/{id}", Methods::Get, error);
+    cfg.service(error);
 }
 
 pub mod routes {
