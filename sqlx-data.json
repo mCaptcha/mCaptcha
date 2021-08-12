@@ -53,6 +53,19 @@
       ]
     }
   },
+  "2021bc0eb03df51af06b59e2a1efdba231e8f35d9cfb5c5b55241c566b9055ce": {
+    "query": "UPDATE mcaptcha_users set name = $1\n        WHERE name = $2",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Text"
+        ]
+      },
+      "nullable": []
+    }
+  },
   "238569a64d7dbd252e3b27204f207e8a8548109717b89495ddf8f9a870c7c75d": {
     "query": "UPDATE mcaptcha_config SET name = $1, duration = $2 \n            WHERE user_id = (SELECT ID FROM mcaptcha_users WHERE name = $3)\n            AND key = $4",
     "describe": {

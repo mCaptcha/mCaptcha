@@ -210,8 +210,12 @@ async fn username_update_works() {
 
     {
         let data = Data::new().await;
-        delete_user(NAME, &data).await;
-        delete_user(NAME2, &data).await;
+
+        futures::join!(
+            delete_user(NAME, &data),
+            delete_user(NAME2, &data),
+            delete_user(NAME_CHANGE, &data)
+        );
     }
 
     let _ = register_and_signin(NAME2, EMAIL2, PASSWORD).await;
