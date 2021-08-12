@@ -20,6 +20,7 @@ use actix::clock::sleep;
 use actix::spawn;
 
 use crate::api::v1::account::delete::runners::delete_user;
+use crate::api::v1::account::{username::runners::username_exists, AccountCheckPayload};
 use crate::api::v1::auth::runners::{register_runner, Register};
 use crate::*;
 
@@ -32,17 +33,25 @@ pub const DEMO_PASSWORD: &str = "password";
 
 /// register demo user runner
 async fn register_demo_user(data: &AppData) -> ServiceResult<()> {
-    let payload = Register {
-        username: DEMO_USER.into(),
-        password: DEMO_PASSWORD.into(),
-        confirm_password: DEMO_PASSWORD.into(),
-        email: None,
+    let user_exists_payload = AccountCheckPayload {
+        val: DEMO_USER.into(),
     };
 
-    log::info!("Registering demo user");
-    match register_runner(&payload, data).await {
-        Err(ServiceError::UsernameTaken) | Ok(_) => Ok(()),
-        Err(e) => Err(e),
+    if !username_exists(&user_exists_payload, &data).await?.exists {
+        let register_payload = Register {
+            username: DEMO_USER.into(),
+            password: DEMO_PASSWORD.into(),
+            confirm_password: DEMO_PASSWORD.into(),
+            email: None,
+        };
+
+        log::info!("Registering demo user");
+        match register_runner(&register_payload, data).await {
+            Err(ServiceError::UsernameTaken) | Ok(_) => Ok(()),
+            Err(e) => Err(e),
+        }
+    } else {
+        Ok(())
     }
 }
 
@@ -77,9 +86,6 @@ mod tests {
     use libmcaptcha::defense::Level;
 
     use super::*;
-    use crate::api::v1::account::{
-        username::runners::username_exists, AccountCheckPayload,
-    };
     use crate::tests::*;
 
     const DURATION: u64 = 5;
