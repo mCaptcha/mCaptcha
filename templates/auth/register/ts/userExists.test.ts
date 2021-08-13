@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 import fetchMock from 'jest-fetch-mock';
 
 import userExists from './userExists';
@@ -38,6 +37,10 @@ it('finds exchange', async () => {
   const usernameField = <HTMLInputElement>document.querySelector('#username');
   usernameField.value = 'test';
   expect(await userExists()).toBe(true);
+
+  usernameField.value = 'test';
+  fetchMock.mockResponseOnce(JSON.stringify({exists: true}));
+  expect(await userExists(usernameField)).toBe(true);
 
   fetchMock.mockResponseOnce(JSON.stringify({exists: false}));
   expect(await userExists()).toBe(false);

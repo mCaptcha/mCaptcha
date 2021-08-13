@@ -56,24 +56,36 @@ const PAGE: &str = "Settings";
 
 #[derive(TemplateOnce, Clone)]
 #[template(path = "panel/settings/index.html")]
-pub struct IndexPage {
+pub struct IndexPage<'a> {
     email: Option<String>,
     secret: String,
+    username: &'a str,
 }
 
 #[my_codegen::get(path = "crate::PAGES.panel.settings.home", wrap = "crate::CheckLogin")]
 async fn settings(data: AppData, id: Identity) -> PageResult<impl Responder> {
     let username = id.identity().unwrap();
 
+    struct DBResult {
+        email: Option<String>,
+        secret: String,
+    }
+
     let details = sqlx::query_as!(
-        IndexPage,
+        DBResult,
         r#"SELECT email, secret  FROM mcaptcha_users WHERE name = ($1)"#,
         &username,
     )
     .fetch_one(&data.db)
     .await?;
 
-    let body = details.render_once().unwrap();
+    let data = IndexPage {
+        email: details.email,
+        secret: details.secret,
+        username: &username,
+    };
+
+    let body = data.render_once().unwrap();
     Ok(HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
         .body(body))

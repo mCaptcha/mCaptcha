@@ -20,8 +20,14 @@ import ROUTES from '../../../api/v1/routes';
 import genJsonPayload from '../../../utils/genJsonPayload';
 import createError from '../../../components/error/index';
 
-const userExists = async () => {
-  const username = <HTMLInputElement>document.getElementById('username');
+const userExists = async (element?: HTMLInputElement) => {
+  console.log(element);
+  let username;
+  if (element === undefined) {
+    username = <HTMLInputElement>document.getElementById('username');
+  } else {
+    username = element;
+  }
   const val = username.value;
   const payload = {
     val,

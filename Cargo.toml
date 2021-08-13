@@ -28,22 +28,17 @@ members = [
 ]
 
 [dependencies]
-#actix-web = "3.3.2"
 actix-web = "4.0.0-beta.8"
 actix = "0.12"
-#actix-identity = "0.3"
 actix-identity = "0.4.0-beta.2"
 actix-http = "3.0.0-beta.8"
-#actix-http = "2.2"
 actix-rt = "2"
-#actix-cors= "0.5.4"
 actix-cors = "0.6.0-beta.2"
-#actix-service = "0.0.6"
 actix-service = "2.0.0"
 my-codegen = {package = "actix-web-codegen", git ="https://github.com/realaravinth/actix-web"}
 
 mime_guess = "2.0.3"
-rust-embed = "5.9.0"
+rust-embed = "6.0.0"
 cache-buster = { git = "https://github.com/realaravinth/cache-buster" }
 
 futures = "0.3.15"

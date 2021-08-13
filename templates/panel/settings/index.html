@@ -17,6 +17,22 @@
 	<h1 class="form__title">
 		<.= PAGE .>
 	</h1>
+      <form class="settings__form" id="settings__username-form"
+        action="<.= crate::V1_API_ROUTES.account.update_username .>" 
+        method="post">
+        <label class="settings-form__label" for="username">
+          Username
+          <input
+            class="settings-form__input"
+            type="text"
+            name="username"
+            id="username"
+			value="<.= username .>"
+          />
+        </label>
+        <button class="settings__submit-btn" type="submit">Update</button>
+      </form>
+
       <form class="settings__form" id="settings__email-form"
         action="<.= crate::V1_API_ROUTES.account.update_email .>" 
         method="post">

@@ -20,6 +20,7 @@ import CopyIcon from '../../components/clipboard/';
 import createError from '../../components/error/';
 
 import emailExists from '../../auth/register/ts/emailExists';
+import userExists from '../../auth/register/ts/userExists';
 
 import LazyElement from '../../utils/lazyElement';
 import isBlankString from '../../utils/isBlankString';
@@ -34,18 +35,22 @@ const SECRET_COPY_DONE_ICON = 'settings__secret-copy-done';
 // form IDs
 const DELETE_FORM = 'settings__delete-form';
 const EMAIL_FORM = 'settings__email-form';
+const USERNAME_FORM = 'settings__username-form';
 const SECRET_FORM = 'settings__secret-form';
 
 // form elements
 const deleteForm = new LazyElement(DELETE_FORM);
 const emailForm = new LazyElement(EMAIL_FORM);
+const usernameForm = new LazyElement(USERNAME_FORM);
 const secretForm = new LazyElement(SECRET_FORM);
 
 // field IDs
 const EMAIL = 'email';
+const USERNAME = 'username';
 
 // field elements
 const emailField = new LazyElement(EMAIL);
+const usernameField = new LazyElement(USERNAME);
 
 // form event handlers
 const updateEmail = async (e: Event) => {
@@ -61,6 +66,28 @@ const updateEmail = async (e: Event) => {
       email,
     };
 
+    const res = await fetch(url, genJsonPayload(payload));
+    if (res.ok) {
+      window.location.reload();
+    } else {
+      const err = await res.json();
+      createError(err.error);
+    }
+  }
+};
+
+const updateUsername = async (e: Event) => {
+  e.preventDefault();
+  const usernameElement = <HTMLInputElement>usernameField.get();
+  const username = usernameElement.value;
+  isBlankString(username, 'username', e);
+  if (await userExists(usernameElement)) {
+    return;
+  } else {
+    const url = getFormUrl(<HTMLFormElement>usernameForm.get());
+    const payload = {
+      username,
+    };
     const res = await fetch(url, genJsonPayload(payload));
     if (res.ok) {
       window.location.reload();
@@ -93,6 +120,11 @@ const deleteAccount = (e: Event) => {
 const registerForms = () => {
   deleteForm.get().addEventListener('submit', e => deleteAccount(e), true);
   emailForm.get().addEventListener('submit', e => updateEmail(e), true);
+  usernameForm.get().addEventListener('submit', e => updateUsername(e), true);
+  console.log(usernameField.get());
+  usernameField
+    .get()
+    .addEventListener('input', async () => await userExists(), false);
   secretForm.get().addEventListener('submit', e => updateSecret(e), true);
 };
 
@@ -106,7 +138,6 @@ const initCopySecret = () => {
 };
 
 /// TODO email update button should only change if email value has been changed
-
 const index = () => {
   registerShowPassword();
   initCopySecret();

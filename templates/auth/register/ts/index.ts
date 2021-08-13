@@ -83,6 +83,10 @@ const registerUser = async (e: Event) => {
 export const index = () => {
   const form = <HTMLFontElement>document.getElementById('form');
   form.addEventListener('submit', registerUser, true);
-  usernameElement.addEventListener('input', userExists, false);
+  usernameElement.addEventListener(
+    'input',
+    async () => await userExists(),
+    false,
+  );
   registerShowPassword();
 };
