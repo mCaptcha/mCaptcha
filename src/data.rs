@@ -44,6 +44,29 @@ use sqlx::PgPool;
 use crate::errors::ServiceResult;
 use crate::SETTINGS;
 
+macro_rules! enum_system_actor {
+    ($name:ident, $type:ident) => {
+        pub async fn $name(&self, msg: $type) -> ServiceResult<()> {
+            match self {
+                Self::Embedded(val) => val.master.send(msg).await?.await??,
+                Self::Redis(val) => val.master.send(msg).await?.await??,
+            };
+            Ok(())
+        }
+    };
+}
+
+macro_rules! enum_system_wrapper {
+    ($name:ident, $type:ty, $return_type:ty) => {
+        pub async fn $name(&self, msg: $type) -> $return_type {
+            match self {
+                Self::Embedded(val) => val.$name(msg).await,
+                Self::Redis(val) => val.$name(msg).await,
+            }
+        }
+    };
+}
+
 /// Represents mCaptcha cache and master system.
 /// When Redis is configured, [SystemGroup::Redis] is used and
 /// in its absense, [SystemGroup::Embedded] is used
@@ -52,60 +75,31 @@ pub enum SystemGroup {
     Redis(System<RedisCache, RedisMaster>),
 }
 
+#[allow(unused_doc_comments)]
 impl SystemGroup {
-    /// utility function to get difficulty factor of site `id` and cache it
-    pub async fn get_pow(&self, id: String) -> Option<PoWConfig> {
-        match self {
-            Self::Embedded(val) => val.get_pow(id).await,
-            Self::Redis(val) => val.get_pow(id).await,
-        }
-    }
+    // TODO find a way to document these methods
 
-    /// utility function to verify [Work]
-    pub async fn verify_pow(&self, work: Work) -> CaptchaResult<String> {
-        match self {
-            Self::Embedded(val) => val.verify_pow(work).await,
-            Self::Redis(val) => val.verify_pow(work).await,
-        }
-    }
+    // utility function to get difficulty factor of site `id` and cache it
+    enum_system_wrapper!(get_pow, String, CaptchaResult<Option<PoWConfig>>);
 
-    /// utility function to validate verification tokens
-    pub async fn validate_verification_tokens(
-        &self,
-        msg: VerifyCaptchaResult,
-    ) -> CaptchaResult<bool> {
-        match self {
-            Self::Embedded(val) => val.validate_verification_tokens(msg).await,
-            Self::Redis(val) => val.validate_verification_tokens(msg).await,
-        }
-    }
+    // utility function to verify [Work]
+    enum_system_wrapper!(verify_pow, Work, CaptchaResult<String>);
 
-    /// utility function to AddSite
-    pub async fn add_site(&self, msg: AddSite) -> ServiceResult<()> {
-        match self {
-            Self::Embedded(val) => val.master.send(msg).await?.await?,
-            Self::Redis(val) => val.master.send(msg).await?.await?,
-        }?;
-        Ok(())
-    }
+    // utility function to validate verification tokens
+    enum_system_wrapper!(
+        validate_verification_tokens,
+        VerifyCaptchaResult,
+        CaptchaResult<bool>
+    );
 
-    /// utility function to rename captcha
-    pub async fn rename(&self, msg: Rename) -> ServiceResult<()> {
-        match self {
-            Self::Embedded(val) => val.master.send(msg).await?.await?,
-            Self::Redis(val) => val.master.send(msg).await?.await?,
-        }?;
-        Ok(())
-    }
+    // utility function to AddSite
+    enum_system_actor!(add_site, AddSite);
 
-    /// utility function to remove captcha
-    pub async fn remove(&self, msg: RemoveCaptcha) -> ServiceResult<()> {
-        match self {
-            Self::Embedded(val) => val.master.send(msg).await?.await?,
-            Self::Redis(val) => val.master.send(msg).await?.await?,
-        }?;
-        Ok(())
-    }
+    // utility function to rename captcha
+    enum_system_actor!(rename, Rename);
+
+    // utility function to remove captcha
+    enum_system_actor!(remove, RemoveCaptcha);
 
     fn new_system<A: Save, B: MasterTrait>(m: Addr<B>, c: Addr<A>) -> System<A, B> {
         let pow = PoWConfigBuilder::default()
