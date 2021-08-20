@@ -295,6 +295,26 @@
 <span id="293">293</span>
 <span id="294">294</span>
 <span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
 </pre><pre class="rust">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -315,6 +335,7 @@
 
 <span class="kw">use</span> <span class="ident">std::convert::From</span>;
 
+<span class="kw">use</span> <span class="ident">actix::MailboxError</span>;
 <span class="kw">use</span> <span class="ident">actix_web</span>::{
     <span class="ident">dev::BaseHttpResponseBuilder</span> <span class="kw">as</span> <span class="ident">HttpResponseBuilder</span>,
     <span class="ident">error::ResponseError</span>,
@@ -326,6 +347,7 @@
 <span class="kw">use</span> <span class="ident">lettre::transport::smtp::Error</span> <span class="kw">as</span> <span class="ident">SmtpError</span>;
 <span class="kw">use</span> <span class="ident">libmcaptcha::errors::CaptchaError</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
+<span class="kw">use</span> <span class="ident">tokio::sync::oneshot::error::RecvError</span>;
 <span class="kw">use</span> <span class="ident">url::ParseError</span>;
 <span class="kw">use</span> <span class="ident">validator::ValidationErrors</span>;
 
@@ -518,6 +540,24 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">SmtpError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">ServiceError::UnableToSendEmail</span>(<span class="ident">SmtpErrorWrapper</span>(<span class="ident">e</span>))
+    }
+}
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
+<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">RecvError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ServiceError</span> {
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">RecvError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="macro">log::error!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">e</span>);
+        <span class="ident">ServiceError::InternalServerError</span>
+    }
+}
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
+<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">MailboxError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ServiceError</span> {
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">MailboxError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="macro">log::error!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">e</span>);
+        <span class="ident">ServiceError::InternalServerError</span>
     }
 }
 

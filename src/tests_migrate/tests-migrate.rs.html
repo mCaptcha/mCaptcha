@@ -89,6 +89,9 @@
 <span id="87">87</span>
 <span id="88">88</span>
 <span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
 </pre><pre class="rust">
 <span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -109,11 +112,10 @@
 <span class="kw">use</span> <span class="ident">std::env</span>;
 
 <span class="kw">use</span> <span class="ident">lazy_static::lazy_static</span>;
+<span class="kw">use</span> <span class="ident">sqlx::postgres::PgPoolOptions</span>;
 
-<span class="kw">mod</span> <span class="ident">data</span>;
 <span class="kw">mod</span> <span class="ident">settings</span>;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">data::Data</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">settings::Settings</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
@@ -125,7 +127,11 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
 <span class="attribute">#[<span class="ident">actix_rt::main</span>]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">main</span>() {
-    <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">Data::new</span>().<span class="kw">await</span>;
+    <span class="kw">let</span> <span class="ident">db</span> <span class="op">=</span> <span class="ident">PgPoolOptions::new</span>()
+        .<span class="ident">max_connections</span>(<span class="ident">SETTINGS</span>.<span class="ident">database</span>.<span class="ident">pool</span>)
+        .<span class="ident">connect</span>(<span class="kw-2">&amp;</span><span class="ident">SETTINGS</span>.<span class="ident">database</span>.<span class="ident">url</span>)
+        .<span class="kw">await</span>
+        .<span class="ident">expect</span>(<span class="string">&quot;Unable to form database pool&quot;</span>);
 
     <span class="kw">for</span> <span class="ident">arg</span> <span class="kw">in</span> <span class="ident">env::args</span>() {
         <span class="kw">if</span> <span class="ident">arg</span> <span class="op">=</span><span class="op">=</span> <span class="string">&quot;--build&quot;</span> {
@@ -134,7 +140,7 @@
         }
     }
 
-    <span class="macro">sqlx::migrate!</span>(<span class="string">&quot;./migrations/&quot;</span>).<span class="ident">run</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>.<span class="ident">db</span>).<span class="kw">await</span>.<span class="ident">unwrap</span>();
+    <span class="macro">sqlx::migrate!</span>(<span class="string">&quot;./migrations/&quot;</span>).<span class="ident">run</span>(<span class="kw-2">&amp;</span><span class="ident">db</span>).<span class="kw">await</span>.<span class="ident">unwrap</span>();
 }
 
 <span class="kw">fn</span> <span class="ident">build</span>() {

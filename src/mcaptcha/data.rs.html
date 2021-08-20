@@ -227,6 +227,7 @@
 <span id="225">225</span>
 <span id="226">226</span>
 <span id="227">227</span>
+<span id="228">228</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -271,6 +272,7 @@
 <span class="kw">use</span> <span class="ident">sqlx::postgres::PgPoolOptions</span>;
 <span class="kw">use</span> <span class="ident">sqlx::PgPool</span>;
 
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::errors::ServiceResult</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::SETTINGS</span>;
 
 <span class="doccomment">/// Represents mCaptcha cache and master system.</span>
@@ -310,29 +312,29 @@
     }
 
     <span class="doccomment">/// utility function to AddSite</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">add_site</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">msg</span>: <span class="ident">AddSite</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CaptchaResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">add_site</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">msg</span>: <span class="ident">AddSite</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="self">Self</span><span class="ident">::Embedded</span>(<span class="ident">val</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">val</span>.<span class="ident">master</span>.<span class="ident">send</span>(<span class="ident">msg</span>).<span class="kw">await</span><span class="question-mark">?</span>,
-            <span class="self">Self</span><span class="ident">::Redis</span>(<span class="ident">val</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">val</span>.<span class="ident">master</span>.<span class="ident">send</span>(<span class="ident">msg</span>).<span class="kw">await</span><span class="question-mark">?</span>,
-        };
+            <span class="self">Self</span><span class="ident">::Embedded</span>(<span class="ident">val</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">val</span>.<span class="ident">master</span>.<span class="ident">send</span>(<span class="ident">msg</span>).<span class="kw">await</span><span class="question-mark">?</span>.<span class="kw">await</span><span class="question-mark">?</span>,
+            <span class="self">Self</span><span class="ident">::Redis</span>(<span class="ident">val</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">val</span>.<span class="ident">master</span>.<span class="ident">send</span>(<span class="ident">msg</span>).<span class="kw">await</span><span class="question-mark">?</span>.<span class="kw">await</span><span class="question-mark">?</span>,
+        }<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(())
     }
 
     <span class="doccomment">/// utility function to rename captcha</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">rename</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">msg</span>: <span class="ident">Rename</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CaptchaResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">rename</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">msg</span>: <span class="ident">Rename</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="self">Self</span><span class="ident">::Embedded</span>(<span class="ident">val</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">val</span>.<span class="ident">master</span>.<span class="ident">send</span>(<span class="ident">msg</span>).<span class="kw">await</span><span class="question-mark">?</span>,
-            <span class="self">Self</span><span class="ident">::Redis</span>(<span class="ident">val</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">val</span>.<span class="ident">master</span>.<span class="ident">send</span>(<span class="ident">msg</span>).<span class="kw">await</span><span class="question-mark">?</span>,
-        };
+            <span class="self">Self</span><span class="ident">::Embedded</span>(<span class="ident">val</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">val</span>.<span class="ident">master</span>.<span class="ident">send</span>(<span class="ident">msg</span>).<span class="kw">await</span><span class="question-mark">?</span>.<span class="kw">await</span><span class="question-mark">?</span>,
+            <span class="self">Self</span><span class="ident">::Redis</span>(<span class="ident">val</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">val</span>.<span class="ident">master</span>.<span class="ident">send</span>(<span class="ident">msg</span>).<span class="kw">await</span><span class="question-mark">?</span>.<span class="kw">await</span><span class="question-mark">?</span>,
+        }<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(())
     }
 
     <span class="doccomment">/// utility function to remove captcha</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">msg</span>: <span class="ident">RemoveCaptcha</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CaptchaResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">msg</span>: <span class="ident">RemoveCaptcha</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="self">Self</span><span class="ident">::Embedded</span>(<span class="ident">val</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">val</span>.<span class="ident">master</span>.<span class="ident">send</span>(<span class="ident">msg</span>).<span class="kw">await</span><span class="question-mark">?</span>,
-            <span class="self">Self</span><span class="ident">::Redis</span>(<span class="ident">val</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">val</span>.<span class="ident">master</span>.<span class="ident">send</span>(<span class="ident">msg</span>).<span class="kw">await</span><span class="question-mark">?</span>,
-        };
+            <span class="self">Self</span><span class="ident">::Embedded</span>(<span class="ident">val</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">val</span>.<span class="ident">master</span>.<span class="ident">send</span>(<span class="ident">msg</span>).<span class="kw">await</span><span class="question-mark">?</span>.<span class="kw">await</span><span class="question-mark">?</span>,
+            <span class="self">Self</span><span class="ident">::Redis</span>(<span class="ident">val</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">val</span>.<span class="ident">master</span>.<span class="ident">send</span>(<span class="ident">msg</span>).<span class="kw">await</span><span class="question-mark">?</span>.<span class="kw">await</span><span class="question-mark">?</span>,
+        }<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(())
     }
 
