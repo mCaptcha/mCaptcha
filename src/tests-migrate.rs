@@ -17,11 +17,10 @@
 use std::env;
 
 use lazy_static::lazy_static;
+use sqlx::postgres::PgPoolOptions;
 
-mod data;
 mod settings;
 
-pub use data::Data;
 pub use settings::Settings;
 
 #[cfg(not(tarpaulin_include))]
@@ -33,7 +32,11 @@ lazy_static! {
 #[cfg(not(tarpaulin_include))]
 #[actix_rt::main]
 async fn main() {
-    let data = Data::new().await;
+    let db = PgPoolOptions::new()
+        .max_connections(SETTINGS.database.pool)
+        .connect(&SETTINGS.database.url)
+        .await
+        .expect("Unable to form database pool");
 
     for arg in env::args() {
         if arg == "--build" {
@@ -42,7 +45,7 @@ async fn main() {
         }
     }
 
-    sqlx::migrate!("./migrations/").run(&data.db).await.unwrap();
+    sqlx::migrate!("./migrations/").run(&db).await.unwrap();
 }
 
 fn build() {

@@ -41,6 +41,7 @@ use libmcaptcha::{
 use sqlx::postgres::PgPoolOptions;
 use sqlx::PgPool;
 
+use crate::errors::ServiceResult;
 use crate::SETTINGS;
 
 /// Represents mCaptcha cache and master system.
@@ -80,29 +81,29 @@ impl SystemGroup {
     }
 
     /// utility function to AddSite
-    pub async fn add_site(&self, msg: AddSite) -> CaptchaResult<()> {
+    pub async fn add_site(&self, msg: AddSite) -> ServiceResult<()> {
         match self {
-            Self::Embedded(val) => val.master.send(msg).await?,
-            Self::Redis(val) => val.master.send(msg).await?,
-        };
+            Self::Embedded(val) => val.master.send(msg).await?.await?,
+            Self::Redis(val) => val.master.send(msg).await?.await?,
+        }?;
         Ok(())
     }
 
     /// utility function to rename captcha
-    pub async fn rename(&self, msg: Rename) -> CaptchaResult<()> {
+    pub async fn rename(&self, msg: Rename) -> ServiceResult<()> {
         match self {
-            Self::Embedded(val) => val.master.send(msg).await?,
-            Self::Redis(val) => val.master.send(msg).await?,
-        };
+            Self::Embedded(val) => val.master.send(msg).await?.await?,
+            Self::Redis(val) => val.master.send(msg).await?.await?,
+        }?;
         Ok(())
     }
 
     /// utility function to remove captcha
-    pub async fn remove(&self, msg: RemoveCaptcha) -> CaptchaResult<()> {
+    pub async fn remove(&self, msg: RemoveCaptcha) -> ServiceResult<()> {
         match self {
-            Self::Embedded(val) => val.master.send(msg).await?,
-            Self::Redis(val) => val.master.send(msg).await?,
-        };
+            Self::Embedded(val) => val.master.send(msg).await?.await?,
+            Self::Redis(val) => val.master.send(msg).await?.await?,
+        }?;
         Ok(())
     }
 

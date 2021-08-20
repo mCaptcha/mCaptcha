@@ -17,6 +17,7 @@
 
 use std::convert::From;
 
+use actix::MailboxError;
 use actix_web::{
     dev::BaseHttpResponseBuilder as HttpResponseBuilder,
     error::ResponseError,
@@ -28,6 +29,7 @@ use derive_more::{Display, Error};
 use lettre::transport::smtp::Error as SmtpError;
 use libmcaptcha::errors::CaptchaError;
 use serde::{Deserialize, Serialize};
+use tokio::sync::oneshot::error::RecvError;
 use url::ParseError;
 use validator::ValidationErrors;
 
@@ -220,6 +222,24 @@ impl From<SmtpError> for ServiceError {
     #[cfg(not(tarpaulin_include))]
     fn from(e: SmtpError) -> Self {
         ServiceError::UnableToSendEmail(SmtpErrorWrapper(e))
+    }
+}
+
+#[cfg(not(tarpaulin_include))]
+impl From<RecvError> for ServiceError {
+    #[cfg(not(tarpaulin_include))]
+    fn from(e: RecvError) -> Self {
+        log::error!("{:?}", e);
+        ServiceError::InternalServerError
+    }
+}
+
+#[cfg(not(tarpaulin_include))]
+impl From<MailboxError> for ServiceError {
+    #[cfg(not(tarpaulin_include))]
+    fn from(e: MailboxError) -> Self {
+        log::error!("{:?}", e);
+        ServiceError::InternalServerError
     }
 }
 
