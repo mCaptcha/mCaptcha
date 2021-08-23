@@ -16,14 +16,10 @@
  */
 @import '../../vars';
 
+$hamburger-menu-animation: 0.3s ease-in;
+
 .secondary-menu {
   display: block;
-}
-
-.secondary-menu__list {
-  //  position: sticky;
-  height: 0px;
-  overflow: hidden;
 }
 
 .nav__hamburger-menu {
@@ -63,17 +59,48 @@
 }
 
 .nav-toggle:not(:checked) ~ .secondary-menu__list {
-  height: 0px;
-  //  overflow-y: hidden;
-  //  max-height: 100%;
+  overflow-y: hidden;
+  max-height: 0;
+  transition: max-height $hamburger-menu-animation;
 }
 
 .nav-toggle:checked ~ .secondary-menu__list {
-  height: 100%;
+  max-height: 500px;
   overflow-y: auto;
+  transition: max-height $hamburger-menu-animation;
 }
 
 .secondary-menu__brand-name:hover {
   color: $light-text;
   cursor: pointer;
+}
+
+.nav-toggle:checked ~ .secondary-menu__heading {
+  .nav__hamburger-menu {
+    span:nth-child(2) {
+      border: none;
+    }
+
+    span:nth-child(3) {
+      transform: rotate(-45deg) translate(55%, -15%);
+      transition: $hamburger-menu-animation;
+    }
+
+    span:first-child {
+      transform: rotate(45deg) translate(35%, 40%);
+      transition: $hamburger-menu-animation;
+    }
+  }
+}
+
+.nav-toggle:not(checked) ~ .secondary-menu__heading {
+  .nav__hamburger-menu {
+    span:nth-child(3) {
+      transition: $hamburger-menu-animation;
+    }
+
+    span:first-child {
+      transition: $hamburger-menu-animation;
+    }
+  }
 }
