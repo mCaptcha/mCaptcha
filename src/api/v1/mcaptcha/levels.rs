@@ -17,7 +17,7 @@
 use actix_identity::Identity;
 use actix_web::{web, HttpResponse, Responder};
 use futures::future::try_join_all;
-use libmcaptcha::{defense::Level, DefenseBuilder};
+use libmcaptcha::{defense::Level, DefenseBuilder, master::messages::RemoveCaptcha};
 use log::debug;
 use serde::{Deserialize, Serialize};
 
@@ -190,6 +190,9 @@ async fn update_levels(
     }
 
     try_join_all(futs).await?;
+    if let Err(ServiceError::CaptchaError(e)) =  data.captcha.remove(RemoveCaptcha(payload.key.clone())).await {
+        log::error!("Deleting captcha key {} while updating it, error: {:?}", &payload.key, e)
+    }
     Ok(HttpResponse::Ok())
 }
 
@@ -277,7 +280,6 @@ mod tests {
         let app = get_app!(data).await;
 
         // 2. get level
-
         let add_level = get_level_data();
         let get_level_resp = test::call_service(
             &app,
