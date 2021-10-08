@@ -31,14 +31,22 @@ docker-publish:
 
 frontend:
 	cd browser && wasm-pack build --release
+	cd docs/openapi/ yarn build
 	yarn install
 	yarn build
 
 frontend-test:
 	cd browser && wasm-pack test --release --headless --chrome
 	cd browser &&  wasm-pack test --release --headless --firefox
+	cd docs/openapi && yarn test
 	cd browser && cargo test
 	yarn test
+
+lint:
+	cargo fmt -v --all -- --emit files
+	cargo clippy --workspace --tests --all-features
+	yarn lint
+	cd docs/openapi && yarn test
 
 migrate:
 	cargo run --bin tests-migrate

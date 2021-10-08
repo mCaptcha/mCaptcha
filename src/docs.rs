@@ -73,7 +73,7 @@ pub fn handle_embedded_file(path: &str) -> HttpResponse {
 async fn dist(path: web::Path<String>) -> impl Responder {
     handle_embedded_file(&path)
 }
-const OPEN_API_SPEC: &str = include_str!("../openapi.yaml");
+const OPEN_API_SPEC: &str = include_str!("../docs/openapi/dist/openapi.yaml");
 
 #[my_codegen::get(path = "DOCS.spec")]
 async fn spec() -> HttpResponse {

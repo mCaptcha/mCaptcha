@@ -1,0 +1,27 @@
+{
+  "name": "mcaptcha-api",
+  "version": "0.1.0",
+  "description": "This service is used to discover bridge interfaces that operate on forges.",
+  "main": "index.js",
+  "scripts": {
+    "build": "swagger-cli bundle openapi.yaml --outfile dist/openapi.yaml --type yaml",
+    "test": "npm run build && spectral lint dist/openapi.yaml",
+    "serve": "npm run build && redoc-cli serve dist/openapi.yaml --port 7000 --options.onlyRequiredInSamples",
+    "html": "npm run build && redoc-cli bundle dist/openapi.yaml  --output dist/index.html --options.onlyRequiredInSamples",
+    "clean": "rm -r dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dat-adi/northstar.git"
+  },
+  "license": "AGPL3",
+  "bugs": {
+    "url": "https://github.com/dat-adi/northstar/issues"
+  },
+  "homepage": "https://github.com/dat-adi/northstar#readme",
+  "dependencies": {
+    "@apidevtools/swagger-cli": "^4.0.4",
+    "@stoplight/spectral": "^5.8.1",
+    "redoc-cli": "^0.10.3"
+  }
+}
