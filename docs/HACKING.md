@@ -122,12 +122,19 @@ $ make
 
 ```bash
 ➜  mcaptcha git:(master) ✗ make help
-  docs      	- build documentation
-  run       	- run developer instance
-  test 		- run unit and integration tests
-  migrate   	- run database migrations
-  dev-env 	- download dependencies
-  clean     	- drop builds and environments
-  coverage 	- build test coverage in HTML format
-  xml-coverage 	- build test coverage in XML for upload to codecov
+default                        Run app in debug mode
+clean                          Delete build artifacts
+coverage                       Generate code coverage report in HTML format
+dev-env                        Setup development environtment
+doc                            Generate documentation
+docker                         Build Docker image
+docker-publish                 Build and publish Docker image
+frontend                       Build frontend
+frontend-test                  Run frontend tests
+lint                           Lint codebase
+migrate                        Run database migrations
+release                        Build app with release optimizations
+test                           Run all available tests
+xml-test-coverage              Generate code coverage report in XML format
+help                           Prints help for targets with comments
 ```
