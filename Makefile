@@ -13,11 +13,6 @@ coverage: migrate ## Generate code coverage report in HTML format
 	cd browser && cargo tarpaulin -t 1200 --out Html
 	cargo tarpaulin -t 1200 --out Html
 
-dev-env: ## Setup development environtment
-	cargo fetch
-	yarn install
-	cd docs/openapi && yarn install
-
 doc: ## Generate documentation
 	#yarn doc
 	cargo doc --no-deps --workspace --all-features
@@ -30,9 +25,15 @@ docker-publish: docker ## Build and publish Docker image
 	docker push mcaptcha/mcaptcha:master 
 	docker push mcaptcha/mcaptcha:latest
 
-frontend: ## Build frontend
+env: ## Setup development environtment
+	cargo fetch
 	cd browser && wasm-pack build --release
-	cd docs/openapi/ yarn build
+	yarn install
+	cd docs/openapi && yarn install
+
+frontend: env ## Build frontend
+	cd docs/openapi/ && yarn build
+	cd browser && wasm-pack build --release
 	yarn install
 	yarn build
 
