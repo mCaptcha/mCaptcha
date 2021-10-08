@@ -16,6 +16,7 @@ coverage: migrate
 dev-env:
 	cargo fetch
 	yarn install
+	cd docs/openapi && yarn install
 
 doc:
 	#yarn doc
