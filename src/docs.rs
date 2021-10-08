@@ -36,7 +36,7 @@ pub mod routes {
         pub const fn new() -> Self {
             Docs {
                 home: "/docs/",
-                spec: "/docs/openapi.json",
+                spec: "/docs/openapi.yaml",
                 assets: "/docs/{_:.*}",
             }
         }
@@ -73,12 +73,13 @@ pub fn handle_embedded_file(path: &str) -> HttpResponse {
 async fn dist(path: web::Path<String>) -> impl Responder {
     handle_embedded_file(&path)
 }
+const OPEN_API_SPEC: &str = include_str!("../openapi.yaml");
 
 #[my_codegen::get(path = "DOCS.spec")]
 async fn spec() -> HttpResponse {
     HttpResponse::Ok()
-        .content_type("appilcation/json")
-        .body(&*crate::OPEN_API_DOC)
+        .content_type("text/yaml")
+        .body(OPEN_API_SPEC)
 }
 
 #[my_codegen::get(path = "&DOCS.home[0..DOCS.home.len() -1]")]

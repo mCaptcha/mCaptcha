@@ -1608,12 +1608,10 @@ dependencies = [
  "sailfish",
  "serde 1.0.127",
  "serde_json",
- "serde_yaml",
  "sqlx",
  "tokio",
  "url",
  "validator",
- "yaml-rust",
 ]
 
 [[package]]
@@ -2625,18 +2623,6 @@ dependencies = [
  "itoa",
  "ryu",
  "serde 1.0.127",
-]
-
-[[package]]
-name = "serde_yaml"
-version = "0.8.18"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "039ba818c784248423789eec090aab9fb566c7b94d6ebbfa1814a9fd52c8afb2"
-dependencies = [
- "dtoa",
- "linked-hash-map",
- "serde 1.0.127",
- "yaml-rust",
 ]
 
 [[package]]
