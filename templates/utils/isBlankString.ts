@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import createError from '../components/error/';
+import createError from "../components/error/";
 
-const isBlankString = (value: string|number, field: string, event?: Event) => {
+const isBlankString = (value: string|number, field: string, event?: Event): boolean => {
   value = value.toString();
-  if (!value.replace(/\s/g, '').length) {
+  if (!value.replace(/\s/g, "").length) {
     if (event !== undefined) {
       event.preventDefault();
     }

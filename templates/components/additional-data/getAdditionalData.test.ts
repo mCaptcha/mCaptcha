@@ -15,9 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import additionalData from './index';
+import additionalData from "./index";
 
-it('sudo form works', () => {
+it("sudo form works", () => {
   try {
     additionalData();
   } catch (e) {
@@ -26,8 +26,8 @@ it('sudo form works', () => {
     );
   }
 
-  const element = document.createElement('div');
-  element.id = 'additional-data';
+  const element = document.createElement("div");
+  element.id = "additional-data";
   document.body.appendChild(element);
   expect(additionalData()).toBe(element);
 });

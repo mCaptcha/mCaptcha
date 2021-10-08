@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import CONST from '../../const';
-import log from '../../../../../../logger';
+import CONST from "../../const";
+import log from "../../../../../../logger";
 
 /** update input IDs with new level */
-const updateInput = (levelGroup: Element, newLevel: number) => {
+const updateInput = (levelGroup: Element, newLevel: number): void => {
   const inputs = <NodeListOf<HTMLInputElement>>(
     levelGroup.querySelectorAll(`.${CONST.LEVEL_INPUT_CLASS}`)
   );
@@ -26,17 +26,17 @@ const updateInput = (levelGroup: Element, newLevel: number) => {
   inputs.forEach(input => {
     if (input.id.includes(CONST.VISITOR_WITHOUT_LEVEL)) {
       log.log(`${input.id}`);
-      log.log('changing visitor_threshold input');
+      log.log("changing visitor_threshold input");
       const id = `${CONST.VISITOR_WITHOUT_LEVEL}${newLevel}`;
       input.id = id;
       input.name = id;
     } else if (input.id.includes(CONST.DIFFICULTY_WITHOUT_LEVEL)) {
-      log.log('changing difficulty input');
+      log.log("changing difficulty input");
       const id = `${CONST.DIFFICULTY_WITHOUT_LEVEL}${newLevel}`;
       input.id = id;
       input.name = id;
     } else {
-      if (input.id != 'add') {
+      if (input.id != "add") {
         throw new Error(`Did you add an extra input to DOM? ${input.id} ${input.className} ${input.name}`);
       }
     }

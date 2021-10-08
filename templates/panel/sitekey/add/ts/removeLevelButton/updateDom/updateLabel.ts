@@ -14,17 +14,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import CONST from '../../const';
-import log from '../../../../../../logger';
+import CONST from "../../const";
+import log from "../../../../../../logger";
 
 /** update level lables to match new level */
-const updateLabels = (levelGroup: Element, newLevel: number) => {
+const updateLabels = (levelGroup: Element, newLevel: number): void => {
   // rename labels
   const labels = <NodeListOf<HTMLLabelElement>>(
-    levelGroup.querySelectorAll(`label`)
+    levelGroup.querySelectorAll("label")
   );
   log.log(labels);
-  labels.forEach(label => {
+  labels.forEach((label) => {
     log.log(`${label.htmlFor}`);
     const currentFor = label.htmlFor;
     if (currentFor.includes(CONST.VISITOR_WITHOUT_LEVEL)) {
@@ -36,9 +36,9 @@ const updateLabels = (levelGroup: Element, newLevel: number) => {
     ) {
       label.htmlFor = `${CONST.REMOVE_LEVEL_BUTTON_ID_WITHOUT_LEVEL}${newLevel}`;
     } else {
-      if (currentFor != 'add') {
+      if (currentFor != "add") {
         throw new Error(
-          `Did you add an extra label to DOM? Found label with for: ${currentFor}`,
+          `Did you add an extra label to DOM? Found label with for: ${currentFor}`
         );
       }
     }

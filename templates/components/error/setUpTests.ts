@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import * as e from './index';
+import * as e from "./index";
 
-const setup = () => {
-  let x = document.createElement('div');
+const setup = (): HTMLElement => {
+  const x = document.createElement("div");
   x.id = e.ERR_CONTAINER_ID;
   return x;
 };

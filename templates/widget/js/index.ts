@@ -9,26 +9,26 @@
  * MIT or <http://www.apache.org/licenses/LICENSE-2.0> for Apache.
  */
 
-import prove from './prove';
-import fetchPoWConfig from './fetchPoWConfig';
-import sendWork from './sendWork';
-import sendToParent from './sendToParent';
-import * as CONST from './const';
+import prove from "./prove";
+import fetchPoWConfig from "./fetchPoWConfig";
+import sendWork from "./sendWork";
+import sendToParent from "./sendToParent";
+import * as CONST from "./const";
 
-import '../main.scss';
+import "../main.scss";
 
 let LOCK = false;
 
 /** add  mcaptcha widget element to DOM */
-export const registerVerificationEventHandler = () => {
+export const registerVerificationEventHandler = (): void => {
   const verificationContainer = <HTMLElement>(
-    document.querySelector('.widget__verification-container')
+    document.querySelector(".widget__verification-container")
   );
-  verificationContainer.style.display = 'flex';
-  CONST.btn().addEventListener('click', e => solveCaptchaRunner(e));
+  verificationContainer.style.display = "flex";
+  CONST.btn().addEventListener("click", (e) => solveCaptchaRunner(e));
 };
 
-export const solveCaptchaRunner = async (e: Event) => {
+export const solveCaptchaRunner = async (e: Event): Promise<void> => {
   if (LOCK) {
     e.preventDefault();
     return;

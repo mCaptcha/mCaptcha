@@ -15,16 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import CONST from '../const';
+import CONST from "../const";
 
-import log from '../../../../../logger';
+import log from "../../../../../logger";
 
 /** returns number of level input fields currently in DOM */
-const getNumLevels = () => {
+const getNumLevels = (): number => {
   let numLevels = 0;
   document
     .querySelectorAll(`.${CONST.LEVEL_CONTAINER_CLASS}`)
-    .forEach(_ => numLevels++);
+    .forEach(() => numLevels++);
   log.debug(`[getNumLevels]: numLevels: ${numLevels}`);
   return numLevels;
 };

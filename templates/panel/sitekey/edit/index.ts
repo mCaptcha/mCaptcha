@@ -14,31 +14,31 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import * as Add from '../add/ts/form/';
-import addLevelButtonAddEventListener from '../add/ts/addLevelButton';
-import {addRemoveLevelButtonEventListenerAll} from '../add/ts/removeLevelButton';
-import getNumLevels from '../add/ts/levels/getNumLevels';
-import validateLevel from '../add/ts/levels/validateLevel';
-import * as UpdateLevel from '../add/ts/levels/updateLevel';
-import validateDescription from '../add/ts/form/validateDescription';
-import validateDuration from '../add/ts/form/validateDuration';
-import {LEVELS} from '../add/ts/levels';
+import * as Add from "../add/ts/form/";
+import addLevelButtonAddEventListener from "../add/ts/addLevelButton";
+import { addRemoveLevelButtonEventListenerAll } from "../add/ts/removeLevelButton";
+import getNumLevels from "../add/ts/levels/getNumLevels";
+import validateLevel from "../add/ts/levels/validateLevel";
+import * as UpdateLevel from "../add/ts/levels/updateLevel";
+import validateDescription from "../add/ts/form/validateDescription";
+import validateDuration from "../add/ts/form/validateDuration";
+import { LEVELS } from "../add/ts/levels";
 
-import getFormUrl from '../../../utils/getFormUrl';
-import genJsonPayload from '../../../utils/genJsonPayload';
-import createError from '../../../components/error';
-import LazyElement from '../../../utils/lazyElement';
+import getFormUrl from "../../../utils/getFormUrl";
+import genJsonPayload from "../../../utils/genJsonPayload";
+import createError from "../../../components/error";
+import LazyElement from "../../../utils/lazyElement";
 
-import VIEWS from '../../../views/v1/routes';
+import VIEWS from "../../../views/v1/routes";
 
-const BTN_ID = 'sitekey-form__submit';
+const BTN_ID = "sitekey-form__submit";
 const BTN = new LazyElement(BTN_ID);
 
 const submit = async (e: Event) => {
   e.preventDefault();
 
   const description = validateDescription(e);
-  const duration = validateDuration(e);
+  const duration = validateDuration();
 
   const formUrl = getFormUrl(Add.FORM);
 
@@ -66,7 +66,7 @@ const submit = async (e: Event) => {
 };
 
 const addSubmitEventListener = () => {
-  Add.FORM.addEventListener('submit', submit, true);
+  Add.FORM.addEventListener("submit", submit, true);
 };
 
 const bootstrapLevels = () => {
@@ -78,7 +78,7 @@ const bootstrapLevels = () => {
   }
 };
 
-export const index = () => {
+export const index = (): void => {
   addSubmitEventListener();
   addLevelButtonAddEventListener();
   bootstrapLevels();

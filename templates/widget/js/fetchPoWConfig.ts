@@ -9,8 +9,8 @@
  * MIT or <http://www.apache.org/licenses/LICENSE-2.0> for Apache.
  */
 
-import genJsonPayload from './utils/genJsonPayload';
-import * as CONST from './const';
+import genJsonPayload from "../../utils/genJsonPayload";
+import * as CONST from "./const";
 
 type GetConfigPayload = {
   key: string;
@@ -26,22 +26,18 @@ export type PoWConfig = {
  * fetch proof-of-work configuration
  * @returns {PoWConfig} pow config
  * */
-export const fetchPoWConfig = async () => {
-  try {
-    const payload: GetConfigPayload = {
-      key: CONST.sitekey(),
-    };
+export const fetchPoWConfig = async (): Promise<PoWConfig> => {
+  const payload: GetConfigPayload = {
+    key: CONST.sitekey(),
+  };
 
-    const res = await fetch(CONST.ROUTES.getConfig, genJsonPayload(payload));
-    if (res.ok) {
-      const config: PoWConfig = await res.json();
-      return config;
-    } else {
-      const err = await res.json();
-      throw new Error(err);
-    }
-  } catch (err) {
-    throw err;
+  const res = await fetch(CONST.ROUTES.getConfig, genJsonPayload(payload));
+  if (res.ok) {
+    const config: PoWConfig = await res.json();
+    return config;
+  } else {
+    const err = await res.json();
+    throw new Error(err);
   }
 };
 

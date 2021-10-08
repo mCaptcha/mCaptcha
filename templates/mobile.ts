@@ -15,13 +15,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import './mobile.scss';
-import './auth/css/mobile.scss';
-import './components/details-footer/mobile.scss';
-import './panel/css/mobile.scss';
-import './panel/settings/mobile.scss';
-import './panel/header/taskbar/mobile.scss';
-import './panel/navbar/mobile.scss';
-import './panel/help-banner/mobile.scss';
-import './panel/sitekey/add/css/mobile.scss';
-import './panel/sitekey/list/css/mobile.scss';
+import "./mobile.scss";
+import "./auth/css/mobile.scss";
+import "./components/details-footer/mobile.scss";
+import "./panel/css/mobile.scss";
+import "./panel/settings/mobile.scss";
+import "./panel/header/taskbar/mobile.scss";
+import "./panel/navbar/mobile.scss";
+import "./panel/help-banner/mobile.scss";
+import "./panel/sitekey/add/css/mobile.scss";
+import "./panel/sitekey/list/css/mobile.scss";

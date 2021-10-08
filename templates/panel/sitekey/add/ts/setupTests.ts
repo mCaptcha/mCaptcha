@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import getNumLevels from './levels/getNumLevels';
-import {Level} from './levels/index';
-import CONST from './const';
-import addLevelButtonAddEventListener from './addLevelButton';
+import getNumLevels from "./levels/getNumLevels";
+import { Level } from "./levels/index";
+import CONST from "./const";
+import addLevelButtonAddEventListener from "./addLevelButton";
 
 /** get rid of all whitespaces, useful when comparing DOM states */
-export const trim = (s: string) => s.replace(/\s/g, '');
+export const trim = (s: string): string => s.replace(/\s/g, "");
 
 export const level1: Level = {
   difficulty_factor: 200,
@@ -43,7 +43,7 @@ export const level2: Level = {
 };
 
 /** add level to DOM by filling add level form and clicking "Add" button */
-export const addLevel = (visitor: number, diff: number) => {
+export const addLevel = (visitor: number, diff: number): void => {
   fillAddLevel(visitor, diff);
   const addLevelButton = <HTMLElement>(
     document.querySelector(`.${CONST.ADD_LEVEL_BUTTON}`)
@@ -54,8 +54,8 @@ export const addLevel = (visitor: number, diff: number) => {
 /** Fill add level form without clicking add button */
 export const fillAddLevel = (
   visitor: number | string,
-  diff: number | string,
-) => {
+  diff: number | string
+): void => {
   addLevelButtonAddEventListener();
 
   const level = getNumLevels();
@@ -71,7 +71,11 @@ export const fillAddLevel = (
 };
 
 /** Fill add level form without clicking add button */
-export const editLevel = (level: number, visitor?: number, diff?: number) => {
+export const editLevel = (
+  level: number,
+  visitor?: number,
+  diff?: number
+): void => {
   if (visitor !== undefined) {
     const visitorField = <HTMLInputElement>(
       document.getElementById(`${CONST.VISITOR_WITHOUT_LEVEL}${level}`)
@@ -88,18 +92,18 @@ export const editLevel = (level: number, visitor?: number, diff?: number) => {
 };
 
 /** Fill description in add level form */
-export const fillDescription = (description: string) => {
-  const inputElement = <HTMLInputElement>document.getElementById('description');
+export const fillDescription = (description: string): void => {
+  const inputElement = <HTMLInputElement>document.getElementById("description");
   inputElement.value = description;
 };
 
 /** Fill duration in add level form */
-export const fillDuration = (duration: number | string) => {
-  const inputElement = <HTMLInputElement>document.getElementById('duration');
+export const fillDuration = (duration: number | string): void => {
+  const inputElement = <HTMLInputElement>document.getElementById("duration");
   inputElement.value = duration.toString();
 };
 
-export const getAddForm = () => `
+export const getAddForm = (): string => `
 <form class="sitekey-form" action="/api/v1/mcaptcha/levels/add" method="post">
   <h1 class="form__title">
     Add Sitekey
@@ -171,7 +175,7 @@ export const getAddForm = () => `
 `;
 
 /** get initial form to test remove button functionality */
-export const getRemoveButtonHTMLForm = () => {
+export const getRemoveButtonHTMLForm = (): string => {
   return `
 <form class="sitekey-form" action="/api/v1/mcaptcha/levels/add" method="post">
   <h1 class="form__title">

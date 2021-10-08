@@ -15,14 +15,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import CONST from '../const';
-import getLevelFields from './getLevelFields';
-import {LEVELS} from './index';
+import CONST from "../const";
+import getLevelFields from "./getLevelFields";
+import { LEVELS } from "./index";
 
-import createError from '../../../../../components/error';
+import createError from "../../../../../components/error";
 
 /** on-change event handler to update level */
-const updateLevel = (e: Event) => {
+const updateLevel = (e: Event): void => {
   const target = <HTMLInputElement>e.target;
 
   const id = target.id;
@@ -36,7 +36,7 @@ const updateLevel = (e: Event) => {
   }
 
   if (Number.isNaN(level)) {
-    console.error(`[updateLevel.ts] level # computed is not correct, got NaN`);
+    console.error("[updateLevel.ts] level # computed is not correct, got NaN");
   }
 
   try {
@@ -48,7 +48,7 @@ const updateLevel = (e: Event) => {
 };
 
 /** registers on-change event handlers to update levels */
-export const register = (id: number) => {
+export const register = (id: number): void => {
   const visitorID = CONST.VISITOR_WITHOUT_LEVEL + id.toString();
   const difficultyID = CONST.DIFFICULTY_WITHOUT_LEVEL + id.toString();
 
@@ -57,6 +57,6 @@ export const register = (id: number) => {
     document.getElementById(difficultyID)
   );
 
-  visitorElement.addEventListener('input', updateLevel, false);
-  difficultyElement.addEventListener('input', updateLevel, false);
+  visitorElement.addEventListener("input", updateLevel, false);
+  difficultyElement.addEventListener("input", updateLevel, false);
 };

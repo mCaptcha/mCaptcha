@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import fetchMock from 'jest-fetch-mock';
+import fetchMock from "jest-fetch-mock";
 
-import userExists from './userExists';
+import userExists from "./userExists";
 
-import {mockAlert, getLoginFormHtml} from '../../../setUpTests';
+import {mockAlert, getLoginFormHtml} from "../../../setUpTests";
 
-import setup from '../../../components/error/setUpTests';
+import setup from "../../../components/error/setUpTests";
 
 fetchMock.enableMocks();
 mockAlert();
@@ -29,16 +29,16 @@ beforeEach(() => {
   fetchMock.resetMocks();
 });
 
-it('finds exchange', async () => {
+it("finds exchange", async () => {
   fetchMock.mockResponseOnce(JSON.stringify({exists: true}));
 
   document.body.innerHTML = getLoginFormHtml();
-  document.querySelector('body').appendChild(setup());
-  const usernameField = <HTMLInputElement>document.querySelector('#username');
-  usernameField.value = 'test';
+  document.querySelector("body").appendChild(setup());
+  const usernameField = <HTMLInputElement>document.querySelector("#username");
+  usernameField.value = "test";
   expect(await userExists()).toBe(true);
 
-  usernameField.value = 'test';
+  usernameField.value = "test";
   fetchMock.mockResponseOnce(JSON.stringify({exists: true}));
   expect(await userExists(usernameField)).toBe(true);
 

@@ -14,8 +14,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import isNumber from '../../../../../utils/isNumber';
-
 //const validateDuration = (e: Event) => {
 //  const duartionElement = <HTMLInputElement>document.getElementById('duration');
 //  const duration = parseInt(duartionElement.value);
@@ -31,30 +29,28 @@ import isNumber from '../../../../../utils/isNumber';
 //
 //export default validateDuration;
 
-import validateDuration from './validateDuration';
-import {getAddForm, fillDuration} from '../setupTests';
+import validateDuration from "./validateDuration";
+import {getAddForm, fillDuration} from "../setupTests";
 
 document.body.innerHTML = getAddForm();
 
 const emptyErr = "can't be empty";
-const NaNErr = 'duration can contain nubers only';
-const zeroErr = 'duration must be greater than zero';
+const NaNErr = "duration can contain nubers only";
+const zeroErr = "duration must be greater than zero";
 
 const duration = 30;
 
-it('validateDuration workds', () => {
+it("validateDuration workds", () => {
   try {
-    const event = new Event('submit');
-    validateDuration(event);
+    validateDuration();
   } catch (e) {
     expect(e.message).toContain(emptyErr);
   }
 
   // fill string error
   try {
-    fillDuration('testing');
-    const event = new Event('submit');
-    validateDuration(event);
+    fillDuration("testing");
+    validateDuration();
   } catch (e) {
     expect(e.message).toContain(NaNErr);
   }
@@ -62,13 +58,11 @@ it('validateDuration workds', () => {
   // zero err
   try {
     fillDuration(0);
-    const event = new Event('submit');
-    validateDuration(event);
+    validateDuration();
   } catch (e) {
     expect(e.message).toContain(zeroErr);
   }
 
   fillDuration(duration);
-  const event = new Event('submit');
-  expect(validateDuration(event)).toBe(duration);
+  expect(validateDuration()).toBe(duration);
 });

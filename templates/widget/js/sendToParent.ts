@@ -8,15 +8,15 @@
  * this program. If not, see <https://spdx.org/licenses/MIT.html> for
  * MIT or <http://www.apache.org/licenses/LICENSE-2.0> for Apache.
  */
-import {Token} from './sendWork';
+import {Token} from "./sendWork";
 
 /**
  * send pow validation token as message to parant of the iframe
  * @param {Token} token: token received from mCaptcha service
  * upon successful PoW validation
  * */
-export const sendToParent = (token: Token) => {
-  window.parent.postMessage(token, '*');
+export const sendToParent = (token: Token): void => {
+  window.parent.postMessage(token, "*");
   // TODO set origin. Make parent send origin as query parameter
   // or as a message to iframe
 };

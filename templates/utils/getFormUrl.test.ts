@@ -15,27 +15,27 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import getFormUrl from './getFormUrl';
-import {getLoginFormHtml} from '../setUpTests';
+import getFormUrl from "./getFormUrl";
+import {getLoginFormHtml} from "../setUpTests";
 
-'use strict';
+"use strict";
 
-const formClassName = 'form__box';
-const formURL = '/api/v1/signin';
+const formClassName = "form__box";
+const formURL = "/api/v1/signin";
 
 const noFormErr = "Can't find form";
 
 document.body.innerHTML = getLoginFormHtml();
 
-const form = document.querySelector('form');
+const form = document.querySelector("form");
 form.action = formURL;
 form.className = formClassName;
 
-it('getFromUrl workds', () => {
+it("getFromUrl workds", () => {
   const name = `.${formClassName}`;
   expect(getFormUrl(name)).toContain(formURL);
 
-  const form = <HTMLFormElement>document.querySelector('form');
+  const form = <HTMLFormElement>document.querySelector("form");
   expect(getFormUrl(form)).toContain(formURL);
 
   expect(getFormUrl()).toContain(formURL);

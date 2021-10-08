@@ -9,19 +9,19 @@
  * MIT or <http://www.apache.org/licenses/LICENSE-2.0> for Apache.
  */
 
-import genJsonPayload from './utils/genJsonPayload';
-import * as CONST from './const';
-import {Work} from './prove';
+import genJsonPayload from "../../utils/genJsonPayload";
+import * as CONST from "./const";
+import {Work} from "./prove";
 
 export type Token = {
   token: string;
 };
 
-export const sendWork = async (payload: Work) => {
+export const sendWork = async (payload: Work): Promise<Token> => {
   try {
     const res = await fetch(CONST.ROUTES.verififyPoW, genJsonPayload(payload));
     if (res.ok) {
-      console.debug('work verified');
+      console.debug("work verified");
       const token: Token = await res.json();
       console.debug(`token ${token.token}`);
       return token;

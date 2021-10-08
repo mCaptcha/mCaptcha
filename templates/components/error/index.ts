@@ -15,9 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export const ERR_CONTAINER_ID = 'err__container';
-export const ERR_MSG_CONTAINER = 'err__msg-container'; // class
-export const ERR_CLOSE = 'err__close'; // class
+export const ERR_CONTAINER_ID = "err__container";
+export const ERR_MSG_CONTAINER = "err__msg-container"; // class
+export const ERR_CLOSE = "err__close"; // class
 
 export const DEFAULT_LIFETIME = 5000;
 
@@ -41,11 +41,11 @@ const err = () => {
 const createError = (
   message: string | HTMLElement,
   lifetime: number = DEFAULT_LIFETIME,
-) => {
-  const box = document.createElement('div');
+): void => {
+  const box = document.createElement("div");
 
   const msg = () => {
-    if (typeof message === 'string') {
+    if (typeof message === "string") {
       return document.createTextNode(message);
     } else {
       return message;
@@ -55,8 +55,8 @@ const createError = (
   box.className = ERR_MSG_CONTAINER;
   box.appendChild(msg());
 
-  const deleteBtn = document.createElement('button');
-  const deleteMsg = document.createTextNode('x');
+  const deleteBtn = document.createElement("button");
+  const deleteMsg = document.createTextNode("x");
   deleteBtn.appendChild(deleteMsg);
   deleteBtn.className = ERR_CLOSE;
   box.appendChild(deleteBtn);
@@ -71,7 +71,7 @@ const createError = (
     box.remove();
   };
 
-  deleteBtn.addEventListener('click', e => deleteHandler(e));
+  deleteBtn.addEventListener("click", e => deleteHandler(e));
 };
 
 export default createError;

@@ -15,8 +15,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import * as listSitekeys from '../sitekey/list/ts/';
+import * as listSitekeys from "../sitekey/list/ts/";
 
-export const index = () => {
-  listSitekeys.index();
-};
+export const index = (): void => listSitekeys.index();

@@ -15,17 +15,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import form from './index';
+import form from "./index";
 
-it('sudo form works', () => {
+it("sudo form works", () => {
   try {
     form.get();
   } catch (e) {
-    expect(e.message).toBe('Element form is undefined');
+    expect(e.message).toBe("Element form is undefined");
   }
 
-  const element = document.createElement('form');
-  element.id = 'form';
+  const element = document.createElement("form");
+  element.id = "form";
   document.body.appendChild(element);
   expect(form.get()).toBe(element);
 });

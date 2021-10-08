@@ -15,16 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import {getPassword} from '../../../auth/login/ts/';
-import FORM from '../../../auth/sudo/';
-import additionalData from '../../../components/additional-data';
-import registerShowPassword from '../../../components/showPassword';
+import { getPassword } from "../../../auth/login/ts/";
+import FORM from "../../../auth/sudo/";
+import additionalData from "../../../components/additional-data";
+import registerShowPassword from "../../../components/showPassword";
 
-import getFormUrl from '../../../utils/getFormUrl';
-import genJsonPayload from '../../../utils/genJsonPayload';
-import createError from '../../../components/error';
+import getFormUrl from "../../../utils/getFormUrl";
+import genJsonPayload from "../../../utils/genJsonPayload";
+import createError from "../../../components/error";
 
-import VIEWS from '../../../views/v1/routes';
+import VIEWS from "../../../views/v1/routes";
 
 const submit = async (e: Event) => {
   e.preventDefault();
@@ -47,7 +47,7 @@ const submit = async (e: Event) => {
   }
 };
 
-export const index = () => {
-  FORM.get().addEventListener('submit', submit, true);
+export const index = (): void => {
+  FORM.get().addEventListener("submit", submit, true);
   registerShowPassword();
 };

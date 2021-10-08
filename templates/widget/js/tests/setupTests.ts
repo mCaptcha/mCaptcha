@@ -8,28 +8,28 @@
  * this program. If not, see <https://spdx.org/licenses/MIT.html> for
  * MIT or <http://www.apache.org/licenses/LICENSE-2.0> for Apache.
  */
-import * as CONST from '../const';
+import * as CONST from "../const";
 
-export const sitekey = 'imbatman';
+export const sitekey = "imbatman";
 
-export const checkbox = <HTMLInputElement>document.createElement('input');
-checkbox.type = 'checkbox';
+export const checkbox = <HTMLInputElement>document.createElement("input");
+checkbox.type = "checkbox";
 checkbox.id = CONST.btnId;
 
 const getMessages = (state: string) => {
-  const msg = <HTMLElement>document.createElement('span');
+  const msg = <HTMLElement>document.createElement("span");
   msg.id = `widget__verification-text--${state}`;
   return msg;
 };
 
-export const beforeMsg = getMessages('before');
-export const afterMsg = getMessages('after');
-export const duringMsg = getMessages('during');
-export const errorMsg = getMessages('error');
+export const beforeMsg = getMessages("before");
+export const afterMsg = getMessages("after");
+export const duringMsg = getMessages("during");
+export const errorMsg = getMessages("error");
 
 /** get base HTML with empty mCaptcha container */
-export const getBaseHtml = () => {
-  const form = <HTMLFormElement>document.createElement('form');
+export const getBaseHtml = (): HTMLFormElement => {
+  const form = <HTMLFormElement>document.createElement("form");
   form.appendChild(checkbox);
   form.appendChild(beforeMsg);
   form.appendChild(duringMsg);

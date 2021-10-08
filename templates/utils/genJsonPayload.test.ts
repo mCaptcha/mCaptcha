@@ -15,22 +15,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import genJsonPayload from './genJsonPayload';
+import genJsonPayload from "./genJsonPayload";
 
-'use strict';
+"use strict";
 
 const payload = {
-  username: 'Jhon',
+  username: "Jhon",
 };
 
 const value = {
-  method: 'POST',
+  method: "POST",
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
   body: JSON.stringify(payload),
 };
 
-it('getFromUrl workds', () => {
+it("getFromUrl workds", () => {
   expect(genJsonPayload(payload)).toEqual(value);
 });

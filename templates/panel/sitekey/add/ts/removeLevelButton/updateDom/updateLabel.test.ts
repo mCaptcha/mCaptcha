@@ -15,18 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import getNumLevels from '../../levels/getNumLevels';
-import {getAddForm, trim} from '../../setupTests';
-import updateLabels from './updateLabel';
-import CONST from '../../const';
+import { trim } from "../../setupTests";
+import updateLabels from "./updateLabel";
+import CONST from "../../const";
 
-import log from '../../../../../../logger';
-import {MODE} from '../../../../../../logger';
-
-import {setupAddlevels} from './setupTests';
+import log from "../../../../../../logger";
+import { MODE } from "../../../../../../logger";
 
 /** get initial form to test remove button functionality */
-export const labelLevel = (level: number) => {
+export const labelLevel = (level: number): string => {
   return `
 <form class="sitekey-form" action="/api/v1/mcaptcha/levels/add" method="post">
   <fieldset class="sitekey__level-container" id="level-group-2">
@@ -85,11 +82,11 @@ document.body.innerHTML = labelLevel(2);
 
 log.setMode(MODE.none);
 
-it('addLevelButton works', () => {
+it("addLevelButton works", () => {
   // removing level  2
   const level = 2;
   const levelGroup = document.querySelector(
-    `#${CONST.LEVEL_FIELDSET_ID_WITHOUT_LEVEL}${level}`,
+    `#${CONST.LEVEL_FIELDSET_ID_WITHOUT_LEVEL}${level}`
   );
 
   const newLevel = 20;
@@ -100,22 +97,22 @@ it('addLevelButton works', () => {
     levelGroup.querySelectorAll(`.${CONST.LABEL_CLASS}`)
   );
   log.log(labels);
-  labels.forEach(label => {
+  labels.forEach((label) => {
     log.log(`${label.htmlFor}`);
     if (label.htmlFor.includes(CONST.VISITOR_WITHOUT_LEVEL)) {
       expect(label.htmlFor).toBe(`${CONST.VISITOR_WITHOUT_LEVEL}${newLevel}`);
     } else if (label.htmlFor.includes(CONST.DIFFICULTY_WITHOUT_LEVEL)) {
       expect(label.htmlFor).toBe(
-        `${CONST.DIFFICULTY_WITHOUT_LEVEL}${newLevel}`,
+        `${CONST.DIFFICULTY_WITHOUT_LEVEL}${newLevel}`
       );
     } else if (
       label.htmlFor.includes(CONST.REMOVE_LEVEL_BUTTON_ID_WITHOUT_LEVEL)
     ) {
       expect(label.htmlFor).toBe(
-        `${CONST.REMOVE_LEVEL_BUTTON_ID_WITHOUT_LEVEL}${newLevel}`,
+        `${CONST.REMOVE_LEVEL_BUTTON_ID_WITHOUT_LEVEL}${newLevel}`
       );
     } else {
-      throw new Error('Did you add an extra label to DOM?');
+      throw new Error("Did you add an extra label to DOM?");
     }
   });
 

@@ -16,7 +16,7 @@
  */
 
 /** get login form HTML */
-export const getLoginFormHtml = () =>
+export const getLoginFormHtml = (): string =>
   `
   <form method="POST" action="/something" id="form">
     <label class="form__in-group" for="username"
@@ -51,7 +51,7 @@ export const getLoginFormHtml = () =>
 `;
 
 /** get registration form HTML */
-export const getRegistrationFormHtml = () => `
+export const getRegistrationFormHtml = (): string => `
   <form method="POST" action="/api/v1/signup"  class="form__box" id="form">
     <label class="form__in-group" for="username"
       >Username
@@ -104,7 +104,7 @@ export const getRegistrationFormHtml = () => `
   </form>
 `;
 
-export const mockAlert = () => {
+export const mockAlert = (): void => {
   delete window.alert;
 
   window.alert = (x: any) => console.log(x);

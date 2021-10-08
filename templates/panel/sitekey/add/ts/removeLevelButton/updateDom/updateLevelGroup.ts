@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import CONST from '../../const';
+import CONST from "../../const";
 
 /** update level grup to match new level */
-const updateLevelGroup = (levelGroup: Element, newLevel: number) =>
+const updateLevelGroup = (levelGroup: Element, newLevel: number): string =>
   (levelGroup.id = `${CONST.LEVEL_FIELDSET_ID_WITHOUT_LEVEL}${newLevel}`);
 
 export default updateLevelGroup;

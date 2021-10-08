@@ -15,17 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import getNumLevels from '../levels/getNumLevels';
-import {
-  getAddForm,
-  getRemoveButtonHTMLForm,
-  trim,
-  addLevel,
-} from '../setupTests';
-import CONST from '../const';
+import getNumLevels from "../levels/getNumLevels";
+import { getAddForm, addLevel } from "../setupTests";
+import CONST from "../const";
 
-import log from '../../../../../logger';
-import {MODE} from '../../../../../logger';
+import log from "../../../../../logger";
+import { MODE } from "../../../../../logger";
 
 document.body.innerHTML = getAddForm();
 
@@ -46,13 +41,13 @@ const setUp = () => {
 
 log.setMode(MODE.none);
 
-it('removeLevelButton works', () => {
+it("removeLevelButton works", () => {
   setUp();
 
   for (let i = 1; i < 4; i++) {
     const l1 = <HTMLButtonElement>(
       document.getElementById(
-        `${CONST.REMOVE_LEVEL_BUTTON_ID_WITHOUT_LEVEL}${1}`,
+        `${CONST.REMOVE_LEVEL_BUTTON_ID_WITHOUT_LEVEL}${1}`
       )
     );
 

@@ -15,15 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import validateLevel from './validateLevel';
-import {getAddForm, level1, fillAddLevel} from '../setupTests';
-import setup from '../../../../../components/error/setUpTests';
+import validateLevel from "./validateLevel";
+import {getAddForm, level1, fillAddLevel} from "../setupTests";
+import setup from "../../../../../components/error/setUpTests";
 
 document.body.innerHTML = getAddForm();
 
 document.body.appendChild(setup());
 
-it('validate levels fields works', () => {
+it("validate levels fields works", () => {
   // null error
   expect(validateLevel(1)).toEqual(false);
 

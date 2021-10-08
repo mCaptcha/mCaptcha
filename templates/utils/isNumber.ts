@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-const isNumber = (value: string|number) => {
+const isNumber = (value: string|number): boolean => {
   value = value.toString();
   return /^\d+$/.test(value);
 };

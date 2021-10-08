@@ -15,14 +15,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import isNumber from './isNumber';
+import isNumber from "./isNumber";
 
-'use strict';
+"use strict";
 
-it('getFromUrl workds', () => {
-  expect(isNumber('test')).toBe(false);
-  expect(isNumber('1test213')).toBe(false);
+it("getFromUrl workds", () => {
+  expect(isNumber("test")).toBe(false);
+  expect(isNumber("1test213")).toBe(false);
 
-  expect(isNumber('12')).toBe(true);
+  expect(isNumber("12")).toBe(true);
   expect(isNumber(2)).toBe(true);
 });

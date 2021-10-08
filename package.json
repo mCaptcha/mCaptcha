@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "scripts": {
     "build": "webpack --mode production",
+    "lint":  "yarn run eslint templates",
     "start": "webpack-dev-server --mode development --progress --color",
     "test": "jest"
   },
@@ -12,10 +13,13 @@
     "@types/jsdom": "^16.2.10",
     "@types/node": "^15.0.2",
     "@types/sinon": "^10.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.31.2",
+    "@typescript-eslint/parser": "^4.31.2",
     "@wasm-tool/wasm-pack-plugin": "^1.4.0",
     "css-loader": "^5.2.4",
     "css-minimizer-webpack-plugin": "^2.0.0",
     "dart-sass": "^1.25.0",
+    "eslint": "^7.32.0",
     "jest": "^26.6.3",
     "jest-fetch-mock": "^3.0.3",
     "jsdom": "^16.5.3",

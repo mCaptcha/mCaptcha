@@ -15,18 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import getNumLevels from '../../levels/getNumLevels';
-import {getAddForm, trim} from '../../setupTests';
-import updateLevelGroup from './updateLevelGroup';
-import CONST from '../../const';
+import { trim} from "../../setupTests";
+import updateLevelGroup from "./updateLevelGroup";
+import CONST from "../../const";
 
-import log from '../../../../../../logger';
-import {MODE} from '../../../../../../logger';
+import log from "../../../../../../logger";
+import {MODE} from "../../../../../../logger";
 
-import {setupAddlevels} from './setupTests';
 
 /** get initial form to test remove button functionality */
-export const labelLevel = (level: number) => {
+export const labelLevel = (level: number): string => {
   return `
 <form class="sitekey-form" action="/api/v1/mcaptcha/levels/add" method="post">
   <fieldset class="sitekey__level-container" id="level-group-${level}">
@@ -85,7 +83,7 @@ document.body.innerHTML = labelLevel(2);
 
 log.setMode(MODE.none);
 
-it('update levelGroup works', () => {
+it("update levelGroup works", () => {
   // removing level  2
   const level = 2;
   const levelGroup = document.querySelector(

@@ -14,17 +14,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import CopyIcon from '../../../../components/clipboard/';
+import CopyIcon from "../../../../components/clipboard/";
 
-const SITEKEY_COPY_ICON = `sitekey__copy-icon`;
-const SITEKEY_COPY_DONE_ICON = `sitekey__copy-done-icon`;
+const SITEKEY_COPY_ICON = "sitekey__copy-icon";
+const SITEKEY_COPY_DONE_ICON = "sitekey__copy-done-icon";
 
-export const index = () => {
+export const index = (): void => {
   const image = document.querySelectorAll(`.${SITEKEY_COPY_ICON}`);
   image.forEach((img: HTMLElement) => {
     if (!img.classList.contains(SITEKEY_COPY_ICON)) {
       throw new Error(
-        'This method should only be called when sitekey copy button/icon is clicked',
+        "This method should only be called when sitekey copy button/icon is clicked"
       );
     }
     const sitekey = img.dataset.sitekey;

@@ -8,19 +8,19 @@
  * this program. If not, see <https://spdx.org/licenses/MIT.html> for
  * MIT or <http://www.apache.org/licenses/LICENSE-2.0> for Apache.
  */
-import LazyElement from '../../utils/lazyElement';
+import LazyElement from "../../utils/lazyElement";
 
 /** mcaptcha checkbox ID **/
-export const btnId = 'widget__verification-checkbox';
+export const btnId = "widget__verification-checkbox";
 
 /** get sitekey */
-export const sitekey = () => {
+export const sitekey = (): string => {
   let sitekey;
   return (() => {
     if (sitekey === null || sitekey === undefined) {
-      sitekey = new URL(window.location.href).searchParams.get('sitekey');
+      sitekey = new URL(window.location.href).searchParams.get("sitekey");
       if (sitekey === null || sitekey === undefined) {
-        throw new Error(`Define sitekey in query parameter`);
+        throw new Error("Define sitekey in query parameter");
       }
     }
     return sitekey;
@@ -29,8 +29,8 @@ export const sitekey = () => {
 
 /** mCaptcha API routes */
 export const ROUTES = (() => {
-  const getConfig = '/api/v1/pow/config';
-  const verififyPoW = '/api/v1/pow/verify';
+  const getConfig = "/api/v1/pow/config";
+  const verififyPoW = "/api/v1/pow/verify";
 
   return {
     /** get URL to fetch PoW configuration */
@@ -41,24 +41,31 @@ export const ROUTES = (() => {
 })();
 
 /** get mCaptcha verifify checkbox button */
-export const btn = () => {
+export const btn = (): HTMLInputElement => {
   let btn;
   return (() => {
     if (btn === null || btn === undefined) {
       btn = <HTMLInputElement>document.getElementById(btnId);
       if (btn === null || btn === undefined) {
-        throw new Error(`mCaptcha button not found)`);
+        throw new Error("mCaptcha button not found)");
       }
     }
     return btn;
   })();
 };
 
-export const messageText = () => {
-  const beforeID = 'widget__verification-text--before';
-  const duringID = 'widget__verification-text--during';
-  const errorID = 'widget__verification-text--error';
-  const afterID = 'widget__verification-text--after';
+type messageTextReturn = {
+  before: () => void;
+  after: () => void;
+  during: () => void;
+  error: () => void;
+};
+
+export const messageText = (): messageTextReturn => {
+  const beforeID = "widget__verification-text--before";
+  const duringID = "widget__verification-text--during";
+  const errorID = "widget__verification-text--error";
+  const afterID = "widget__verification-text--after";
 
   const before = new LazyElement(beforeID);
   const after = new LazyElement(afterID);
@@ -70,9 +77,9 @@ export const messageText = () => {
   //  let error: HTMLElement;
 
   /** runner fn to display HTMLElement **/
-  const showMsg = (e: HTMLElement) => (e.style.display = 'block');
+  const showMsg = (e: HTMLElement) => (e.style.display = "block");
   /** runner fn to hide HTMLElement **/
-  const hideMsg = (e: HTMLElement) => (e.style.display = 'none');
+  const hideMsg = (e: HTMLElement) => (e.style.display = "none");
 
   return {
     /** display "before" message **/
@@ -109,4 +116,4 @@ export const messageText = () => {
   };
 };
 
-export const inputId = 'mcaptcha-response';
+export const inputId = "mcaptcha-response";

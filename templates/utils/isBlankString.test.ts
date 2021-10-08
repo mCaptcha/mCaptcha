@@ -15,22 +15,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import isBlankString from './isBlankString';
-import {mockAlert} from '../setUpTests';
+import isBlankString from "./isBlankString";
+import {mockAlert} from "../setUpTests";
 
 
-import setup from '../components/error/setUpTests';
+import setup from "../components/error/setUpTests";
 
-'use strict';
+"use strict";
 
 mockAlert();
 
-it('getFromUrl workds', () => {
-  document.querySelector('body').appendChild(setup());
-  expect(isBlankString('test', 'username')).toBe(false);
+it("getFromUrl workds", () => {
+  document.querySelector("body").appendChild(setup());
+  expect(isBlankString("test", "username")).toBe(false);
   try {
-    isBlankString('  ', 'username');
+    isBlankString("  ", "username");
   } catch (e) {
-    expect(e.message).toContain(`can't be empty`);
+    expect(e.message).toContain("can't be empty");
   }
 });

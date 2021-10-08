@@ -15,8 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import registerShowPassword from './index';
-import {showPassword} from './index';
+import registerShowPassword from "./index";
+import {showPassword} from "./index";
 
 const initial_content = `
 <form class="sitekey-form" method="POST" action="/api/v1/signin" id="form" data-bitwarden-watching="1">
@@ -41,49 +41,49 @@ const initial_content = `
   </form>
   `;
 
-it('show password works', () => {
+it("show password works", () => {
   document.body.innerHTML = initial_content;
 
   const container = <HTMLElement>(
-    document.querySelector(`.show-password-container`)
+    document.querySelector(".show-password-container")
   );
-  const hide = <HTMLElement>container.querySelector('.show-password--hide');
-  const show = <HTMLElement>container.querySelector('.show-password--show');
-  const password = <HTMLInputElement>document.getElementById('password');
-  show.style.display = 'inline';
-  hide.style.display = 'none';
+  const hide = <HTMLElement>container.querySelector(".show-password--hide");
+  const show = <HTMLElement>container.querySelector(".show-password--show");
+  const password = <HTMLInputElement>document.getElementById("password");
+  show.style.display = "inline";
+  hide.style.display = "none";
 
   showPassword();
-  expect(hide.style.display).toEqual('inline');
-  expect(show.style.display).toEqual('none');
-  expect(password.type).toEqual('text');
+  expect(hide.style.display).toEqual("inline");
+  expect(show.style.display).toEqual("none");
+  expect(password.type).toEqual("text");
 
   showPassword();
-  expect(show.style.display).toEqual('inline');
-  expect(hide.style.display).toEqual('none');
-  expect(password.type).toEqual('password');
+  expect(show.style.display).toEqual("inline");
+  expect(hide.style.display).toEqual("none");
+  expect(password.type).toEqual("password");
 });
 
-it('show password click works', () => {
+it("show password click works", () => {
   document.body.innerHTML = initial_content;
 
   const container = <HTMLElement>(
-    document.querySelector(`.show-password-container`)
+    document.querySelector(".show-password-container")
   );
-  const hide = <HTMLElement>container.querySelector('.show-password--hide');
-  const show = <HTMLElement>container.querySelector('.show-password--show');
-  const password = <HTMLInputElement>document.getElementById('password');
-  show.style.display = 'inline';
-  hide.style.display = 'none';
+  const hide = <HTMLElement>container.querySelector(".show-password--hide");
+  const show = <HTMLElement>container.querySelector(".show-password--show");
+  const password = <HTMLInputElement>document.getElementById("password");
+  show.style.display = "inline";
+  hide.style.display = "none";
 
   registerShowPassword();
   container.click();
-  expect(hide.style.display).toEqual('inline');
-  expect(show.style.display).toEqual('none');
-  expect(password.type).toEqual('text');
+  expect(hide.style.display).toEqual("inline");
+  expect(show.style.display).toEqual("none");
+  expect(password.type).toEqual("text");
 
   container.click();
-  expect(show.style.display).toEqual('inline');
-  expect(hide.style.display).toEqual('none');
-  expect(password.type).toEqual('password');
+  expect(show.style.display).toEqual("inline");
+  expect(hide.style.display).toEqual("none");
+  expect(password.type).toEqual("password");
 });

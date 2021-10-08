@@ -15,12 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import getNumLevels from '../../levels/getNumLevels';
-import {getAddForm, addLevel} from '../../setupTests';
+import getNumLevels from "../../levels/getNumLevels";
+import { getAddForm, addLevel } from "../../setupTests";
 
 document.body.innerHTML = getAddForm();
 
-export const setupAddlevels = () => {
+export const setupAddlevels = (): void => {
   expect(getNumLevels()).toBe(1);
   // add a level
   addLevel(2, 2);

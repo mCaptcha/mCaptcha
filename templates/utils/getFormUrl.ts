@@ -21,12 +21,12 @@
  * So when using class-names, pass in ".whatever-classname"
  * and for ID, "#id".
  * */
-const getFormUrl = (querySelector?: string | HTMLFormElement) => {
+const getFormUrl = (querySelector?: string | HTMLFormElement): string => {
   let form;
   if (querySelector === undefined) {
-    form = <HTMLFormElement>document.querySelector('form');
+    form = <HTMLFormElement>document.querySelector("form");
   }
-  if (typeof querySelector == 'string' || querySelector instanceof String) {
+  if (typeof querySelector == "string" || querySelector instanceof String) {
     form = <HTMLFormElement>document.querySelector(querySelector.toString());
   }
   if (querySelector instanceof HTMLFormElement) {

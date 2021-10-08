@@ -14,17 +14,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import isNumber from '../../../../../utils/isNumber';
+import isNumber from "../../../../../utils/isNumber";
 
-const validateDuration = (e: Event) => {
-  const duartionElement = <HTMLInputElement>document.getElementById('duration');
+const validateDuration = (): number => {
+  const duartionElement = <HTMLInputElement>document.getElementById("duration");
   const duration = parseInt(duartionElement.value);
   if (!isNumber(duration) || Number.isNaN(duration)) {
-    throw new Error('duration can contain nubers only');
+    throw new Error("duration can contain nubers only");
   }
 
   if (duration <= 0) {
-    throw new Error('duration must be greater than zero');
+    throw new Error("duration must be greater than zero");
   }
   return duration;
 };

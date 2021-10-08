@@ -17,7 +17,7 @@
 use actix_identity::Identity;
 use actix_web::{web, HttpResponse, Responder};
 use futures::future::try_join_all;
-use libmcaptcha::{defense::Level, DefenseBuilder, master::messages::RemoveCaptcha};
+use libmcaptcha::{defense::Level, master::messages::RemoveCaptcha, DefenseBuilder};
 use log::debug;
 use serde::{Deserialize, Serialize};
 
@@ -190,8 +190,16 @@ async fn update_levels(
     }
 
     try_join_all(futs).await?;
-    if let Err(ServiceError::CaptchaError(e)) =  data.captcha.remove(RemoveCaptcha(payload.key.clone())).await {
-        log::error!("Deleting captcha key {} while updating it, error: {:?}", &payload.key, e)
+    if let Err(ServiceError::CaptchaError(e)) = data
+        .captcha
+        .remove(RemoveCaptcha(payload.key.clone()))
+        .await
+    {
+        log::error!(
+            "Deleting captcha key {} while updating it, error: {:?}",
+            &payload.key,
+            e
+        )
     }
     Ok(HttpResponse::Ok())
 }

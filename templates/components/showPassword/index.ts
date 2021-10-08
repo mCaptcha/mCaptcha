@@ -15,12 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-const showPasswordButtonClassHidden = 'show-password--hide';
-const showPasswordButtonClassShowing = 'show-password--show';
+const showPasswordButtonClassHidden = "show-password--hide";
+const showPasswordButtonClassShowing = "show-password--show";
 
-const container = 'show-password-container';
+const container = "show-password-container";
 
-let display = 'hidden';
+let display = "hidden";
 
 const showPasswordButtons = () => {
   let buttons: NodeListOf<HTMLElement>;
@@ -49,45 +49,45 @@ const hidePasswordButtons = () => {
 };
 
 // e is click event from show password container
-export const showPassword = () => {
-  const inputs = document.body.querySelectorAll('input');
+export const showPassword = (): void => {
+  const inputs = document.body.querySelectorAll("input");
 
-  if (display == 'hidden') {
-    display = 'show';
+  if (display == "hidden") {
+    display = "show";
     inputs.forEach(element => {
-      if (element.type === 'password') {
-        element.type = 'text';
+      if (element.type === "password") {
+        element.type = "text";
       }
     });
     showPasswordButtons().forEach((button: HTMLInputElement) => {
-      button.style.display = 'none';
+      button.style.display = "none";
     });
 
     hidePasswordButtons().forEach((button: HTMLInputElement) => {
-      button.style.display = 'inline';
+      button.style.display = "inline";
     });
   } else {
-    display = 'hidden';
+    display = "hidden";
     inputs.forEach(element => {
-      if (element.type === 'text' && element.name.includes('password')) {
-        element.type = 'password';
+      if (element.type === "text" && element.name.includes("password")) {
+        element.type = "password";
       }
     });
     showPasswordButtons().forEach((button: HTMLInputElement) => {
-      button.style.display = 'inline';
+      button.style.display = "inline";
     });
 
     hidePasswordButtons().forEach((button: HTMLInputElement) => {
-      button.style.display = 'none';
+      button.style.display = "none";
     });
   }
 
   // posibily clicked on something else
 };
 
-export const registerShowPassword = () => {
+export const registerShowPassword = (): void => {
   document.querySelectorAll(`.${container}`).forEach(container => {
-    container.addEventListener('click', showPassword);
+    container.addEventListener("click", showPassword);
   });
 };
 

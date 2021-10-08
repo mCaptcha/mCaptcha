@@ -15,15 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import ROUTES from '../../../api/v1/routes';
+import ROUTES from "../../../api/v1/routes";
 
-import genJsonPayload from '../../../utils/genJsonPayload';
-import createError from '../../../components/error/index';
+import genJsonPayload from "../../../utils/genJsonPayload";
+import createError from "../../../components/error/index";
 
-const emailExists = async (element?: HTMLInputElement) => {
+const emailExists = async (element?: HTMLInputElement): Promise<boolean> => {
   let email;
   if (element === undefined || element === null) {
-    email = <HTMLInputElement>document.getElementById('email');
+    email = <HTMLInputElement>document.getElementById("email");
   } else {
     email = element;
   }
@@ -37,7 +37,7 @@ const emailExists = async (element?: HTMLInputElement) => {
   if (res.ok) {
     const data = await res.json();
     if (data.exists) {
-      email.className += ' form__in-field--warn';
+      email.className += " form__in-field--warn";
       createError(`Email "${val}" is already used`);
       return data.exists;
     }

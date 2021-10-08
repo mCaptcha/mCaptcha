@@ -80,6 +80,9 @@ jobs:
 
             #      - name: build frontend
             #        run: make frontend
+            #
+      - name: lint frontend
+        run: yarn lint
 
       - name: run tests
         run: make test

@@ -15,9 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-const additionalData = () => {
+const additionalData = (): HTMLElement => {
   let element = null;
-  const ID = 'additional-data';
+  const ID = "additional-data";
 
   if (element === null) {
     element = <HTMLElement>document.getElementById(ID);
@@ -29,7 +29,7 @@ const additionalData = () => {
       return element;
     }
   } else {
-    element;
+    return element;
   }
 };
 

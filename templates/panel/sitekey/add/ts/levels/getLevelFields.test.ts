@@ -15,27 +15,27 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import getLevelFields from './getLevelFields';
+import getLevelFields from "./getLevelFields";
 import {
   getAddForm,
   level1,
   level2,
   fillAddLevel,
   addLevel,
-} from '../setupTests';
+} from "../setupTests";
 
 document.body.innerHTML = getAddForm();
 
-const visNumErr = 'visitor can contain nubers only';
-const diffNumErr = 'difficulty can contain nubers only';
+const visNumErr = "visitor can contain nubers only";
+const diffNumErr = "difficulty can contain nubers only";
 
-it('get levels fields works', () => {
+it("get levels fields works", () => {
   addLevel(level1.visitor_threshold, level1.difficulty_factor);
   expect(getLevelFields(1)).toEqual(level1);
 
   // NaN visitor
   try {
-    fillAddLevel('test', level2.difficulty_factor);
+    fillAddLevel("test", level2.difficulty_factor);
     getLevelFields(2);
   } catch (e) {
     expect(e.message).toBe(visNumErr);
@@ -43,7 +43,7 @@ it('get levels fields works', () => {
 
   // Nan difficulty_factor
   try {
-    fillAddLevel(level2.visitor_threshold, 'fooasdads');
+    fillAddLevel(level2.visitor_threshold, "fooasdads");
     getLevelFields(2);
   } catch (e) {
     expect(e.message).toBe(diffNumErr);

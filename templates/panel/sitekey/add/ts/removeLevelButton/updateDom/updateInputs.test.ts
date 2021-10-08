@@ -15,20 +15,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import {getAddForm, trim} from '../../setupTests';
-import updateInputs from './updateInputs';
-import CONST from '../../const';
+import {getAddForm, trim} from "../../setupTests";
+import updateInputs from "./updateInputs";
+import CONST from "../../const";
 
-import log from '../../../../../../logger';
-import {MODE} from '../../../../../../logger';
+import log from "../../../../../../logger";
+import {MODE} from "../../../../../../logger";
 
-import {setupAddlevels} from './setupTests';
+import {setupAddlevels} from "./setupTests";
 
 document.body.innerHTML = getAddForm();
 
 log.setMode(MODE.none);
 
-it('updateInputs works', () => {
+it("updateInputs works", () => {
   setupAddlevels();
   // removing level  2
   const level = 2;
@@ -58,7 +58,7 @@ it('updateInputs works', () => {
 });
 
 /** get initial form to test remove button functionality */
-export const update = () => {
+export const update = (): string => {
   return `
 <form class="sitekey-form" action="/api/v1/mcaptcha/levels/add" method="post">
   <h1 class="form__title">

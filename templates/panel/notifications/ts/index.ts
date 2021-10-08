@@ -15,13 +15,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import genJsonPayload from '../../../utils/genJsonPayload';
-import createError from '../../../components/error';
+import genJsonPayload from "../../../utils/genJsonPayload";
+import createError from "../../../components/error";
 
-import ROUTES from '../../../api/v1/routes';
+import ROUTES from "../../../api/v1/routes";
 
-const BTN = document.querySelectorAll('.notification__mark-read-btn');
-const TABLE_BODY = document.querySelector('.notification__body');
+const BTN = document.querySelectorAll(".notification__mark-read-btn");
+const TABLE_BODY = document.querySelector(".notification__body");
 
 const notification_record = (id: number) =>
   <HTMLElement>TABLE_BODY.querySelector(`#notification__item-${id}`);
@@ -46,10 +46,10 @@ const markRead = async (e: Event) => {
 
 const addMarkReadEventListenet = () => {
   BTN.forEach(btn => {
-    btn.addEventListener('click', markRead, true);
+    btn.addEventListener("click", markRead, true);
   });
 };
 
-export const index = () => {
+export const index = (): void => {
   addMarkReadEventListenet();
 };

@@ -15,14 +15,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import {LEVELS, Level} from './index';
-import {level1, level1visErr, level1diffErr, level2} from '../setupTests';
+import {LEVELS, Level} from "./index";
+import {level1, level1visErr, level1diffErr, level2} from "../setupTests";
 
-const visitorErr = 'visitor count should be greater than previous levels';
-const difficultyErr = 'difficulty should be greater than previous levels';
+const visitorErr = "visitor count should be greater than previous levels";
+const difficultyErr = "difficulty should be greater than previous levels";
 
-const zeroVisError = 'visitors must be greater than zero';
-const zeroDiffError = 'difficulty must be greater than zero';
+const zeroVisError = "visitors must be greater than zero";
+const zeroDiffError = "difficulty must be greater than zero";
 
 const zeroVis: Level = {
   difficulty_factor: 10,
@@ -34,7 +34,7 @@ const zeroDiff: Level = {
   visitor_threshold: 10,
 };
 
-it('LEVELS works', () => {
+it("LEVELS works", () => {
   // add level
   LEVELS.add(level1);
   expect(LEVELS.getLevels()).toEqual([level1]);

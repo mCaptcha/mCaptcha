@@ -15,33 +15,33 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import VIEWS from '../../../views/v1/routes';
+import VIEWS from "../../../views/v1/routes";
 
-import isBlankString from '../../../utils/isBlankString';
-import genJsonPayload from '../../../utils/genJsonPayload';
+import isBlankString from "../../../utils/isBlankString";
+import genJsonPayload from "../../../utils/genJsonPayload";
 
-import userExists from './userExists';
-import emailExists from './emailExists';
-import getFormUrl from '../../../utils/getFormUrl';
-import registerShowPassword from '../../../components/showPassword';
-import createError from '../../../components/error/index';
+import userExists from "./userExists";
+import emailExists from "./emailExists";
+import getFormUrl from "../../../utils/getFormUrl";
+import registerShowPassword from "../../../components/showPassword";
+import createError from "../../../components/error/index";
 
 //import '../forms.scss';
 
-const usernameElement = <HTMLInputElement>document.getElementById('username');
-const emailElement = <HTMLInputElement>document.getElementById('email');
-const passwordElement = <HTMLInputElement>document.getElementById('password');
+const usernameElement = <HTMLInputElement>document.getElementById("username");
+const emailElement = <HTMLInputElement>document.getElementById("email");
+const passwordElement = <HTMLInputElement>document.getElementById("password");
 
-const registerUser = async (e: Event) => {
+const registerUser = async (e: Event): Promise<void> => {
   e.preventDefault();
 
   const username = usernameElement.value;
-  isBlankString(username, 'username', e);
+  isBlankString(username, "username", e);
   //isBlankString(e);//, username, 'username');
 
   const password = passwordElement.value;
   const passwordCheckElement = <HTMLInputElement>(
-    document.getElementById('password-check')
+    document.getElementById("password-check")
   );
   const passwordCheck = passwordCheckElement.value;
   if (password != passwordCheck) {
@@ -54,7 +54,7 @@ const registerUser = async (e: Event) => {
   }
 
   let email: string | null = emailElement.value;
-  if (!email.replace(/\s/g, '').length) {
+  if (!email.replace(/\s/g, "").length) {
     email = null;
   } else {
     exists = await emailExists();
@@ -80,11 +80,11 @@ const registerUser = async (e: Event) => {
   }
 };
 
-export const index = () => {
-  const form = <HTMLFontElement>document.getElementById('form');
-  form.addEventListener('submit', registerUser, true);
+export const index = (): void => {
+  const form = <HTMLFontElement>document.getElementById("form");
+  form.addEventListener("submit", registerUser, true);
   usernameElement.addEventListener(
-    'input',
+    "input",
     async () => await userExists(),
     false,
   );

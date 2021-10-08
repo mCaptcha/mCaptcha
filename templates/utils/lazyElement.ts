@@ -22,7 +22,7 @@ class LazyElement {
     this.id = id;
   }
 
-  get() {
+  get(): HTMLElement {
     if (this.element === null || this.element === undefined) {
       const element = document.getElementById(this.id);
       if (element === null || element === undefined) {

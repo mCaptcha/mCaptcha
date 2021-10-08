@@ -15,16 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import getNumLevels from './levels/getNumLevels';
-import {getAddForm, trim, addLevel} from './setupTests';
-import setup from '../../../../components/error/setUpTests';
+import getNumLevels from "./levels/getNumLevels";
+import {getAddForm, trim, addLevel} from "./setupTests";
+import setup from "../../../../components/error/setUpTests";
 
 document.body.innerHTML = getAddForm();
 document.body.appendChild(setup());
 
 jest.useFakeTimers();
 
-it('addLevelButton works', () => {
+it("addLevelButton works", () => {
   expect(getNumLevels()).toBe(1);
   // add a level
   addLevel(2, 4);
@@ -36,7 +36,7 @@ it('addLevelButton works', () => {
   addLevel(4, 9);
   expect(getNumLevels()).toBe(3);
 
-  let a = document.body.innerHTML;
+  const a = document.body.innerHTML;
 
 
   expect(trim(a)).toBe(trim(finalHtml()));

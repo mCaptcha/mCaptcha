@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import CONST from '../../const';
+import CONST from "../../const";
 
 /** update remove level button's ID */
-const updateRemoveButton = (levelGroup: Element, newLevel: number) => {
+const updateRemoveButton = (levelGroup: Element, newLevel: number): void => {
   // rename button
   const button = <HTMLInputElement>(
     levelGroup.querySelector(`.${CONST.REMOVE_LEVEL_BUTTON_CLASS}`)

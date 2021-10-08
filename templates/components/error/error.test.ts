@@ -15,16 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import createError from './index';
-import * as e from './index';
+import createError from "./index";
+import * as e from "./index";
 
-import setup from './setUpTests';
+import setup from "./setUpTests";
 
-'use strict';
+"use strict";
 
 jest.useFakeTimers();
 
-it('checks if error boxes work', () => {
+it("checks if error boxes work", () => {
   document.body.append(setup());
 
   const getMsg = (num: number) => `message ${num}`;
@@ -32,21 +32,21 @@ it('checks if error boxes work', () => {
   let msg = document.querySelector(`.${e.ERR_MSG_CONTAINER}`);
   expect(msg.innerHTML).toContain(getMsg(1));
 
-  let btn = <HTMLButtonElement>msg.getElementsByClassName(e.ERR_CLOSE)[0];
+  const btn = <HTMLButtonElement>msg.getElementsByClassName(e.ERR_CLOSE)[0];
   btn.click();
   msg = document.querySelector(`.${e.ERR_MSG_CONTAINER}`);
   expect(msg).toEqual(null);
 
-  const errElement = document.createElement('p');
+  const errElement = document.createElement("p");
   errElement.appendChild(document.createTextNode(getMsg(2)));
   createError(errElement);
-  msg = document.querySelector(`.${e.ERR_MSG_CONTAINER}`).querySelector('p');
+  msg = document.querySelector(`.${e.ERR_MSG_CONTAINER}`).querySelector("p");
   expect(msg).toEqual(errElement);
 
-  let timeOutElement = document.createElement('p');
+  const timeOutElement = document.createElement("p");
   timeOutElement.appendChild(document.createTextNode(getMsg(2)));
   createError(timeOutElement, 200);
-  msg = document.querySelector(`.${e.ERR_MSG_CONTAINER}`).querySelector('p');
+  msg = document.querySelector(`.${e.ERR_MSG_CONTAINER}`).querySelector("p");
   expect(msg).toEqual(timeOutElement);
   jest.runOnlyPendingTimers();
   msg = document.querySelector(`.${e.ERR_MSG_CONTAINER}`);

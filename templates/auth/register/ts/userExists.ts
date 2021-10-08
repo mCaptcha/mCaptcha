@@ -15,16 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import ROUTES from '../../../api/v1/routes';
+import ROUTES from "../../../api/v1/routes";
 
-import genJsonPayload from '../../../utils/genJsonPayload';
-import createError from '../../../components/error/index';
+import genJsonPayload from "../../../utils/genJsonPayload";
+import createError from "../../../components/error/index";
 
-const userExists = async (element?: HTMLInputElement) => {
+const userExists = async (element?: HTMLInputElement): Promise<boolean> => {
   console.log(element);
   let username;
   if (element === undefined) {
-    username = <HTMLInputElement>document.getElementById('username');
+    username = <HTMLInputElement>document.getElementById("username");
   } else {
     username = element;
   }
@@ -37,7 +37,7 @@ const userExists = async (element?: HTMLInputElement) => {
   if (res.ok) {
     const data = await res.json();
     if (data.exists) {
-      username.className += ' form__in-field--warn';
+      username.className += " form__in-field--warn";
       createError(`Username "${val}" taken`);
     }
     return data.exists;

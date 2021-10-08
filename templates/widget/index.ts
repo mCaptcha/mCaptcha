@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import './main.scss';
+import "./main.scss";
 //import prove from './runner/prove';
 //import fetchPoWConfig from './runner/fetchPoWConfig';
 //import sendWork from './runner/sendWork';

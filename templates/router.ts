@@ -19,11 +19,11 @@
 const normalizeUri = (uri: string) => {
   uri = uri.trim();
   if (uri.length == 0) {
-    throw new Error('uri is empty');
+    throw new Error("uri is empty");
   }
 
-  let uriLength = uri.length;
-  if (uri[uriLength - 1] == '/') {
+  const uriLength = uri.length;
+  if (uri[uriLength - 1] == "/") {
     uri = uri.slice(0, uriLength - 1);
   }
   return uri;
@@ -51,14 +51,14 @@ export class Router {
    * @param {function} fn: - function to be registered when window.locatin.path
    * matches uri
    * */
-  register(uri: string, fn: () => void) {
+  register(uri: string, fn: () => void): void {
     uri = normalizeUri(uri);
 
-    let pattern = new RegExp(`^${uri}$`);
+    const pattern = new RegExp(`^${uri}$`);
 
-    let patterString = pattern.toString();
+    const patterString = pattern.toString();
     if (
-      this.routes.find(route => {
+      this.routes.find((route) => {
         if (route.pattern.toString() == patterString) {
           return true;
         } else {
@@ -66,7 +66,7 @@ export class Router {
         }
       })
     ) {
-      throw new Error('URI exists');
+      throw new Error("URI exists");
     }
 
     const route: routeTuple = {
@@ -80,13 +80,13 @@ export class Router {
    * executes registered function with route
    * matches window.pathname.location
    * */
-  route() {
+  route(): void {
     const path = normalizeUri(window.location.pathname);
 
     let fn: undefined | (() => void);
 
     if (
-      this.routes.find(route => {
+      this.routes.find((route) => {
         if (path.match(route.pattern)) {
           fn = route.fn;
           return true;

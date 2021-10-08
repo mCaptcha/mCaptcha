@@ -15,11 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import validateDescription from './validateDescription';
-import {getAddForm, fillDescription} from '../setupTests';
-import {mockAlert} from '../../../../../setUpTests';
+import validateDescription from "./validateDescription";
+import {getAddForm, fillDescription} from "../setupTests";
+import {mockAlert} from "../../../../../setUpTests";
 
-import setup from '../../../../../components/error/setUpTests';
+import setup from "../../../../../components/error/setUpTests";
 
 mockAlert();
 
@@ -27,17 +27,17 @@ document.body.innerHTML = getAddForm();
 
 const emptyErr = "can't be empty";
 
-it('validateDescription workds', () => {
-  document.querySelector('body').appendChild(setup());
+it("validateDescription workds", () => {
+  document.querySelector("body").appendChild(setup());
   try {
-    const event = new Event('submit');
+    const event = new Event("submit");
     validateDescription(event);
   } catch (e) {
     expect(e.message).toContain(emptyErr);
   }
 
   // fill and validate
-  fillDescription('testing');
-  const event = new Event('submit');
+  fillDescription("testing");
+  const event = new Event("submit");
   validateDescription(event);
 });

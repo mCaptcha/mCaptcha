@@ -9,9 +9,9 @@
  * MIT or <http://www.apache.org/licenses/LICENSE-2.0> for Apache.
  */
 
-import {gen_pow} from 'mcaptcha-browser';
-import {PoWConfig} from './fetchPoWConfig';
-import * as CONST from './const';
+import { gen_pow } from "mcaptcha-browser";
+import { PoWConfig } from "./fetchPoWConfig";
+import * as CONST from "./const";
 
 export type Work = {
   result: string;
@@ -30,26 +30,22 @@ type WasmWork = {
  * @param {PoWConfig} config - the proof-of-work configuration using which
  * work needs to be computed
  * */
-const prove = async (config: PoWConfig) => {
-  try {
-    const proofString = gen_pow(
-      config.salt,
-      config.string,
-      config.difficulty_factor,
-    );
-    const proof: WasmWork = JSON.parse(proofString);
+const prove = async (config: PoWConfig): Promise<Work> => {
+  const proofString = gen_pow(
+    config.salt,
+    config.string,
+    config.difficulty_factor
+  );
+  const proof: WasmWork = JSON.parse(proofString);
 
-    const res: Work = {
-      key: CONST.sitekey(),
-      string: config.string,
-      nonce: proof.nonce,
-      result: proof.result,
-    };
+  const res: Work = {
+    key: CONST.sitekey(),
+    string: config.string,
+    nonce: proof.nonce,
+    result: proof.result,
+  };
 
-    return res;
-  } catch (err) {
-    throw err;
-  }
+  return res;
 };
 
 export default prove;

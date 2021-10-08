@@ -15,30 +15,31 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import {LEVELS} from '../levels';
+import { LEVELS } from "../levels";
 
-import getFormUrl from '../../../../../utils/getFormUrl';
-import genJsonPayload from '../../../../../utils/genJsonPayload';
+import getFormUrl from "../../../../../utils/getFormUrl";
+import genJsonPayload from "../../../../../utils/genJsonPayload";
 
-import VIEWS from '../../../../../views/v1/routes';
+import VIEWS from "../../../../../views/v1/routes";
 
-import validateDescription from './validateDescription';
-import validateDuration from './validateDuration';
+import validateDescription from "./validateDescription";
+import validateDuration from "./validateDuration";
 
-import createError from '../../../../../components/error';
+import createError from "../../../../../components/error";
 
-export const SITE_KEY_FORM_CLASS = 'sitekey-form';
-export const FORM = <HTMLFormElement>document.querySelector(`.${SITE_KEY_FORM_CLASS}`);
+export const SITE_KEY_FORM_CLASS = "sitekey-form";
+export const FORM = <HTMLFormElement>(
+  document.querySelector(`.${SITE_KEY_FORM_CLASS}`)
+);
 
-export const addSubmitEventListener = () => {
-  FORM.addEventListener('submit', submit, true);
-};
+export const addSubmitEventListener = (): void =>
+  FORM.addEventListener("submit", submit, true);
 
 const submit = async (e: Event) => {
   e.preventDefault();
 
   const description = validateDescription(e);
-  const duration = validateDuration(e);
+  const duration = validateDuration();
 
   const formUrl = getFormUrl(FORM);
 

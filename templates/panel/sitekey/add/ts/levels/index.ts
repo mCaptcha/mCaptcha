@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import log from '../../../../../logger';
+import log from "../../../../../logger";
 
 /** Datatype represenging an mCaptcha level */
 export type Level = {
@@ -95,7 +95,7 @@ export const LEVELS = (function() {
           }
         }
         levels.levels = tmpLevel.levels;
-        log.debug(`post update:`);
+        log.debug("post update:");
         LEVELS.print();
         return true;
       } catch (e) {
@@ -133,7 +133,7 @@ export const LEVELS = (function() {
           }
         }
         levels.levels = tmpLevel.levels;
-        log.debug('Post remove:');
+        log.debug("Post remove:");
         LEVELS.print();
         return true;
       } catch (e) {

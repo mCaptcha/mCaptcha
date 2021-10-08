@@ -15,15 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import {LEVELS} from './index';
-import getLevelFields from './getLevelFields';
-import createError from '../../../../../components/error/';
+import {LEVELS} from "./index";
+import getLevelFields from "./getLevelFields";
+import createError from "../../../../../components/error/";
 
 /**
  * Fetches level from DOM using the ID passesd and validates
  * its contents
  * */
-const validateLevel = (id: number) => {
+const validateLevel = (id: number): boolean => {
   try {
     const level = getLevelFields(id);
     LEVELS.add(level);

@@ -15,12 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import isBlankString from '../../../../../utils/isBlankString';
+import isBlankString from "../../../../../utils/isBlankString";
 
-const validateDescription = (e: Event) => {
-  const inputElement = <HTMLInputElement>document.getElementById('description');
+const validateDescription = (e: Event): string => {
+  const inputElement = <HTMLInputElement>document.getElementById("description");
   const val = inputElement.value;
-  const filed = 'Description';
+  const filed = "Description";
   isBlankString(val, filed, e);
   return val;
 };

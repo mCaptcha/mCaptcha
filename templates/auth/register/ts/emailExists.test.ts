@@ -15,13 +15,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import fetchMock from 'jest-fetch-mock';
+import fetchMock from "jest-fetch-mock";
 
-import emailExists from './emailExists';
+import emailExists from "./emailExists";
 
-import {mockAlert, getRegistrationFormHtml} from '../../../setUpTests';
+import {mockAlert, getRegistrationFormHtml} from "../../../setUpTests";
 
-import setup from '../../../components/error/setUpTests';
+import setup from "../../../components/error/setUpTests";
 
 fetchMock.enableMocks();
 mockAlert();
@@ -30,14 +30,14 @@ beforeEach(() => {
   fetchMock.resetMocks();
 });
 
-it('finds exchange', async () => {
+it("finds exchange", async () => {
   fetchMock.mockResponseOnce(JSON.stringify({exists: true}));
 
   document.body.innerHTML = getRegistrationFormHtml();
-  document.querySelector('body').appendChild(setup());
+  document.querySelector("body").appendChild(setup());
 
-  const emailField = <HTMLInputElement>document.getElementById('email');
-  emailField.setAttribute('value', 'test@a.com');
+  const emailField = <HTMLInputElement>document.getElementById("email");
+  emailField.setAttribute("value", "test@a.com");
 
   expect(await emailExists()).toBe(true);
 

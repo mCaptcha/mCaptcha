@@ -16,20 +16,20 @@
  */
 
 const ROUTES = {
-  registerUser: '/join/',
-  loginUser: '/login/',
-  signoutUser: '/api/v1/signout',
-  panelHome: '/',
-  settings: '/settings/',
-  updateSecret: '/settings/secret/update/',
-  deleteAccount: '/settings/account/delete/',
-  docsHome: '/docs/',
-  notifications: '/notifications',
-  listSitekey: '/sitekeys/',
-  viewSitekey: (key: string) => `/sitekey/${key}/`,
-  editSitekey: (key: string) => `/sitekey/${key}/edit/`,
-  deleteSitekey: (key: string) => `/sitekey/${key}/delete/`,
-  addSiteKey: '/sitekeys/add',
+  registerUser: "/join/",
+  loginUser: "/login/",
+  signoutUser: "/api/v1/signout",
+  panelHome: "/",
+  settings: "/settings/",
+  updateSecret: "/settings/secret/update/",
+  deleteAccount: "/settings/account/delete/",
+  docsHome: "/docs/",
+  notifications: "/notifications",
+  listSitekey: "/sitekeys/",
+  viewSitekey: (key: string): string => `/sitekey/${key}/`,
+  editSitekey: (key: string): string => `/sitekey/${key}/edit/`,
+  deleteSitekey: (key: string): string => `/sitekey/${key}/delete/`,
+  addSiteKey: "/sitekeys/add",
 };
 
 export default ROUTES;

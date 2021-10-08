@@ -15,17 +15,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import getNumLevels from '../add/ts/levels/getNumLevels';
-import {addLevel} from '../add/ts/setupTests';
-import setup from '../../../components/error/setUpTests';
-import * as SETUP from './setupTest';
+import getNumLevels from "../add/ts/levels/getNumLevels";
+import {addLevel} from "../add/ts/setupTests";
+import setup from "../../../components/error/setUpTests";
+import * as SETUP from "./setupTest";
 
 document.body.innerHTML = SETUP.EDIT_FORM;
 document.body.appendChild(setup());
 
 jest.useFakeTimers();
 
-it('edit sitekey works', () => {
+it("edit sitekey works", () => {
   expect(getNumLevels()).toBe(2);
   // add a level
   addLevel(5, 6);

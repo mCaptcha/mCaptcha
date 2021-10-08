@@ -23,7 +23,7 @@ class CopyIcon {
   constructor(
     writeText: string,
     copyIcon: HTMLElement,
-    copyDoneIconClass: string,
+    copyDoneIconClass: string
   ) {
     this.copyIcon = copyIcon;
     this.copyDoneIconClass = copyDoneIconClass;
@@ -32,24 +32,24 @@ class CopyIcon {
     this.__registerHandlers();
   }
 
-  __registerHandlers() {
-    this.copyIcon.addEventListener('click', e => this.copySitekey(e));
+  __registerHandlers(): void {
+    this.copyIcon.addEventListener("click", (e) => this.copySitekey(e));
   }
 
   /*
    * Copy secret to clipboard
    */
-  async copySitekey(e: Event) {
+  async copySitekey(e: Event): Promise<void> {
     const image = <HTMLElement>e.target;
     const copyDoneIcon = <HTMLElement>(
       image.parentElement.querySelector(`.${this.copyDoneIconClass}`)
     );
     await navigator.clipboard.writeText(this.writeText);
-    image.style.display = 'none';
-    copyDoneIcon.style.display = 'block';
+    image.style.display = "none";
+    copyDoneIcon.style.display = "block";
     setTimeout(() => {
-      copyDoneIcon.style.display = 'none';
-      image.style.display = 'block';
+      copyDoneIcon.style.display = "none";
+      image.style.display = "block";
     }, 1200);
   }
 }

@@ -15,15 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import {trim} from '../../setupTests';
-import updateRemoveButton from './updateRemoveButton';
-import CONST from '../../const';
+import {trim} from "../../setupTests";
+import updateRemoveButton from "./updateRemoveButton";
+import CONST from "../../const";
 
-import log from '../../../../../../logger';
-import {MODE} from '../../../../../../logger';
+import log from "../../../../../../logger";
+import {MODE} from "../../../../../../logger";
 
 /** get initial form to test remove button functionality */
-export const labelLevel = (level: number) => {
+export const labelLevel = (level: number): string => {
   return `
 <form class="sitekey-form" action="/api/v1/mcaptcha/levels/add" method="post">
   <fieldset class="sitekey__level-container" id="level-group-">
@@ -83,7 +83,7 @@ document.body.innerHTML = labelLevel(level);
 
 log.setMode(MODE.none);
 
-it('update remove button works', () => {
+it("update remove button works", () => {
   // removing level  2
 
   const levelGroup = document.getElementById(
