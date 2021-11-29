@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Methods",""]]});
+initSidebarItems({"fn":[["services",""]]});

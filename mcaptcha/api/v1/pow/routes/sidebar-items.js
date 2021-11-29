@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["PoW",""]]});
+initSidebarItems({"macro":[["rm_scope",""]],"struct":[["PoW",""]]});
