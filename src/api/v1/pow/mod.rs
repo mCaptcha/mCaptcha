@@ -16,7 +16,6 @@
 */
 
 use actix_web::web;
-use actix_web::*;
 
 pub mod get_config;
 pub mod verify_pow;
@@ -28,13 +27,14 @@ pub use super::mcaptcha::levels::I32Levels;
 pub fn services(cfg: &mut web::ServiceConfig) {
     let cors = actix_cors::Cors::default()
         .allow_any_origin()
-        .allowed_methods(vec!["POST"])
+        .allowed_methods(vec!["POST", "GET"])
         .allow_any_header()
         .max_age(3600)
         .send_wildcard();
 
+    let routes = crate::V1_API_ROUTES.pow;
     cfg.service(
-        Scope::new(crate::V1_API_ROUTES.pow.scope)
+        web::scope(routes.scope)
             .wrap(cors)
             .service(verify_pow::verify_pow)
             .service(get_config::get_config)
@@ -50,9 +50,25 @@ pub mod routes {
         pub scope: &'static str,
     }
 
+    macro_rules! rm_scope {
+        ($name:ident) => {
+            /// remove scope for $name route
+            pub fn $name(&self) -> &str {
+                self.$name
+                    //.strip_prefix(&self.scope[..self.scope.len() - 1])
+                    .strip_prefix(self.scope)
+                    .unwrap()
+            }
+        };
+    }
+
     impl PoW {
         pub const fn new() -> Self {
-            let scope = "/api/v1/pow/";
+            // date: 2021-11-29 16:31
+            // commit: 6eb75d7
+            // route 404s when scope contained trailing slash
+            //let scope = "/api/v1/pow/";
+            let scope = "/api/v1/pow";
             PoW {
                 get_config: "/api/v1/pow/config",
                 verify_pow: "/api/v1/pow/verify",
@@ -60,35 +76,22 @@ pub mod routes {
                 scope,
             }
         }
+
+        rm_scope!(get_config);
+        rm_scope!(verify_pow);
+        rm_scope!(validate_captcha_token);
     }
 }
 
-//#[allow(non_camel_case_types, missing_docs)]
-//pub struct post;
-//impl actix_web::dev::HttpServiceFactory for post {
-//    fn register(self, __config: &mut actix_web::dev::AppService) {
-//        async fn post() -> impl Responder {
-//            HttpResponse::Ok()
-//        }
-//        let __resource = actix_web::Resource::new("/test/post")
-//            .guard(actix_web::guard::Post())
-//            .to(post);
-//        actix_web::dev::HttpServiceFactory::register(__resource, __config)
-//    }
-//}
-
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use super::routes::PoW;
 
     #[test]
     fn scope_pow_works() {
-        let pow = routes::PoW::new();
-        assert_eq!(pow.get_config.strip_prefix(pow.scope).unwrap(), "config");
-        assert_eq!(pow.verify_pow.strip_prefix(pow.scope).unwrap(), "verify");
-        assert_eq!(
-            pow.validate_captcha_token.strip_prefix(pow.scope).unwrap(),
-            "siteverify"
-        );
+        let pow = PoW::new();
+        assert_eq!(pow.get_config(), "/config");
+        assert_eq!(pow.verify_pow(), "/verify");
+        assert_eq!(pow.validate_captcha_token(), "/siteverify");
     }
 }

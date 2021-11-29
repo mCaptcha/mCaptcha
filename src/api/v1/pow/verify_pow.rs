@@ -36,9 +36,7 @@ pub struct ValidationToken {
 
 /// route handler that verifies PoW and issues a solution token
 /// if verification is successful
-#[my_codegen::post(
-    path = "V1_API_ROUTES.pow.verify_pow.strip_prefix(V1_API_ROUTES.pow.scope).unwrap()"
-)]
+#[my_codegen::post(path = "V1_API_ROUTES.pow.verify_pow()")]
 pub async fn verify_pow(
     payload: web::Json<Work>,
     data: AppData,

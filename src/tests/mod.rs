@@ -40,10 +40,7 @@ macro_rules! post_request {
     };
 
     ($serializable:expr, $uri:expr) => {
-        test::TestRequest::post()
-            .uri($uri)
-            .insert_header((actix_web::http::header::CONTENT_TYPE, "application/json"))
-            .set_payload(serde_json::to_string($serializable).unwrap())
+        test::TestRequest::post().uri($uri).set_json($serializable)
     };
 }
 
@@ -66,11 +63,7 @@ macro_rules! get_app {
                 .wrap(actix_middleware::NormalizePath::new(
                     actix_middleware::TrailingSlash::Trim,
                 ))
-                .configure(crate::api::v1::services)
-                .configure(crate::widget::services)
-                .configure(crate::docs::services)
-                .configure(crate::pages::services)
-                .configure(crate::static_assets::services),
+                .configure(crate::routes::services),
         )
     };
     ($data:expr) => {
@@ -80,11 +73,7 @@ macro_rules! get_app {
                 .wrap(actix_middleware::NormalizePath::new(
                     actix_middleware::TrailingSlash::Trim,
                 ))
-                .configure(crate::api::v1::services)
-                .configure(crate::widget::services)
-                .configure(crate::docs::services)
-                .configure(crate::pages::services)
-                .configure(crate::static_assets::services)
+                .configure(crate::routes::services)
                 //.data(std::sync::Arc::new(crate::data::Data::new().await))
                 .app_data(actix_web::web::Data::new($data.clone())),
         )

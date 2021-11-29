@@ -33,9 +33,7 @@ pub struct CaptchaValidateResp {
 // API keys are mcaptcha actor names
 
 /// route hander that validates a PoW solution token
-#[my_codegen::post(
-    path = "V1_API_ROUTES.pow.validate_captcha_token.strip_prefix(V1_API_ROUTES.pow.scope).unwrap()"
-)]
+#[my_codegen::post(path = "V1_API_ROUTES.pow.validate_captcha_token()")]
 pub async fn validate_captcha_token(
     payload: web::Json<VerifyCaptchaResult>,
     data: AppData,

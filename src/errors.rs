@@ -19,10 +19,9 @@ use std::convert::From;
 
 use actix::MailboxError;
 use actix_web::{
-    dev::BaseHttpResponseBuilder as HttpResponseBuilder,
     error::ResponseError,
     http::{header, StatusCode},
-    HttpResponse,
+    HttpResponse, HttpResponseBuilder,
 };
 use argon2_creds::errors::CredsError;
 use derive_more::{Display, Error};

@@ -29,11 +29,11 @@ pub use routes::ROUTES;
 
 pub fn services(cfg: &mut ServiceConfig) {
     meta::services(cfg);
+    pow::services(cfg);
     auth::services(cfg);
     account::services(cfg);
     mcaptcha::services(cfg);
     notifications::services(cfg);
-    pow::services(cfg);
 }
 
 #[cfg(test)]

@@ -102,8 +102,6 @@ pub type AppData = actix_web::web::Data<Arc<crate::data::Data>>;
 async fn main() -> std::io::Result<()> {
     use std::time::Duration;
 
-    use api::v1;
-
     env::set_var("RUST_LOG", "info");
 
     pretty_env_logger::init();
@@ -137,11 +135,7 @@ async fn main() -> std::io::Result<()> {
             .wrap(actix_middleware::NormalizePath::new(
                 actix_middleware::TrailingSlash::Trim,
             ))
-            .configure(v1::services)
-            .configure(docs::services)
-            .configure(widget::services)
-            .configure(pages::services)
-            .configure(static_assets::services)
+            .configure(routes::services)
             .app_data(get_json_err())
     })
     .bind(SETTINGS.server.get_ip())

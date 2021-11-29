@@ -15,52 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#[allow(dead_code)]
-pub enum Methods {
-    /// GET hander
-    Get,
-    /// POST handler
-    Post,
-    /// Protected GET handler
-    ProtectGet,
-    /// Protected POST handler
-    ProtectPost,
-}
-
-/// Defines resoures for [Methods]
-#[macro_export]
-macro_rules! define_resource {
-    ($cfg:expr, $path:expr, Methods::Get, $to:expr) => {
-        $cfg.service(
-            actix_web::web::resource($path)
-                .guard(actix_web::guard::Get())
-                .to($to),
-        );
-    };
-
-    ($cfg:expr, $path:expr, Methods::Post, $to:expr) => {
-        $cfg.service(
-            actix_web::Resource::new($path)
-                .guard(actix_web::guard::Post())
-                .to($to),
-        );
-    };
-
-    ($cfg:expr, $path:expr, Methods::ProtectPost, $to:expr) => {
-        $cfg.service(
-            actix_web::web::resource($path)
-                .wrap(crate::CheckLogin)
-                .guard(actix_web::guard::Post())
-                .to($to),
-        );
-    };
-
-    ($cfg:expr, $path:expr, Methods::ProtectGet, $to:expr) => {
-        $cfg.service(
-            actix_web::web::resource($path)
-                .wrap(crate::CheckLogin)
-                .guard(actix_web::guard::Get())
-                .to($to),
-        );
-    };
+pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
+    crate::api::v1::services(cfg);
+    crate::docs::services(cfg);
+    crate::widget::services(cfg);
+    crate::pages::services(cfg);
+    crate::static_assets::services(cfg);
 }

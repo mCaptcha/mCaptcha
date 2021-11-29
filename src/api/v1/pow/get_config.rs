@@ -30,12 +30,6 @@ use crate::stats::record::record_fetch;
 use crate::AppData;
 use crate::V1_API_ROUTES;
 
-//#[derive(Clone, Debug, Deserialize, Serialize)]
-//pub struct PoWConfig {
-//    pub name: String,
-//    pub domain: String,
-//}
-
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct GetConfigPayload {
     pub key: String,
@@ -44,9 +38,7 @@ pub struct GetConfigPayload {
 // API keys are mcaptcha actor names
 
 /// get PoW configuration for an mcaptcha key
-#[my_codegen::post(
-    path = "V1_API_ROUTES.pow.get_config.strip_prefix(V1_API_ROUTES.pow.scope).unwrap()"
-)]
+#[my_codegen::post(path = "V1_API_ROUTES.pow.get_config()")]
 pub async fn get_config(
     payload: web::Json<GetConfigPayload>,
     data: AppData,
@@ -153,20 +145,15 @@ async fn init_mcaptcha(data: &AppData, key: &str) -> ServiceResult<()> {
 
 #[cfg(test)]
 mod tests {
-    use actix_web::http::StatusCode;
-    use actix_web::test;
     use libmcaptcha::pow::PoWConfig;
 
-    use super::*;
-    use crate::tests::*;
-    use crate::*;
-
-    #[test]
-    fn feature() {
-        actix_rt::System::new().block_on(async move { get_pow_config_works().await });
-    }
-
+    #[actix_rt::test]
     async fn get_pow_config_works() {
+        use super::*;
+        use crate::tests::*;
+        use crate::*;
+        use actix_web::test;
+
         const NAME: &str = "powusrworks";
         const PASSWORD: &str = "testingpas";
         const EMAIL: &str = "randomuser@a.com";
@@ -177,8 +164,7 @@ mod tests {
         }
 
         register_and_signin(NAME, EMAIL, PASSWORD).await;
-        let (data, _, signin_resp, token_key) = add_levels_util(NAME, PASSWORD).await;
-        let cookies = get_cookie!(signin_resp);
+        let (data, _, _signin_resp, token_key) = add_levels_util(NAME, PASSWORD).await;
         let app = get_app!(data).await;
 
         let get_config_payload = GetConfigPayload {
@@ -187,10 +173,11 @@ mod tests {
 
         // update and check changes
 
+        let url = V1_API_ROUTES.pow.get_config;
+        println!("{}", &url);
         let get_config_resp = test::call_service(
             &app,
             post_request!(&get_config_payload, V1_API_ROUTES.pow.get_config)
-                .cookie(cookies.clone())
                 .to_request(),
         )
         .await;
