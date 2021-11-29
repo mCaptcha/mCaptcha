@@ -1,5 +1,5 @@
-default: frontend ## Run app in debug mode
-	cargo run
+default: frontend ## Build app in debug mode
+	cargo build
 
 clean: ## Delete build artifacts
 	@cargo clean
@@ -55,6 +55,9 @@ migrate: ## Run database migrations
 
 release: frontend ## Build app with release optimizations
 	cargo build --release
+
+run: frontend ## Run app in debug mode
+	cargo run
 
 test: frontend-test frontend ## Run all available tests
 	echo 'static/' && tree static || true

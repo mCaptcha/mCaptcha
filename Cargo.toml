@@ -28,21 +28,21 @@ members = [
 ]
 
 [dependencies]
-actix-web = "4.0.0-beta.8"
+actix-web = "4.0.0-beta.12"
 actix = "0.12"
-actix-identity = "0.4.0-beta.2"
-actix-http = "3.0.0-beta.9"
+actix-identity = "0.4.0-beta.4"
+actix-http = "3.0.0-beta.13"
 actix-rt = "2"
-actix-cors = "0.6.0-beta.2"
+actix-cors = "0.6.0-beta.4"
 actix-service = "2.0.0"
-my-codegen = {package = "actix-web-codegen", git ="https://github.com/realaravinth/actix-web"}
+my-codegen = {version="0.5.0-beta.5", package = "actix-web-codegen", git ="https://github.com/realaravinth/actix-web"}
 
 mime_guess = "2.0.3"
 rust-embed = "6.0.0"
 cache-buster = { git = "https://github.com/realaravinth/cache-buster" }
 
 futures = "0.3.15"
-tokio = { version = "1", features = ["sync"]}
+tokio = { version = "1.14", features = ["sync"]}
 
 sqlx = { version = "0.5.5", features = [ "runtime-actix-rustls", "postgres", "time", "offline" ] }
 argon2-creds = { branch = "master", git = "https://github.com/realaravinth/argon2-creds"}
@@ -91,7 +91,7 @@ sqlx = { version = "0.5.5", features = [ "runtime-actix-rustls", "postgres", "ti
 
 [dev-dependencies]
 pow_sha256 = { version = "0.2.1", git = "https://github.com/mcaptcha/pow_sha256" }
-awc = "3.0.0-beta.7"
+awc = "3.0.0-beta.11"
 
 
 [target.x86_64-unknown-linux-musl]
