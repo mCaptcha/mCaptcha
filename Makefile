@@ -36,6 +36,7 @@ frontend: env ## Build frontend
 	cd browser && wasm-pack build --release
 	yarn install
 	yarn build
+	@./scripts/librejs.sh
 
 frontend-test: ## Run frontend tests
 	cd browser && wasm-pack test --release --headless --chrome
