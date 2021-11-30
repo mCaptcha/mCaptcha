@@ -9,6 +9,7 @@ Proof of work based, privacy respecting CAPTCHA system with a kickass UX.
 
 [![Documentation](https://img.shields.io/badge/docs-master-blue?style=flat-square)](https://mcaptcha.github.io/mCaptcha/mCaptcha/)
 [![Build](https://github.com/mCaptcha/mCaptcha/actions/workflows/linux.yml/badge.svg)](https://github.com/mCaptcha/mCaptcha/actions/workflows/linux.yml)
+[![Docker](https://img.shields.io/docker/pulls/mcaptcha/mcaptcha)](https://hub.docker.com/r/mcaptcha/mcaptcha)
 [![dependency status](https://deps.rs/repo/github/mCaptcha/mCaptcha/status.svg?style=flat-square)](https://deps.rs/repo/github/mCaptcha/mCaptcha)
 [![codecov](https://codecov.io/gh/mCaptcha/mCaptcha/branch/master/graph/badge.svg?style=flat-square)](https://codecov.io/gh/mCaptcha/mCaptcha)
 <br />

@@ -5,9 +5,9 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 //const WasmPackPlugin = require('@wasm-tool/wasm-pack-plugin');
 
 module.exports = {
-  devtool: 'inline-source-map',
-  mode: 'development',
-  //mode: 'production',
+  //devtool: 'inline-source-map',
+  //mode: 'development',
+  mode: 'production',
   entry: {
     bundle: './templates/index.ts',
     mobile: './templates/mobile.ts',

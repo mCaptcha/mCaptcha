@@ -2,6 +2,7 @@
   "name": "vanilla",
   "main": "index.js",
   "version": "1.0.0",
+  "license": "AGPL-3.0",
   "scripts": {
     "build": "webpack --mode production",
     "lint": "yarn run eslint templates",
