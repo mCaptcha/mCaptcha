@@ -9,7 +9,7 @@
  * MIT or <http://www.apache.org/licenses/LICENSE-2.0> for Apache.
  */
 
-import genJsonPayload from "../../utils/genJsonPayload";
+import genJsonPayload from "../utils/genJsonPayload";
 import * as CONST from "./const";
 import {Work} from "./prove";
 

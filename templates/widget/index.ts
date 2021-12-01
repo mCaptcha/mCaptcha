@@ -1,55 +1,68 @@
 /*
- * Copyright (C) 2021  Aravinth Manivannan <realaravinth@batsense.net>
+ * mCaptcha is a PoW based DoS protection software.
+ * This is the frontend web component of the mCaptcha system
+ * Copyright © 2021 Aravinth Manivnanan <realaravinth@batsense.net>.
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Use of this source code is governed by Apache 2.0 or MIT license.
+ * You shoud have received a copy of MIT and Apache 2.0 along with
+ * this program. If not, see <https://spdx.org/licenses/MIT.html> for
+ * MIT or <http://www.apache.org/licenses/LICENSE-2.0> for Apache.
  */
-import "./main.scss";
-//import prove from './runner/prove';
-//import fetchPoWConfig from './runner/fetchPoWConfig';
-//import sendWork from './runner/sendWork';
-//import sendToParent from './runner/sendToParent';
-//import * as CONST from './runner/const';
-//
-///** add  mcaptcha widget element to DOM */
-//export const register = () => {
-//  const verificationContainer = <HTMLElement>(
-//    document.querySelector('.widget__verification-container')
-//  );
-//  verificationContainer.style.display = 'flex';
-//
-//  CONST.btn().addEventListener('click', e => solveCaptchaRunner(e));
-//};
-//
-//const solveCaptchaRunner = async (e: Event) => {
-//  e.preventDefault();
-//  // steps:
-//
-//  // 1. hide --before message
-//  CONST.messageText().before().style.display = 'none';
-//
-//  // 1. show --during
-//  CONST.messageText().during().style.display = 'block';
-//  // 1. get config
-//  const config = await fetchPoWConfig();
-//  // 2. prove work
-//  const proof = await prove(config);
-//  // 3. submit work
-//  const token = await sendWork(proof);
-//  // 4. send token
-//  sendToParent(token);
-//  // 5. mark checkbox checked
-//  CONST.btn().checked = true;
-//};
-//
-//register();
+
+import prove from "./prove";
+import fetchPoWConfig from "./fetchPoWConfig";
+import sendWork from "./sendWork";
+import sendToParent from "./sendToParent";
+import * as CONST from "./const";
+
+import "../main.scss";
+
+let LOCK = false;
+
+/** add  mcaptcha widget element to DOM */
+export const registerVerificationEventHandler = (): void => {
+  const verificationContainer = <HTMLElement>(
+    document.querySelector(".widget__verification-container")
+  );
+  verificationContainer.style.display = "flex";
+  CONST.btn().addEventListener("click", (e) => solveCaptchaRunner(e));
+};
+
+export const solveCaptchaRunner = async (e: Event): Promise<void> => {
+  if (LOCK) {
+    e.preventDefault();
+    return;
+  }
+
+  try {
+    LOCK = true;
+    if (CONST.btn().checked == false) {
+      CONST.messageText().before();
+      LOCK = false;
+      return;
+    }
+    e.preventDefault();
+    // steps:
+
+    // 1. show during
+    CONST.messageText().during();
+    // 1. get config
+    const config = await fetchPoWConfig();
+    // 2. prove work
+    const proof = await prove(config);
+    // 3. submit work
+    const token = await sendWork(proof);
+    // 4. send token
+    sendToParent(token);
+    // 5. mark checkbox checked
+    CONST.btn().checked = true;
+    CONST.messageText().after();
+    LOCK = false;
+  } catch (e) {
+    CONST.messageText().error();
+    console.error(e);
+    LOCK = false;
+  }
+};
+
+registerVerificationEventHandler();

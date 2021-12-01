@@ -1,38 +1,38 @@
-'use strict';
-const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+"use strict";
+const path = require("path");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 //const WasmPackPlugin = require('@wasm-tool/wasm-pack-plugin');
 
 module.exports = {
   //devtool: 'inline-source-map',
   //mode: 'development',
-  mode: 'production',
+  mode: "production",
   entry: {
-    bundle: './templates/index.ts',
-    mobile: './templates/mobile.ts',
-    verificationWidget: './templates/widget/js/index.ts',
+    bundle: "./templates/index.ts",
+    mobile: "./templates/mobile.ts",
+    verificationWidget: "./templates/widget/index.ts",
   },
   output: {
-    filename: '[name].js',
-    path: path.resolve(__dirname, './static/cache/bundle/'),
+    filename: "[name].js",
+    path: path.resolve(__dirname, "./static/cache/bundle/"),
   },
   module: {
     rules: [
       {
         test: /\.tsx?$/,
-        loader: 'ts-loader',
+        loader: "ts-loader",
       },
 
       {
         test: /\.s[ac]ss$/i,
         use: [
           MiniCssExtractPlugin.loader,
-          'css-loader',
+          "css-loader",
           {
-            loader: 'sass-loader',
+            loader: "sass-loader",
             options: {
-              implementation: require('dart-sass'),
+              implementation: require("dart-sass"),
             },
           },
         ],
@@ -40,7 +40,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js'],
+    extensions: [".ts", ".tsx", ".js"],
   },
 
   plugins: [
@@ -53,7 +53,7 @@ module.exports = {
   optimization: {
     minimizer: [
       // For webpack@5 you can use the `...` syntax to extend existing minimizers (i.e. `terser-webpack-plugin`), uncomment the next line
-      `...`,
+      "...",
       new CssMinimizerPlugin(),
     ],
   },

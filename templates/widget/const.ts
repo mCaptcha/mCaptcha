@@ -8,7 +8,7 @@
  * this program. If not, see <https://spdx.org/licenses/MIT.html> for
  * MIT or <http://www.apache.org/licenses/LICENSE-2.0> for Apache.
  */
-import LazyElement from "../../utils/lazyElement";
+import LazyElement from "../utils/lazyElement";
 
 /** mcaptcha checkbox ID **/
 export const btnId = "widget__verification-checkbox";
@@ -71,10 +71,6 @@ export const messageText = (): messageTextReturn => {
   const after = new LazyElement(afterID);
   const during = new LazyElement(duringID);
   const error = new LazyElement(errorID);
-  //  let before: HTMLElement;
-  //  let after: HTMLElement;
-  //  let during: HTMLElement;
-  //  let error: HTMLElement;
 
   /** runner fn to display HTMLElement **/
   const showMsg = (e: HTMLElement) => (e.style.display = "block");
