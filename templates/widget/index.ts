@@ -15,7 +15,7 @@ import sendWork from "./sendWork";
 import sendToParent from "./sendToParent";
 import * as CONST from "./const";
 
-import "../main.scss";
+import "./main.scss";
 
 let LOCK = false;
 

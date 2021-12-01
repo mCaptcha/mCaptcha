@@ -9,7 +9,7 @@
  * MIT or <http://www.apache.org/licenses/LICENSE-2.0> for Apache.
  */
 
-import { gen_pow } from "mcaptcha-browser";
+import { gen_pow } from "@mcaptcha/pow-wasm";
 import { PoWConfig } from "./fetchPoWConfig";
 import * as CONST from "./const";
 

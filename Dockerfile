@@ -1,15 +1,5 @@
-FROM rust:latest as wasm
-
-LABEL org.opencontainers.image.source https://github.com/mCaptcha/mCaptcha
-
-RUN curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
-COPY browser/ /browser
-WORKDIR /browser
-RUN wasm-pack build --release
-
 FROM node:16.0.0 as frontend
 COPY package.json yarn.lock /src/
-COPY --from=wasm /browser /src/browser
 WORKDIR /src
 RUN yarn install
 WORKDIR /
@@ -26,7 +16,6 @@ WORKDIR /src
 RUN mkdir src && echo "fn main() {}" > src/main.rs
 COPY Cargo.toml .
 RUN sed -i '/.*build.rs.*/d' Cargo.toml
-RUN sed -i '/.*browser.*/d' Cargo.toml
 COPY Cargo.lock .
 COPY migrations /src/migrations
 COPY sqlx-data.json /src/
@@ -39,6 +28,7 @@ COPY --from=frontend /src/static/cache/bundle /src/static/cache/bundle
 RUN cargo build --release 
 
 FROM debian:bullseye
+LABEL org.opencontainers.image.source https://github.com/mCaptcha/mCaptcha
 RUN useradd -ms /bin/bash -u 1001 mcaptcha
 WORKDIR /home/mcaptcha
 COPY --from=rust /src/target/release/mcaptcha /usr/local/bin/

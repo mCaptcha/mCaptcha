@@ -13,3 +13,4 @@ src/cache_buster_data.json
 coverage
 dist
 assets
+yarn-error.log

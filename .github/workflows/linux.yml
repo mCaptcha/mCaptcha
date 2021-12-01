@@ -54,7 +54,7 @@ jobs:
 
       - uses: actions/setup-node@v2
         with:
-          node-version: '14.x'
+          node-version: '16.x'
 
       - name: start smtp server
         run: docker run -d -p 1080:1080 -p 10025:1025  maildev/maildev --incoming-user admin --incoming-pass password
@@ -65,9 +65,6 @@ jobs:
           toolchain: ${{ matrix.version }}-x86_64-unknown-linux-gnu
           profile: minimal
           override: true
-
-      - name: Install wasm-pack
-        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 
       - name: Run migrations
         run: make migrate
