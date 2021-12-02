@@ -1,12 +1,14 @@
+BUNDLE = static/cache/bundle
+OPENAPI = docs/openapi
+CLEAN_UP = $(BUNDLE) src/cache_buster_data.json assets
+
 default: frontend ## Build app in debug mode
 	cargo build
 
 clean: ## Delete build artifacts
 	@cargo clean
 	@yarn cache clean
-	@-rm ./src/cache_buster_data.json
-	@-rm -rf ./static/cache/bundle
-	@-rm -rf ./assets
+	@-rm $(CLEAN_UP)
 
 coverage: migrate ## Generate code coverage report in HTML format
 	cargo tarpaulin -t 1200 --out Html
@@ -28,20 +30,23 @@ env: ## Setup development environtment
 	cd docs/openapi && yarn install
 
 frontend: env ## Build frontend
-	cd docs/openapi/ && yarn build
+	cd $(OPENAPI) && yarn build
 	yarn install
+	@-rm -rf $(BUNDLE)
+	@-mkdir $(BUNDLE)
 	yarn build
 	@./scripts/librejs.sh
+	@./scripts/cachebust.sh
 
 frontend-test: ## Run frontend tests
-	cd docs/openapi && yarn test
+	cd $(OPENAPI)&& yarn test
 	yarn test
 
 lint: ## Lint codebase
 	cargo fmt -v --all -- --emit files
 	cargo clippy --workspace --tests --all-features
 	yarn lint
-	cd docs/openapi && yarn test
+	cd $(OPENAPI)&& yarn test
 
 migrate: ## Run database migrations
 	cargo run --bin tests-migrate
@@ -53,8 +58,6 @@ run: frontend ## Run app in debug mode
 	cargo run
 
 test: frontend-test frontend ## Run all available tests
-	echo 'static/' && tree static || true
-	echo 'tree/' && tree assets || true
 	cargo test --all-features --no-fail-fast
 
 xml-test-coverage: migrate ## Generate code coverage report in XML format
