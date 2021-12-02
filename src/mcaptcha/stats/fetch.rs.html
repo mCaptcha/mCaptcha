@@ -259,7 +259,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Stats</span> {
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">user</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="ident">PgPool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">user</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="ident">PgPool</span>) -&gt; <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">config_fetches_fut</span> <span class="op">=</span> <span class="ident">runners::fetch_config_fetched</span>(<span class="ident">user</span>, <span class="ident">key</span>, <span class="ident">db</span>);
         <span class="kw">let</span> <span class="ident">solves_fut</span> <span class="op">=</span> <span class="ident">runners::fetch_solve</span>(<span class="ident">user</span>, <span class="ident">key</span>, <span class="ident">db</span>);
         <span class="kw">let</span> <span class="ident">confirms_fut</span> <span class="op">=</span> <span class="ident">runners::fetch_confirm</span>(<span class="ident">user</span>, <span class="ident">key</span>, <span class="ident">db</span>);
@@ -278,7 +278,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">StatsUnixTimestamp</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_stats</span>(<span class="ident">stats</span>: <span class="kw-2">&amp;</span><span class="ident">Stats</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_stats</span>(<span class="ident">stats</span>: <span class="kw-2">&amp;</span><span class="ident">Stats</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">config_fetches</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::unix_timestamp</span>(<span class="kw-2">&amp;</span><span class="ident">stats</span>.<span class="ident">config_fetches</span>);
         <span class="kw">let</span> <span class="ident">solves</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::unix_timestamp</span>(<span class="kw-2">&amp;</span><span class="ident">stats</span>.<span class="ident">solves</span>);
         <span class="kw">let</span> <span class="ident">confirms</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::unix_timestamp</span>(<span class="kw-2">&amp;</span><span class="ident">stats</span>.<span class="ident">confirms</span>);
@@ -291,7 +291,7 @@
 
     <span class="doccomment">/// featch PoWConfig confirms</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">unix_timestamp</span>(<span class="ident">dates</span>: <span class="kw-2">&amp;</span>[<span class="ident">Date</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">unix_timestamp</span>(<span class="ident">dates</span>: <span class="kw-2">&amp;</span>[<span class="ident">Date</span>]) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">res</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Vec::with_capacity</span>(<span class="ident">dates</span>.<span class="ident">len</span>());
 
         <span class="ident">dates</span>
@@ -310,7 +310,7 @@
         <span class="ident">user</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
         <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
         <span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="ident">PgPool</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Date</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Date</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">records</span> <span class="op">=</span> <span class="macro">sqlx::query_as!</span>(
             <span class="ident">Date</span>,
             <span class="string">&quot;SELECT time FROM mcaptcha_pow_fetched_stats
@@ -340,7 +340,7 @@
         <span class="ident">user</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
         <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
         <span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="ident">PgPool</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Date</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Date</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">records</span> <span class="op">=</span> <span class="macro">sqlx::query_as!</span>(
             <span class="ident">Date</span>,
             <span class="string">&quot;SELECT time FROM mcaptcha_pow_solved_stats 
@@ -368,7 +368,7 @@
         <span class="ident">user</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
         <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
         <span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="ident">PgPool</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Date</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Date</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">records</span> <span class="op">=</span> <span class="macro">sqlx::query_as!</span>(
             <span class="ident">Date</span>,
             <span class="string">&quot;SELECT time FROM mcaptcha_pow_confirmed_stats 

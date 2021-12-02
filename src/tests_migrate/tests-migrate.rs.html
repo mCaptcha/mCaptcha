@@ -125,7 +125,7 @@
         .<span class="ident">expect</span>(<span class="string">&quot;Unable to form database pool&quot;</span>);
 
     <span class="kw">for</span> <span class="ident">arg</span> <span class="kw">in</span> <span class="ident">env::args</span>() {
-        <span class="kw">if</span> <span class="ident">arg</span> <span class="op">=</span><span class="op">=</span> <span class="string">&quot;--build&quot;</span> {
+        <span class="kw">if</span> <span class="ident">arg</span> <span class="op">==</span> <span class="string">&quot;--build&quot;</span> {
             <span class="macro">println!</span>(<span class="string">&quot;Building cache buster config&quot;</span>);
             <span class="ident">build</span>();
         }

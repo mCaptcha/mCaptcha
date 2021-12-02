@@ -264,7 +264,7 @@
     }
 
     <span class="kw">impl</span> <span class="ident">Auth</span> {
-        <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Auth</span> {
+        <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="ident">Auth</span> {
             <span class="kw">let</span> <span class="ident">login</span> <span class="op">=</span> <span class="string">&quot;/api/v1/signin&quot;</span>;
             <span class="kw">let</span> <span class="ident">logout</span> <span class="op">=</span> <span class="string">&quot;/logout&quot;</span>;
             <span class="kw">let</span> <span class="ident">register</span> <span class="op">=</span> <span class="string">&quot;/api/v1/signup&quot;</span>;
@@ -304,7 +304,7 @@
     }
 
     <span class="doccomment">/// returns Ok(()) when everything checks out and the user is authenticated. Erros otherwise</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">login_runner</span>(<span class="ident">payload</span>: <span class="ident">Login</span>, <span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="ident">AppData</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">login_runner</span>(<span class="ident">payload</span>: <span class="ident">Login</span>, <span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="ident">AppData</span>) -&gt; <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
         <span class="kw">use</span> <span class="ident">argon2_creds::Config</span>;
         <span class="kw">use</span> <span class="ident">sqlx::Error::RowNotFound</span>;
 
@@ -332,13 +332,13 @@
             .<span class="kw">await</span>;
 
             <span class="kw">match</span> <span class="ident">email_fut</span> {
-                <span class="prelude-val">Ok</span>(<span class="ident">s</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="prelude-val">Ok</span>(<span class="ident">s</span>) =&gt; {
                     <span class="ident">verify</span>(<span class="kw-2">&amp;</span><span class="ident">s</span>.<span class="ident">password</span>, <span class="kw-2">&amp;</span><span class="ident">payload</span>.<span class="ident">password</span>)<span class="question-mark">?</span>;
                     <span class="prelude-val">Ok</span>(<span class="ident">s</span>.<span class="ident">name</span>)
                 }
 
-                <span class="prelude-val">Err</span>(<span class="ident">RowNotFound</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">ServiceError::AccountNotFound</span>),
-                <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">ServiceError::InternalServerError</span>),
+                <span class="prelude-val">Err</span>(<span class="ident">RowNotFound</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">ServiceError::AccountNotFound</span>),
+                <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">ServiceError::InternalServerError</span>),
             }
         } <span class="kw">else</span> {
             <span class="kw">let</span> <span class="ident">username_fut</span> <span class="op">=</span> <span class="macro">sqlx::query_as!</span>(
@@ -350,12 +350,12 @@
             .<span class="kw">await</span>;
 
             <span class="kw">match</span> <span class="ident">username_fut</span> {
-                <span class="prelude-val">Ok</span>(<span class="ident">s</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="prelude-val">Ok</span>(<span class="ident">s</span>) =&gt; {
                     <span class="ident">verify</span>(<span class="kw-2">&amp;</span><span class="ident">s</span>.<span class="ident">password</span>, <span class="kw-2">&amp;</span><span class="ident">payload</span>.<span class="ident">password</span>)<span class="question-mark">?</span>;
                     <span class="prelude-val">Ok</span>(<span class="ident">payload</span>.<span class="ident">login</span>)
                 }
-                <span class="prelude-val">Err</span>(<span class="ident">RowNotFound</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">ServiceError::AccountNotFound</span>),
-                <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">ServiceError::InternalServerError</span>),
+                <span class="prelude-val">Err</span>(<span class="ident">RowNotFound</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">ServiceError::AccountNotFound</span>),
+                <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">ServiceError::InternalServerError</span>),
             }
         }
     }
@@ -363,7 +363,7 @@
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">register_runner</span>(
         <span class="ident">payload</span>: <span class="kw-2">&amp;</span><span class="ident">Register</span>,
         <span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="ident">AppData</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">ServiceResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="op">!</span><span class="ident"><span class="kw">crate</span>::SETTINGS</span>.<span class="ident">allow_registration</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ServiceError::ClosedForRegistration</span>);
         }
@@ -408,7 +408,7 @@
             <span class="kw">if</span> <span class="ident">res</span>.<span class="ident">is_ok</span>() {
                 <span class="kw">break</span>;
             } <span class="kw">else</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">sqlx::Error::Database</span>(<span class="ident">err</span>)) <span class="op">=</span> <span class="ident">res</span> {
-                <span class="kw">if</span> <span class="ident">err</span>.<span class="ident">code</span>() <span class="op">=</span><span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">Cow::from</span>(<span class="string">&quot;23505&quot;</span>)) {
+                <span class="kw">if</span> <span class="ident">err</span>.<span class="ident">code</span>() <span class="op">==</span> <span class="prelude-val">Some</span>(<span class="ident">Cow::from</span>(<span class="string">&quot;23505&quot;</span>)) {
                     <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="ident">err</span>.<span class="ident">message</span>();
                     <span class="kw">if</span> <span class="ident">msg</span>.<span class="ident">contains</span>(<span class="string">&quot;mcaptcha_users_name_key&quot;</span>) {
                         <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ServiceError::UsernameTaken</span>);
@@ -437,7 +437,7 @@
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">register</span>(
     <span class="ident">payload</span>: <span class="ident">web::Json</span><span class="op">&lt;</span><span class="ident">runners::Register</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">AppData</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
     <span class="ident">runners::register_runner</span>(<span class="kw-2">&amp;</span><span class="ident">payload</span>, <span class="kw-2">&amp;</span><span class="ident">data</span>).<span class="kw">await</span><span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse::Ok</span>())
 }
@@ -447,14 +447,14 @@
     <span class="ident">id</span>: <span class="ident">Identity</span>,
     <span class="ident">payload</span>: <span class="ident">web::Json</span><span class="op">&lt;</span><span class="ident">runners::Login</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">AppData</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">username</span> <span class="op">=</span> <span class="ident">runners::login_runner</span>(<span class="ident">payload</span>.<span class="ident">into_inner</span>(), <span class="kw-2">&amp;</span><span class="ident">data</span>).<span class="kw">await</span><span class="question-mark">?</span>;
     <span class="ident">id</span>.<span class="ident">remember</span>(<span class="ident">username</span>);
     <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse::Ok</span>())
 }
 
 <span class="attribute">#[<span class="ident">my_codegen::get</span>(<span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;crate::V1_API_ROUTES.auth.logout&quot;</span>, <span class="ident">wrap</span> <span class="op">=</span> <span class="string">&quot;crate::CheckLogin&quot;</span>)]</span>
-<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">signout</span>(<span class="ident">id</span>: <span class="ident">Identity</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Responder</span> {
+<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">signout</span>(<span class="ident">id</span>: <span class="ident">Identity</span>) -&gt; <span class="kw">impl</span> <span class="ident">Responder</span> {
     <span class="kw">if</span> <span class="ident">id</span>.<span class="ident">identity</span>().<span class="ident">is_some</span>() {
         <span class="ident">id</span>.<span class="ident">forget</span>();
     }

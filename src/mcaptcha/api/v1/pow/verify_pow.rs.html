@@ -175,7 +175,7 @@
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">verify_pow</span>(
     <span class="ident">payload</span>: <span class="ident">web::Json</span><span class="op">&lt;</span><span class="ident">Work</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">AppData</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">payload</span>.<span class="ident">key</span>.<span class="ident">clone</span>();
     <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">data</span>.<span class="ident">captcha</span>.<span class="ident">verify_pow</span>(<span class="ident">payload</span>.<span class="ident">into_inner</span>()).<span class="kw">await</span><span class="question-mark">?</span>;
     <span class="ident">record_solve</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>, <span class="kw-2">&amp;</span><span class="ident">data</span>.<span class="ident">db</span>).<span class="kw">await</span>;

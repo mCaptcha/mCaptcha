@@ -196,7 +196,7 @@
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">validate_captcha_token</span>(
     <span class="ident">payload</span>: <span class="ident">web::Json</span><span class="op">&lt;</span><span class="ident">VerifyCaptchaResult</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">AppData</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">payload</span>.<span class="ident">key</span>.<span class="ident">clone</span>();
     <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">data</span>
         .<span class="ident">captcha</span>

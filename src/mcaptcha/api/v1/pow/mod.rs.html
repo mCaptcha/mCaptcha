@@ -148,9 +148,9 @@
     }
 
     <span class="macro">macro_rules!</span> <span class="ident">rm_scope</span> {
-        (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>) <span class="op">=</span><span class="op">&gt;</span> {
+        (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>) =&gt; {
             <span class="doccomment">/// remove scope for $name route</span>
-            <span class="kw">pub</span> <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
+            <span class="kw">pub</span> <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> {
                 <span class="self">self</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>
                     <span class="comment">//.strip_prefix(&amp;self.scope[..self.scope.len() - 1])</span>
                     .<span class="ident">strip_prefix</span>(<span class="self">self</span>.<span class="ident">scope</span>)
@@ -160,7 +160,7 @@
     }
 
     <span class="kw">impl</span> <span class="ident">PoW</span> {
-        <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
             <span class="comment">// date: 2021-11-29 16:31</span>
             <span class="comment">// commit: 6eb75d7</span>
             <span class="comment">// route 404s when scope contained trailing slash</span>

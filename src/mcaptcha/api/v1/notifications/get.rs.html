@@ -206,7 +206,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Notification</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">NotificationResp</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">n</span>: <span class="ident">Notification</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">n</span>: <span class="ident">Notification</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">NotificationResp</span> {
             <span class="ident">name</span>: <span class="ident">n</span>.<span class="ident">name</span>.<span class="ident">unwrap</span>(),
             <span class="ident">heading</span>: <span class="ident">n</span>.<span class="ident">heading</span>.<span class="ident">unwrap</span>(),
@@ -225,7 +225,7 @@
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_notification</span>(
     <span class="ident">data</span>: <span class="ident">AppData</span>,
     <span class="ident">id</span>: <span class="ident">Identity</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">receiver</span> <span class="op">=</span> <span class="ident">id</span>.<span class="ident">identity</span>().<span class="ident">unwrap</span>();
     <span class="comment">// TODO handle error where payload.to doesnt exist</span>
 
@@ -246,7 +246,7 @@
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_notification</span>(
         <span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="ident">AppData</span>,
         <span class="ident">receiver</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Notification</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Notification</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="comment">// TODO handle error where payload.to doesnt exist</span>
 
         <span class="kw">let</span> <span class="ident">notifications</span> <span class="op">=</span> <span class="macro">sqlx::query_file_as!</span>(

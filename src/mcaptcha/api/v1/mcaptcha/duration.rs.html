@@ -208,7 +208,7 @@
         <span class="kw">pub</span> <span class="ident">get</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
     }
     <span class="kw">impl</span> <span class="ident">Duration</span> {
-        <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Duration</span> {
+        <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="ident">Duration</span> {
             <span class="ident">Duration</span> {
                 <span class="ident">update</span>: <span class="string">&quot;/api/v1/mcaptcha/domain/token/duration/update&quot;</span>,
                 <span class="ident">get</span>: <span class="string">&quot;/api/v1/mcaptcha/domain/token/duration/get&quot;</span>,
@@ -231,7 +231,7 @@
     <span class="ident">payload</span>: <span class="ident">web::Json</span><span class="op">&lt;</span><span class="ident">UpdateDuration</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">AppData</span>,
     <span class="ident">id</span>: <span class="ident">Identity</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">username</span> <span class="op">=</span> <span class="ident">id</span>.<span class="ident">identity</span>().<span class="ident">unwrap</span>();
 
     <span class="kw">if</span> <span class="ident">payload</span>.<span class="ident">duration</span> <span class="op">&gt;</span> <span class="number">0</span> {
@@ -272,7 +272,7 @@
     <span class="ident">payload</span>: <span class="ident">web::Json</span><span class="op">&lt;</span><span class="ident">MCaptchaDetails</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">AppData</span>,
     <span class="ident">id</span>: <span class="ident">Identity</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">username</span> <span class="op">=</span> <span class="ident">id</span>.<span class="ident">identity</span>().<span class="ident">unwrap</span>();
 
     <span class="kw">let</span> <span class="ident">duration</span> <span class="op">=</span> <span class="macro">sqlx::query_as!</span>(

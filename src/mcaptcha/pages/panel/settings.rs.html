@@ -148,7 +148,7 @@
     }
 
     <span class="kw">impl</span> <span class="ident">Settings</span> {
-        <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
             <span class="ident">Settings</span> {
                 <span class="ident">home</span>: <span class="string">&quot;/settings&quot;</span>,
                 <span class="ident">delete_account</span>: <span class="string">&quot;/settings/account/delete&quot;</span>,
@@ -156,7 +156,7 @@
             }
         }
 
-        <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">get_sitemap</span>() <span class="op">-</span><span class="op">&gt;</span> [<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>; <span class="number">1</span>] {
+        <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">get_sitemap</span>() -&gt; [<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>; <span class="number">1</span>] {
             <span class="kw">const</span> <span class="ident">S</span>: <span class="ident">Settings</span> <span class="op">=</span> <span class="ident">Settings::new</span>();
 
             [<span class="ident">S</span>.<span class="ident">home</span>]
@@ -181,7 +181,7 @@
 }
 
 <span class="attribute">#[<span class="ident">my_codegen::get</span>(<span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;crate::PAGES.panel.settings.home&quot;</span>, <span class="ident">wrap</span> <span class="op">=</span> <span class="string">&quot;crate::CheckLogin&quot;</span>)]</span>
-<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">settings</span>(<span class="ident">data</span>: <span class="ident">AppData</span>, <span class="ident">id</span>: <span class="ident">Identity</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PageResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
+<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">settings</span>(<span class="ident">data</span>: <span class="ident">AppData</span>, <span class="ident">id</span>: <span class="ident">Identity</span>) -&gt; <span class="ident">PageResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">username</span> <span class="op">=</span> <span class="ident">id</span>.<span class="ident">identity</span>().<span class="ident">unwrap</span>();
 
     <span class="kw">struct</span> <span class="ident">DBResult</span> {
@@ -213,7 +213,7 @@
     <span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;crate::PAGES.panel.settings.delete_account&quot;</span>,
     <span class="ident">wrap</span> <span class="op">=</span> <span class="string">&quot;crate::CheckLogin&quot;</span>
 )]</span>
-<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_account</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Responder</span> {
+<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_account</span>() -&gt; <span class="kw">impl</span> <span class="ident">Responder</span> {
     <span class="kw">let</span> <span class="ident">page</span> <span class="op">=</span> <span class="ident">SudoPage</span>::<span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">u8</span><span class="op">&gt;</span><span class="ident">::new</span>(<span class="ident"><span class="kw">crate</span>::V1_API_ROUTES</span>.<span class="ident">account</span>.<span class="ident">delete</span>, <span class="prelude-val">None</span>)
         .<span class="ident">render_once</span>()
         .<span class="ident">unwrap</span>();
@@ -226,7 +226,7 @@
     <span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;crate::PAGES.panel.settings.update_secret&quot;</span>,
     <span class="ident">wrap</span> <span class="op">=</span> <span class="string">&quot;crate::CheckLogin&quot;</span>
 )]</span>
-<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_secret</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Responder</span> {
+<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_secret</span>() -&gt; <span class="kw">impl</span> <span class="ident">Responder</span> {
     <span class="kw">let</span> <span class="ident">page</span> <span class="op">=</span> <span class="ident">SudoPage</span>::<span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">u8</span><span class="op">&gt;</span><span class="ident">::new</span>(<span class="ident"><span class="kw">crate</span>::V1_API_ROUTES</span>.<span class="ident">account</span>.<span class="ident">update_secret</span>, <span class="prelude-val">None</span>)
         .<span class="ident">render_once</span>()
         .<span class="ident">unwrap</span>();

@@ -106,7 +106,7 @@
     <span class="ident">id</span>: <span class="ident">Identity</span>,
     <span class="ident">payload</span>: <span class="ident">web::Json</span><span class="op">&lt;</span><span class="ident">Password</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">AppData</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
     <span class="kw">use</span> <span class="ident">argon2_creds::Config</span>;
     <span class="kw">use</span> <span class="ident">sqlx::Error::RowNotFound</span>;
 
@@ -121,7 +121,7 @@
     .<span class="kw">await</span>;
 
     <span class="kw">match</span> <span class="ident">rec</span> {
-        <span class="prelude-val">Ok</span>(<span class="ident">s</span>) <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="prelude-val">Ok</span>(<span class="ident">s</span>) =&gt; {
             <span class="kw">if</span> <span class="ident">Config::verify</span>(<span class="kw-2">&amp;</span><span class="ident">s</span>.<span class="ident">password</span>, <span class="kw-2">&amp;</span><span class="ident">payload</span>.<span class="ident">password</span>)<span class="question-mark">?</span> {
                 <span class="ident">runners::delete_user</span>(<span class="kw-2">&amp;</span><span class="ident">username</span>, <span class="kw-2">&amp;</span><span class="ident">data</span>).<span class="kw">await</span><span class="question-mark">?</span>;
                 <span class="ident">id</span>.<span class="ident">forget</span>();
@@ -130,8 +130,8 @@
                 <span class="prelude-val">Err</span>(<span class="ident">ServiceError::WrongPassword</span>)
             }
         }
-        <span class="prelude-val">Err</span>(<span class="ident">RowNotFound</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">ServiceError::AccountNotFound</span>),
-        <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">ServiceError::InternalServerError</span>),
+        <span class="prelude-val">Err</span>(<span class="ident">RowNotFound</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">ServiceError::AccountNotFound</span>),
+        <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">ServiceError::InternalServerError</span>),
     }
 }
 
@@ -139,7 +139,7 @@
 
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_user</span>(<span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="ident">AppData</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_user</span>(<span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="ident">AppData</span>) -&gt; <span class="ident">ServiceResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="macro">sqlx::query!</span>(<span class="string">&quot;DELETE FROM mcaptcha_users WHERE name = ($1)&quot;</span>, <span class="ident">name</span>,)
             .<span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>.<span class="ident">db</span>)
             .<span class="kw">await</span><span class="question-mark">?</span>;

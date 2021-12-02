@@ -187,7 +187,7 @@
     }
 
     <span class="kw">impl</span> <span class="ident">Meta</span> {
-        <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
             <span class="self">Self</span> {
                 <span class="ident">build_details</span>: <span class="string">&quot;/api/v1/meta/build&quot;</span>,
                 <span class="ident">health</span>: <span class="string">&quot;/api/v1/meta/health&quot;</span>,
@@ -198,7 +198,7 @@
 
 <span class="doccomment">/// emmits build details of the bninary</span>
 <span class="attribute">#[<span class="ident">my_codegen::get</span>(<span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;crate::V1_API_ROUTES.meta.build_details&quot;</span>)]</span>
-<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">build_details</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Responder</span> {
+<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">build_details</span>() -&gt; <span class="kw">impl</span> <span class="ident">Responder</span> {
     <span class="kw">let</span> <span class="ident">build</span> <span class="op">=</span> <span class="ident">BuildDetails</span> {
         <span class="ident">version</span>: <span class="ident">VERSION</span>,
         <span class="ident">git_commit_hash</span>: <span class="ident">GIT_COMMIT_HASH</span>,
@@ -215,14 +215,14 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Health</span> {
-    <span class="kw">fn</span> <span class="ident">is_redis</span>(<span class="ident">redis</span>: <span class="kw-2">&amp;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">is_redis</span>(<span class="ident">redis</span>: <span class="kw-2">&amp;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
         <span class="ident">redis</span>.<span class="ident">is_none</span>()
     }
 }
 
 <span class="doccomment">/// checks all components of the system</span>
 <span class="attribute">#[<span class="ident">my_codegen::get</span>(<span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;crate::V1_API_ROUTES.meta.health&quot;</span>)]</span>
-<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">health</span>(<span class="ident">data</span>: <span class="ident">AppData</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Responder</span> {
+<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">health</span>(<span class="ident">data</span>: <span class="ident">AppData</span>) -&gt; <span class="kw">impl</span> <span class="ident">Responder</span> {
     <span class="kw">use</span> <span class="ident">sqlx::Connection</span>;
 
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">resp_builder</span> <span class="op">=</span> <span class="ident">HealthBuilder::default</span>();

@@ -160,7 +160,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">IndexPage</span> {
-    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">n</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Notification</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">n</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Notification</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">IndexPage</span> { <span class="ident">n</span> }
     }
 }
@@ -174,7 +174,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">get::Notification</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Notification</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">n</span>: <span class="ident">get::Notification</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">n</span>: <span class="ident">get::Notification</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">Notification</span> {
             <span class="ident">name</span>: <span class="ident">n</span>.<span class="ident">name</span>.<span class="ident">unwrap</span>(),
             <span class="ident">heading</span>: <span class="ident">n</span>.<span class="ident">heading</span>.<span class="ident">unwrap</span>(),
@@ -186,7 +186,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Notification</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">print_date</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">print_date</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">String</span> {
         <span class="ident">Date::format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">received</span>)
     }
 }
@@ -194,7 +194,7 @@
 <span class="kw">const</span> <span class="ident">PAGE</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;Notifications&quot;</span>;
 
 <span class="attribute">#[<span class="ident">my_codegen::get</span>(<span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;crate::PAGES.panel.notifications&quot;</span>, <span class="ident">wrap</span> <span class="op">=</span> <span class="string">&quot;crate::CheckLogin&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">notifications</span>(<span class="ident">data</span>: <span class="ident">AppData</span>, <span class="ident">id</span>: <span class="ident">Identity</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PageResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">notifications</span>(<span class="ident">data</span>: <span class="ident">AppData</span>, <span class="ident">id</span>: <span class="ident">Identity</span>) -&gt; <span class="ident">PageResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">receiver</span> <span class="op">=</span> <span class="ident">id</span>.<span class="ident">identity</span>().<span class="ident">unwrap</span>();
     <span class="comment">// TODO handle error where payload.to doesnt exist</span>
 

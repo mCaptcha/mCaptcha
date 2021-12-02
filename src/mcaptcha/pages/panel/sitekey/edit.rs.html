@@ -193,7 +193,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">IndexPage</span> {
-    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">config</span>: <span class="ident">McaptchaConfig</span>, <span class="ident">levels</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Level</span><span class="op">&gt;</span>, <span class="ident">key</span>: <span class="ident">String</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">config</span>: <span class="ident">McaptchaConfig</span>, <span class="ident">levels</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Level</span><span class="op">&gt;</span>, <span class="ident">key</span>: <span class="ident">String</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">IndexPage</span> {
             <span class="ident">duration</span>: <span class="ident">config</span>.<span class="ident">duration</span> <span class="kw">as</span> <span class="ident">u32</span>,
             <span class="ident">name</span>: <span class="ident">config</span>.<span class="ident">name</span>,
@@ -209,7 +209,7 @@
     <span class="ident">path</span>: <span class="ident">web::Path</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">AppData</span>,
     <span class="ident">id</span>: <span class="ident">Identity</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PageResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">PageResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">username</span> <span class="op">=</span> <span class="ident">id</span>.<span class="ident">identity</span>().<span class="ident">unwrap</span>();
     <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">path</span>.<span class="ident">into_inner</span>();
 

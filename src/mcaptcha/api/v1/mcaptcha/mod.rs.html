@@ -59,7 +59,7 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">duration</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">levels</span>;
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_random</span>(<span class="ident">len</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_random</span>(<span class="ident">len</span>: <span class="ident">usize</span>) -&gt; <span class="ident">String</span> {
     <span class="kw">use</span> <span class="ident">std::iter</span>;
 
     <span class="kw">use</span> <span class="ident">rand</span>::{<span class="ident">distributions::Alphanumeric</span>, <span class="ident">rngs::ThreadRng</span>, <span class="ident">thread_rng</span>, <span class="ident">Rng</span>};
