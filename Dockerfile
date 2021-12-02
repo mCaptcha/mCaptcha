@@ -10,6 +10,7 @@ WORKDIR /src
 RUN yarn build
 COPY scripts /src/scripts
 RUN /src/scripts/librejs.sh
+RUN /src/scripts/cachebust.sh
 
 FROM rust:latest as rust
 WORKDIR /src
