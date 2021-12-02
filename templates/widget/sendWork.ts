@@ -11,11 +11,7 @@
 
 import genJsonPayload from "../utils/genJsonPayload";
 import * as CONST from "./const";
-import {Work} from "./prove";
-
-export type Token = {
-  token: string;
-};
+import { Work, Token } from "./types";
 
 export const sendWork = async (payload: Work): Promise<Token> => {
   try {
@@ -33,7 +29,7 @@ export const sendWork = async (payload: Work): Promise<Token> => {
   } catch (err) {
     CONST.messageText().error();
     console.error(err);
-    await new Promise(r => setTimeout(r, 1000));
+    await new Promise((r) => setTimeout(r, 1000));
     window.location.reload();
     throw err;
   }

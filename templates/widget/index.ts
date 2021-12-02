@@ -9,7 +9,7 @@
  * MIT or <http://www.apache.org/licenses/LICENSE-2.0> for Apache.
  */
 
-import prove from "./prove";
+import { Work, ServiceWorkerWork } from "./types";
 import fetchPoWConfig from "./fetchPoWConfig";
 import sendWork from "./sendWork";
 import sendToParent from "./sendToParent";
@@ -18,6 +18,7 @@ import * as CONST from "./const";
 import "./main.scss";
 
 let LOCK = false;
+const worker = new Worker("/bench.js");
 
 /** add  mcaptcha widget element to DOM */
 export const registerVerificationEventHandler = (): void => {
@@ -49,15 +50,30 @@ export const solveCaptchaRunner = async (e: Event): Promise<void> => {
     // 1. get config
     const config = await fetchPoWConfig();
     // 2. prove work
-    const proof = await prove(config);
-    // 3. submit work
-    const token = await sendWork(proof);
-    // 4. send token
-    sendToParent(token);
-    // 5. mark checkbox checked
-    CONST.btn().checked = true;
-    CONST.messageText().after();
-    LOCK = false;
+    worker.postMessage(config);
+
+    worker.onmessage = async (event: MessageEvent) => {
+      const resp: ServiceWorkerWork = event.data;
+      console.log(
+        `Proof generated. Difficuly: ${config.difficulty_factor} Duration: ${resp.duration}`
+      );
+
+      const proof: Work = {
+        key: CONST.sitekey(),
+        string: config.string,
+        nonce: resp.work.nonce,
+        result: resp.work.result,
+      };
+
+      // 3. submit work
+      const token = await sendWork(proof);
+      // 4. send token
+      sendToParent(token);
+      // 5. mark checkbox checked
+      CONST.btn().checked = true;
+      CONST.messageText().after();
+      LOCK = false;
+    };
   } catch (e) {
     CONST.messageText().error();
     console.error(e);

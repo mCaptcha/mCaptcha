@@ -12,6 +12,7 @@ module.exports = {
     bundle: "./templates/index.ts",
     mobile: "./templates/mobile.ts",
     verificationWidget: "./templates/widget/index.ts",
+    bench: "./templates/widget/service-worker.ts",
   },
   output: {
     filename: "[name].js",

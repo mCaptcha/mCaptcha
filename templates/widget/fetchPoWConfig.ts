@@ -11,15 +11,10 @@
 
 import genJsonPayload from "../utils/genJsonPayload";
 import * as CONST from "./const";
+import { PoWConfig } from "./types";
 
 type GetConfigPayload = {
   key: string;
-};
-
-export type PoWConfig = {
-  string: string;
-  difficulty_factor: number;
-  salt: string;
 };
 
 /**

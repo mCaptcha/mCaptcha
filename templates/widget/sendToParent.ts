@@ -8,7 +8,7 @@
  * this program. If not, see <https://spdx.org/licenses/MIT.html> for
  * MIT or <http://www.apache.org/licenses/LICENSE-2.0> for Apache.
  */
-import {Token} from "./sendWork";
+import {Token} from "./types";
 
 /**
  * send pow validation token as message to parant of the iframe

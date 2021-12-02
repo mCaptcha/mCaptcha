@@ -9,23 +9,29 @@
  * MIT or <http://www.apache.org/licenses/LICENSE-2.0> for Apache.
  */
 
-import { gen_pow } from "@mcaptcha/pow-wasm";
-import { WasmWork, PoWConfig } from "./types";
-
-/**
- * proove work
- * @param {PoWConfig} config - the proof-of-work configuration using which
- * work needs to be computed
- * */
-const prove = (config: PoWConfig): WasmWork => {
-  const proofString = gen_pow(
-    config.salt,
-    config.string,
-    config.difficulty_factor
-  );
-  const proof: WasmWork = JSON.parse(proofString);
-
-  return proof;
+export type Work = {
+  result: string;
+  nonce: number;
+  string: string;
+  key: string;
 };
 
-export default prove;
+export type WasmWork = {
+  result: string;
+  nonce: number;
+};
+
+export type ServiceWorkerWork = {
+  work: WasmWork;
+  duration: number;
+};
+
+export type PoWConfig = {
+  string: string;
+  difficulty_factor: number;
+  salt: string;
+};
+
+export type Token = {
+  token: string;
+};
