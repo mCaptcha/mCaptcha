@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["check_url",""],["set_database_url",""],["set_from_database_url",""]],"struct":[["Captcha",""],["Database",""],["DatabaseBuilder",""],["Redis",""],["Server",""],["Settings",""],["Smtp",""]]});
+initSidebarItems({"fn":[["check_url",""],["set_database_url",""],["set_from_database_url",""]],"struct":[["Captcha",""],["Database",""],["DatabaseBuilder",""],["DefaultDifficultyStrategy",""],["Redis",""],["Server",""],["Settings",""],["Smtp",""]]});

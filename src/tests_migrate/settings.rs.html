@@ -229,6 +229,15 @@
 <span id="229">229</span>
 <span id="230">230</span>
 <span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
  *
@@ -267,6 +276,15 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Captcha</span> {
     <span class="kw">pub</span> <span class="ident">salt</span>: <span class="ident">String</span>,
     <span class="kw">pub</span> <span class="ident">gc</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">default_difficulty_strategy</span>: <span class="ident">DefaultDifficultyStrategy</span>,
+}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DefaultDifficultyStrategy</span> {
+    <span class="kw">pub</span> <span class="ident">avg_traffic_difficulty</span>: <span class="ident">u32</span>,
+    <span class="kw">pub</span> <span class="ident">broke_my_site_traffic_difficulty</span>: <span class="ident">u32</span>,
+    <span class="kw">pub</span> <span class="ident">peak_sustainable_traffic_difficulty</span>: <span class="ident">u32</span>,
+    <span class="kw">pub</span> <span class="ident">duration</span>: <span class="ident">u32</span>,
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Deserialize</span>)]</span>
@@ -333,7 +351,7 @@
     <span class="kw">pub</span> <span class="ident">database</span>: <span class="ident">Database</span>,
     <span class="kw">pub</span> <span class="ident">redis</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Redis</span><span class="op">&gt;</span>,
     <span class="kw">pub</span> <span class="ident">server</span>: <span class="ident">Server</span>,
-    <span class="kw">pub</span> <span class="ident">pow</span>: <span class="ident">Captcha</span>,
+    <span class="kw">pub</span> <span class="ident">captcha</span>: <span class="ident">Captcha</span>,
     <span class="kw">pub</span> <span class="ident">source_code</span>: <span class="ident">String</span>,
     <span class="kw">pub</span> <span class="ident">smtp</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Smtp</span><span class="op">&gt;</span>,
     <span class="kw">pub</span> <span class="ident">allow_registration</span>: <span class="ident">bool</span>,

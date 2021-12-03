@@ -325,7 +325,7 @@
 
     <span class="kw">fn</span> <span class="ident">new_system</span><span class="op">&lt;</span><span class="ident">A</span>: <span class="ident">Save</span>, <span class="ident">B</span>: <span class="ident">MasterTrait</span><span class="op">&gt;</span>(<span class="ident">m</span>: <span class="ident">Addr</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>, <span class="ident">c</span>: <span class="ident">Addr</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span>) -&gt; <span class="ident">System</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">pow</span> <span class="op">=</span> <span class="ident">PoWConfigBuilder::default</span>()
-            .<span class="ident">salt</span>(<span class="ident">SETTINGS</span>.<span class="ident">pow</span>.<span class="ident">salt</span>.<span class="ident">clone</span>())
+            .<span class="ident">salt</span>(<span class="ident">SETTINGS</span>.<span class="ident">captcha</span>.<span class="ident">salt</span>.<span class="ident">clone</span>())
             .<span class="ident">build</span>()
             .<span class="ident">unwrap</span>();
 
@@ -350,7 +350,7 @@
                 <span class="ident">SystemGroup::Redis</span>(<span class="ident">captcha</span>)
             }
             <span class="prelude-val">None</span> =&gt; {
-                <span class="kw">let</span> <span class="ident">master</span> <span class="op">=</span> <span class="ident">EmbeddedMaster::new</span>(<span class="ident">SETTINGS</span>.<span class="ident">pow</span>.<span class="ident">gc</span>).<span class="ident">start</span>();
+                <span class="kw">let</span> <span class="ident">master</span> <span class="op">=</span> <span class="ident">EmbeddedMaster::new</span>(<span class="ident">SETTINGS</span>.<span class="ident">captcha</span>.<span class="ident">gc</span>).<span class="ident">start</span>();
                 <span class="kw">let</span> <span class="ident">cache</span> <span class="op">=</span> <span class="ident">HashCache::default</span>().<span class="ident">start</span>();
                 <span class="kw">let</span> <span class="ident">captcha</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::new_system</span>(<span class="ident">master</span>, <span class="ident">cache</span>);
 
