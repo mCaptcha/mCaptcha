@@ -36,6 +36,15 @@ pub struct Server {
 pub struct Captcha {
     pub salt: String,
     pub gc: u64,
+    pub default_difficulty_strategy: DefaultDifficultyStrategy,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct DefaultDifficultyStrategy {
+    pub avg_traffic_difficulty: u32,
+    pub broke_my_site_traffic_difficulty: u32,
+    pub peak_sustainable_traffic_difficulty: u32,
+    pub duration: u32,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -102,7 +111,7 @@ pub struct Settings {
     pub database: Database,
     pub redis: Option<Redis>,
     pub server: Server,
-    pub pow: Captcha,
+    pub captcha: Captcha,
     pub source_code: String,
     pub smtp: Option<Smtp>,
     pub allow_registration: bool,

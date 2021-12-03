@@ -103,7 +103,7 @@ impl SystemGroup {
 
     fn new_system<A: Save, B: MasterTrait>(m: Addr<B>, c: Addr<A>) -> System<A, B> {
         let pow = PoWConfigBuilder::default()
-            .salt(SETTINGS.pow.salt.clone())
+            .salt(SETTINGS.captcha.salt.clone())
             .build()
             .unwrap();
 
@@ -128,7 +128,7 @@ impl SystemGroup {
                 SystemGroup::Redis(captcha)
             }
             None => {
-                let master = EmbeddedMaster::new(SETTINGS.pow.gc).start();
+                let master = EmbeddedMaster::new(SETTINGS.captcha.gc).start();
                 let cache = HashCache::default().start();
                 let captcha = Self::new_system(master, cache);
 

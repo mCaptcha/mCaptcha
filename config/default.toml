@@ -21,13 +21,19 @@ domain = "localhost"
 proxy_has_tls = false
 #url_prefix = ""
 
-[pow]
+[captcha]
 # Please set a unique value, your mCaptcha instance's security depends on this being 
 # unique
 salt = "asdl;kjfhjawehfpa;osdkjasdvjaksndfpoanjdfainsdfaijdsfajlkjdsaf;ajsdfweroire"
 # garbage collection period to manage mCaptcha system
 # leave untouched if you don't know what you are doing
 gc = 30
+
+[captcha.default_difficulty_strategy]
+avg_traffic_difficulty =  50000 # almost instant solution
+peak_sustainable_traffic_difficulty = 3000000 # roughly 1.5s
+broke_my_site_traffic_difficulty = 5000000  # greater than 3.5s
+duration = 30 # cooldown period in seconds
 
 [database]
 # This section deals with the database location and how to access it
