@@ -19,10 +19,13 @@ use std::borrow::Cow;
 use actix_identity::Identity;
 use actix_web::{web, HttpResponse, Responder};
 use libmcaptcha::master::messages::{RemoveCaptcha, RenameBuilder};
+use libmcaptcha::{defense::Level, defense::LevelBuilder};
 use serde::{Deserialize, Serialize};
 
 use super::get_random;
+use super::levels::{add_captcha_runner, AddLevels};
 use crate::errors::*;
+use crate::settings::DefaultDifficultyStrategy;
 use crate::stats::fetch::{Stats, StatsUnixTimestamp};
 use crate::AppData;
 
@@ -31,6 +34,7 @@ pub mod routes {
         pub delete: &'static str,
         pub update_key: &'static str,
         pub stats: &'static str,
+        pub user_provided_traffic_pattern: &'static str,
     }
 
     impl MCaptcha {
@@ -39,6 +43,8 @@ pub mod routes {
                 update_key: "/api/v1/mcaptcha/update/key",
                 delete: "/api/v1/mcaptcha/delete",
                 stats: "/api/v1/mcaptcha/stats",
+                user_provided_traffic_pattern:
+                    "/api/v1/mcaptcha/add/user-provided-traffic-pattern",
             }
         }
     }
@@ -48,6 +54,7 @@ pub fn services(cfg: &mut web::ServiceConfig) {
     cfg.service(update_token);
     cfg.service(delete_mcaptcha);
     cfg.service(get_stats);
+    cfg.service(from_user_provided_traffic_pattern);
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -59,58 +66,6 @@ pub struct MCaptchaID {
 pub struct MCaptchaDetails {
     pub name: String,
     pub key: String,
-}
-
-// this should be called from within add levels
-#[inline]
-pub async fn add_mcaptcha_util(
-    duration: u32,
-    description: &str,
-    data: &AppData,
-    id: &Identity,
-) -> ServiceResult<MCaptchaDetails> {
-    let username = id.identity().unwrap();
-    let mut key;
-
-    let resp;
-
-    loop {
-        key = get_random(32);
-
-        let res = sqlx::query!(
-            "INSERT INTO mcaptcha_config
-        (key, user_id, duration, name)
-        VALUES ($1, (SELECT ID FROM mcaptcha_users WHERE name = $2), $3, $4)",
-            &key,
-            &username,
-            duration as i32,
-            description,
-        )
-        .execute(&data.db)
-        .await;
-
-        match res {
-            Err(sqlx::Error::Database(err)) => {
-                if err.code() == Some(Cow::from("23505"))
-                    && err.message().contains("mcaptcha_config_key_key")
-                {
-                    continue;
-                } else {
-                    return Err(sqlx::Error::Database(err).into());
-                }
-            }
-            Err(e) => return Err(e.into()),
-
-            Ok(_) => {
-                resp = MCaptchaDetails {
-                    key,
-                    name: description.to_owned(),
-                };
-                break;
-            }
-        }
-    }
-    Ok(resp)
 }
 
 #[my_codegen::post(
@@ -265,14 +220,102 @@ async fn get_stats(
     Ok(HttpResponse::Ok().json(&stats))
 }
 
-// Workflow:
-// 1. Sign up
-// 2. Sign in
-// 3. Add domain(DNS TXT record verification? / put string at path)
-// 4. Create token
-// 5. Add levels
-// 6. Update duration
-// 7. Start syatem
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct UserProvidedTrafficPattern {
+    pub avg_traffic: u32,
+    pub peak_sustainable_traffic: u32,
+    pub broke_my_site_traffic: Option<u32>,
+    pub description: String,
+}
+
+impl UserProvidedTrafficPattern {
+    pub fn calculate(
+        &self,
+        strategy: &DefaultDifficultyStrategy,
+    ) -> ServiceResult<Vec<Level>> {
+        let mut levels = vec![
+            LevelBuilder::default()
+                .difficulty_factor(strategy.avg_traffic_difficulty)?
+                .visitor_threshold(self.avg_traffic)
+                .build()?,
+            LevelBuilder::default()
+                .difficulty_factor(strategy.peak_sustainable_traffic_difficulty)?
+                .visitor_threshold(self.peak_sustainable_traffic)
+                .build()?,
+        ];
+        let mut highest_level = LevelBuilder::default();
+        highest_level.difficulty_factor(strategy.broke_my_site_traffic_difficulty)?;
+
+        match self.broke_my_site_traffic {
+            Some(broke_my_site_traffic) => {
+                highest_level.visitor_threshold(broke_my_site_traffic)
+            }
+            None => match self
+                .peak_sustainable_traffic
+                .checked_add(self.peak_sustainable_traffic / 2)
+            {
+                Some(num) => highest_level.visitor_threshold(num),
+                // TODO check for overflow: database saves these values as i32, so this u32 is cast
+                // into i32. Should choose bigger number or casts properly
+                None => highest_level.visitor_threshold(u32::MAX),
+            },
+        };
+
+        levels.push(highest_level.build()?);
+
+        Ok(levels)
+    }
+}
+
+#[my_codegen::post(
+    path = "crate::V1_API_ROUTES.mcaptcha.user_provided_traffic_pattern",
+    wrap = "crate::CheckLogin"
+)]
+async fn from_user_provided_traffic_pattern(
+    payload: web::Json<UserProvidedTrafficPattern>,
+    data: AppData,
+    id: Identity,
+) -> ServiceResult<impl Responder> {
+    let username = id.identity().unwrap();
+    let payload = payload.into_inner();
+    let levels =
+        payload.calculate(&crate::SETTINGS.captcha.default_difficulty_strategy)?;
+    let msg = AddLevels {
+        levels,
+        duration: crate::SETTINGS.captcha.default_difficulty_strategy.duration,
+        description: payload.description,
+    };
+
+    let broke_my_site_traffic = match payload.broke_my_site_traffic {
+        Some(n) => Some(n as i32),
+        None => None,
+    };
+
+    let mcaptcha_config = add_captcha_runner(&msg, &data, &username).await?;
+    sqlx::query!(
+        "INSERT INTO mcaptcha_sitekey_user_provided_avg_traffic (
+        config_id,
+        avg_traffic,
+        peak_sustainable_traffic,
+        broke_my_site_traffic
+    ) VALUES ( 
+         (SELECT config_id FROM mcaptcha_config 
+          WHERE
+            key = ($1)
+          AND user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2)
+         ), $3, $4, $5)",
+        //payload.avg_traffic,
+        &mcaptcha_config.key,
+        &username,
+        payload.avg_traffic as i32,
+        payload.peak_sustainable_traffic as i32,
+        broke_my_site_traffic,
+    )
+    .execute(&data.db)
+    .await?;
+
+    Ok(HttpResponse::Ok().json(mcaptcha_config))
+}
 
 #[cfg(test)]
 mod tests {
@@ -335,5 +378,125 @@ mod tests {
         .await;
         // if updated key doesn't exist in databse, a non 200 result will bereturned
         assert_eq!(get_statis_resp.status(), StatusCode::OK);
+    }
+
+    #[actix_rt::test]
+    async fn user_provided_traffic_pattern_calculate_works() {
+        const NAME: &str = "defaultuserconfgworks";
+
+        let mut payload = UserProvidedTrafficPattern {
+            avg_traffic: 100_000,
+            peak_sustainable_traffic: 1_000_000,
+            broke_my_site_traffic: Some(10_000_000),
+            description: NAME.into(),
+        };
+
+        let strategy = &crate::SETTINGS.captcha.default_difficulty_strategy;
+        let l1 = LevelBuilder::default()
+            .difficulty_factor(strategy.avg_traffic_difficulty)
+            .unwrap()
+            .visitor_threshold(payload.avg_traffic)
+            .build()
+            .unwrap();
+
+        let l2 = LevelBuilder::default()
+            .difficulty_factor(strategy.peak_sustainable_traffic_difficulty)
+            .unwrap()
+            .visitor_threshold(payload.peak_sustainable_traffic)
+            .build()
+            .unwrap();
+        let l3 = LevelBuilder::default()
+            .difficulty_factor(strategy.broke_my_site_traffic_difficulty)
+            .unwrap()
+            .visitor_threshold(payload.broke_my_site_traffic.unwrap())
+            .build()
+            .unwrap();
+
+        let levels = vec![l1, l2, l3];
+        assert_eq!(payload.calculate(strategy).unwrap(), levels);
+
+        let estimated_lmax = LevelBuilder::default()
+            .difficulty_factor(strategy.broke_my_site_traffic_difficulty)
+            .unwrap()
+            .visitor_threshold(1500000)
+            .build()
+            .unwrap();
+        payload.broke_my_site_traffic = None;
+        assert_eq!(
+            payload.calculate(strategy).unwrap(),
+            vec![l1, l2, estimated_lmax]
+        );
+
+        let lmax = LevelBuilder::default()
+            .difficulty_factor(strategy.broke_my_site_traffic_difficulty)
+            .unwrap()
+            .visitor_threshold(u32::MAX)
+            .build()
+            .unwrap();
+
+        let very_large_l2_peak_traffic = u32::MAX - 1;
+        let very_large_l2 = LevelBuilder::default()
+            .difficulty_factor(strategy.peak_sustainable_traffic_difficulty)
+            .unwrap()
+            .visitor_threshold(very_large_l2_peak_traffic)
+            .build()
+            .unwrap();
+
+        //        payload.broke_my_site_traffic = Some(very_large_l2_peak_traffic);
+        payload.peak_sustainable_traffic = very_large_l2_peak_traffic;
+        assert_eq!(
+            payload.calculate(strategy).unwrap(),
+            vec![l1, very_large_l2, lmax]
+        );
+    }
+
+    #[actix_rt::test]
+    async fn from_user_provided_traffic_pattern_works() {
+        const NAME: &str = "defaultuserconfgworks";
+        const PASSWORD: &str = "longpassworddomain";
+        const EMAIL: &str = "defaultuserconfgworks@a.com";
+
+        {
+            let data = Data::new().await;
+            delete_user(NAME, &data).await;
+        }
+
+        let (data, _creds, signin_resp) =
+            register_and_signin(NAME, EMAIL, PASSWORD).await;
+        let cookies = get_cookie!(signin_resp);
+        let app = get_app!(data).await;
+
+        let payload = UserProvidedTrafficPattern {
+            avg_traffic: 100_000,
+            peak_sustainable_traffic: 1_000_000,
+            broke_my_site_traffic: Some(10_000_000),
+            description: NAME.into(),
+        };
+
+        let default_levels = payload
+            .calculate(&crate::SETTINGS.captcha.default_difficulty_strategy)
+            .unwrap();
+
+        let add_token_resp = test::call_service(
+            &app,
+            post_request!(&payload, ROUTES.mcaptcha.user_provided_traffic_pattern)
+                .cookie(cookies.clone())
+                .to_request(),
+        )
+        .await;
+        assert_eq!(add_token_resp.status(), StatusCode::OK);
+        let token_key: MCaptchaDetails = test::read_body_json(add_token_resp).await;
+
+        let get_level_resp = test::call_service(
+            &app,
+            post_request!(&token_key, ROUTES.levels.get)
+                .cookie(cookies.clone())
+                .to_request(),
+        )
+        .await;
+
+        assert_eq!(get_level_resp.status(), StatusCode::OK);
+        let res_levels: Vec<Level> = test::read_body_json(get_level_resp).await;
+        assert_eq!(res_levels, default_levels);
     }
 }

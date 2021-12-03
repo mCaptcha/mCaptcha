@@ -14,6 +14,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+use std::borrow::Cow;
+
 use actix_identity::Identity;
 use actix_web::{web, HttpResponse, Responder};
 use futures::future::try_join_all;
@@ -21,8 +23,8 @@ use libmcaptcha::{defense::Level, master::messages::RemoveCaptcha, DefenseBuilde
 use log::debug;
 use serde::{Deserialize, Serialize};
 
-use super::captcha::add_mcaptcha_util;
 use super::captcha::MCaptchaDetails;
+use super::get_random;
 use crate::errors::*;
 use crate::AppData;
 
@@ -65,9 +67,17 @@ async fn add_levels(
     data: AppData,
     id: Identity,
 ) -> ServiceResult<impl Responder> {
-    let mut defense = DefenseBuilder::default();
     let username = id.identity().unwrap();
+    let mcaptcha_config = add_captcha_runner(&payload, &data, &username).await?;
+    Ok(HttpResponse::Ok().json(mcaptcha_config))
+}
 
+pub async fn add_captcha_runner(
+    payload: &AddLevels,
+    data: &AppData,
+    username: &str,
+) -> ServiceResult<MCaptchaDetails> {
+    let mut defense = DefenseBuilder::default();
     for level in payload.levels.iter() {
         defense.add_level(*level)?;
     }
@@ -76,7 +86,51 @@ async fn add_levels(
 
     debug!("creating config");
     let mcaptcha_config =
-        add_mcaptcha_util(payload.duration, &payload.description, &data, &id).await?;
+       // add_mcaptcha_util(payload.duration, &payload.description, &data, username).await?;
+
+    {
+    let mut key;
+
+    let resp;
+
+    loop {
+        key = get_random(32);
+
+        let res = sqlx::query!(
+            "INSERT INTO mcaptcha_config
+        (key, user_id, duration, name)
+        VALUES ($1, (SELECT ID FROM mcaptcha_users WHERE name = $2), $3, $4)",
+            &key,
+            &username,
+            payload.duration as i32,
+            &payload.description,
+        )
+        .execute(&data.db)
+        .await;
+
+        match res {
+            Err(sqlx::Error::Database(err)) => {
+                if err.code() == Some(Cow::from("23505"))
+                    && err.message().contains("mcaptcha_config_key_key")
+                {
+                    continue;
+                } else {
+                    return Err(sqlx::Error::Database(err).into());
+                }
+            }
+            Err(e) => return Err(e.into()),
+
+            Ok(_) => {
+                resp = MCaptchaDetails {
+                    key,
+                    name: payload.description.to_owned(),
+                };
+                break;
+            }
+        }
+    }
+    resp
+    };
 
     debug!("config created");
 
@@ -105,8 +159,7 @@ async fn add_levels(
     }
 
     try_join_all(futs).await?;
-
-    Ok(HttpResponse::Ok().json(mcaptcha_config))
+    Ok(mcaptcha_config)
 }
 
 #[derive(Serialize, Deserialize)]

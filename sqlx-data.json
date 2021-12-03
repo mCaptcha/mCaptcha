@@ -327,6 +327,22 @@
       ]
     }
   },
+  "61523f76efade451db9db38cf4c8092af7489a90cd4186e8d21eb1d8afafdf64": {
+    "query": "INSERT INTO mcaptcha_sitekey_user_provided_avg_traffic (\n        config_id,\n        avg_traffic,\n        peak_sustainable_traffic,\n        broke_my_site_traffic\n    ) VALUES ( \n         (SELECT config_id FROM mcaptcha_config \n          WHERE\n            key = ($1)\n          AND user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2)\n         ), $3, $4, $5)",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Text",
+          "Int4",
+          "Int4",
+          "Int4"
+        ]
+      },
+      "nullable": []
+    }
+  },
   "717771c42737feb3f4ca13f2ab11361073ea17b55562a103f660149bf049c5c6": {
     "query": "SELECT difficulty_factor, visitor_threshold FROM mcaptcha_levels  WHERE\n            config_id = (\n                SELECT config_id FROM mcaptcha_config WHERE key = ($1)\n                AND user_id = (SELECT ID from mcaptcha_users WHERE name = $2)\n                )\n            ORDER BY difficulty_factor ASC;",
     "describe": {
