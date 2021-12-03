@@ -16,7 +16,7 @@
  */
 use std::borrow::Cow;
 
-use actix_web::body::Body;
+use actix_web::body::AnyBody;
 use actix_web::{http::header, web, HttpResponse, Responder};
 use mime_guess::from_path;
 use rust_embed::RustEmbed;
@@ -54,7 +54,7 @@ struct Asset;
 pub fn handle_embedded_file(path: &str) -> HttpResponse {
     match Asset::get(path) {
         Some(content) => {
-            let body: Body = match content.data {
+            let body: AnyBody = match content.data {
                 Cow::Borrowed(bytes) => bytes.into(),
                 Cow::Owned(bytes) => bytes.into(),
             };
