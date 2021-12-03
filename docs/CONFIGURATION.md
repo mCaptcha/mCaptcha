@@ -59,12 +59,21 @@ you will be overriding the values set in the configuration files.
 
 \* Authentication doesn't work without `MCAPTCHA_DOMAIN` set to the correct domain
 
-### Proof of work
+### Captcha
 
-| Name                | Value                                                                                   |
-| ------------------- | --------------------------------------------------------------------------------------- |
-| `MCAPTCHA_POW_SALT` | Salt has to be long and random                                                          |
-| `MCAPTCHA_POW_GC`   | Garbage collection duration in seconds, requires tuning but 30 is a good starting point |
+| Name                                                | Value                                                                                               |
+| --------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `MCAPTCHA_CAPTCHA_SALT`                             | Salt has to be long and random                                                                      |
+| `MCAPTCHA_CAPTCHA_GC`                               | Garbage collection duration in seconds, requires tuning but 30 is a good starting point             |
+| `MCAPTCHA_CAPTCHA_AVG_TRAFFIC_DIFFICULTY`%           | Difficulty factor to use in CAPTCHA configuration estimation for average traffic metric             |
+| `MCAPTCHA_CAPTCHA_PEAK_TRAFFIC_DIFFICULTY`%          | Difficulty factor to use in CAPTCHA configuration estimation for peak traffic metric                |
+| `MCAPTCHA_CAPTCHA_BROKE_MY_SITE_TRAFFIC_DIFFICULTY`% | Difficulty factor to use in CAPTCHA configuration estimation for traffic that took the website down |
+
+\% See commits
+[`54b14291ec140e`](https://github.com/mCaptcha/mCaptcha/commit/54b14291ec140ea4cbbf73462d3d6fc2d39f2d2c)
+and
+[`42544ec421e0`](https://github.com/mCaptcha/mCaptcha/commit/42544ec421e0c3ec4a8d132e6101ab4069bf0065)
+for more info.
 
 ### SMTP
 
