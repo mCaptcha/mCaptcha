@@ -19,12 +19,12 @@ import { PoWConfig, ServiceWorkerWork } from "./types";
 import log from "../logger";
 
 log.log("worker registered");
-onmessage = (e) => {
+onmessage = async (e) => {
   console.debug("message received at worker");
   const config: PoWConfig = e.data;
 
   const t0 = performance.now();
-  const work = prove(config);
+  const work = await prove(config);
 
   const t1 = performance.now();
   const duration = t1 - t0;

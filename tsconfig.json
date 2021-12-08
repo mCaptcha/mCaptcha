@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "incremental": true,
-    "target": "es5",
-    "module": "es6",
+    "target": "es2020",
+    "module": "es2020",
     "allowJs": false,
     "sourceMap": true,
     "outDir": "./static-assets/bundle",
