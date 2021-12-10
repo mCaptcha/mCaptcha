@@ -15,23 +15,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import {LEVELS} from "./index";
-import getLevelFields from "./getLevelFields";
-import createError from "../../../../../components/error/";
+import validateLevel from "./validateLevel";
+import {getAddForm, level1, fillAddLevel} from "../setupTests";
+import setup from "../../../../../../components/error/setUpTests";
 
-/**
- * Fetches level from DOM using the ID passesd and validates
- * its contents
- * */
-const validateLevel = (id: number): boolean => {
-  try {
-    const level = getLevelFields(id);
-    LEVELS.add(level);
-    return true;
-  } catch (e) {
-    createError(e.message);
-    return false;
-  }
-};
+document.body.innerHTML = getAddForm();
 
-export default validateLevel;
+document.body.appendChild(setup());
+
+it("validate levels fields works", () => {
+  // null error
+  expect(validateLevel(1)).toEqual(false);
+
+  fillAddLevel(level1.visitor_threshold, level1.difficulty_factor);
+  expect(validateLevel(1)).toEqual(true);
+
+  // zero visitor error
+  fillAddLevel(0, level1.difficulty_factor);
+  expect(validateLevel(1)).toEqual(false);
+
+  // zero difficulty error
+  fillAddLevel(level1.visitor_threshold, 0);
+  expect(validateLevel(1)).toEqual(false);
+});

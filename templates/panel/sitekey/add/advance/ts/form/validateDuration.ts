@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import isNumber from "../../../../../utils/isNumber";
+import isNumber from "../../../../../../utils/isNumber";
 
 const validateDuration = (): number => {
   const duartionElement = <HTMLInputElement>document.getElementById("duration");

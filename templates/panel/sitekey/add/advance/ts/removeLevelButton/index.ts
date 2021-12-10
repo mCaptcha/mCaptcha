@@ -18,7 +18,7 @@ import { LEVELS } from "../levels/index";
 import updateLevelNumbersOnDOM from "./updateDom";
 import CONST from "../const";
 
-import log from "../../../../../logger";
+import log from "../../../../../../logger";
 
 const REMOVE_LEVEL_BUTTON = "sitekey-form__level-remove-level-button";
 

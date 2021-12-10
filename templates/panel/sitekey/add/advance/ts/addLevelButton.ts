@@ -23,7 +23,7 @@ import {
 } from "./removeLevelButton";
 import CONST from "./const";
 
-import log from "../../../../logger";
+import log from "../../../../../logger";
 
 /**
  * Gets executed when 'Add' Button is clicked to add levels

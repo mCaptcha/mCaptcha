@@ -14,15 +14,15 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import * as Add from "../add/ts/form/";
-import addLevelButtonAddEventListener from "../add/ts/addLevelButton";
-import { addRemoveLevelButtonEventListenerAll } from "../add/ts/removeLevelButton";
-import getNumLevels from "../add/ts/levels/getNumLevels";
-import validateLevel from "../add/ts/levels/validateLevel";
-import * as UpdateLevel from "../add/ts/levels/updateLevel";
-import validateDescription from "../add/ts/form/validateDescription";
-import validateDuration from "../add/ts/form/validateDuration";
-import { LEVELS } from "../add/ts/levels";
+import * as Add from "../add/advance/ts/form/";
+import addLevelButtonAddEventListener from "../add/advance/ts/addLevelButton";
+import { addRemoveLevelButtonEventListenerAll } from "../add/advance/ts/removeLevelButton";
+import getNumLevels from "../add/advance/ts/levels/getNumLevels";
+import validateLevel from "../add/advance/ts/levels/validateLevel";
+import * as UpdateLevel from "../add/advance/ts/levels/updateLevel";
+import validateDescription from "../add/advance/ts/form/validateDescription";
+import validateDuration from "../add/advance/ts/form/validateDuration";
+import { LEVELS } from "../add/advance/ts/levels";
 
 import getFormUrl from "../../../utils/getFormUrl";
 import genJsonPayload from "../../../utils/genJsonPayload";

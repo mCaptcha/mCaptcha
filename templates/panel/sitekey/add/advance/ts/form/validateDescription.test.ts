@@ -17,9 +17,9 @@
 
 import validateDescription from "./validateDescription";
 import {getAddForm, fillDescription} from "../setupTests";
-import {mockAlert} from "../../../../../setUpTests";
+import {mockAlert} from "../../../../../../setUpTests";
 
-import setup from "../../../../../components/error/setUpTests";
+import setup from "../../../../../../components/error/setUpTests";
 
 mockAlert();
 

@@ -15,42 +15,50 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import getNumLevels from "./levels/getNumLevels";
-import {getAddForm, trim, addLevel} from "./setupTests";
-import setup from "../../../../components/error/setUpTests";
+import {getAddForm, trim} from "../../setupTests";
+import updateInputs from "./updateInputs";
+import CONST from "../../const";
+
+import log from "../../../../../../../logger";
+import {MODE} from "../../../../../../../logger";
+
+import {setupAddlevels} from "./setupTests";
 
 document.body.innerHTML = getAddForm();
-document.body.appendChild(setup());
 
-jest.useFakeTimers();
+log.setMode(MODE.none);
 
-it("addLevelButton works", () => {
-  expect(getNumLevels()).toBe(1);
-  // add a level
-  addLevel(2, 4);
-  expect(getNumLevels()).toBe(2);
+it("updateInputs works", () => {
+  setupAddlevels();
+  // removing level  2
+  const level = 2;
+  const levelGroup = document.querySelector(
+    `#${CONST.LEVEL_FIELDSET_ID_WITHOUT_LEVEL}${level}`,
+  );
 
+  const newLevel = 20;
 
-  
-  // add second level
-  addLevel(4, 9);
-  expect(getNumLevels()).toBe(3);
+  updateInputs(levelGroup, newLevel);
 
-  const a = document.body.innerHTML;
+  const inputs = <NodeListOf<HTMLInputElement>>(
+    levelGroup.querySelectorAll(`.${CONST.LEVEL_INPUT_CLASS}`)
+  );
+  inputs.forEach(input => {
+    if (input.id.includes(CONST.VISITOR_WITHOUT_LEVEL)) {
+      expect(input.id).toBe(`${CONST.VISITOR_WITHOUT_LEVEL}${newLevel}`);
+      console.log("checking visitor");
+    } else {
+      //    if (input.id.includes(CONST.DIFFICULTY_WITHOUT_LEVEL)) {
+      console.log("checking difficulty");
+      expect(input.id).toBe(`${CONST.DIFFICULTY_WITHOUT_LEVEL}${newLevel}`);
+    }
+  });
 
-
-  expect(trim(a)).toBe(trim(finalHtml()));
-
-  // try to add duplicate level
-  addLevel(2, 4);
-  expect(getNumLevels()).toBe(3);
-
-  // try to add negative parameters
-  addLevel(-4, -9);
-  expect(getNumLevels()).toBe(3);
+  expect(trim(document.body.innerHTML)).toBe(trim(update()));
 });
 
-const finalHtml = () => {
+/** get initial form to test remove button functionality */
+export const update = (): string => {
   return `
 <form class="sitekey-form" action="/api/v1/mcaptcha/levels/add" method="post">
   <h1 class="form__title">
@@ -126,9 +134,9 @@ const finalHtml = () => {
       <input
         class="sitekey-form__level-input"
         type="number"
-        name="visitor2"
+        name="visitor20"
         
-        id="visitor2"
+        id="visitor20"
       >
     </label>
 
@@ -136,10 +144,10 @@ const finalHtml = () => {
       Difficulty
       <input
         type="number"
-        name="difficulty2"
+        name="difficulty20"
         class="sitekey-form__level-input"
         
-        id="difficulty2"
+        id="difficulty20"
       >
     </label>
     <label class="sitekey-form__level-label--hidden" for="remove-level2">
@@ -178,6 +186,43 @@ const finalHtml = () => {
         id="difficulty3"
       >
     </label>
+    <label class="sitekey-form__level-label--hidden" for="remove-level3">
+      Remove Level
+      <input
+        class="sitekey-form__level-remove-level-button"
+        type="button"
+        name="remove-level3"
+        id="remove-level3"
+        value="x"
+      >
+    </label>
+  </fieldset>
+
+  <fieldset class="sitekey__level-container" id="level-group-4">
+    <legend class="sitekey__level-title">
+      Level 4
+    </legend>
+    <label class="sitekey-form__level-label" for="visitor4"
+      >Visitor
+      <input
+        class="sitekey-form__level-input"
+        type="number"
+        name="visitor4"
+        
+        id="visitor4"
+      >
+    </label>
+
+    <label class="sitekey-form__level-label" for="difficulty4">
+      Difficulty
+      <input
+        type="number"
+        name="difficulty4"
+        class="sitekey-form__level-input"
+        
+        id="difficulty4"
+      >
+    </label>
     <label class="sitekey-form__level-label--hidden" for="add">
       Add level
       <input
@@ -192,7 +237,5 @@ const finalHtml = () => {
 
   <button class="sitekey-form__submit" type="submit">Submit</button>
 </form>
-<div id="err__container">
-  </div>
-  `;
+`;
 };

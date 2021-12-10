@@ -15,18 +15,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import CONST from "../const";
+import isBlankString from "../../../../../../utils/isBlankString";
 
-import log from "../../../../../logger";
-
-/** returns number of level input fields currently in DOM */
-const getNumLevels = (): number => {
-  let numLevels = 0;
-  document
-    .querySelectorAll(`.${CONST.LEVEL_CONTAINER_CLASS}`)
-    .forEach(() => numLevels++);
-  log.debug(`[getNumLevels]: numLevels: ${numLevels}`);
-  return numLevels;
+const validateDescription = (e: Event): string => {
+  const inputElement = <HTMLInputElement>document.getElementById("description");
+  const val = inputElement.value;
+  const filed = "Description";
+  isBlankString(val, filed, e);
+  return val;
 };
 
-export default getNumLevels;
+export default validateDescription;

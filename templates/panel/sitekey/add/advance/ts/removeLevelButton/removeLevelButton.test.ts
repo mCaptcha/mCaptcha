@@ -19,8 +19,8 @@ import getNumLevels from "../levels/getNumLevels";
 import { getAddForm, addLevel } from "../setupTests";
 import CONST from "../const";
 
-import log from "../../../../../logger";
-import { MODE } from "../../../../../logger";
+import log from "../../../../../../logger";
+import { MODE } from "../../../../../../logger";
 
 document.body.innerHTML = getAddForm();
 

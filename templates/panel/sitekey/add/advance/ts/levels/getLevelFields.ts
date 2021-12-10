@@ -18,7 +18,7 @@
 import { Level } from "./index";
 import CONST from "../const";
 
-import log from "../../../../../logger";
+import log from "../../../../../../logger";
 
 /** Fetches level from DOM using the ID passesd and validates */
 const getLevelFields = (id: number): Level => {

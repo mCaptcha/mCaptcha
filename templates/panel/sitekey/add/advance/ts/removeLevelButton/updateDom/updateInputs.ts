@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import CONST from "../../const";
-import log from "../../../../../../logger";
+import log from "../../../../../../../logger";
 
 /** update input IDs with new level */
 const updateInput = (levelGroup: Element, newLevel: number): void => {

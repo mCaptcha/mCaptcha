@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import log from "../../../../../logger";
+import log from "../../../../../../logger";
 
 /** Datatype represenging an mCaptcha level */
 export type Level = {

@@ -17,15 +17,15 @@
 
 import { LEVELS } from "../levels";
 
-import getFormUrl from "../../../../../utils/getFormUrl";
-import genJsonPayload from "../../../../../utils/genJsonPayload";
+import getFormUrl from "../../../../../../utils/getFormUrl";
+import genJsonPayload from "../../../../../../utils/genJsonPayload";
 
-import VIEWS from "../../../../../views/v1/routes";
+import VIEWS from "../../../../../../views/v1/routes";
 
 import validateDescription from "./validateDescription";
 import validateDuration from "./validateDuration";
 
-import createError from "../../../../../components/error";
+import createError from "../../../../../../components/error";
 
 export const SITE_KEY_FORM_CLASS = "sitekey-form";
 export const FORM = <HTMLFormElement>(

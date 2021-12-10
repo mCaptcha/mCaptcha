@@ -15,8 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import getNumLevels from "../add/ts/levels/getNumLevels";
-import {addLevel} from "../add/ts/setupTests";
+import getNumLevels from "../add/advance/ts/levels/getNumLevels";
+import {addLevel} from "../add/advance/ts/setupTests";
 import setup from "../../../components/error/setUpTests";
 import * as SETUP from "./setupTest";
 

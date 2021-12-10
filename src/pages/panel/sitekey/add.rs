@@ -26,7 +26,7 @@ lazy_static! {
 }
 
 #[derive(TemplateOnce, Clone)]
-#[template(path = "panel/sitekey/add/index.html")]
+#[template(path = "panel/sitekey/add/advance/index.html")]
 pub struct IndexPage<'a> {
     pub levels: usize,
     pub form_title: &'a str,

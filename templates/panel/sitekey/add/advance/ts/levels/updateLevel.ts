@@ -19,7 +19,7 @@ import CONST from "../const";
 import getLevelFields from "./getLevelFields";
 import { LEVELS } from "./index";
 
-import createError from "../../../../../components/error";
+import createError from "../../../../../../components/error";
 
 /** on-change event handler to update level */
 const updateLevel = (e: Event): void => {

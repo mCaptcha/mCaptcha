@@ -16,7 +16,7 @@
  */
 import getNumLevels from "../../levels/getNumLevels";
 import CONST from "../../const";
-import log from "../../../../../../logger";
+import log from "../../../../../../../logger";
 
 import updateLabels from "./updateLabel";
 import updateInputs from "./updateInputs";
