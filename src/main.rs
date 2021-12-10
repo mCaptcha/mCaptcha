@@ -63,14 +63,14 @@ lazy_static! {
     pub static ref JS: &'static str =
         FILES.get("./static/cache/bundle/bundle.js").unwrap();
     pub static ref CSS: &'static str =
-        FILES.get("./static/cache/bundle/bundle.css").unwrap();
+        FILES.get("./static/cache/bundle/css/main.css").unwrap();
     pub static ref MOBILE_CSS: &'static str =
-        FILES.get("./static/cache/bundle/mobile.css").unwrap();
+        FILES.get("./static/cache/bundle/css/mobile.css").unwrap();
 
     pub static ref VERIFICATIN_WIDGET_JS: &'static str =
         FILES.get("./static/cache/bundle/verificationWidget.js").unwrap();
     pub static ref VERIFICATIN_WIDGET_CSS: &'static str =
-        FILES.get("./static/cache/bundle/verificationWidget.css").unwrap();
+        FILES.get("./static/cache/bundle/css/widget.css").unwrap();
 
     /// points to source files matching build commit
     pub static ref SOURCE_FILES_OF_INSTANCE: String = {

@@ -35,6 +35,15 @@ frontend: env ## Build frontend
 	@-rm -rf $(BUNDLE)
 	@-mkdir $(BUNDLE)
 	yarn build
+	@yarn run dart-sass -s \
+		compressed templates/main.scss  \
+		./static/cache/bundle/css/main.css
+	@yarn run dart-sass -s \
+		compressed templates/mobile.scss  \
+		./static/cache/bundle/css/mobile.css
+	@yarn run dart-sass -s \
+		compressed templates/widget/main.scss  \
+		./static/cache/bundle/css/widget.css
 	@./scripts/librejs.sh
 	@./scripts/cachebust.sh
 

@@ -15,11 +15,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+@import "./auth/css/main.scss";
+@import "./components/details-footer/main.scss";
+@import "./components/error/main.scss";
+@import "./components/showPassword/main.scss";
+@import "./panel/css/main.scss";
+@import "./panel/navbar/main.scss";
+@import "./panel/settings/main.scss";
+@import "./panel/notifications/main.scss";
+@import "./panel/header/taskbar/main.scss";
+@import "./panel/help-banner/main.scss";
+@import "./panel/sitekey/add/advance/css/main.scss";
+@import "./panel/sitekey/list/css/main.scss";
+@import "./errors/main.scss";
+
 // creadits: https://codepen.io/rachelandrew/pen/MmOvPr/?editors=1100
 .layout {
-  display: grid;
-  grid-template-columns: minmax(250px, auto) 1fr;
-  grid-template-areas: 'navbar mainContent';
+	display: grid;
+	grid-template-columns: minmax(250px, auto) 1fr;
+	grid-template-areas: "navbar mainContent";
 }
 
 /* no grid support? check this out later */
@@ -44,19 +58,19 @@
 //}
 
 nav {
-  //  grid-row: 1/ 4;
-  /* needed for the floated layout */
-  clear: both;
-  grid-area: navbar;
-//  height: 100%;
+	//  grid-row: 1/ 4;
+	/* needed for the floated layout */
+	clear: both;
+	grid-area: navbar;
+	//  height: 100%;
 }
 
 .tmp-layout {
-  //  grid-column: 2 / 5;
-  grid-area: mainContent;
-  max-height: 100%;
-  display: flex;
-  flex-direction: column;
+	//  grid-column: 2 / 5;
+	grid-area: mainContent;
+	max-height: 100%;
+	display: flex;
+	flex-direction: column;
 }
 
 /* We need to set the widths used on floated items back to auto, and remove the bottom margin as when we have grid we have gaps.

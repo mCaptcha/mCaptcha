@@ -39,8 +39,8 @@ mod tests {
     #[test]
     fn filemap_works() {
         let files = super::FileMap::new();
-        let css = files.get("./static/cache/bundle/bundle.css").unwrap();
+        let css = files.get("./static/cache/bundle/css/main.css").unwrap();
         println!("{}", css);
-        assert!(css.contains("/assets/bundle/bundle"));
+        assert!(css.contains("/assets/bundle/css"));
     }
 }
