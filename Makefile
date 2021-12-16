@@ -2,6 +2,11 @@ BUNDLE = static/cache/bundle
 OPENAPI = docs/openapi
 CLEAN_UP = $(BUNDLE) src/cache_buster_data.json assets
 
+define frontend_env ## install frontend deps
+	yarn install
+	cd docs/openapi && yarn install
+endef
+
 default: frontend ## Build app in debug mode
 	cargo build
 
@@ -26,10 +31,13 @@ docker-publish: docker ## Build and publish Docker image
 
 env: ## Setup development environtment
 	cargo fetch
-	yarn install
-	cd docs/openapi && yarn install
+	$(call frontend_env)
 
-frontend: env ## Build frontend
+frontend-env: ## Install frontend deps
+	$(call frontend_env)
+
+frontend: ## Build frontend
+	$(call frontend_env)
 	cd $(OPENAPI) && yarn build
 	yarn install
 	@-rm -rf $(BUNDLE)
