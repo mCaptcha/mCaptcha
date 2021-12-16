@@ -26,7 +26,7 @@ use crate::AppData;
     path = "crate::V1_API_ROUTES.account.delete",
     wrap = "crate::CheckLogin"
 )]
-async fn delete_account(
+pub async fn delete_account(
     id: Identity,
     payload: web::Json<Password>,
     data: AppData,

@@ -23,7 +23,6 @@ use libmcaptcha::{
 };
 use serde::{Deserialize, Serialize};
 
-use super::GetDurationResp;
 use super::I32Levels;
 use crate::errors::*;
 use crate::stats::record::record_fetch;
@@ -96,9 +95,13 @@ async fn init_mcaptcha(data: &AppData, key: &str) -> ServiceResult<()> {
         &key,
     )
     .fetch_all(&data.db);
+
+    struct DurationResp {
+        duration: i32,
+    }
     // get duration
     let duration_fut = sqlx::query_as!(
-        GetDurationResp,
+        DurationResp,
         "SELECT duration FROM mcaptcha_config  
         WHERE key = $1",
         &key,

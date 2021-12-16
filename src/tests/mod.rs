@@ -10,8 +10,8 @@ use serde::Serialize;
 
 use super::*;
 use crate::api::v1::auth::runners::{Login, Register};
-use crate::api::v1::mcaptcha::captcha::MCaptchaDetails;
-use crate::api::v1::mcaptcha::levels::AddLevels;
+use crate::api::v1::mcaptcha::create::CreateCaptcha;
+use crate::api::v1::mcaptcha::create::MCaptchaDetails;
 use crate::api::v1::ROUTES;
 use crate::data::Data;
 use crate::errors::*;
@@ -159,10 +159,10 @@ pub const L2: Level = Level {
     visitor_threshold: 500,
 };
 
-pub fn get_level_data() -> AddLevels {
+pub fn get_level_data() -> CreateCaptcha {
     let levels = vec![L1, L2];
 
-    AddLevels {
+    CreateCaptcha {
         levels,
         duration: 30,
         description: "dummy".into(),
@@ -182,7 +182,7 @@ pub async fn add_levels_util(
     // 1. add level
     let add_token_resp = test::call_service(
         &app,
-        post_request!(&add_level, ROUTES.levels.add)
+        post_request!(&add_level, ROUTES.captcha.create)
             .cookie(cookies.clone())
             .to_request(),
     )

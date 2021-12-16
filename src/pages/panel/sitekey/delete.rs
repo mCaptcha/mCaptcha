@@ -26,7 +26,7 @@ use crate::{PAGES, V1_API_ROUTES};
 pub async fn delete_sitekey(path: web::Path<String>) -> impl Responder {
     let key = path.into_inner();
     let data = vec![("sitekey", key)];
-    let page = SudoPage::new(V1_API_ROUTES.mcaptcha.delete, Some(data))
+    let page = SudoPage::new(V1_API_ROUTES.captcha.delete, Some(data))
         .render_once()
         .unwrap();
     HttpResponse::Ok()

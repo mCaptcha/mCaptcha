@@ -120,7 +120,7 @@ mod tests {
 
         let resp = test::call_service(
             &app,
-            post_request!(&token_key, crate::V1_API_ROUTES.levels.get)
+            post_request!(&token_key, crate::V1_API_ROUTES.captcha.get)
                 .cookie(cookies.clone())
                 .to_request(),
         )
@@ -133,7 +133,7 @@ mod tests {
 
         let resp = test::call_service(
             &app,
-            post_request!(&token_key, crate::V1_API_ROUTES.levels.get)
+            post_request!(&token_key, crate::V1_API_ROUTES.captcha.create)
                 .cookie(cookies)
                 .to_request(),
         )

@@ -17,9 +17,7 @@
 
 use super::account::routes::Account;
 use super::auth::routes::Auth;
-use super::mcaptcha::captcha::routes::MCaptcha;
-use super::mcaptcha::duration::routes::Duration;
-use super::mcaptcha::levels::routes::Levels;
+use super::mcaptcha::routes::Captcha;
 use super::meta::routes::Meta;
 use super::notifications::routes::Notifications;
 use super::pow::routes::PoW;
@@ -29,9 +27,7 @@ pub const ROUTES: Routes = Routes::new();
 pub struct Routes {
     pub auth: Auth,
     pub account: Account,
-    pub levels: Levels,
-    pub mcaptcha: MCaptcha,
-    pub duration: Duration,
+    pub captcha: Captcha,
     pub meta: Meta,
     pub pow: PoW,
     pub notifications: Notifications,
@@ -42,9 +38,7 @@ impl Routes {
         Routes {
             auth: Auth::new(),
             account: Account::new(),
-            levels: Levels::new(),
-            mcaptcha: MCaptcha::new(),
-            duration: Duration::new(),
+            captcha: Captcha::new(),
             meta: Meta::new(),
             pow: PoW::new(),
             notifications: Notifications::new(),

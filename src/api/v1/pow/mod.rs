@@ -21,8 +21,7 @@ pub mod get_config;
 pub mod verify_pow;
 pub mod verify_token;
 
-pub use super::mcaptcha::duration::GetDurationResp;
-pub use super::mcaptcha::levels::I32Levels;
+pub use super::mcaptcha::get::I32Levels;
 
 pub fn services(cfg: &mut web::ServiceConfig) {
     let cors = actix_cors::Cors::default()
