@@ -34,7 +34,9 @@ pub mod routes {
         pub delete: &'static str,
         pub update_key: &'static str,
         pub stats: &'static str,
-        pub user_provided_traffic_pattern: &'static str,
+        /// easy is using defaults
+        pub create_easy: &'static str,
+        pub update_easy: &'static str,
     }
 
     impl MCaptcha {
@@ -43,8 +45,8 @@ pub mod routes {
                 update_key: "/api/v1/mcaptcha/update/key",
                 delete: "/api/v1/mcaptcha/delete",
                 stats: "/api/v1/mcaptcha/stats",
-                user_provided_traffic_pattern:
-                    "/api/v1/mcaptcha/add/user-provided-traffic-pattern",
+                create_easy: "/api/v1/mcaptcha/add/easy",
+                update_easy: "/api/v1/mcaptcha/update/easy",
             }
         }
     }
@@ -54,7 +56,7 @@ pub fn services(cfg: &mut web::ServiceConfig) {
     cfg.service(update_token);
     cfg.service(delete_mcaptcha);
     cfg.service(get_stats);
-    cfg.service(from_user_provided_traffic_pattern);
+    cfg.service(create_easy);
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -221,14 +223,14 @@ async fn get_stats(
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct UserProvidedTrafficPattern {
+pub struct TrafficPattern {
     pub avg_traffic: u32,
     pub peak_sustainable_traffic: u32,
     pub broke_my_site_traffic: Option<u32>,
     pub description: String,
 }
 
-impl UserProvidedTrafficPattern {
+impl TrafficPattern {
     pub fn calculate(
         &self,
         strategy: &DefaultDifficultyStrategy,
@@ -268,11 +270,11 @@ impl UserProvidedTrafficPattern {
 }
 
 #[my_codegen::post(
-    path = "crate::V1_API_ROUTES.mcaptcha.user_provided_traffic_pattern",
+    path = "crate::V1_API_ROUTES.mcaptcha.create_easy",
     wrap = "crate::CheckLogin"
 )]
-async fn from_user_provided_traffic_pattern(
-    payload: web::Json<UserProvidedTrafficPattern>,
+async fn create_easy(
+    payload: web::Json<TrafficPattern>,
     data: AppData,
     id: Identity,
 ) -> ServiceResult<impl Responder> {
@@ -380,78 +382,83 @@ mod tests {
         assert_eq!(get_statis_resp.status(), StatusCode::OK);
     }
 
-    #[actix_rt::test]
-    async fn user_provided_traffic_pattern_calculate_works() {
-        const NAME: &str = "defaultuserconfgworks";
+    #[cfg(test)]
+    mod isoloated_test {
+        use super::{LevelBuilder, TrafficPattern};
 
-        let mut payload = UserProvidedTrafficPattern {
-            avg_traffic: 100_000,
-            peak_sustainable_traffic: 1_000_000,
-            broke_my_site_traffic: Some(10_000_000),
-            description: NAME.into(),
-        };
+        #[test]
+        fn easy_configuration_works() {
+            const NAME: &str = "defaultuserconfgworks";
 
-        let strategy = &crate::SETTINGS.captcha.default_difficulty_strategy;
-        let l1 = LevelBuilder::default()
-            .difficulty_factor(strategy.avg_traffic_difficulty)
-            .unwrap()
-            .visitor_threshold(payload.avg_traffic)
-            .build()
-            .unwrap();
+            let mut payload = TrafficPattern {
+                avg_traffic: 100_000,
+                peak_sustainable_traffic: 1_000_000,
+                broke_my_site_traffic: Some(10_000_000),
+                description: NAME.into(),
+            };
 
-        let l2 = LevelBuilder::default()
-            .difficulty_factor(strategy.peak_sustainable_traffic_difficulty)
-            .unwrap()
-            .visitor_threshold(payload.peak_sustainable_traffic)
-            .build()
-            .unwrap();
-        let l3 = LevelBuilder::default()
-            .difficulty_factor(strategy.broke_my_site_traffic_difficulty)
-            .unwrap()
-            .visitor_threshold(payload.broke_my_site_traffic.unwrap())
-            .build()
-            .unwrap();
+            let strategy = &crate::SETTINGS.captcha.default_difficulty_strategy;
+            let l1 = LevelBuilder::default()
+                .difficulty_factor(strategy.avg_traffic_difficulty)
+                .unwrap()
+                .visitor_threshold(payload.avg_traffic)
+                .build()
+                .unwrap();
 
-        let levels = vec![l1, l2, l3];
-        assert_eq!(payload.calculate(strategy).unwrap(), levels);
+            let l2 = LevelBuilder::default()
+                .difficulty_factor(strategy.peak_sustainable_traffic_difficulty)
+                .unwrap()
+                .visitor_threshold(payload.peak_sustainable_traffic)
+                .build()
+                .unwrap();
+            let l3 = LevelBuilder::default()
+                .difficulty_factor(strategy.broke_my_site_traffic_difficulty)
+                .unwrap()
+                .visitor_threshold(payload.broke_my_site_traffic.unwrap())
+                .build()
+                .unwrap();
 
-        let estimated_lmax = LevelBuilder::default()
-            .difficulty_factor(strategy.broke_my_site_traffic_difficulty)
-            .unwrap()
-            .visitor_threshold(1500000)
-            .build()
-            .unwrap();
-        payload.broke_my_site_traffic = None;
-        assert_eq!(
-            payload.calculate(strategy).unwrap(),
-            vec![l1, l2, estimated_lmax]
-        );
+            let levels = vec![l1, l2, l3];
+            assert_eq!(payload.calculate(strategy).unwrap(), levels);
 
-        let lmax = LevelBuilder::default()
-            .difficulty_factor(strategy.broke_my_site_traffic_difficulty)
-            .unwrap()
-            .visitor_threshold(u32::MAX)
-            .build()
-            .unwrap();
+            let estimated_lmax = LevelBuilder::default()
+                .difficulty_factor(strategy.broke_my_site_traffic_difficulty)
+                .unwrap()
+                .visitor_threshold(1500000)
+                .build()
+                .unwrap();
+            payload.broke_my_site_traffic = None;
+            assert_eq!(
+                payload.calculate(strategy).unwrap(),
+                vec![l1, l2, estimated_lmax]
+            );
 
-        let very_large_l2_peak_traffic = u32::MAX - 1;
-        let very_large_l2 = LevelBuilder::default()
-            .difficulty_factor(strategy.peak_sustainable_traffic_difficulty)
-            .unwrap()
-            .visitor_threshold(very_large_l2_peak_traffic)
-            .build()
-            .unwrap();
+            let lmax = LevelBuilder::default()
+                .difficulty_factor(strategy.broke_my_site_traffic_difficulty)
+                .unwrap()
+                .visitor_threshold(u32::MAX)
+                .build()
+                .unwrap();
 
-        //        payload.broke_my_site_traffic = Some(very_large_l2_peak_traffic);
-        payload.peak_sustainable_traffic = very_large_l2_peak_traffic;
-        assert_eq!(
-            payload.calculate(strategy).unwrap(),
-            vec![l1, very_large_l2, lmax]
-        );
+            let very_large_l2_peak_traffic = u32::MAX - 1;
+            let very_large_l2 = LevelBuilder::default()
+                .difficulty_factor(strategy.peak_sustainable_traffic_difficulty)
+                .unwrap()
+                .visitor_threshold(very_large_l2_peak_traffic)
+                .build()
+                .unwrap();
+
+            //        payload.broke_my_site_traffic = Some(very_large_l2_peak_traffic);
+            payload.peak_sustainable_traffic = very_large_l2_peak_traffic;
+            assert_eq!(
+                payload.calculate(strategy).unwrap(),
+                vec![l1, very_large_l2, lmax]
+            );
+        }
     }
 
     #[actix_rt::test]
-    async fn from_user_provided_traffic_pattern_works() {
+    async fn easy_works() {
         const NAME: &str = "defaultuserconfgworks";
         const PASSWORD: &str = "longpassworddomain";
         const EMAIL: &str = "defaultuserconfgworks@a.com";
@@ -466,7 +473,7 @@ mod tests {
         let cookies = get_cookie!(signin_resp);
         let app = get_app!(data).await;
 
-        let payload = UserProvidedTrafficPattern {
+        let payload = TrafficPattern {
             avg_traffic: 100_000,
             peak_sustainable_traffic: 1_000_000,
             broke_my_site_traffic: Some(10_000_000),
@@ -479,7 +486,7 @@ mod tests {
 
         let add_token_resp = test::call_service(
             &app,
-            post_request!(&payload, ROUTES.mcaptcha.user_provided_traffic_pattern)
+            post_request!(&payload, ROUTES.mcaptcha.create_easy)
                 .cookie(cookies.clone())
                 .to_request(),
         )
