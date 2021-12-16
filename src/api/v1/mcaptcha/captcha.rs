@@ -23,7 +23,7 @@ use libmcaptcha::{defense::Level, defense::LevelBuilder};
 use serde::{Deserialize, Serialize};
 
 use super::get_random;
-use super::levels::{add_captcha_runner, AddLevels};
+use super::levels::{add_captcha_runner, update_level_runner, AddLevels, UpdateLevels};
 use crate::errors::*;
 use crate::settings::DefaultDifficultyStrategy;
 use crate::stats::fetch::{Stats, StatsUnixTimestamp};
@@ -57,6 +57,7 @@ pub fn services(cfg: &mut web::ServiceConfig) {
     cfg.service(delete_mcaptcha);
     cfg.service(get_stats);
     cfg.service(create_easy);
+    cfg.service(update_easy);
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -319,6 +320,83 @@ async fn create_easy(
     Ok(HttpResponse::Ok().json(mcaptcha_config))
 }
 
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct UpdateTrafficPattern {
+    pub pattern: TrafficPattern,
+    pub key: String,
+}
+
+#[my_codegen::post(
+    path = "crate::V1_API_ROUTES.mcaptcha.update_easy",
+    wrap = "crate::CheckLogin"
+)]
+async fn update_easy(
+    payload: web::Json<UpdateTrafficPattern>,
+    data: AppData,
+    id: Identity,
+) -> ServiceResult<impl Responder> {
+    let username = id.identity().unwrap();
+    let payload = payload.into_inner();
+    let levels = payload
+        .pattern
+        .calculate(&crate::SETTINGS.captcha.default_difficulty_strategy)?;
+
+    let msg = UpdateLevels {
+        levels,
+        duration: crate::SETTINGS.captcha.default_difficulty_strategy.duration,
+        description: payload.pattern.description,
+        key: payload.key,
+    };
+
+    update_level_runner(&msg, &data, &username).await?;
+
+    sqlx::query!(
+        "DELETE FROM mcaptcha_sitekey_user_provided_avg_traffic 
+        WHERE config_id = (
+            SELECT config_id 
+            FROM 
+                mcaptcha_config 
+            WHERE
+                key = ($1) 
+            AND 
+                user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2)
+            );",
+        &msg.key,
+        &username,
+    )
+    .execute(&data.db)
+    .await?;
+
+    let broke_my_site_traffic = match payload.pattern.broke_my_site_traffic {
+        Some(n) => Some(n as i32),
+        None => None,
+    };
+
+    sqlx::query!(
+        "INSERT INTO mcaptcha_sitekey_user_provided_avg_traffic (
+        config_id,
+        avg_traffic,
+        peak_sustainable_traffic,
+        broke_my_site_traffic
+    ) VALUES ( 
+         (SELECT config_id FROM mcaptcha_config 
+          WHERE
+            key = ($1)
+          AND user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2)
+         ), $3, $4, $5)",
+        //payload.avg_traffic,
+        &msg.key,
+        &username,
+        payload.pattern.avg_traffic as i32,
+        payload.pattern.peak_sustainable_traffic as i32,
+        broke_my_site_traffic,
+    )
+    .execute(&data.db)
+    .await?;
+
+    Ok(HttpResponse::Ok())
+}
+
 #[cfg(test)]
 mod tests {
     use actix_web::http::StatusCode;
@@ -484,6 +562,8 @@ mod tests {
             .calculate(&crate::SETTINGS.captcha.default_difficulty_strategy)
             .unwrap();
 
+        // START create_easy
+
         let add_token_resp = test::call_service(
             &app,
             post_request!(&payload, ROUTES.mcaptcha.create_easy)
@@ -505,5 +585,46 @@ mod tests {
         assert_eq!(get_level_resp.status(), StatusCode::OK);
         let res_levels: Vec<Level> = test::read_body_json(get_level_resp).await;
         assert_eq!(res_levels, default_levels);
+        // END create_easy
+
+        // START update_easy
+        let update_pattern = TrafficPattern {
+            avg_traffic: 1_000,
+            peak_sustainable_traffic: 10_000,
+            broke_my_site_traffic: Some(1_000_000),
+            description: NAME.into(),
+        };
+
+        let updated_default_values = update_pattern
+            .calculate(&crate::SETTINGS.captcha.default_difficulty_strategy)
+            .unwrap();
+
+        let payload = UpdateTrafficPattern {
+            pattern: update_pattern,
+            key: token_key.key.clone(),
+        };
+
+        let update_token_resp = test::call_service(
+            &app,
+            post_request!(&payload, ROUTES.mcaptcha.update_easy)
+                .cookie(cookies.clone())
+                .to_request(),
+        )
+        .await;
+        assert_eq!(update_token_resp.status(), StatusCode::OK);
+
+        let get_level_resp = test::call_service(
+            &app,
+            post_request!(&token_key, ROUTES.levels.get)
+                .cookie(cookies.clone())
+                .to_request(),
+        )
+        .await;
+
+        assert_eq!(get_level_resp.status(), StatusCode::OK);
+        let res_levels: Vec<Level> = test::read_body_json(get_level_resp).await;
+        assert_ne!(res_levels, default_levels);
+        assert_eq!(res_levels, updated_default_values);
+        // END update_easy
     }
 }

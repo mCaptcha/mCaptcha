@@ -180,6 +180,15 @@ async fn update_levels(
     id: Identity,
 ) -> ServiceResult<impl Responder> {
     let username = id.identity().unwrap();
+    update_level_runner(&payload, &data, &username).await?;
+    Ok(HttpResponse::Ok())
+}
+
+pub async fn update_level_runner(
+    payload: &UpdateLevels,
+    data: &AppData,
+    username: &str,
+) -> ServiceResult<()> {
     let mut defense = DefenseBuilder::default();
 
     for level in payload.levels.iter() {
@@ -252,9 +261,9 @@ async fn update_levels(
             "Deleting captcha key {} while updating it, error: {:?}",
             &payload.key,
             e
-        )
+        );
     }
-    Ok(HttpResponse::Ok())
+    Ok(())
 }
 
 #[my_codegen::post(path = "crate::V1_API_ROUTES.levels.get", wrap = "crate::CheckLogin")]
