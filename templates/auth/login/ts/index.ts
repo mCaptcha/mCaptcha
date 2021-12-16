@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import {init} from "mcaptcha-glue";
+//import {init} from "mcaptcha-glue";
 
 import VIEWS from "../../../views/v1/routes";
 
@@ -69,5 +69,5 @@ export const index = (): void => {
   const form = <HTMLFontElement>document.getElementById("form");
   form.addEventListener("submit", login, true);
   registerShowPassword();
-  init();
+//  init();
 };

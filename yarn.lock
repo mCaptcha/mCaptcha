@@ -533,6 +533,11 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
+"@mcaptcha/core-glue@^0.1.0-alpha-3":
+  version "0.1.0-alpha-3"
+  resolved "https://registry.yarnpkg.com/@mcaptcha/core-glue/-/core-glue-0.1.0-alpha-3.tgz#16c11cb3751b6421999353dc10c032afd08ffa8b"
+  integrity sha512-avphBVgf3PPDWuUoDsB2qiXAss2pc00lUILswJaMQofr8FQyflzkhha8H2Z+qGFiX0Iib/yyP2TOtBDbHqE9Tg==
+
 "@mcaptcha/pow-wasm@^0.1.0-alpha-1":
   version "0.1.0-alpha-1"
   resolved "https://registry.yarnpkg.com/@mcaptcha/pow-wasm/-/pow-wasm-0.1.0-alpha-1.tgz#ec3fac9d34b7b6436dec6597629501e524a8b702"
@@ -542,6 +547,13 @@
   version "0.1.0-alpha-1"
   resolved "https://registry.yarnpkg.com/@mcaptcha/pow_sha256-polyfill/-/pow_sha256-polyfill-0.1.0-alpha-1.tgz#d34ee78de39223416358c540af46ea863e4373c2"
   integrity sha512-lnQNBCOnVI9BunHP8FGCsGs310GguQWdxSspXlvWcrLwgl86aq0hlBzZfOV+szG/jeTRAMry0He3MrD/kbqB/Q==
+
+"@mcaptcha/vanilla-glue@^0.1.0-alpha-1":
+  version "0.1.0-alpha-1"
+  resolved "https://registry.yarnpkg.com/@mcaptcha/vanilla-glue/-/vanilla-glue-0.1.0-alpha-1.tgz#6ddef419280853c55611d30fd44f4a31e7aab65f"
+  integrity sha512-GHPjUpqdgk9DquGnGYGDQertcwMENKUc4yr/Q3M7WzL6rPBs6JMCVdDHV22RGTxk3xBM19fGuDQ8GOyNauQ3hg==
+  dependencies:
+    "@mcaptcha/core-glue" "^0.1.0-alpha-3"
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -3667,11 +3679,6 @@ makeerror@1.0.x:
   integrity sha1-4BpckQnyr3lmDk6LlYd5AYT1qWw=
   dependencies:
     tmpl "1.0.x"
-
-mcaptcha-glue@^0.1.0-alpha-1:
-  version "0.1.0-alpha-3"
-  resolved "https://registry.yarnpkg.com/mcaptcha-glue/-/mcaptcha-glue-0.1.0-alpha-3.tgz#0c1c5cfc6991de6571fb2c0f0950acac289e1141"
-  integrity sha512-C/Nfw4RGsmbozbyvxx/p0C7bUBn+YmP7tTl/8ORNdQiuy2VQUmD874LvbocnmSar8Isk/8rIaCqmVRBlRw/Yaw==
 
 mdn-data@2.0.14:
   version "2.0.14"

@@ -14,6 +14,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import * as lib from "mcaptcha-glue";
+//import * as lib from "@mcaptcha/vanilla-glue";
 
-export const register = (): void => lib.init();
+//export const register = (): void => init();
