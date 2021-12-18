@@ -1,0 +1,72 @@
+<form class="sitekey-form" action="<.= crate::V1_API_ROUTES.captcha.easy.create .>" method="post">
+  <div class="sitekey-form__advance-options-container">
+	<h1 class="sitekey-form__advance-options-form-title">
+		<.= form_title .>
+	</h1>
+    <a 
+      class="sitekey-form__advance-options-link"
+      href="<.= crate::PAGES.panel.sitekey.add_advance .>">
+      Advance Options
+    </a>
+  </div>
+    <label class="sitekey-form__label" for="description">
+		Description
+	  <input
+		class="sitekey-form__input"
+		type="text"
+		name="description"
+		id="description"
+		required
+		<. if !form_description.trim().is_empty() { .>
+		value="<.= form_description .>"
+		<. } .>
+	  />
+	</label>
+
+    <label class="sitekey-form__label" for="avg_traffic">
+		Average Traffic of your website
+	  <input
+		class="sitekey-form__input"
+		type="number"
+		name="avg_traffic"
+		id="avg_traffic"
+		required
+        <. if let Some(avg_traffic) = avg_traffic { .>
+          value="<.= avg_traffic .>"
+        <. } .>
+	  />
+	</label>
+
+
+
+    <label class="sitekey-form__label" for="avg_traffic">
+		Maximum traffic that your website can handle
+	  <input
+		class="sitekey-form__input"
+		type="number"
+		name="peak_sustainable_traffic"
+		id="peak_sustainable_traffic"
+		required
+        <. if let Some(peak_sustainable_traffic) = peak_sustainable_traffic { .>
+          value="<.= peak_sustainable_traffic .>"
+        <. } .>
+
+	  />
+	</label>
+
+    <label class="sitekey-form__label" for="avg_traffic">
+		Traffic that broke your website(Optional)
+	  <input
+		class="sitekey-form__input"
+		type="number"
+		name="broke_my_site_traffic"
+		id="broke_my_site_traffic"
+        <. if let Some(broke_my_site_traffic) = broke_my_site_traffic { .>
+          value="<.= broke_my_site_traffic .>"
+        <. } .>
+
+	  />
+	</label>
+
+  <button class="sitekey-form__submit" type="submit">Submit</button>
+</form>
