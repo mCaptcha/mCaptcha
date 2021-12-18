@@ -14,9 +14,7 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-
 #![allow(clippy::type_complexity)]
-//use std::task::{Context, Poll};
 
 use actix_http::body::AnyBody;
 use actix_identity::Identity;
@@ -58,32 +56,9 @@ where
     type Error = Error;
     type Future = Either<S::Future, Ready<Result<Self::Response, Self::Error>>>;
 
-    //    fn poll_ready(&mut self, cx: &mut Context) -> Poll<Result<(), Self::Error>> {
-    //        self.service.poll_ready(cx)
-    //    }
-    //
     actix_service::forward_ready!(service);
 
     fn call(&self, req: ServiceRequest) -> Self::Future {
-        //    let (r, mut pl) = req.into_parts();
-
-        //    // TODO investigate when the bellow statement will
-        //    // return error
-        //    if let Ok(Some(_)) = Identity::from_request(&r, &mut pl)
-        //        .into_inner()
-        //        .map(|x| x.identity())
-        //    {
-        //        let req = ServiceRequest::from_parts(r, pl);
-        //        Either::Left(self.service.call(req))
-        //    } else {
-        //        let resp = actix_http::ResponseBuilder::new(http::StatusCode::FOUND)
-        //            .insert_header((http::header::LOCATION, PAGES.auth.login))
-        //            .finish();
-
-        //        let req = ServiceRequest::from_parts(r, pl);
-        //        Either::Right(ok(req.into_response(resp)))
-        //    }
-
         let (r, mut pl) = req.into_parts();
 
         // TODO investigate when the bellow statement will
