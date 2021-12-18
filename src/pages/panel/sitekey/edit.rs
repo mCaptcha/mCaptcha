@@ -57,7 +57,10 @@ impl IndexPage {
 }
 
 /// route handler that renders individual views for sitekeys
-#[my_codegen::get(path = "crate::PAGES.panel.sitekey.edit", wrap = "crate::CheckLogin")]
+#[my_codegen::get(
+    path = "crate::PAGES.panel.sitekey.edit_advance",
+    wrap = "crate::CheckLogin"
+)]
 pub async fn edit_sitekey(
     path: web::Path<String>,
     data: AppData,
@@ -121,7 +124,7 @@ mod test {
 
         let app = get_app!(data).await;
 
-        let url = format!("/sitekey/{}/edit", &key.key);
+        let url = PAGES.panel.sitekey.get_edit_advance(&key.key);
 
         let list_sitekey_resp = test::call_service(
             &app,
