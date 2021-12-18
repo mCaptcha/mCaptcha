@@ -515,6 +515,27 @@
       "nullable": []
     }
   },
+  "a1c49ee377d6ac57fb22c9eac0ef1927a97087abd58da092a91623d06fa7076e": {
+    "query": "SELECT name FROM mcaptcha_config \n                WHERE key = $1 \n                AND user_id = (\n                    SELECT user_id FROM mcaptcha_users WHERE NAME = $2)",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "name",
+          "type_info": "Varchar"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Text"
+        ]
+      },
+      "nullable": [
+        false
+      ]
+    }
+  },
   "ad23588ee4bcbb13e208460ce21e2fa9f1373893934b530b339fea10360b34a8": {
     "query": "SELECT EXISTS (SELECT 1 from mcaptcha_users WHERE name = $1)",
     "describe": {
@@ -591,6 +612,39 @@
       "nullable": [
         false,
         false
+      ]
+    }
+  },
+  "c2e167e56242de7e0a835e25004b15ca8340545fa0ca7ac8f3293157d2d03d98": {
+    "query": "SELECT \n          avg_traffic, \n          peak_sustainable_traffic, \n          broke_my_site_traffic \n        FROM \n          mcaptcha_sitekey_user_provided_avg_traffic \n        WHERE \n          config_id = (\n            SELECT \n              config_id \n            FROM \n              mcaptcha_config \n            WHERE \n              KEY = $1 \n              AND user_id = (\n                SELECT \n                  id \n                FROM \n                  mcaptcha_users \n                WHERE \n                  NAME = $2\n              )\n          )\n        ",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "avg_traffic",
+          "type_info": "Int4"
+        },
+        {
+          "ordinal": 1,
+          "name": "peak_sustainable_traffic",
+          "type_info": "Int4"
+        },
+        {
+          "ordinal": 2,
+          "name": "broke_my_site_traffic",
+          "type_info": "Int4"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        true
       ]
     }
   },
