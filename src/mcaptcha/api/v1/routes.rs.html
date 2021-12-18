@@ -45,12 +45,6 @@
 <span id="45">45</span>
 <span id="46">46</span>
 <span id="47">47</span>
-<span id="48">48</span>
-<span id="49">49</span>
-<span id="50">50</span>
-<span id="51">51</span>
-<span id="52">52</span>
-<span id="53">53</span>
 </pre><pre class="rust"><code><span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 *
@@ -70,9 +64,7 @@
 
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::account::routes::Account</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::auth::routes::Auth</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::mcaptcha::captcha::routes::MCaptcha</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::mcaptcha::duration::routes::Duration</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::mcaptcha::levels::routes::Levels</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::mcaptcha::routes::Captcha</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::meta::routes::Meta</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::notifications::routes::Notifications</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::pow::routes::PoW</span>;
@@ -82,9 +74,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Routes</span> {
     <span class="kw">pub</span> <span class="ident">auth</span>: <span class="ident">Auth</span>,
     <span class="kw">pub</span> <span class="ident">account</span>: <span class="ident">Account</span>,
-    <span class="kw">pub</span> <span class="ident">levels</span>: <span class="ident">Levels</span>,
-    <span class="kw">pub</span> <span class="ident">mcaptcha</span>: <span class="ident">MCaptcha</span>,
-    <span class="kw">pub</span> <span class="ident">duration</span>: <span class="ident">Duration</span>,
+    <span class="kw">pub</span> <span class="ident">captcha</span>: <span class="ident">Captcha</span>,
     <span class="kw">pub</span> <span class="ident">meta</span>: <span class="ident">Meta</span>,
     <span class="kw">pub</span> <span class="ident">pow</span>: <span class="ident">PoW</span>,
     <span class="kw">pub</span> <span class="ident">notifications</span>: <span class="ident">Notifications</span>,
@@ -95,9 +85,7 @@
         <span class="ident">Routes</span> {
             <span class="ident">auth</span>: <span class="ident">Auth::new</span>(),
             <span class="ident">account</span>: <span class="ident">Account::new</span>(),
-            <span class="ident">levels</span>: <span class="ident">Levels::new</span>(),
-            <span class="ident">mcaptcha</span>: <span class="ident">MCaptcha::new</span>(),
-            <span class="ident">duration</span>: <span class="ident">Duration::new</span>(),
+            <span class="ident">captcha</span>: <span class="ident">Captcha::new</span>(),
             <span class="ident">meta</span>: <span class="ident">Meta::new</span>(),
             <span class="ident">pow</span>: <span class="ident">PoW::new</span>(),
             <span class="ident">notifications</span>: <span class="ident">Notifications::new</span>(),

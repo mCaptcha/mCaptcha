@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["services",""],["update_token_helper",""]],"mod":[["routes",""]],"struct":[["DeleteCaptcha",""],["MCaptchaDetails",""],["MCaptchaID",""],["StatsPayload",""],["UserProvidedTrafficPattern",""],["delete_mcaptcha",""],["from_user_provided_traffic_pattern",""],["get_stats",""],["update_token",""]]});
