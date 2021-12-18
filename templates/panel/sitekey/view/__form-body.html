@@ -1,0 +1,32 @@
+</h1>
+<label class="sitekey-form__label" for="description">
+    Description
+  <input
+    <. if READONLY { .>
+      <.= "readonly='readonly'" .>
+    <. } .>
+    class="sitekey-form__input"
+    type="text"
+    name="description"
+    id="description"
+    required
+    <. if !name.trim().is_empty() { .>
+    value="<.= name .>"
+    <. } .>
+  />
+</label>
+<label class="sitekey-form__label" for="duration">
+    Cooldown Duratoin(in seconds)
+  <input
+    <. if READONLY { .>
+    <.= "readonly='readonly'" .>
+    <. } .>
+    class="sitekey-form__input"
+    type="number"
+    name="duration"
+    id="duration"
+    min=0
+    required
+    value="<.= duration .>"
+  />
+</label>

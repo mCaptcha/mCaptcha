@@ -1,8 +1,27 @@
 <. const URL: &str = crate::V1_API_ROUTES.captcha.create; .>
 <. const READONLY: bool = true; .>
-<. include!("./__form-top.html"); .>
+<. let edit_url = crate::PAGES.panel.sitekey.get_edit_easy(&key) ;.>
+<. include!("./__form-container-setup.html"); .>
+    <h1 class="form__title">Sitekey: <.= name .> 
+    <a 
+      target="_blank"
+      href="<.= crate::WIDGET_ROUTES.verification_widget .>/?sitekey=<.= &key.>"
+    >View deployment
+      <img class="sitekey-form__widget-link" 
+        src="<.= crate::FILES.get("./static/cache/img/svg/external-link.svg").unwrap() .>"
+        alt="View widget deployment" 
+      />
+    </a> 
+
+  <. if READONLY { .>
+    <. let edit_url = crate::PAGES.panel.sitekey.get_edit_easy(&key) ;.>
+      <. include!("./__edit-sitekey-icon.html"); .>
+    <. } .>
+    <. include!("./__delete-btn.html"); .>
+
+      <. include!("./__form-body.html"); .>
       <. for (count, level) in levels.iter().enumerate() { .>
-        <. include!("./existing-level.html"); .> 
+        <. include!("./existing-level.html"); .>
       <. } .>
 <./* synchronise with "./__form-bottom.html" Lines below should break form */.>
     </form>
