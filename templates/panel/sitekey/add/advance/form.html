@@ -1,7 +1,14 @@
 <form class="sitekey-form" action="<.= crate::V1_API_ROUTES.captcha.create .>" method="post">
-	<h1 class="form__title">
+  <div class="sitekey-form__advance-options-container">
+	<h1 class="sitekey-form__advance-options-form-title">
 		<.= form_title .>
 	</h1>
+    <a 
+      class="sitekey-form__advance-options-link"
+      href="<.= crate::PAGES.panel.sitekey.add_easy .>">
+      Easy Options
+    </a>
+  </div>
     <label class="sitekey-form__label" for="description">
 		Description
 	  <input

@@ -15,105 +15,127 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-@import '../../../../../reset';
-@import '../../../../../vars';
-@import '../../../../../components/button';
-@import '../../../../../components/forms';
+@import "../../../../../reset";
+@import "../../../../../vars";
+@import "../../../../../components/button";
+@import "../../../../../components/forms";
+
+$form-title-border: 0.1px solid $light-grey;
 
 .sitekey-form {
-  display: flex;
-  flex-direction: column;
-  width: 90%;
-  justify-content: center;
-  align-items: center;
-//  box-sizing: content-box;
-  background-color: $white;
-  margin: auto;
-  padding-bottom: 30px;
+	display: flex;
+	flex-direction: column;
+	width: 90%;
+	justify-content: center;
+	align-items: center;
+	//  box-sizing: content-box;
+	background-color: $white;
+	margin: auto;
+	padding-bottom: 30px;
 }
 
 .form__title-flex-container {
-  display: flex;
-  width: 100%;
-  border-bottom: 0.1px solid $light-grey;
+	display: flex;
+	width: 100%;
+	border-bottom: 0.1px solid $light-grey;
+}
+
+@mixin form__title {
+	padding-left: 10px;
+	font-size: 1rem;
+	padding: 0.75rem 1.25rem;
+	box-sizing: border-box;
+	text-align: left;
+	width: 100%;
+	border-bottom: $form-title-border;
 }
 
 .form__title {
-  padding-left: 10px;
-  font-size: 1rem;
-  padding: 0.75rem 1.25rem;
-  box-sizing: border-box;
-  text-align: left;
-  width: 100%;
-  border-bottom: 0.1px solid $light-grey;
+	@include form__title;
 }
 
 .sitekey-form__label {
-  @include form-label;
+	@include form-label;
 }
 
 .sitekey-form__input {
-  @include form-input;
-  width: 100%;
+	@include form-input;
+	width: 100%;
 }
 
 // level styling
 .sitekey__level-container {
-  width: $form-content-width;
-  box-sizing: border-box;
-  display: flex;
-  border: none;
+	width: $form-content-width;
+	box-sizing: border-box;
+	display: flex;
+	border: none;
 }
 
 .sitekey__level-title {
-  margin-bottom: 10px;
-  margin-top: 5px;
+	margin-bottom: 10px;
+	margin-top: 5px;
 }
 
 .sitekey-form__level-label {
-  @include form-label;
-  font-size: 0.9rem;
+	@include form-label;
+	font-size: 0.9rem;
 }
 
 .sitekey-form__level-name {
-  @include form-label;
-  display: block;
+	@include form-label;
+	display: block;
 }
 
 .sitekey-form__level-input {
-  @include form-input;
-  flex: 2;
+	@include form-input;
+	flex: 2;
 }
 
-
 .sitekey-form__add-level-btn-spacer {
-  color: $white;
+	color: $white;
 }
 
 .sitekey-form__level-add-level-button {
-  @include violet-button;
+	@include violet-button;
 }
 
 .sitekey-form__level-add-level-button:hover {
-  @include violet-button-hover;
+	@include violet-button-hover;
 }
 
 .sitekey-form__level-label--hidden {
-  @include form-label;
-  color: $white;
-  flex: 1;
+	@include form-label;
+	color: $white;
+	flex: 1;
 }
 
 // level styling ends
 
 .sitekey-form__submit {
-  @include violet-button;
-  display: block;
-  margin-top: 50px;
-  width: $form-content-width;
-  width: 90%;
+	@include violet-button;
+	display: block;
+	margin-top: 50px;
+	width: $form-content-width;
+	width: 90%;
 }
 
 .sitekey-form__submit:hover {
-  @include violet-button-hover;
+	@include violet-button-hover;
+}
+
+.sitekey-form__advance-options-container {
+	display: flex;
+	width: 100%;
+	border-bottom: $form-title-border;
+}
+
+.sitekey-form__advance-options-form-title {
+	@include form__title;
+	border: none;
+}
+
+.sitekey-form__advance-options-link {
+	width: 200px;
+	display: block;
+	margin: auto;
 }
