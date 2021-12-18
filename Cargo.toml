@@ -7,7 +7,7 @@ repository = "https://github.com/mCaptcha/mCaptcha"
 documentation = "https://mcaptcha.org/docs/"
 license = "AGPLv3 or later version"
 authors = ["realaravinth <realaravinth@batsense.net>"]
-edition = "2018"
+edition = "2021"
 default-run = "mcaptcha"
 build = "build.rs"
 

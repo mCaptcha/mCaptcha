@@ -15,9 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 use std::time::Duration;
+//use std::sync::atomicBool
 
 use actix::clock::sleep;
 use actix::spawn;
+use tokio::task::JoinHandle;
 
 use crate::api::v1::account::delete::runners::delete_user;
 use crate::api::v1::account::{username::runners::username_exists, AccountCheckPayload};
@@ -31,52 +33,79 @@ pub const DEMO_USER: &str = "aaronsw";
 /// Demo password
 pub const DEMO_PASSWORD: &str = "password";
 
-/// register demo user runner
-async fn register_demo_user(data: &AppData) -> ServiceResult<()> {
-    let user_exists_payload = AccountCheckPayload {
-        val: DEMO_USER.into(),
-    };
+pub struct DemoUser {
+    data: AppData,
+    duration: Duration,
+    handle: JoinHandle<()>,
+}
 
-    if !username_exists(&user_exists_payload, data).await?.exists {
-        let register_payload = Register {
-            username: DEMO_USER.into(),
-            password: DEMO_PASSWORD.into(),
-            confirm_password: DEMO_PASSWORD.into(),
-            email: None,
+impl DemoUser {
+    pub async fn spawn(data: AppData, duration: Duration) -> ServiceResult<Self> {
+        let handle = Self::run(data.clone(), duration.clone()).await?;
+        let d = Self {
+            data,
+            duration,
+            handle,
         };
 
-        log::info!("Registering demo user");
-        match register_runner(&register_payload, data).await {
-            Err(ServiceError::UsernameTaken) | Ok(_) => Ok(()),
-            Err(e) => Err(e),
+        Ok(d)
+    }
+
+    #[allow(dead_code)]
+    pub fn abort(&self) {
+        self.handle.abort();
+    }
+
+    /// register demo user runner
+    async fn register_demo_user(data: &AppData) -> ServiceResult<()> {
+        let user_exists_payload = AccountCheckPayload {
+            val: DEMO_USER.into(),
+        };
+
+        if !username_exists(&user_exists_payload, &data).await?.exists {
+            let register_payload = Register {
+                username: DEMO_USER.into(),
+                password: DEMO_PASSWORD.into(),
+                confirm_password: DEMO_PASSWORD.into(),
+                email: None,
+            };
+
+            log::info!("Registering demo user");
+            match register_runner(&register_payload, &data).await {
+                Err(ServiceError::UsernameTaken) | Ok(_) => Ok(()),
+                Err(e) => Err(e),
+            }
+        } else {
+            Ok(())
         }
-    } else {
+    }
+
+    async fn delete_demo_user(data: &AppData) -> ServiceResult<()> {
+        log::info!("Deleting demo user");
+        delete_user(DEMO_USER, &data).await?;
         Ok(())
     }
-}
 
-async fn delete_demo_user(data: &AppData) -> ServiceResult<()> {
-    log::info!("Deleting demo user");
-    delete_user(DEMO_USER, data).await?;
-    Ok(())
-}
+    pub async fn run(
+        data: AppData,
+        duration: Duration,
+    ) -> ServiceResult<JoinHandle<()>> {
+        Self::register_demo_user(&data).await?;
 
-pub async fn run(data: AppData, duration: Duration) -> ServiceResult<()> {
-    register_demo_user(&data).await?;
-
-    let fut = async move {
-        loop {
-            sleep(duration).await;
-            if let Err(e) = delete_demo_user(&data).await {
-                log::error!("Error while deleting demo user: {:?}", e);
+        let fut = async move {
+            loop {
+                sleep(duration).await;
+                if let Err(e) = Self::delete_demo_user(&data).await {
+                    log::error!("Error while deleting demo user: {:?}", e);
+                }
+                if let Err(e) = Self::register_demo_user(&data).await {
+                    log::error!("Error while registering demo user: {:?}", e);
+                }
             }
-            if let Err(e) = register_demo_user(&data).await {
-                log::error!("Error while registering demo user: {:?}", e);
-            }
-        }
-    };
-    spawn(fut);
-    Ok(())
+        };
+        let handle = spawn(fut);
+        Ok(handle)
+    }
 }
 
 #[cfg(test)]
@@ -100,7 +129,7 @@ mod tests {
         let duration = Duration::from_secs(DURATION);
 
         // register works
-        let _ = register_demo_user(&data).await.unwrap();
+        let _ = DemoUser::register_demo_user(&data).await.unwrap();
         let payload = AccountCheckPayload {
             val: DEMO_USER.into(),
         };
@@ -108,11 +137,11 @@ mod tests {
         signin(DEMO_USER, DEMO_PASSWORD).await;
 
         // deletion works
-        assert!(super::delete_demo_user(&data).await.is_ok());
+        assert!(DemoUser::delete_demo_user(&data).await.is_ok());
         assert!(!username_exists(&payload, &data).await.unwrap().exists);
 
         // test the runner
-        run(data, duration).await.unwrap();
+        let user = DemoUser::spawn(data, duration).await.unwrap();
         let (data_inner, _, signin_resp, token_key) =
             add_levels_util(DEMO_USER, DEMO_PASSWORD).await;
         let cookies = get_cookie!(signin_resp);
@@ -133,7 +162,7 @@ mod tests {
 
         let resp = test::call_service(
             &app,
-            post_request!(&token_key, crate::V1_API_ROUTES.captcha.create)
+            post_request!(&token_key, crate::V1_API_ROUTES.captcha.get)
                 .cookie(cookies)
                 .to_request(),
         )
@@ -141,5 +170,6 @@ mod tests {
         assert_eq!(resp.status(), StatusCode::OK);
         let res_levels: Vec<Level> = test::read_body_json(resp).await;
         assert!(res_levels.is_empty());
+        user.abort();
     }
 }

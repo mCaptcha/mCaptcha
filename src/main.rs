@@ -54,6 +54,7 @@ pub use settings::Settings;
 use static_assets::FileMap;
 pub use widget::WIDGET_ROUTES;
 
+use crate::demo::DemoUser;
 pub use crate::middleware::auth::CheckLogin;
 
 lazy_static! {
@@ -114,10 +115,14 @@ async fn main() -> std::io::Result<()> {
     sqlx::migrate!("./migrations/").run(&data.db).await.unwrap();
     let data = actix_web::web::Data::new(data);
 
+    let mut demo_user: Option<DemoUser> = None;
+
     if SETTINGS.allow_demo && SETTINGS.allow_registration {
-        demo::run(data.clone(), Duration::from_secs(60 * 30))
-            .await
-            .unwrap();
+        demo_user = Some(
+            DemoUser::spawn(data.clone(), Duration::from_secs(60 * 30))
+                .await
+                .unwrap(),
+        );
     }
 
     println!("Starting server on: http://{}", SETTINGS.server.get_ip());
@@ -141,7 +146,12 @@ async fn main() -> std::io::Result<()> {
     .bind(SETTINGS.server.get_ip())
     .unwrap()
     .run()
-    .await
+    .await?;
+
+    if let Some(demo_user) = demo_user {
+        demo_user.abort();
+    }
+    Ok(())
 }
 
 #[cfg(not(tarpaulin_include))]
