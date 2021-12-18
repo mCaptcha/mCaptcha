@@ -1,6 +1,16 @@
 <. const URL: &str = crate::V1_API_ROUTES.captcha.update; .>
 <. const READONLY: bool = false; .>
-<. include!("../view/__form-top.html"); .>
+<. let edit_url = crate::PAGES.panel.sitekey.get_edit_easy(&key); .>
+<. include!("../view/__form-container-setup.html"); .>
+  <div class="sitekey-form__advance-options-container">
+    <h1 class="form__title">Sitekey: <.= name .> </h1>
+    <a 
+      class="sitekey-form__advance-options-link"
+      href="<.= edit_url .>">
+      Easy Options
+    </a>
+  </div>
+    <. include!("../view/__form-body.html"); .>
     <. for (count, level) in levels.iter().enumerate() { .>
            <. include!("./existing-level.html"); .>  
     <. } .>
