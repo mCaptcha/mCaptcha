@@ -236,8 +236,6 @@
 <span id="236">236</span>
 <span id="237">237</span>
 <span id="238">238</span>
-<span id="239">239</span>
-<span id="240">240</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
  *
@@ -311,7 +309,6 @@
     <span class="kw">pub</span> <span class="ident">username</span>: <span class="ident">String</span>,
     <span class="kw">pub</span> <span class="ident">password</span>: <span class="ident">String</span>,
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">String</span>,
-    <span class="kw">pub</span> <span class="ident">url</span>: <span class="ident">String</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">DatabaseBuilder</span> {
@@ -325,7 +322,6 @@
             <span class="ident">port</span>: <span class="ident">url</span>.<span class="ident">port</span>().<span class="ident">expect</span>(<span class="string">&quot;Enter database port&quot;</span>).<span class="ident">into</span>(),
             <span class="ident">hostname</span>: <span class="ident">url</span>.<span class="ident">host</span>().<span class="ident">expect</span>(<span class="string">&quot;Enter database host&quot;</span>).<span class="ident">to_string</span>(),
             <span class="ident">username</span>: <span class="ident">url</span>.<span class="ident">username</span>().<span class="ident">into</span>(),
-            <span class="ident">url</span>: <span class="ident">url</span>.<span class="ident">to_string</span>(),
             <span class="ident">password</span>: <span class="ident">url</span>.<span class="ident">password</span>().<span class="ident">expect</span>(<span class="string">&quot;Enter database password&quot;</span>).<span class="ident">into</span>(),
             <span class="ident">name</span>,
         }
