@@ -13,8 +13,8 @@ jobs:
       fail-fast: false
       matrix:
         version:
-          # - stable
-          - 1.51.0
+          - stable
+            #- 1.51.0
 
     name: ${{ matrix.version }} - x86_64-unknown-linux-gnu
     runs-on: ubuntu-latest
@@ -37,14 +37,6 @@ jobs:
         image: mcaptcha/cache
         ports:
           - 6379:6379
-            #      smtp:
-            #        image: maildev/maildev
-            #        ports:
-            #          - 10025:1025
-            #          - 1080:1080
-            #        env:
-            #          MAILDEV_INCOMING_USER: admin
-            #          MAILDEV_INCOMING_PASS: password
 
     steps:
       - uses: actions/checkout@v2
@@ -61,7 +53,7 @@ jobs:
 
       - uses: actions/setup-node@v2
         with:
-          node-version: '16.x'
+          node-version: "16.x"
 
       - name: start smtp server
         run: docker run -d -p 1080:1080 -p 10025:1025  maildev/maildev --incoming-user admin --incoming-pass password
@@ -88,11 +80,10 @@ jobs:
         run: make frontend
 
       - name: Generate coverage file
-        if: matrix.version == '1.51.0' && (github.ref == 'refs/heads/master' || github.event_name == 'pull_request')
+        if: (github.ref == 'refs/heads/master' || github.event_name == 'pull_request')
         uses: actions-rs/tarpaulin@v0.1
         with:
-          version: '0.15.0'
-          args: '-t 1200'
+          args: "-t 1200"
         env:
           DATABASE_URL: postgres://postgres:password@localhost:5432/postgres
           # GIT_HASH is dummy value. I guess build.rs is skipped in tarpaulin
@@ -103,5 +94,5 @@ jobs:
           COMPILED_DATE: "2021-07-21"
 
       - name: Upload to Codecov
-        if: matrix.version == '1.51.0' && (github.ref == 'refs/heads/master' || github.event_name == 'pull_request')
-        uses: codecov/codecov-action@v1
+        if: (github.ref == 'refs/heads/master' || github.event_name == 'pull_request')
+        uses: codecov/codecov-action@v2
