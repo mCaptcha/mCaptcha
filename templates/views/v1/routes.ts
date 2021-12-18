@@ -27,9 +27,11 @@ const ROUTES = {
   notifications: "/notifications",
   listSitekey: "/sitekeys/",
   viewSitekey: (key: string): string => `/sitekey/${key}/`,
-  editSitekey: (key: string): string => `/sitekey/${key}/edit/`,
+  editSitekeyAdvance: (key: string): string => `/sitekey/${key}/advance/edit/`,
+  addSiteKeyAdvance: "/sitekeys/advance/add",
+  addSiteKeyEasy: "/sitekeys/easy/add",
+  editSitekeyEasy: (key: string): string => `/sitekey/${key}/easy/edit/`,
   deleteSitekey: (key: string): string => `/sitekey/${key}/delete/`,
-  addSiteKey: "/sitekeys/add",
 };
 
 export default ROUTES;
