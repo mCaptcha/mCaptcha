@@ -394,6 +394,35 @@
 <span id="394">394</span>
 <span id="395">395</span>
 <span id="396">396</span>
+<span id="397">397</span>
+<span id="398">398</span>
+<span id="399">399</span>
+<span id="400">400</span>
+<span id="401">401</span>
+<span id="402">402</span>
+<span id="403">403</span>
+<span id="404">404</span>
+<span id="405">405</span>
+<span id="406">406</span>
+<span id="407">407</span>
+<span id="408">408</span>
+<span id="409">409</span>
+<span id="410">410</span>
+<span id="411">411</span>
+<span id="412">412</span>
+<span id="413">413</span>
+<span id="414">414</span>
+<span id="415">415</span>
+<span id="416">416</span>
+<span id="417">417</span>
+<span id="418">418</span>
+<span id="419">419</span>
+<span id="420">420</span>
+<span id="421">421</span>
+<span id="422">422</span>
+<span id="423">423</span>
+<span id="424">424</span>
+<span id="425">425</span>
 </pre><pre class="rust"><code><span class="comment">/*
 * Copyright (C) 2021  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 *
@@ -615,6 +644,7 @@
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="ident">actix_web::http::StatusCode</span>;
     <span class="kw">use</span> <span class="ident">actix_web::test</span>;
+    <span class="kw">use</span> <span class="ident">actix_web::web::Bytes</span>;
 
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
     <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::api::v1::mcaptcha::create::MCaptchaDetails</span>;
@@ -788,6 +818,34 @@
         <span class="macro">assert_ne!</span>(<span class="ident">res_levels</span>, <span class="ident">default_levels</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">res_levels</span>, <span class="ident">updated_default_values</span>);
         <span class="comment">// END update_easy</span>
+
+        <span class="comment">// test easy edit page</span>
+        <span class="kw">let</span> <span class="ident">easy_url</span> <span class="op">=</span> <span class="ident">PAGES</span>.<span class="ident">panel</span>.<span class="ident">sitekey</span>.<span class="ident">get_edit_easy</span>(<span class="kw-2">&amp;</span><span class="ident">token_key</span>.<span class="ident">key</span>);
+
+        <span class="kw">let</span> <span class="ident">easy_edit_page</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
+            <span class="kw-2">&amp;</span><span class="ident">app</span>,
+            <span class="ident">test::TestRequest::get</span>()
+                .<span class="ident">uri</span>(<span class="kw-2">&amp;</span><span class="ident">easy_url</span>)
+                .<span class="ident">cookie</span>(<span class="ident">cookies</span>.<span class="ident">clone</span>())
+                .<span class="ident">to_request</span>(),
+        )
+        .<span class="kw">await</span>;
+        <span class="macro">assert_eq!</span>(<span class="ident">easy_edit_page</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::OK</span>);
+
+        <span class="kw">let</span> <span class="ident">body</span>: <span class="ident">Bytes</span> <span class="op">=</span> <span class="ident">test::read_body</span>(<span class="ident">easy_edit_page</span>).<span class="kw">await</span>;
+        <span class="kw">let</span> <span class="ident">body</span> <span class="op">=</span> <span class="ident">String::from_utf8</span>(<span class="ident">body</span>.<span class="ident">to_vec</span>()).<span class="ident">unwrap</span>();
+        <span class="macro">assert!</span>(<span class="ident">body</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">token_key</span>.<span class="ident">name</span>));
+
+        <span class="macro">assert!</span>(<span class="ident">body</span>.<span class="ident">contains</span>(
+            <span class="kw-2">&amp;</span><span class="ident">payload</span>
+                .<span class="ident">pattern</span>
+                .<span class="ident">broke_my_site_traffic</span>
+                .<span class="ident">as_ref</span>()
+                .<span class="ident">unwrap</span>()
+                .<span class="ident">to_string</span>()
+        ));
+        <span class="macro">assert!</span>(<span class="ident">body</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">payload</span>.<span class="ident">pattern</span>.<span class="ident">avg_traffic</span>.<span class="ident">to_string</span>()));
+        <span class="macro">assert!</span>(<span class="ident">body</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">payload</span>.<span class="ident">pattern</span>.<span class="ident">peak_sustainable_traffic</span>.<span class="ident">to_string</span>()));
     }
 }
 </code></pre></div>
