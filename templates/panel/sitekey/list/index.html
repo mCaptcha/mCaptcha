@@ -48,7 +48,7 @@ include!("../../navbar/index.html"); .>
               </td>
               <td class="sitekey-list__key">
                 <div class="sitekey-list__edit">
-                  <. let key = format!("/sitekey/{}", &sitekey.key); .>
+                  <. let edit_url = crate::PAGES.panel.sitekey.get_edit_easy(&sitekey.key) ;.>
                   <. include!("../view/__edit-sitekey-icon.html"); .>
                 </div>
               </td>
