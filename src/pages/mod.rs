@@ -58,11 +58,12 @@ mod tests {
 
         let app = get_app!(data).await;
 
-        let edit_sitekey_url = format!("/sitekey/{}/edit", &token_key.key);
-        let delete_sitekey_url = format!("/sitekey/{}/delete", &token_key.key);
+        let edit_sitekey_url = PAGES.panel.sitekey.get_edit_advance(&token_key.key);
+        let delete_sitekey_url = PAGES.panel.sitekey.get_delete(&token_key.key);
         let urls = vec![
             PAGES.home,
-            PAGES.panel.sitekey.add,
+            PAGES.panel.sitekey.add_advance,
+            PAGES.panel.sitekey.add_easy,
             PAGES.panel.sitekey.list,
             PAGES.panel.notifications,
             PAGES.panel.settings.home,
