@@ -71,7 +71,6 @@ struct DatabaseBuilder {
     pub username: String,
     pub password: String,
     pub name: String,
-    pub url: String,
 }
 
 impl DatabaseBuilder {
@@ -85,7 +84,6 @@ impl DatabaseBuilder {
             port: url.port().expect("Enter database port").into(),
             hostname: url.host().expect("Enter database host").to_string(),
             username: url.username().into(),
-            url: url.to_string(),
             password: url.password().expect("Enter database password").into(),
             name,
         }
