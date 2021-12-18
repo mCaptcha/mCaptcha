@@ -15,13 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 use actix_identity::Identity;
-use actix_web::{web, HttpResponse, Responder};
+use actix_web::{http, web, HttpResponse, Responder};
 use sailfish::TemplateOnce;
+use sqlx::Error::RowNotFound;
 
+use crate::api::v1::mcaptcha::easy::TrafficPattern;
 use crate::errors::*;
 use crate::AppData;
 
-const PAGE: &str = "SiteKeys";
+const PAGE: &str = "Edit Sitekey";
 
 #[derive(Clone)]
 struct McaptchaConfig {
@@ -100,9 +102,118 @@ pub async fn advance(
         .body(body))
 }
 
+#[derive(TemplateOnce, Clone)]
+#[template(path = "panel/sitekey/edit/easy/index.html")]
+pub struct EasyEditPage<'a> {
+    pub form_title: &'a str,
+    pub pattern: TrafficPattern,
+    pub key: String,
+}
+
+impl<'a> EasyEditPage<'a> {
+    pub fn new(key: String, pattern: TrafficPattern) -> Self {
+        Self {
+            form_title: PAGE,
+            pattern,
+            key,
+        }
+    }
+}
+
+/// route handler that renders individual views for sitekeys
+#[my_codegen::get(
+    path = "crate::PAGES.panel.sitekey.edit_easy",
+    wrap = "crate::CheckLogin"
+)]
+pub async fn easy(
+    path: web::Path<String>,
+    data: AppData,
+    id: Identity,
+) -> PageResult<impl Responder> {
+    let username = id.identity().unwrap();
+    let key = path.into_inner();
+
+    struct Traffic {
+        peak_sustainable_traffic: i32,
+        avg_traffic: i32,
+        broke_my_site_traffic: Option<i32>,
+    }
+
+    match sqlx::query_as!(
+        Traffic,
+        "SELECT 
+          avg_traffic, 
+          peak_sustainable_traffic, 
+          broke_my_site_traffic 
+        FROM 
+          mcaptcha_sitekey_user_provided_avg_traffic 
+        WHERE 
+          config_id = (
+            SELECT 
+              config_id 
+            FROM 
+              mcaptcha_config 
+            WHERE 
+              KEY = $1 
+              AND user_id = (
+                SELECT 
+                  id 
+                FROM 
+                  mcaptcha_users 
+                WHERE 
+                  NAME = $2
+              )
+          )
+        ",
+        &key,
+        &username
+    )
+    .fetch_one(&data.db)
+    .await
+    {
+        Ok(c) => {
+            struct Description {
+                name: String,
+            }
+            let description = sqlx::query_as!(
+                Description,
+                "SELECT name FROM mcaptcha_config 
+                WHERE key = $1 
+                AND user_id = (
+                    SELECT user_id FROM mcaptcha_users WHERE NAME = $2)",
+                &key,
+                &username
+            )
+            .fetch_one(&data.db)
+            .await?;
+
+            let pattern = TrafficPattern {
+                peak_sustainable_traffic: c.peak_sustainable_traffic as u32,
+                avg_traffic: c.avg_traffic as u32,
+                broke_my_site_traffic: c.broke_my_site_traffic.map(|n| n as u32),
+                description: description.name,
+            };
+
+            let page = EasyEditPage::new(key, pattern).render_once().unwrap();
+            return Ok(HttpResponse::Ok()
+                .content_type("text/html; charset=utf-8")
+                .body(page));
+        }
+        Err(RowNotFound) => {
+            return Ok(HttpResponse::Found()
+                .insert_header((
+                    http::header::LOCATION,
+                    crate::PAGES.panel.sitekey.get_edit_advance(&key),
+                ))
+                .finish());
+        }
+        Err(e) => Err(e.into()),
+    }
+}
+
 #[cfg(test)]
 mod test {
-    use actix_web::http::StatusCode;
+    use actix_web::http::{header, StatusCode};
     use actix_web::test;
     use actix_web::web::Bytes;
 
@@ -148,5 +259,19 @@ mod test {
         assert!(body.contains(&L1.difficulty_factor.to_string()));
         assert!(body.contains(&L2.difficulty_factor.to_string()));
         assert!(body.contains(&L2.visitor_threshold.to_string()));
+
+        let easy_url = PAGES.panel.sitekey.get_edit_easy(&key.key);
+
+        let redirect_resp = test::call_service(
+            &app,
+            test::TestRequest::get()
+                .uri(&easy_url)
+                .cookie(cookies.clone())
+                .to_request(),
+        )
+        .await;
+        assert_eq!(redirect_resp.status(), StatusCode::FOUND);
+        let headers = redirect_resp.headers();
+        assert_eq!(headers.get(header::LOCATION).unwrap(), &url);
     }
 }

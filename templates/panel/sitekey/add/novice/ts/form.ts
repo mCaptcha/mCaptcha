@@ -45,9 +45,14 @@ export const break_my_site_name = "traffic that broke your website";
 export const avg_traffic_name = "average";
 export const peak_traffic_name = "maximum traffic your website can handle";
 
-const submit = async (e: Event) => {
-  e.preventDefault();
+type TrafficPattern = {
+  avg_traffic: number;
+  peak_sustainable_traffic: number;
+  broke_my_site_traffic?: number;
+  description: string;
+};
 
+export const validate = (e: Event): TrafficPattern => {
   const description = validateDescription(e);
 
   let broke_is_set = false;
@@ -89,8 +94,6 @@ const submit = async (e: Event) => {
     }
   }
 
-  const formUrl = getFormUrl(FORM);
-
   const payload = {
     avg_traffic,
     peak_sustainable_traffic,
@@ -98,6 +101,14 @@ const submit = async (e: Event) => {
     description,
   };
 
+  return payload;
+};
+
+const submit = async (e: Event) => {
+  e.preventDefault();
+
+  const formUrl = getFormUrl(FORM);
+  const payload = validate(e);
   console.debug(`[form submition] json payload: ${JSON.stringify(payload)}`);
 
   const res = await fetch(formUrl, genJsonPayload(payload));

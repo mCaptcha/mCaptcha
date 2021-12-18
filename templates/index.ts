@@ -25,7 +25,8 @@ import * as deleteAccount from "./panel/settings/account/delete";
 import * as updateSecret from "./panel/settings/secret/update";
 import * as addSiteKeyAdvance from "./panel/sitekey/add/advance/ts";
 import * as addSiteKeyEasy from "./panel/sitekey/add/novice/ts";
-import * as editSitekey from "./panel/sitekey/edit/";
+import * as editSitekeyAdvance from "./panel/sitekey/edit/";
+import * as editSitekeyEasy from "./panel/sitekey/edit/easy/";
 import * as deleteSitekey from "./panel/sitekey/delete/";
 import * as listSitekeys from "./panel/sitekey/list/ts";
 import * as notidications from "./panel/notifications/ts";
@@ -48,7 +49,8 @@ router.register(VIEWS.notifications, notidications.index);
 router.register(VIEWS.listSitekey, listSitekeys.index);
 router.register(VIEWS.addSiteKeyAdvance,addSiteKeyAdvance.index);
 router.register(VIEWS.addSiteKeyEasy, addSiteKeyEasy.index);
-router.register(VIEWS.editSitekeyAdvance("[A-Z),a-z,0-9]+"), editSitekey.index);
+router.register(VIEWS.editSitekeyAdvance("[A-Z),a-z,0-9]+"), editSitekeyAdvance.index);
+router.register(VIEWS.editSitekeyEasy("[A-Z),a-z,0-9]+"), editSitekeyEasy.index);
 router.register(VIEWS.deleteSitekey("[A-Z),a-z,0-9]+"), deleteSitekey.index);
 
 try {

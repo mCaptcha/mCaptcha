@@ -219,6 +219,7 @@ async fn update(
 mod tests {
     use actix_web::http::StatusCode;
     use actix_web::test;
+    use actix_web::web::Bytes;
 
     use super::*;
     use crate::api::v1::mcaptcha::create::MCaptchaDetails;
@@ -392,5 +393,33 @@ mod tests {
         assert_ne!(res_levels, default_levels);
         assert_eq!(res_levels, updated_default_values);
         // END update_easy
+
+        // test easy edit page
+        let easy_url = PAGES.panel.sitekey.get_edit_easy(&token_key.key);
+
+        let easy_edit_page = test::call_service(
+            &app,
+            test::TestRequest::get()
+                .uri(&easy_url)
+                .cookie(cookies.clone())
+                .to_request(),
+        )
+        .await;
+        assert_eq!(easy_edit_page.status(), StatusCode::OK);
+
+        let body: Bytes = test::read_body(easy_edit_page).await;
+        let body = String::from_utf8(body.to_vec()).unwrap();
+        assert!(body.contains(&token_key.name));
+
+        assert!(body.contains(
+            &payload
+                .pattern
+                .broke_my_site_traffic
+                .as_ref()
+                .unwrap()
+                .to_string()
+        ));
+        assert!(body.contains(&payload.pattern.avg_traffic.to_string()));
+        assert!(body.contains(&payload.pattern.peak_sustainable_traffic.to_string()));
     }
 }
