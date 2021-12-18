@@ -37,17 +37,17 @@ struct Level {
 }
 
 #[derive(TemplateOnce, Clone)]
-#[template(path = "panel/sitekey/edit/index.html")]
-struct IndexPage {
+#[template(path = "panel/sitekey/edit/advance.html")]
+struct AdvanceEditPage {
     duration: u32,
     name: String,
     key: String,
     levels: Vec<Level>,
 }
 
-impl IndexPage {
+impl AdvanceEditPage {
     fn new(config: McaptchaConfig, levels: Vec<Level>, key: String) -> Self {
-        IndexPage {
+        AdvanceEditPage {
             duration: config.duration as u32,
             name: config.name,
             levels,
@@ -61,7 +61,7 @@ impl IndexPage {
     path = "crate::PAGES.panel.sitekey.edit_advance",
     wrap = "crate::CheckLogin"
 )]
-pub async fn edit_sitekey(
+pub async fn advance(
     path: web::Path<String>,
     data: AppData,
     id: Identity,
@@ -92,7 +92,9 @@ pub async fn edit_sitekey(
     .fetch_all(&data.db)
     .await?;
 
-    let body = IndexPage::new(config, levels, key).render_once().unwrap();
+    let body = AdvanceEditPage::new(config, levels, key)
+        .render_once()
+        .unwrap();
     Ok(HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
         .body(body))

@@ -72,7 +72,7 @@ pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
     cfg.service(add::easy);
     cfg.service(list::list_sitekeys);
     cfg.service(view::view_sitekey);
-    cfg.service(edit::edit_sitekey);
+    cfg.service(edit::advance);
     cfg.service(delete::delete_sitekey);
 }
 
