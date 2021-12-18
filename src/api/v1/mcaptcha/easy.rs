@@ -113,10 +113,7 @@ async fn create(
         description: payload.description,
     };
 
-    let broke_my_site_traffic = match payload.broke_my_site_traffic {
-        Some(n) => Some(n as i32),
-        None => None,
-    };
+    let broke_my_site_traffic = payload.broke_my_site_traffic.map(|n| n as i32);
 
     let mcaptcha_config = create_runner(&msg, &data, &username).await?;
     sqlx::query!(
@@ -191,10 +188,7 @@ async fn update(
     .execute(&data.db)
     .await?;
 
-    let broke_my_site_traffic = match payload.pattern.broke_my_site_traffic {
-        Some(n) => Some(n as i32),
-        None => None,
-    };
+    let broke_my_site_traffic = payload.pattern.broke_my_site_traffic.map(|n| n as i32);
 
     sqlx::query!(
         "INSERT INTO mcaptcha_sitekey_user_provided_avg_traffic (

@@ -34,19 +34,13 @@ pub const DEMO_USER: &str = "aaronsw";
 pub const DEMO_PASSWORD: &str = "password";
 
 pub struct DemoUser {
-    data: AppData,
-    duration: Duration,
     handle: JoinHandle<()>,
 }
 
 impl DemoUser {
     pub async fn spawn(data: AppData, duration: Duration) -> ServiceResult<Self> {
-        let handle = Self::run(data.clone(), duration.clone()).await?;
-        let d = Self {
-            data,
-            duration,
-            handle,
-        };
+        let handle = Self::run(data, duration).await?;
+        let d = Self { handle };
 
         Ok(d)
     }
@@ -62,7 +56,7 @@ impl DemoUser {
             val: DEMO_USER.into(),
         };
 
-        if !username_exists(&user_exists_payload, &data).await?.exists {
+        if !username_exists(&user_exists_payload, data).await?.exists {
             let register_payload = Register {
                 username: DEMO_USER.into(),
                 password: DEMO_PASSWORD.into(),
@@ -71,7 +65,7 @@ impl DemoUser {
             };
 
             log::info!("Registering demo user");
-            match register_runner(&register_payload, &data).await {
+            match register_runner(&register_payload, data).await {
                 Err(ServiceError::UsernameTaken) | Ok(_) => Ok(()),
                 Err(e) => Err(e),
             }
@@ -82,7 +76,7 @@ impl DemoUser {
 
     async fn delete_demo_user(data: &AppData) -> ServiceResult<()> {
         log::info!("Deleting demo user");
-        delete_user(DEMO_USER, &data).await?;
+        delete_user(DEMO_USER, data).await?;
         Ok(())
     }
 

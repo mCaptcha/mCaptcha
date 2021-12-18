@@ -166,6 +166,7 @@ impl Data {
         let creds = Self::get_creds();
         let c = creds.clone();
 
+        #[allow(unused_variables)]
         let init = thread::spawn(move || {
             log::info!("Initializing credential manager");
             c.init();

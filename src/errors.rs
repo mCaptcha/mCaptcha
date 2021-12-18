@@ -123,7 +123,6 @@ impl ResponseError for ServiceError {
                 })
                 .unwrap(),
             )
-            .into()
     }
 
     #[cfg(not(tarpaulin_include))]
