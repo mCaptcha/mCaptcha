@@ -1,6 +1,8 @@
 name: Build
 
 on:
+  schedule:
+    - cron: "0 9 * * *"
   pull_request:
     types: [opened, synchronize, reopened]
   push:
