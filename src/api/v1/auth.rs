@@ -230,16 +230,17 @@ async fn register(
 async fn login(
     id: Identity,
     payload: web::Json<runners::Login>,
-    path: web::Path<super::RedirectQuery>,
+    query: web::Query<super::RedirectQuery>,
     data: AppData,
 ) -> ServiceResult<impl Responder> {
     let username = runners::login_runner(payload.into_inner(), &data).await?;
     id.remember(username);
     //    Ok(HttpResponse::Ok())
 
-    if let Some(redirect_to) = &path.redirect_to {
+    let query = query.into_inner();
+    if let Some(redirect_to) = query.redirect_to {
         Ok(HttpResponse::Found()
-            .insert_header((header::LOCATION, redirect_to))
+            .append_header((header::LOCATION, redirect_to))
             .finish())
     } else {
         Ok(HttpResponse::Ok().finish())

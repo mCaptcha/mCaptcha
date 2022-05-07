@@ -22,35 +22,35 @@ name = "tests-migrate"
 path = "./src/tests-migrate.rs"
 
 [dependencies]
-actix-web = "4.0.0-beta.12"
-actix = "0.12"
-actix-identity = "0.4.0-beta.4"
-actix-http = "3.0.0-beta.13"
+actix-web = "4.0.1"
+actix = "0.13"
+actix-identity = "0.4.0"
+actix-http = "3.0.4"
 actix-rt = "2"
-actix-cors = "0.6.0-beta.4"
+actix-cors = "0.6.1"
 actix-service = "2.0.0"
-my-codegen = {version="0.5.0-beta.5", package = "actix-web-codegen", git ="https://github.com/realaravinth/actix-web"}
-
+#my-codegen = {version="0.5.0-beta.5", package = "actix-web-codegen", git ="https://github.com/realaravinth/actix-web"}
 mime_guess = "2.0.3"
-rust-embed = "6.0.0"
+rust-embed = "6.4.0"
 cache-buster = { git = "https://github.com/realaravinth/cache-buster" }
 
 futures = "0.3.15"
 tokio = { version = "1.14", features = ["sync"]}
 
-sqlx = { version = "0.5.5", features = [ "runtime-actix-rustls", "postgres", "time", "offline" ] }
+sqlx = { version = "0.5.13", features = [ "runtime-actix-rustls", "postgres", "time", "offline" ] }
 argon2-creds = { branch = "master", git = "https://github.com/realaravinth/argon2-creds"}
 #argon2-creds = { version="*", path = "../../argon2-creds/" }
 config = "0.11"
-validator = { version = "0.14", features = ["derive"]}
+validator = { version = "0.15", features = ["derive"]}
 
-derive_builder = "0.10"
+derive_builder = "0.11"
 derive_more = "0.99"
 
 serde = "1"
 serde_json = "1"
 
 url = "2.2"
+urlencoding =  "2.1.0"
 
 pretty_env_logger = "0.4"
 log = "0.4"
@@ -63,7 +63,7 @@ libmcaptcha = { branch = "master", git = "https://github.com/mCaptcha/libmcaptch
 
 rand = "0.8"
 
-sailfish = "0.3.2"
+sailfish = "0.4.0"
 
 mime = "0.3.16"
 
@@ -76,16 +76,24 @@ lettre = { version = "0.10.0-rc.3", features = [
 
 openssl = { version = "0.10.29", features = ["vendored"] }
 
+[dependencies.my-codegen]
+git = "https://github.com/realaravinth/actix-web"
+package = "actix-web-codegen"
+
+[dependencies.actix-auth-middleware]
+version = "0.2.0"
+git = "https://github.com/realaravinth/actix-auth-middleware"
+features = ["actix_identity_backend"]
 
 [build-dependencies]
 serde_json = "1"
 cache-buster = { version = "0.2.0", git = "https://github.com/realaravinth/cache-buster" }
 mime = "0.3.16"
-sqlx = { version = "0.5.5", features = [ "runtime-actix-rustls", "postgres", "time", "offline" ] }
+sqlx = { version = "0.5.13", features = [ "runtime-actix-rustls", "postgres", "time", "offline" ] }
 
 [dev-dependencies]
 pow_sha256 = { version = "0.2.1", git = "https://github.com/mcaptcha/pow_sha256" }
-awc = "3.0.0-beta.11"
+awc = "3.0.0"
 
 
 [target.x86_64-unknown-linux-musl]

@@ -16,7 +16,7 @@
  */
 use std::borrow::Cow;
 
-use actix_web::body::AnyBody;
+use actix_web::body::BoxBody;
 use actix_web::{get, http::header, web, HttpResponse, Responder};
 use log::debug;
 use mime_guess::from_path;
@@ -82,9 +82,9 @@ struct Asset;
 fn handle_assets(path: &str) -> HttpResponse {
     match Asset::get(path) {
         Some(content) => {
-            let body: AnyBody = match content.data {
-                Cow::Borrowed(bytes) => bytes.into(),
-                Cow::Owned(bytes) => bytes.into(),
+            let body: BoxBody = match content.data {
+                Cow::Borrowed(bytes) => BoxBody::new(bytes),
+                Cow::Owned(bytes) => BoxBody::new(bytes),
             };
 
             HttpResponse::Ok()
@@ -99,6 +99,7 @@ fn handle_assets(path: &str) -> HttpResponse {
         None => HttpResponse::NotFound().body("404 Not Found"),
     }
 }
+
 
 #[get("/assets/{_:.*}")]
 pub async fn static_files(path: web::Path<String>) -> impl Responder {
@@ -112,9 +113,9 @@ struct Favicons;
 fn handle_favicons(path: &str) -> HttpResponse {
     match Favicons::get(path) {
         Some(content) => {
-            let body: AnyBody = match content.data {
-                Cow::Borrowed(bytes) => bytes.into(),
-                Cow::Owned(bytes) => bytes.into(),
+            let body: BoxBody = match content.data {
+                Cow::Borrowed(bytes) => BoxBody::new(bytes),
+                Cow::Owned(bytes) => BoxBody::new(bytes),
             };
 
             HttpResponse::Ok()
@@ -129,6 +130,7 @@ fn handle_favicons(path: &str) -> HttpResponse {
         None => HttpResponse::NotFound().body("404 Not Found"),
     }
 }
+
 
 #[get("/{file}")]
 pub async fn favicons(path: web::Path<String>) -> impl Responder {

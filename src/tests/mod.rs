@@ -3,6 +3,7 @@ use std::sync::Arc;
 use actix_web::test;
 use actix_web::{
     dev::ServiceResponse, error::ResponseError, http::StatusCode,
+    body::{EitherBody, BoxBody},
     middleware as actix_middleware,
 };
 use libmcaptcha::defense::Level;
@@ -85,7 +86,7 @@ pub async fn register_and_signin(
     name: &str,
     email: &str,
     password: &str,
-) -> (Arc<data::Data>, Login, ServiceResponse) {
+) -> (Arc<data::Data>, Login, ServiceResponse<EitherBody<BoxBody>>) {
     register(name, email, password).await;
     signin(name, password).await
 }
@@ -109,7 +110,7 @@ pub async fn register(name: &str, email: &str, password: &str) {
 }
 
 /// signin util
-pub async fn signin(name: &str, password: &str) -> (Arc<Data>, Login, ServiceResponse) {
+pub async fn signin(name: &str, password: &str) -> (Arc<Data>, Login, ServiceResponse<EitherBody<BoxBody>>) {
     let data = Data::new().await;
     let app = get_app!(data.clone()).await;
 
@@ -172,7 +173,7 @@ pub fn get_level_data() -> CreateCaptcha {
 pub async fn add_levels_util(
     name: &str,
     password: &str,
-) -> (Arc<data::Data>, Login, ServiceResponse, MCaptchaDetails) {
+) -> (Arc<data::Data>, Login, ServiceResponse<EitherBody<BoxBody>>, MCaptchaDetails) {
     let (data, creds, signin_resp) = signin(name, password).await;
     let cookies = get_cookie!(signin_resp);
     let app = get_app!(data).await;

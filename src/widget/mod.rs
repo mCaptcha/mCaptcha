@@ -58,7 +58,7 @@ lazy_static! {
 async fn show_widget() -> PageResult<impl Responder> {
     Ok(HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
-        .body(&*INDEX_PAGE))
+        .body(&**INDEX_PAGE))
 }
 
 /// widget services

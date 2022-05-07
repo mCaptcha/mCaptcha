@@ -16,7 +16,7 @@
  */
 use std::borrow::Cow;
 
-use actix_web::body::AnyBody;
+use actix_web::body::BoxBody;
 use actix_web::{http::header, web, HttpResponse, Responder};
 use mime_guess::from_path;
 use rust_embed::RustEmbed;
@@ -54,12 +54,15 @@ struct Asset;
 pub fn handle_embedded_file(path: &str) -> HttpResponse {
     match Asset::get(path) {
         Some(content) => {
-            let body: AnyBody = match content.data {
-                Cow::Borrowed(bytes) => bytes.into(),
-                Cow::Owned(bytes) => bytes.into(),
+            let body: BoxBody = match content.data {
+                Cow::Borrowed(bytes) => BoxBody::new(bytes),
+                Cow::Owned(bytes) => BoxBody::new(bytes),
             };
+
             HttpResponse::Ok()
                 .insert_header(header::CacheControl(vec![
+                    header::CacheDirective::Public,
+                    header::CacheDirective::Extension("immutable".into(), None),
                     header::CacheDirective::MaxAge(CACHE_AGE),
                 ]))
                 .content_type(from_path(path).first_or_octet_stream().as_ref())
@@ -68,6 +71,7 @@ pub fn handle_embedded_file(path: &str) -> HttpResponse {
         None => HttpResponse::NotFound().body("404 Not Found"),
     }
 }
+
 
 #[my_codegen::get(path = "DOCS.assets")]
 async fn dist(path: web::Path<String>) -> impl Responder {

@@ -104,7 +104,7 @@ async fn delete_account() -> impl Responder {
         .unwrap();
     HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
-        .body(&page)
+        .body(page)
 }
 
 #[my_codegen::get(
@@ -117,5 +117,5 @@ async fn update_secret() -> impl Responder {
         .unwrap();
     HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
-        .body(&page)
+        .body(page)
 }

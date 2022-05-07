@@ -34,5 +34,5 @@ pub async fn delete_sitekey(path: web::Path<String>) -> impl Responder {
         .unwrap();
     HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
-        .body(&page)
+        .body(page)
 }

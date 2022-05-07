@@ -56,11 +56,11 @@ async fn error(path: web::Path<usize>) -> impl Responder {
     let resp = match path.into_inner() {
         500 => HttpResponse::InternalServerError()
             .content_type("text/html; charset=utf-8")
-            .body(&*INTERNAL_SERVER_ERROR_BODY),
+            .body(&**INTERNAL_SERVER_ERROR_BODY),
 
         _ => HttpResponse::InternalServerError()
             .content_type("text/html; charset=utf-8")
-            .body(&*UNKNOWN_ERROR_BODY),
+            .body(&**UNKNOWN_ERROR_BODY),
     };
 
     resp

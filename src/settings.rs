@@ -121,10 +121,6 @@ impl Settings {
     pub fn new() -> Result<Self, ConfigError> {
         let mut s = Config::new();
 
-        // setting default values
-        #[cfg(test)]
-        s.set_default("database.pool", 2.to_string())
-            .expect("Couldn't get the number of CPUs");
 
         const CURRENT_DIR: &str = "./config/default.toml";
         const ETC: &str = "/etc/mcaptcha/config.toml";
@@ -161,6 +157,13 @@ impl Settings {
         }
 
         set_database_url(&mut s);
+
+        // setting default values
+        #[cfg(test)]
+        s.set("database.pool", 2.to_string())
+            .expect("Couldn't set database pool count");
+
+
 
         match s.try_into() {
             Ok(val) => Ok(val),

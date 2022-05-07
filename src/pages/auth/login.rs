@@ -42,5 +42,5 @@ lazy_static! {
 pub async fn login() -> impl Responder {
     HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
-        .body(&*INDEX)
+        .body(&**INDEX)
 }

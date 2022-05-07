@@ -50,5 +50,5 @@ lazy_static! {
 pub async fn sitemap() -> impl Responder {
     HttpResponse::Ok()
         .content_type("application/xml; charset=utf-8")
-        .body(&*INDEX)
+        .body(&**INDEX)
 }

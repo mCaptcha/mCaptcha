@@ -54,7 +54,7 @@ impl<'a> Default for AdvanceIndexPage<'a> {
 pub async fn advance() -> impl Responder {
     HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
-        .body(&*ADVANCE_INDEX)
+        .body(&**ADVANCE_INDEX)
 }
 
 #[derive(TemplateOnce, Clone)]
@@ -86,5 +86,5 @@ impl<'a> Default for EasyIndexPage<'a> {
 pub async fn easy() -> impl Responder {
     HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
-        .body(&*EASY_INDEX)
+        .body(&**EASY_INDEX)
 }
