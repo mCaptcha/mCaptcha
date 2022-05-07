@@ -66,7 +66,10 @@ impl Notification {
 
 const PAGE: &str = "Notifications";
 
-#[my_codegen::get(path = "crate::PAGES.panel.notifications", wrap = "crate::CheckLogin")]
+#[my_codegen::get(
+    path = "crate::PAGES.panel.notifications",
+    wrap = "crate::pages::get_middleware()"
+)]
 pub async fn notifications(data: AppData, id: Identity) -> PageResult<impl Responder> {
     let receiver = id.identity().unwrap();
     // TODO handle error where payload.to doesnt exist

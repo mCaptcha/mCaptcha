@@ -20,6 +20,7 @@ use lazy_static::lazy_static;
 use my_codegen::get;
 use sailfish::TemplateOnce;
 
+use crate::api::v1::RedirectQuery;
 use crate::PAGES;
 
 #[derive(Clone, TemplateOnce)]

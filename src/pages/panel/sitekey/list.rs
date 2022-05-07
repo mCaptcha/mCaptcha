@@ -38,7 +38,10 @@ impl IndexPage {
 }
 
 /// render a list of all sitekeys that a user has
-#[my_codegen::get(path = "crate::PAGES.panel.sitekey.list", wrap = "crate::CheckLogin")]
+#[my_codegen::get(
+    path = "crate::PAGES.panel.sitekey.list",
+    wrap = "crate::pages::get_middleware()"
+)]
 pub async fn list_sitekeys(data: AppData, id: Identity) -> PageResult<impl Responder> {
     let res = get_list_sitekeys(&data, &id).await?;
     let body = IndexPage::new(res).render_once().unwrap();

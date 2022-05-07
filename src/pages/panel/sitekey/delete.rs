@@ -22,7 +22,10 @@ use sailfish::TemplateOnce;
 use crate::pages::auth::sudo::SudoPage;
 use crate::{PAGES, V1_API_ROUTES};
 
-#[get(path = "PAGES.panel.sitekey.delete", wrap = "crate::CheckLogin")]
+#[get(
+    path = "PAGES.panel.sitekey.delete",
+    wrap = "crate::pages::get_middleware()"
+)]
 pub async fn delete_sitekey(path: web::Path<String>) -> impl Responder {
     let key = path.into_inner();
     let data = vec![("sitekey", key)];

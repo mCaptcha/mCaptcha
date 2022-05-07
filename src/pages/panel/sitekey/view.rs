@@ -66,7 +66,10 @@ impl IndexPage {
 }
 
 /// route handler that renders individual views for sitekeys
-#[my_codegen::get(path = "crate::PAGES.panel.sitekey.view", wrap = "crate::CheckLogin")]
+#[my_codegen::get(
+    path = "crate::PAGES.panel.sitekey.view",
+    wrap = "crate::pages::get_middleware()"
+)]
 pub async fn view_sitekey(
     path: web::Path<String>,
     data: AppData,

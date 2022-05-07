@@ -61,7 +61,7 @@ impl AdvanceEditPage {
 /// route handler that renders individual views for sitekeys
 #[my_codegen::get(
     path = "crate::PAGES.panel.sitekey.edit_advance",
-    wrap = "crate::CheckLogin"
+    wrap = "crate::pages::get_middleware()"
 )]
 pub async fn advance(
     path: web::Path<String>,
@@ -123,7 +123,7 @@ impl<'a> EasyEditPage<'a> {
 /// route handler that renders individual views for sitekeys
 #[my_codegen::get(
     path = "crate::PAGES.panel.sitekey.edit_easy",
-    wrap = "crate::CheckLogin"
+    wrap = "crate::pages::get_middleware()"
 )]
 pub async fn easy(
     path: web::Path<String>,

@@ -25,6 +25,8 @@ pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
 }
 
 pub mod routes {
+    use actix_auth_middleware::GetLoginRoute;
+
     pub struct Auth {
         pub login: &'static str,
         pub join: &'static str,
@@ -40,6 +42,20 @@ pub mod routes {
         pub const fn get_sitemap() -> [&'static str; 2] {
             const AUTH: Auth = Auth::new();
             [AUTH.login, AUTH.join]
+        }
+    }
+
+    impl GetLoginRoute for Auth {
+        fn get_login_route(&self, src: Option<&str>) -> String {
+            if let Some(redirect_to) = src {
+                format!(
+                    "{}?redirect_to={}",
+                    self.login,
+                    urlencoding::encode(redirect_to)
+                )
+            } else {
+                self.login.to_string()
+            }
         }
     }
 }

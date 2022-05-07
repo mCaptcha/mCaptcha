@@ -49,7 +49,7 @@ impl<'a> Default for AdvanceIndexPage<'a> {
 
 #[my_codegen::get(
     path = "crate::PAGES.panel.sitekey.add_advance",
-    wrap = "crate::CheckLogin"
+    wrap = "crate::pages::get_middleware()"
 )]
 pub async fn advance() -> impl Responder {
     HttpResponse::Ok()
@@ -81,7 +81,7 @@ impl<'a> Default for EasyIndexPage<'a> {
 
 #[my_codegen::get(
     path = "crate::PAGES.panel.sitekey.add_easy",
-    wrap = "crate::CheckLogin"
+    wrap = "crate::pages::get_middleware()"
 )]
 pub async fn easy() -> impl Responder {
     HttpResponse::Ok()

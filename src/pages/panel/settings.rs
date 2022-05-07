@@ -62,7 +62,10 @@ pub struct IndexPage<'a> {
     username: &'a str,
 }
 
-#[my_codegen::get(path = "crate::PAGES.panel.settings.home", wrap = "crate::CheckLogin")]
+#[my_codegen::get(
+    path = "crate::PAGES.panel.settings.home",
+    wrap = "crate::pages::get_middleware()"
+)]
 async fn settings(data: AppData, id: Identity) -> PageResult<impl Responder> {
     let username = id.identity().unwrap();
 
@@ -93,7 +96,7 @@ async fn settings(data: AppData, id: Identity) -> PageResult<impl Responder> {
 
 #[my_codegen::get(
     path = "crate::PAGES.panel.settings.delete_account",
-    wrap = "crate::CheckLogin"
+    wrap = "crate::pages::get_middleware()"
 )]
 async fn delete_account() -> impl Responder {
     let page = SudoPage::<u8, u8>::new(crate::V1_API_ROUTES.account.delete, None)
@@ -106,7 +109,7 @@ async fn delete_account() -> impl Responder {
 
 #[my_codegen::get(
     path = "crate::PAGES.panel.settings.update_secret",
-    wrap = "crate::CheckLogin"
+    wrap = "crate::pages::get_middleware()"
 )]
 async fn update_secret() -> impl Responder {
     let page = SudoPage::<u8, u8>::new(crate::V1_API_ROUTES.account.update_secret, None)

@@ -41,7 +41,10 @@ impl IndexPage {
 
 const PAGE: &str = "Dashboard";
 
-#[my_codegen::get(path = "crate::PAGES.panel.home", wrap = "crate::CheckLogin")]
+#[my_codegen::get(
+    path = "crate::PAGES.panel.home",
+    wrap = "crate::pages::get_middleware()"
+)]
 async fn panel(data: AppData, id: Identity) -> PageResult<impl Responder> {
     let sitekeys = get_list_sitekeys(&data, &id).await?;
     let body = IndexPage::new(sitekeys).render_once().unwrap();

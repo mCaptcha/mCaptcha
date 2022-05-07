@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
+use actix_auth_middleware::Authentication;
 use actix_web::web::ServiceConfig;
 
 mod auth;
@@ -29,6 +29,10 @@ pub fn services(cfg: &mut ServiceConfig) {
     panel::services(cfg);
     errors::services(cfg);
     cfg.service(sitemap::sitemap);
+}
+
+pub fn get_middleware() -> Authentication<routes::Routes> {
+    Authentication::with_identity(routes::ROUTES)
 }
 
 #[cfg(not(tarpaulin_include))]

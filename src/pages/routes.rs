@@ -14,10 +14,12 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+use actix_auth_middleware::GetLoginRoute;
 
 use super::auth::routes::Auth;
 use super::errors::routes::Errors;
 use super::panel::routes::Panel;
+
 pub const ROUTES: Routes = Routes::new();
 
 pub struct Routes {
@@ -55,6 +57,12 @@ impl Routes {
         let a = Auth::get_sitemap();
         let p = Panel::get_sitemap();
         [a[0], a[1], p[0], p[1], p[2], p[3], p[4]]
+    }
+}
+
+impl GetLoginRoute for Routes {
+    fn get_login_route(&self, src: Option<&str>) -> String {
+        self.auth.get_login_route(src)
     }
 }
 
