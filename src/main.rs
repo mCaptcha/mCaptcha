@@ -32,7 +32,6 @@ mod demo;
 mod docs;
 mod email;
 mod errors;
-mod middleware;
 #[macro_use]
 mod pages;
 #[macro_use]
@@ -55,7 +54,6 @@ use static_assets::FileMap;
 pub use widget::WIDGET_ROUTES;
 
 use crate::demo::DemoUser;
-pub use crate::middleware::auth::CheckLogin;
 
 lazy_static! {
     pub static ref SETTINGS: Settings = Settings::new().unwrap();
