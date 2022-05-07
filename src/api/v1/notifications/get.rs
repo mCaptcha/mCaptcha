@@ -55,7 +55,7 @@ impl From<Notification> for NotificationResp {
 /// route handler that gets all unread notifications
 #[my_codegen::get(
     path = "crate::V1_API_ROUTES.notifications.get",
-    wrap = "crate::CheckLogin"
+    wrap = "crate::api::v1::get_middleware()"
 )]
 pub async fn get_notification(
     data: AppData,

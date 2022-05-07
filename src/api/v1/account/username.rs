@@ -67,7 +67,7 @@ pub struct Username {
 /// update username
 #[my_codegen::post(
     path = "crate::V1_API_ROUTES.account.update_username",
-    wrap = "crate::CheckLogin"
+    wrap = "crate::api::v1::get_middleware()"
 )]
 async fn set_username(
     id: Identity,

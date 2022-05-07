@@ -24,7 +24,7 @@ use crate::AppData;
 
 #[my_codegen::post(
     path = "crate::V1_API_ROUTES.account.delete",
-    wrap = "crate::CheckLogin"
+    wrap = "crate::api::v1::get_middleware()"
 )]
 pub async fn delete_account(
     id: Identity,

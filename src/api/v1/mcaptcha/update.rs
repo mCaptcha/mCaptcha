@@ -29,7 +29,7 @@ use crate::AppData;
 
 #[my_codegen::post(
     path = "crate::V1_API_ROUTES.captcha.update_key",
-    wrap = "crate::CheckLogin"
+    wrap = "crate::api::v1::get_middleware()"
 )]
 pub async fn update_key(
     payload: web::Json<MCaptchaDetails>,
@@ -79,7 +79,7 @@ pub struct UpdateCaptcha {
 
 #[my_codegen::post(
     path = "crate::V1_API_ROUTES.captcha.update",
-    wrap = "crate::CheckLogin"
+    wrap = "crate::api::v1::get_middleware()"
 )]
 pub async fn update_captcha(
     payload: web::Json<UpdateCaptcha>,

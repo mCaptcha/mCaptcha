@@ -25,7 +25,7 @@ use crate::AppData;
 
 #[my_codegen::post(
     path = "crate::V1_API_ROUTES.captcha.get",
-    wrap = "crate::CheckLogin"
+    wrap = "crate::api::v1::get_middleware()"
 )]
 pub async fn get_captcha(
     payload: web::Json<MCaptchaDetails>,

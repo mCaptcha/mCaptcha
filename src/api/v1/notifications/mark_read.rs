@@ -39,7 +39,7 @@ pub struct NotificationResp {
 /// route handler that marks a notification read
 #[my_codegen::post(
     path = "crate::V1_API_ROUTES.notifications.mark_read",
-    wrap = "crate::CheckLogin"
+    wrap = "crate::api::v1::get_middleware()"
 )]
 pub async fn mark_read(
     data: AppData,

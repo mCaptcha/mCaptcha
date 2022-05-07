@@ -70,7 +70,7 @@ async fn update_password_runner(
 
 #[my_codegen::post(
     path = "crate::V1_API_ROUTES.account.update_password",
-    wrap = "crate::CheckLogin"
+    wrap = "crate::api::v1::get_middleware()"
 )]
 async fn update_user_password(
     id: Identity,

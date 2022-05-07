@@ -15,7 +15,9 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+use actix_auth_middleware::Authentication;
 use actix_web::web::ServiceConfig;
+use serde::Deserialize;
 
 pub mod account;
 pub mod auth;
@@ -34,6 +36,15 @@ pub fn services(cfg: &mut ServiceConfig) {
     account::services(cfg);
     mcaptcha::services(cfg);
     notifications::services(cfg);
+}
+
+#[derive(Deserialize)]
+pub struct RedirectQuery {
+    pub redirect_to: Option<String>,
+}
+
+pub fn get_middleware() -> Authentication<routes::Routes> {
+    Authentication::with_identity(ROUTES)
 }
 
 #[cfg(test)]

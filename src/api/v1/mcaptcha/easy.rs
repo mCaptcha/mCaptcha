@@ -96,7 +96,7 @@ impl TrafficPattern {
 
 #[my_codegen::post(
     path = "crate::V1_API_ROUTES.captcha.easy.create",
-    wrap = "crate::CheckLogin"
+    wrap = "crate::api::v1::get_middleware()"
 )]
 async fn create(
     payload: web::Json<TrafficPattern>,
@@ -149,7 +149,7 @@ pub struct UpdateTrafficPattern {
 
 #[my_codegen::post(
     path = "crate::V1_API_ROUTES.captcha.easy.update",
-    wrap = "crate::CheckLogin"
+    wrap = "crate::api::v1::get_middleware()"
 )]
 async fn update(
     payload: web::Json<UpdateTrafficPattern>,

@@ -31,7 +31,7 @@ pub struct Secret {
 
 #[my_codegen::get(
     path = "crate::V1_API_ROUTES.account.get_secret",
-    wrap = "crate::CheckLogin"
+    wrap = "crate::api::v1::get_middleware()"
 )]
 async fn get_secret(id: Identity, data: AppData) -> ServiceResult<impl Responder> {
     let username = id.identity().unwrap();
@@ -49,7 +49,7 @@ async fn get_secret(id: Identity, data: AppData) -> ServiceResult<impl Responder
 
 #[my_codegen::post(
     path = "crate::V1_API_ROUTES.account.update_secret",
-    wrap = "crate::CheckLogin"
+    wrap = "crate::api::v1::get_middleware()"
 )]
 async fn update_user_secret(
     id: Identity,

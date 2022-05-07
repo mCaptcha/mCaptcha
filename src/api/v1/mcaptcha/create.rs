@@ -42,7 +42,7 @@ pub struct MCaptchaDetails {
 // so that the whole thing can be added/udpaed in a single stroke
 #[my_codegen::post(
     path = "crate::V1_API_ROUTES.captcha.create",
-    wrap = "crate::CheckLogin"
+    wrap = "crate::api::v1::get_middleware()"
 )]
 pub async fn create(
     payload: web::Json<CreateCaptcha>,

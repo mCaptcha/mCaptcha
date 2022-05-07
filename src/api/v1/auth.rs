@@ -25,6 +25,8 @@ use crate::errors::*;
 use crate::AppData;
 
 pub mod routes {
+    use actix_auth_middleware::GetLoginRoute;
+
     pub struct Auth {
         pub logout: &'static str,
         pub login: &'static str,
@@ -40,6 +42,20 @@ pub mod routes {
                 logout,
                 login,
                 register,
+            }
+        }
+    }
+
+    impl GetLoginRoute for Auth {
+        fn get_login_route(&self, src: Option<&str>) -> String {
+            if let Some(redirect_to) = src {
+                format!(
+                    "{}?redirect_to={}",
+                    self.login,
+                    urlencoding::encode(redirect_to)
+                )
+            } else {
+                self.login.to_string()
             }
         }
     }
@@ -214,14 +230,26 @@ async fn register(
 async fn login(
     id: Identity,
     payload: web::Json<runners::Login>,
+    path: web::Path<super::RedirectQuery>,
     data: AppData,
 ) -> ServiceResult<impl Responder> {
     let username = runners::login_runner(payload.into_inner(), &data).await?;
     id.remember(username);
-    Ok(HttpResponse::Ok())
+    //    Ok(HttpResponse::Ok())
+
+    if let Some(redirect_to) = &path.redirect_to {
+        Ok(HttpResponse::Found()
+            .insert_header((header::LOCATION, redirect_to))
+            .finish())
+    } else {
+        Ok(HttpResponse::Ok().finish())
+    }
 }
 
-#[my_codegen::get(path = "crate::V1_API_ROUTES.auth.logout", wrap = "crate::CheckLogin")]
+#[my_codegen::get(
+    path = "crate::V1_API_ROUTES.auth.logout",
+    wrap = "crate::api::v1::get_middleware()"
+)]
 async fn signout(id: Identity) -> impl Responder {
     if id.identity().is_some() {
         id.forget();

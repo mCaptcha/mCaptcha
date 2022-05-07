@@ -14,6 +14,7 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+use actix_auth_middleware::GetLoginRoute;
 
 use super::account::routes::Account;
 use super::auth::routes::Auth;
@@ -43,5 +44,11 @@ impl Routes {
             pow: PoW::new(),
             notifications: Notifications::new(),
         }
+    }
+}
+
+impl GetLoginRoute for Routes {
+    fn get_login_route(&self, src: Option<&str>) -> String {
+        self.auth.get_login_route(src)
     }
 }

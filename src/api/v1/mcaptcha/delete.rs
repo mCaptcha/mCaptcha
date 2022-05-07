@@ -30,7 +30,7 @@ pub struct DeleteCaptcha {
 
 #[my_codegen::post(
     path = "crate::V1_API_ROUTES.captcha.delete",
-    wrap = "crate::CheckLogin"
+    wrap = "crate::api::v1::get_middleware()"
 )]
 async fn delete(
     payload: web::Json<DeleteCaptcha>,

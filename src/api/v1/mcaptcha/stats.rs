@@ -42,7 +42,7 @@ pub struct StatsPayload {
 
 #[my_codegen::post(
     path = "crate::V1_API_ROUTES.captcha.stats.get",
-    wrap = "crate::CheckLogin"
+    wrap = "crate::api::v1::get_middleware()"
 )]
 pub async fn get(
     payload: web::Json<StatsPayload>,
