@@ -77,7 +77,6 @@ fn cache_bust() {
         .source("./static/cache")
         .result("./assets")
         .mime_types(types)
-        .copy(true)
         .follow_links(true)
         .build()
         .unwrap();

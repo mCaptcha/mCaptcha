@@ -52,7 +52,6 @@ fn cache_bust() {
     let config = BusterBuilder::default()
         .source("./static/cache/")
         .result("./assets")
-        .copy(true)
         .no_hash(no_hash)
         .follow_links(true)
         .build()
