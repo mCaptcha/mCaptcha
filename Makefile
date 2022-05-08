@@ -10,6 +10,14 @@ endef
 default: frontend ## Build app in debug mode
 	cargo build
 
+check: ## Check for syntax errors on all workspaces
+	cargo check --workspace --tests --all-features
+	cd db/db-migrations && cargo check --tests --all-features
+	cd db/db-sqlx-postgres &&\
+		DATABASE_URL=${POSTGRES_DATABASE_URL}\
+		cargo check
+	cd db/db-core/ && cargo check
+
 clean: ## Delete build artifacts
 	@cargo clean
 	@yarn cache clean
