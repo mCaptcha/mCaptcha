@@ -31,6 +31,7 @@ fn main() {
     let now = OffsetDateTime::now_utc().format("%y-%m-%d");
     println!("cargo:rustc-env=COMPILED_DATE={}", &now);
 
+    #[cfg(not(debug_assertions))]
     cache_bust();
 }
 
