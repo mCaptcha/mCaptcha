@@ -1,0 +1,13 @@
+[package]
+name = "db-migrations"
+version = "0.1.0"
+edition = "2021"
+homepage = "https://mcaptcha.org"
+repository = "https://github.com/mCaptcha/mCaptcha"
+documentation = "https://mcaptcha.org/docs/"
+license = "AGPLv3 or later version"
+authors = ["realaravinth <realaravinth@batsense.net>"]
+
+[dependencies]
+actix-rt = "2"
+sqlx = { version = "0.5.13", features = [ "runtime-actix-rustls", "postgres", "time", "offline" ] }
