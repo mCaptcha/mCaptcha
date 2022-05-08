@@ -13,13 +13,14 @@ build = "build.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+
+[workspace]
+exclude = ["db/db-migrations"]
+memebers = [".", "db/db-core", "db/db-sqlx-postgres"]
+
 [[bin]]
 name = "mcaptcha"
 path = "./src/main.rs"
-
-[[bin]]
-name = "tests-migrate"
-path = "./src/tests-migrate.rs"
 
 [dependencies]
 actix-web = "4.0.1"
@@ -75,6 +76,13 @@ lettre = { version = "0.10.0-rc.3", features = [
 ]}
 
 openssl = { version = "0.10.29", features = ["vendored"] }
+
+
+[dependencies.db-core]
+path = "./db/db-core"
+
+[dependencies.db-sqlx-postgres]
+path = "./db/db-sqlx-postgres"
 
 [dependencies.my-codegen]
 git = "https://github.com/realaravinth/actix-web"

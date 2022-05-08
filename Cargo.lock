@@ -836,6 +836,28 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3ee2393c4a91429dffb4bedf19f4d6abf27d8a732c8ce4980305d782e5426d57"
 
 [[package]]
+name = "db-core"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "serde 1.0.137",
+ "serde_json",
+ "thiserror",
+ "url",
+]
+
+[[package]]
+name = "db-sqlx-postgres"
+version = "0.1.0"
+dependencies = [
+ "actix-rt",
+ "async-trait",
+ "db-core",
+ "sqlx",
+ "url",
+]
+
+[[package]]
 name = "derive_builder"
 version = "0.10.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1629,6 +1651,8 @@ dependencies = [
  "awc",
  "cache-buster",
  "config",
+ "db-core",
+ "db-sqlx-postgres",
  "derive_builder 0.11.1",
  "derive_more",
  "futures",
@@ -3195,6 +3219,7 @@ dependencies = [
  "idna",
  "matches",
  "percent-encoding",
+ "serde 1.0.137",
 ]
 
 [[package]]

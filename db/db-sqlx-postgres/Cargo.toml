@@ -1,0 +1,20 @@
+[package]
+name = "db-sqlx-postgres"
+version = "0.1.0"
+edition = "2021"
+homepage = "https://mcaptcha.org"
+repository = "https://github.com/mCaptcha/mCaptcha"
+documentation = "https://mcaptcha.org/docs/"
+license = "AGPLv3 or later version"
+authors = ["realaravinth <realaravinth@batsense.net>"]
+
+[dependencies]
+sqlx = { version = "0.5.13", features = [ "runtime-actix-rustls", "postgres", "time", "offline" ] }
+db-core = {path = "../db-core"}
+async-trait = "0.1.51"
+
+[dev-dependencies]
+actix-rt = "2"
+sqlx = { version = "0.5.13", features = [ "runtime-actix-rustls", "postgres", "time", "offline" ] }
+db-core = {path = "../db-core", features = ["test"]}
+url = { version  = "2.2.2", features = ["serde"] }
