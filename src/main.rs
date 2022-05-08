@@ -130,7 +130,7 @@ async fn main() -> std::io::Result<()> {
             .wrap(actix_middleware::Logger::default())
             .wrap(
                 actix_middleware::DefaultHeaders::new()
-                    .header("Permissions-Policy", "interest-cohort=()"),
+                    .add(("Permissions-Policy", "interest-cohort=()")),
             )
             .wrap(get_identity_service())
             .wrap(actix_middleware::Compress::default())
