@@ -1,0 +1,6 @@
+template_dirs = ["templates"]
+#escape = true
+delimiter = "."
+
+[optimizations]
+rm_whitespace = true
