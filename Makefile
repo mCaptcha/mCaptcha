@@ -75,7 +75,8 @@ run: frontend ## Run app in debug mode
 	cargo run
 
 test: frontend-test frontend ## Run all available tests
-	cargo test --all-features --no-fail-fast
+	./scripts/tests.sh
+#	cargo test --all-features --no-fail-fast
 
 xml-test-coverage: migrate ## Generate code coverage report in XML format
 	cargo tarpaulin -t 1200 --out Xml
