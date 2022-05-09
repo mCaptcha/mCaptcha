@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["NAME",""]],"fn":[["services",""]],"mod":[["auth",""],["errors",""],["panel",""],["routes",""],["sitemap",""]]});
+initSidebarItems({"constant":[["NAME",""]],"fn":[["get_middleware",""],["services",""]],"mod":[["auth",""],["errors",""],["panel",""],["routes",""],["sitemap",""]]});

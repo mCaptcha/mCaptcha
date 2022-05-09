@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["services",""]],"mod":[["account",""],["auth",""],["mcaptcha",""],["meta",""],["notifications",""],["pow",""],["routes",""]]});
+initSidebarItems({"fn":[["get_middleware",""],["services",""]],"mod":[["account",""],["auth",""],["mcaptcha",""],["meta",""],["notifications",""],["pow",""],["routes",""]],"struct":[["RedirectQuery",""]]});
