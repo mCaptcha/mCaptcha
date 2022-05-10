@@ -197,7 +197,12 @@ impl From<CredsError> for ServiceError {
 impl From<DBError> for ServiceError {
     #[cfg(not(tarpaulin_include))]
     fn from(e: DBError) -> ServiceError {
-        ServiceError::DBError(DBErrorWrapper(e))
+        match e{
+            DBError::UsernameTaken => ServiceError::UsernameTaken,
+            DBError::SecretTaken => ServiceError::InternalServerError,
+            DBError::EmailTaken => ServiceError::EmailTaken,
+            _ => ServiceError::DBError(DBErrorWrapper(e))
+        }
     }
 }
 

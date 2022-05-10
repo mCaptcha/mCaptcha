@@ -58,12 +58,28 @@ pub mod dev {
     pub use async_trait::async_trait;
 }
 
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
+/// Data required to register a new user
+pub struct Register<'a> {
+    /// username of new user
+    pub username: &'a str,
+    /// secret of new user
+    pub secret: &'a str,
+    /// hashed password of new use
+    pub hash: &'a str,
+    /// Optionally, email of new use
+    pub email: Option<&'a str>,
+}
+
 #[async_trait]
 /// mCaptcha's database requirements. To implement support for $Database, kindly implement this
 /// trait.
 pub trait MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
     /// ping DB
     async fn ping(&self) -> bool;
+
+    /// register a new user
+    async fn register(&self, p: &Register) -> DBResult<()>;
 }
 
 /// Trait to clone MCDatabase

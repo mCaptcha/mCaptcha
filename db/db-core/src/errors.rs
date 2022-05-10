@@ -26,6 +26,15 @@ pub enum DBError {
     /// errors that are specific to a database implementation
     #[error("{0}")]
     DBError(#[source] BoxDynError),
+    /// Username is taken
+    #[error("Username is taken")]
+    UsernameTaken,
+    /// Email is taken
+    #[error("Email is taken")]
+    EmailTaken,
+    /// Secret is taken
+    #[error("Secret is taken")]
+    SecretTaken,
 }
 
 /// Convenience type alias for grouping driver-specific errors
