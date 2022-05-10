@@ -26,8 +26,13 @@ pub fn map_register_err(e: Error) -> DBError {
     if let Error::Database(err) = e {
         if err.code() == Some(Cow::from("23505")) {
             let msg = err.message();
-            if msg.contains("mcaptcha_users_username_key") {
-                unimplemented!();
+            println!("{}", msg);
+            if msg.contains("mcaptcha_users_name_key") {
+                DBError::UsernameTaken
+            } else if msg.contains("mcaptcha_users_email_key") {
+                DBError::EmailTaken
+            } else if msg.contains("mcaptcha_users_secret_key") {
+                DBError::SecretTaken
             } else {
                 DBError::DBError(Box::new(Error::Database(err)))
             }

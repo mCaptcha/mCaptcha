@@ -100,6 +100,35 @@ impl MCDatabase for Database {
             false
         }
     }
+
+    /// register a new user
+    async fn register(&self, p: &Register) -> DBResult<()> {
+        let res;
+        if let Some(email) = &p.email {
+            res = sqlx::query!(
+                "insert into mcaptcha_users 
+        (name , password, email, secret) values ($1, $2, $3, $4)",
+                &p.username,
+                &p.hash,
+                &email,
+                &p.secret,
+            )
+            .execute(&self.pool)
+            .await;
+        } else {
+            res = sqlx::query!(
+                "INSERT INTO mcaptcha_users 
+        (name , password,  secret) VALUES ($1, $2, $3)",
+                &p.username,
+                &p.hash,
+                &p.secret,
+            )
+            .execute(&self.pool)
+            .await;
+        };
+        res.map_err(map_register_err)?;
+        Ok(())
+    }
 }
 
 fn now_unix_time_stamp() -> i64 {
