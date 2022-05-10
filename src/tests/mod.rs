@@ -150,6 +150,10 @@ pub async fn bad_post_req_test<T: Serialize>(
             .to_request(),
     )
     .await;
+    if resp.status() != err.status_code() {
+        let resp_err: ErrorToResponse = test::read_body_json(resp).await;
+        panic!("error {}", resp_err.error);
+    }
     assert_eq!(resp.status(), err.status_code());
     let resp_err: ErrorToResponse = test::read_body_json(resp).await;
     //println!("{}", txt.error);

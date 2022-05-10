@@ -18,6 +18,7 @@
 use actix_identity::Identity;
 use actix_web::http::header;
 use actix_web::{web, HttpResponse, Responder};
+use db_core::errors::DBError;
 use serde::{Deserialize, Serialize};
 
 use super::mcaptcha::get_random;
@@ -166,48 +167,21 @@ pub mod runners {
 
         loop {
             secret = get_random(32);
-            let res;
-            if let Some(email) = &payload.email {
-                res = sqlx::query!(
-                    "insert into mcaptcha_users 
-        (name , password, email, secret) values ($1, $2, $3, $4)",
-                    &username,
-                    &hash,
-                    &email,
-                    &secret,
-                )
-                .execute(&data.db)
-                .await;
-            } else {
-                res = sqlx::query!(
-                    "INSERT INTO mcaptcha_users 
-        (name , password,  secret) VALUES ($1, $2, $3)",
-                    &username,
-                    &hash,
-                    &secret,
-                )
-                .execute(&data.db)
-                .await;
-            }
-            if res.is_ok() {
-                break;
-            } else if let Err(sqlx::Error::Database(err)) = res {
-                if err.code() == Some(Cow::from("23505")) {
-                    let msg = err.message();
-                    if msg.contains("mcaptcha_users_name_key") {
-                        return Err(ServiceError::UsernameTaken);
-                    } else if msg.contains("mcaptcha_users_email_key") {
-                        return Err(ServiceError::EmailTaken);
-                    } else if msg.contains("mcaptcha_users_secret_key") {
-                        continue;
-                    } else {
-                        return Err(ServiceError::InternalServerError);
-                    }
-                } else {
-                    return Err(sqlx::Error::Database(err).into());
-                }
+
+            let p = db_core::Register {
+                username: &username,
+                hash: &hash,
+                email: payload.email.as_ref().map(|s| s.as_str()),
+                secret: &secret,
             };
+
+            match data.dblib.register(&p).await {
+                Ok(_) => break,
+                Err(DBError::SecretTaken) => continue,
+                Err(e) => return Err(e.into()),
+            }
         }
+
         Ok(())
     }
 }
