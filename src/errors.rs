@@ -24,6 +24,7 @@ use actix_web::{
     HttpResponse, HttpResponseBuilder,
 };
 use argon2_creds::errors::CredsError;
+use db_core::errors::DBError;
 use derive_more::{Display, Error};
 use lettre::transport::smtp::Error as SmtpError;
 use libmcaptcha::errors::CaptchaError;
@@ -34,6 +35,15 @@ use validator::ValidationErrors;
 
 #[derive(Debug, Display, Error)]
 pub struct SmtpErrorWrapper(SmtpError);
+
+#[derive(Debug, Display, Error)]
+pub struct DBErrorWrapper(DBError);
+
+impl std::cmp::PartialEq for DBErrorWrapper {
+    fn eq(&self, other: &Self) -> bool {
+        format!("{}", self.0) == format!("{}", other.0)
+    }
+}
 
 impl std::cmp::PartialEq for SmtpErrorWrapper {
     fn eq(&self, other: &Self) -> bool {
@@ -103,6 +113,9 @@ pub enum ServiceError {
 
     #[display(fmt = "{}", _0)]
     CaptchaError(CaptchaError),
+
+    #[display(fmt = "{}", _0)]
+    DBError(DBErrorWrapper),
 }
 
 #[derive(Serialize, Deserialize)]
@@ -160,6 +173,8 @@ impl ResponseError for ServiceError {
                 log::error!("{}", e.0);
                 StatusCode::INTERNAL_SERVER_ERROR
             }
+
+            ServiceError::DBError(_) => StatusCode::INTERNAL_SERVER_ERROR,
         }
     }
 }
@@ -176,6 +191,13 @@ impl From<CredsError> for ServiceError {
             CredsError::PasswordTooLong => ServiceError::PasswordTooLong,
             CredsError::PasswordTooShort => ServiceError::PasswordTooShort,
         }
+    }
+}
+
+impl From<DBError> for ServiceError {
+    #[cfg(not(tarpaulin_include))]
+    fn from(e: DBError) -> ServiceError {
+        ServiceError::DBError(DBErrorWrapper(e))
     }
 }
 
