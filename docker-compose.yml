@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   mcaptcha:
-    build: .
+    image: mcaptcha/mcaptcha:latest
     ports:
       - 7000:7000
     environment:
