@@ -76,14 +76,9 @@ async fn health(data: AppData) -> impl Responder {
     use sqlx::Connection;
 
     let mut resp_builder = HealthBuilder::default();
-    resp_builder.db(false);
     resp_builder.redis = None;
 
-    if let Ok(mut con) = data.db.acquire().await {
-        if con.ping().await.is_ok() {
-            resp_builder.db(true);
-        }
-    };
+    resp_builder.db(data.dblib.ping().await);
 
     if let SystemGroup::Redis(_) = data.captcha {
         if let Ok(r) = Redis::new(RedisConfig::Single(
