@@ -72,7 +72,6 @@ pub fn handle_embedded_file(path: &str) -> HttpResponse {
     }
 }
 
-
 #[my_codegen::get(path = "DOCS.assets")]
 async fn dist(path: web::Path<String>) -> impl Responder {
     handle_embedded_file(&path)

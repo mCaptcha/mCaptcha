@@ -100,7 +100,6 @@ fn handle_assets(path: &str) -> HttpResponse {
     }
 }
 
-
 #[get("/assets/{_:.*}")]
 pub async fn static_files(path: web::Path<String>) -> impl Responder {
     handle_assets(&path)
@@ -130,7 +129,6 @@ fn handle_favicons(path: &str) -> HttpResponse {
         None => HttpResponse::NotFound().body("404 Not Found"),
     }
 }
-
 
 #[get("/{file}")]
 pub async fn favicons(path: web::Path<String>) -> impl Responder {

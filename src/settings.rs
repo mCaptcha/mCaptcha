@@ -121,7 +121,6 @@ impl Settings {
     pub fn new() -> Result<Self, ConfigError> {
         let mut s = Config::new();
 
-
         const CURRENT_DIR: &str = "./config/default.toml";
         const ETC: &str = "/etc/mcaptcha/config.toml";
 
@@ -162,8 +161,6 @@ impl Settings {
         #[cfg(test)]
         s.set("database.pool", 2.to_string())
             .expect("Couldn't set database pool count");
-
-
 
         match s.try_into() {
             Ok(val) => Ok(val),

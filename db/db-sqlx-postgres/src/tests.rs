@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2022  Aravinth Manivannan <realaravinth@batsense.net>
  *

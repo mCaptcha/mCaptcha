@@ -18,8 +18,8 @@ use db_core::dev::*;
 use std::str::FromStr;
 
 use sqlx::postgres::PgPoolOptions;
-use sqlx::PgPool;
 use sqlx::types::time::OffsetDateTime;
+use sqlx::PgPool;
 
 pub mod errors;
 #[cfg(test)]

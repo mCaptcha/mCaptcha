@@ -17,8 +17,6 @@
 //! Test utilities
 use crate::prelude::*;
 
-pub async fn database_works<'a, T: MCDatabase>(
-    db: &T,
-) {
+pub async fn database_works<'a, T: MCDatabase>(db: &T) {
     unimplemented!("database tests");
 }
