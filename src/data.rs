@@ -19,6 +19,8 @@ use std::thread;
 
 use actix::prelude::*;
 use argon2_creds::{Config, ConfigBuilder, PasswordPolicy};
+use db_core::prelude::*;
+use db_sqlx_postgres::{ConnectionOptions, Fresh};
 use lettre::transport::smtp::authentication::Mechanism;
 use lettre::{
     transport::smtp::authentication::Credentials, AsyncSmtpTransport, Tokio1Executor,
@@ -40,6 +42,8 @@ use libmcaptcha::{
 };
 use sqlx::postgres::PgPoolOptions;
 use sqlx::PgPool;
+
+use db_core::MCDatabase;
 
 use crate::errors::ServiceResult;
 use crate::SETTINGS;
@@ -142,6 +146,8 @@ impl SystemGroup {
 pub struct Data {
     /// databse pool
     pub db: PgPool,
+    /// database ops defined by db crates
+    pub dblib: Box<dyn MCDatabase>,
     /// credential management configuration
     pub creds: Config,
     /// mCaptcha system: Redis cache, etc.
@@ -179,9 +185,19 @@ impl Data {
             .await
             .expect("Unable to form database pool");
 
+        let settings = &SETTINGS;
+        let pool = settings.database.pool;
+        let pool_options = PgPoolOptions::new().max_connections(pool);
+        let connection_options = ConnectionOptions::Fresh(Fresh {
+            pool_options,
+            url: settings.database.url.clone(),
+        });
+        let dblib = Box::new(connection_options.connect().await.unwrap());
+
         let data = Data {
             creds,
             db,
+            dblib,
             captcha: SystemGroup::new().await,
             mailer: Self::get_mailer(),
         };
