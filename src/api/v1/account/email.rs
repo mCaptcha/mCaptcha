@@ -18,6 +18,7 @@ use std::borrow::Cow;
 
 use actix_identity::Identity;
 use actix_web::{web, HttpResponse, Responder};
+use db_core::UpdateEmail;
 use serde::{Deserialize, Serialize};
 
 use super::{AccountCheckPayload, AccountCheckResp};
@@ -55,25 +56,13 @@ async fn set_email(
 
     data.creds.email(&payload.email)?;
 
-    let res = sqlx::query!(
-        "UPDATE mcaptcha_users set email = $1
-        WHERE name = $2",
-        &payload.email,
-        &username,
-    )
-    .execute(&data.db)
-    .await;
-    if res.is_err() {
-        if let Err(sqlx::Error::Database(err)) = res {
-            if err.code() == Some(Cow::from("23505"))
-                && err.message().contains("mcaptcha_users_email_key")
-            {
-                return Err(ServiceError::EmailTaken);
-            } else {
-                return Err(sqlx::Error::Database(err).into());
-            }
-        };
-    }
+    let update_email = UpdateEmail {
+        username: &username,
+        new_email: &payload.email,
+    };
+
+    data.dblib.update_email(&update_email).await?;
+
     Ok(HttpResponse::Ok())
 }
 
