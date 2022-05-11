@@ -29,6 +29,10 @@ pub async fn database_works<'a, T: MCDatabase>(db: &T, p: &Register<'a>) {
     }
     db.register(p).await.unwrap();
     assert!(
+        db.email_exists(p.email.as_ref().unwrap()).await.unwrap(),
+        "user is registered so email should exsit"
+    );
+    assert!(
         db.username_exists(p.username).await.unwrap(),
         "user is registered so username should exsit"
     );
@@ -46,4 +50,9 @@ pub async fn database_works<'a, T: MCDatabase>(db: &T, p: &Register<'a>) {
         db.username_exists(p2.username).await.unwrap(),
         "user is registered so username should exsit"
     );
+    assert!(
+        !db.email_exists(p.email.as_ref().unwrap()).await.unwrap(),
+        "user registration with email is deleted; so email shouldn't exsit"
+    );
+
 }
