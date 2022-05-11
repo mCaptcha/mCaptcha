@@ -19,7 +19,6 @@ use actix_web::{web, HttpResponse, Responder};
 use argon2_creds::Config;
 use db_core::Login;
 use serde::{Deserialize, Serialize};
-use sqlx::Error::RowNotFound;
 
 use crate::api::v1::auth::runners::Password;
 use crate::errors::*;

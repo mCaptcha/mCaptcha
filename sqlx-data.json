@@ -39,19 +39,6 @@
     },
     "query": "SELECT email, secret  FROM mcaptcha_users WHERE name = ($1)"
   },
-  "2021bc0eb03df51af06b59e2a1efdba231e8f35d9cfb5c5b55241c566b9055ce": {
-    "describe": {
-      "columns": [],
-      "nullable": [],
-      "parameters": {
-        "Left": [
-          "Varchar",
-          "Text"
-        ]
-      }
-    },
-    "query": "UPDATE mcaptcha_users set name = $1\n        WHERE name = $2"
-  },
   "238569a64d7dbd252e3b27204f207e8a8548109717b89495ddf8f9a870c7c75d": {
     "describe": {
       "columns": [],
@@ -168,6 +155,21 @@
       }
     },
     "query": "SELECT time FROM mcaptcha_pow_confirmed_stats \n            WHERE \n                config_id = (\n                    SELECT config_id FROM mcaptcha_config \n                WHERE \n                    key = $1\n                AND\n                     user_id = (\n                        SELECT \n                            ID FROM mcaptcha_users WHERE name = $2))\n                ORDER BY time DESC"
+  },
+  "45d9e9fb6344fe3a18c2529d50c935d3837bfe25c96595beb6970d6067720578": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Text",
+          "Varchar",
+          "Varchar"
+        ]
+      }
+    },
+    "query": "insert into mcaptcha_users \n        (name , password, email, secret) values ($1, $2, $3, $4)"
   },
   "4a5dfbc5aeb2bab290a09640cc25223d484fbc7549e5bc54f33bab8616725031": {
     "describe": {
@@ -560,6 +562,18 @@
       }
     },
     "query": "SELECT time FROM mcaptcha_pow_fetched_stats\n            WHERE \n                config_id = (\n                    SELECT \n                        config_id FROM mcaptcha_config \n                    WHERE \n                        key = $1\n                    AND\n                        user_id = (\n                        SELECT \n                            ID FROM mcaptcha_users WHERE name = $2))\n                ORDER BY time DESC"
+  },
+  "ca9d5241f1234d1825f7ead391ebe9099fca776e7101ac6e1761881606def5fa": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      }
+    },
+    "query": "DELETE FROM mcaptcha_users WHERE name = ($1)"
   },
   "d85750d86bbafeaf6f52cec3d49d708bef1a9ef85bbd9c55d63c9c27cb93223c": {
     "describe": {

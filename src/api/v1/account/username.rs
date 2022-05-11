@@ -65,26 +65,10 @@ async fn set_username(
 
     let processed_uname = data.creds.username(&payload.username)?;
 
-    let res = sqlx::query!(
-        "UPDATE mcaptcha_users set name = $1
-        WHERE name = $2",
-        &processed_uname,
-        &username,
-    )
-    .execute(&data.db)
-    .await;
+    data.dblib
+        .update_username(&username, &processed_uname)
+        .await?;
 
-    if res.is_err() {
-        if let Err(sqlx::Error::Database(err)) = res {
-            if err.code() == Some(Cow::from("23505"))
-                && err.message().contains("mcaptcha_users_name_key")
-            {
-                return Err(ServiceError::UsernameTaken);
-            } else {
-                return Err(sqlx::Error::Database(err).into());
-            }
-        };
-    }
     id.forget();
     id.remember(processed_uname);
 
