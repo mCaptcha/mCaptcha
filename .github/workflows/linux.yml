@@ -55,6 +55,12 @@ jobs:
             target
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
+
+      - name: load env
+        run: |
+          source .env-sample \
+            && echo "POSTGRES_DATABASE_URL=$POSTGRES_DATABASE_URL" >> $GITHUB_ENV 
+
       - uses: actions/setup-node@v2
         with:
           node-version: '16.x'
@@ -72,12 +78,12 @@ jobs:
       - name: Run migrations
         run: make migrate
         env:
-          DATABASE_URL: postgres://postgres:password@localhost:5432/postgres
+          POSTGRES_DATABASE_URL: "${{ env.POSTGRES_DATABASE_URL }}"
 
       - name: build
         run: make
         env:
-          DATABASE_URL: postgres://postgres:password@localhost:5432/postgres
+          POSTGRES_DATABASE_URL: "${{ env.POSTGRES_DATABASE_URL }}"
 
             #      - name: build frontend
             #        run: make frontend
@@ -88,13 +94,13 @@ jobs:
       - name: run tests
         run: make test
         env:
-          DATABASE_URL: postgres://postgres:password@localhost:5432/postgres
+          POSTGRES_DATABASE_URL: "${{ env.POSTGRES_DATABASE_URL }}"
           
       - name: generate documentation
         if: matrix.version == 'stable' && (github.repository == 'mCaptcha/mCaptcha')
         run: make doc
         env:
-          DATABASE_URL: postgres://postgres:password@localhost:5432/postgres
+          POSTGRES_DATABASE_URL: "${{ env.POSTGRES_DATABASE_URL }}"
           GIT_HASH: 8e77345f1597e40c2e266cb4e6dee74888918a61 # dummy value
           COMPILED_DATE: "2021-07-21"
 
