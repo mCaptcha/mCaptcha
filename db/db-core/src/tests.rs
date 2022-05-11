@@ -66,10 +66,23 @@ pub async fn database_works<'a, T: MCDatabase>(db: &T, p: &Register<'a>) {
     );
     assert_eq!(name_hash.username, p.username, "username matches");
 
-    // deleting user for re-registration with email = None
-    db.delete_user(p.username).await.unwrap();
+    // update username to p.email
     assert!(
-        !db.username_exists(p.username).await.unwrap(),
+        !db.username_exists(p.email.as_ref().unwrap()).await.unwrap(),
+        "user with p.email doesn't exist. pre-check to update username to p.email"
+    );
+    db.update_username(p.username, p.email.as_ref().unwrap())
+        .await
+        .unwrap();
+    assert!(
+        db.username_exists(p.email.as_ref().unwrap()).await.unwrap(),
+        "user with p.email exist post-update"
+    );
+
+    // deleting user for re-registration with email = None
+    db.delete_user(p.email.as_ref().unwrap()).await.unwrap();
+    assert!(
+        !db.username_exists(p.email.as_ref().unwrap()).await.unwrap(),
         "user is deleted so username shouldn't exsit"
     );
 

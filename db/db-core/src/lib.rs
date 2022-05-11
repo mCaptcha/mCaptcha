@@ -125,6 +125,9 @@ pub trait MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
 
     /// update user's password
     async fn update_password(&self, p: &NameHash) -> DBResult<()>;
+
+    /// update username
+    async fn update_username(&self, current: &str, new: &str) -> DBResult<()>;
 }
 
 /// Trait to clone MCDatabase
