@@ -64,9 +64,7 @@ pub mod runners {
     use super::*;
 
     pub async fn delete_user(name: &str, data: &AppData) -> ServiceResult<()> {
-        sqlx::query!("DELETE FROM mcaptcha_users WHERE name = ($1)", name,)
-            .execute(&data.db)
-            .await?;
+        data.dblib.delete_user(name).await?;
         Ok(())
     }
 }
