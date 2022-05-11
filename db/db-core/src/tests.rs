@@ -28,6 +28,12 @@ pub async fn database_works<'a, T: MCDatabase>(db: &T, p: &Register<'a>) {
         );
     }
     db.register(p).await.unwrap();
+
+    assert_eq!(
+        db.get_password(p.username).await.unwrap(),
+        p.hash,
+        "user password matches"
+    );
     assert!(
         db.email_exists(p.email.as_ref().unwrap()).await.unwrap(),
         "user is registered so email should exsit"
