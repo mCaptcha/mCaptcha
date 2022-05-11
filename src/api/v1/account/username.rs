@@ -40,22 +40,9 @@ pub mod runners {
         payload: &AccountCheckPayload,
         data: &AppData,
     ) -> ServiceResult<AccountCheckResp> {
-        let res = sqlx::query!(
-            "SELECT EXISTS (SELECT 1 from mcaptcha_users WHERE name = $1)",
-            &payload.val,
-        )
-        .fetch_one(&data.db)
-        .await?;
+        let exists = data.dblib.username_exists(&payload.val).await?;
 
-        let mut resp = AccountCheckResp { exists: false };
-
-        if let Some(x) = res.exists {
-            if x {
-                resp.exists = true;
-            }
-        }
-
-        Ok(resp)
+        Ok(AccountCheckResp { exists })
     }
 }
 
