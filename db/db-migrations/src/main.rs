@@ -14,3 +14,27 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+use std::env;
+
+use sqlx::postgres::PgPoolOptions;
+
+#[cfg(not(tarpaulin_include))]
+#[actix_rt::main]
+async fn main() {
+    //TODO featuregate sqlite and postgres
+    postgres_migrate().await;
+}
+
+async fn postgres_migrate() {
+    let db_url = env::var("POSTGRES_DATABASE_URL").expect("set POSTGRES_DATABASE_URL env var");
+    let db = PgPoolOptions::new()
+        .max_connections(2)
+        .connect(&db_url)
+        .await
+        .expect("Unable to form database pool");
+
+    sqlx::migrate!("../db-sqlx-postgres/migrations/")
+        .run(&db)
+        .await
+        .unwrap();
+}
