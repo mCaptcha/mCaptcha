@@ -89,6 +89,15 @@ pub enum Login<'a> {
     Email(&'a str),
 }
 
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
+/// type encapsulating username and hashed password of a user
+pub struct NameHash {
+    /// username
+    pub username: String,
+    /// hashed password
+    pub hash: String,
+}
+
 #[async_trait]
 /// mCaptcha's database requirements. To implement support for $Database, kindly implement this
 /// trait.
@@ -112,7 +121,7 @@ pub trait MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
     async fn update_email(&self, p: &UpdateEmail) -> DBResult<()>;
 
     /// get a user's password
-    async fn get_password(&self, l: &Login) -> DBResult<String>;
+    async fn get_password(&self, l: &Login) -> DBResult<NameHash>;
 }
 
 /// Trait to clone MCDatabase

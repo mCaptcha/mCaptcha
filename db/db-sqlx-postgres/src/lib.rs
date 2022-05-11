@@ -189,15 +189,16 @@ impl MCDatabase for Database {
     }
 
     /// get a user's password
-    async fn get_password(&self, l: &Login) -> DBResult<String> {
+    async fn get_password(&self, l: &Login) -> DBResult<NameHash> {
         struct Password {
+            name: String,
             password: String,
         }
 
         let rec = match l {
             Login::Username(u) => sqlx::query_as!(
                 Password,
-                r#"SELECT password  FROM mcaptcha_users WHERE name = ($1)"#,
+                r#"SELECT name, password  FROM mcaptcha_users WHERE name = ($1)"#,
                 u,
             )
             .fetch_one(&self.pool)
@@ -206,7 +207,7 @@ impl MCDatabase for Database {
 
             Login::Email(e) => sqlx::query_as!(
                 Password,
-                r#"SELECT password  FROM mcaptcha_users WHERE email = ($1)"#,
+                r#"SELECT name, password  FROM mcaptcha_users WHERE email = ($1)"#,
                 e,
             )
             .fetch_one(&self.pool)
@@ -214,7 +215,12 @@ impl MCDatabase for Database {
             .map_err(map_register_err)?,
         };
 
-        Ok(rec.password)
+        let res = NameHash {
+            hash: rec.password,
+            username: rec.name,
+        };
+
+        Ok(res)
     }
 }
 

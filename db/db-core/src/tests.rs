@@ -29,20 +29,23 @@ pub async fn database_works<'a, T: MCDatabase>(db: &T, p: &Register<'a>) {
     }
     db.register(p).await.unwrap();
 
-    assert_eq!(
-        db.get_password(&Login::Username(p.username)).await.unwrap(),
-        p.hash,
-        "user password matches"
-    );
+    // testing get_password
 
-    assert_eq!(
-        db.get_password(&Login::Email(p.email.as_ref().unwrap()))
-            .await
-            .unwrap(),
-        p.hash,
-        "user password matches"
-    );
+    // with username
+    let name_hash = db.get_password(&Login::Username(p.username)).await.unwrap();
+    assert_eq!(name_hash.hash, p.hash, "user password matches");
 
+    assert_eq!(name_hash.username, p.username, "username matches");
+
+    // with email
+    let name_hash = db
+        .get_password(&Login::Email(p.email.as_ref().unwrap()))
+        .await
+        .unwrap();
+    assert_eq!(name_hash.hash, p.hash, "user password matches");
+    assert_eq!(name_hash.username, p.username, "username matches");
+
+    // testing email exists
     assert!(
         db.email_exists(p.email.as_ref().unwrap()).await.unwrap(),
         "user is registered so email should exsit"
@@ -70,11 +73,11 @@ pub async fn database_works<'a, T: MCDatabase>(db: &T, p: &Register<'a>) {
         "user registration with email is deleted; so email shouldn't exsit"
     );
 
+    // testing update email
     let update_email = UpdateEmail {
         username: p.username,
         new_email: p.email.as_ref().unwrap(),
     };
-
     db.update_email(&update_email).await.unwrap();
     println!(
         "null user email: {}",
