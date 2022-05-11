@@ -35,7 +35,10 @@ pub async fn delete_account(
 
     let username = id.identity().unwrap();
 
-    let hash = data.dblib.get_password(&db_core::Login::Username(&username)).await?;
+    let hash = data
+        .dblib
+        .get_password(&db_core::Login::Username(&username))
+        .await?;
 
     if Config::verify(&hash.hash, &payload.password)? {
         runners::delete_user(&username, &data).await?;

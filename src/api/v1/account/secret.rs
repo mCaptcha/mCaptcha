@@ -18,16 +18,12 @@ use std::borrow::Cow;
 
 use actix_identity::Identity;
 use actix_web::{HttpResponse, Responder};
+use db_core::prelude::*;
 use serde::{Deserialize, Serialize};
 
 use crate::api::v1::mcaptcha::get_random;
 use crate::errors::*;
 use crate::AppData;
-
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct Secret {
-    pub secret: String,
-}
 
 #[my_codegen::get(
     path = "crate::V1_API_ROUTES.account.get_secret",
@@ -35,15 +31,7 @@ pub struct Secret {
 )]
 async fn get_secret(id: Identity, data: AppData) -> ServiceResult<impl Responder> {
     let username = id.identity().unwrap();
-
-    let secret = sqlx::query_as!(
-        Secret,
-        r#"SELECT secret  FROM mcaptcha_users WHERE name = ($1)"#,
-        &username,
-    )
-    .fetch_one(&data.db)
-    .await?;
-
+    let secret = data.dblib.get_secret(&username).await?;
     Ok(HttpResponse::Ok().json(secret))
 }
 
