@@ -174,6 +174,20 @@ impl MCDatabase for Database {
 
         Ok(resp)
     }
+
+    /// update a user's email
+    async fn update_email(&self, p: &UpdateEmail) -> DBResult<()> {
+        sqlx::query!(
+            "UPDATE mcaptcha_users set email = $1
+            WHERE name = $2",
+            &p.new_email,
+            &p.username,
+        )
+        .execute(&self.pool)
+        .await
+        .map_err(map_register_err)?;
+        Ok(())
+    }
 }
 
 fn now_unix_time_stamp() -> i64 {
