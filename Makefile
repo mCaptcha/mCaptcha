@@ -74,7 +74,7 @@ lint: ## Lint codebase
 	cd $(OPENAPI)&& yarn test
 
 migrate: ## Run database migrations
-	cargo run --bin tests-migrate
+	cd db/db-migrations/ && cargo run
 
 release: frontend ## Build app with release optimizations
 	cargo build --release
