@@ -80,6 +80,9 @@ pub trait MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
 
     /// register a new user
     async fn register(&self, p: &Register) -> DBResult<()>;
+
+    /// delete a user
+    async fn delete_user(&self, username: &str) -> DBResult<()>;
 }
 
 /// Trait to clone MCDatabase
