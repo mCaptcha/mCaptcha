@@ -188,6 +188,24 @@ impl MCDatabase for Database {
         .map_err(map_register_err)?;
         Ok(())
     }
+
+    /// get a user's password
+    async fn get_password(&self, username: &str) -> DBResult<String> {
+        struct Password {
+            password: String,
+        }
+
+        let rec = sqlx::query_as!(
+            Password,
+            r#"SELECT password  FROM mcaptcha_users WHERE name = ($1)"#,
+            username,
+        )
+        .fetch_one(&self.pool)
+        .await
+        .map_err(map_register_err)?;
+
+        Ok(rec.password)
+    }
 }
 
 fn now_unix_time_stamp() -> i64 {
