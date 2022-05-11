@@ -15,7 +15,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 use db_core::dev::*;
-use std::str::FromStr;
 
 use sqlx::postgres::PgPoolOptions;
 use sqlx::types::time::OffsetDateTime;

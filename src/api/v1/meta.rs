@@ -73,10 +73,7 @@ impl Health {
 /// checks all components of the system
 #[my_codegen::get(path = "crate::V1_API_ROUTES.meta.health")]
 async fn health(data: AppData) -> impl Responder {
-    use sqlx::Connection;
-
     let mut resp_builder = HealthBuilder::default();
-    resp_builder.redis = None;
 
     resp_builder.db(data.dblib.ping().await);
 

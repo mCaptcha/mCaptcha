@@ -139,7 +139,7 @@ pub mod runners {
             let p = db_core::Register {
                 username: &username,
                 hash: &hash,
-                email: payload.email.as_ref().map(|s| s.as_str()),
+                email: payload.email.as_deref(),
                 secret: &secret,
             };
 

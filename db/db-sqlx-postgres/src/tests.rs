@@ -14,12 +14,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+#![cfg(test)]
+
 use sqlx::postgres::PgPoolOptions;
 use std::env;
 
 use crate::*;
 
-use db_core::prelude::*;
 use db_core::tests::*;
 
 #[actix_rt::test]

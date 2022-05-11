@@ -20,7 +20,6 @@ use argon2_creds::Config;
 use db_core::Login;
 use serde::{Deserialize, Serialize};
 
-use crate::api::v1::auth::runners::Password;
 use crate::errors::*;
 use crate::*;
 

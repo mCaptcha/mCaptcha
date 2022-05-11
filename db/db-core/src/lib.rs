@@ -31,10 +31,7 @@
 //! - [errors](crate::auth): error data structures used in this crate
 //! - [ops](crate::ops): meta operations like connection pool creation, migrations and getting
 //! connection from pool
-use std::str::FromStr;
-
 use serde::{Deserialize, Serialize};
-use url::Url;
 
 pub mod errors;
 pub mod ops;
