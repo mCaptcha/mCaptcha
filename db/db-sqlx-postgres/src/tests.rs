@@ -14,14 +14,32 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-//use sqlx::postgres::PgPoolOptions;
-//use std::env;
-//
-//use crate::*;
-//
-//use db_core::tests::*;
-//
-//#[actix_rt::test]
-//async fn everyting_works() {
-//    unimplemented!();
-//}
+use sqlx::postgres::PgPoolOptions;
+use std::env;
+
+use crate::*;
+
+use db_core::prelude::*;
+use db_core::tests::*;
+
+#[actix_rt::test]
+async fn everyting_works() {
+    const EMAIL: &str = "postgresuser@foo.com";
+    const NAME: &str = "postgresuser";
+    const PASSWORD: &str = "pasdfasdfasdfadf";
+    const SECRET1: &str = "postgressecret1";
+
+    let url = env::var("POSTGRES_DATABASE_URL").unwrap();
+    let pool_options = PgPoolOptions::new().max_connections(2);
+    let connection_options = ConnectionOptions::Fresh(Fresh { pool_options, url });
+    let db = connection_options.connect().await.unwrap();
+
+    db.migrate().await.unwrap();
+    let p = Register {
+        username: NAME,
+        email: Some(EMAIL),
+        hash: PASSWORD,
+        secret: SECRET1,
+    };
+    database_works(&db, &p).await;
+}
