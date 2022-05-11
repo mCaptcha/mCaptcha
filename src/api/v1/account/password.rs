@@ -57,15 +57,12 @@ async fn update_password_runner(
 
     let new_hash = data.creds.password(&update.new_password)?;
 
-    sqlx::query!(
-        "UPDATE mcaptcha_users set password = $1
-        WHERE name = $2",
-        &new_hash,
-        &user,
-    )
-    .execute(&data.db)
-    .await?;
+    let p = db_core::NameHash {
+        username: user.to_owned(),
+        hash: new_hash,
+    };
 
+    data.dblib.update_password(&p).await?;
     Ok(())
 }
 
