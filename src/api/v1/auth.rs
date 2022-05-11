@@ -91,7 +91,6 @@ pub mod runners {
     /// returns Ok(()) when everything checks out and the user is authenticated. Erros otherwise
     pub async fn login_runner(payload: Login, data: &AppData) -> ServiceResult<String> {
         use argon2_creds::Config;
-        use sqlx::Error::RowNotFound;
 
         let verify = |stored: &str, received: &str| {
             if Config::verify(stored, received)? {
@@ -101,50 +100,19 @@ pub mod runners {
             }
         };
 
-        if payload.login.contains('@') {
-            #[derive(Clone, Debug)]
-            struct EmailLogin {
-                name: String,
-                password: String,
-            }
-
-            let email_fut = sqlx::query_as!(
-                EmailLogin,
-                r#"SELECT name, password  FROM mcaptcha_users WHERE email = ($1)"#,
-                &payload.login,
-            )
-            .fetch_one(&data.db)
-            .await;
-
-            match email_fut {
-                Ok(s) => {
-                    verify(&s.password, &payload.password)?;
-                    Ok(s.name)
-                }
-
-                Err(RowNotFound) => Err(ServiceError::AccountNotFound),
-                Err(_) => Err(ServiceError::InternalServerError),
-            }
+        let s = if payload.login.contains('@') {
+            data.dblib
+                .get_password(&db_core::Login::Email(&payload.login))
+                .await?
         } else {
-            let username_fut = sqlx::query_as!(
-                Password,
-                r#"SELECT password  FROM mcaptcha_users WHERE name = ($1)"#,
-                &payload.login,
-            )
-            .fetch_one(&data.db)
-            .await;
+            data.dblib
+                .get_password(&db_core::Login::Username(&payload.login))
+                .await?
+        };
 
-            match username_fut {
-                Ok(s) => {
-                    verify(&s.password, &payload.password)?;
-                    Ok(payload.login)
-                }
-                Err(RowNotFound) => Err(ServiceError::AccountNotFound),
-                Err(_) => Err(ServiceError::InternalServerError),
-            }
-        }
+        verify(&s.hash, &payload.password)?;
+        Ok(s.username)
     }
-
     pub async fn register_runner(
         payload: &Register,
         data: &AppData,

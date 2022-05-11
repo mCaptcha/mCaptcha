@@ -17,6 +17,7 @@
 use actix_identity::Identity;
 use actix_web::{web, HttpResponse, Responder};
 use argon2_creds::Config;
+use db_core::Login;
 use serde::{Deserialize, Serialize};
 use sqlx::Error::RowNotFound;
 
@@ -83,26 +84,15 @@ async fn update_user_password(
 
     let username = id.identity().unwrap();
 
-    let rec = sqlx::query_as!(
-        Password,
-        r#"SELECT password  FROM mcaptcha_users WHERE name = ($1)"#,
-        &username,
-    )
-    .fetch_one(&data.db)
-    .await;
+    // TODO: verify behavior when account is not found
+    let res = data.dblib.get_password(&Login::Username(&username)).await?;
 
-    match rec {
-        Ok(s) => {
-            if Config::verify(&s.password, &payload.password)? {
-                let update: UpdatePassword = payload.into_inner().into();
-                update_password_runner(&username, update, &data).await?;
-                Ok(HttpResponse::Ok())
-            } else {
-                Err(ServiceError::WrongPassword)
-            }
-        }
-        Err(RowNotFound) => Err(ServiceError::AccountNotFound),
-        Err(_) => Err(ServiceError::InternalServerError),
+    if Config::verify(&res.hash, &payload.password)? {
+        let update: UpdatePassword = payload.into_inner().into();
+        update_password_runner(&username, update, &data).await?;
+        Ok(HttpResponse::Ok())
+    } else {
+        Err(ServiceError::WrongPassword)
     }
 }
 
