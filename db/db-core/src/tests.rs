@@ -17,6 +17,33 @@
 //! Test utilities
 use crate::prelude::*;
 
-pub async fn database_works<'a, T: MCDatabase>(db: &T) {
-    unimplemented!("database tests");
+/// test all database functions
+pub async fn database_works<'a, T: MCDatabase>(db: &T, p: &Register<'a>) {
+    assert!(db.ping().await, "ping test");
+    if db.username_exists(p.username).await.unwrap() {
+        db.delete_user(p.username).await.unwrap();
+        assert!(
+            !db.username_exists(p.username).await.unwrap(),
+            "user is deleted so username shouldn't exsit"
+        );
+    }
+    db.register(p).await.unwrap();
+    assert!(
+        db.username_exists(p.username).await.unwrap(),
+        "user is registered so username should exsit"
+    );
+    db.delete_user(p.username).await.unwrap();
+    assert!(
+        !db.username_exists(p.username).await.unwrap(),
+        "user is deleted so username shouldn't exsit"
+    );
+
+    // register with email = None
+    let mut p2 = p.clone();
+    p2.email = None;
+    db.register(&p2).await.unwrap();
+    assert!(
+        db.username_exists(p2.username).await.unwrap(),
+        "user is registered so username should exsit"
+    );
 }
