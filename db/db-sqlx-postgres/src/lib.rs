@@ -129,6 +129,15 @@ impl MCDatabase for Database {
         res.map_err(map_register_err)?;
         Ok(())
     }
+
+    /// delete a user
+    async fn delete_user(&self, username: &str) -> DBResult<()> {
+        sqlx::query!("DELETE FROM mcaptcha_users WHERE name = ($1)", username)
+            .execute(&self.pool)
+            .await
+            .map_err(map_register_err)?;
+        Ok(())
+    }
 }
 
 fn now_unix_time_stamp() -> i64 {
