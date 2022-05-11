@@ -55,4 +55,18 @@ pub async fn database_works<'a, T: MCDatabase>(db: &T, p: &Register<'a>) {
         "user registration with email is deleted; so email shouldn't exsit"
     );
 
+    let update_email = UpdateEmail {
+        username: p.username,
+        new_email: p.email.as_ref().unwrap(),
+    };
+
+    db.update_email(&update_email).await.unwrap();
+    println!(
+        "null user email: {}",
+        db.email_exists(p.email.as_ref().unwrap()).await.unwrap()
+    );
+    assert!(
+        db.email_exists(p.email.as_ref().unwrap()).await.unwrap(),
+        "user was with empty email but email is set; so email should exsit"
+    );
 }

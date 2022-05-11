@@ -71,6 +71,15 @@ pub struct Register<'a> {
     pub email: Option<&'a str>,
 }
 
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
+/// data required to update them email of a user
+pub struct UpdateEmail<'a> {
+    /// username of the user
+    pub username: &'a str,
+    /// new email address of the user
+    pub new_email: &'a str,
+}
+
 #[async_trait]
 /// mCaptcha's database requirements. To implement support for $Database, kindly implement this
 /// trait.
@@ -89,6 +98,9 @@ pub trait MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
 
     /// check if email exists
     async fn email_exists(&self, email: &str) -> DBResult<bool>;
+
+    /// update a user's email
+    async fn update_email(&self, p: &UpdateEmail) -> DBResult<()>;
 }
 
 /// Trait to clone MCDatabase
