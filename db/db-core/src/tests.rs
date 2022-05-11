@@ -29,6 +29,10 @@ pub async fn database_works<'a, T: MCDatabase>(db: &T, p: &Register<'a>) {
     }
     db.register(p).await.unwrap();
 
+    // testing get secret
+    let secret = db.get_secret(&p.username).await.unwrap();
+    assert_eq!(secret.secret, p.secret, "user secret matches");
+
     // testing get_password
 
     // with username

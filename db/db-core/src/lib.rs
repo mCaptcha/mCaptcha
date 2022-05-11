@@ -125,6 +125,16 @@ pub trait MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
 
     /// update username
     async fn update_username(&self, current: &str, new: &str) -> DBResult<()>;
+
+    /// get a user's secret
+    async fn get_secret(&self, username: &str) -> DBResult<Secret>;
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+/// datastructure representing a user's secret
+pub struct Secret {
+    /// user's secret
+    pub secret: String,
 }
 
 /// Trait to clone MCDatabase
