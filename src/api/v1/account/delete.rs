@@ -32,30 +32,17 @@ pub async fn delete_account(
     data: AppData,
 ) -> ServiceResult<impl Responder> {
     use argon2_creds::Config;
-    use sqlx::Error::RowNotFound;
 
     let username = id.identity().unwrap();
 
-    let rec = sqlx::query_as!(
-        Password,
-        r#"SELECT password  FROM mcaptcha_users WHERE name = ($1)"#,
-        &username,
-    )
-    .fetch_one(&data.db)
-    .await;
+    let hash = data.dblib.get_password(&db_core::Login::Username(&username)).await?;
 
-    match rec {
-        Ok(s) => {
-            if Config::verify(&s.password, &payload.password)? {
-                runners::delete_user(&username, &data).await?;
-                id.forget();
-                Ok(HttpResponse::Ok())
-            } else {
-                Err(ServiceError::WrongPassword)
-            }
-        }
-        Err(RowNotFound) => Err(ServiceError::AccountNotFound),
-        Err(_) => Err(ServiceError::InternalServerError),
+    if Config::verify(&hash.hash, &payload.password)? {
+        runners::delete_user(&username, &data).await?;
+        id.forget();
+        Ok(HttpResponse::Ok())
+    } else {
+        Err(ServiceError::WrongPassword)
     }
 }
 
