@@ -103,9 +103,8 @@ impl MCDatabase for Database {
 
     /// register a new user
     async fn register(&self, p: &Register) -> DBResult<()> {
-        let res;
-        if let Some(email) = &p.email {
-            res = sqlx::query!(
+        let res = if let Some(email) = &p.email {
+            sqlx::query!(
                 "insert into mcaptcha_users 
         (name , password, email, secret) values ($1, $2, $3, $4)",
                 &p.username,
@@ -114,9 +113,9 @@ impl MCDatabase for Database {
                 &p.secret,
             )
             .execute(&self.pool)
-            .await;
+            .await
         } else {
-            res = sqlx::query!(
+            sqlx::query!(
                 "INSERT INTO mcaptcha_users 
         (name , password,  secret) VALUES ($1, $2, $3)",
                 &p.username,
@@ -124,7 +123,7 @@ impl MCDatabase for Database {
                 &p.secret,
             )
             .execute(&self.pool)
-            .await;
+            .await
         };
         res.map_err(map_register_err)?;
         Ok(())
@@ -190,19 +189,30 @@ impl MCDatabase for Database {
     }
 
     /// get a user's password
-    async fn get_password(&self, username: &str) -> DBResult<String> {
+    async fn get_password(&self, l: &Login) -> DBResult<String> {
         struct Password {
             password: String,
         }
 
-        let rec = sqlx::query_as!(
-            Password,
-            r#"SELECT password  FROM mcaptcha_users WHERE name = ($1)"#,
-            username,
-        )
-        .fetch_one(&self.pool)
-        .await
-        .map_err(map_register_err)?;
+        let rec = match l {
+            Login::Username(u) => sqlx::query_as!(
+                Password,
+                r#"SELECT password  FROM mcaptcha_users WHERE name = ($1)"#,
+                u,
+            )
+            .fetch_one(&self.pool)
+            .await
+            .map_err(map_register_err)?,
+
+            Login::Email(e) => sqlx::query_as!(
+                Password,
+                r#"SELECT password  FROM mcaptcha_users WHERE email = ($1)"#,
+                e,
+            )
+            .fetch_one(&self.pool)
+            .await
+            .map_err(map_register_err)?,
+        };
 
         Ok(rec.password)
     }
