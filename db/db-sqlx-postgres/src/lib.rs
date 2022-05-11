@@ -156,6 +156,24 @@ impl MCDatabase for Database {
 
         Ok(resp)
     }
+
+    /// check if email exists
+    async fn email_exists(&self, email: &str) -> DBResult<bool> {
+        let res = sqlx::query!(
+            "SELECT EXISTS (SELECT 1 from mcaptcha_users WHERE email = $1)",
+            email
+        )
+        .fetch_one(&self.pool)
+        .await
+        .map_err(map_register_err)?;
+
+        let mut resp = false;
+        if let Some(x) = res.exists {
+            resp = x;
+        }
+
+        Ok(resp)
+    }
 }
 
 fn now_unix_time_stamp() -> i64 {
