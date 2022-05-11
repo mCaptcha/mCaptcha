@@ -222,6 +222,21 @@ impl MCDatabase for Database {
 
         Ok(res)
     }
+
+    /// update user's password
+    async fn update_password(&self, p: &NameHash) -> DBResult<()> {
+        sqlx::query!(
+            "UPDATE mcaptcha_users set password = $1
+            WHERE name = $2",
+            &p.hash,
+            &p.username,
+        )
+        .execute(&self.pool)
+        .await
+        .map_err(map_register_err)?;
+
+        Ok(())
+    }
 }
 
 fn now_unix_time_stamp() -> i64 {
