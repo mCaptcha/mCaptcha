@@ -107,7 +107,10 @@ git clone https://github.com/mCaptcha/mCaptcha.git
 docker-compose -d up
 ```
 
-after the container is up login in [http://localhost:7000](http://localhost:7000) with the default credentials user: aaronsw password: password
+After the containers are up, visit [http://localhost:7000](http://localhost:7000) and login with the default credentials:
+
+- username: aaronsw 
+- password: password
 
 
 It takes a while to build the image so please be patient :)
