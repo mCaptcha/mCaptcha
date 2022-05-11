@@ -83,6 +83,9 @@ pub trait MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
 
     /// delete a user
     async fn delete_user(&self, username: &str) -> DBResult<()>;
+
+    /// check if username exists
+    async fn username_exists(&self, username: &str) -> DBResult<bool>;
 }
 
 /// Trait to clone MCDatabase
