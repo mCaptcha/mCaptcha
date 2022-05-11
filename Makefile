@@ -82,6 +82,16 @@ release: frontend ## Build app with release optimizations
 run: frontend ## Run app in debug mode
 	cargo run
 
+
+sqlx-offline-data: ## prepare sqlx offline data
+	cargo sqlx prepare  --database-url=${POSTGRES_DATABASE_URL} -- --bin mcaptcha \
+		--all-features
+	cd db/db-migrations && cargo sqlx prepare  \
+		--database-url=${POSTGRES_DATABASE_URL} -- --bin db-migrations \
+		--all-features
+#	cd db/db-sqlx-sqlite/ \
+#		&& DATABASE_URL=${SQLITE_DATABASE_URL} cargo sqlx prepare
+
 test: frontend-test frontend ## Run all available tests
 	cd db/db-sqlx-postgres &&\
 		DATABASE_URL=${POSTGRES_DATABASE_URL}\
