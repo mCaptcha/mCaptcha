@@ -38,7 +38,7 @@ pub async fn database_works<'a, T: MCDatabase>(db: &T, p: &Register<'a>) {
     assert_eq!(name_hash.username, p.username, "username matches");
 
     // with email
-    let name_hash = db
+    let mut name_hash = db
         .get_password(&Login::Email(p.email.as_ref().unwrap()))
         .await
         .unwrap();
@@ -54,6 +54,19 @@ pub async fn database_works<'a, T: MCDatabase>(db: &T, p: &Register<'a>) {
         db.username_exists(p.username).await.unwrap(),
         "user is registered so username should exsit"
     );
+
+    // update password test. setting password = username
+    name_hash.hash = name_hash.username.clone();
+    db.update_password(&name_hash).await.unwrap();
+
+    let name_hash = db.get_password(&Login::Username(p.username)).await.unwrap();
+    assert_eq!(
+        name_hash.hash, p.username,
+        "user password matches with changed value"
+    );
+    assert_eq!(name_hash.username, p.username, "username matches");
+
+    // deleting user for re-registration with email = None
     db.delete_user(p.username).await.unwrap();
     assert!(
         !db.username_exists(p.username).await.unwrap(),
