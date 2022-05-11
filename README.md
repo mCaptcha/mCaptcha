@@ -103,8 +103,15 @@ development, database frequently wiped).
 Clone the repo and run the following from the root of the repo:
 
 ```bash
-$ docker-compose -d up
+git clone https://github.com/mCaptcha/mCaptcha.git
+docker-compose -d up
 ```
+
+After the containers are up, visit [http://localhost:7000](http://localhost:7000) and login with the default credentials:
+
+- username: aaronsw 
+- password: password
+
 
 It takes a while to build the image so please be patient :)
 
