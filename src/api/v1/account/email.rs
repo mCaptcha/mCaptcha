@@ -34,20 +34,9 @@ pub async fn email_exists(
     payload: web::Json<AccountCheckPayload>,
     data: AppData,
 ) -> ServiceResult<impl Responder> {
-    let res = sqlx::query!(
-        "SELECT EXISTS (SELECT 1 from mcaptcha_users WHERE email = $1)",
-        &payload.val,
-    )
-    .fetch_one(&data.db)
-    .await?;
+    let exists = data.dblib.email_exists(&payload.val).await?;
 
-    let mut resp = AccountCheckResp { exists: false };
-
-    if let Some(x) = res.exists {
-        if x {
-            resp.exists = true;
-        }
-    }
+    let resp = AccountCheckResp { exists };
 
     Ok(HttpResponse::Ok().json(resp))
 }
