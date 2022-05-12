@@ -22,6 +22,7 @@ use libmcaptcha::defense::Level;
 use libmcaptcha::master::messages::RenameBuilder;
 use serde::{Deserialize, Serialize};
 
+use db_core::errors::DBError;
 use db_core::CreateCaptcha;
 
 use super::create::MCaptchaDetails;
@@ -43,16 +44,21 @@ pub async fn update_key(
 
     loop {
         key = get_random(32);
-        let res = runner::update_key(&key, &payload.key, &username, &data).await;
-        if res.is_ok() {
-            break;
-        } else if let Err(sqlx::Error::Database(err)) = res {
-            if err.code() == Some(Cow::from("23505")) {
-                continue;
-            } else {
-                return Err(sqlx::Error::Database(err).into());
+
+        let mut key;
+        loop {
+            key = get_random(32);
+
+            match data
+                .dblib
+                .update_captcha_key(&username, &payload.key, &key)
+                .await
+            {
+                Ok(_) => break,
+                Err(DBError::SecretTaken) => continue,
+                Err(e) => return Err(e.into()),
             }
-        };
+        }
     }
 
     let payload = payload.into_inner();
@@ -98,24 +104,6 @@ pub mod runner {
     use libmcaptcha::{master::messages::RemoveCaptcha, DefenseBuilder};
 
     use super::*;
-
-    pub async fn update_key(
-        key: &str,
-        old_key: &str,
-        username: &str,
-        data: &AppData,
-    ) -> Result<(), sqlx::Error> {
-        sqlx::query!(
-            "UPDATE mcaptcha_config SET key = $1 
-        WHERE key = $2 AND user_id = (SELECT ID FROM mcaptcha_users WHERE name = $3)",
-            &key,
-            &old_key,
-            &username,
-        )
-        .execute(&data.db)
-        .await?;
-        Ok(())
-    }
 
     pub async fn update_captcha(
         payload: &UpdateCaptcha,
