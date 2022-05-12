@@ -278,6 +278,23 @@ impl MCDatabase for Database {
         .map_err(map_register_err)?;
         Ok(())
     }
+
+    /// create new captcha
+    async fn create_captcha(&self, username: &str, p: &CreateCaptcha) -> DBResult<()> {
+        sqlx::query!(
+            "INSERT INTO mcaptcha_config
+        (key, user_id, duration, name)
+        VALUES ($1, (SELECT ID FROM mcaptcha_users WHERE name = $2), $3, $4)",
+            p.key,
+            username,
+            p.duration as i32,
+            p.description,
+        )
+        .execute(&self.pool)
+        .await
+        .map_err(map_register_err)?;
+        Ok(())
+    }
 }
 
 fn now_unix_time_stamp() -> i64 {

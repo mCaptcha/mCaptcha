@@ -33,6 +33,8 @@ pub fn map_register_err(e: Error) -> DBError {
                 DBError::EmailTaken
             } else if msg.contains("mcaptcha_users_secret_key") {
                 DBError::SecretTaken
+            } else if msg.contains("mcaptcha_config_key_key") {
+                DBError::CaptchaKeyTaken
             } else {
                 DBError::DBError(Box::new(Error::Database(err)))
             }

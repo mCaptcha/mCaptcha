@@ -29,6 +29,10 @@ async fn everyting_works() {
     const NAME: &str = "postgresuser";
     const PASSWORD: &str = "pasdfasdfasdfadf";
     const SECRET1: &str = "postgressecret1";
+    // captcha config
+    const CAPTCHA_SECRET: &str = "postgrescaptchasecret";
+    const CAPTCHA_DESCRIPTION: &str = "postgrescaptchadescription";
+    const CAPTCHA_DURATION: i32 = 30;
 
     let url = env::var("POSTGRES_DATABASE_URL").unwrap();
     let pool_options = PgPoolOptions::new().max_connections(2);
@@ -42,5 +46,11 @@ async fn everyting_works() {
         hash: PASSWORD,
         secret: SECRET1,
     };
-    database_works(&db, &p).await;
+
+    let c = CreateCaptcha {
+        duration: CAPTCHA_DURATION,
+        key: CAPTCHA_SECRET,
+        description: CAPTCHA_DESCRIPTION,
+    };
+    database_works(&db, &p, &c).await;
 }
