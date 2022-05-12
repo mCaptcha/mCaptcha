@@ -317,6 +317,26 @@ impl MCDatabase for Database {
         Ok(())
     }
 
+    /// update captcha key; doesn't change metadata
+    async fn update_captcha_key(
+        &self,
+        username: &str,
+        old_key: &str,
+        new_key: &str,
+    ) -> DBResult<()> {
+        sqlx::query!(
+            "UPDATE mcaptcha_config SET key = $1 
+        WHERE key = $2 AND user_id = (SELECT ID FROM mcaptcha_users WHERE name = $3)",
+            new_key,
+            old_key,
+            username,
+        )
+        .execute(&self.pool)
+        .await
+        .map_err(map_register_err)?;
+        Ok(())
+    }
+
     /// Add levels to captcha
     async fn add_captcha_levels(
         &self,
