@@ -19,6 +19,8 @@ use actix_web::{web, HttpResponse, Responder};
 use libmcaptcha::master::messages::RemoveCaptcha;
 use serde::{Deserialize, Serialize};
 
+use db_core::Login;
+
 use crate::errors::*;
 use crate::AppData;
 
@@ -38,58 +40,19 @@ async fn delete(
     id: Identity,
 ) -> ServiceResult<impl Responder> {
     use argon2_creds::Config;
-    use sqlx::Error::RowNotFound;
 
     let username = id.identity().unwrap();
 
-    struct PasswordID {
-        password: String,
-        id: i32,
+    let hash = data.dblib.get_password(&Login::Username(&username)).await?;
+
+    if !Config::verify(&hash.hash, &payload.password)? {
+        return Err(ServiceError::WrongPassword);
     }
+    let payload = payload.into_inner();
+    data.dblib.delete_captcha(&username, &payload.key).await?;
 
-    let rec = sqlx::query_as!(
-        PasswordID,
-        r#"SELECT ID, password  FROM mcaptcha_users WHERE name = ($1)"#,
-        &username,
-    )
-    .fetch_one(&data.db)
-    .await;
-
-    match rec {
-        Ok(rec) => {
-            if Config::verify(&rec.password, &payload.password)? {
-                let payload = payload.into_inner();
-                sqlx::query!(
-                    "DELETE FROM mcaptcha_levels 
-                     WHERE config_id = (
-                        SELECT config_id FROM mcaptcha_config 
-                        WHERE key = $1 AND user_id = $2
-                    );",
-                    &payload.key,
-                    &rec.id,
-                )
-                .execute(&data.db)
-                .await?;
-
-                sqlx::query!(
-                    "DELETE FROM mcaptcha_config WHERE key = ($1) AND user_id = $2;",
-                    &payload.key,
-                    &rec.id,
-                )
-                .execute(&data.db)
-                .await?;
-                if let Err(err) = data.captcha.remove(RemoveCaptcha(payload.key)).await {
-                    log::error!(
-                        "Error while trying to remove captcha from cache {}",
-                        err
-                    );
-                }
-                Ok(HttpResponse::Ok())
-            } else {
-                Err(ServiceError::WrongPassword)
-            }
-        }
-        Err(RowNotFound) => Err(ServiceError::UsernameNotFound),
-        Err(_) => Err(ServiceError::InternalServerError),
+    if let Err(err) = data.captcha.remove(RemoveCaptcha(payload.key)).await {
+        log::error!("Error while trying to remove captcha from cache {}", err);
     }
+    Ok(HttpResponse::Ok())
 }
