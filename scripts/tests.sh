@@ -4,6 +4,7 @@
 # I tried running cargo test with the `--jobs` parameter set to 1 but that didn't 
 # seem to solve the issue. This scr will run the whole test suite but one test at a time. 
 
+set -Eeuo pipefail
 
 for ut in  \
 	api::v1::meta::tests::build_details_works \
