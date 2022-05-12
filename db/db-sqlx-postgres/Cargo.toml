@@ -9,9 +9,10 @@ license = "AGPLv3 or later version"
 authors = ["realaravinth <realaravinth@batsense.net>"]
 
 [dependencies]
-sqlx = { version = "0.5.13", features = [ "runtime-actix-rustls", "postgres", "time", "offline" ] }
-db-core = {path = "../db-core"}
 async-trait = "0.1.51"
+db-core = {path = "../db-core"}
+futures = "0.3.15"
+sqlx = { version = "0.5.13", features = [ "runtime-actix-rustls", "postgres", "time", "offline" ] }
 
 [dev-dependencies]
 actix-rt = "2"

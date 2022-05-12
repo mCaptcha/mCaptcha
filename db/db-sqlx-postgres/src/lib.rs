@@ -295,6 +295,42 @@ impl MCDatabase for Database {
         .map_err(map_register_err)?;
         Ok(())
     }
+
+    /// Add levels to captcha
+    async fn add_captcha_levels(
+        &self,
+        username: &str,
+        captcha_key: &str,
+        levels: &[Level],
+    ) -> DBResult<()> {
+        use futures::future::try_join_all;
+        let mut futs = Vec::with_capacity(levels.len());
+
+        for level in levels.iter() {
+            let difficulty_factor = level.difficulty_factor as i32;
+            let visitor_threshold = level.visitor_threshold as i32;
+            let fut = sqlx::query!(
+                "INSERT INTO mcaptcha_levels (
+            difficulty_factor, 
+            visitor_threshold,
+            config_id) VALUES  (
+            $1, $2, (
+                SELECT config_id FROM mcaptcha_config WHERE
+                key = ($3) AND user_id = (
+                SELECT ID FROM mcaptcha_users WHERE name = $4
+                    )));",
+                difficulty_factor,
+                visitor_threshold,
+                &captcha_key,
+                username,
+            )
+            .execute(&self.pool);
+            futs.push(fut);
+        }
+
+        try_join_all(futs).await.map_err(map_register_err)?;
+        Ok(())
+    }
 }
 
 fn now_unix_time_stamp() -> i64 {

@@ -34,6 +34,21 @@ async fn everyting_works() {
     const CAPTCHA_DESCRIPTION: &str = "postgrescaptchadescription";
     const CAPTCHA_DURATION: i32 = 30;
 
+    const LEVELS: [Level; 3] = [
+        Level {
+            difficulty_factor: 1,
+            visitor_threshold: 1,
+        },
+        Level {
+            difficulty_factor: 2,
+            visitor_threshold: 2,
+        },
+        Level {
+            difficulty_factor: 3,
+            visitor_threshold: 3,
+        },
+    ];
+
     let url = env::var("POSTGRES_DATABASE_URL").unwrap();
     let pool_options = PgPoolOptions::new().max_connections(2);
     let connection_options = ConnectionOptions::Fresh(Fresh { pool_options, url });
@@ -52,5 +67,5 @@ async fn everyting_works() {
         key: CAPTCHA_SECRET,
         description: CAPTCHA_DESCRIPTION,
     };
-    database_works(&db, &p, &c).await;
+    database_works(&db, &p, &c, &LEVELS).await;
 }
