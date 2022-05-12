@@ -96,7 +96,7 @@ test: frontend-test frontend ## Run all available tests
 	cd db/db-sqlx-postgres &&\
 		DATABASE_URL=${POSTGRES_DATABASE_URL}\
 		cargo test --no-fail-fast
-	#./scripts/tests.sh
+	./scripts/tests.sh
 #	cargo test --all-features --no-fail-fast
 
 xml-test-coverage: migrate ## Generate code coverage report in XML format

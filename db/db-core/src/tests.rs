@@ -35,12 +35,12 @@ pub async fn database_works<'a, T: MCDatabase>(
     db.register(p).await.unwrap();
 
     // testing get secret
-    let secret = db.get_secret(&p.username).await.unwrap();
+    let secret = db.get_secret(p.username).await.unwrap();
     assert_eq!(secret.secret, p.secret, "user secret matches");
 
     // testing update secret: setting secret = username
     db.update_secret(p.username, p.username).await.unwrap();
-    let secret = db.get_secret(&p.username).await.unwrap();
+    let secret = db.get_secret(p.username).await.unwrap();
     assert_eq!(
         secret.secret, p.username,
         "user secret matches username; as set by previous step"
@@ -131,6 +131,8 @@ pub async fn database_works<'a, T: MCDatabase>(
         "user was with empty email but email is set; so email should exsit"
     );
 
-    db.create_captcha(&p.username, c).await.unwrap();
+    db.create_captcha(p.username, c).await.unwrap();
+    assert!(db.captcha_exists(None, c.key).await.unwrap());
+    assert!(db.captcha_exists(Some(p.username), c.key).await.unwrap());
     db.add_captcha_levels(p.username, c.key, l).await.unwrap();
 }

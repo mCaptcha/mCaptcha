@@ -144,6 +144,13 @@ pub trait MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
         captcha_key: &str,
         levels: &[Level],
     ) -> DBResult<()>;
+
+    /// check if captcha exists
+    async fn captcha_exists(
+        &self,
+        username: Option<&str>,
+        captcha_key: &str,
+    ) -> DBResult<bool>;
 }
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
