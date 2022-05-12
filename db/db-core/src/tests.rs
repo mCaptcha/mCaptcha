@@ -148,7 +148,19 @@ pub async fn database_works<'a, T: MCDatabase>(
     c2.description = p.username;
     db.update_captcha_metadata(p.username, &c2).await.unwrap();
 
-    // delete captcha
-    db.delete_captcha(p.username, c.key).await.unwrap();
+    // update captcha key; set key = username;
+    db.update_captcha_key(p.username, c.key, p.username)
+        .await
+        .unwrap();
+    // checking for captcha with old key; shouldn't exist
+    assert!(!db.captcha_exists(Some(p.username), c.key).await.unwrap());
+    // checking for captcha with new key; shouldn exist
+    assert!(db
+        .captcha_exists(Some(p.username), p.username)
+        .await
+        .unwrap());
+
+    // delete captcha; updated key = p.username so invoke delete with it
+    db.delete_captcha(p.username, p.username).await.unwrap();
     assert!(!db.captcha_exists(Some(p.username), c.key).await.unwrap());
 }
