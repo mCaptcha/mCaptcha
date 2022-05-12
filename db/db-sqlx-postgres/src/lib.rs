@@ -264,6 +264,20 @@ impl MCDatabase for Database {
 
         Ok(secret)
     }
+
+    /// update a user's secret
+    async fn update_secret(&self, username: &str, secret: &str) -> DBResult<()> {
+        sqlx::query!(
+            "UPDATE mcaptcha_users set secret = $1
+        WHERE name = $2",
+            &secret,
+            &username,
+        )
+        .execute(&self.pool)
+        .await
+        .map_err(map_register_err)?;
+        Ok(())
+    }
 }
 
 fn now_unix_time_stamp() -> i64 {
