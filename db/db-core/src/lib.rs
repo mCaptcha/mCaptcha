@@ -137,6 +137,13 @@ pub trait MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
     /// create new captcha
     async fn create_captcha(&self, username: &str, p: &CreateCaptcha) -> DBResult<()>;
 
+    /// update captcha metadata; doesn't change captcha key
+    async fn update_captcha_metadata(
+        &self,
+        username: &str,
+        p: &CreateCaptcha,
+    ) -> DBResult<()>;
+
     /// Add levels to captcha
     async fn add_captcha_levels(
         &self,

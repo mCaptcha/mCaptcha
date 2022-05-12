@@ -142,6 +142,12 @@ pub async fn database_works<'a, T: MCDatabase>(
     // delete captcha levels
     db.delete_captcha_levels(p.username, c.key).await.unwrap();
 
+    // update captcha; set description = username and duration *= duration;
+    let mut c2 = c.clone();
+    c2.duration *= c2.duration;
+    c2.description = p.username;
+    db.update_captcha_metadata(p.username, &c2).await.unwrap();
+
     // delete captcha
     db.delete_captcha(p.username, c.key).await.unwrap();
     assert!(!db.captcha_exists(Some(p.username), c.key).await.unwrap());
