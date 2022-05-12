@@ -87,7 +87,8 @@ jobs:
         run: make frontend
 
       - name: Generate coverage file
-        if: (github.ref == 'refs/heads/master' || github.event_name == 'pull_request')
+        if: github.event_name == 'pull_request'
+        #if: (github.ref == 'refs/heads/master' || github.event_name == 'pull_request')
         uses: actions-rs/tarpaulin@v0.1
         with:
           args: "-t 1200"
@@ -101,5 +102,5 @@ jobs:
           COMPILED_DATE: "2021-07-21"
 
       - name: Upload to Codecov
-        if: (github.ref == 'refs/heads/master' || github.event_name == 'pull_request')
+        if: github.event_name == 'pull_request'
         uses: codecov/codecov-action@v2
