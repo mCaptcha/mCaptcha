@@ -35,6 +35,9 @@ pub enum DBError {
     /// Secret is taken
     #[error("Secret is taken")]
     SecretTaken,
+    /// Captcha key is taken
+    #[error("Captcha key is taken")]
+    CaptchaKeyTaken,
 }
 
 /// Convenience type alias for grouping driver-specific errors

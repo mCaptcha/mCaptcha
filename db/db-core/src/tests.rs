@@ -18,7 +18,11 @@
 use crate::prelude::*;
 
 /// test all database functions
-pub async fn database_works<'a, T: MCDatabase>(db: &T, p: &Register<'a>) {
+pub async fn database_works<'a, T: MCDatabase>(
+    db: &T,
+    p: &Register<'a>,
+    c: &CreateCaptcha<'a>,
+) {
     assert!(db.ping().await, "ping test");
     if db.username_exists(p.username).await.unwrap() {
         db.delete_user(p.username).await.unwrap();
@@ -125,4 +129,6 @@ pub async fn database_works<'a, T: MCDatabase>(db: &T, p: &Register<'a>) {
         db.email_exists(p.email.as_ref().unwrap()).await.unwrap(),
         "user was with empty email but email is set; so email should exsit"
     );
+
+    db.create_captcha(&p.username, c).await.unwrap();
 }

@@ -33,6 +33,8 @@
 //! connection from pool
 use serde::{Deserialize, Serialize};
 
+use libmcaptcha::defense::Level;
+
 pub mod errors;
 pub mod ops;
 #[cfg(feature = "test")]
@@ -131,6 +133,20 @@ pub trait MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
 
     /// update a user's secret
     async fn update_secret(&self, username: &str, secret: &str) -> DBResult<()>;
+
+    /// create new captcha
+    async fn create_captcha(&self, username: &str, p: &CreateCaptcha) -> DBResult<()>;
+}
+
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+/// data requried to create new captcha
+pub struct CreateCaptcha<'a> {
+    /// cool down duration
+    pub duration: i32,
+    /// description of the captcha
+    pub description: &'a str,
+    /// secret key of the captcha
+    pub key: &'a str,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
