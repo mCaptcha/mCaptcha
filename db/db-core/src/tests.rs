@@ -131,8 +131,18 @@ pub async fn database_works<'a, T: MCDatabase>(
         "user was with empty email but email is set; so email should exsit"
     );
 
+    // create captcha
     db.create_captcha(p.username, c).await.unwrap();
     assert!(db.captcha_exists(None, c.key).await.unwrap());
     assert!(db.captcha_exists(Some(p.username), c.key).await.unwrap());
+
+    // add captcha levels
     db.add_captcha_levels(p.username, c.key, l).await.unwrap();
+
+    // delete captcha levels
+    db.delete_captcha_levels(p.username, c.key).await.unwrap();
+
+    // delete captcha
+    db.delete_captcha(p.username, c.key).await.unwrap();
+    assert!(!db.captcha_exists(Some(p.username), c.key).await.unwrap());
 }
