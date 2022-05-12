@@ -331,6 +331,49 @@ impl MCDatabase for Database {
         try_join_all(futs).await.map_err(map_register_err)?;
         Ok(())
     }
+
+    /// check if captcha exists
+    async fn captcha_exists(
+        &self,
+        username: Option<&str>,
+        captcha_key: &str,
+    ) -> DBResult<bool> {
+        let mut exists = false;
+
+        match username {
+            Some(username) => {
+                let x = sqlx::query!(
+                    "SELECT EXISTS (
+            SELECT 1 from mcaptcha_config WHERE key = $1 
+            AND user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2)
+            )",
+                    captcha_key,
+                    username
+                )
+                .fetch_one(&self.pool)
+                .await
+                .map_err(map_register_err)?;
+                if let Some(x) = x.exists {
+                    exists = x;
+                };
+            }
+
+            None => {
+                let x = sqlx::query!(
+                    "SELECT EXISTS (SELECT 1 from mcaptcha_config WHERE key = $1)",
+                    &captcha_key,
+                )
+                .fetch_one(&self.pool)
+                .await
+                .map_err(map_register_err)?;
+                if let Some(x) = x.exists {
+                    exists = x;
+                };
+            }
+        };
+
+        Ok(exists)
+    }
 }
 
 fn now_unix_time_stamp() -> i64 {
