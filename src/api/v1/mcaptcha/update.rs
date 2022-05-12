@@ -155,33 +155,13 @@ pub mod runner {
             &username,
             &payload.key,
         )
-        .execute(&data.db); //.await?;
+        .execute(&data.db);
 
         futs.push(update_fut);
 
-        for level in payload.levels.iter() {
-            let difficulty_factor = level.difficulty_factor as i32;
-            let visitor_threshold = level.visitor_threshold as i32;
-            let fut = sqlx::query!(
-                "INSERT INTO mcaptcha_levels (
-            difficulty_factor, 
-            visitor_threshold,
-            config_id) VALUES  (
-            $1, $2, (
-                    SELECT config_id FROM mcaptcha_config WHERE key = ($3) AND
-                    user_id = (
-                        SELECT ID from mcaptcha_users WHERE name = $4
-                    )
-                ));",
-                difficulty_factor,
-                visitor_threshold,
-                &payload.key,
-                &username,
-            )
-            .execute(&data.db); //.await?;
-            futs.push(fut);
-        }
-
+        data.dblib
+            .add_captcha_levels(&username, &payload.key, &payload.levels)
+            .await?;
         try_join_all(futs).await?;
         if let Err(ServiceError::CaptchaError(e)) = data
             .captcha

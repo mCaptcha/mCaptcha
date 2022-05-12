@@ -854,6 +854,7 @@ dependencies = [
  "actix-rt",
  "async-trait",
  "db-core",
+ "futures",
  "sqlx",
  "url",
 ]

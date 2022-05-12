@@ -67,21 +67,6 @@
     },
     "query": "--  mark a notification as read\nUPDATE mcaptcha_notifications\n    SET read = TRUE\nWHERE \n    mcaptcha_notifications.id = $1\nAND\n    mcaptcha_notifications.rx = (\n        SELECT\n            id\n        FROM\n            mcaptcha_users\n        WHERE\n        name = $2\n    );\n"
   },
-  "307245aaf5b0d692448b80358d6916aa50c507b35e724d66c9b16a16b60e1b38": {
-    "describe": {
-      "columns": [],
-      "nullable": [],
-      "parameters": {
-        "Left": [
-          "Varchar",
-          "Text",
-          "Int4",
-          "Varchar"
-        ]
-      }
-    },
-    "query": "INSERT INTO mcaptcha_config\n        (key, user_id, duration, name)\n        VALUES ($1, (SELECT ID FROM mcaptcha_users WHERE name = $2), $3, $4)"
-  },
   "3ebc2aab517b9a2db463b6ea64aee76da5d051817acba8d0fb55ad503acc6b63": {
     "describe": {
       "columns": [
@@ -340,21 +325,6 @@
     },
     "query": "SELECT ID, password  FROM mcaptcha_users WHERE name = ($1)"
   },
-  "94901d49666b3097b1fed832966697c4a1e3937beb2bd0431df4857402a4de04": {
-    "describe": {
-      "columns": [],
-      "nullable": [],
-      "parameters": {
-        "Left": [
-          "Int4",
-          "Int4",
-          "Text",
-          "Text"
-        ]
-      }
-    },
-    "query": "INSERT INTO mcaptcha_levels (\n            difficulty_factor, \n            visitor_threshold,\n            config_id) VALUES  (\n            $1, $2, (\n                    SELECT config_id FROM mcaptcha_config WHERE key = ($3) AND\n                    user_id = (\n                        SELECT ID from mcaptcha_users WHERE name = $4\n                    )\n                ));"
-  },
   "9753721856a47438c5e72f28fd9d149db10c48e677b4613bf3f1e8487908aac8": {
     "describe": {
       "columns": [
@@ -584,20 +554,5 @@
       }
     },
     "query": "-- gets all unread notifications a user has\nSELECT \n    mcaptcha_notifications.id,\n    mcaptcha_notifications.heading,\n    mcaptcha_notifications.message,\n    mcaptcha_notifications.received,\n    mcaptcha_users.name\nFROM\n    mcaptcha_notifications \nINNER JOIN \n    mcaptcha_users \nON \n    mcaptcha_notifications.tx = mcaptcha_users.id\nWHERE \n    mcaptcha_notifications.rx = (\n        SELECT \n            id \n        FROM \n            mcaptcha_users\n        WHERE\n            name = $1\n        )\nAND \n    mcaptcha_notifications.read IS NULL;\n"
-  },
-  "f330cb94c53d33495df94aacec7e4e91d8a920742b89a63d1c59a8ea8937c5c8": {
-    "describe": {
-      "columns": [],
-      "nullable": [],
-      "parameters": {
-        "Left": [
-          "Int4",
-          "Int4",
-          "Text",
-          "Text"
-        ]
-      }
-    },
-    "query": "INSERT INTO mcaptcha_levels (\n            difficulty_factor, \n            visitor_threshold,\n            config_id) VALUES  (\n            $1, $2, (\n                SELECT config_id FROM mcaptcha_config WHERE\n                key = ($3) AND user_id = (\n                SELECT ID FROM mcaptcha_users WHERE name = $4\n                    )));"
   }
 }

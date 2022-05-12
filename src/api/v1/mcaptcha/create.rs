@@ -58,11 +58,8 @@ pub async fn create(
 }
 
 pub mod runner {
-    use futures::future::try_join_all;
-    use libmcaptcha::DefenseBuilder;
-    use log::debug;
-
     use super::*;
+    use libmcaptcha::DefenseBuilder;
 
     pub async fn create(
         payload: &CreateCaptcha,
@@ -76,12 +73,7 @@ pub mod runner {
 
         defense.build()?;
 
-        debug!("creating config");
-        //        let mcaptcha_config =
-        //       // add_mcaptcha_util(payload.duration, &payload.description, &data, username).await?;
-
         let mut key;
-
         let duration = payload.duration as i32;
         loop {
             key = get_random(32);
@@ -97,31 +89,9 @@ pub mod runner {
                 Err(e) => return Err(e.into()),
             }
         }
-        let mut futs = Vec::with_capacity(payload.levels.len());
-
-        for level in payload.levels.iter() {
-            let difficulty_factor = level.difficulty_factor as i32;
-            let visitor_threshold = level.visitor_threshold as i32;
-            let fut = sqlx::query!(
-                "INSERT INTO mcaptcha_levels (
-            difficulty_factor, 
-            visitor_threshold,
-            config_id) VALUES  (
-            $1, $2, (
-                SELECT config_id FROM mcaptcha_config WHERE
-                key = ($3) AND user_id = (
-                SELECT ID FROM mcaptcha_users WHERE name = $4
-                    )));",
-                difficulty_factor,
-                visitor_threshold,
-                &key,
-                &username,
-            )
-            .execute(&data.db);
-            futs.push(fut);
-        }
-
-        try_join_all(futs).await?;
+        data.dblib
+            .add_captcha_levels(&username, &key, &payload.levels)
+            .await?;
         let mcaptcha_config = MCaptchaDetails {
             name: payload.description.clone(),
             key,
