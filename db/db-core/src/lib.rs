@@ -128,6 +128,9 @@ pub trait MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
 
     /// get a user's secret
     async fn get_secret(&self, username: &str) -> DBResult<Secret>;
+
+    /// update a user's secret
+    async fn update_secret(&self, username: &str, secret: &str) -> DBResult<()>;
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
