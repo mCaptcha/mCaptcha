@@ -52,21 +52,6 @@
     },
     "query": "UPDATE mcaptcha_users set name = $1\n            WHERE name = $2"
   },
-  "238569a64d7dbd252e3b27204f207e8a8548109717b89495ddf8f9a870c7c75d": {
-    "describe": {
-      "columns": [],
-      "nullable": [],
-      "parameters": {
-        "Left": [
-          "Varchar",
-          "Int4",
-          "Text",
-          "Text"
-        ]
-      }
-    },
-    "query": "UPDATE mcaptcha_config SET name = $1, duration = $2 \n            WHERE user_id = (SELECT ID FROM mcaptcha_users WHERE name = $3)\n            AND key = $4"
-  },
   "2b319a202bb983d5f28979d1e371f399125da1122fbda36a5a55b75b9c743451": {
     "describe": {
       "columns": [],
@@ -264,6 +249,21 @@
       }
     },
     "query": "UPDATE mcaptcha_config SET key = $1 \n        WHERE key = $2 AND user_id = (SELECT ID FROM mcaptcha_users WHERE name = $3)"
+  },
+  "570c22f19fe0b97d78086038c8ef82509dce0bae704d80f9f031c1c47e6a6572": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int4",
+          "Text",
+          "Text"
+        ]
+      }
+    },
+    "query": "UPDATE mcaptcha_config SET name = $1, duration = $2\n            WHERE user_id = (SELECT ID FROM mcaptcha_users WHERE name = $3)\n            AND key = $4"
   },
   "60081afa71dca3d10b372aabfdbc809f0cf62b33994a3bb43ea444159c6544fe": {
     "describe": {

@@ -22,6 +22,8 @@ use libmcaptcha::defense::Level;
 use libmcaptcha::master::messages::RenameBuilder;
 use serde::{Deserialize, Serialize};
 
+use db_core::CreateCaptcha;
+
 use super::create::MCaptchaDetails;
 use super::get_random;
 use crate::errors::*;
@@ -131,38 +133,21 @@ pub mod runner {
         // still, needs to be benchmarked
         defense.build()?;
 
-        let mut futs = Vec::with_capacity(payload.levels.len() + 2);
-        sqlx::query!(
-            "DELETE FROM mcaptcha_levels 
-        WHERE config_id = (
-            SELECT config_id FROM mcaptcha_config where key = ($1) 
-            AND user_id = (
-            SELECT ID from mcaptcha_users WHERE name = $2
-            )
-            )",
-            &payload.key,
-            &username
-        )
-        .execute(&data.db)
-        .await?;
+        data.dblib
+            .delete_captcha_levels(username, &payload.key)
+            .await?;
 
-        let update_fut = sqlx::query!(
-            "UPDATE mcaptcha_config SET name = $1, duration = $2 
-            WHERE user_id = (SELECT ID FROM mcaptcha_users WHERE name = $3)
-            AND key = $4",
-            &payload.description,
-            payload.duration as i32,
-            &username,
-            &payload.key,
-        )
-        .execute(&data.db);
+        let m = CreateCaptcha {
+            key: &payload.key,
+            duration: payload.duration as i32,
+            description: &payload.description,
+        };
 
-        futs.push(update_fut);
+        data.dblib.update_captcha_metadata(&username, &m).await?;
 
         data.dblib
             .add_captcha_levels(username, &payload.key, &payload.levels)
             .await?;
-        try_join_all(futs).await?;
         if let Err(ServiceError::CaptchaError(e)) = data
             .captcha
             .remove(RemoveCaptcha(payload.key.clone()))
