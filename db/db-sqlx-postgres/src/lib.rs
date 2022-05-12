@@ -374,6 +374,44 @@ impl MCDatabase for Database {
 
         Ok(exists)
     }
+
+    /// Delete all levels of a captcha
+    async fn delete_captcha_levels(
+        &self,
+        username: &str,
+        captcha_key: &str,
+    ) -> DBResult<()> {
+        sqlx::query!(
+            "DELETE FROM mcaptcha_levels 
+        WHERE config_id = (
+            SELECT config_id FROM mcaptcha_config where key = ($1) 
+            AND user_id = (
+            SELECT ID from mcaptcha_users WHERE name = $2
+            )
+            )",
+            captcha_key,
+            username
+        )
+        .execute(&self.pool)
+        .await
+        .map_err(map_register_err)?;
+        Ok(())
+    }
+
+    /// Delete captcha
+    async fn delete_captcha(&self, username: &str, captcha_key: &str) -> DBResult<()> {
+        sqlx::query!(
+            "DELETE FROM mcaptcha_config WHERE key = ($1)
+                AND
+            user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2)",
+            captcha_key,
+            username,
+        )
+        .execute(&self.pool)
+        .await
+        .map_err(map_register_err)?;
+        Ok(())
+    }
 }
 
 fn now_unix_time_stamp() -> i64 {
