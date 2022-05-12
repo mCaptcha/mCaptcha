@@ -14,8 +14,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-use std::borrow::Cow;
-
 use actix_identity::Identity;
 use actix_web::{web, HttpResponse, Responder};
 use serde::{Deserialize, Serialize};

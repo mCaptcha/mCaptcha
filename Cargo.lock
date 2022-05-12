@@ -840,6 +840,7 @@ name = "db-core"
 version = "0.1.0"
 dependencies = [
  "async-trait",
+ "libmcaptcha",
  "serde 1.0.137",
  "serde_json",
  "thiserror",

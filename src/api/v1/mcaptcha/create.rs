@@ -21,6 +21,9 @@ use actix_web::{web, HttpResponse, Responder};
 use libmcaptcha::defense::Level;
 use serde::{Deserialize, Serialize};
 
+use db_core::errors::DBError;
+use db_core::CreateCaptcha as DBCreateCaptcha;
+
 use super::get_random;
 use crate::errors::*;
 use crate::AppData;
@@ -74,55 +77,26 @@ pub mod runner {
         defense.build()?;
 
         debug!("creating config");
-        let mcaptcha_config =
-       // add_mcaptcha_util(payload.duration, &payload.description, &data, username).await?;
+        //        let mcaptcha_config =
+        //       // add_mcaptcha_util(payload.duration, &payload.description, &data, username).await?;
 
-    {
-    let mut key;
+        let mut key;
 
-    let resp;
+        let duration = payload.duration as i32;
+        loop {
+            key = get_random(32);
+            let p = DBCreateCaptcha {
+                description: &payload.description,
+                key: &key,
+                duration,
+            };
 
-    loop {
-        key = get_random(32);
-
-        let res = sqlx::query!(
-            "INSERT INTO mcaptcha_config
-        (key, user_id, duration, name)
-        VALUES ($1, (SELECT ID FROM mcaptcha_users WHERE name = $2), $3, $4)",
-            &key,
-            &username,
-            payload.duration as i32,
-            &payload.description,
-        )
-        .execute(&data.db)
-        .await;
-
-        match res {
-            Err(sqlx::Error::Database(err)) => {
-                if err.code() == Some(Cow::from("23505"))
-                    && err.message().contains("mcaptcha_config_key_key")
-                {
-                    continue;
-                } else {
-                    return Err(sqlx::Error::Database(err).into());
-                }
-            }
-            Err(e) => return Err(e.into()),
-
-            Ok(_) => {
-                resp = MCaptchaDetails {
-                    key,
-                    name: payload.description.to_owned(),
-                };
-                break;
+            match data.dblib.create_captcha(&username, &p).await {
+                Ok(_) => break,
+                Err(DBError::SecretTaken) => continue,
+                Err(e) => return Err(e.into()),
             }
         }
-    }
-    resp
-    };
-
-        debug!("config created");
-
         let mut futs = Vec::with_capacity(payload.levels.len());
 
         for level in payload.levels.iter() {
@@ -140,7 +114,7 @@ pub mod runner {
                     )));",
                 difficulty_factor,
                 visitor_threshold,
-                &mcaptcha_config.key,
+                &key,
                 &username,
             )
             .execute(&data.db);
@@ -148,6 +122,10 @@ pub mod runner {
         }
 
         try_join_all(futs).await?;
+        let mcaptcha_config = MCaptchaDetails {
+            name: payload.description.clone(),
+            key,
+        };
         Ok(mcaptcha_config)
     }
 }

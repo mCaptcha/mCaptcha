@@ -63,8 +63,6 @@ pub mod routes {
 }
 
 pub mod runners {
-    use std::borrow::Cow;
-
     use super::*;
 
     #[derive(Clone, Debug, Deserialize, Serialize)]
