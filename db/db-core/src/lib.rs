@@ -33,7 +33,7 @@
 //! connection from pool
 use serde::{Deserialize, Serialize};
 
-use libmcaptcha::defense::Level;
+pub use libmcaptcha::defense::Level;
 
 pub mod errors;
 pub mod ops;
@@ -136,6 +136,14 @@ pub trait MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
 
     /// create new captcha
     async fn create_captcha(&self, username: &str, p: &CreateCaptcha) -> DBResult<()>;
+
+    /// Add levels to captcha
+    async fn add_captcha_levels(
+        &self,
+        username: &str,
+        captcha_key: &str,
+        levels: &[Level],
+    ) -> DBResult<()>;
 }
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]

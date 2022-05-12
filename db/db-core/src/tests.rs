@@ -22,6 +22,7 @@ pub async fn database_works<'a, T: MCDatabase>(
     db: &T,
     p: &Register<'a>,
     c: &CreateCaptcha<'a>,
+    l: &[Level],
 ) {
     assert!(db.ping().await, "ping test");
     if db.username_exists(p.username).await.unwrap() {
@@ -131,4 +132,5 @@ pub async fn database_works<'a, T: MCDatabase>(
     );
 
     db.create_captcha(&p.username, c).await.unwrap();
+    db.add_captcha_levels(p.username, c.key, l).await.unwrap();
 }
