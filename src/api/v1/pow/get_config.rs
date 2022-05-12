@@ -42,43 +42,65 @@ pub async fn get_config(
     payload: web::Json<GetConfigPayload>,
     data: AppData,
 ) -> ServiceResult<impl Responder> {
-    let res = sqlx::query!(
-        "SELECT EXISTS (SELECT 1 from mcaptcha_config WHERE key = $1)",
-        &payload.key,
-    )
-    .fetch_one(&data.db)
-    .await?;
+    //    let res = sqlx::query!(
+    //        "SELECT EXISTS (SELECT 1 from mcaptcha_config WHERE key = $1)",
+    //        &payload.key,
+    //    )
+    //    .fetch_one(&data.db)
+    //    .await?;
 
-    if res.exists.is_none() {
+    //if res.exists.is_none() {
+    if !data.dblib.captcha_exists(None, &payload.key).await? {
         return Err(ServiceError::TokenNotFound);
     }
     let payload = payload.into_inner();
-    match res.exists {
-        Some(true) => {
-            match data.captcha.get_pow(payload.key.clone()).await {
-                Ok(Some(config)) => {
-                    record_fetch(&payload.key, &data.db).await;
-                    Ok(HttpResponse::Ok().json(config))
-                }
-                Ok(None) => {
-                    init_mcaptcha(&data, &payload.key).await?;
-                    let config = data
-                        .captcha
-                        .get_pow(payload.key.clone())
-                        .await
-                        .expect("mcaptcha should be initialized and ready to go");
-                    // background it. would require data::Data to be static
-                    // to satidfy lifetime
-                    record_fetch(&payload.key, &data.db).await;
-                    Ok(HttpResponse::Ok().json(config))
-                }
-                Err(e) => Err(e.into()),
-            }
-        }
 
-        Some(false) => Err(ServiceError::TokenNotFound),
-        None => Err(ServiceError::TokenNotFound),
+    match data.captcha.get_pow(payload.key.clone()).await {
+        Ok(Some(config)) => {
+            record_fetch(&payload.key, &data.db).await;
+            Ok(HttpResponse::Ok().json(config))
+        }
+        Ok(None) => {
+            init_mcaptcha(&data, &payload.key).await?;
+            let config = data
+                .captcha
+                .get_pow(payload.key.clone())
+                .await
+                .expect("mcaptcha should be initialized and ready to go");
+            // background it. would require data::Data to be static
+            // to satidfy lifetime
+            record_fetch(&payload.key, &data.db).await;
+            Ok(HttpResponse::Ok().json(config))
+        }
+        Err(e) => Err(e.into()),
     }
+
+    //    match res.exists {
+    //        Some(true) => {
+    //            match data.captcha.get_pow(payload.key.clone()).await {
+    //                Ok(Some(config)) => {
+    //                    record_fetch(&payload.key, &data.db).await;
+    //                    Ok(HttpResponse::Ok().json(config))
+    //                }
+    //                Ok(None) => {
+    //                    init_mcaptcha(&data, &payload.key).await?;
+    //                    let config = data
+    //                        .captcha
+    //                        .get_pow(payload.key.clone())
+    //                        .await
+    //                        .expect("mcaptcha should be initialized and ready to go");
+    //                    // background it. would require data::Data to be static
+    //                    // to satidfy lifetime
+    //                    record_fetch(&payload.key, &data.db).await;
+    //                    Ok(HttpResponse::Ok().json(config))
+    //                }
+    //                Err(e) => Err(e.into()),
+    //            }
+    //        }
+    //
+    //        Some(false) => Err(ServiceError::TokenNotFound),
+    //        None => Err(ServiceError::TokenNotFound),
+    //    }
 }
 /// Call this when [MCaptcha][libmcaptcha::MCaptcha] is not in master.
 ///

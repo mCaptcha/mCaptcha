@@ -14,8 +14,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-use std::borrow::Cow;
-
 use actix_identity::Identity;
 use actix_web::{web, HttpResponse, Responder};
 use libmcaptcha::defense::Level;
@@ -83,14 +81,14 @@ pub mod runner {
                 duration,
             };
 
-            match data.dblib.create_captcha(&username, &p).await {
+            match data.dblib.create_captcha(username, &p).await {
                 Ok(_) => break,
                 Err(DBError::SecretTaken) => continue,
                 Err(e) => return Err(e.into()),
             }
         }
         data.dblib
-            .add_captcha_levels(&username, &key, &payload.levels)
+            .add_captcha_levels(username, &key, &payload.levels)
             .await?;
         let mcaptcha_config = MCaptchaDetails {
             name: payload.description.clone(),

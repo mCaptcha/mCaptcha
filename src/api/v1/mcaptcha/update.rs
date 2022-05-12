@@ -160,7 +160,7 @@ pub mod runner {
         futs.push(update_fut);
 
         data.dblib
-            .add_captcha_levels(&username, &payload.key, &payload.levels)
+            .add_captcha_levels(username, &payload.key, &payload.levels)
             .await?;
         try_join_all(futs).await?;
         if let Err(ServiceError::CaptchaError(e)) = data
