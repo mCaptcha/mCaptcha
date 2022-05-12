@@ -74,7 +74,8 @@ lint: ## Lint codebase
 	cd $(OPENAPI)&& yarn test
 
 migrate: ## Run database migrations
-	cd db/db-migrations/ && cargo run
+	cd db/db-migrations/ && \
+		DATABASE_URL=${POSTGRES_DATABASE_URL} cargo run
 
 release: frontend ## Build app with release optimizations
 	cargo build --release
