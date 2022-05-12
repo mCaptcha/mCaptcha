@@ -27,13 +27,11 @@ macro_rules! get_cookie {
 }
 
 pub async fn delete_user(name: &str, data: &Data) {
-    let r = sqlx::query!("DELETE FROM mcaptcha_users WHERE name = ($1)", name,)
-        .execute(&data.db)
-        .await;
+    let x = data.dblib.delete_user(name).await;
     println!();
     println!();
     println!();
-    println!("Deleting user: {:?}", &r);
+    println!("Deleting user: {:?}", &x);
 }
 
 #[macro_export]
