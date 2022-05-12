@@ -14,12 +14,9 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-use std::borrow::Cow;
-
 use actix_identity::Identity;
 use actix_web::{HttpResponse, Responder};
 use db_core::prelude::*;
-use serde::{Deserialize, Serialize};
 
 use crate::api::v1::mcaptcha::get_random;
 use crate::errors::*;
@@ -49,26 +46,14 @@ async fn update_user_secret(
 
     loop {
         secret = get_random(32);
-        let res = sqlx::query!(
-            "UPDATE mcaptcha_users set secret = $1
-        WHERE name = $2",
-            &secret,
-            &username,
-        )
-        .execute(&data.db)
-        .await;
-        if res.is_ok() {
-            break;
-        } else if let Err(sqlx::Error::Database(err)) = res {
-            if err.code() == Some(Cow::from("23505"))
-                && err.message().contains("mcaptcha_users_secret_key")
-            {
-                continue;
-            } else {
-                return Err(sqlx::Error::Database(err).into());
-            }
+
+        match data.dblib.update_secret(&username, &secret).await {
+            Ok(_) => break,
+            Err(DBError::SecretTaken) => continue,
+            Err(e) => return Err(e.into()),
         }
     }
+
     Ok(HttpResponse::Ok())
 }
 
