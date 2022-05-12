@@ -55,7 +55,7 @@ jobs:
 
       - name: load env
         run: |
-          source .env-sample \
+          source .env_sample \
             && echo "POSTGRES_DATABASE_URL=$POSTGRES_DATABASE_URL" >> $GITHUB_ENV 
 
       - uses: actions/setup-node@v2
