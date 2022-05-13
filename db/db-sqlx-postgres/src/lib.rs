@@ -133,7 +133,7 @@ impl MCDatabase for Database {
         sqlx::query!("DELETE FROM mcaptcha_users WHERE name = ($1)", username)
             .execute(&self.pool)
             .await
-            .map_err(map_register_err)?;
+            .map_err(|e| map_row_not_found_err(e, DBError::AccountNotFound))?;
         Ok(())
     }
 
@@ -183,7 +183,8 @@ impl MCDatabase for Database {
         )
         .execute(&self.pool)
         .await
-        .map_err(map_register_err)?;
+        .map_err(|e| map_row_not_found_err(e, DBError::AccountNotFound))?;
+
         Ok(())
     }
 
@@ -202,7 +203,7 @@ impl MCDatabase for Database {
             )
             .fetch_one(&self.pool)
             .await
-            .map_err(map_register_err)?,
+            .map_err(|e| map_row_not_found_err(e, DBError::AccountNotFound))?,
 
             Login::Email(e) => sqlx::query_as!(
                 Password,
@@ -211,7 +212,7 @@ impl MCDatabase for Database {
             )
             .fetch_one(&self.pool)
             .await
-            .map_err(map_register_err)?,
+            .map_err(|e| map_row_not_found_err(e, DBError::AccountNotFound))?,
         };
 
         let res = NameHash {
@@ -232,7 +233,7 @@ impl MCDatabase for Database {
         )
         .execute(&self.pool)
         .await
-        .map_err(map_register_err)?;
+        .map_err(|e| map_row_not_found_err(e, DBError::AccountNotFound))?;
 
         Ok(())
     }
@@ -247,7 +248,8 @@ impl MCDatabase for Database {
         )
         .execute(&self.pool)
         .await
-        .map_err(map_register_err)?;
+        .map_err(|e| map_row_not_found_err(e, DBError::AccountNotFound))?;
+
         Ok(())
     }
 
@@ -260,7 +262,7 @@ impl MCDatabase for Database {
         )
         .fetch_one(&self.pool)
         .await
-        .map_err(map_register_err)?;
+        .map_err(|e| map_row_not_found_err(e, DBError::AccountNotFound))?;
 
         Ok(secret)
     }
@@ -275,7 +277,8 @@ impl MCDatabase for Database {
         )
         .execute(&self.pool)
         .await
-        .map_err(map_register_err)?;
+        .map_err(|e| map_row_not_found_err(e, DBError::AccountNotFound))?;
+
         Ok(())
     }
 
@@ -292,7 +295,8 @@ impl MCDatabase for Database {
         )
         .execute(&self.pool)
         .await
-        .map_err(map_register_err)?;
+        .map_err(|e| map_row_not_found_err(e, DBError::AccountNotFound))?;
+
         Ok(())
     }
 
@@ -313,7 +317,8 @@ impl MCDatabase for Database {
         )
         .execute(&self.pool)
         .await
-        .map_err(map_register_err)?;
+        .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
+
         Ok(())
     }
 
@@ -333,7 +338,8 @@ impl MCDatabase for Database {
         )
         .execute(&self.pool)
         .await
-        .map_err(map_register_err)?;
+        .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
+
         Ok(())
     }
 
@@ -369,7 +375,10 @@ impl MCDatabase for Database {
             futs.push(fut);
         }
 
-        try_join_all(futs).await.map_err(map_register_err)?;
+        try_join_all(futs)
+            .await
+            .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
+
         Ok(())
     }
 
@@ -435,7 +444,8 @@ impl MCDatabase for Database {
         )
         .execute(&self.pool)
         .await
-        .map_err(map_register_err)?;
+        .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
+
         Ok(())
     }
 
@@ -450,8 +460,58 @@ impl MCDatabase for Database {
         )
         .execute(&self.pool)
         .await
-        .map_err(map_register_err)?;
+        .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
+
         Ok(())
+    }
+
+    /// Get captcha levels
+    async fn get_captcha_levels(
+        &self,
+        username: Option<&str>,
+        captcha_key: &str,
+    ) -> DBResult<Vec<Level>> {
+        struct I32Levels {
+            difficulty_factor: i32,
+            visitor_threshold: i32,
+        }
+        let levels = match username {
+            None => sqlx::query_as!(
+                I32Levels,
+                "SELECT difficulty_factor, visitor_threshold FROM mcaptcha_levels  WHERE
+            config_id = (
+                SELECT config_id FROM mcaptcha_config WHERE key = ($1)
+                ) ORDER BY difficulty_factor ASC;",
+                captcha_key,
+            )
+            .fetch_all(&self.pool)
+            .await
+            .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?,
+
+            Some(username) => sqlx::query_as!(
+                I32Levels,
+                "SELECT difficulty_factor, visitor_threshold FROM mcaptcha_levels  WHERE
+            config_id = (
+                SELECT config_id FROM mcaptcha_config WHERE key = ($1)
+                AND user_id = (SELECT ID from mcaptcha_users WHERE name = $2)
+                )
+            ORDER BY difficulty_factor ASC;",
+                captcha_key,
+                username
+            )
+            .fetch_all(&self.pool)
+            .await
+            .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?,
+        };
+
+        let mut new_levels = Vec::with_capacity(levels.len());
+        for l in levels.iter() {
+            new_levels.push(Level {
+                difficulty_factor: l.difficulty_factor as u32,
+                visitor_threshold: l.visitor_threshold as u32,
+            });
+        }
+        Ok(new_levels)
     }
 }
 
