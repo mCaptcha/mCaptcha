@@ -139,6 +139,16 @@ pub async fn database_works<'a, T: MCDatabase>(
     // add captcha levels
     db.add_captcha_levels(p.username, c.key, l).await.unwrap();
 
+    // get captcha levels with username
+    let levels = db
+        .get_captcha_levels(Some(p.username), c.key)
+        .await
+        .unwrap();
+    assert_eq!(levels, l);
+    // get captcha levels without username
+    let levels = db.get_captcha_levels(None, c.key).await.unwrap();
+    assert_eq!(levels, l);
+
     // delete captcha levels
     db.delete_captcha_levels(p.username, c.key).await.unwrap();
 

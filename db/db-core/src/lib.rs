@@ -176,6 +176,13 @@ pub trait MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
 
     /// Delete captcha
     async fn delete_captcha(&self, username: &str, captcha_key: &str) -> DBResult<()>;
+
+    /// Get captcha levels
+    async fn get_captcha_levels(
+        &self,
+        username: Option<&str>,
+        captcha_key: &str,
+    ) -> DBResult<Vec<Level>>;
 }
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
