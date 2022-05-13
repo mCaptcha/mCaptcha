@@ -17,6 +17,7 @@
 use actix_identity::Identity;
 use actix_web::{web, HttpResponse, Responder};
 
+use libmcaptcha::defense::Level;
 use serde::{Deserialize, Serialize};
 
 use super::create::MCaptchaDetails;
@@ -56,20 +57,8 @@ pub mod runner {
         key: &str,
         username: &str,
         data: &AppData,
-    ) -> ServiceResult<Vec<I32Levels>> {
-        let levels = sqlx::query_as!(
-            I32Levels,
-            "SELECT difficulty_factor, visitor_threshold FROM mcaptcha_levels  WHERE
-            config_id = (
-                SELECT config_id FROM mcaptcha_config WHERE key = ($1)
-                AND user_id = (SELECT ID from mcaptcha_users WHERE name = $2)
-                )
-            ORDER BY difficulty_factor ASC;",
-            key,
-            &username
-        )
-        .fetch_all(&data.db)
-        .await?;
+    ) -> ServiceResult<Vec<Level>> {
+        let levels = data.dblib.get_captcha_levels(Some(username), key).await?;
 
         Ok(levels)
     }

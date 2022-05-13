@@ -14,8 +14,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-use std::borrow::Cow;
-
 use actix_identity::Identity;
 use actix_web::{web, HttpResponse, Responder};
 use libmcaptcha::defense::Level;
@@ -45,19 +43,14 @@ pub async fn update_key(
     loop {
         key = get_random(32);
 
-        let mut key;
-        loop {
-            key = get_random(32);
-
-            match data
-                .dblib
-                .update_captcha_key(&username, &payload.key, &key)
-                .await
-            {
-                Ok(_) => break,
-                Err(DBError::SecretTaken) => continue,
-                Err(e) => return Err(e.into()),
-            }
+        match data
+            .dblib
+            .update_captcha_key(&username, &payload.key, &key)
+            .await
+        {
+            Ok(_) => break,
+            Err(DBError::SecretTaken) => continue,
+            Err(e) => return Err(e.into()),
         }
     }
 
@@ -100,7 +93,6 @@ pub async fn update_captcha(
 }
 
 pub mod runner {
-    use futures::future::try_join_all;
     use libmcaptcha::{master::messages::RemoveCaptcha, DefenseBuilder};
 
     use super::*;

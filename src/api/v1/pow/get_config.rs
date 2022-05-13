@@ -23,7 +23,6 @@ use libmcaptcha::{
 };
 use serde::{Deserialize, Serialize};
 
-use super::I32Levels;
 use crate::errors::*;
 use crate::stats::record::record_fetch;
 use crate::AppData;
@@ -108,29 +107,20 @@ pub async fn get_config(
 /// creates [MCaptcha][libmcaptcha::MCaptcha] and adds it to [Master][libmcaptcha::Defense]
 async fn init_mcaptcha(data: &AppData, key: &str) -> ServiceResult<()> {
     // get levels
-    let levels_fut = sqlx::query_as!(
-        I32Levels,
-        "SELECT difficulty_factor, visitor_threshold FROM mcaptcha_levels  WHERE
-            config_id = (
-                SELECT config_id FROM mcaptcha_config WHERE key = ($1)
-                ) ORDER BY difficulty_factor ASC;",
-        &key,
-    )
-    .fetch_all(&data.db);
-
+    let levels = data.dblib.get_captcha_levels(None, key).await?;
     struct DurationResp {
         duration: i32,
     }
     // get duration
-    let duration_fut = sqlx::query_as!(
+    let duration = sqlx::query_as!(
         DurationResp,
         "SELECT duration FROM mcaptcha_config  
         WHERE key = $1",
         &key,
     )
-    .fetch_one(&data.db);
+    .fetch_one(&data.db)
+    .await?;
     //let (levels, duration) = futures::try_join!(levels_fut, duration_fut).await?;
-    let (levels, duration) = futures::try_join!(levels_fut, duration_fut)?;
 
     // build defense
     let mut defense = DefenseBuilder::default();
