@@ -106,7 +106,6 @@ pub enum ServiceError {
     #[display(fmt = "Unable to send email, contact admin")]
     UnableToSendEmail(SmtpErrorWrapper),
 
-    /// when the a token name is already taken
     /// token not found
     #[display(fmt = "Token not found. Is token registered?")]
     TokenNotFound,
@@ -116,6 +115,10 @@ pub enum ServiceError {
 
     #[display(fmt = "{}", _0)]
     DBError(DBErrorWrapper),
+
+    /// captcha not found
+    #[display(fmt = "Captcha not found.")]
+    CaptchaNotFound,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -175,6 +178,7 @@ impl ResponseError for ServiceError {
             }
 
             ServiceError::DBError(_) => StatusCode::INTERNAL_SERVER_ERROR,
+            ServiceError::CaptchaNotFound => StatusCode::NOT_FOUND,
         }
     }
 }
@@ -197,10 +201,13 @@ impl From<CredsError> for ServiceError {
 impl From<DBError> for ServiceError {
     #[cfg(not(tarpaulin_include))]
     fn from(e: DBError) -> ServiceError {
+        println!("from conversin: {}", e);
         match e {
             DBError::UsernameTaken => ServiceError::UsernameTaken,
             DBError::SecretTaken => ServiceError::InternalServerError,
             DBError::EmailTaken => ServiceError::EmailTaken,
+            DBError::AccountNotFound => ServiceError::AccountNotFound,
+            DBError::CaptchaNotFound => ServiceError::CaptchaNotFound,
             _ => ServiceError::DBError(DBErrorWrapper(e)),
         }
     }
