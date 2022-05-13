@@ -38,6 +38,12 @@ pub enum DBError {
     /// Captcha key is taken
     #[error("Captcha key is taken")]
     CaptchaKeyTaken,
+    /// Account not found
+    #[error("Account not found")]
+    AccountNotFound,
+    /// Captcha not found
+    #[error("Captcha not found")]
+    CaptchaNotFound,
 }
 
 /// Convenience type alias for grouping driver-specific errors
