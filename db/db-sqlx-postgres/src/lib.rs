@@ -561,6 +561,56 @@ impl MCDatabase for Database {
         .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
         Ok(())
     }
+
+    /// Get traffic configuration
+    async fn get_traffic_pattern(
+        &self,
+        username: &str,
+        captcha_key: &str,
+    ) -> DBResult<TrafficPattern> {
+        struct Traffic {
+            peak_sustainable_traffic: i32,
+            avg_traffic: i32,
+            broke_my_site_traffic: Option<i32>,
+        }
+        let res = sqlx::query_as!(
+            Traffic,
+            "SELECT 
+          avg_traffic, 
+          peak_sustainable_traffic, 
+          broke_my_site_traffic 
+        FROM 
+          mcaptcha_sitekey_user_provided_avg_traffic 
+        WHERE 
+          config_id = (
+            SELECT 
+              config_id 
+            FROM 
+              mcaptcha_config 
+            WHERE 
+              KEY = $1 
+              AND user_id = (
+                SELECT 
+                  id 
+                FROM 
+                  mcaptcha_users 
+                WHERE 
+                  NAME = $2
+              )
+          )
+        ",
+            captcha_key,
+            username
+        )
+        .fetch_one(&self.pool)
+        .await
+        .map_err(|e| map_row_not_found_err(e, DBError::TrafficPatternNotFound))?;
+        Ok(TrafficPattern {
+            broke_my_site_traffic: res.broke_my_site_traffic.as_ref().map(|v| *v as u32),
+            avg_traffic: res.avg_traffic as u32,
+            peak_sustainable_traffic: res.peak_sustainable_traffic as u32,
+        })
+    }
 }
 
 fn now_unix_time_stamp() -> i64 {
