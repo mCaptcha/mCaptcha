@@ -111,7 +111,6 @@ async fn main() -> std::io::Result<()> {
     );
 
     let data = Data::new().await;
-    sqlx::migrate!("./migrations/").run(&data.db).await.unwrap();
     let data = actix_web::web::Data::new(data);
 
     let mut demo_user: Option<DemoUser> = None;

@@ -192,12 +192,13 @@ impl Data {
             pool_options,
             url: settings.database.url.clone(),
         });
-        let dblib = Box::new(connection_options.connect().await.unwrap());
+        let dblib = connection_options.connect().await.unwrap();
+        dblib.migrate().await.unwrap();
 
         let data = Data {
             creds,
             db,
-            dblib,
+            dblib: Box::new(dblib),
             captcha: SystemGroup::new().await,
             mailer: Self::get_mailer(),
         };
