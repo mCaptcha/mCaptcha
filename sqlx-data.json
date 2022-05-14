@@ -241,39 +241,6 @@
     },
     "query": "SELECT config_id, duration, name from mcaptcha_config WHERE\n        key = $1 AND\n        user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2) "
   },
-  "c2e167e56242de7e0a835e25004b15ca8340545fa0ca7ac8f3293157d2d03d98": {
-    "describe": {
-      "columns": [
-        {
-          "name": "avg_traffic",
-          "ordinal": 0,
-          "type_info": "Int4"
-        },
-        {
-          "name": "peak_sustainable_traffic",
-          "ordinal": 1,
-          "type_info": "Int4"
-        },
-        {
-          "name": "broke_my_site_traffic",
-          "ordinal": 2,
-          "type_info": "Int4"
-        }
-      ],
-      "nullable": [
-        false,
-        false,
-        true
-      ],
-      "parameters": {
-        "Left": [
-          "Text",
-          "Text"
-        ]
-      }
-    },
-    "query": "SELECT \n          avg_traffic, \n          peak_sustainable_traffic, \n          broke_my_site_traffic \n        FROM \n          mcaptcha_sitekey_user_provided_avg_traffic \n        WHERE \n          config_id = (\n            SELECT \n              config_id \n            FROM \n              mcaptcha_config \n            WHERE \n              KEY = $1 \n              AND user_id = (\n                SELECT \n                  id \n                FROM \n                  mcaptcha_users \n                WHERE \n                  NAME = $2\n              )\n          )\n        "
-  },
   "c399efd5db1284dcb470c40f9b076851f77498c75a63a3b151d4a111bd3e2957": {
     "describe": {
       "columns": [

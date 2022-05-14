@@ -17,7 +17,8 @@
 use actix_identity::Identity;
 use actix_web::{http, web, HttpResponse, Responder};
 use sailfish::TemplateOnce;
-use sqlx::Error::RowNotFound;
+
+use db_core::errors::DBError;
 
 use crate::api::v1::mcaptcha::easy::TrafficPatternRequest;
 use crate::errors::*;
@@ -133,44 +134,7 @@ pub async fn easy(
     let username = id.identity().unwrap();
     let key = path.into_inner();
 
-    struct Traffic {
-        peak_sustainable_traffic: i32,
-        avg_traffic: i32,
-        broke_my_site_traffic: Option<i32>,
-    }
-
-    match sqlx::query_as!(
-        Traffic,
-        "SELECT 
-          avg_traffic, 
-          peak_sustainable_traffic, 
-          broke_my_site_traffic 
-        FROM 
-          mcaptcha_sitekey_user_provided_avg_traffic 
-        WHERE 
-          config_id = (
-            SELECT 
-              config_id 
-            FROM 
-              mcaptcha_config 
-            WHERE 
-              KEY = $1 
-              AND user_id = (
-                SELECT 
-                  id 
-                FROM 
-                  mcaptcha_users 
-                WHERE 
-                  NAME = $2
-              )
-          )
-        ",
-        &key,
-        &username
-    )
-    .fetch_one(&data.db)
-    .await
-    {
+    match data.dblib.get_traffic_pattern(&username, &key).await {
         Ok(c) => {
             struct Description {
                 name: String,
@@ -199,7 +163,7 @@ pub async fn easy(
                 .content_type("text/html; charset=utf-8")
                 .body(page));
         }
-        Err(RowNotFound) => {
+        Err(DBError::TrafficPatternNotFound) => {
             return Ok(HttpResponse::Found()
                 .insert_header((
                     http::header::LOCATION,
@@ -207,7 +171,10 @@ pub async fn easy(
                 ))
                 .finish());
         }
-        Err(e) => Err(e.into()),
+        Err(e) => {
+            let e: ServiceError = e.into();
+            Err(e.into())
+        }
     }
 }
 

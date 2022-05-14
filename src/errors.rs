@@ -119,6 +119,10 @@ pub enum ServiceError {
     /// captcha not found
     #[display(fmt = "Captcha not found.")]
     CaptchaNotFound,
+
+    /// Traffic pattern not found
+    #[display(fmt = "Traffic pattern not found")]
+    TrafficPatternNotFound,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -179,6 +183,7 @@ impl ResponseError for ServiceError {
 
             ServiceError::DBError(_) => StatusCode::INTERNAL_SERVER_ERROR,
             ServiceError::CaptchaNotFound => StatusCode::NOT_FOUND,
+            ServiceError::TrafficPatternNotFound => StatusCode::NOT_FOUND,
         }
     }
 }
@@ -208,6 +213,7 @@ impl From<DBError> for ServiceError {
             DBError::EmailTaken => ServiceError::EmailTaken,
             DBError::AccountNotFound => ServiceError::AccountNotFound,
             DBError::CaptchaNotFound => ServiceError::CaptchaNotFound,
+            DBError::TrafficPatternNotFound => ServiceError::TrafficPatternNotFound,
             _ => ServiceError::DBError(DBErrorWrapper(e)),
         }
     }
