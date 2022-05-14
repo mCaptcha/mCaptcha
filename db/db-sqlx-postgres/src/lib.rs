@@ -532,6 +532,35 @@ impl MCDatabase for Database {
 
         Ok(resp.duration)
     }
+    /// Add traffic configuration
+    async fn add_traffic_pattern(
+        &self,
+        username: &str,
+        captcha_key: &str,
+        pattern: &TrafficPattern,
+    ) -> DBResult<()> {
+        sqlx::query!(
+            "INSERT INTO mcaptcha_sitekey_user_provided_avg_traffic (
+            config_id,
+            avg_traffic,
+            peak_sustainable_traffic,
+            broke_my_site_traffic
+            ) VALUES ( 
+             (SELECT config_id FROM mcaptcha_config WHERE key = ($1)
+             AND user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2)
+            ), $3, $4, $5)",
+            //payload.avg_traffic,
+            captcha_key,
+            username,
+            pattern.avg_traffic as i32,
+            pattern.peak_sustainable_traffic as i32,
+            pattern.broke_my_site_traffic.as_ref().map(|v| *v as i32),
+        )
+        .execute(&self.pool)
+        .await
+        .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
+        Ok(())
+    }
 }
 
 fn now_unix_time_stamp() -> i64 {

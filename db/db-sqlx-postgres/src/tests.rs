@@ -34,6 +34,13 @@ async fn everyting_works() {
     const CAPTCHA_DESCRIPTION: &str = "postgrescaptchadescription";
     const CAPTCHA_DURATION: i32 = 30;
 
+    // easy traffic pattern
+    const TRAFFIC_PATTERN: TrafficPattern = TrafficPattern {
+        avg_traffic: 500,
+        peak_sustainable_traffic: 5_000,
+        broke_my_site_traffic: Some(10_000),
+    };
+
     const LEVELS: [Level; 3] = [
         Level {
             difficulty_factor: 1,
@@ -67,5 +74,5 @@ async fn everyting_works() {
         key: CAPTCHA_SECRET,
         description: CAPTCHA_DESCRIPTION,
     };
-    database_works(&db, &p, &c, &LEVELS).await;
+    database_works(&db, &p, &c, &LEVELS, &TRAFFIC_PATTERN).await;
 }
