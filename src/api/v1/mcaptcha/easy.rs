@@ -170,22 +170,25 @@ async fn update(
 
     update_captcha_runner(&msg, &data, &username).await?;
 
-    sqlx::query!(
-        "DELETE FROM mcaptcha_sitekey_user_provided_avg_traffic 
-        WHERE config_id = (
-            SELECT config_id 
-            FROM 
-                mcaptcha_config 
-            WHERE
-                key = ($1) 
-            AND 
-                user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2)
-            );",
-        &msg.key,
-        &username,
-    )
-    .execute(&data.db)
-    .await?;
+    data.dblib
+        .delete_traffic_pattern(&username, &msg.key)
+        .await?;
+    //    sqlx::query!(
+    //        "DELETE FROM mcaptcha_sitekey_user_provided_avg_traffic
+    //        WHERE config_id = (
+    //            SELECT config_id
+    //            FROM
+    //                mcaptcha_config
+    //            WHERE
+    //                key = ($1)
+    //            AND
+    //                user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2)
+    //            );",
+    //        &msg.key,
+    //        &username,
+    //    )
+    //    .execute(&data.db)
+    //    .await?;
 
     data.dblib
         .add_traffic_pattern(&username, &msg.key, &pattern)
