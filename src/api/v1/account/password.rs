@@ -96,28 +96,27 @@ pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
 }
 
 #[cfg(test)]
-mod tests {
+pub mod tests {
     use super::*;
 
     use actix_web::http::StatusCode;
     use actix_web::test;
 
     use crate::api::v1::ROUTES;
-    use crate::data::Data;
     use crate::tests::*;
 
     #[actix_rt::test]
-    async fn update_password_works() {
+    pub async fn update_password_works() {
         const NAME: &str = "updatepassuser";
         const PASSWORD: &str = "longpassword2";
         const EMAIL: &str = "updatepassuser@a.com";
 
-        {
-            let data = Data::new().await;
-            delete_user(NAME, &data).await;
-        }
+        let data = crate::data::Data::new().await;
+        let data = &data;
 
-        let (data, _, signin_resp) = register_and_signin(NAME, EMAIL, PASSWORD).await;
+        delete_user(data, NAME).await;
+
+        let (_, signin_resp) = register_and_signin(data, NAME, EMAIL, PASSWORD).await;
         let cookies = get_cookie!(signin_resp);
         let app = get_app!(data).await;
 
@@ -129,7 +128,7 @@ mod tests {
             confirm_new_password: PASSWORD.into(),
         };
 
-        let res = update_password_runner(NAME, update_password.into(), &data).await;
+        let res = update_password_runner(NAME, update_password.into(), data).await;
         assert!(res.is_err());
         assert_eq!(res, Err(ServiceError::PasswordsDontMatch));
 
@@ -139,7 +138,7 @@ mod tests {
             confirm_new_password: new_password.into(),
         };
 
-        assert!(update_password_runner(NAME, update_password.into(), &data)
+        assert!(update_password_runner(NAME, update_password.into(), data)
             .await
             .is_ok());
 
@@ -150,6 +149,7 @@ mod tests {
         };
 
         bad_post_req_test(
+            data,
             NAME,
             new_password,
             ROUTES.account.update_password,
@@ -165,6 +165,7 @@ mod tests {
         };
 
         bad_post_req_test(
+            data,
             NAME,
             new_password,
             ROUTES.account.update_password,

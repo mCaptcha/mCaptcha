@@ -49,7 +49,7 @@ pub async fn verify_pow(
 }
 
 #[cfg(test)]
-mod tests {
+pub mod tests {
     use actix_web::http::StatusCode;
     use actix_web::test;
     use libmcaptcha::pow::PoWConfig;
@@ -60,18 +60,17 @@ mod tests {
     use crate::*;
 
     #[actix_rt::test]
-    async fn verify_pow_works() {
+    pub async fn verify_pow_works() {
         const NAME: &str = "powverifyusr";
         const PASSWORD: &str = "testingpas";
         const EMAIL: &str = "verifyuser@a.com";
+        let data = crate::data::Data::new().await;
+        let data = &data;
 
-        {
-            let data = Data::new().await;
-            delete_user(NAME, &data).await;
-        }
+        delete_user(data, NAME).await;
 
-        register_and_signin(NAME, EMAIL, PASSWORD).await;
-        let (data, _, _signin_resp, token_key) = add_levels_util(NAME, PASSWORD).await;
+        register_and_signin(data, NAME, EMAIL, PASSWORD).await;
+        let (_, _signin_resp, token_key) = add_levels_util(data, NAME, PASSWORD).await;
         let app = get_app!(data).await;
 
         let get_config_payload = GetConfigPayload {

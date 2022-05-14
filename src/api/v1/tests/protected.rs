@@ -18,7 +18,6 @@
 use actix_web::http::StatusCode;
 use actix_web::test;
 
-use crate::data::Data;
 use crate::*;
 
 use crate::tests::*;
@@ -28,6 +27,8 @@ async fn protected_routes_work() {
     const NAME: &str = "testuser619";
     const PASSWORD: &str = "longpassword2";
     const EMAIL: &str = "testuser119@a.com2";
+    let data = crate::data::Data::new().await;
+    let data = &data;
 
     let _post_protected_urls = [
         "/api/v1/account/secret/",
@@ -47,12 +48,9 @@ async fn protected_routes_work() {
 
     let get_protected_urls = ["/logout"];
 
-    {
-        let data = Data::new().await;
-        delete_user(NAME, &data).await;
-    }
+    delete_user(data, NAME).await;
 
-    let (data, _, signin_resp) = register_and_signin(NAME, EMAIL, PASSWORD).await;
+    let (_, signin_resp) = register_and_signin(data, NAME, EMAIL, PASSWORD).await;
     let cookies = get_cookie!(signin_resp);
     let app = get_app!(data).await;
 

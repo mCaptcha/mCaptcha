@@ -216,7 +216,7 @@ async fn update(
 }
 
 #[cfg(test)]
-mod tests {
+pub mod tests {
     use actix_web::http::StatusCode;
     use actix_web::test;
     use actix_web::web::Bytes;
@@ -227,7 +227,6 @@ mod tests {
     use crate::tests::*;
     use crate::*;
 
-    #[cfg(test)]
     mod isoloated_test {
         use super::{LevelBuilder, TrafficPattern};
 
@@ -303,18 +302,17 @@ mod tests {
     }
 
     #[actix_rt::test]
-    async fn easy_works() {
+    pub async fn easy_works() {
         const NAME: &str = "defaultuserconfgworks";
         const PASSWORD: &str = "longpassworddomain";
         const EMAIL: &str = "defaultuserconfgworks@a.com";
+        let data = crate::data::Data::new().await;
+        let data = &data;
 
-        {
-            let data = Data::new().await;
-            delete_user(NAME, &data).await;
-        }
+        delete_user(data, NAME).await;
 
-        let (data, _creds, signin_resp) =
-            register_and_signin(NAME, EMAIL, PASSWORD).await;
+        let (_creds, signin_resp) =
+            register_and_signin(data, NAME, EMAIL, PASSWORD).await;
         let cookies = get_cookie!(signin_resp);
         let app = get_app!(data).await;
 

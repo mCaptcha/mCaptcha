@@ -97,7 +97,7 @@ pub mod runner {
 }
 
 #[cfg(test)]
-mod tests {
+pub mod tests {
     use actix_web::http::StatusCode;
     use actix_web::test;
 
@@ -107,7 +107,7 @@ mod tests {
     use crate::*;
 
     #[actix_rt::test]
-    async fn notification_get_works() {
+    pub async fn notification_get_works() {
         const NAME1: &str = "notifuser12";
         const NAME2: &str = "notiuser22";
         const PASSWORD: &str = "longpassworddomain";
@@ -116,16 +116,16 @@ mod tests {
         const HEADING: &str = "testing notifications get";
         const MESSAGE: &str = "testing notifications get message";
 
-        {
-            let data = Data::new().await;
-            delete_user(NAME1, &data).await;
-            delete_user(NAME2, &data).await;
-        }
+        let data = crate::data::Data::new().await;
+        let data = &data;
 
-        register_and_signin(NAME1, EMAIL1, PASSWORD).await;
-        register_and_signin(NAME2, EMAIL2, PASSWORD).await;
-        let (data, _creds, signin_resp) = signin(NAME1, PASSWORD).await;
-        let (_data, _creds2, signin_resp2) = signin(NAME2, PASSWORD).await;
+        delete_user(data, NAME1).await;
+        delete_user(data, NAME2).await;
+
+        register_and_signin(data, NAME1, EMAIL1, PASSWORD).await;
+        register_and_signin(data, NAME2, EMAIL2, PASSWORD).await;
+        let (_creds, signin_resp) = signin(data, NAME1, PASSWORD).await;
+        let (_creds2, signin_resp2) = signin(data, NAME2, PASSWORD).await;
         let cookies = get_cookie!(signin_resp);
         let cookies2 = get_cookie!(signin_resp2);
         let app = get_app!(data).await;

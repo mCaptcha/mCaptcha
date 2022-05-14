@@ -94,7 +94,8 @@ pub const PKG_HOMEPAGE: &str = env!("CARGO_PKG_HOMEPAGE");
 
 pub const CACHE_AGE: u32 = 604800;
 
-pub type AppData = actix_web::web::Data<Arc<crate::data::Data>>;
+pub type ArcData = Arc<crate::data::Data>;
+pub type AppData = actix_web::web::Data<ArcData>;
 
 #[cfg(not(tarpaulin_include))]
 #[actix_web::main]

@@ -123,7 +123,7 @@ pub mod runner {
             description: &payload.description,
         };
 
-        data.dblib.update_captcha_metadata(&username, &m).await?;
+        data.dblib.update_captcha_metadata(username, &m).await?;
 
         data.dblib
             .add_captcha_levels(username, &payload.key, &payload.levels)
@@ -159,15 +159,13 @@ mod tests {
         const NAME: &str = "updateusermcaptcha";
         const PASSWORD: &str = "longpassworddomain";
         const EMAIL: &str = "testupdateusermcaptcha@a.com";
-
-        {
-            let data = Data::new().await;
-            delete_user(NAME, &data).await;
-        }
+        let data = crate::data::Data::new().await;
+        let data = &data;
+        delete_user(data, NAME).await;
 
         // 1. add mcaptcha token
-        register_and_signin(NAME, EMAIL, PASSWORD).await;
-        let (data, _, signin_resp, token_key) = add_levels_util(NAME, PASSWORD).await;
+        register_and_signin(data, NAME, EMAIL, PASSWORD).await;
+        let (_, signin_resp, token_key) = add_levels_util(data, NAME, PASSWORD).await;
         let cookies = get_cookie!(signin_resp);
         let app = get_app!(data).await;
 

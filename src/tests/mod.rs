@@ -1,5 +1,3 @@
-use std::sync::Arc;
-
 use actix_web::test;
 use actix_web::{
     body::{BoxBody, EitherBody},
@@ -16,22 +14,14 @@ use crate::api::v1::auth::runners::{Login, Register};
 use crate::api::v1::mcaptcha::create::CreateCaptcha;
 use crate::api::v1::mcaptcha::create::MCaptchaDetails;
 use crate::api::v1::ROUTES;
-use crate::data::Data;
 use crate::errors::*;
+use crate::ArcData;
 
 #[macro_export]
 macro_rules! get_cookie {
     ($resp:expr) => {
         $resp.response().cookies().next().unwrap().to_owned()
     };
-}
-
-pub async fn delete_user(name: &str, data: &Data) {
-    let x = data.dblib.delete_user(name).await;
-    println!();
-    println!();
-    println!();
-    println!("Deleting user: {:?}", &x);
 }
 
 #[macro_export]
@@ -81,19 +71,27 @@ macro_rules! get_app {
     };
 }
 
+pub async fn delete_user(data: &ArcData, name: &str) {
+    let x = data.dblib.delete_user(name).await;
+    println!();
+    println!();
+    println!();
+    println!("Deleting user: {:?}", &x);
+}
+
 /// register and signin utility
 pub async fn register_and_signin(
+    data: &ArcData,
     name: &str,
     email: &str,
     password: &str,
-) -> (Arc<data::Data>, Login, ServiceResponse<EitherBody<BoxBody>>) {
-    register(name, email, password).await;
-    signin(name, password).await
+) -> (Login, ServiceResponse<EitherBody<BoxBody>>) {
+    register(data, name, email, password).await;
+    signin(data, name, password).await
 }
 
 /// register utility
-pub async fn register(name: &str, email: &str, password: &str) {
-    let data = Data::new().await;
+pub async fn register(data: &ArcData, name: &str, email: &str, password: &str) {
     let app = get_app!(data).await;
 
     // 1. Register
@@ -111,10 +109,10 @@ pub async fn register(name: &str, email: &str, password: &str) {
 
 /// signin util
 pub async fn signin(
+    data: &ArcData,
     name: &str,
     password: &str,
-) -> (Arc<Data>, Login, ServiceResponse<EitherBody<BoxBody>>) {
-    let data = Data::new().await;
+) -> (Login, ServiceResponse<EitherBody<BoxBody>>) {
     let app = get_app!(data.clone()).await;
 
     // 2. signin
@@ -126,18 +124,19 @@ pub async fn signin(
         test::call_service(&app, post_request!(&creds, ROUTES.auth.login).to_request())
             .await;
     assert_eq!(signin_resp.status(), StatusCode::OK);
-    (data, creds, signin_resp)
+    (creds, signin_resp)
 }
 
 /// pub duplicate test
 pub async fn bad_post_req_test<T: Serialize>(
+    data: &ArcData,
     name: &str,
     password: &str,
     url: &str,
     payload: &T,
     err: ServiceError,
 ) {
-    let (data, _, signin_resp) = signin(name, password).await;
+    let (_, signin_resp) = signin(data, name, password).await;
     let cookies = get_cookie!(signin_resp);
     let app = get_app!(data).await;
 
@@ -158,6 +157,31 @@ pub async fn bad_post_req_test<T: Serialize>(
     assert_eq!(resp_err.error, format!("{}", err));
 }
 
+pub async fn add_levels_util(
+    data: &ArcData,
+    name: &str,
+    password: &str,
+) -> (Login, ServiceResponse<EitherBody<BoxBody>>, MCaptchaDetails) {
+    let (creds, signin_resp) = signin(data, name, password).await;
+    let cookies = get_cookie!(signin_resp);
+    let app = get_app!(data).await;
+
+    let add_level = get_level_data();
+
+    // 1. add level
+    let add_token_resp = test::call_service(
+        &app,
+        post_request!(&add_level, ROUTES.captcha.create)
+            .cookie(cookies.clone())
+            .to_request(),
+    )
+    .await;
+    assert_eq!(add_token_resp.status(), StatusCode::OK);
+    let token_key: MCaptchaDetails = test::read_body_json(add_token_resp).await;
+
+    (creds, signin_resp, token_key)
+}
+
 pub const L1: Level = Level {
     difficulty_factor: 50,
     visitor_threshold: 50,
@@ -175,33 +199,4 @@ pub fn get_level_data() -> CreateCaptcha {
         duration: 30,
         description: "dummy".into(),
     }
-}
-
-pub async fn add_levels_util(
-    name: &str,
-    password: &str,
-) -> (
-    Arc<data::Data>,
-    Login,
-    ServiceResponse<EitherBody<BoxBody>>,
-    MCaptchaDetails,
-) {
-    let (data, creds, signin_resp) = signin(name, password).await;
-    let cookies = get_cookie!(signin_resp);
-    let app = get_app!(data).await;
-
-    let add_level = get_level_data();
-
-    // 1. add level
-    let add_token_resp = test::call_service(
-        &app,
-        post_request!(&add_level, ROUTES.captcha.create)
-            .cookie(cookies.clone())
-            .to_request(),
-    )
-    .await;
-    assert_eq!(add_token_resp.status(), StatusCode::OK);
-    let token_key: MCaptchaDetails = test::read_body_json(add_token_resp).await;
-
-    (data, creds, signin_resp, token_key)
 }

@@ -99,7 +99,7 @@ pub fn services(cfg: &mut web::ServiceConfig) {
 }
 
 #[cfg(test)]
-mod tests {
+pub mod tests {
     use actix_web::{http::StatusCode, test, App};
 
     use super::*;
@@ -121,9 +121,10 @@ mod tests {
     }
 
     #[actix_rt::test]
-    async fn health_works() {
+    pub async fn health_works() {
         println!("{}", V1_API_ROUTES.meta.health);
-        let data = Data::new().await;
+        let data = crate::data::Data::new().await;
+        let data = &data;
         let app = get_app!(data).await;
 
         let resp = test::call_service(

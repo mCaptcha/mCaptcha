@@ -23,7 +23,6 @@ use libmcaptcha::defense::Level;
 
 use crate::api::v1::mcaptcha::update::UpdateCaptcha;
 use crate::api::v1::ROUTES;
-use crate::data::Data;
 use crate::errors::*;
 use crate::tests::*;
 use crate::*;
@@ -38,19 +37,18 @@ const L2: Level = Level {
 };
 
 #[actix_rt::test]
-async fn level_routes_work() {
+pub async fn level_routes_work() {
     const NAME: &str = "testuserlevelroutes";
     const PASSWORD: &str = "longpassworddomain";
     const EMAIL: &str = "testuserlevelrouts@a.com";
+    let data = crate::data::Data::new().await;
+    let data = &data;
 
-    {
-        let data = Data::new().await;
-        delete_user(NAME, &data).await;
-    }
+    delete_user(data, NAME).await;
 
-    register_and_signin(NAME, EMAIL, PASSWORD).await;
+    register_and_signin(data, NAME, EMAIL, PASSWORD).await;
     // create captcha
-    let (data, _, signin_resp, key) = add_levels_util(NAME, PASSWORD).await;
+    let (_, signin_resp, key) = add_levels_util(data, NAME, PASSWORD).await;
     let cookies = get_cookie!(signin_resp);
     let app = get_app!(data).await;
 
@@ -103,6 +101,7 @@ async fn level_routes_work() {
     };
 
     bad_post_req_test(
+        data,
         NAME,
         PASSWORD,
         ROUTES.captcha.delete,

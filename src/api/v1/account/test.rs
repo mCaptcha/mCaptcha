@@ -1,19 +1,19 @@
 /*
-* Copyright (C) 2022  Aravinth Manivannan <realaravinth@batsense.net>
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as
-* published by the Free Software Foundation, either version 3 of the
-* License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-*
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+ * Copyright (C) 2022  Aravinth Manivannan <realaravinth@batsense.net>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 
 use actix_web::http::StatusCode;
 use actix_web::test;
@@ -23,24 +23,21 @@ use super::username::Username;
 use super::*;
 use crate::api::v1::auth::runners::Password;
 use crate::api::v1::ROUTES;
-use crate::data::Data;
 use crate::*;
 
 use crate::errors::*;
 use crate::tests::*;
 
 #[actix_rt::test]
-async fn uname_email_exists_works() {
+pub async fn uname_email_exists_works() {
     const NAME: &str = "testuserexists";
     const PASSWORD: &str = "longpassword2";
     const EMAIL: &str = "testuserexists@a.com2";
+    let data = crate::data::Data::new().await;
+    let data = &data;
+    delete_user(data, NAME).await;
 
-    {
-        let data = Data::new().await;
-        delete_user(NAME, &data).await;
-    }
-
-    let (data, _, signin_resp) = register_and_signin(NAME, EMAIL, PASSWORD).await;
+    let (_, signin_resp) = register_and_signin(data, NAME, EMAIL, PASSWORD).await;
     let cookies = get_cookie!(signin_resp);
     let app = get_app!(data).await;
 
@@ -118,21 +115,20 @@ async fn uname_email_exists_works() {
 }
 
 #[actix_rt::test]
-async fn email_udpate_password_validation_del_userworks() {
+pub async fn email_udpate_password_validation_del_userworks() {
     const NAME: &str = "testuser2";
     const PASSWORD: &str = "longpassword2";
     const EMAIL: &str = "testuser1@a.com2";
     const NAME2: &str = "eupdauser";
     const EMAIL2: &str = "eupdauser@a.com";
 
-    {
-        let data = Data::new().await;
-        delete_user(NAME, &data).await;
-        delete_user(NAME2, &data).await;
-    }
+    let data = crate::data::Data::new().await;
+    let data = &data;
+    delete_user(data, NAME).await;
+    delete_user(data, NAME2).await;
 
-    let _ = register_and_signin(NAME2, EMAIL2, PASSWORD).await;
-    let (data, _creds, signin_resp) = register_and_signin(NAME, EMAIL, PASSWORD).await;
+    let _ = register_and_signin(data, NAME2, EMAIL2, PASSWORD).await;
+    let (_creds, signin_resp) = register_and_signin(data, NAME, EMAIL, PASSWORD).await;
     let cookies = get_cookie!(signin_resp);
     let app = get_app!(data).await;
 
@@ -153,6 +149,7 @@ async fn email_udpate_password_validation_del_userworks() {
     // check duplicate email while duplicate email
     email_payload.email = EMAIL2.into();
     bad_post_req_test(
+        data,
         NAME,
         PASSWORD,
         ROUTES.account.update_email,
@@ -166,6 +163,7 @@ async fn email_udpate_password_validation_del_userworks() {
         password: NAME.into(),
     };
     bad_post_req_test(
+        data,
         NAME,
         PASSWORD,
         ROUTES.account.delete,
@@ -200,7 +198,7 @@ async fn email_udpate_password_validation_del_userworks() {
 }
 
 #[actix_rt::test]
-async fn username_update_works() {
+pub async fn username_update_works() {
     const NAME: &str = "testuserupda";
     const EMAIL: &str = "testuserupda@sss.com";
     const EMAIL2: &str = "testuserupda2@sss.com";
@@ -208,18 +206,17 @@ async fn username_update_works() {
     const NAME2: &str = "terstusrtds";
     const NAME_CHANGE: &str = "terstusrtdsxx";
 
-    {
-        let data = Data::new().await;
+    let data = crate::data::Data::new().await;
+    let data = &data;
 
-        futures::join!(
-            delete_user(NAME, &data),
-            delete_user(NAME2, &data),
-            delete_user(NAME_CHANGE, &data)
-        );
-    }
+    futures::join!(
+        delete_user(data, NAME),
+        delete_user(data, NAME2),
+        delete_user(data, NAME_CHANGE),
+    );
 
-    let _ = register_and_signin(NAME2, EMAIL2, PASSWORD).await;
-    let (data, _creds, signin_resp) = register_and_signin(NAME, EMAIL, PASSWORD).await;
+    let _ = register_and_signin(data, NAME2, EMAIL2, PASSWORD).await;
+    let (_creds, signin_resp) = register_and_signin(data, NAME, EMAIL, PASSWORD).await;
     let cookies = get_cookie!(signin_resp);
     let app = get_app!(data).await;
 
@@ -239,6 +236,7 @@ async fn username_update_works() {
     // check duplicate username with duplicate username
     username_udpate.username = NAME2.into();
     bad_post_req_test(
+        data,
         NAME_CHANGE,
         PASSWORD,
         ROUTES.account.update_username,

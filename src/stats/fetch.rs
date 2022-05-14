@@ -178,7 +178,6 @@ mod tests {
     use super::*;
     use crate::stats::record::*;
     use crate::tests::*;
-    use crate::*;
 
     #[actix_rt::test]
     async fn stats_works() {
@@ -186,11 +185,13 @@ mod tests {
         const PASSWORD: &str = "testingpas";
         const EMAIL: &str = "statsuser@a.com";
 
-        let data = Data::new().await;
-        delete_user(NAME, &data).await;
+        let data = crate::data::Data::new().await;
+        let data = &data;
+        let data = &data;
+        delete_user(data, NAME).await;
 
-        register_and_signin(NAME, EMAIL, PASSWORD).await;
-        let (_, _, _, token_key) = add_levels_util(NAME, PASSWORD).await;
+        register_and_signin(data, NAME, EMAIL, PASSWORD).await;
+        let (_, _, token_key) = add_levels_util(data, NAME, PASSWORD).await;
         let key = token_key.key.clone();
 
         let stats = Stats::new(NAME, &key, &data.db).await.unwrap();

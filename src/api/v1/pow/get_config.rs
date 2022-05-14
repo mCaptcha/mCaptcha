@@ -159,11 +159,12 @@ async fn init_mcaptcha(data: &AppData, key: &str) -> ServiceResult<()> {
 }
 
 #[cfg(test)]
-mod tests {
+pub mod tests {
+    use crate::*;
     use libmcaptcha::pow::PoWConfig;
 
     #[actix_rt::test]
-    async fn get_pow_config_works() {
+    pub async fn get_pow_config_works() {
         use super::*;
         use crate::tests::*;
         use crate::*;
@@ -173,13 +174,13 @@ mod tests {
         const PASSWORD: &str = "testingpas";
         const EMAIL: &str = "randomuser@a.com";
 
-        {
-            let data = Data::new().await;
-            delete_user(NAME, &data).await;
-        }
+        let data = crate::data::Data::new().await;
+        let data = &data;
 
-        register_and_signin(NAME, EMAIL, PASSWORD).await;
-        let (data, _, _signin_resp, token_key) = add_levels_util(NAME, PASSWORD).await;
+        delete_user(data, NAME).await;
+
+        register_and_signin(data, NAME, EMAIL, PASSWORD).await;
+        let (_, _signin_resp, token_key) = add_levels_util(data, NAME, PASSWORD).await;
         let app = get_app!(data).await;
 
         let get_config_payload = GetConfigPayload {

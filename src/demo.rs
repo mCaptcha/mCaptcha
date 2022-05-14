@@ -115,11 +115,10 @@ mod tests {
 
     #[actix_rt::test]
     async fn demo_account_works() {
-        {
-            let data = Data::new().await;
-            crate::tests::delete_user(DEMO_USER, &data).await;
-        }
-        let data = AppData::new(Data::new().await);
+        let data_inner = crate::data::Data::new().await;
+        let data_inner = &data_inner;
+        let data = AppData::new(data_inner.clone());
+        crate::tests::delete_user(data_inner, DEMO_USER).await;
         let duration = Duration::from_secs(DURATION);
 
         // register works
@@ -128,7 +127,7 @@ mod tests {
             val: DEMO_USER.into(),
         };
         assert!(username_exists(&payload, &data).await.unwrap().exists);
-        signin(DEMO_USER, DEMO_PASSWORD).await;
+        signin(data_inner, DEMO_USER, DEMO_PASSWORD).await;
 
         // deletion works
         assert!(DemoUser::delete_demo_user(&data).await.is_ok());
@@ -136,8 +135,8 @@ mod tests {
 
         // test the runner
         let user = DemoUser::spawn(data, duration).await.unwrap();
-        let (data_inner, _, signin_resp, token_key) =
-            add_levels_util(DEMO_USER, DEMO_PASSWORD).await;
+        let (_, signin_resp, token_key) =
+            add_levels_util(data_inner, DEMO_USER, DEMO_PASSWORD).await;
         let cookies = get_cookie!(signin_resp);
         let app = get_app!(data_inner).await;
 

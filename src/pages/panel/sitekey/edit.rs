@@ -225,14 +225,12 @@ mod test {
         const NAME: &str = "editsitekeyuser";
         const PASSWORD: &str = "longpassworddomain";
         const EMAIL: &str = "editsitekeyuser@a.com";
+        let data = crate::data::Data::new().await;
+        let data = &data;
+        delete_user(data, NAME).await;
 
-        {
-            let data = Data::new().await;
-            delete_user(NAME, &data).await;
-        }
-
-        register_and_signin(NAME, EMAIL, PASSWORD).await;
-        let (data, _, signin_resp, key) = add_levels_util(NAME, PASSWORD).await;
+        register_and_signin(data, NAME, EMAIL, PASSWORD).await;
+        let (_, signin_resp, key) = add_levels_util(data, NAME, PASSWORD).await;
         let cookies = get_cookie!(signin_resp);
 
         let app = get_app!(data).await;

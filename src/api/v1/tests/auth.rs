@@ -20,22 +20,23 @@ use actix_web::test;
 
 use crate::api::v1::auth::runners::{Login, Register};
 use crate::api::v1::ROUTES;
-use crate::data::Data;
 use crate::errors::*;
 use crate::*;
 
 use crate::tests::*;
 
 #[actix_rt::test]
-async fn auth_works() {
-    let data = Data::new().await;
+pub async fn auth_works() {
     const NAME: &str = "testuser";
     const PASSWORD: &str = "longpassword";
     const EMAIL: &str = "testuser1@a.com";
 
+    let data = crate::data::Data::new().await;
+    let data = &data;
+
     let app = get_app!(data).await;
 
-    delete_user(NAME, &data).await;
+    delete_user(data, NAME).await;
 
     // 1. Register with email == None
     let msg = Register {
@@ -49,14 +50,14 @@ async fn auth_works() {
             .await;
     assert_eq!(resp.status(), StatusCode::OK);
     // delete user
-    delete_user(NAME, &data).await;
+    delete_user(data, NAME).await;
 
     // 1. Register and signin
-    let (_, _, signin_resp) = register_and_signin(NAME, EMAIL, PASSWORD).await;
+    let (_, signin_resp) = register_and_signin(data, NAME, EMAIL, PASSWORD).await;
     let cookies = get_cookie!(signin_resp);
 
     // Sign in with email
-    signin(EMAIL, PASSWORD).await;
+    signin(data, EMAIL, PASSWORD).await;
 
     // 2. check if duplicate username is allowed
     let mut msg = Register {
@@ -66,6 +67,7 @@ async fn auth_works() {
         email: Some(EMAIL.into()),
     };
     bad_post_req_test(
+        data,
         NAME,
         PASSWORD,
         ROUTES.auth.register,
@@ -77,6 +79,7 @@ async fn auth_works() {
     let name = format!("{}dupemail", NAME);
     msg.username = name;
     bad_post_req_test(
+        data,
         NAME,
         PASSWORD,
         ROUTES.auth.register,
@@ -91,6 +94,7 @@ async fn auth_works() {
         password: msg.password.clone(),
     };
     bad_post_req_test(
+        data,
         NAME,
         PASSWORD,
         ROUTES.auth.login,
@@ -101,6 +105,7 @@ async fn auth_works() {
 
     creds.login = "nonexistantuser@example.com".into();
     bad_post_req_test(
+        data,
         NAME,
         PASSWORD,
         ROUTES.auth.login,
@@ -114,6 +119,7 @@ async fn auth_works() {
     creds.password = NAME.into();
 
     bad_post_req_test(
+        data,
         NAME,
         PASSWORD,
         ROUTES.auth.login,
@@ -137,12 +143,13 @@ async fn auth_works() {
 }
 
 #[actix_rt::test]
-async fn serverside_password_validation_works() {
+pub async fn serverside_password_validation_works() {
     const NAME: &str = "testuser542";
     const PASSWORD: &str = "longpassword2";
 
-    let data = Data::new().await;
-    delete_user(NAME, &data).await;
+    let data = crate::data::Data::new().await;
+    let data = &data;
+    delete_user(data, NAME).await;
 
     let app = get_app!(data).await;
 
