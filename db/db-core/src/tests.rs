@@ -136,6 +136,9 @@ pub async fn database_works<'a, T: MCDatabase>(
     assert!(db.captcha_exists(None, c.key).await.unwrap());
     assert!(db.captcha_exists(Some(p.username), c.key).await.unwrap());
 
+    // get captcha cooldown duration
+    assert_eq!(db.get_captcha_cooldown(c.key).await.unwrap(), c.duration);
+
     // add captcha levels
     db.add_captcha_levels(p.username, c.key, l).await.unwrap();
 
