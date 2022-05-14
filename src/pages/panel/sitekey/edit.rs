@@ -19,7 +19,7 @@ use actix_web::{http, web, HttpResponse, Responder};
 use sailfish::TemplateOnce;
 use sqlx::Error::RowNotFound;
 
-use crate::api::v1::mcaptcha::easy::TrafficPattern;
+use crate::api::v1::mcaptcha::easy::TrafficPatternRequest;
 use crate::errors::*;
 use crate::AppData;
 
@@ -106,12 +106,12 @@ pub async fn advance(
 #[template(path = "panel/sitekey/edit/easy/index.html")]
 pub struct EasyEditPage<'a> {
     pub form_title: &'a str,
-    pub pattern: TrafficPattern,
+    pub pattern: TrafficPatternRequest,
     pub key: String,
 }
 
 impl<'a> EasyEditPage<'a> {
-    pub fn new(key: String, pattern: TrafficPattern) -> Self {
+    pub fn new(key: String, pattern: TrafficPatternRequest) -> Self {
         Self {
             form_title: PAGE,
             pattern,
@@ -187,7 +187,7 @@ pub async fn easy(
             .fetch_one(&data.db)
             .await?;
 
-            let pattern = TrafficPattern {
+            let pattern = TrafficPatternRequest {
                 peak_sustainable_traffic: c.peak_sustainable_traffic as u32,
                 avg_traffic: c.avg_traffic as u32,
                 broke_my_site_traffic: c.broke_my_site_traffic.map(|n| n as u32),
