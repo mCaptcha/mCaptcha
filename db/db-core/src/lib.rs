@@ -201,6 +201,13 @@ pub trait MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
         username: &str,
         captcha_key: &str,
     ) -> DBResult<TrafficPattern>;
+
+    /// Delete traffic configuration
+    async fn delete_traffic_pattern(
+        &self,
+        username: &str,
+        captcha_key: &str,
+    ) -> DBResult<()>;
 }
 
 #[derive(Default, PartialEq, Serialize, Deserialize, Clone, Debug)]

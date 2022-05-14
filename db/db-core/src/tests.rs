@@ -15,6 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 //! Test utilities
+use crate::errors::*;
 use crate::prelude::*;
 
 /// test all database functions
@@ -145,6 +146,16 @@ pub async fn database_works<'a, T: MCDatabase>(
     assert_eq!(
         &db.get_traffic_pattern(p.username, c.key).await.unwrap(),
         tp
+    );
+
+    // delete traffic pattern
+    db.delete_traffic_pattern(p.username, c.key).await.unwrap();
+    assert!(
+        matches!(
+            db.get_traffic_pattern(p.username, c.key).await,
+            Err(DBError::TrafficPatternNotFound)
+        ),
+        "deletion successful; traffic pattern no longer exists"
     );
 
     // add captcha levels
