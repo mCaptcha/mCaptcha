@@ -513,6 +513,25 @@ impl MCDatabase for Database {
         }
         Ok(new_levels)
     }
+
+    /// Get captcha's cooldown period
+    async fn get_captcha_cooldown(&self, captcha_key: &str) -> DBResult<i32> {
+        struct DurationResp {
+            duration: i32,
+        }
+
+        let resp = sqlx::query_as!(
+            DurationResp,
+            "SELECT duration FROM mcaptcha_config  
+            WHERE key = $1",
+            captcha_key,
+        )
+        .fetch_one(&self.pool)
+        .await
+        .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
+
+        Ok(resp.duration)
+    }
 }
 
 fn now_unix_time_stamp() -> i64 {
