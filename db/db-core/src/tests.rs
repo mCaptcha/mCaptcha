@@ -140,6 +140,13 @@ pub async fn database_works<'a, T: MCDatabase>(
     // get captcha cooldown duration
     assert_eq!(db.get_captcha_cooldown(c.key).await.unwrap(), c.duration);
 
+    // add traffic pattern
+    db.add_traffic_pattern(p.username, c.key, tp).await.unwrap();
+    assert_eq!(
+        &db.get_traffic_pattern(p.username, c.key).await.unwrap(),
+        tp
+    );
+
     // add captcha levels
     db.add_captcha_levels(p.username, c.key, l).await.unwrap();
 

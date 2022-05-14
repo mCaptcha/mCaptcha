@@ -194,9 +194,16 @@ pub trait MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
         captcha_key: &str,
         pattern: &TrafficPattern,
     ) -> DBResult<()>;
+
+    /// Get traffic configuration
+    async fn get_traffic_pattern(
+        &self,
+        username: &str,
+        captcha_key: &str,
+    ) -> DBResult<TrafficPattern>;
 }
 
-#[derive(Default, Serialize, Deserialize, Clone, Debug)]
+#[derive(Default, PartialEq, Serialize, Deserialize, Clone, Debug)]
 /// User's traffic pattern; used in generating a captcha configuration
 pub struct TrafficPattern {
     /// average traffic of user's website

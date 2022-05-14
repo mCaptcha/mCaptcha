@@ -44,6 +44,9 @@ pub enum DBError {
     /// Captcha not found
     #[error("Captcha not found")]
     CaptchaNotFound,
+    /// Traffic pattern not found
+    #[error("Traffic pattern not found")]
+    TrafficPatternNotFound,
 }
 
 /// Convenience type alias for grouping driver-specific errors
