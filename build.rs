@@ -14,9 +14,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+use std::env;
 use std::process::Command;
 
-use cache_buster::{BusterBuilder, NoHashCategory};
 use sqlx::types::time::OffsetDateTime;
 
 fn main() {
@@ -30,33 +30,4 @@ fn main() {
 
     let now = OffsetDateTime::now_utc().format("%y-%m-%d");
     println!("cargo:rustc-env=COMPILED_DATE={}", &now);
-
-    #[cfg(not(debug_assertions))]
-    cache_bust();
-}
-
-fn cache_bust() {
-    //    until APPLICATION_WASM gets added to mime crate
-    //    PR: https://github.com/hyperium/mime/pull/138
-    //    let types = vec![
-    //        mime::IMAGE_PNG,
-    //        mime::IMAGE_SVG,
-    //        mime::IMAGE_JPEG,
-    //        mime::IMAGE_GIF,
-    //        mime::APPLICATION_JAVASCRIPT,
-    //        mime::TEXT_CSS,
-    //    ];
-
-    println!("cargo:rerun-if-changed=static/cache");
-    let no_hash = vec![NoHashCategory::FileExtentions(vec!["wasm"])];
-
-    let config = BusterBuilder::default()
-        .source("./static/cache/")
-        .result("./assets")
-        .no_hash(no_hash)
-        .follow_links(true)
-        .build()
-        .unwrap();
-
-    config.process().unwrap();
 }

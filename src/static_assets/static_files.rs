@@ -141,64 +141,28 @@ mod tests {
     use actix_web::http::StatusCode;
     use actix_web::test;
 
-    use super::*;
     use crate::*;
 
     #[actix_rt::test]
     async fn static_assets_work() {
         let app = get_app!().await;
 
-        let resp = test::call_service(
-            &app,
-            test::TestRequest::get().uri(*crate::JS).to_request(),
-        )
-        .await;
-        assert_eq!(resp.status(), StatusCode::OK);
+        let urls = [
+            *crate::JS,
+            *crate::VERIFICATIN_WIDGET_JS,
+            *crate::VERIFICATIN_WIDGET_CSS,
+            crate::FILES
+                .get("./static/cache/img/icon-trans.png")
+                .unwrap(),
+            "/favicon.ico",
+        ];
 
-        let resp = test::call_service(
-            &app,
-            test::TestRequest::get()
-                .uri(*crate::VERIFICATIN_WIDGET_JS)
-                .to_request(),
-        )
-        .await;
-        assert_eq!(resp.status(), StatusCode::OK);
-
-        let resp = test::call_service(
-            &app,
-            test::TestRequest::get()
-                .uri(*crate::VERIFICATIN_WIDGET_CSS)
-                .to_request(),
-        )
-        .await;
-        assert_eq!(resp.status(), StatusCode::OK);
-
-        let resp = test::call_service(
-            &app,
-            test::TestRequest::get()
-                .uri(
-                    crate::FILES
-                        .get("./static/cache/img/icon-trans.png")
-                        .unwrap(),
-                )
-                .to_request(),
-        )
-        .await;
-        assert_eq!(resp.status(), StatusCode::OK);
-    }
-
-    #[actix_rt::test]
-    async fn favicons_work() {
-        assert!(Favicons::get("favicon.ico").is_some());
-
-        //let app = test::init_service(App::new().configure(services)).await;
-        let app = get_app!().await;
-
-        let resp = test::call_service(
-            &app,
-            test::TestRequest::get().uri("/favicon.ico").to_request(),
-        )
-        .await;
-        assert_eq!(resp.status(), StatusCode::OK);
+        for u in urls.iter() {
+            println!("[*] Testing static asset at URL: {u}");
+            let resp =
+                test::call_service(&app, test::TestRequest::get().uri(u).to_request())
+                    .await;
+            assert_eq!(resp.status(), StatusCode::OK);
+        }
     }
 }

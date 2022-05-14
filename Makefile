@@ -7,16 +7,24 @@ define frontend_env ## install frontend deps
 	cd docs/openapi && yarn install
 endef
 
+define cache_bust ## run cache_busting program
+	cd utils/cache-bust && cargo run
+endef
+
 default: frontend ## Build app in debug mode
 	cargo build
 
 check: ## Check for syntax errors on all workspaces
 	cargo check --workspace --tests --all-features
+	cd utils/cache-bust && cargo check --tests --all-features
 	cd db/db-migrations && cargo check --tests --all-features
 	cd db/db-sqlx-postgres &&\
 		DATABASE_URL=${POSTGRES_DATABASE_URL}\
 		cargo check
 	cd db/db-core/ && cargo check
+
+cache-bust: ## Run cache buster on static assets
+	$(call cache_bust)
 
 clean: ## Delete build artifacts
 	@cargo clean
@@ -24,6 +32,7 @@ clean: ## Delete build artifacts
 	@-rm $(CLEAN_UP)
 
 coverage: migrate ## Generate code coverage report in HTML format
+	$(call cache_bust)
 	cargo tarpaulin -t 1200 --out Html
 
 doc: ## Generate documentation
@@ -78,6 +87,7 @@ migrate: ## Run database migrations
 		DATABASE_URL=${POSTGRES_DATABASE_URL} cargo run
 
 release: frontend ## Build app with release optimizations
+	$(call cache_bust)
 	cargo build --release
 
 run: frontend ## Run app in debug mode
@@ -94,6 +104,7 @@ sqlx-offline-data: ## prepare sqlx offline data
 #		&& DATABASE_URL=${SQLITE_DATABASE_URL} cargo sqlx prepare
 
 test: frontend-test frontend ## Run all available tests
+	$(call cache_bust)
 	cd db/db-sqlx-postgres &&\
 		DATABASE_URL=${POSTGRES_DATABASE_URL}\
 		cargo test --no-fail-fast
@@ -101,6 +112,7 @@ test: frontend-test frontend ## Run all available tests
 #	./scripts/tests.sh
 
 xml-test-coverage: migrate ## Generate code coverage report in XML format
+	$(call cache_bust)
 	cargo tarpaulin -t 1200 --out Xml
 
 help: ## Prints help for targets with comments
