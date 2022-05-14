@@ -611,6 +611,32 @@ impl MCDatabase for Database {
             peak_sustainable_traffic: res.peak_sustainable_traffic as u32,
         })
     }
+
+    /// Delete traffic configuration
+    async fn delete_traffic_pattern(
+        &self,
+        username: &str,
+        captcha_key: &str,
+    ) -> DBResult<()> {
+        sqlx::query!(
+            "DELETE FROM mcaptcha_sitekey_user_provided_avg_traffic
+        WHERE config_id = (
+            SELECT config_id 
+            FROM 
+                mcaptcha_config 
+            WHERE
+                key = ($1) 
+            AND 
+                user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2)
+            );",
+            captcha_key,
+            username,
+        )
+        .execute(&self.pool)
+        .await
+        .map_err(|e| map_row_not_found_err(e, DBError::TrafficPatternNotFound))?;
+        Ok(())
+    }
 }
 
 fn now_unix_time_stamp() -> i64 {
