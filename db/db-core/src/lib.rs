@@ -186,6 +186,25 @@ pub trait MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
 
     /// Get captcha's cooldown period
     async fn get_captcha_cooldown(&self, captcha_key: &str) -> DBResult<i32>;
+
+    /// Add traffic configuration
+    async fn add_traffic_pattern(
+        &self,
+        username: &str,
+        captcha_key: &str,
+        pattern: &TrafficPattern,
+    ) -> DBResult<()>;
+}
+
+#[derive(Default, Serialize, Deserialize, Clone, Debug)]
+/// User's traffic pattern; used in generating a captcha configuration
+pub struct TrafficPattern {
+    /// average traffic of user's website
+    pub avg_traffic: u32,
+    /// the peak traffic that the user's website can handle
+    pub peak_sustainable_traffic: u32,
+    /// trafic that bought the user's website down; optional
+    pub broke_my_site_traffic: Option<u32>,
 }
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]

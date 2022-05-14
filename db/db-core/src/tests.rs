@@ -23,6 +23,7 @@ pub async fn database_works<'a, T: MCDatabase>(
     p: &Register<'a>,
     c: &CreateCaptcha<'a>,
     l: &[Level],
+    tp: &TrafficPattern,
 ) {
     assert!(db.ping().await, "ping test");
     if db.username_exists(p.username).await.unwrap() {
