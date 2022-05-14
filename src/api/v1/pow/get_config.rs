@@ -41,13 +41,6 @@ pub async fn get_config(
     payload: web::Json<GetConfigPayload>,
     data: AppData,
 ) -> ServiceResult<impl Responder> {
-    //    let res = sqlx::query!(
-    //        "SELECT EXISTS (SELECT 1 from mcaptcha_config WHERE key = $1)",
-    //        &payload.key,
-    //    )
-    //    .fetch_one(&data.db)
-    //    .await?;
-
     //if res.exists.is_none() {
     if !data.dblib.captcha_exists(None, &payload.key).await? {
         return Err(ServiceError::TokenNotFound);
@@ -108,19 +101,7 @@ pub async fn get_config(
 async fn init_mcaptcha(data: &AppData, key: &str) -> ServiceResult<()> {
     // get levels
     let levels = data.dblib.get_captcha_levels(None, key).await?;
-    struct DurationResp {
-        duration: i32,
-    }
-    // get duration
-    let duration = sqlx::query_as!(
-        DurationResp,
-        "SELECT duration FROM mcaptcha_config  
-        WHERE key = $1",
-        &key,
-    )
-    .fetch_one(&data.db)
-    .await?;
-    //let (levels, duration) = futures::try_join!(levels_fut, duration_fut).await?;
+    let duration = data.dblib.get_captcha_cooldown(&key).await?;
 
     // build defense
     let mut defense = DefenseBuilder::default();
@@ -141,7 +122,7 @@ async fn init_mcaptcha(data: &AppData, key: &str) -> ServiceResult<()> {
     let mcaptcha = MCaptchaBuilder::default()
         .defense(defense)
         // leaky bucket algorithm's emission interval
-        .duration(duration.duration as u64)
+        .duration(duration as u64)
         //   .cache(cache)
         .build()
         .unwrap();

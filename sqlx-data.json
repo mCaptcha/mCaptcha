@@ -470,6 +470,26 @@
     },
     "query": "SELECT name FROM mcaptcha_config \n                WHERE key = $1 \n                AND user_id = (\n                    SELECT user_id FROM mcaptcha_users WHERE NAME = $2)"
   },
+  "ad196ab3ef9dc32f6de2313577ccd6c26eae9ab19df5f71ce182651983efb99a": {
+    "describe": {
+      "columns": [
+        {
+          "name": "duration",
+          "ordinal": 0,
+          "type_info": "Int4"
+        }
+      ],
+      "nullable": [
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      }
+    },
+    "query": "SELECT duration FROM mcaptcha_config  \n            WHERE key = $1"
+  },
   "ad23588ee4bcbb13e208460ce21e2fa9f1373893934b530b339fea10360b34a8": {
     "describe": {
       "columns": [
