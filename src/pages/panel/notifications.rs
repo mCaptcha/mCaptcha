@@ -74,16 +74,7 @@ pub async fn notifications(data: AppData, id: Identity) -> PageResult<impl Respo
     // TODO handle error where payload.to doesnt exist
 
     //    let mut notifications = runner::get_notification(&data, &receiver).await?;
-    let mut notifications = data
-        .dblib
-        .get_all_unread_notifications(&receiver)
-        .await
-        .map_err(|e| {
-            let se: ServiceError = e.into();
-            let pe: PageError = se.into();
-            pe
-        })?;
-
+    let mut notifications = data.dblib.get_all_unread_notifications(&receiver).await?;
     let notifications = notifications.drain(0..).map(|x| x.into()).collect();
 
     let body = IndexPage::new(notifications).render_once().unwrap();

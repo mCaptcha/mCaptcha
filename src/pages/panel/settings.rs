@@ -69,22 +69,13 @@ pub struct IndexPage<'a> {
 async fn settings(data: AppData, id: Identity) -> PageResult<impl Responder> {
     let username = id.identity().unwrap();
 
-    struct DBResult {
-        email: Option<String>,
-        secret: String,
-    }
-
-    let details = sqlx::query_as!(
-        DBResult,
-        r#"SELECT email, secret  FROM mcaptcha_users WHERE name = ($1)"#,
-        &username,
-    )
-    .fetch_one(&data.db)
-    .await?;
+    let secret = data.dblib.get_secret(&username).await?;
+    let secret = secret.secret;
+    let email = data.dblib.get_email(&username).await?;
 
     let data = IndexPage {
-        email: details.email,
-        secret: details.secret,
+        email,
+        secret,
         username: &username,
     };
 

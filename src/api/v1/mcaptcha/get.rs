@@ -34,7 +34,10 @@ pub async fn get_captcha(
     id: Identity,
 ) -> ServiceResult<impl Responder> {
     let username = id.identity().unwrap();
-    let levels = runner::get_captcha(&payload.key, &username, &data).await?;
+    let levels = data
+        .dblib
+        .get_captcha_levels(Some(&username), &payload.key)
+        .await?;
     Ok(HttpResponse::Ok().json(levels))
 }
 
@@ -47,19 +50,4 @@ pub struct Levels {
 pub struct I32Levels {
     pub difficulty_factor: i32,
     pub visitor_threshold: i32,
-}
-
-pub mod runner {
-    use super::*;
-
-    // TODO get metadata from mcaptcha_config table
-    pub async fn get_captcha(
-        key: &str,
-        username: &str,
-        data: &AppData,
-    ) -> ServiceResult<Vec<Level>> {
-        let levels = data.dblib.get_captcha_levels(Some(username), key).await?;
-
-        Ok(levels)
-    }
 }

@@ -310,6 +310,15 @@ impl From<ServiceError> for PageError {
     }
 }
 
+#[cfg(not(tarpaulin_include))]
+impl From<DBError> for PageError {
+    #[cfg(not(tarpaulin_include))]
+    fn from(e: DBError) -> Self {
+        let se: ServiceError = e.into();
+        se.into()
+    }
+}
+
 impl ResponseError for PageError {
     fn error_response(&self) -> HttpResponse {
         use crate::PAGES;

@@ -13,32 +13,6 @@
     },
     "query": "INSERT INTO mcaptcha_pow_confirmed_stats \n        (config_id, time) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1), $2)"
   },
-  "06699fda6b1542bf4544c0bdece91531a3020c24c9c76bcf967980e71ee25b42": {
-    "describe": {
-      "columns": [
-        {
-          "name": "email",
-          "ordinal": 0,
-          "type_info": "Varchar"
-        },
-        {
-          "name": "secret",
-          "ordinal": 1,
-          "type_info": "Varchar"
-        }
-      ],
-      "nullable": [
-        true,
-        false
-      ],
-      "parameters": {
-        "Left": [
-          "Text"
-        ]
-      }
-    },
-    "query": "SELECT email, secret  FROM mcaptcha_users WHERE name = ($1)"
-  },
   "4303f5c6ef98e0de9d8d3c2d781d3ffaa3dee5f7d27db831d327b26f03ba9d68": {
     "describe": {
       "columns": [

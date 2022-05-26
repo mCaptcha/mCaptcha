@@ -20,6 +20,8 @@ use actix_web::{web, HttpResponse, Responder};
 use futures::{future::TryFutureExt, try_join};
 use sailfish::TemplateOnce;
 
+use libmcaptcha::defense::Level;
+
 use crate::errors::*;
 use crate::stats::fetch::Stats;
 use crate::AppData;
@@ -33,11 +35,6 @@ struct McaptchaConfig {
     name: String,
 }
 
-#[derive(Clone)]
-struct Level {
-    difficulty_factor: i32,
-    visitor_threshold: i32,
-}
 #[derive(TemplateOnce, Clone)]
 #[template(path = "panel/sitekey/view/index.html")]
 struct IndexPage {
@@ -89,19 +86,9 @@ pub async fn view_sitekey(
     .fetch_one(&data.db)
     .await?;
 
-    let levels_fut = sqlx::query_as!(
-        Level,
-        "SELECT 
-            difficulty_factor, visitor_threshold 
-        FROM 
-            mcaptcha_levels 
-        WHERE config_id = $1 ORDER BY difficulty_factor ASC",
-        &config.config_id
-    )
-    .fetch_all(&data.db)
-    .err_into();
+    let levels = data.dblib.get_captcha_levels(Some(&username), &key).await?;
 
-    let (stats, levels) = try_join!(Stats::new(&username, &key, &data.db), levels_fut)?;
+    let stats = Stats::new(&username, &key, &data.db).await?;
 
     let body = IndexPage::new(stats, config, levels, key)
         .render_once()
