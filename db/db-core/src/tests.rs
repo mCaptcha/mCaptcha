@@ -25,6 +25,7 @@ pub async fn database_works<'a, T: MCDatabase>(
     c: &CreateCaptcha<'a>,
     l: &[Level],
     tp: &TrafficPattern,
+    an: &AddNotification<'a>,
 ) {
     assert!(db.ping().await, "ping test");
     if db.username_exists(p.username).await.unwrap() {
@@ -132,6 +133,29 @@ pub async fn database_works<'a, T: MCDatabase>(
         db.email_exists(p.email.as_ref().unwrap()).await.unwrap(),
         "user was with empty email but email is set; so email should exsit"
     );
+
+    /*
+     * test notification workflows
+     * 1. Add notifications: a minimum of two, to mark as read and test if it has affected it
+     * 2. Get unread notifications
+     * 3. Mark a notification read, check if it has affected Step #2
+     */
+
+    // 1. add notification
+    db.create_notification(an).await.unwrap();
+    db.create_notification(an).await.unwrap();
+
+    // 2. Get notifications
+    let notifications = db.get_all_unread_notifications(&an.to).await.unwrap();
+    assert_eq!(notifications.len(), 2);
+    assert_eq!(notifications[0].heading.as_ref().unwrap(), an.heading);
+
+    // 3. mark a notification read
+    db.mark_notification_read(an.to, notifications[0].id.unwrap())
+        .await
+        .unwrap();
+    let new_notifications = db.get_all_unread_notifications(&an.to).await.unwrap();
+    assert_eq!(new_notifications.len(), 1);
 
     // create captcha
     db.create_captcha(p.username, c).await.unwrap();

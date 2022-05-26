@@ -47,6 +47,9 @@ pub enum DBError {
     /// Traffic pattern not found
     #[error("Traffic pattern not found")]
     TrafficPatternNotFound,
+
+    #[error("Notification not found")]
+    NotificationNotFound,
 }
 
 /// Convenience type alias for grouping driver-specific errors

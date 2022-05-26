@@ -208,6 +208,46 @@ pub trait MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
         username: &str,
         captcha_key: &str,
     ) -> DBResult<()>;
+
+    /// create new notification
+    async fn create_notification(&self, p: &AddNotification) -> DBResult<()>;
+
+    /// get all unread notifications
+    async fn get_all_unread_notifications(
+        &self,
+        username: &str,
+    ) -> DBResult<Vec<Notification>>;
+
+    /// mark a notification read
+    async fn mark_notification_read(&self, username: &str, id: i32) -> DBResult<()>;
+}
+
+#[derive(Debug, Clone, Default, Deserialize, Serialize, PartialEq)]
+/// Represents notification
+pub struct Notification {
+    /// receiver name  of the notification
+    pub name: Option<String>,
+    /// heading of the notification
+    pub heading: Option<String>,
+    /// message of the notification
+    pub message: Option<String>,
+    /// when notification was received
+    pub received: Option<i64>,
+    /// db assigned ID of the notification
+    pub id: Option<i32>,
+}
+
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
+/// Data required to add notification
+pub struct AddNotification<'a> {
+    /// who is the notification addressed to?
+    pub to: &'a str,
+    /// notification sender
+    pub from: &'a str,
+    /// heading of the notification
+    pub heading: &'a str,
+    /// mesage of the notification
+    pub message: &'a str,
 }
 
 #[derive(Default, PartialEq, Serialize, Deserialize, Clone, Debug)]
