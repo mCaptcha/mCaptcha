@@ -155,6 +155,23 @@ impl MCDatabase for Database {
         Ok(resp)
     }
 
+    /// get user email
+    async fn get_email(&self, username: &str) -> DBResult<Option<String>> {
+        struct Email {
+            email: Option<String>,
+        }
+
+        let res = sqlx::query_as!(
+            Email,
+            "SELECT email FROM mcaptcha_users WHERE name = $1",
+            username
+        )
+        .fetch_one(&self.pool)
+        .await
+        .map_err(|e| map_row_not_found_err(e, DBError::AccountNotFound))?;
+        Ok(res.email)
+    }
+
     /// check if email exists
     async fn email_exists(&self, email: &str) -> DBResult<bool> {
         let res = sqlx::query!(
