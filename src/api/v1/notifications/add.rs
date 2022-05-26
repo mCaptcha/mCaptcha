@@ -22,8 +22,10 @@ use serde::{Deserialize, Serialize};
 use crate::errors::*;
 use crate::AppData;
 
-#[derive(Serialize, Deserialize)]
-pub struct AddNotification {
+use db_core::AddNotification;
+
+#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
+pub struct AddNotificationRequest {
     pub to: String,
     pub heading: String,
     pub message: String,
@@ -35,27 +37,22 @@ pub struct AddNotification {
     wrap = "crate::api::v1::get_middleware()"
 )]
 pub async fn add_notification(
-    payload: web::Json<AddNotification>,
+    payload: web::Json<AddNotificationRequest>,
     data: AppData,
     id: Identity,
 ) -> ServiceResult<impl Responder> {
     let sender = id.identity().unwrap();
     // TODO handle error where payload.to doesnt exist
-    sqlx::query!(
-        "INSERT INTO mcaptcha_notifications (
-              heading, message, tx, rx)
-              VALUES  (
-              $1, $2,
-                  (SELECT ID FROM mcaptcha_users WHERE name = $3),
-                  (SELECT ID FROM mcaptcha_users WHERE name = $4)
-                      );",
-        &payload.heading,
-        &payload.message,
-        &sender,
-        &payload.to,
-    )
-    .execute(&data.db)
-    .await?;
+
+    let p = AddNotification {
+        from: &sender,
+        to: &payload.to,
+        message: &payload.message,
+        heading: &payload.heading,
+    };
+
+    data.dblib.create_notification(&p).await?;
+
     Ok(HttpResponse::Ok())
 }
 
@@ -88,7 +85,7 @@ pub mod tests {
         let cookies = get_cookie!(signin_resp);
         let app = get_app!(data).await;
 
-        let msg = AddNotification {
+        let msg = AddNotificationRequest {
             to: NAME2.into(),
             heading: "Test notification".into(),
             message: "Testeing notifications with a dummy message".into(),

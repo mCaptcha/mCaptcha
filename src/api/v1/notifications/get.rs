@@ -18,20 +18,13 @@
 use actix_identity::Identity;
 use actix_web::{HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
-use sqlx::types::time::OffsetDateTime;
 
 use crate::errors::*;
 use crate::AppData;
 
-pub struct Notification {
-    pub name: Option<String>,
-    pub heading: Option<String>,
-    pub message: Option<String>,
-    pub received: Option<OffsetDateTime>,
-    pub id: Option<i32>,
-}
+use db_core::Notification;
 
-#[derive(Deserialize, Serialize)]
+#[derive(Default, PartialEq, Clone, Deserialize, Serialize)]
 pub struct NotificationResp {
     pub name: String,
     pub heading: String,
@@ -45,10 +38,23 @@ impl From<Notification> for NotificationResp {
         NotificationResp {
             name: n.name.unwrap(),
             heading: n.heading.unwrap(),
-            received: n.received.unwrap().unix_timestamp(),
+            received: n.received.unwrap(),
             id: n.id.unwrap(),
             message: n.message.unwrap(),
         }
+    }
+}
+
+impl NotificationResp {
+    pub fn from_notifications(mut n: Vec<Notification>) -> Vec<Self> {
+        let mut notifications = Vec::with_capacity(n.len());
+
+        n.drain(0..).for_each(|x| {
+            let y: NotificationResp = x.into();
+            notifications.push(y)
+        });
+
+        notifications
     }
 }
 
@@ -64,36 +70,9 @@ pub async fn get_notification(
     let receiver = id.identity().unwrap();
     // TODO handle error where payload.to doesnt exist
 
-    let mut notifications = runner::get_notification(&data, &receiver).await?;
-    let resp: Vec<NotificationResp> = notifications
-        .drain(0..)
-        .map(|x| {
-            let y: NotificationResp = x.into();
-            y
-        })
-        .collect();
-
-    Ok(HttpResponse::Ok().json(resp))
-}
-
-pub mod runner {
-    use super::*;
-    pub async fn get_notification(
-        data: &AppData,
-        receiver: &str,
-    ) -> ServiceResult<Vec<Notification>> {
-        // TODO handle error where payload.to doesnt exist
-
-        let notifications = sqlx::query_file_as!(
-            Notification,
-            "src/api/v1/notifications/get_all_unread.sql",
-            &receiver
-        )
-        .fetch_all(&data.db)
-        .await?;
-
-        Ok(notifications)
-    }
+    let notifications = data.dblib.get_all_unread_notifications(&receiver).await?;
+    let notifications = NotificationResp::from_notifications(notifications);
+    Ok(HttpResponse::Ok().json(notifications))
 }
 
 #[cfg(test)]
@@ -102,7 +81,7 @@ pub mod tests {
     use actix_web::test;
 
     use super::*;
-    use crate::api::v1::notifications::add::AddNotification;
+    use crate::api::v1::notifications::add::AddNotificationRequest;
     use crate::tests::*;
     use crate::*;
 
@@ -130,7 +109,7 @@ pub mod tests {
         let cookies2 = get_cookie!(signin_resp2);
         let app = get_app!(data).await;
 
-        let msg = AddNotification {
+        let msg = AddNotificationRequest {
             to: NAME2.into(),
             heading: HEADING.into(),
             message: MESSAGE.into(),

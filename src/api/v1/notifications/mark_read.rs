@@ -27,15 +27,6 @@ pub struct MarkReadReq {
     pub id: i32,
 }
 
-#[derive(Deserialize, Serialize)]
-pub struct NotificationResp {
-    pub name: String,
-    pub heading: String,
-    pub message: String,
-    pub received: i64,
-    pub id: i32,
-}
-
 /// route handler that marks a notification read
 #[my_codegen::post(
     path = "crate::V1_API_ROUTES.notifications.mark_read",
@@ -49,14 +40,10 @@ pub async fn mark_read(
     let receiver = id.identity().unwrap();
     // TODO handle error where payload.to doesnt exist
 
-    sqlx::query_file_as!(
-        Notification,
-        "src/api/v1/notifications/mark_read.sql",
-        payload.id,
-        &receiver
-    )
-    .execute(&data.db)
-    .await?;
+    // TODO get payload from path /api/v1/notifications/{id}/read"
+    data.dblib
+        .mark_notification_read(&receiver, payload.id)
+        .await?;
 
     Ok(HttpResponse::Ok())
 }
@@ -67,7 +54,8 @@ pub mod tests {
     use actix_web::test;
 
     use super::*;
-    use crate::api::v1::notifications::add::AddNotification;
+    use crate::api::v1::notifications::add::AddNotificationRequest;
+    use crate::api::v1::notifications::get::NotificationResp;
     use crate::tests::*;
     use crate::*;
 
@@ -94,7 +82,7 @@ pub mod tests {
         let cookies2 = get_cookie!(signin_resp2);
         let app = get_app!(data).await;
 
-        let msg = AddNotification {
+        let msg = AddNotificationRequest {
             to: NAME2.into(),
             heading: HEADING.into(),
             message: MESSAGE.into(),

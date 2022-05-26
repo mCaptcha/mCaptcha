@@ -20,9 +20,8 @@ use actix_web::{HttpResponse, Responder};
 use sailfish::TemplateOnce;
 use sqlx::types::time::OffsetDateTime;
 
-use crate::api::v1::notifications::get::{self, runner};
 use crate::date::Date;
-use crate::errors::PageResult;
+use crate::errors::{PageError, PageResult, ServiceError};
 use crate::AppData;
 
 #[derive(TemplateOnce)]
@@ -46,12 +45,12 @@ pub struct Notification {
     pub id: i32,
 }
 
-impl From<get::Notification> for Notification {
-    fn from(n: get::Notification) -> Self {
+impl From<db_core::Notification> for Notification {
+    fn from(n: db_core::Notification) -> Self {
         Notification {
             name: n.name.unwrap(),
             heading: n.heading.unwrap(),
-            received: n.received.unwrap(),
+            received: OffsetDateTime::from_unix_timestamp(n.received.unwrap()),
             id: n.id.unwrap(),
             message: n.message.unwrap(),
         }
@@ -74,7 +73,17 @@ pub async fn notifications(data: AppData, id: Identity) -> PageResult<impl Respo
     let receiver = id.identity().unwrap();
     // TODO handle error where payload.to doesnt exist
 
-    let mut notifications = runner::get_notification(&data, &receiver).await?;
+    //    let mut notifications = runner::get_notification(&data, &receiver).await?;
+    let mut notifications = data
+        .dblib
+        .get_all_unread_notifications(&receiver)
+        .await
+        .map_err(|e| {
+            let se: ServiceError = e.into();
+            let pe: PageError = se.into();
+            pe
+        })?;
+
     let notifications = notifications.drain(0..).map(|x| x.into()).collect();
 
     let body = IndexPage::new(notifications).render_once().unwrap();
