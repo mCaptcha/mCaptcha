@@ -637,30 +637,98 @@ impl MCDatabase for Database {
         .map_err(|e| map_row_not_found_err(e, DBError::TrafficPatternNotFound))?;
         Ok(())
     }
+
+    /// create new notification
+    async fn create_notification(&self, p: &AddNotification) -> DBResult<()> {
+        let now = now_unix_time_stamp();
+        sqlx::query!(
+            "INSERT INTO mcaptcha_notifications (
+              heading, message, tx, rx, received)
+              VALUES  (
+              $1, $2,
+                  (SELECT ID FROM mcaptcha_users WHERE name = $3),
+                  (SELECT ID FROM mcaptcha_users WHERE name = $4),
+                  $5
+                      );",
+            p.heading,
+            p.message,
+            p.from,
+            p.to,
+            now
+        )
+        .execute(&self.pool)
+        .await
+        .map_err(map_register_err)?;
+
+        Ok(())
+    }
+
+    /// get all unread notifications
+    async fn get_all_unread_notifications(
+        &self,
+        username: &str,
+    ) -> DBResult<Vec<Notification>> {
+        let mut inner_notifications = sqlx::query_file_as!(
+            InnerNotification,
+            "./src/get_all_unread_notifications.sql",
+            &username
+        )
+        .fetch_all(&self.pool)
+        .await
+        .map_err(|e| map_row_not_found_err(e, DBError::AccountNotFound))?;
+
+        let mut notifications = Vec::with_capacity(inner_notifications.len());
+
+        inner_notifications
+            .drain(0..)
+            .for_each(|n| notifications.push(n.into()));
+
+        Ok(notifications)
+    }
+
+    /// mark a notification read
+    async fn mark_notification_read(&self, username: &str, id: i32) -> DBResult<()> {
+        sqlx::query_file_as!(
+            Notification,
+            "./src/mark_notification_read.sql",
+            id,
+            &username
+        )
+        .execute(&self.pool)
+        .await
+        .map_err(|e| map_row_not_found_err(e, DBError::NotificationNotFound))?;
+
+        Ok(())
+    }
 }
 
-fn now_unix_time_stamp() -> i64 {
-    OffsetDateTime::now_utc().unix_timestamp()
+fn now_unix_time_stamp() -> OffsetDateTime {
+    OffsetDateTime::now_utc()
 }
 
-//
-//#[allow(non_snake_case)]
-//struct InnerGistComment {
-//    ID: i64,
-//    owner: String,
-//    comment: Option<String>,
-//    gist_public_id: String,
-//    created: i64,
-//}
-//
-//impl From<InnerGistComment> for GistComment {
-//    fn from(g: InnerGistComment) -> Self {
-//        Self {
-//            id: g.ID,
-//            owner: g.owner,
-//            comment: g.comment.unwrap(),
-//            gist_public_id: g.gist_public_id,
-//            created: g.created,
-//        }
-//    }
-//}
+#[derive(Debug, Clone, Default, PartialEq)]
+/// Represents notification
+pub struct InnerNotification {
+    /// receiver name  of the notification
+    pub name: Option<String>,
+    /// heading of the notification
+    pub heading: Option<String>,
+    /// message of the notification
+    pub message: Option<String>,
+    /// when notification was received
+    pub received: Option<OffsetDateTime>,
+    /// db assigned ID of the notification
+    pub id: Option<i32>,
+}
+
+impl From<InnerNotification> for Notification {
+    fn from(n: InnerNotification) -> Self {
+        Notification {
+            name: n.name,
+            heading: n.heading,
+            message: n.message,
+            received: n.received.map(|t| t.unix_timestamp()),
+            id: n.id,
+        }
+    }
+}

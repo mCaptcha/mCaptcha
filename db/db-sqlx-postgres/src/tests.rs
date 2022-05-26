@@ -33,6 +33,9 @@ async fn everyting_works() {
     const CAPTCHA_SECRET: &str = "postgrescaptchasecret";
     const CAPTCHA_DESCRIPTION: &str = "postgrescaptchadescription";
     const CAPTCHA_DURATION: i32 = 30;
+    // notification config
+    const HEADING: &str = "testing notifications get db postgres";
+    const MESSAGE: &str = "testing notifications get message db postgres";
 
     // easy traffic pattern
     const TRAFFIC_PATTERN: TrafficPattern = TrafficPattern {
@@ -56,6 +59,13 @@ async fn everyting_works() {
         },
     ];
 
+    const add_notification: AddNotification = AddNotification {
+        from: NAME,
+        to: NAME,
+        message: MESSAGE,
+        heading: HEADING,
+    };
+
     let url = env::var("POSTGRES_DATABASE_URL").unwrap();
     let pool_options = PgPoolOptions::new().max_connections(2);
     let connection_options = ConnectionOptions::Fresh(Fresh { pool_options, url });
@@ -74,5 +84,5 @@ async fn everyting_works() {
         key: CAPTCHA_SECRET,
         description: CAPTCHA_DESCRIPTION,
     };
-    database_works(&db, &p, &c, &LEVELS, &TRAFFIC_PATTERN).await;
+    database_works(&db, &p, &c, &LEVELS, &TRAFFIC_PATTERN, &add_notification).await;
 }
