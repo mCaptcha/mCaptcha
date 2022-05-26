@@ -41,6 +41,7 @@ pub enum DBError {
     /// Account not found
     #[error("Account not found")]
     AccountNotFound,
+
     /// Captcha not found
     #[error("Captcha not found")]
     CaptchaNotFound,

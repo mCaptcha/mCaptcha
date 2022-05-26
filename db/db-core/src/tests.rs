@@ -65,6 +65,17 @@ pub async fn database_works<'a, T: MCDatabase>(
     assert_eq!(name_hash.hash, p.hash, "user password matches");
     assert_eq!(name_hash.username, p.username, "username matches");
 
+    // testing get_email
+    assert_eq!(
+        db.get_email(p.username)
+            .await
+            .unwrap()
+            .as_ref()
+            .unwrap()
+            .as_str(),
+        p.email.unwrap()
+    );
+
     // testing email exists
     assert!(
         db.email_exists(p.email.as_ref().unwrap()).await.unwrap(),
@@ -118,6 +129,9 @@ pub async fn database_works<'a, T: MCDatabase>(
         !db.email_exists(p.email.as_ref().unwrap()).await.unwrap(),
         "user registration with email is deleted; so email shouldn't exsit"
     );
+
+    // testing get_email = None
+    assert_eq!(db.get_email(p.username).await.unwrap(), None);
 
     // testing update email
     let update_email = UpdateEmail {
