@@ -50,12 +50,12 @@ where
     }
 }
 
-impl Clone for Box<dyn CloneStats> {
-    fn clone(&self) -> Self {
-        self.clone()
-        //(*self).clone_stats()
-    }
-}
+//impl Clone for Box<dyn CloneStats> {
+//    fn clone(&self) -> Self {
+//        Box::clone(self)
+//        //(*self).clone_stats()
+//    }
+//}
 
 #[derive(Debug, Default, PartialEq, Clone, Deserialize, Serialize)]
 pub struct CaptchaStats {

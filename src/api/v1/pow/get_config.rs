@@ -101,7 +101,7 @@ pub async fn get_config(
 async fn init_mcaptcha(data: &AppData, key: &str) -> ServiceResult<()> {
     // get levels
     let levels = data.db.get_captcha_levels(None, key).await?;
-    let duration = data.db.get_captcha_cooldown(&key).await?;
+    let duration = data.db.get_captcha_cooldown(key).await?;
 
     // build defense
     let mut defense = DefenseBuilder::default();

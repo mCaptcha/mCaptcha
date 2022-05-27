@@ -63,9 +63,7 @@ async fn set_username(
 
     let processed_uname = data.creds.username(&payload.username)?;
 
-    data.db
-        .update_username(&username, &processed_uname)
-        .await?;
+    data.db.update_username(&username, &processed_uname).await?;
 
     id.forget();
     id.remember(processed_uname);

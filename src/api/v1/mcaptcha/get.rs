@@ -17,7 +17,6 @@
 use actix_identity::Identity;
 use actix_web::{web, HttpResponse, Responder};
 
-use libmcaptcha::defense::Level;
 use serde::{Deserialize, Serialize};
 
 use super::create::MCaptchaDetails;

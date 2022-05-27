@@ -166,9 +166,7 @@ async fn update(
 
     update_captcha_runner(&msg, &data, &username).await?;
 
-    data.db
-        .delete_traffic_pattern(&username, &msg.key)
-        .await?;
+    data.db.delete_traffic_pattern(&username, &msg.key).await?;
 
     data.db
         .add_traffic_pattern(&username, &msg.key, &pattern)
@@ -196,7 +194,6 @@ pub mod tests {
 
         #[test]
         fn easy_configuration_works() {
-            const NAME: &str = "defaultuserconfgworks";
             let settings = crate::tests::get_settings();
 
             let mut payload = TrafficPattern {

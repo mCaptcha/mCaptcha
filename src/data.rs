@@ -185,7 +185,7 @@ impl Data {
             log::info!("Initialized credential manager");
         });
 
-         let pool = s.database.pool;
+        let pool = s.database.pool;
         let pool_options = PgPoolOptions::new().max_connections(pool);
         let connection_options = ConnectionOptions::Fresh(Fresh {
             pool_options,

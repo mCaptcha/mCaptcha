@@ -59,7 +59,7 @@ async fn everyting_works() {
         },
     ];
 
-    const add_notification: AddNotification = AddNotification {
+    const ADD_NOTIFICATION: AddNotification = AddNotification {
         from: NAME,
         to: NAME,
         message: MESSAGE,
@@ -84,5 +84,5 @@ async fn everyting_works() {
         key: CAPTCHA_SECRET,
         description: CAPTCHA_DESCRIPTION,
     };
-    database_works(&db, &p, &c, &LEVELS, &TRAFFIC_PATTERN, &add_notification).await;
+    database_works(&db, &p, &c, &LEVELS, &TRAFFIC_PATTERN, &ADD_NOTIFICATION).await;
 }

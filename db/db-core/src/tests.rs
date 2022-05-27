@@ -160,7 +160,7 @@ pub async fn database_works<'a, T: MCDatabase>(
     db.create_notification(an).await.unwrap();
 
     // 2. Get notifications
-    let notifications = db.get_all_unread_notifications(&an.to).await.unwrap();
+    let notifications = db.get_all_unread_notifications(an.to).await.unwrap();
     assert_eq!(notifications.len(), 2);
     assert_eq!(notifications[0].heading.as_ref().unwrap(), an.heading);
 
@@ -168,7 +168,7 @@ pub async fn database_works<'a, T: MCDatabase>(
     db.mark_notification_read(an.to, notifications[0].id.unwrap())
         .await
         .unwrap();
-    let new_notifications = db.get_all_unread_notifications(&an.to).await.unwrap();
+    let new_notifications = db.get_all_unread_notifications(an.to).await.unwrap();
     assert_eq!(new_notifications.len(), 1);
 
     // create captcha

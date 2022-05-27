@@ -23,7 +23,6 @@ use sailfish::TemplateOnce;
 
 use crate::errors::*;
 use crate::Data;
-use crate::SETTINGS;
 
 const PAGE: &str = "Login";
 
