@@ -46,8 +46,8 @@ use sqlx::PgPool;
 use db_core::MCDatabase;
 
 use crate::errors::ServiceResult;
-//use crate::SETTINGS;
 use crate::settings::Settings;
+use crate::stats::{Dummy, Real, Stats};
 
 macro_rules! enum_system_actor {
     ($name:ident, $type:ident) => {
@@ -159,9 +159,10 @@ pub struct Data {
     pub captcha: SystemGroup,
     /// email client
     pub mailer: Option<Mailer>,
-
     /// app settings
     pub settings: Settings,
+    /// stats recorder
+    pub stats: Box<dyn Stats>,
 }
 
 impl Data {
@@ -202,6 +203,12 @@ impl Data {
         let dblib = connection_options.connect().await.unwrap();
         dblib.migrate().await.unwrap();
 
+        let stats: Box<dyn Stats> = if s.captcha.enable_stats {
+            Box::new(Real::default())
+        } else {
+            Box::new(Dummy::default())
+        };
+
         let data = Data {
             creds,
             db,
@@ -209,6 +216,7 @@ impl Data {
             captcha: SystemGroup::new(s).await,
             mailer: Self::get_mailer(s),
             settings: s.clone(),
+            stats,
         };
 
         #[cfg(not(debug_assertions))]

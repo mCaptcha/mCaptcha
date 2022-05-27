@@ -21,7 +21,6 @@ use libmcaptcha::cache::messages::VerifyCaptchaResult;
 use serde::{Deserialize, Serialize};
 
 use crate::errors::*;
-use crate::stats::record::record_confirm;
 use crate::AppData;
 use crate::V1_API_ROUTES;
 
@@ -44,7 +43,7 @@ pub async fn validate_captcha_token(
         .validate_verification_tokens(payload.into_inner())
         .await?;
     let payload = CaptchaValidateResp { valid: res };
-    record_confirm(&key, &data.db).await;
+    data.stats.record_confirm(&data, &key).await;
     //println!("{:?}", &payload);
     Ok(HttpResponse::Ok().json(payload))
 }

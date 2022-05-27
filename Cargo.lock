@@ -1650,6 +1650,7 @@ dependencies = [
  "actix-web",
  "actix-web-codegen 4.0.0 (git+https://github.com/realaravinth/actix-web)",
  "argon2-creds",
+ "async-trait",
  "awc",
  "cache-buster",
  "config",

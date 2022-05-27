@@ -24,7 +24,7 @@ use libmcaptcha::{
 use serde::{Deserialize, Serialize};
 
 use crate::errors::*;
-use crate::stats::record::record_fetch;
+//use crate::stats::record::record_fetch;
 use crate::AppData;
 use crate::V1_API_ROUTES;
 
@@ -49,7 +49,7 @@ pub async fn get_config(
 
     match data.captcha.get_pow(payload.key.clone()).await {
         Ok(Some(config)) => {
-            record_fetch(&payload.key, &data.db).await;
+            data.stats.record_fetch(&data, &payload.key).await;
             Ok(HttpResponse::Ok().json(config))
         }
         Ok(None) => {
@@ -61,7 +61,7 @@ pub async fn get_config(
                 .expect("mcaptcha should be initialized and ready to go");
             // background it. would require data::Data to be static
             // to satidfy lifetime
-            record_fetch(&payload.key, &data.db).await;
+            data.stats.record_fetch(&data, &payload.key).await;
             Ok(HttpResponse::Ok().json(config))
         }
         Err(e) => Err(e.into()),

@@ -176,7 +176,6 @@ pub mod runners {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::stats::record::*;
     use crate::tests::*;
 
     #[actix_rt::test]
@@ -185,8 +184,7 @@ mod tests {
         const PASSWORD: &str = "testingpas";
         const EMAIL: &str = "statsuser@a.com";
 
-        let data = crate::data::Data::new().await;
-        let data = &data;
+        let data = get_data().await;
         let data = &data;
         delete_user(data, NAME).await;
 
@@ -200,10 +198,10 @@ mod tests {
         assert_eq!(stats.solves.len(), 0);
         assert_eq!(stats.confirms.len(), 0);
 
-        futures::join!(
-            record_fetch(&key, &data.db),
-            record_solve(&key, &data.db),
-            record_confirm(&key, &data.db)
+        let _ = futures::join!(
+            data.stats.record_fetch(&data, &key,),
+            data.stats.record_solve(&data, &key,),
+            data.stats.record_confirm(&data, &key,),
         );
 
         let stats = Stats::new(NAME, &key, &data.db).await.unwrap();
