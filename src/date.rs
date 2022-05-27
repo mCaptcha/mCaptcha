@@ -65,6 +65,12 @@ impl Date {
     pub fn date(&self) -> String {
         self.time.format("%F %r %z")
     }
+
+    pub fn new(unix: i64) -> Self {
+        Self {
+            time: OffsetDateTime::from_unix_timestamp(unix),
+        }
+    }
 }
 
 #[cfg(test)]

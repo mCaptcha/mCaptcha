@@ -14,14 +14,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
-pub mod fetch;
-//pub mod record;
-
-pub use fetch::StatsUnixTimestamp;
-
 use async_trait::async_trait;
 use db_core::errors::DBResult;
+use serde::{Deserialize, Serialize};
 
 use crate::data::Data;
 
@@ -35,6 +30,9 @@ pub trait Stats: std::marker::Send + std::marker::Sync + CloneStats {
 
     /// record PoWConfig confirms
     async fn record_confirm(&self, d: &Data, key: &str) -> DBResult<()>;
+
+    /// fetch stats
+    async fn fetch(&self, d: &Data, user: &str, key: &str) -> DBResult<CaptchaStats>;
 }
 
 /// Trait to clone MCDatabase
@@ -59,6 +57,13 @@ impl Clone for Box<dyn CloneStats> {
     }
 }
 
+#[derive(Debug, Default, PartialEq, Clone, Deserialize, Serialize)]
+pub struct CaptchaStats {
+    pub config_fetches: Vec<i64>,
+    pub solves: Vec<i64>,
+    pub confirms: Vec<i64>,
+}
+
 #[derive(Clone, Default, PartialEq, Debug)]
 pub struct Real;
 
@@ -77,6 +82,24 @@ impl Stats for Real {
     /// record PoWConfig confirms
     async fn record_confirm(&self, d: &Data, key: &str) -> DBResult<()> {
         d.dblib.record_confirm(key).await
+    }
+
+    /// fetch stats
+    async fn fetch(&self, d: &Data, user: &str, key: &str) -> DBResult<CaptchaStats> {
+        let config_fetches_fut = d.dblib.fetch_config_fetched(user, key);
+        let solves_fut = d.dblib.fetch_solve(user, key);
+        let confirms_fut = d.dblib.fetch_confirm(user, key);
+
+        let (config_fetches, solves, confirms) =
+            futures::try_join!(config_fetches_fut, solves_fut, confirms_fut)?;
+
+        let res = CaptchaStats {
+            config_fetches,
+            solves,
+            confirms,
+        };
+
+        Ok(res)
     }
 }
 
@@ -98,5 +121,10 @@ impl Stats for Dummy {
     /// record PoWConfig confirms
     async fn record_confirm(&self, _: &Data, _: &str) -> DBResult<()> {
         Ok(())
+    }
+
+    /// fetch stats
+    async fn fetch(&self, _: &Data, _: &str, _: &str) -> DBResult<CaptchaStats> {
+        Ok(CaptchaStats::default())
     }
 }

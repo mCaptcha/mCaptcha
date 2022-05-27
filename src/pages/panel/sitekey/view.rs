@@ -17,13 +17,12 @@
 
 use actix_identity::Identity;
 use actix_web::{web, HttpResponse, Responder};
-use futures::{future::TryFutureExt, try_join};
 use sailfish::TemplateOnce;
 
 use libmcaptcha::defense::Level;
 
 use crate::errors::*;
-use crate::stats::fetch::Stats;
+use crate::stats::CaptchaStats;
 use crate::AppData;
 
 const PAGE: &str = "SiteKeys";
@@ -42,12 +41,12 @@ struct IndexPage {
     name: String,
     key: String,
     levels: Vec<Level>,
-    stats: Stats,
+    stats: CaptchaStats,
 }
 
 impl IndexPage {
     fn new(
-        stats: Stats,
+        stats: CaptchaStats,
         config: McaptchaConfig,
         levels: Vec<Level>,
         key: String,
@@ -87,8 +86,7 @@ pub async fn view_sitekey(
     .await?;
 
     let levels = data.dblib.get_captcha_levels(Some(&username), &key).await?;
-
-    let stats = Stats::new(&username, &key, &data.db).await?;
+    let stats = data.stats.fetch(&data, &username, &key).await?;
 
     let body = IndexPage::new(stats, config, levels, key)
         .render_once()

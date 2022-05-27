@@ -42,7 +42,7 @@ pub async fn verify_pow(
 ) -> ServiceResult<impl Responder> {
     let key = payload.key.clone();
     let res = data.captcha.verify_pow(payload.into_inner()).await?;
-    data.stats.record_solve(&data, &key).await;
+    data.stats.record_solve(&data, &key).await?;
     let payload = ValidationToken { token: res };
     Ok(HttpResponse::Ok().json(payload))
 }

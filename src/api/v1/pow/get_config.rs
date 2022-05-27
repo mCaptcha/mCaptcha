@@ -49,7 +49,7 @@ pub async fn get_config(
 
     match data.captcha.get_pow(payload.key.clone()).await {
         Ok(Some(config)) => {
-            data.stats.record_fetch(&data, &payload.key).await;
+            data.stats.record_fetch(&data, &payload.key).await?;
             Ok(HttpResponse::Ok().json(config))
         }
         Ok(None) => {
@@ -61,7 +61,7 @@ pub async fn get_config(
                 .expect("mcaptcha should be initialized and ready to go");
             // background it. would require data::Data to be static
             // to satidfy lifetime
-            data.stats.record_fetch(&data, &payload.key).await;
+            data.stats.record_fetch(&data, &payload.key).await?;
             Ok(HttpResponse::Ok().json(config))
         }
         Err(e) => Err(e.into()),

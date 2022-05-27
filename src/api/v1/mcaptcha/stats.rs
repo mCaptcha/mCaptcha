@@ -19,7 +19,6 @@ use actix_web::{web, HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
 
 use crate::errors::*;
-use crate::stats::fetch::{Stats, StatsUnixTimestamp};
 use crate::AppData;
 
 pub mod routes {
@@ -50,7 +49,6 @@ pub async fn get(
     id: Identity,
 ) -> ServiceResult<impl Responder> {
     let username = id.identity().unwrap();
-    let stats = Stats::new(&username, &payload.key, &data.db).await?;
-    let stats = StatsUnixTimestamp::from_stats(&stats);
+    let stats = data.stats.fetch(&data, &username, &payload.key).await?;
     Ok(HttpResponse::Ok().json(&stats))
 }

@@ -16,7 +16,7 @@
               </h3>
             </td>
             <td>
-                <p class="notification__item-text"><.= val.date() .></p>
+                <p class="notification__item-text"><.= crate::date::Date::new(*val).date() .></p>
             </td>
           </tr>
         <. } .>

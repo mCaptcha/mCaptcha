@@ -43,7 +43,7 @@ pub async fn validate_captcha_token(
         .validate_verification_tokens(payload.into_inner())
         .await?;
     let payload = CaptchaValidateResp { valid: res };
-    data.stats.record_confirm(&data, &key).await;
+    data.stats.record_confirm(&data, &key).await?;
     //println!("{:?}", &payload);
     Ok(HttpResponse::Ok().json(payload))
 }
