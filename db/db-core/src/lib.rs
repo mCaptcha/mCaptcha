@@ -232,6 +232,26 @@ pub trait MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
 
     /// record PoWConfig confirms
     async fn record_confirm(&self, key: &str) -> DBResult<()>;
+
+    /// featch PoWConfig fetches
+    async fn fetch_config_fetched(&self, user: &str, key: &str) -> DBResult<Vec<i64>>;
+
+    /// featch PoWConfig solves
+    async fn fetch_solve(&self, user: &str, key: &str) -> DBResult<Vec<i64>>;
+
+    /// featch PoWConfig confirms
+    async fn fetch_confirm(&self, user: &str, key: &str) -> DBResult<Vec<i64>>;
+}
+
+#[derive(Debug, Clone, Default, Deserialize, Serialize, PartialEq)]
+/// Captcha statistics with time recorded in UNIX epoch formats
+pub struct StatsUnixTimestamp {
+    /// times at which the configuration were fetched
+    pub config_fetches: Vec<i64>,
+    /// times at which the PoW was solved
+    pub solves: Vec<i64>,
+    /// times at which the PoW token was verified
+    pub confirms: Vec<i64>,
 }
 
 #[derive(Debug, Clone, Default, Deserialize, Serialize, PartialEq)]

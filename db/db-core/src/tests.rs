@@ -209,14 +209,42 @@ pub async fn database_works<'a, T: MCDatabase>(
     let levels = db.get_captcha_levels(None, c.key).await.unwrap();
     assert_eq!(levels, l);
 
-    // delete captcha levels
-    db.delete_captcha_levels(p.username, c.key).await.unwrap();
+    /*
+     * Test stats
+     * 1. record fetch config
+     * 2. record solve
+     * 3. record token verify
+     * 4. fetch config fetches
+     * 5. fetch solves
+     * 6. fetch token verify
+     */
 
-    // update captcha; set description = username and duration *= duration;
-    let mut c2 = c.clone();
-    c2.duration *= c2.duration;
-    c2.description = p.username;
-    db.update_captcha_metadata(p.username, &c2).await.unwrap();
+    assert!(db
+        .fetch_config_fetched(p.username, c.key)
+        .await
+        .unwrap()
+        .is_empty());
+    assert!(db.fetch_solve(p.username, c.key).await.unwrap().is_empty());
+    assert!(db
+        .fetch_confirm(p.username, c.key)
+        .await
+        .unwrap()
+        .is_empty());
+
+    db.record_fetch(c.key).await.unwrap();
+    db.record_solve(c.key).await.unwrap();
+    db.record_confirm(c.key).await.unwrap();
+
+    assert_eq!(db.fetch_solve(p.username, c.key).await.unwrap().len(), 1);
+    assert_eq!(
+        db.fetch_config_fetched(p.username, c.key)
+            .await
+            .unwrap()
+            .len(),
+        1
+    );
+    assert_eq!(db.fetch_solve(p.username, c.key).await.unwrap().len(), 1);
+    assert_eq!(db.fetch_confirm(p.username, c.key).await.unwrap().len(), 1);
 
     // update captcha key; set key = username;
     db.update_captcha_key(p.username, c.key, p.username)
@@ -229,6 +257,15 @@ pub async fn database_works<'a, T: MCDatabase>(
         .captcha_exists(Some(p.username), p.username)
         .await
         .unwrap());
+
+    // delete captcha levels
+    db.delete_captcha_levels(p.username, c.key).await.unwrap();
+
+    // update captcha; set description = username and duration *= duration;
+    let mut c2 = c.clone();
+    c2.duration *= c2.duration;
+    c2.description = p.username;
+    db.update_captcha_metadata(p.username, &c2).await.unwrap();
 
     // delete captcha; updated key = p.username so invoke delete with it
     db.delete_captcha(p.username, p.username).await.unwrap();
