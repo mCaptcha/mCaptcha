@@ -23,18 +23,19 @@ mod notifications;
 mod settings;
 pub mod sitekey;
 
+use db_core::Captcha;
+
 use crate::errors::PageResult;
 use crate::AppData;
-use sitekey::list::{get_list_sitekeys, SiteKeys};
 
 #[derive(TemplateOnce, Clone)]
 #[template(path = "panel/index.html")]
 pub struct IndexPage {
-    sitekeys: SiteKeys,
+    sitekeys: Vec<Captcha>,
 }
 
 impl IndexPage {
-    fn new(sitekeys: SiteKeys) -> Self {
+    fn new(sitekeys: Vec<Captcha>) -> Self {
         IndexPage { sitekeys }
     }
 }
@@ -46,7 +47,8 @@ const PAGE: &str = "Dashboard";
     wrap = "crate::pages::get_middleware()"
 )]
 async fn panel(data: AppData, id: Identity) -> PageResult<impl Responder> {
-    let sitekeys = get_list_sitekeys(&data, &id).await?;
+    let username = id.identity().unwrap();
+    let sitekeys = data.dblib.get_all_user_captchas(&username).await?;
     let body = IndexPage::new(sitekeys).render_once().unwrap();
     Ok(HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")

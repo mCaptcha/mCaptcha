@@ -149,8 +149,6 @@ impl SystemGroup {
 
 /// App data
 pub struct Data {
-    /// databse pool
-    pub db: PgPool,
     /// database ops defined by db crates
     pub dblib: Box<dyn MCDatabase>,
     /// credential management configuration
@@ -188,11 +186,11 @@ impl Data {
             log::info!("Initialized credential manager");
         });
 
-        let db = PgPoolOptions::new()
-            .max_connections(s.database.pool)
-            .connect(&s.database.url)
-            .await
-            .expect("Unable to form database pool");
+        //        let db = PgPoolOptions::new()
+        //            .max_connections(s.database.pool)
+        //            .connect(&s.database.url)
+        //            .await
+        //            .expect("Unable to form database pool");
 
         let pool = s.database.pool;
         let pool_options = PgPoolOptions::new().max_connections(pool);
@@ -211,7 +209,7 @@ impl Data {
 
         let data = Data {
             creds,
-            db,
+            //db,
             dblib: Box::new(dblib),
             captcha: SystemGroup::new(s).await,
             mailer: Self::get_mailer(s),

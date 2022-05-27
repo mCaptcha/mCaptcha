@@ -19,20 +19,21 @@ use actix_identity::Identity;
 use actix_web::{HttpResponse, Responder};
 use sailfish::TemplateOnce;
 
-use crate::api::v1::mcaptcha::create::MCaptchaDetails;
+use db_core::Captcha;
+
 use crate::errors::*;
 use crate::AppData;
 
 #[derive(TemplateOnce, Clone)]
 #[template(path = "panel/sitekey/list/index.html")]
 pub struct IndexPage {
-    sitekeys: SiteKeys,
+    sitekeys: Vec<Captcha>,
 }
 
 const PAGE: &str = "SiteKeys";
 
 impl IndexPage {
-    fn new(sitekeys: SiteKeys) -> Self {
+    fn new(sitekeys: Vec<Captcha>) -> Self {
         IndexPage { sitekeys }
     }
 }
@@ -43,28 +44,13 @@ impl IndexPage {
     wrap = "crate::pages::get_middleware()"
 )]
 pub async fn list_sitekeys(data: AppData, id: Identity) -> PageResult<impl Responder> {
-    let res = get_list_sitekeys(&data, &id).await?;
+    let username = id.identity().unwrap();
+    let res = data.dblib.get_all_user_captchas(&username).await?;
     let body = IndexPage::new(res).render_once().unwrap();
     Ok(HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
         .body(body))
 }
-
-/// utility function to get a list of all sitekeys that a user owns
-pub async fn get_list_sitekeys(data: &AppData, id: &Identity) -> PageResult<SiteKeys> {
-    let username = id.identity().unwrap();
-    let res = sqlx::query_as!(
-        MCaptchaDetails,
-        "SELECT key, name from mcaptcha_config WHERE
-        user_id = (SELECT ID FROM mcaptcha_users WHERE name = $1) ",
-        &username,
-    )
-    .fetch_all(&data.db)
-    .await?;
-    Ok(res)
-}
-
-pub type SiteKeys = Vec<MCaptchaDetails>;
 
 #[cfg(test)]
 mod test {

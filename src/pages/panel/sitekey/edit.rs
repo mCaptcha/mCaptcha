@@ -19,6 +19,7 @@ use actix_web::{http, web, HttpResponse, Responder};
 use sailfish::TemplateOnce;
 
 use db_core::errors::DBError;
+use db_core::Captcha;
 use libmcaptcha::defense::Level;
 
 use crate::api::v1::mcaptcha::easy::TrafficPatternRequest;
@@ -26,19 +27,6 @@ use crate::errors::*;
 use crate::AppData;
 
 const PAGE: &str = "Edit Sitekey";
-
-#[derive(Clone)]
-struct McaptchaConfig {
-    config_id: i32,
-    duration: i32,
-    name: String,
-}
-
-//#[derive(Clone)]
-//struct Level {
-//    difficulty_factor: i32,
-//    visitor_threshold: i32,
-//}
 
 #[derive(TemplateOnce, Clone)]
 #[template(path = "panel/sitekey/edit/advance.html")]
@@ -50,10 +38,10 @@ struct AdvanceEditPage {
 }
 
 impl AdvanceEditPage {
-    fn new(config: McaptchaConfig, levels: Vec<Level>, key: String) -> Self {
+    fn new(config: Captcha, levels: Vec<Level>, key: String) -> Self {
         AdvanceEditPage {
             duration: config.duration as u32,
-            name: config.name,
+            name: config.description,
             levels,
             key,
         }
@@ -73,17 +61,7 @@ pub async fn advance(
     let username = id.identity().unwrap();
     let key = path.into_inner();
 
-    let config = sqlx::query_as!(
-        McaptchaConfig,
-        "SELECT config_id, duration, name from mcaptcha_config WHERE
-        key = $1 AND
-        user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2) ",
-        &key,
-        &username,
-    )
-    .fetch_one(&data.db)
-    .await?;
-
+    let config = data.dblib.get_captcha_config(&username, &key).await?;
     let levels = data.dblib.get_captcha_levels(Some(&username), &key).await?;
 
     let body = AdvanceEditPage::new(config, levels, key)
@@ -127,26 +105,12 @@ pub async fn easy(
 
     match data.dblib.get_traffic_pattern(&username, &key).await {
         Ok(c) => {
-            struct Description {
-                name: String,
-            }
-            let description = sqlx::query_as!(
-                Description,
-                "SELECT name FROM mcaptcha_config 
-                WHERE key = $1 
-                AND user_id = (
-                    SELECT user_id FROM mcaptcha_users WHERE NAME = $2)",
-                &key,
-                &username
-            )
-            .fetch_one(&data.db)
-            .await?;
-
+            let config = data.dblib.get_captcha_config(&username, &key).await?;
             let pattern = TrafficPatternRequest {
                 peak_sustainable_traffic: c.peak_sustainable_traffic as u32,
                 avg_traffic: c.avg_traffic as u32,
                 broke_my_site_traffic: c.broke_my_site_traffic.map(|n| n as u32),
-                description: description.name,
+                description: config.description,
             };
 
             let page = EasyEditPage::new(key, pattern).render_once().unwrap();

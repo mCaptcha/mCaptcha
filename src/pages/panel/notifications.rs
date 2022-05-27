@@ -21,7 +21,7 @@ use sailfish::TemplateOnce;
 use sqlx::types::time::OffsetDateTime;
 
 use crate::date::Date;
-use crate::errors::{PageError, PageResult, ServiceError};
+use crate::errors::PageResult;
 use crate::AppData;
 
 #[derive(TemplateOnce)]

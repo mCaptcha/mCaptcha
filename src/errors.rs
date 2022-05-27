@@ -240,20 +240,20 @@ impl From<CaptchaError> for ServiceError {
     }
 }
 
-#[cfg(not(tarpaulin_include))]
-impl From<sqlx::Error> for ServiceError {
-    #[cfg(not(tarpaulin_include))]
-    fn from(e: sqlx::Error) -> Self {
-        use sqlx::error::Error;
-        use std::borrow::Cow;
-        if let Error::Database(err) = e {
-            if err.code() == Some(Cow::from("23505")) {
-                return ServiceError::UsernameTaken;
-            }
-        }
-        ServiceError::InternalServerError
-    }
-}
+//#[cfg(not(tarpaulin_include))]
+//impl From<sqlx::Error> for ServiceError {
+//    #[cfg(not(tarpaulin_include))]
+//    fn from(e: sqlx::Error) -> Self {
+//        use sqlx::error::Error;
+//        use std::borrow::Cow;
+//        if let Error::Database(err) = e {
+//            if err.code() == Some(Cow::from("23505")) {
+//                return ServiceError::UsernameTaken;
+//            }
+//        }
+//        ServiceError::InternalServerError
+//    }
+//}
 
 #[cfg(not(tarpaulin_include))]
 impl From<SmtpError> for ServiceError {

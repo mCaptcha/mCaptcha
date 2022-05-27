@@ -19,6 +19,7 @@ use actix_identity::Identity;
 use actix_web::{web, HttpResponse, Responder};
 use sailfish::TemplateOnce;
 
+use db_core::Captcha;
 use libmcaptcha::defense::Level;
 
 use crate::errors::*;
@@ -26,13 +27,6 @@ use crate::stats::CaptchaStats;
 use crate::AppData;
 
 const PAGE: &str = "SiteKeys";
-
-#[derive(Clone)]
-struct McaptchaConfig {
-    config_id: i32,
-    duration: i32,
-    name: String,
-}
 
 #[derive(TemplateOnce, Clone)]
 #[template(path = "panel/sitekey/view/index.html")]
@@ -47,13 +41,13 @@ struct IndexPage {
 impl IndexPage {
     fn new(
         stats: CaptchaStats,
-        config: McaptchaConfig,
+        config: Captcha,
         levels: Vec<Level>,
         key: String,
     ) -> Self {
         IndexPage {
             duration: config.duration as u32,
-            name: config.name,
+            name: config.description,
             levels,
             key,
             stats,
@@ -73,18 +67,7 @@ pub async fn view_sitekey(
 ) -> PageResult<impl Responder> {
     let username = id.identity().unwrap();
     let key = path.into_inner();
-
-    let config = sqlx::query_as!(
-        McaptchaConfig,
-        "SELECT config_id, duration, name from mcaptcha_config WHERE
-        key = $1 AND
-        user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2) ",
-        &key,
-        &username,
-    )
-    .fetch_one(&data.db)
-    .await?;
-
+    let config = data.dblib.get_captcha_config(&username, &key).await?;
     let levels = data.dblib.get_captcha_levels(Some(&username), &key).await?;
     let stats = data.stats.fetch(&data, &username, &key).await?;
 
