@@ -223,6 +223,15 @@ pub trait MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
 
     /// mark a notification read
     async fn mark_notification_read(&self, username: &str, id: i32) -> DBResult<()>;
+
+    /// record PoWConfig fetches
+    async fn record_fetch(&self, key: &str) -> DBResult<()>;
+
+    /// record PoWConfig solves
+    async fn record_solve(&self, key: &str) -> DBResult<()>;
+
+    /// record PoWConfig confirms
+    async fn record_confirm(&self, key: &str) -> DBResult<()>;
 }
 
 #[derive(Debug, Clone, Default, Deserialize, Serialize, PartialEq)]
