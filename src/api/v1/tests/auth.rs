@@ -31,7 +31,7 @@ pub async fn auth_works() {
     const PASSWORD: &str = "longpassword";
     const EMAIL: &str = "testuser1@a.com";
 
-    let data = crate::data::Data::new().await;
+    let data = get_data().await;
     let data = &data;
 
     let app = get_app!(data).await;
@@ -147,7 +147,7 @@ pub async fn serverside_password_validation_works() {
     const NAME: &str = "testuser542";
     const PASSWORD: &str = "longpassword2";
 
-    let data = crate::data::Data::new().await;
+    let data = get_data().await;
     let data = &data;
     delete_user(data, NAME).await;
 

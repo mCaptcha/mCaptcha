@@ -46,7 +46,8 @@ use sqlx::PgPool;
 use db_core::MCDatabase;
 
 use crate::errors::ServiceResult;
-use crate::SETTINGS;
+//use crate::SETTINGS;
+use crate::settings::Settings;
 
 macro_rules! enum_system_actor {
     ($name:ident, $type:ident) => {
@@ -105,9 +106,13 @@ impl SystemGroup {
     // utility function to remove captcha
     enum_system_actor!(remove, RemoveCaptcha);
 
-    fn new_system<A: Save, B: MasterTrait>(m: Addr<B>, c: Addr<A>) -> System<A, B> {
+    fn new_system<A: Save, B: MasterTrait>(
+        s: &Settings,
+        m: Addr<B>,
+        c: Addr<A>,
+    ) -> System<A, B> {
         let pow = PoWConfigBuilder::default()
-            .salt(SETTINGS.captcha.salt.clone())
+            .salt(s.captcha.salt.clone())
             .build()
             .unwrap();
 
@@ -116,8 +121,8 @@ impl SystemGroup {
 
     // read settings, if Redis is configured then produce a Redis mCaptcha cache
     // based SystemGroup
-    async fn new() -> Self {
-        match &SETTINGS.redis {
+    async fn new(s: &Settings) -> Self {
+        match &s.redis {
             Some(val) => {
                 let master = RedisMaster::new(RedisConfig::Single(val.url.clone()))
                     .await
@@ -127,14 +132,14 @@ impl SystemGroup {
                     .await
                     .unwrap()
                     .start();
-                let captcha = Self::new_system(master, cache);
+                let captcha = Self::new_system(s, master, cache);
 
                 SystemGroup::Redis(captcha)
             }
             None => {
-                let master = EmbeddedMaster::new(SETTINGS.captcha.gc).start();
+                let master = EmbeddedMaster::new(s.captcha.gc).start();
                 let cache = HashCache::default().start();
-                let captcha = Self::new_system(master, cache);
+                let captcha = Self::new_system(s, master, cache);
 
                 SystemGroup::Embedded(captcha)
             }
@@ -154,6 +159,9 @@ pub struct Data {
     pub captcha: SystemGroup,
     /// email client
     pub mailer: Option<Mailer>,
+
+    /// app settings
+    pub settings: Settings,
 }
 
 impl Data {
@@ -168,7 +176,7 @@ impl Data {
     }
     #[cfg(not(tarpaulin_include))]
     /// create new instance of app data
-    pub async fn new() -> Arc<Self> {
+    pub async fn new(s: &Settings) -> Arc<Self> {
         let creds = Self::get_creds();
         let c = creds.clone();
 
@@ -180,17 +188,16 @@ impl Data {
         });
 
         let db = PgPoolOptions::new()
-            .max_connections(SETTINGS.database.pool)
-            .connect(&SETTINGS.database.url)
+            .max_connections(s.database.pool)
+            .connect(&s.database.url)
             .await
             .expect("Unable to form database pool");
 
-        let settings = &SETTINGS;
-        let pool = settings.database.pool;
+        let pool = s.database.pool;
         let pool_options = PgPoolOptions::new().max_connections(pool);
         let connection_options = ConnectionOptions::Fresh(Fresh {
             pool_options,
-            url: settings.database.url.clone(),
+            url: s.database.url.clone(),
         });
         let dblib = connection_options.connect().await.unwrap();
         dblib.migrate().await.unwrap();
@@ -199,8 +206,9 @@ impl Data {
             creds,
             db,
             dblib: Box::new(dblib),
-            captcha: SystemGroup::new().await,
-            mailer: Self::get_mailer(),
+            captcha: SystemGroup::new(s).await,
+            mailer: Self::get_mailer(s),
+            settings: s.clone(),
         };
 
         #[cfg(not(debug_assertions))]
@@ -209,8 +217,8 @@ impl Data {
         Arc::new(data)
     }
 
-    fn get_mailer() -> Option<Mailer> {
-        if let Some(smtp) = SETTINGS.smtp.as_ref() {
+    fn get_mailer(s: &Settings) -> Option<Mailer> {
+        if let Some(smtp) = s.smtp.as_ref() {
             let creds =
                 Credentials::new(smtp.username.to_string(), smtp.password.to_string()); // "smtp_username".to_string(), "smtp_password".to_string());
 

@@ -115,7 +115,7 @@ pub mod runners {
         payload: &Register,
         data: &AppData,
     ) -> ServiceResult<()> {
-        if !crate::SETTINGS.allow_registration {
+        if !data.settings.allow_registration {
             return Err(ServiceError::ClosedForRegistration);
         }
 

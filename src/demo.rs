@@ -115,7 +115,7 @@ mod tests {
 
     #[actix_rt::test]
     async fn demo_account_works() {
-        let data_inner = crate::data::Data::new().await;
+        let data_inner = get_data().await;
         let data_inner = &data_inner;
         let data = AppData::new(data_inner.clone());
         crate::tests::delete_user(data_inner, DEMO_USER).await;

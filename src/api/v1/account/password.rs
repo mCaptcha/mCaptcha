@@ -111,7 +111,7 @@ pub mod tests {
         const PASSWORD: &str = "longpassword2";
         const EMAIL: &str = "updatepassuser@a.com";
 
-        let data = crate::data::Data::new().await;
+        let data = get_data().await;
         let data = &data;
 
         delete_user(data, NAME).await;

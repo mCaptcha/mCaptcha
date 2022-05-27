@@ -33,7 +33,7 @@ pub async fn uname_email_exists_works() {
     const NAME: &str = "testuserexists";
     const PASSWORD: &str = "longpassword2";
     const EMAIL: &str = "testuserexists@a.com2";
-    let data = crate::data::Data::new().await;
+    let data = get_data().await;
     let data = &data;
     delete_user(data, NAME).await;
 
@@ -122,7 +122,7 @@ pub async fn email_udpate_password_validation_del_userworks() {
     const NAME2: &str = "eupdauser";
     const EMAIL2: &str = "eupdauser@a.com";
 
-    let data = crate::data::Data::new().await;
+    let data = get_data().await;
     let data = &data;
     delete_user(data, NAME).await;
     delete_user(data, NAME2).await;
@@ -206,7 +206,7 @@ pub async fn username_update_works() {
     const NAME2: &str = "terstusrtds";
     const NAME_CHANGE: &str = "terstusrtdsxx";
 
-    let data = crate::data::Data::new().await;
+    let data = get_data().await;
     let data = &data;
 
     futures::join!(

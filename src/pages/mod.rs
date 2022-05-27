@@ -11,7 +11,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 use actix_auth_middleware::Authentication;
 use actix_web::web::ServiceConfig;
@@ -51,7 +52,7 @@ mod tests {
         const PASSWORD: &str = "longpassword";
         const EMAIL: &str = "templateuser@a.com";
 
-        let data = crate::data::Data::new().await;
+        let data = get_data().await;
         let data = &data;
         delete_user(data, NAME).await;
 

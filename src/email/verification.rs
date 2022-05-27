@@ -1,19 +1,19 @@
 /*
-* Copyright (C) 2022  Aravinth Manivannan <realaravinth@batsense.net>
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as
-* published by the Free Software Foundation, either version 3 of the
-* License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-*
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+ * Copyright (C) 2022  Aravinth Manivannan <realaravinth@batsense.net>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 //! Email operations: verification, notification, etc
 use lettre::{
     message::{header, MultiPart, SinglePart},
@@ -44,7 +44,7 @@ async fn verification(
     to: &str,
     verification_link: &str,
 ) -> ServiceResult<()> {
-    if let Some(smtp) = SETTINGS.smtp.as_ref() {
+    if let Some(smtp) = data.settings.smtp.as_ref() {
         let from = format!("mCaptcha Admin <{}>", smtp.from);
         let reply_to = format!("mCaptcha Admin <{}>", smtp.reply);
         const SUBJECT: &str = "[mCaptcha] Please verify your email";
@@ -64,7 +64,7 @@ Admin
 instance: {}
 project website: {}",
             verification_link,
-            SETTINGS.server.domain,
+            &data.settings.server.domain,
             crate::PKG_HOMEPAGE
         );
 
@@ -105,7 +105,8 @@ mod tests {
     async fn email_verification_works() {
         const TO_ADDR: &str = "Hello <realaravinth@localhost>";
         const VERIFICATION_LINK: &str = "https://localhost";
-        let data = Data::new().await;
+        let data = crate::tests::get_data().await;
+        let settings = &data.settings;
         verification(&data, TO_ADDR, VERIFICATION_LINK)
             .await
             .unwrap();
@@ -118,7 +119,7 @@ mod tests {
             .unwrap();
         let data: serde_json::Value = resp.json().await.unwrap();
         let data = &data[0];
-        let smtp = SETTINGS.smtp.as_ref().unwrap();
+        let smtp = settings.smtp.as_ref().unwrap();
 
         let from_addr = &data["headers"]["from"];
 

@@ -113,7 +113,7 @@ mod test {
         const PASSWORD: &str = "longpassworddomain";
         const EMAIL: &str = "viewsitekeyuser@a.com";
 
-        let data = crate::data::Data::new().await;
+        let data = get_data().await;
         let data = &data;
         delete_user(data, NAME).await;
 

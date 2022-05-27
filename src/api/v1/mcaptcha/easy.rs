@@ -121,13 +121,11 @@ async fn create(
     let username = id.identity().unwrap();
     let payload = payload.into_inner();
     let pattern = (&payload).into();
-    let levels = calculate(
-        &pattern,
-        &crate::SETTINGS.captcha.default_difficulty_strategy,
-    )?;
+    let levels =
+        calculate(&pattern, &data.settings.captcha.default_difficulty_strategy)?;
     let msg = CreateCaptcha {
         levels,
-        duration: crate::SETTINGS.captcha.default_difficulty_strategy.duration,
+        duration: data.settings.captcha.default_difficulty_strategy.duration,
         description: payload.description,
     };
 
@@ -156,14 +154,12 @@ async fn update(
     let username = id.identity().unwrap();
     let payload = payload.into_inner();
     let pattern = (&payload.pattern).into();
-    let levels = calculate(
-        &pattern,
-        &crate::SETTINGS.captcha.default_difficulty_strategy,
-    )?;
+    let levels =
+        calculate(&pattern, &data.settings.captcha.default_difficulty_strategy)?;
 
     let msg = UpdateCaptcha {
         levels,
-        duration: crate::SETTINGS.captcha.default_difficulty_strategy.duration,
+        duration: data.settings.captcha.default_difficulty_strategy.duration,
         description: payload.pattern.description,
         key: payload.key,
     };
@@ -201,6 +197,7 @@ pub mod tests {
         #[test]
         fn easy_configuration_works() {
             const NAME: &str = "defaultuserconfgworks";
+            let settings = crate::tests::get_settings();
 
             let mut payload = TrafficPattern {
                 avg_traffic: 100_000,
@@ -208,7 +205,7 @@ pub mod tests {
                 broke_my_site_traffic: Some(10_000_000),
             };
 
-            let strategy = &crate::SETTINGS.captcha.default_difficulty_strategy;
+            let strategy = &settings.captcha.default_difficulty_strategy;
             let l1 = LevelBuilder::default()
                 .difficulty_factor(strategy.avg_traffic_difficulty)
                 .unwrap()
@@ -273,7 +270,7 @@ pub mod tests {
         const NAME: &str = "defaultuserconfgworks";
         const PASSWORD: &str = "longpassworddomain";
         const EMAIL: &str = "defaultuserconfgworks@a.com";
-        let data = crate::data::Data::new().await;
+        let data = crate::tests::get_data().await;
         let data = &data;
 
         delete_user(data, NAME).await;
@@ -292,7 +289,7 @@ pub mod tests {
 
         let default_levels = calculate(
             &(&payload).into(),
-            &crate::SETTINGS.captcha.default_difficulty_strategy,
+            &data.settings.captcha.default_difficulty_strategy,
         )
         .unwrap();
 
@@ -331,7 +328,7 @@ pub mod tests {
 
         let updated_default_values = calculate(
             &(&update_pattern).into(),
-            &crate::SETTINGS.captcha.default_difficulty_strategy,
+            &data.settings.captcha.default_difficulty_strategy,
         )
         .unwrap();
 

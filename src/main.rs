@@ -110,12 +110,13 @@ async fn main() -> std::io::Result<()> {
         PKG_NAME, PKG_DESCRIPTION, PKG_HOMEPAGE, VERSION, GIT_COMMIT_HASH
     );
 
-    let data = Data::new().await;
+    let settings = Settings::new().unwrap();
+    let data = Data::new(&settings).await;
     let data = actix_web::web::Data::new(data);
 
     let mut demo_user: Option<DemoUser> = None;
 
-    if SETTINGS.allow_demo && SETTINGS.allow_registration {
+    if settings.allow_demo && settings.allow_registration {
         demo_user = Some(
             DemoUser::spawn(data.clone(), Duration::from_secs(60 * 30))
                 .await
@@ -123,7 +124,8 @@ async fn main() -> std::io::Result<()> {
         );
     }
 
-    println!("Starting server on: http://{}", SETTINGS.server.get_ip());
+    let ip = settings.server.get_ip();
+    println!("Starting server on: http://{ip}");
 
     HttpServer::new(move || {
         App::new()
@@ -132,7 +134,7 @@ async fn main() -> std::io::Result<()> {
                 actix_middleware::DefaultHeaders::new()
                     .add(("Permissions-Policy", "interest-cohort=()")),
             )
-            .wrap(get_identity_service())
+            .wrap(get_identity_service(&settings))
             .wrap(actix_middleware::Compress::default())
             .app_data(data.clone())
             .wrap(actix_middleware::NormalizePath::new(
@@ -141,7 +143,7 @@ async fn main() -> std::io::Result<()> {
             .configure(routes::services)
             .app_data(get_json_err())
     })
-    .bind(SETTINGS.server.get_ip())
+    .bind(&ip)
     .unwrap()
     .run()
     .await?;
@@ -161,14 +163,16 @@ pub fn get_json_err() -> JsonConfig {
 }
 
 #[cfg(not(tarpaulin_include))]
-pub fn get_identity_service() -> IdentityService<CookieIdentityPolicy> {
-    let cookie_secret = &SETTINGS.server.cookie_secret;
+pub fn get_identity_service(
+    settings: &Settings,
+) -> IdentityService<CookieIdentityPolicy> {
+    let cookie_secret = &settings.server.cookie_secret;
     IdentityService::new(
         CookieIdentityPolicy::new(cookie_secret.as_bytes())
             .name("Authorization")
             //TODO change cookie age
             .max_age_secs(216000)
-            .domain(&SETTINGS.server.domain)
+            .domain(&settings.server.domain)
             .secure(false),
     )
 }
