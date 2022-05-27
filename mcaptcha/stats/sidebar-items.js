@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["fetch",""],["record",""]]});
+initSidebarItems({"struct":[["CaptchaStats",""],["Dummy",""],["Real",""]],"trait":[["CloneStats","Trait to clone MCDatabase"],["Stats",""]]});

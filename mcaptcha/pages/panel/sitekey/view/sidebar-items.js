@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["PAGE",""]],"struct":[["IndexPage",""],["Level",""],["McaptchaConfig",""],["view_sitekey","route handler that renders individual views for sitekeys"]]});
+initSidebarItems({"constant":[["PAGE",""]],"struct":[["IndexPage",""],["view_sitekey","route handler that renders individual views for sitekeys"]]});

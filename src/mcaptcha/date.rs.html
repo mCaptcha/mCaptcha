@@ -112,6 +112,12 @@
 <span id="107">107</span>
 <span id="108">108</span>
 <span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
  *
@@ -178,6 +184,12 @@
     <span class="doccomment">/// print date</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">date</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">String</span> {
         <span class="self">self</span>.<span class="ident">time</span>.<span class="ident">format</span>(<span class="string">&quot;%F %r %z&quot;</span>)
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">unix</span>: <span class="ident">i64</span>) -&gt; <span class="self">Self</span> {
+        <span class="self">Self</span> {
+            <span class="ident">time</span>: <span class="ident">OffsetDateTime::from_unix_timestamp</span>(<span class="ident">unix</span>),
+        }
     }
 }
 

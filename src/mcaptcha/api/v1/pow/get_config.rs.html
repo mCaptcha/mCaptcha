@@ -188,28 +188,22 @@
 <span id="183">183</span>
 <span id="184">184</span>
 <span id="185">185</span>
-<span id="186">186</span>
-<span id="187">187</span>
-<span id="188">188</span>
-<span id="189">189</span>
-<span id="190">190</span>
-<span id="191">191</span>
 </pre><pre class="rust"><code><span class="comment">/*
-* Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as
-* published by the Free Software Foundation, either version 3 of the
-* License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-*
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
-*/</span>
+ * Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+ */</span>
 
 <span class="comment">//use actix::prelude::*;</span>
 <span class="kw">use</span> <span class="ident">actix_web</span>::{<span class="ident">web</span>, <span class="ident">HttpResponse</span>, <span class="ident">Responder</span>};
@@ -219,9 +213,8 @@
 };
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
-<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::I32Levels</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::errors</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::stats::record::record_fetch</span>;
+<span class="comment">//use crate::stats::record::record_fetch;</span>
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::AppData</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::V1_API_ROUTES</span>;
 
@@ -238,43 +231,58 @@
     <span class="ident">payload</span>: <span class="ident">web::Json</span><span class="op">&lt;</span><span class="ident">GetConfigPayload</span><span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">AppData</span>,
 ) -&gt; <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="macro">sqlx::query!</span>(
-        <span class="string">&quot;SELECT EXISTS (SELECT 1 from mcaptcha_config WHERE key = $1)&quot;</span>,
-        <span class="kw-2">&amp;</span><span class="ident">payload</span>.<span class="ident">key</span>,
-    )
-    .<span class="ident">fetch_one</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>.<span class="ident">db</span>)
-    .<span class="kw">await</span><span class="question-mark">?</span>;
-
-    <span class="kw">if</span> <span class="ident">res</span>.<span class="ident">exists</span>.<span class="ident">is_none</span>() {
+    <span class="comment">//if res.exists.is_none() {</span>
+    <span class="kw">if</span> <span class="op">!</span><span class="ident">data</span>.<span class="ident">db</span>.<span class="ident">captcha_exists</span>(<span class="prelude-val">None</span>, <span class="kw-2">&amp;</span><span class="ident">payload</span>.<span class="ident">key</span>).<span class="kw">await</span><span class="question-mark">?</span> {
         <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ServiceError::TokenNotFound</span>);
     }
     <span class="kw">let</span> <span class="ident">payload</span> <span class="op">=</span> <span class="ident">payload</span>.<span class="ident">into_inner</span>();
-    <span class="kw">match</span> <span class="ident">res</span>.<span class="ident">exists</span> {
-        <span class="prelude-val">Some</span>(<span class="bool-val">true</span>) =&gt; {
-            <span class="kw">match</span> <span class="ident">data</span>.<span class="ident">captcha</span>.<span class="ident">get_pow</span>(<span class="ident">payload</span>.<span class="ident">key</span>.<span class="ident">clone</span>()).<span class="kw">await</span> {
-                <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">config</span>)) =&gt; {
-                    <span class="ident">record_fetch</span>(<span class="kw-2">&amp;</span><span class="ident">payload</span>.<span class="ident">key</span>, <span class="kw-2">&amp;</span><span class="ident">data</span>.<span class="ident">db</span>).<span class="kw">await</span>;
-                    <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse::Ok</span>().<span class="ident">json</span>(<span class="ident">config</span>))
-                }
-                <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; {
-                    <span class="ident">init_mcaptcha</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>, <span class="kw-2">&amp;</span><span class="ident">payload</span>.<span class="ident">key</span>).<span class="kw">await</span><span class="question-mark">?</span>;
-                    <span class="kw">let</span> <span class="ident">config</span> <span class="op">=</span> <span class="ident">data</span>
-                        .<span class="ident">captcha</span>
-                        .<span class="ident">get_pow</span>(<span class="ident">payload</span>.<span class="ident">key</span>.<span class="ident">clone</span>())
-                        .<span class="kw">await</span>
-                        .<span class="ident">expect</span>(<span class="string">&quot;mcaptcha should be initialized and ready to go&quot;</span>);
-                    <span class="comment">// background it. would require data::Data to be static</span>
-                    <span class="comment">// to satidfy lifetime</span>
-                    <span class="ident">record_fetch</span>(<span class="kw-2">&amp;</span><span class="ident">payload</span>.<span class="ident">key</span>, <span class="kw-2">&amp;</span><span class="ident">data</span>.<span class="ident">db</span>).<span class="kw">await</span>;
-                    <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse::Ok</span>().<span class="ident">json</span>(<span class="ident">config</span>))
-                }
-                <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">e</span>.<span class="ident">into</span>()),
-            }
-        }
 
-        <span class="prelude-val">Some</span>(<span class="bool-val">false</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">ServiceError::TokenNotFound</span>),
-        <span class="prelude-val">None</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">ServiceError::TokenNotFound</span>),
+    <span class="kw">match</span> <span class="ident">data</span>.<span class="ident">captcha</span>.<span class="ident">get_pow</span>(<span class="ident">payload</span>.<span class="ident">key</span>.<span class="ident">clone</span>()).<span class="kw">await</span> {
+        <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">config</span>)) =&gt; {
+            <span class="ident">data</span>.<span class="ident">stats</span>.<span class="ident">record_fetch</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>, <span class="kw-2">&amp;</span><span class="ident">payload</span>.<span class="ident">key</span>).<span class="kw">await</span><span class="question-mark">?</span>;
+            <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse::Ok</span>().<span class="ident">json</span>(<span class="ident">config</span>))
+        }
+        <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; {
+            <span class="ident">init_mcaptcha</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>, <span class="kw-2">&amp;</span><span class="ident">payload</span>.<span class="ident">key</span>).<span class="kw">await</span><span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">config</span> <span class="op">=</span> <span class="ident">data</span>
+                .<span class="ident">captcha</span>
+                .<span class="ident">get_pow</span>(<span class="ident">payload</span>.<span class="ident">key</span>.<span class="ident">clone</span>())
+                .<span class="kw">await</span>
+                .<span class="ident">expect</span>(<span class="string">&quot;mcaptcha should be initialized and ready to go&quot;</span>);
+            <span class="comment">// background it. would require data::Data to be static</span>
+            <span class="comment">// to satidfy lifetime</span>
+            <span class="ident">data</span>.<span class="ident">stats</span>.<span class="ident">record_fetch</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>, <span class="kw-2">&amp;</span><span class="ident">payload</span>.<span class="ident">key</span>).<span class="kw">await</span><span class="question-mark">?</span>;
+            <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse::Ok</span>().<span class="ident">json</span>(<span class="ident">config</span>))
+        }
+        <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">e</span>.<span class="ident">into</span>()),
     }
+
+    <span class="comment">//    match res.exists {</span>
+    <span class="comment">//        Some(true) =&gt; {</span>
+    <span class="comment">//            match data.captcha.get_pow(payload.key.clone()).await {</span>
+    <span class="comment">//                Ok(Some(config)) =&gt; {</span>
+    <span class="comment">//                    record_fetch(&amp;payload.key, &amp;data.db).await;</span>
+    <span class="comment">//                    Ok(HttpResponse::Ok().json(config))</span>
+    <span class="comment">//                }</span>
+    <span class="comment">//                Ok(None) =&gt; {</span>
+    <span class="comment">//                    init_mcaptcha(&amp;data, &amp;payload.key).await?;</span>
+    <span class="comment">//                    let config = data</span>
+    <span class="comment">//                        .captcha</span>
+    <span class="comment">//                        .get_pow(payload.key.clone())</span>
+    <span class="comment">//                        .await</span>
+    <span class="comment">//                        .expect(&quot;mcaptcha should be initialized and ready to go&quot;);</span>
+    <span class="comment">//                    // background it. would require data::Data to be static</span>
+    <span class="comment">//                    // to satidfy lifetime</span>
+    <span class="comment">//                    record_fetch(&amp;payload.key, &amp;data.db).await;</span>
+    <span class="comment">//                    Ok(HttpResponse::Ok().json(config))</span>
+    <span class="comment">//                }</span>
+    <span class="comment">//                Err(e) =&gt; Err(e.into()),</span>
+    <span class="comment">//            }</span>
+    <span class="comment">//        }</span>
+    <span class="comment">//</span>
+    <span class="comment">//        Some(false) =&gt; Err(ServiceError::TokenNotFound),</span>
+    <span class="comment">//        None =&gt; Err(ServiceError::TokenNotFound),</span>
+    <span class="comment">//    }</span>
 }
 <span class="doccomment">/// Call this when [MCaptcha][libmcaptcha::MCaptcha] is not in master.</span>
 <span class="doccomment">///</span>
@@ -282,29 +290,8 @@
 <span class="doccomment">/// creates [MCaptcha][libmcaptcha::MCaptcha] and adds it to [Master][libmcaptcha::Defense]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">init_mcaptcha</span>(<span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="ident">AppData</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">ServiceResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="comment">// get levels</span>
-    <span class="kw">let</span> <span class="ident">levels_fut</span> <span class="op">=</span> <span class="macro">sqlx::query_as!</span>(
-        <span class="ident">I32Levels</span>,
-        <span class="string">&quot;SELECT difficulty_factor, visitor_threshold FROM mcaptcha_levels  WHERE
-            config_id = (
-                SELECT config_id FROM mcaptcha_config WHERE key = ($1)
-                ) ORDER BY difficulty_factor ASC;&quot;</span>,
-        <span class="kw-2">&amp;</span><span class="ident">key</span>,
-    )
-    .<span class="ident">fetch_all</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>.<span class="ident">db</span>);
-
-    <span class="kw">struct</span> <span class="ident">DurationResp</span> {
-        <span class="ident">duration</span>: <span class="ident">i32</span>,
-    }
-    <span class="comment">// get duration</span>
-    <span class="kw">let</span> <span class="ident">duration_fut</span> <span class="op">=</span> <span class="macro">sqlx::query_as!</span>(
-        <span class="ident">DurationResp</span>,
-        <span class="string">&quot;SELECT duration FROM mcaptcha_config  
-        WHERE key = $1&quot;</span>,
-        <span class="kw-2">&amp;</span><span class="ident">key</span>,
-    )
-    .<span class="ident">fetch_one</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>.<span class="ident">db</span>);
-    <span class="comment">//let (levels, duration) = futures::try_join!(levels_fut, duration_fut).await?;</span>
-    <span class="kw">let</span> (<span class="ident">levels</span>, <span class="ident">duration</span>) <span class="op">=</span> <span class="macro">futures::try_join!</span>(<span class="ident">levels_fut</span>, <span class="ident">duration_fut</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">levels</span> <span class="op">=</span> <span class="ident">data</span>.<span class="ident">db</span>.<span class="ident">get_captcha_levels</span>(<span class="prelude-val">None</span>, <span class="ident">key</span>).<span class="kw">await</span><span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">duration</span> <span class="op">=</span> <span class="ident">data</span>.<span class="ident">db</span>.<span class="ident">get_captcha_cooldown</span>(<span class="ident">key</span>).<span class="kw">await</span><span class="question-mark">?</span>;
 
     <span class="comment">// build defense</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">defense</span> <span class="op">=</span> <span class="ident">DefenseBuilder::default</span>();
@@ -325,7 +312,7 @@
     <span class="kw">let</span> <span class="ident">mcaptcha</span> <span class="op">=</span> <span class="ident">MCaptchaBuilder::default</span>()
         .<span class="ident">defense</span>(<span class="ident">defense</span>)
         <span class="comment">// leaky bucket algorithm&#39;s emission interval</span>
-        .<span class="ident">duration</span>(<span class="ident">duration</span>.<span class="ident">duration</span> <span class="kw">as</span> <span class="ident">u64</span>)
+        .<span class="ident">duration</span>(<span class="ident">duration</span> <span class="kw">as</span> <span class="ident">u64</span>)
         <span class="comment">//   .cache(cache)</span>
         .<span class="ident">build</span>()
         .<span class="ident">unwrap</span>();
@@ -343,11 +330,12 @@
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span> {
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">tests</span> {
+    <span class="kw">use</span> <span class="kw">crate</span>::<span class="kw-2">*</span>;
     <span class="kw">use</span> <span class="ident">libmcaptcha::pow::PoWConfig</span>;
 
     <span class="attribute">#[<span class="ident">actix_rt::test</span>]</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_pow_config_works</span>() {
+    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_pow_config_works</span>() {
         <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
         <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::tests</span>::<span class="kw-2">*</span>;
         <span class="kw">use</span> <span class="kw">crate</span>::<span class="kw-2">*</span>;
@@ -357,13 +345,13 @@
         <span class="kw">const</span> <span class="ident">PASSWORD</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;testingpas&quot;</span>;
         <span class="kw">const</span> <span class="ident">EMAIL</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;randomuser@a.com&quot;</span>;
 
-        {
-            <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">Data::new</span>().<span class="kw">await</span>;
-            <span class="ident">delete_user</span>(<span class="ident">NAME</span>, <span class="kw-2">&amp;</span><span class="ident">data</span>).<span class="kw">await</span>;
-        }
+        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">get_data</span>().<span class="kw">await</span>;
+        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">data</span>;
 
-        <span class="ident">register_and_signin</span>(<span class="ident">NAME</span>, <span class="ident">EMAIL</span>, <span class="ident">PASSWORD</span>).<span class="kw">await</span>;
-        <span class="kw">let</span> (<span class="ident">data</span>, <span class="kw">_</span>, <span class="ident">_signin_resp</span>, <span class="ident">token_key</span>) <span class="op">=</span> <span class="ident">add_levels_util</span>(<span class="ident">NAME</span>, <span class="ident">PASSWORD</span>).<span class="kw">await</span>;
+        <span class="ident">delete_user</span>(<span class="ident">data</span>, <span class="ident">NAME</span>).<span class="kw">await</span>;
+
+        <span class="ident">register_and_signin</span>(<span class="ident">data</span>, <span class="ident">NAME</span>, <span class="ident">EMAIL</span>, <span class="ident">PASSWORD</span>).<span class="kw">await</span>;
+        <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">_signin_resp</span>, <span class="ident">token_key</span>) <span class="op">=</span> <span class="ident">add_levels_util</span>(<span class="ident">data</span>, <span class="ident">NAME</span>, <span class="ident">PASSWORD</span>).<span class="kw">await</span>;
         <span class="kw">let</span> <span class="ident">app</span> <span class="op">=</span> <span class="macro">get_app!</span>(<span class="ident">data</span>).<span class="kw">await</span>;
 
         <span class="kw">let</span> <span class="ident">get_config_payload</span> <span class="op">=</span> <span class="ident">GetConfigPayload</span> {

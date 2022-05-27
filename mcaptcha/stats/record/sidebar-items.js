@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["record_confirm","record PoWConfig confirms"],["record_fetch","record PoWConfig fetches"],["record_solve","record PoWConfig solves"]]});

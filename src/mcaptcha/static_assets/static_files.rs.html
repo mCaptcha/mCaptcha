@@ -171,44 +171,6 @@
 <span id="166">166</span>
 <span id="167">167</span>
 <span id="168">168</span>
-<span id="169">169</span>
-<span id="170">170</span>
-<span id="171">171</span>
-<span id="172">172</span>
-<span id="173">173</span>
-<span id="174">174</span>
-<span id="175">175</span>
-<span id="176">176</span>
-<span id="177">177</span>
-<span id="178">178</span>
-<span id="179">179</span>
-<span id="180">180</span>
-<span id="181">181</span>
-<span id="182">182</span>
-<span id="183">183</span>
-<span id="184">184</span>
-<span id="185">185</span>
-<span id="186">186</span>
-<span id="187">187</span>
-<span id="188">188</span>
-<span id="189">189</span>
-<span id="190">190</span>
-<span id="191">191</span>
-<span id="192">192</span>
-<span id="193">193</span>
-<span id="194">194</span>
-<span id="195">195</span>
-<span id="196">196</span>
-<span id="197">197</span>
-<span id="198">198</span>
-<span id="199">199</span>
-<span id="200">200</span>
-<span id="201">201</span>
-<span id="202">202</span>
-<span id="203">203</span>
-<span id="204">204</span>
-<span id="205">205</span>
-<span id="206">206</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
  *
@@ -311,7 +273,6 @@
     }
 }
 
-
 <span class="attribute">#[<span class="ident">get</span>(<span class="string">&quot;/assets/{_:.*}&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">static_files</span>(<span class="ident">path</span>: <span class="ident">web::Path</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) -&gt; <span class="kw">impl</span> <span class="ident">Responder</span> {
     <span class="ident">handle_assets</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>)
@@ -342,7 +303,6 @@
     }
 }
 
-
 <span class="attribute">#[<span class="ident">get</span>(<span class="string">&quot;/{file}&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">favicons</span>(<span class="ident">path</span>: <span class="ident">web::Path</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) -&gt; <span class="kw">impl</span> <span class="ident">Responder</span> {
     <span class="macro">debug!</span>(<span class="string">&quot;searching favicons&quot;</span>);
@@ -354,65 +314,29 @@
     <span class="kw">use</span> <span class="ident">actix_web::http::StatusCode</span>;
     <span class="kw">use</span> <span class="ident">actix_web::test</span>;
 
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
     <span class="kw">use</span> <span class="kw">crate</span>::<span class="kw-2">*</span>;
 
     <span class="attribute">#[<span class="ident">actix_rt::test</span>]</span>
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">static_assets_work</span>() {
         <span class="kw">let</span> <span class="ident">app</span> <span class="op">=</span> <span class="macro">get_app!</span>().<span class="kw">await</span>;
 
-        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="ident">app</span>,
-            <span class="ident">test::TestRequest::get</span>().<span class="ident">uri</span>(<span class="kw-2">*</span><span class="ident"><span class="kw">crate</span>::JS</span>).<span class="ident">to_request</span>(),
-        )
-        .<span class="kw">await</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::OK</span>);
+        <span class="kw">let</span> <span class="ident">urls</span> <span class="op">=</span> [
+            <span class="kw-2">*</span><span class="ident"><span class="kw">crate</span>::JS</span>,
+            <span class="kw-2">*</span><span class="ident"><span class="kw">crate</span>::VERIFICATIN_WIDGET_JS</span>,
+            <span class="kw-2">*</span><span class="ident"><span class="kw">crate</span>::VERIFICATIN_WIDGET_CSS</span>,
+            <span class="ident"><span class="kw">crate</span>::FILES</span>
+                .<span class="ident">get</span>(<span class="string">&quot;./static/cache/img/icon-trans.png&quot;</span>)
+                .<span class="ident">unwrap</span>(),
+            <span class="string">&quot;/favicon.ico&quot;</span>,
+        ];
 
-        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="ident">app</span>,
-            <span class="ident">test::TestRequest::get</span>()
-                .<span class="ident">uri</span>(<span class="kw-2">*</span><span class="ident"><span class="kw">crate</span>::VERIFICATIN_WIDGET_JS</span>)
-                .<span class="ident">to_request</span>(),
-        )
-        .<span class="kw">await</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::OK</span>);
-
-        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="ident">app</span>,
-            <span class="ident">test::TestRequest::get</span>()
-                .<span class="ident">uri</span>(<span class="kw-2">*</span><span class="ident"><span class="kw">crate</span>::VERIFICATIN_WIDGET_CSS</span>)
-                .<span class="ident">to_request</span>(),
-        )
-        .<span class="kw">await</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::OK</span>);
-
-        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="ident">app</span>,
-            <span class="ident">test::TestRequest::get</span>()
-                .<span class="ident">uri</span>(
-                    <span class="ident"><span class="kw">crate</span>::FILES</span>
-                        .<span class="ident">get</span>(<span class="string">&quot;./static/cache/img/icon-trans.png&quot;</span>)
-                        .<span class="ident">unwrap</span>(),
-                )
-                .<span class="ident">to_request</span>(),
-        )
-        .<span class="kw">await</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::OK</span>);
-    }
-
-    <span class="attribute">#[<span class="ident">actix_rt::test</span>]</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">favicons_work</span>() {
-        <span class="macro">assert!</span>(<span class="ident">Favicons::get</span>(<span class="string">&quot;favicon.ico&quot;</span>).<span class="ident">is_some</span>());
-
-        <span class="comment">//let app = test::init_service(App::new().configure(services)).await;</span>
-        <span class="kw">let</span> <span class="ident">app</span> <span class="op">=</span> <span class="macro">get_app!</span>().<span class="kw">await</span>;
-
-        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="ident">app</span>,
-            <span class="ident">test::TestRequest::get</span>().<span class="ident">uri</span>(<span class="string">&quot;/favicon.ico&quot;</span>).<span class="ident">to_request</span>(),
-        )
-        .<span class="kw">await</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::OK</span>);
+        <span class="kw">for</span> <span class="ident">u</span> <span class="kw">in</span> <span class="ident">urls</span>.<span class="ident">iter</span>() {
+            <span class="macro">println!</span>(<span class="string">&quot;[*] Testing static asset at URL: {u}&quot;</span>);
+            <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span>
+                <span class="ident">test::call_service</span>(<span class="kw-2">&amp;</span><span class="ident">app</span>, <span class="ident">test::TestRequest::get</span>().<span class="ident">uri</span>(<span class="ident">u</span>).<span class="ident">to_request</span>())
+                    .<span class="kw">await</span>;
+            <span class="macro">assert_eq!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::OK</span>);
+        }
     }
 }
 </code></pre></div>

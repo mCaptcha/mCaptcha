@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["MarkReadReq",""],["NotificationResp",""],["mark_read","route handler that marks a notification read"]]});
+initSidebarItems({"struct":[["MarkReadReq",""],["mark_read","route handler that marks a notification read"]]});

@@ -171,7 +171,6 @@
 <span id="166">166</span>
 <span id="167">167</span>
 <span id="168">168</span>
-<span id="169">169</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
  *
@@ -289,11 +288,10 @@
 
     <span class="attribute">#[<span class="ident">actix_rt::test</span>]</span>
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">demo_account_works</span>() {
-        {
-            <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">Data::new</span>().<span class="kw">await</span>;
-            <span class="ident"><span class="kw">crate</span>::tests::delete_user</span>(<span class="ident">DEMO_USER</span>, <span class="kw-2">&amp;</span><span class="ident">data</span>).<span class="kw">await</span>;
-        }
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">AppData::new</span>(<span class="ident">Data::new</span>().<span class="kw">await</span>);
+        <span class="kw">let</span> <span class="ident">data_inner</span> <span class="op">=</span> <span class="ident">get_data</span>().<span class="kw">await</span>;
+        <span class="kw">let</span> <span class="ident">data_inner</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">data_inner</span>;
+        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">AppData::new</span>(<span class="ident">data_inner</span>.<span class="ident">clone</span>());
+        <span class="ident"><span class="kw">crate</span>::tests::delete_user</span>(<span class="ident">data_inner</span>, <span class="ident">DEMO_USER</span>).<span class="kw">await</span>;
         <span class="kw">let</span> <span class="ident">duration</span> <span class="op">=</span> <span class="ident">Duration::from_secs</span>(<span class="ident">DURATION</span>);
 
         <span class="comment">// register works</span>
@@ -302,7 +300,7 @@
             <span class="ident">val</span>: <span class="ident">DEMO_USER</span>.<span class="ident">into</span>(),
         };
         <span class="macro">assert!</span>(<span class="ident">username_exists</span>(<span class="kw-2">&amp;</span><span class="ident">payload</span>, <span class="kw-2">&amp;</span><span class="ident">data</span>).<span class="kw">await</span>.<span class="ident">unwrap</span>().<span class="ident">exists</span>);
-        <span class="ident">signin</span>(<span class="ident">DEMO_USER</span>, <span class="ident">DEMO_PASSWORD</span>).<span class="kw">await</span>;
+        <span class="ident">signin</span>(<span class="ident">data_inner</span>, <span class="ident">DEMO_USER</span>, <span class="ident">DEMO_PASSWORD</span>).<span class="kw">await</span>;
 
         <span class="comment">// deletion works</span>
         <span class="macro">assert!</span>(<span class="ident">DemoUser::delete_demo_user</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>).<span class="kw">await</span>.<span class="ident">is_ok</span>());
@@ -310,8 +308,8 @@
 
         <span class="comment">// test the runner</span>
         <span class="kw">let</span> <span class="ident">user</span> <span class="op">=</span> <span class="ident">DemoUser::spawn</span>(<span class="ident">data</span>, <span class="ident">duration</span>).<span class="kw">await</span>.<span class="ident">unwrap</span>();
-        <span class="kw">let</span> (<span class="ident">data_inner</span>, <span class="kw">_</span>, <span class="ident">signin_resp</span>, <span class="ident">token_key</span>) <span class="op">=</span>
-            <span class="ident">add_levels_util</span>(<span class="ident">DEMO_USER</span>, <span class="ident">DEMO_PASSWORD</span>).<span class="kw">await</span>;
+        <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">signin_resp</span>, <span class="ident">token_key</span>) <span class="op">=</span>
+            <span class="ident">add_levels_util</span>(<span class="ident">data_inner</span>, <span class="ident">DEMO_USER</span>, <span class="ident">DEMO_PASSWORD</span>).<span class="kw">await</span>;
         <span class="kw">let</span> <span class="ident">cookies</span> <span class="op">=</span> <span class="macro">get_cookie!</span>(<span class="ident">signin_resp</span>);
         <span class="kw">let</span> <span class="ident">app</span> <span class="op">=</span> <span class="macro">get_app!</span>(<span class="ident">data_inner</span>).<span class="kw">await</span>;
 

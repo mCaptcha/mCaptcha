@@ -160,24 +160,22 @@
 <span id="155">155</span>
 <span id="156">156</span>
 <span id="157">157</span>
-<span id="158">158</span>
-<span id="159">159</span>
 </pre><pre class="rust"><code><span class="comment">/*
-* Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as
-* published by the Free Software Foundation, either version 3 of the
-* License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-*
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
-*/</span>
+ * Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+ */</span>
 <span class="doccomment">//! PoW success token module</span>
 
 <span class="kw">use</span> <span class="ident">actix_web</span>::{<span class="ident">web</span>, <span class="ident">HttpResponse</span>, <span class="ident">Responder</span>};
@@ -185,7 +183,6 @@
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::errors</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::stats::record::record_confirm</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::AppData</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::V1_API_ROUTES</span>;
 
@@ -208,13 +205,13 @@
         .<span class="ident">validate_verification_tokens</span>(<span class="ident">payload</span>.<span class="ident">into_inner</span>())
         .<span class="kw">await</span><span class="question-mark">?</span>;
     <span class="kw">let</span> <span class="ident">payload</span> <span class="op">=</span> <span class="ident">CaptchaValidateResp</span> { <span class="ident">valid</span>: <span class="ident">res</span> };
-    <span class="ident">record_confirm</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>, <span class="kw-2">&amp;</span><span class="ident">data</span>.<span class="ident">db</span>).<span class="kw">await</span>;
+    <span class="ident">data</span>.<span class="ident">stats</span>.<span class="ident">record_confirm</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>, <span class="kw-2">&amp;</span><span class="ident">key</span>).<span class="kw">await</span><span class="question-mark">?</span>;
     <span class="comment">//println!(&quot;{:?}&quot;, &amp;payload);</span>
     <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse::Ok</span>().<span class="ident">json</span>(<span class="ident">payload</span>))
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span> {
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="ident">actix_web::http::StatusCode</span>;
     <span class="kw">use</span> <span class="ident">actix_web::test</span>;
     <span class="kw">use</span> <span class="ident">libmcaptcha::pow::PoWConfig</span>;
@@ -227,7 +224,7 @@
     <span class="kw">use</span> <span class="kw">crate</span>::<span class="kw-2">*</span>;
 
     <span class="attribute">#[<span class="ident">actix_rt::test</span>]</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">validate_captcha_token_works</span>() {
+    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">validate_captcha_token_works</span>() {
         <span class="kw">const</span> <span class="ident">NAME</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;enterprisetken&quot;</span>;
         <span class="kw">const</span> <span class="ident">PASSWORD</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;testingpas&quot;</span>;
         <span class="kw">const</span> <span class="ident">EMAIL</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;verifyuser@enter.com&quot;</span>;
@@ -236,13 +233,12 @@
         <span class="kw">const</span> <span class="ident">VERIFY_TOKEN_URL</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;/api/v1/pow/siteverify&quot;</span>;
         <span class="comment">//        const UPDATE_URL: &amp;str = &quot;/api/v1/mcaptcha/domain/token/duration/update&quot;;</span>
 
-        {
-            <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">Data::new</span>().<span class="kw">await</span>;
-            <span class="ident">delete_user</span>(<span class="ident">NAME</span>, <span class="kw-2">&amp;</span><span class="ident">data</span>).<span class="kw">await</span>;
-        }
+        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">get_data</span>().<span class="kw">await</span>;
+        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">data</span>;
+        <span class="ident">delete_user</span>(<span class="ident">data</span>, <span class="ident">NAME</span>).<span class="kw">await</span>;
 
-        <span class="ident">register_and_signin</span>(<span class="ident">NAME</span>, <span class="ident">EMAIL</span>, <span class="ident">PASSWORD</span>).<span class="kw">await</span>;
-        <span class="kw">let</span> (<span class="ident">data</span>, <span class="kw">_</span>, <span class="ident">_signin_resp</span>, <span class="ident">token_key</span>) <span class="op">=</span> <span class="ident">add_levels_util</span>(<span class="ident">NAME</span>, <span class="ident">PASSWORD</span>).<span class="kw">await</span>;
+        <span class="ident">register_and_signin</span>(<span class="ident">data</span>, <span class="ident">NAME</span>, <span class="ident">EMAIL</span>, <span class="ident">PASSWORD</span>).<span class="kw">await</span>;
+        <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">_signin_resp</span>, <span class="ident">token_key</span>) <span class="op">=</span> <span class="ident">add_levels_util</span>(<span class="ident">data</span>, <span class="ident">NAME</span>, <span class="ident">PASSWORD</span>).<span class="kw">await</span>;
         <span class="kw">let</span> <span class="ident">app</span> <span class="op">=</span> <span class="macro">get_app!</span>(<span class="ident">data</span>).<span class="kw">await</span>;
 
         <span class="kw">let</span> <span class="ident">get_config_payload</span> <span class="op">=</span> <span class="ident">GetConfigPayload</span> {

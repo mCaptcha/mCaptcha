@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["services",""]],"mod":[["routes",""]],"struct":[["TrafficPattern",""],["UpdateTrafficPattern",""],["create",""],["update",""]]});
+initSidebarItems({"fn":[["calculate",""],["services",""]],"mod":[["routes",""]],"struct":[["TrafficPatternRequest","User’s traffic pattern; used in generating a captcha configuration"],["UpdateTrafficPattern",""],["create",""],["update",""]]});

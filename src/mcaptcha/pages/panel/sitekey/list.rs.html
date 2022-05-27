@@ -108,21 +108,6 @@
 <span id="103">103</span>
 <span id="104">104</span>
 <span id="105">105</span>
-<span id="106">106</span>
-<span id="107">107</span>
-<span id="108">108</span>
-<span id="109">109</span>
-<span id="110">110</span>
-<span id="111">111</span>
-<span id="112">112</span>
-<span id="113">113</span>
-<span id="114">114</span>
-<span id="115">115</span>
-<span id="116">116</span>
-<span id="117">117</span>
-<span id="118">118</span>
-<span id="119">119</span>
-<span id="120">120</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
  *
@@ -144,20 +129,21 @@
 <span class="kw">use</span> <span class="ident">actix_web</span>::{<span class="ident">HttpResponse</span>, <span class="ident">Responder</span>};
 <span class="kw">use</span> <span class="ident">sailfish::TemplateOnce</span>;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::api::v1::mcaptcha::create::MCaptchaDetails</span>;
+<span class="kw">use</span> <span class="ident">db_core::Captcha</span>;
+
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::errors</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::AppData</span>;
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">TemplateOnce</span>, <span class="ident">Clone</span>)]</span>
 <span class="attribute">#[<span class="ident">template</span>(<span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;panel/sitekey/list/index.html&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">IndexPage</span> {
-    <span class="ident">sitekeys</span>: <span class="ident">SiteKeys</span>,
+    <span class="ident">sitekeys</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Captcha</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">const</span> <span class="ident">PAGE</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;SiteKeys&quot;</span>;
 
 <span class="kw">impl</span> <span class="ident">IndexPage</span> {
-    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">sitekeys</span>: <span class="ident">SiteKeys</span>) -&gt; <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">sitekeys</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Captcha</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">IndexPage</span> { <span class="ident">sitekeys</span> }
     }
 }
@@ -168,28 +154,13 @@
     <span class="ident">wrap</span> <span class="op">=</span> <span class="string">&quot;crate::pages::get_middleware()&quot;</span>
 )]</span>
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_sitekeys</span>(<span class="ident">data</span>: <span class="ident">AppData</span>, <span class="ident">id</span>: <span class="ident">Identity</span>) -&gt; <span class="ident">PageResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">get_list_sitekeys</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>, <span class="kw-2">&amp;</span><span class="ident">id</span>).<span class="kw">await</span><span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">username</span> <span class="op">=</span> <span class="ident">id</span>.<span class="ident">identity</span>().<span class="ident">unwrap</span>();
+    <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">data</span>.<span class="ident">db</span>.<span class="ident">get_all_user_captchas</span>(<span class="kw-2">&amp;</span><span class="ident">username</span>).<span class="kw">await</span><span class="question-mark">?</span>;
     <span class="kw">let</span> <span class="ident">body</span> <span class="op">=</span> <span class="ident">IndexPage::new</span>(<span class="ident">res</span>).<span class="ident">render_once</span>().<span class="ident">unwrap</span>();
     <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse::Ok</span>()
         .<span class="ident">content_type</span>(<span class="string">&quot;text/html; charset=utf-8&quot;</span>)
         .<span class="ident">body</span>(<span class="ident">body</span>))
 }
-
-<span class="doccomment">/// utility function to get a list of all sitekeys that a user owns</span>
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_list_sitekeys</span>(<span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="ident">AppData</span>, <span class="ident">id</span>: <span class="kw-2">&amp;</span><span class="ident">Identity</span>) -&gt; <span class="ident">PageResult</span><span class="op">&lt;</span><span class="ident">SiteKeys</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">username</span> <span class="op">=</span> <span class="ident">id</span>.<span class="ident">identity</span>().<span class="ident">unwrap</span>();
-    <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="macro">sqlx::query_as!</span>(
-        <span class="ident">MCaptchaDetails</span>,
-        <span class="string">&quot;SELECT key, name from mcaptcha_config WHERE
-        user_id = (SELECT ID FROM mcaptcha_users WHERE name = $1) &quot;</span>,
-        <span class="kw-2">&amp;</span><span class="ident">username</span>,
-    )
-    .<span class="ident">fetch_all</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>.<span class="ident">db</span>)
-    .<span class="kw">await</span><span class="question-mark">?</span>;
-    <span class="prelude-val">Ok</span>(<span class="ident">res</span>)
-}
-
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">SiteKeys</span> <span class="op">=</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">MCaptchaDetails</span><span class="op">&gt;</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">test</span> {
@@ -206,13 +177,12 @@
         <span class="kw">const</span> <span class="ident">PASSWORD</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;longpassworddomain&quot;</span>;
         <span class="kw">const</span> <span class="ident">EMAIL</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;listsitekeyuser@a.com&quot;</span>;
 
-        {
-            <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">Data::new</span>().<span class="kw">await</span>;
-            <span class="ident">delete_user</span>(<span class="ident">NAME</span>, <span class="kw-2">&amp;</span><span class="ident">data</span>).<span class="kw">await</span>;
-        }
+        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">get_data</span>().<span class="kw">await</span>;
+        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">data</span>;
+        <span class="ident">delete_user</span>(<span class="ident">data</span>, <span class="ident">NAME</span>).<span class="kw">await</span>;
 
-        <span class="ident">register_and_signin</span>(<span class="ident">NAME</span>, <span class="ident">EMAIL</span>, <span class="ident">PASSWORD</span>).<span class="kw">await</span>;
-        <span class="kw">let</span> (<span class="ident">data</span>, <span class="kw">_</span>, <span class="ident">signin_resp</span>, <span class="ident">key</span>) <span class="op">=</span> <span class="ident">add_levels_util</span>(<span class="ident">NAME</span>, <span class="ident">PASSWORD</span>).<span class="kw">await</span>;
+        <span class="ident">register_and_signin</span>(<span class="ident">data</span>, <span class="ident">NAME</span>, <span class="ident">EMAIL</span>, <span class="ident">PASSWORD</span>).<span class="kw">await</span>;
+        <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">signin_resp</span>, <span class="ident">key</span>) <span class="op">=</span> <span class="ident">add_levels_util</span>(<span class="ident">data</span>, <span class="ident">NAME</span>, <span class="ident">PASSWORD</span>).<span class="kw">await</span>;
         <span class="kw">let</span> <span class="ident">cookies</span> <span class="op">=</span> <span class="macro">get_cookie!</span>(<span class="ident">signin_resp</span>);
 
         <span class="kw">let</span> <span class="ident">app</span> <span class="op">=</span> <span class="macro">get_app!</span>(<span class="ident">data</span>).<span class="kw">await</span>;

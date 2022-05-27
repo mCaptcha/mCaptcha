@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["update_captcha",""],["update_key",""]]});
+initSidebarItems({"fn":[["update_captcha",""]]});

@@ -316,22 +316,48 @@
 <span id="311">311</span>
 <span id="312">312</span>
 <span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
 </pre><pre class="rust"><code><span class="comment">/*
-* Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as
-* published by the Free Software Foundation, either version 3 of the
-* License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-*
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
-*/</span>
+ * Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+ */</span>
 
 <span class="kw">use</span> <span class="ident">std::convert::From</span>;
 
@@ -342,6 +368,7 @@
     <span class="ident">HttpResponse</span>, <span class="ident">HttpResponseBuilder</span>,
 };
 <span class="kw">use</span> <span class="ident">argon2_creds::errors::CredsError</span>;
+<span class="kw">use</span> <span class="ident">db_core::errors::DBError</span>;
 <span class="kw">use</span> <span class="ident">derive_more</span>::{<span class="ident">Display</span>, <span class="ident">Error</span>};
 <span class="kw">use</span> <span class="ident">lettre::transport::smtp::Error</span> <span class="kw">as</span> <span class="ident">SmtpError</span>;
 <span class="kw">use</span> <span class="ident">libmcaptcha::errors::CaptchaError</span>;
@@ -352,6 +379,15 @@
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Display</span>, <span class="ident">Error</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SmtpErrorWrapper</span>(<span class="ident">SmtpError</span>);
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Display</span>, <span class="ident">Error</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DBErrorWrapper</span>(<span class="ident">DBError</span>);
+
+<span class="kw">impl</span> <span class="ident">std::cmp::PartialEq</span> <span class="kw">for</span> <span class="ident">DBErrorWrapper</span> {
+    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, <span class="self">self</span>.<span class="number">0</span>) <span class="op">==</span> <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">other</span>.<span class="number">0</span>)
+    }
+}
 
 <span class="kw">impl</span> <span class="ident">std::cmp::PartialEq</span> <span class="kw">for</span> <span class="ident">SmtpErrorWrapper</span> {
     <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="ident">bool</span> {
@@ -414,13 +450,23 @@
     <span class="attribute">#[<span class="ident">display</span>(<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;Unable to send email, contact admin&quot;</span>)]</span>
     <span class="ident">UnableToSendEmail</span>(<span class="ident">SmtpErrorWrapper</span>),
 
-    <span class="doccomment">/// when the a token name is already taken</span>
     <span class="doccomment">/// token not found</span>
     <span class="attribute">#[<span class="ident">display</span>(<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;Token not found. Is token registered?&quot;</span>)]</span>
     <span class="ident">TokenNotFound</span>,
 
     <span class="attribute">#[<span class="ident">display</span>(<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;{}&quot;</span>, <span class="ident">_0</span>)]</span>
     <span class="ident">CaptchaError</span>(<span class="ident">CaptchaError</span>),
+
+    <span class="attribute">#[<span class="ident">display</span>(<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;{}&quot;</span>, <span class="ident">_0</span>)]</span>
+    <span class="ident">DBError</span>(<span class="ident">DBErrorWrapper</span>),
+
+    <span class="doccomment">/// captcha not found</span>
+    <span class="attribute">#[<span class="ident">display</span>(<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;Captcha not found.&quot;</span>)]</span>
+    <span class="ident">CaptchaNotFound</span>,
+
+    <span class="doccomment">/// Traffic pattern not found</span>
+    <span class="attribute">#[<span class="ident">display</span>(<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;Traffic pattern not found&quot;</span>)]</span>
+    <span class="ident">TrafficPatternNotFound</span>,
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
@@ -478,6 +524,10 @@
                 <span class="macro">log::error!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">e</span>.<span class="number">0</span>);
                 <span class="ident">StatusCode::INTERNAL_SERVER_ERROR</span>
             }
+
+            <span class="ident">ServiceError::DBError</span>(<span class="kw">_</span>) =&gt; <span class="ident">StatusCode::INTERNAL_SERVER_ERROR</span>,
+            <span class="ident">ServiceError::CaptchaNotFound</span> =&gt; <span class="ident">StatusCode::NOT_FOUND</span>,
+            <span class="ident">ServiceError::TrafficPatternNotFound</span> =&gt; <span class="ident">StatusCode::NOT_FOUND</span>,
         }
     }
 }
@@ -493,6 +543,22 @@
             <span class="ident">CredsError::Argon2Error</span>(<span class="kw">_</span>) =&gt; <span class="ident">ServiceError::InternalServerError</span>,
             <span class="ident">CredsError::PasswordTooLong</span> =&gt; <span class="ident">ServiceError::PasswordTooLong</span>,
             <span class="ident">CredsError::PasswordTooShort</span> =&gt; <span class="ident">ServiceError::PasswordTooShort</span>,
+        }
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">DBError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ServiceError</span> {
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">DBError</span>) -&gt; <span class="ident">ServiceError</span> {
+        <span class="macro">println!</span>(<span class="string">&quot;from conversin: {}&quot;</span>, <span class="ident">e</span>);
+        <span class="kw">match</span> <span class="ident">e</span> {
+            <span class="ident">DBError::UsernameTaken</span> =&gt; <span class="ident">ServiceError::UsernameTaken</span>,
+            <span class="ident">DBError::SecretTaken</span> =&gt; <span class="ident">ServiceError::InternalServerError</span>,
+            <span class="ident">DBError::EmailTaken</span> =&gt; <span class="ident">ServiceError::EmailTaken</span>,
+            <span class="ident">DBError::AccountNotFound</span> =&gt; <span class="ident">ServiceError::AccountNotFound</span>,
+            <span class="ident">DBError::CaptchaNotFound</span> =&gt; <span class="ident">ServiceError::CaptchaNotFound</span>,
+            <span class="ident">DBError::TrafficPatternNotFound</span> =&gt; <span class="ident">ServiceError::TrafficPatternNotFound</span>,
+            <span class="kw">_</span> =&gt; <span class="ident">ServiceError::DBError</span>(<span class="ident">DBErrorWrapper</span>(<span class="ident">e</span>)),
         }
     }
 }
@@ -515,21 +581,6 @@
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">CaptchaError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ServiceError</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">CaptchaError</span>) -&gt; <span class="ident">ServiceError</span> {
         <span class="ident">ServiceError::CaptchaError</span>(<span class="ident">e</span>)
-    }
-}
-
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">sqlx::Error</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ServiceError</span> {
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">sqlx::Error</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">use</span> <span class="ident">sqlx::error::Error</span>;
-        <span class="kw">use</span> <span class="ident">std::borrow::Cow</span>;
-        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Error::Database</span>(<span class="ident">err</span>) <span class="op">=</span> <span class="ident">e</span> {
-            <span class="kw">if</span> <span class="ident">err</span>.<span class="ident">code</span>() <span class="op">==</span> <span class="prelude-val">Some</span>(<span class="ident">Cow::from</span>(<span class="string">&quot;23505&quot;</span>)) {
-                <span class="kw">return</span> <span class="ident">ServiceError::UsernameTaken</span>;
-            }
-        }
-        <span class="ident">ServiceError::InternalServerError</span>
     }
 }
 
@@ -573,18 +624,19 @@
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">sqlx::Error</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PageError</span> {
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="kw">_</span>: <span class="ident">sqlx::Error</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident">PageError::InternalServerError</span>
-    }
-}
-
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">ServiceError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PageError</span> {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">ServiceError</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">PageError::ServiceError</span>(<span class="ident">e</span>)
+    }
+}
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
+<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">DBError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PageError</span> {
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">DBError</span>) -&gt; <span class="self">Self</span> {
+        <span class="kw">let</span> <span class="ident">se</span>: <span class="ident">ServiceError</span> <span class="op">=</span> <span class="ident">e</span>.<span class="ident">into</span>();
+        <span class="ident">se</span>.<span class="ident">into</span>()
     }
 }
 

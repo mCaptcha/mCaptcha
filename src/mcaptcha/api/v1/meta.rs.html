@@ -146,29 +146,22 @@
 <span id="141">141</span>
 <span id="142">142</span>
 <span id="143">143</span>
-<span id="144">144</span>
-<span id="145">145</span>
-<span id="146">146</span>
-<span id="147">147</span>
-<span id="148">148</span>
-<span id="149">149</span>
-<span id="150">150</span>
 </pre><pre class="rust"><code><span class="comment">/*
-* Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as
-* published by the Free Software Foundation, either version 3 of the
-* License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-*
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
-*/</span>
+ * Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+ */</span>
 
 <span class="kw">use</span> <span class="ident">actix_web</span>::{<span class="ident">web</span>, <span class="ident">HttpResponse</span>, <span class="ident">Responder</span>};
 <span class="kw">use</span> <span class="ident">derive_builder::Builder</span>;
@@ -228,21 +221,13 @@
 <span class="doccomment">/// checks all components of the system</span>
 <span class="attribute">#[<span class="ident">my_codegen::get</span>(<span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;crate::V1_API_ROUTES.meta.health&quot;</span>)]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">health</span>(<span class="ident">data</span>: <span class="ident">AppData</span>) -&gt; <span class="kw">impl</span> <span class="ident">Responder</span> {
-    <span class="kw">use</span> <span class="ident">sqlx::Connection</span>;
-
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">resp_builder</span> <span class="op">=</span> <span class="ident">HealthBuilder::default</span>();
-    <span class="ident">resp_builder</span>.<span class="ident">db</span>(<span class="bool-val">false</span>);
-    <span class="ident">resp_builder</span>.<span class="ident">redis</span> <span class="op">=</span> <span class="prelude-val">None</span>;
 
-    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="kw-2">mut</span> <span class="ident">con</span>) <span class="op">=</span> <span class="ident">data</span>.<span class="ident">db</span>.<span class="ident">acquire</span>().<span class="kw">await</span> {
-        <span class="kw">if</span> <span class="ident">con</span>.<span class="ident">ping</span>().<span class="kw">await</span>.<span class="ident">is_ok</span>() {
-            <span class="ident">resp_builder</span>.<span class="ident">db</span>(<span class="bool-val">true</span>);
-        }
-    };
+    <span class="ident">resp_builder</span>.<span class="ident">db</span>(<span class="ident">data</span>.<span class="ident">db</span>.<span class="ident">ping</span>().<span class="kw">await</span>);
 
     <span class="kw">if</span> <span class="kw">let</span> <span class="ident">SystemGroup::Redis</span>(<span class="kw">_</span>) <span class="op">=</span> <span class="ident">data</span>.<span class="ident">captcha</span> {
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">r</span>) <span class="op">=</span> <span class="ident">Redis::new</span>(<span class="ident">RedisConfig::Single</span>(
-            <span class="ident"><span class="kw">crate</span>::SETTINGS</span>.<span class="ident">redis</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>().<span class="ident">url</span>.<span class="ident">clone</span>(),
+            <span class="ident">data</span>.<span class="ident">settings</span>.<span class="ident">redis</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>().<span class="ident">url</span>.<span class="ident">clone</span>(),
         ))
         .<span class="kw">await</span>
         {
@@ -262,7 +247,7 @@
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span> {
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="ident">actix_web</span>::{<span class="ident">http::StatusCode</span>, <span class="ident">test</span>, <span class="ident">App</span>};
 
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
@@ -284,9 +269,10 @@
     }
 
     <span class="attribute">#[<span class="ident">actix_rt::test</span>]</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">health_works</span>() {
+    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">health_works</span>() {
         <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">V1_API_ROUTES</span>.<span class="ident">meta</span>.<span class="ident">health</span>);
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">Data::new</span>().<span class="kw">await</span>;
+        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::tests::get_data</span>().<span class="kw">await</span>;
+        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">data</span>;
         <span class="kw">let</span> <span class="ident">app</span> <span class="op">=</span> <span class="macro">get_app!</span>(<span class="ident">data</span>).<span class="kw">await</span>;
 
         <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(

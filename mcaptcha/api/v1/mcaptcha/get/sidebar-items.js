@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["runner",""]],"struct":[["I32Levels",""],["Levels",""],["get_captcha",""]]});
+initSidebarItems({"struct":[["I32Levels",""],["Levels",""],["get_captcha",""]]});
