@@ -744,7 +744,7 @@ impl MCDatabase for Database {
     )
     .execute(&self.pool)
     .await
-        .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
+    .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
         Ok(())
     }
 
@@ -761,6 +761,95 @@ impl MCDatabase for Database {
     .await
         .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
         Ok(())
+    }
+
+    /// featch PoWConfig fetches
+    async fn fetch_config_fetched(&self, user: &str, key: &str) -> DBResult<Vec<i64>> {
+        let records = sqlx::query_as!(
+            Date,
+            "SELECT time FROM mcaptcha_pow_fetched_stats
+            WHERE 
+                config_id = (
+                    SELECT 
+                        config_id FROM mcaptcha_config 
+                    WHERE 
+                        key = $1
+                    AND
+                        user_id = (
+                        SELECT 
+                            ID FROM mcaptcha_users WHERE name = $2))
+                ORDER BY time DESC",
+            &key,
+            &user,
+        )
+        .fetch_all(&self.pool)
+        .await
+        .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
+
+        Ok(Date::dates_to_unix(records))
+    }
+
+    /// featch PoWConfig solves
+    async fn fetch_solve(&self, user: &str, key: &str) -> DBResult<Vec<i64>> {
+        let records = sqlx::query_as!(
+            Date,
+            "SELECT time FROM mcaptcha_pow_solved_stats 
+            WHERE config_id = (
+                SELECT config_id FROM mcaptcha_config 
+                WHERE 
+                    key = $1
+                AND
+                     user_id = (
+                        SELECT 
+                            ID FROM mcaptcha_users WHERE name = $2)) 
+                ORDER BY time DESC",
+            &key,
+            &user
+        )
+        .fetch_all(&self.pool)
+        .await
+        .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
+
+        Ok(Date::dates_to_unix(records))
+    }
+
+    /// featch PoWConfig confirms
+    async fn fetch_confirm(&self, user: &str, key: &str) -> DBResult<Vec<i64>> {
+        let records = sqlx::query_as!(
+            Date,
+            "SELECT time FROM mcaptcha_pow_confirmed_stats 
+            WHERE 
+                config_id = (
+                    SELECT config_id FROM mcaptcha_config 
+                WHERE 
+                    key = $1
+                AND
+                     user_id = (
+                        SELECT 
+                            ID FROM mcaptcha_users WHERE name = $2))
+                ORDER BY time DESC",
+            &key,
+            &user
+        )
+        .fetch_all(&self.pool)
+        .await
+        .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
+
+        Ok(Date::dates_to_unix(records))
+    }
+}
+
+#[derive(Clone)]
+struct Date {
+    time: OffsetDateTime,
+}
+
+impl Date {
+    fn dates_to_unix(mut d: Vec<Self>) -> Vec<i64> {
+        let mut dates = Vec::with_capacity(d.len());
+        d.drain(0..)
+            .for_each(|x| dates.push(x.time.unix_timestamp()));
+        dates
     }
 }
 

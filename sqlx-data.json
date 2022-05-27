@@ -1,26 +1,5 @@
 {
   "db": "PostgreSQL",
-  "4303f5c6ef98e0de9d8d3c2d781d3ffaa3dee5f7d27db831d327b26f03ba9d68": {
-    "describe": {
-      "columns": [
-        {
-          "name": "time",
-          "ordinal": 0,
-          "type_info": "Timestamptz"
-        }
-      ],
-      "nullable": [
-        false
-      ],
-      "parameters": {
-        "Left": [
-          "Text",
-          "Text"
-        ]
-      }
-    },
-    "query": "SELECT time FROM mcaptcha_pow_confirmed_stats \n            WHERE \n                config_id = (\n                    SELECT config_id FROM mcaptcha_config \n                WHERE \n                    key = $1\n                AND\n                     user_id = (\n                        SELECT \n                            ID FROM mcaptcha_users WHERE name = $2))\n                ORDER BY time DESC"
-  },
   "4c3a9fe30a4c6bd49ab1cb8883c4495993aa05f2991483b4f04913b2e5043a63": {
     "describe": {
       "columns": [
@@ -72,27 +51,6 @@
       }
     },
     "query": "SELECT key, name from mcaptcha_config WHERE\n        user_id = (SELECT ID FROM mcaptcha_users WHERE name = $1) "
-  },
-  "84484cb6892db29121816bc5bff5702b9e857e20aa14e79d080d78ae7593153b": {
-    "describe": {
-      "columns": [
-        {
-          "name": "time",
-          "ordinal": 0,
-          "type_info": "Timestamptz"
-        }
-      ],
-      "nullable": [
-        false
-      ],
-      "parameters": {
-        "Left": [
-          "Text",
-          "Text"
-        ]
-      }
-    },
-    "query": "SELECT time FROM mcaptcha_pow_solved_stats \n            WHERE config_id = (\n                SELECT config_id FROM mcaptcha_config \n                WHERE \n                    key = $1\n                AND\n                     user_id = (\n                        SELECT \n                            ID FROM mcaptcha_users WHERE name = $2)) \n                ORDER BY time DESC"
   },
   "a1c49ee377d6ac57fb22c9eac0ef1927a97087abd58da092a91623d06fa7076e": {
     "describe": {
@@ -147,26 +105,5 @@
       }
     },
     "query": "SELECT config_id, duration, name from mcaptcha_config WHERE\n        key = $1 AND\n        user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2) "
-  },
-  "c399efd5db1284dcb470c40f9b076851f77498c75a63a3b151d4a111bd3e2957": {
-    "describe": {
-      "columns": [
-        {
-          "name": "time",
-          "ordinal": 0,
-          "type_info": "Timestamptz"
-        }
-      ],
-      "nullable": [
-        false
-      ],
-      "parameters": {
-        "Left": [
-          "Text",
-          "Text"
-        ]
-      }
-    },
-    "query": "SELECT time FROM mcaptcha_pow_fetched_stats\n            WHERE \n                config_id = (\n                    SELECT \n                        config_id FROM mcaptcha_config \n                    WHERE \n                        key = $1\n                    AND\n                        user_id = (\n                        SELECT \n                            ID FROM mcaptcha_users WHERE name = $2))\n                ORDER BY time DESC"
   }
 }
