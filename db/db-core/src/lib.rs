@@ -140,6 +140,12 @@ pub trait MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
     /// create new captcha
     async fn create_captcha(&self, username: &str, p: &CreateCaptcha) -> DBResult<()>;
 
+    /// Get captcha config
+    async fn get_captcha_config(&self, username: &str, key: &str) -> DBResult<Captcha>;
+
+    /// Get all captchas belonging to user
+    async fn get_all_user_captchas(&self, username: &str) -> DBResult<Vec<Captcha>>;
+
     /// update captcha metadata; doesn't change captcha key
     async fn update_captcha_metadata(
         &self,
@@ -293,7 +299,7 @@ pub struct TrafficPattern {
     pub broke_my_site_traffic: Option<u32>,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, PartialEq, Deserialize, Serialize)]
 /// data requried to create new captcha
 pub struct CreateCaptcha<'a> {
     /// cool down duration
@@ -304,7 +310,20 @@ pub struct CreateCaptcha<'a> {
     pub key: &'a str,
 }
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, PartialEq, Deserialize, Serialize)]
+/// Data representing a captcha
+pub struct Captcha {
+    /// Database assigned ID
+    pub config_id: i32,
+    /// cool down duration
+    pub duration: i32,
+    /// description of the captcha
+    pub description: String,
+    /// secret key of the captcha
+    pub key: String,
+}
+
+#[derive(Clone, Debug, Deserialize, PartialEq, Default, Serialize)]
 /// datastructure representing a user's secret
 pub struct Secret {
     /// user's secret

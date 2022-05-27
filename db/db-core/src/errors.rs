@@ -49,6 +49,7 @@ pub enum DBError {
     #[error("Traffic pattern not found")]
     TrafficPatternNotFound,
 
+    /// Notification not found
     #[error("Notification not found")]
     NotificationNotFound,
 }

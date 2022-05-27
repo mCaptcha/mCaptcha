@@ -176,6 +176,17 @@ pub async fn database_works<'a, T: MCDatabase>(
     assert!(db.captcha_exists(None, c.key).await.unwrap());
     assert!(db.captcha_exists(Some(p.username), c.key).await.unwrap());
 
+    // get captcha configuration
+    let captcha = db.get_captcha_config(p.username, c.key).await.unwrap();
+    assert_eq!(captcha.key, c.key);
+    assert_eq!(captcha.duration, c.duration);
+    assert_eq!(captcha.description, c.description);
+
+    // get all captchas that belong to user
+    let all_user_captchas = db.get_all_user_captchas(p.username).await.unwrap();
+    assert_eq!(all_user_captchas.len(), 1);
+    assert_eq!(all_user_captchas[0], captcha);
+
     // get captcha cooldown duration
     assert_eq!(db.get_captcha_cooldown(c.key).await.unwrap(), c.duration);
 
