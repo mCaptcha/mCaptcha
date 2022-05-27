@@ -103,6 +103,10 @@ sqlx-offline-data: ## prepare sqlx offline data
 #	cd db/db-sqlx-sqlite/ \
 #		&& DATABASE_URL=${SQLITE_DATABASE_URL} cargo sqlx prepare
 
+test-db: ## run tests on database
+	cd db/db-sqlx-postgres &&\
+		DATABASE_URL=${POSTGRES_DATABASE_URL}\
+		cargo test --no-fail-fast
 test: frontend-test frontend ## Run all available tests
 	$(call cache_bust)
 	cd db/db-sqlx-postgres &&\
