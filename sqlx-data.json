@@ -1,18 +1,5 @@
 {
   "db": "PostgreSQL",
-  "044e2036a518de2ccac9318ccba07f7ce10e4a1c1d51d0128ea5e8cb94358ac5": {
-    "describe": {
-      "columns": [],
-      "nullable": [],
-      "parameters": {
-        "Left": [
-          "Text",
-          "Timestamptz"
-        ]
-      }
-    },
-    "query": "INSERT INTO mcaptcha_pow_confirmed_stats \n        (config_id, time) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1), $2)"
-  },
   "4303f5c6ef98e0de9d8d3c2d781d3ffaa3dee5f7d27db831d327b26f03ba9d68": {
     "describe": {
       "columns": [
@@ -59,19 +46,6 @@
       }
     },
     "query": "SELECT \n            difficulty_factor, visitor_threshold \n        FROM \n            mcaptcha_levels \n        WHERE config_id = $1 ORDER BY difficulty_factor ASC"
-  },
-  "726a794f7599b78ab749d9f887f5c28db38f072b41f691bde35d23ba0dd72409": {
-    "describe": {
-      "columns": [],
-      "nullable": [],
-      "parameters": {
-        "Left": [
-          "Text",
-          "Timestamptz"
-        ]
-      }
-    },
-    "query": "INSERT INTO mcaptcha_pow_fetched_stats \n        (config_id, time) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1), $2)"
   },
   "76d1b62e0c70d09247691ca328d8674c8039fab922a40352b8ab5ed5b26a5293": {
     "describe": {
@@ -194,18 +168,5 @@
       }
     },
     "query": "SELECT time FROM mcaptcha_pow_fetched_stats\n            WHERE \n                config_id = (\n                    SELECT \n                        config_id FROM mcaptcha_config \n                    WHERE \n                        key = $1\n                    AND\n                        user_id = (\n                        SELECT \n                            ID FROM mcaptcha_users WHERE name = $2))\n                ORDER BY time DESC"
-  },
-  "dbe4307651d94bc6db4f1d8b2c6d076fde6280983d59593216d7765cbbdd669c": {
-    "describe": {
-      "columns": [],
-      "nullable": [],
-      "parameters": {
-        "Left": [
-          "Text",
-          "Timestamptz"
-        ]
-      }
-    },
-    "query": "INSERT INTO mcaptcha_pow_solved_stats \n        (config_id, time) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1), $2)"
   }
 }

@@ -717,6 +717,51 @@ impl MCDatabase for Database {
 
         Ok(())
     }
+
+    /// record PoWConfig fetches
+    async fn record_fetch(&self, key: &str) -> DBResult<()> {
+        let now = now_unix_time_stamp();
+        let _ = sqlx::query!(
+        "INSERT INTO mcaptcha_pow_fetched_stats 
+        (config_id, time) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1), $2)",
+        key,
+        &now,
+    )
+    .execute(&self.pool)
+    .await
+        .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
+        Ok(())
+    }
+
+    /// record PoWConfig solves
+    async fn record_solve(&self, key: &str) -> DBResult<()> {
+        let now = OffsetDateTime::now_utc();
+        let _ = sqlx::query!(
+        "INSERT INTO mcaptcha_pow_solved_stats 
+        (config_id, time) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1), $2)",
+        key,
+        &now,
+    )
+    .execute(&self.pool)
+    .await
+        .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
+        Ok(())
+    }
+
+    /// record PoWConfig confirms
+    async fn record_confirm(&self, key: &str) -> DBResult<()> {
+        let now = now_unix_time_stamp();
+        let _ = sqlx::query!(
+        "INSERT INTO mcaptcha_pow_confirmed_stats 
+        (config_id, time) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1), $2)",
+        key,
+        &now
+    )
+    .execute(&self.pool)
+    .await
+        .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
+        Ok(())
+    }
 }
 
 fn now_unix_time_stamp() -> OffsetDateTime {
