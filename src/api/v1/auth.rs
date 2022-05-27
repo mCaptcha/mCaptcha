@@ -99,11 +99,11 @@ pub mod runners {
         };
 
         let s = if payload.login.contains('@') {
-            data.dblib
+            data.db
                 .get_password(&db_core::Login::Email(&payload.login))
                 .await?
         } else {
-            data.dblib
+            data.db
                 .get_password(&db_core::Login::Username(&payload.login))
                 .await?
         };
@@ -141,7 +141,7 @@ pub mod runners {
                 secret: &secret,
             };
 
-            match data.dblib.register(&p).await {
+            match data.db.register(&p).await {
                 Ok(_) => break,
                 Err(DBError::SecretTaken) => continue,
                 Err(e) => return Err(e.into()),

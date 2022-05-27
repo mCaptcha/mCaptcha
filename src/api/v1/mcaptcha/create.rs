@@ -81,13 +81,13 @@ pub mod runner {
                 duration,
             };
 
-            match data.dblib.create_captcha(username, &p).await {
+            match data.db.create_captcha(username, &p).await {
                 Ok(_) => break,
                 Err(DBError::SecretTaken) => continue,
                 Err(e) => return Err(e.into()),
             }
         }
-        data.dblib
+        data.db
             .add_captcha_levels(username, &key, &payload.levels)
             .await?;
         let mcaptcha_config = MCaptchaDetails {

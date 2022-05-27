@@ -98,7 +98,7 @@ macro_rules! get_app {
 }
 
 pub async fn delete_user(data: &ArcData, name: &str) {
-    let x = data.dblib.delete_user(name).await;
+    let x = data.db.delete_user(name).await;
     println!();
     println!();
     println!();

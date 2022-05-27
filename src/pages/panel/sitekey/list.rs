@@ -45,7 +45,7 @@ impl IndexPage {
 )]
 pub async fn list_sitekeys(data: AppData, id: Identity) -> PageResult<impl Responder> {
     let username = id.identity().unwrap();
-    let res = data.dblib.get_all_user_captchas(&username).await?;
+    let res = data.db.get_all_user_captchas(&username).await?;
     let body = IndexPage::new(res).render_once().unwrap();
     Ok(HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")

@@ -130,7 +130,7 @@ async fn create(
     };
 
     let mcaptcha_config = create_runner(&msg, &data, &username).await?;
-    data.dblib
+    data.db
         .add_traffic_pattern(&username, &mcaptcha_config.key, &pattern)
         .await?;
     Ok(HttpResponse::Ok().json(mcaptcha_config))
@@ -166,11 +166,11 @@ async fn update(
 
     update_captcha_runner(&msg, &data, &username).await?;
 
-    data.dblib
+    data.db
         .delete_traffic_pattern(&username, &msg.key)
         .await?;
 
-    data.dblib
+    data.db
         .add_traffic_pattern(&username, &msg.key, &pattern)
         .await?;
 

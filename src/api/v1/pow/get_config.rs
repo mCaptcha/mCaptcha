@@ -42,7 +42,7 @@ pub async fn get_config(
     data: AppData,
 ) -> ServiceResult<impl Responder> {
     //if res.exists.is_none() {
-    if !data.dblib.captcha_exists(None, &payload.key).await? {
+    if !data.db.captcha_exists(None, &payload.key).await? {
         return Err(ServiceError::TokenNotFound);
     }
     let payload = payload.into_inner();
@@ -100,8 +100,8 @@ pub async fn get_config(
 /// creates [MCaptcha][libmcaptcha::MCaptcha] and adds it to [Master][libmcaptcha::Defense]
 async fn init_mcaptcha(data: &AppData, key: &str) -> ServiceResult<()> {
     // get levels
-    let levels = data.dblib.get_captcha_levels(None, key).await?;
-    let duration = data.dblib.get_captcha_cooldown(&key).await?;
+    let levels = data.db.get_captcha_levels(None, key).await?;
+    let duration = data.db.get_captcha_cooldown(&key).await?;
 
     // build defense
     let mut defense = DefenseBuilder::default();

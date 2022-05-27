@@ -36,7 +36,7 @@ pub async fn delete_account(
     let username = id.identity().unwrap();
 
     let hash = data
-        .dblib
+        .db
         .get_password(&db_core::Login::Username(&username))
         .await?;
 
@@ -54,7 +54,7 @@ pub mod runners {
     use super::*;
 
     pub async fn delete_user(name: &str, data: &AppData) -> ServiceResult<()> {
-        data.dblib.delete_user(name).await?;
+        data.db.delete_user(name).await?;
         Ok(())
     }
 }

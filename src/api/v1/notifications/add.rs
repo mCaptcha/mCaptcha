@@ -51,7 +51,7 @@ pub async fn add_notification(
         heading: &payload.heading,
     };
 
-    data.dblib.create_notification(&p).await?;
+    data.db.create_notification(&p).await?;
 
     Ok(HttpResponse::Ok())
 }

@@ -41,7 +41,6 @@ use libmcaptcha::{
     system::{System, SystemBuilder},
 };
 use sqlx::postgres::PgPoolOptions;
-use sqlx::PgPool;
 
 use db_core::MCDatabase;
 
@@ -150,7 +149,7 @@ impl SystemGroup {
 /// App data
 pub struct Data {
     /// database ops defined by db crates
-    pub dblib: Box<dyn MCDatabase>,
+    pub db: Box<dyn MCDatabase>,
     /// credential management configuration
     pub creds: Config,
     /// mCaptcha system: Redis cache, etc.
@@ -186,20 +185,14 @@ impl Data {
             log::info!("Initialized credential manager");
         });
 
-        //        let db = PgPoolOptions::new()
-        //            .max_connections(s.database.pool)
-        //            .connect(&s.database.url)
-        //            .await
-        //            .expect("Unable to form database pool");
-
-        let pool = s.database.pool;
+         let pool = s.database.pool;
         let pool_options = PgPoolOptions::new().max_connections(pool);
         let connection_options = ConnectionOptions::Fresh(Fresh {
             pool_options,
             url: s.database.url.clone(),
         });
-        let dblib = connection_options.connect().await.unwrap();
-        dblib.migrate().await.unwrap();
+        let db = connection_options.connect().await.unwrap();
+        db.migrate().await.unwrap();
 
         let stats: Box<dyn Stats> = if s.captcha.enable_stats {
             Box::new(Real::default())
@@ -209,8 +202,7 @@ impl Data {
 
         let data = Data {
             creds,
-            //db,
-            dblib: Box::new(dblib),
+            db: Box::new(db),
             captcha: SystemGroup::new(s).await,
             mailer: Self::get_mailer(s),
             settings: s.clone(),

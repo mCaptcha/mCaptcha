@@ -33,7 +33,7 @@ pub async fn email_exists(
     payload: web::Json<AccountCheckPayload>,
     data: AppData,
 ) -> ServiceResult<impl Responder> {
-    let exists = data.dblib.email_exists(&payload.val).await?;
+    let exists = data.db.email_exists(&payload.val).await?;
 
     let resp = AccountCheckResp { exists };
 
@@ -59,7 +59,7 @@ async fn set_email(
         new_email: &payload.email,
     };
 
-    data.dblib.update_email(&update_email).await?;
+    data.db.update_email(&update_email).await?;
 
     Ok(HttpResponse::Ok())
 }

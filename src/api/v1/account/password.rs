@@ -60,7 +60,7 @@ async fn update_password_runner(
         hash: new_hash,
     };
 
-    data.dblib.update_password(&p).await?;
+    data.db.update_password(&p).await?;
     Ok(())
 }
 
@@ -80,7 +80,7 @@ async fn update_user_password(
     let username = id.identity().unwrap();
 
     // TODO: verify behavior when account is not found
-    let res = data.dblib.get_password(&Login::Username(&username)).await?;
+    let res = data.db.get_password(&Login::Username(&username)).await?;
 
     if Config::verify(&res.hash, &payload.password)? {
         let update: UpdatePassword = payload.into_inner().into();

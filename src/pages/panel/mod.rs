@@ -48,7 +48,7 @@ const PAGE: &str = "Dashboard";
 )]
 async fn panel(data: AppData, id: Identity) -> PageResult<impl Responder> {
     let username = id.identity().unwrap();
-    let sitekeys = data.dblib.get_all_user_captchas(&username).await?;
+    let sitekeys = data.db.get_all_user_captchas(&username).await?;
     let body = IndexPage::new(sitekeys).render_once().unwrap();
     Ok(HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")

@@ -75,7 +75,7 @@ impl Health {
 async fn health(data: AppData) -> impl Responder {
     let mut resp_builder = HealthBuilder::default();
 
-    resp_builder.db(data.dblib.ping().await);
+    resp_builder.db(data.db.ping().await);
 
     if let SystemGroup::Redis(_) = data.captcha {
         if let Ok(r) = Redis::new(RedisConfig::Single(

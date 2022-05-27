@@ -67,8 +67,8 @@ pub async fn view_sitekey(
 ) -> PageResult<impl Responder> {
     let username = id.identity().unwrap();
     let key = path.into_inner();
-    let config = data.dblib.get_captcha_config(&username, &key).await?;
-    let levels = data.dblib.get_captcha_levels(Some(&username), &key).await?;
+    let config = data.db.get_captcha_config(&username, &key).await?;
+    let levels = data.db.get_captcha_levels(Some(&username), &key).await?;
     let stats = data.stats.fetch(&data, &username, &key).await?;
 
     let body = IndexPage::new(stats, config, levels, key)

@@ -41,7 +41,7 @@ pub async fn mark_read(
     // TODO handle error where payload.to doesnt exist
 
     // TODO get payload from path /api/v1/notifications/{id}/read"
-    data.dblib
+    data.db
         .mark_notification_read(&receiver, payload.id)
         .await?;
 

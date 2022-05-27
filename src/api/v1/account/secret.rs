@@ -28,7 +28,7 @@ use crate::AppData;
 )]
 async fn get_secret(id: Identity, data: AppData) -> ServiceResult<impl Responder> {
     let username = id.identity().unwrap();
-    let secret = data.dblib.get_secret(&username).await?;
+    let secret = data.db.get_secret(&username).await?;
     Ok(HttpResponse::Ok().json(secret))
 }
 
@@ -47,7 +47,7 @@ async fn update_user_secret(
     loop {
         secret = get_random(32);
 
-        match data.dblib.update_secret(&username, &secret).await {
+        match data.db.update_secret(&username, &secret).await {
             Ok(_) => break,
             Err(DBError::SecretTaken) => continue,
             Err(e) => return Err(e.into()),

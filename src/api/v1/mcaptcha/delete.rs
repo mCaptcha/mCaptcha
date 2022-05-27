@@ -43,13 +43,13 @@ async fn delete(
 
     let username = id.identity().unwrap();
 
-    let hash = data.dblib.get_password(&Login::Username(&username)).await?;
+    let hash = data.db.get_password(&Login::Username(&username)).await?;
 
     if !Config::verify(&hash.hash, &payload.password)? {
         return Err(ServiceError::WrongPassword);
     }
     let payload = payload.into_inner();
-    data.dblib.delete_captcha(&username, &payload.key).await?;
+    data.db.delete_captcha(&username, &payload.key).await?;
 
     if let Err(err) = data.captcha.remove(RemoveCaptcha(payload.key)).await {
         log::error!("Error while trying to remove captcha from cache {}", err);

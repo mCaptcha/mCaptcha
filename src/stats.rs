@@ -71,24 +71,24 @@ pub struct Real;
 impl Stats for Real {
     /// record PoWConfig fetches
     async fn record_fetch(&self, d: &Data, key: &str) -> DBResult<()> {
-        d.dblib.record_fetch(key).await
+        d.db.record_fetch(key).await
     }
 
     /// record PoWConfig solves
     async fn record_solve(&self, d: &Data, key: &str) -> DBResult<()> {
-        d.dblib.record_solve(key).await
+        d.db.record_solve(key).await
     }
 
     /// record PoWConfig confirms
     async fn record_confirm(&self, d: &Data, key: &str) -> DBResult<()> {
-        d.dblib.record_confirm(key).await
+        d.db.record_confirm(key).await
     }
 
     /// fetch stats
     async fn fetch(&self, d: &Data, user: &str, key: &str) -> DBResult<CaptchaStats> {
-        let config_fetches_fut = d.dblib.fetch_config_fetched(user, key);
-        let solves_fut = d.dblib.fetch_solve(user, key);
-        let confirms_fut = d.dblib.fetch_confirm(user, key);
+        let config_fetches_fut = d.db.fetch_config_fetched(user, key);
+        let solves_fut = d.db.fetch_solve(user, key);
+        let confirms_fut = d.db.fetch_confirm(user, key);
 
         let (config_fetches, solves, confirms) =
             futures::try_join!(config_fetches_fut, solves_fut, confirms_fut)?;

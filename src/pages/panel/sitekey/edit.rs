@@ -61,8 +61,8 @@ pub async fn advance(
     let username = id.identity().unwrap();
     let key = path.into_inner();
 
-    let config = data.dblib.get_captcha_config(&username, &key).await?;
-    let levels = data.dblib.get_captcha_levels(Some(&username), &key).await?;
+    let config = data.db.get_captcha_config(&username, &key).await?;
+    let levels = data.db.get_captcha_levels(Some(&username), &key).await?;
 
     let body = AdvanceEditPage::new(config, levels, key)
         .render_once()
@@ -103,9 +103,9 @@ pub async fn easy(
     let username = id.identity().unwrap();
     let key = path.into_inner();
 
-    match data.dblib.get_traffic_pattern(&username, &key).await {
+    match data.db.get_traffic_pattern(&username, &key).await {
         Ok(c) => {
-            let config = data.dblib.get_captcha_config(&username, &key).await?;
+            let config = data.db.get_captcha_config(&username, &key).await?;
             let pattern = TrafficPatternRequest {
                 peak_sustainable_traffic: c.peak_sustainable_traffic as u32,
                 avg_traffic: c.avg_traffic as u32,

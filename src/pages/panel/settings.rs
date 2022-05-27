@@ -69,9 +69,9 @@ pub struct IndexPage<'a> {
 async fn settings(data: AppData, id: Identity) -> PageResult<impl Responder> {
     let username = id.identity().unwrap();
 
-    let secret = data.dblib.get_secret(&username).await?;
+    let secret = data.db.get_secret(&username).await?;
     let secret = secret.secret;
-    let email = data.dblib.get_email(&username).await?;
+    let email = data.db.get_email(&username).await?;
 
     let data = IndexPage {
         email,

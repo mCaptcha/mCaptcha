@@ -70,7 +70,7 @@ pub async fn get_notification(
     let receiver = id.identity().unwrap();
     // TODO handle error where payload.to doesnt exist
 
-    let notifications = data.dblib.get_all_unread_notifications(&receiver).await?;
+    let notifications = data.db.get_all_unread_notifications(&receiver).await?;
     let notifications = NotificationResp::from_notifications(notifications);
     Ok(HttpResponse::Ok().json(notifications))
 }

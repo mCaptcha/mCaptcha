@@ -38,7 +38,7 @@ pub mod runners {
         payload: &AccountCheckPayload,
         data: &AppData,
     ) -> ServiceResult<AccountCheckResp> {
-        let exists = data.dblib.username_exists(&payload.val).await?;
+        let exists = data.db.username_exists(&payload.val).await?;
 
         Ok(AccountCheckResp { exists })
     }
@@ -63,7 +63,7 @@ async fn set_username(
 
     let processed_uname = data.creds.username(&payload.username)?;
 
-    data.dblib
+    data.db
         .update_username(&username, &processed_uname)
         .await?;
 

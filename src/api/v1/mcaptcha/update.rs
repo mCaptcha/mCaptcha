@@ -44,7 +44,7 @@ pub async fn update_key(
         key = get_random(32);
 
         match data
-            .dblib
+            .db
             .update_captcha_key(&username, &payload.key, &key)
             .await
         {
@@ -113,7 +113,7 @@ pub mod runner {
         // still, needs to be benchmarked
         defense.build()?;
 
-        data.dblib
+        data.db
             .delete_captcha_levels(username, &payload.key)
             .await?;
 
@@ -123,9 +123,9 @@ pub mod runner {
             description: &payload.description,
         };
 
-        data.dblib.update_captcha_metadata(username, &m).await?;
+        data.db.update_captcha_metadata(username, &m).await?;
 
-        data.dblib
+        data.db
             .add_captcha_levels(username, &payload.key, &payload.levels)
             .await?;
         if let Err(ServiceError::CaptchaError(e)) = data

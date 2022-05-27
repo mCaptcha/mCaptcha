@@ -35,7 +35,7 @@ pub async fn get_captcha(
 ) -> ServiceResult<impl Responder> {
     let username = id.identity().unwrap();
     let levels = data
-        .dblib
+        .db
         .get_captcha_levels(Some(&username), &payload.key)
         .await?;
     Ok(HttpResponse::Ok().json(levels))
