@@ -12,6 +12,7 @@ define cache_bust ## run cache_busting program
 endef
 
 default: frontend ## Build app in debug mode
+	$(call cache_bust)
 	cargo build
 
 check: ## Check for syntax errors on all workspaces
@@ -99,6 +100,9 @@ sqlx-offline-data: ## prepare sqlx offline data
 		--all-features
 	cd db/db-migrations && cargo sqlx prepare  \
 		--database-url=${POSTGRES_DATABASE_URL} -- --bin db-migrations \
+		--all-features
+	cd db/db-sqlx-postgres && cargo sqlx prepare  \
+		--database-url=${POSTGRES_DATABASE_URL} -- \
 		--all-features
 #	cd db/db-sqlx-sqlite/ \
 #		&& DATABASE_URL=${SQLITE_DATABASE_URL} cargo sqlx prepare
