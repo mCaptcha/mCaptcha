@@ -19,6 +19,7 @@ use actix_web::{http, web, HttpResponse, Responder};
 use sailfish::TemplateOnce;
 
 use db_core::errors::DBError;
+use libmcaptcha::defense::Level;
 
 use crate::api::v1::mcaptcha::easy::TrafficPatternRequest;
 use crate::errors::*;
@@ -33,11 +34,11 @@ struct McaptchaConfig {
     name: String,
 }
 
-#[derive(Clone)]
-struct Level {
-    difficulty_factor: i32,
-    visitor_threshold: i32,
-}
+//#[derive(Clone)]
+//struct Level {
+//    difficulty_factor: i32,
+//    visitor_threshold: i32,
+//}
 
 #[derive(TemplateOnce, Clone)]
 #[template(path = "panel/sitekey/edit/advance.html")]
@@ -83,17 +84,7 @@ pub async fn advance(
     .fetch_one(&data.db)
     .await?;
 
-    let levels = sqlx::query_as!(
-        Level,
-        "SELECT 
-            difficulty_factor, visitor_threshold 
-        FROM 
-            mcaptcha_levels 
-        WHERE config_id = $1 ORDER BY difficulty_factor ASC",
-        &config.config_id
-    )
-    .fetch_all(&data.db)
-    .await?;
+    let levels = data.dblib.get_captcha_levels(Some(&username), &key).await?;
 
     let body = AdvanceEditPage::new(config, levels, key)
         .render_once()
