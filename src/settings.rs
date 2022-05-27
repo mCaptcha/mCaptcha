@@ -36,6 +36,7 @@ pub struct Server {
 pub struct Captcha {
     pub salt: String,
     pub gc: u64,
+    pub enable_stats: bool,
     pub default_difficulty_strategy: DefaultDifficultyStrategy,
 }
 
@@ -123,6 +124,9 @@ impl Settings {
 
         const CURRENT_DIR: &str = "./config/default.toml";
         const ETC: &str = "/etc/mcaptcha/config.toml";
+
+        s.set("capatcha.enable_stats", true.to_string())
+            .expect("unable to set capatcha.enable_stats default config");
 
         if let Ok(path) = env::var("MCAPTCHA_CONFIG") {
             s.merge(File::with_name(&path))?;

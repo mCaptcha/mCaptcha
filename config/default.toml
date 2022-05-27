@@ -28,6 +28,7 @@ salt = "asdl;kjfhjawehfpa;osdkjasdvjaksndfpoanjdfainsdfaijdsfajlkjdsaf;ajsdfwero
 # garbage collection period to manage mCaptcha system
 # leave untouched if you don't know what you are doing
 gc = 30
+enable_stats = true
 
 [captcha.default_difficulty_strategy]
 avg_traffic_difficulty =  50000 # almost instant solution
