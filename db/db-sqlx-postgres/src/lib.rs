@@ -317,6 +317,42 @@ impl MCDatabase for Database {
         Ok(())
     }
 
+    /// Get captcha config
+    async fn get_captcha_config(&self, username: &str, key: &str) -> DBResult<Captcha> {
+        let captcha = sqlx::query_as!(
+            InternaleCaptchaConfig,
+            "SELECT config_id, duration, name, key from mcaptcha_config WHERE
+                        key = $1 AND
+                        user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2) ",
+            &key,
+            &username,
+        )
+        .fetch_one(&self.pool)
+        .await
+        .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
+
+        Ok(captcha.into())
+    }
+
+    /// Get all captchas belonging to user
+    async fn get_all_user_captchas(&self, username: &str) -> DBResult<Vec<Captcha>> {
+        let mut res = sqlx::query_as!(
+            InternaleCaptchaConfig,
+            "SELECT key, name, config_id, duration FROM mcaptcha_config WHERE
+            user_id = (SELECT ID FROM mcaptcha_users WHERE name = $1) ",
+            &username,
+        )
+        .fetch_all(&self.pool)
+        .await
+        .map_err(|e| map_row_not_found_err(e, DBError::AccountNotFound))?;
+
+        let mut captchas = Vec::with_capacity(res.len());
+
+        res.drain(0..).for_each(|r| captchas.push(r.into()));
+
+        Ok(captchas)
+    }
+
     /// update captcha metadata; doesn't change captcha key
     async fn update_captcha_metadata(
         &self,
@@ -880,6 +916,25 @@ impl From<InnerNotification> for Notification {
             message: n.message,
             received: n.received.map(|t| t.unix_timestamp()),
             id: n.id,
+        }
+    }
+}
+
+#[derive(Clone)]
+struct InternaleCaptchaConfig {
+    config_id: i32,
+    duration: i32,
+    name: String,
+    key: String,
+}
+
+impl From<InternaleCaptchaConfig> for Captcha {
+    fn from(i: InternaleCaptchaConfig) -> Self {
+        Self {
+            config_id: i.config_id,
+            duration: i.duration,
+            description: i.name,
+            key: i.key,
         }
     }
 }
