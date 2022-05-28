@@ -17,23 +17,32 @@ COPY Makefile /src/
 COPY scripts /src/scripts
 RUN make frontend
 
+FROM rust:latest as planner
+RUN cargo install cargo-chef
+WORKDIR /src
+COPY . /src/
+RUN cargo chef prepare --recipe-path recipe.json
+
+FROM rust:latest as cacher
+WORKDIR /src/
+RUN cargo install cargo-chef
+COPY --from=planner /src/recipe.json recipe.json
+RUN cargo chef cook --release --recipe-path recipe.json
+
 FROM rust:latest as rust
 WORKDIR /src
-RUN mkdir src && echo "fn main() {}" > src/main.rs
-COPY Cargo.toml .
-RUN sed -i '/.*build.rs.*/d' Cargo.toml
-COPY Cargo.lock .
-COPY migrations /src/migrations
-COPY sqlx-data.json /src/
-COPY src/tests-migrate.rs /src/src/tests-migrate.rs
-COPY src/settings.rs /src/src/settings.rs
-RUN cargo --version
-RUN cargo build --release
-COPY . /src
+COPY . .
+COPY --from=cacher /src/target target
+#COPY --from=cacher /src/db/db-core/target /src/db/db-core/target 
+#COPY --from=cacher /src/db/db-sqlx-postgres/target /src/db/db-sqlx-postgres/target 
+#COPY --from=cacher /src/db/db-migrations/target /src/db/db-migrations/target 
+#COPY --from=cacher /src/utils/cache-bust/target /src/utils/cache-bust/target 
 COPY --from=frontend /src/static/cache/bundle/ /src/static/cache/bundle/
-RUN cargo build --release 
+RUN cargo --version
+RUN make cache-bust
+RUN cargo build --release
 
-FROM debian:bullseye
+FROM debian:bullseye as mCaptcha
 LABEL org.opencontainers.image.source https://github.com/mCaptcha/mCaptcha
 RUN useradd -ms /bin/bash -u 1001 mcaptcha
 WORKDIR /home/mcaptcha
