@@ -14,10 +14,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+use std::str::FromStr;
+
 use db_core::dev::*;
 
 use sqlx::postgres::PgPoolOptions;
 use sqlx::types::time::OffsetDateTime;
+use sqlx::ConnectOptions;
 use sqlx::PgPool;
 
 pub mod errors;
@@ -42,6 +45,7 @@ pub enum ConnectionOptions {
 
 pub struct Fresh {
     pub pool_options: PgPoolOptions,
+    pub disable_logging: bool,
     pub url: String,
 }
 
@@ -63,11 +67,22 @@ impl Connect for ConnectionOptions {
     type Pool = Database;
     async fn connect(self) -> DBResult<Self::Pool> {
         let pool = match self {
-            Self::Fresh(fresh) => fresh
-                .pool_options
-                .connect(&fresh.url)
-                .await
-                .map_err(|e| DBError::DBError(Box::new(e)))?,
+            Self::Fresh(fresh) => {
+                let mut connect_options =
+                    sqlx::postgres::PgConnectOptions::from_str(&fresh.url).unwrap();
+                if fresh.disable_logging {
+                    connect_options.disable_statement_logging();
+                }
+                sqlx::postgres::PgConnectOptions::from_str(&fresh.url)
+                    .unwrap()
+                    .disable_statement_logging();
+                fresh
+                    .pool_options
+                    .connect_with(connect_options)
+                    .await
+                    .map_err(|e| DBError::DBError(Box::new(e)))?
+            }
+
             Self::Existing(conn) => conn.0,
         };
         Ok(Database { pool })
