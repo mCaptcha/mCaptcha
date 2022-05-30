@@ -190,7 +190,7 @@ impl Data {
         let connection_options = ConnectionOptions::Fresh(Fresh {
             pool_options,
             url: s.database.url.clone(),
-            disable_logging: s.debug,
+            disable_logging: !s.debug,
         });
         let db = connection_options.connect().await.unwrap();
         db.migrate().await.unwrap();
