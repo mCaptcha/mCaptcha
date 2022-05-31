@@ -98,7 +98,8 @@ pub async fn get_config(
 ///
 /// This fn gets mcaptcha config from database, builds [Defense][libmcaptcha::Defense],
 /// creates [MCaptcha][libmcaptcha::MCaptcha] and adds it to [Master][libmcaptcha::Defense]
-async fn init_mcaptcha(data: &AppData, key: &str) -> ServiceResult<()> {
+pub async fn init_mcaptcha(data: &AppData, key: &str) -> ServiceResult<()> {
+    println!("Initializing captcha");
     // get levels
     let levels = data.db.get_captcha_levels(None, key).await?;
     let duration = data.db.get_captcha_cooldown(key).await?;
@@ -117,6 +118,7 @@ async fn init_mcaptcha(data: &AppData, key: &str) -> ServiceResult<()> {
     }
 
     let defense = defense.build()?;
+    println!("{:?}", defense);
 
     // create captcha
     let mcaptcha = MCaptchaBuilder::default()
@@ -181,5 +183,99 @@ pub mod tests {
         assert_eq!(get_config_resp.status(), StatusCode::OK);
         let config: PoWConfig = test::read_body_json(get_config_resp).await;
         assert_eq!(config.difficulty_factor, L1.difficulty_factor);
+    }
+
+    #[actix_rt::test]
+    pub async fn pow_difficulty_factor_increases_on_visitor_count_increase() {
+        use super::*;
+        use crate::tests::*;
+        use crate::*;
+        use actix_web::test;
+
+        use libmcaptcha::defense::Level;
+
+        use crate::api::v1::mcaptcha::create::CreateCaptcha;
+        use crate::api::v1::mcaptcha::create::MCaptchaDetails;
+
+        const NAME: &str = "powusrworks2";
+        const PASSWORD: &str = "testingpas";
+        const EMAIL: &str = "randomuser2@a.com";
+        pub const L1: Level = Level {
+            difficulty_factor: 10,
+            visitor_threshold: 10,
+        };
+        pub const L2: Level = Level {
+            difficulty_factor: 20,
+            visitor_threshold: 20,
+        };
+
+        pub const L3: Level = Level {
+            difficulty_factor: 30,
+            visitor_threshold: 30,
+        };
+
+        let data = get_data().await;
+        let data = &data;
+        let levels = [L1, L2, L3];
+
+        delete_user(data, NAME).await;
+
+        let (_, signin_resp) = register_and_signin(data, NAME, EMAIL, PASSWORD).await;
+        let cookies = get_cookie!(signin_resp);
+        let app = get_app!(data).await;
+
+        let create_captcha = CreateCaptcha {
+            levels: levels.into(),
+            duration: 30,
+            description: "dummy".into(),
+        };
+
+        // 1. add level
+        let add_token_resp = test::call_service(
+            &app,
+            post_request!(&create_captcha, V1_API_ROUTES.captcha.create)
+                .cookie(cookies.clone())
+                .to_request(),
+        )
+        .await;
+        assert_eq!(add_token_resp.status(), StatusCode::OK);
+        let token_key: MCaptchaDetails = test::read_body_json(add_token_resp).await;
+
+        let get_config_payload = GetConfigPayload {
+            key: token_key.key.clone(),
+        };
+
+        let url = V1_API_ROUTES.pow.get_config;
+        let mut prev = 0;
+        for (count, l) in levels.iter().enumerate() {
+            for l in prev..l.visitor_threshold * 2 {
+                let get_config_resp = test::call_service(
+                    &app,
+                    post_request!(&get_config_payload, V1_API_ROUTES.pow.get_config)
+                        .to_request(),
+                )
+                .await;
+            }
+
+            let get_config_resp = test::call_service(
+                &app,
+                post_request!(&get_config_payload, V1_API_ROUTES.pow.get_config)
+                    .to_request(),
+            )
+            .await;
+
+            let config: PoWConfig = test::read_body_json(get_config_resp).await;
+            println!(
+                "[{count}] received difficulty_factor: {} prev difficulty_factor {}",
+                config.difficulty_factor, prev
+            );
+            if count == levels.len() - 1 {
+                assert!(config.difficulty_factor == prev);
+            } else {
+                assert!(config.difficulty_factor > prev);
+            }
+            prev = config.difficulty_factor;
+        }
+        // update and check changes
     }
 }
