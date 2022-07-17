@@ -60,7 +60,7 @@ refer to [official instructions](https://www.gnu.org/software/make/)
 
 ### External Dependencies:
 
-### Postgres databse:
+### Postgres database:
 
 The backend requires a Postgres database. We have
 compiletime SQL checks so without a database available, you won't be
@@ -125,7 +125,7 @@ $ make
 default                        Run app in debug mode
 clean                          Delete build artifacts
 coverage                       Generate code coverage report in HTML format
-dev-env                        Setup development environtment
+dev-env                        Setup development environment
 doc                            Generate documentation
 docker                         Build Docker image
 docker-publish                 Build and publish Docker image
