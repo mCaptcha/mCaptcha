@@ -1,4 +1,4 @@
-version: '3.9'
+version: "3.9"
 
 services:
   mcaptcha:
@@ -6,11 +6,11 @@ services:
     ports:
       - 7000:7000
     environment:
-      DATABASE_URL: postgres://postgres:password@postgres:5432/postgres # set password at placeholder
+      DATABASE_URL: postgres://postgres:password@mcaptcha_postgres:5432/postgres # set password at placeholder
       MCAPTCHA_REDIS_URL: redis://mcaptcha-redis/
       RUST_LOG: debug
 
-  postgres:
+  mcaptcha_postgres:
     image: postgres:13.2
     volumes:
       - mcaptcha-data:/var/lib/postgresql/
