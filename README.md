@@ -124,7 +124,7 @@ See [HACKING.md](./docs/HACKING.md)
 
 ## Deployment:
 
-See [DEPLOYMENT.md](./docs/DEPLOYMET.md)
+See [DEPLOYMENT.md](./docs/DEPLOYMENT.md)
 
 ## Configuration:
 
