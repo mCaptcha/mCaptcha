@@ -34,14 +34,14 @@ docker run -p <host-machine-port>:<port-in-configuration-file> \
 
 If you don't have a Postgres instance running, you can either install
 one using a package manager or launch one with docker. A [docker-compose
-configuration]('../docker-compose.yml) is available that will launch both
+configuration](../docker-compose.yml) is available that will launch both
 a database instance mcaptcha instance.
 
 ## With docker-compose
 
 1. Follow steps above to build docker image.
 
-2. Set database password [docker-compose configuration]('../docker-compose.yml).
+2. Set database password [docker-compose configuration](../docker-compose.yml).
 
 3. Launch network:
 
