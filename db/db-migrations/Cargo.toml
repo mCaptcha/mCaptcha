@@ -10,4 +10,4 @@ authors = ["realaravinth <realaravinth@batsense.net>"]
 
 [dependencies]
 actix-rt = "2"
-sqlx = { version = "0.5.13", features = [ "runtime-actix-rustls", "postgres", "time", "offline" ] }
+sqlx = { version = "0.5.13", features = [ "runtime-actix-rustls", "postgres", "time", "offline", "mysql" ] }
