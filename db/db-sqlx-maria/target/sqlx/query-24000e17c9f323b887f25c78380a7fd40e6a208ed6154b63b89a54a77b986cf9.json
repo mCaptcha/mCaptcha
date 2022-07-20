@@ -1,0 +1,11 @@
+{
+  "query": "DELETE FROM mcaptcha_levels \n        WHERE config_id = (\n            SELECT config_id FROM mcaptcha_config where captcha_key= (?) \n            AND user_id = (\n            SELECT ID from mcaptcha_users WHERE name = ?\n            )\n            )",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "7894dda54cd65559fe3b81bab7df8cc848e21ed5c7f5e88951bf1c98c78ed820"
+}

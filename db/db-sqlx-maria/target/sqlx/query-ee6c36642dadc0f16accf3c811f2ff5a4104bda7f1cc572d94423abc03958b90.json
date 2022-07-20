@@ -1,0 +1,65 @@
+{
+  "query": "SELECT captcha_key, name, config_id, duration FROM mcaptcha_config WHERE\n            user_id = (SELECT ID FROM mcaptcha_users WHERE name = ?) ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "captcha_key",
+        "type_info": {
+          "type": "VarString",
+          "flags": {
+            "bits": 4101
+          },
+          "char_set": 224,
+          "max_size": 400
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "name",
+        "type_info": {
+          "type": "VarString",
+          "flags": {
+            "bits": 4097
+          },
+          "char_set": 224,
+          "max_size": 400
+        }
+      },
+      {
+        "ordinal": 2,
+        "name": "config_id",
+        "type_info": {
+          "type": "Long",
+          "flags": {
+            "bits": 515
+          },
+          "char_set": 63,
+          "max_size": 11
+        }
+      },
+      {
+        "ordinal": 3,
+        "name": "duration",
+        "type_info": {
+          "type": "Long",
+          "flags": {
+            "bits": 1
+          },
+          "char_set": 63,
+          "max_size": 11
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "3812693a9ae4402d900bcbf680981e6194073bd1937af11a77daa3776fb4c873"
+}

@@ -1,0 +1,11 @@
+{
+  "query": "INSERT INTO mcaptcha_sitekey_user_provided_avg_traffic (\n            config_id,\n            avg_traffic,\n            peak_sustainable_traffic,\n            broke_my_site_traffic\n            ) VALUES ( \n             (SELECT config_id FROM mcaptcha_config where captcha_key= (?)\n             AND user_id = (SELECT ID FROM mcaptcha_users WHERE name = ?)\n            ), ?, ?, ?)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 5
+    },
+    "nullable": []
+  },
+  "hash": "22e697114c3ed5b0156cdceab11a398f1ef3a804f482e1cd948bc615ef95fc92"
+}

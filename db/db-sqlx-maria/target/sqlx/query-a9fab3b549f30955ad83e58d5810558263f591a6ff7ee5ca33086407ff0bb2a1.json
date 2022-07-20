@@ -1,0 +1,26 @@
+{
+  "query": "SELECT name from mcaptcha_users WHERE name = ?",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "name",
+        "type_info": {
+          "type": "VarString",
+          "flags": {
+            "bits": 4101
+          },
+          "char_set": 224,
+          "max_size": 400
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "e6569a6064d0e07abea4c0bd4686cdfdaac64f0109ac40efaed06a744a2eaf5e"
+}

@@ -1,0 +1,11 @@
+{
+  "query": "DELETE FROM mcaptcha_users WHERE name = (?)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": []
+  },
+  "hash": "6d1b6e5e58ca2ba285cab7b050bbdc43de1f3e46cf7d420bc95c124a1c7c9d1f"
+}

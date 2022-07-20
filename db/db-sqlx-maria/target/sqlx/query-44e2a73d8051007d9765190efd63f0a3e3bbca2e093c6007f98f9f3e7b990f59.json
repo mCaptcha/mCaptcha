@@ -1,0 +1,11 @@
+{
+  "query": "INSERT INTO mcaptcha_notifications (\n              heading, message, tx, rx, received)\n              VALUES  (\n              ?, ?,\n                  (SELECT ID FROM mcaptcha_users WHERE name = ?),\n                  (SELECT ID FROM mcaptcha_users WHERE name = ?),\n                  ?\n                      );",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 5
+    },
+    "nullable": []
+  },
+  "hash": "89386c46668a2653a54687e65958af5cf7a8da268339a1f5a379ede47b3c6d2a"
+}

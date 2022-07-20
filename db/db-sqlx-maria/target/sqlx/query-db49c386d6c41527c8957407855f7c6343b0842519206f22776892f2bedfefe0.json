@@ -1,0 +1,26 @@
+{
+  "query": "SELECT time FROM mcaptcha_pow_fetched_stats\n            WHERE \n                config_id = (\n                    SELECT \n                        config_id FROM mcaptcha_config \n                    WHERE \n                        captcha_key = ?\n                    AND\n                        user_id = (\n                        SELECT \n                            ID FROM mcaptcha_users WHERE name = ?))\n                ORDER BY time DESC",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "time",
+        "type_info": {
+          "type": "Timestamp",
+          "flags": {
+            "bits": 1185
+          },
+          "char_set": 63,
+          "max_size": 19
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "daac5e937aeac2f106eb89154b431fa8bd1bd7baa95e51704fdcdf50bd970a1d"
+}

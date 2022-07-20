@@ -1,0 +1,78 @@
+{
+  "query": "-- gets all unread notifications a user has\nSELECT \n    mcaptcha_notifications.id,\n    mcaptcha_notifications.heading,\n    mcaptcha_notifications.message,\n    mcaptcha_notifications.received,\n    mcaptcha_users.name\nFROM\n    mcaptcha_notifications \nINNER JOIN \n    mcaptcha_users \nON \n    mcaptcha_notifications.tx = mcaptcha_users.id\nWHERE \n    mcaptcha_notifications.rx = (\n        SELECT \n            id \n        FROM \n            mcaptcha_users\n        WHERE\n            name = ?\n        )\nAND \n    mcaptcha_notifications.read_notification IS NULL;\n",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": {
+          "type": "Long",
+          "flags": {
+            "bits": 515
+          },
+          "char_set": 63,
+          "max_size": 11
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "heading",
+        "type_info": {
+          "type": "VarString",
+          "flags": {
+            "bits": 4097
+          },
+          "char_set": 224,
+          "max_size": 400
+        }
+      },
+      {
+        "ordinal": 2,
+        "name": "message",
+        "type_info": {
+          "type": "VarString",
+          "flags": {
+            "bits": 4097
+          },
+          "char_set": 224,
+          "max_size": 1000
+        }
+      },
+      {
+        "ordinal": 3,
+        "name": "received",
+        "type_info": {
+          "type": "Timestamp",
+          "flags": {
+            "bits": 1185
+          },
+          "char_set": 63,
+          "max_size": 19
+        }
+      },
+      {
+        "ordinal": 4,
+        "name": "name",
+        "type_info": {
+          "type": "VarString",
+          "flags": {
+            "bits": 4101
+          },
+          "char_set": 224,
+          "max_size": 400
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "b9b0c63380bc0dfdea8aae092dcefceb316fe94667d74f53d53063810cdd2ba8"
+}

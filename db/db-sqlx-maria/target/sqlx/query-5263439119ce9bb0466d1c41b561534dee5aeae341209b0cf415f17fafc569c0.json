@@ -1,0 +1,11 @@
+{
+  "query": "INSERT INTO mcaptcha_pow_fetched_stats \n        (config_id, time) VALUES ((SELECT config_id FROM mcaptcha_config where captcha_key= ?), ?)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "598a8202942771eff460faa6f09bd3fb1fc910d5fab7edb07c49dadbbaeb1cb8"
+}

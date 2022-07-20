@@ -1,0 +1,39 @@
+{
+  "query": "SELECT name, password  FROM mcaptcha_users WHERE email = ?",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "name",
+        "type_info": {
+          "type": "VarString",
+          "flags": {
+            "bits": 4101
+          },
+          "char_set": 224,
+          "max_size": 400
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "password",
+        "type_info": {
+          "type": "Blob",
+          "flags": {
+            "bits": 4113
+          },
+          "char_set": 224,
+          "max_size": 262140
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "ed943cbf7e16536d81010255ce2f5beb207b2b9d44cb859fa9f2233405b80ae0"
+}

@@ -1,0 +1,11 @@
+{
+  "query": "UPDATE mcaptcha_users set password = ?\n            WHERE name = ?",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "cad5b403470f26c565e74a1dca19b7dee066141dec0f708070067e34d5bf72cc"
+}

@@ -1,0 +1,26 @@
+{
+  "query": "SELECT secret  FROM mcaptcha_users WHERE name = ?",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "secret",
+        "type_info": {
+          "type": "VarString",
+          "flags": {
+            "bits": 4101
+          },
+          "char_set": 224,
+          "max_size": 200
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "dd9b4dec39405ff19af21faabb6a7c3bb3207e7e785fe15357146b88c6c27f01"
+}

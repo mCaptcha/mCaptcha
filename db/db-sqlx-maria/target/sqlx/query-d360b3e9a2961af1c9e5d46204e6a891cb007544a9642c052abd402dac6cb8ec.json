@@ -1,0 +1,11 @@
+{
+  "query": "--  mark a notification as read\nUPDATE mcaptcha_notifications\n    SET read_notification = TRUE\nWHERE \n    mcaptcha_notifications.id = ?\nAND\n    mcaptcha_notifications.rx = (\n        SELECT\n            id\n        FROM\n            mcaptcha_users\n        WHERE\n        name = ?\n    );\n",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "cf333541509213f11a9bf7119dcb3289bb77abf1482fc1d47e7f5bb27bdc8d97"
+}
