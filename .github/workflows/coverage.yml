@@ -34,10 +34,26 @@ jobs:
           --health-retries 5
         ports:
           - 5432:5432
+
       mcaptcha-redis:
         image: mcaptcha/cache
         ports:
           - 6379:6379
+
+      maria:
+        image: mariadb
+        env: MARIADB_USER:maria
+          MARIADB_PASSWORD:password
+          MARIADB_ROOT_PASSWORD:password
+          MARIADB_DATABASE:maria
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+        ports:
+          - 3306:3306
+
 
     steps:
       - uses: actions/checkout@v2

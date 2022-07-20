@@ -8,7 +8,8 @@ on:
   push:
     branches:
       - master
-      - db-abstract
+      - "*"
+      - !gh-pages
 
 jobs:
   build_and_test:
@@ -37,19 +38,34 @@ jobs:
           --health-retries 5
         ports:
           - 5432:5432
+
       mcaptcha-redis:
         image: mcaptcha/cache
         ports:
           - 6379:6379
       mcaptcha-smtp:
         image: maildev/maildev
-        env: 
+        env:
           MAILDEV_WEB_PORT: "1080"
           MAILDEV_INCOMING_USER: "admin"
           MAILDEV_INCOMING_PASS: "password"
         ports:
           - 1080:1080
           - 10025:1025
+
+      maria:
+        image: mariadb
+        env: MARIADB_USER:maria
+          MARIADB_PASSWORD:password
+          MARIADB_ROOT_PASSWORD:password
+          MARIADB_DATABASE:maria
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+        ports:
+          - 3306:3306
 
     steps:
       - uses: actions/checkout@v2
