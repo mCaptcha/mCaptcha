@@ -18,8 +18,9 @@ use std::env;
 use std::path::Path;
 
 use config::{Config, ConfigError, Environment, File};
+use derive_more::Display;
 use log::{debug, warn};
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use url::Url;
 
 #[derive(Debug, Clone, Deserialize)]
@@ -65,28 +66,47 @@ impl Server {
     }
 }
 
-#[derive(Debug, Clone, Deserialize)]
-struct DatabaseBuilder {
-    pub port: u32,
-    pub hostname: String,
-    pub username: String,
-    pub password: String,
-    pub name: String,
+//#[derive(Debug, Clone, Deserialize)]
+//struct DatabaseBuilder {
+//    pub port: u32,
+//    pub hostname: String,
+//    pub username: String,
+//    pub password: String,
+//    pub name: String,
+//}
+
+//impl DatabaseBuilder {
+//    #[cfg(not(tarpaulin_include))]
+//    fn extract_database_url(url: &Url) -> Self {
+//        debug!("Databse name: {}", url.path());
+//        let mut path = url.path().split('/');
+//        path.next();
+//        let name = path.next().expect("no database name").to_string();
+//        DatabaseBuilder {
+//            port: url.port().expect("Enter database port").into(),
+//            hostname: url.host().expect("Enter database host").to_string(),
+//            username: url.username().into(),
+//            password: url.password().expect("Enter database password").into(),
+//            name,
+//        }
+//    }
+//}
+
+#[derive(Deserialize, Serialize, Display, PartialEq, Clone, Debug)]
+#[serde(rename_all = "lowercase")]
+pub enum DBType {
+    #[display(fmt = "postgres")]
+    Postgres,
+    #[display(fmt = "maria")]
+    Maria,
 }
 
-impl DatabaseBuilder {
-    #[cfg(not(tarpaulin_include))]
-    fn extract_database_url(url: &Url) -> Self {
-        debug!("Databse name: {}", url.path());
-        let mut path = url.path().split('/');
-        path.next();
-        let name = path.next().expect("no database name").to_string();
-        DatabaseBuilder {
-            port: url.port().expect("Enter database port").into(),
-            hostname: url.host().expect("Enter database host").to_string(),
-            username: url.username().into(),
-            password: url.password().expect("Enter database password").into(),
-            name,
+impl DBType {
+    fn from_url(url: &Url) -> Result<Self, ConfigError> {
+        match url.scheme() {
+            "mysql" => Ok(Self::Maria),
+            "postgres" => Ok(Self::Postgres),
+            _ => Err(ConfigError::Message("Unknown database type".into())),
         }
     }
 }
@@ -95,6 +115,7 @@ impl DatabaseBuilder {
 pub struct Database {
     pub url: String,
     pub pool: u32,
+    pub database_type: DBType,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -153,13 +174,12 @@ impl Settings {
         match env::var("DATABASE_URL") {
             Ok(val) => {
                 let url = Url::parse(&val).expect("couldn't parse Database URL");
-                let database_conf = DatabaseBuilder::extract_database_url(&url);
-                set_from_database_url(&mut s, &database_conf);
+                s.set("database.url", url.to_string()).unwrap();
             }
-            Err(e) => warn!("couldn't interpret DATABASE_URL: {}", e),
+            Err(e) => {
+                set_database_url(&mut s);
+            }
         }
-
-        set_database_url(&mut s);
 
         // setting default values
         #[cfg(test)]
@@ -180,20 +200,6 @@ fn check_url(s: &Config) {
         .expect("Couldn't access source_code");
 
     Url::parse(&url).expect("Please enter a URL for source_code in settings");
-}
-
-#[cfg(not(tarpaulin_include))]
-fn set_from_database_url(s: &mut Config, database_conf: &DatabaseBuilder) {
-    s.set("database.username", database_conf.username.clone())
-        .expect("Couldn't set database username");
-    s.set("database.password", database_conf.password.clone())
-        .expect("Couldn't access database password");
-    s.set("database.hostname", database_conf.hostname.clone())
-        .expect("Couldn't access database hostname");
-    s.set("database.port", database_conf.port as i64)
-        .expect("Couldn't access database port");
-    s.set("database.name", database_conf.name.clone())
-        .expect("Couldn't access database name");
 }
 
 #[cfg(not(tarpaulin_include))]

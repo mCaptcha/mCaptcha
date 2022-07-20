@@ -50,6 +50,7 @@ username = "postgres"
 password = "password"
 name = "postgres"
 pool = 4
+database_type="postgres" # "postgres", "maria"
 
 [redis]
 # This section deals with the database location and how to access it
