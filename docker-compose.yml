@@ -11,8 +11,8 @@ services:
       RUST_LOG: debug
       PORT: 7000
     depends_on:
-      mcaptcha-postgres
-      mcaptcha-redis
+      - mcaptcha-postgres
+      - mcaptcha-redis
 
   mcaptcha_postgres:
     image: postgres:13.2
