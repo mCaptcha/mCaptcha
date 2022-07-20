@@ -16,7 +16,7 @@ build = "build.rs"
 
 [workspace]
 exclude = ["db/db-migrations", "utils/cache-bust"]
-memebers = [".", "db/db-core", "db/db-sqlx-postgres"]
+memebers = [".", "db/db-core", "db/db-sqlx-postgres", "db/db-sqlx-maria"]
 
 [[bin]]
 name = "mcaptcha"
@@ -38,7 +38,7 @@ cache-buster = { git = "https://github.com/realaravinth/cache-buster" }
 futures = "0.3.15"
 tokio = { version = "1.14", features = ["sync"]}
 
-sqlx = { version = "0.5.13", features = [ "runtime-actix-rustls", "postgres", "time", "offline" ] }
+sqlx = { version = "0.5.13", features = [ "runtime-actix-rustls", "postgres", "time", "offline", "mysql"] }
 argon2-creds = { branch = "master", git = "https://github.com/realaravinth/argon2-creds"}
 #argon2-creds = { version="*", path = "../../argon2-creds/" }
 config = "0.11"
@@ -84,6 +84,9 @@ path = "./db/db-core"
 [dependencies.db-sqlx-postgres]
 path = "./db/db-sqlx-postgres"
 
+[dependencies.db-sqlx-maria]
+path = "./db/db-sqlx-maria"
+
 [dependencies.my-codegen]
 git = "https://github.com/realaravinth/actix-web"
 package = "actix-web-codegen"
@@ -95,7 +98,7 @@ features = ["actix_identity_backend"]
 
 [build-dependencies]
 serde_json = "1"
-sqlx = { version = "0.5.13", features = [ "runtime-actix-rustls", "postgres", "time", "offline" ] }
+sqlx = { version = "0.5.13", features = [ "runtime-actix-rustls", "postgres", "time", "offline", "mysql" ] }
 
 [dev-dependencies]
 pow_sha256 = { version = "0.2.1", git = "https://github.com/mcaptcha/pow_sha256" }

@@ -19,8 +19,6 @@ use std::thread;
 
 use actix::prelude::*;
 use argon2_creds::{Config, ConfigBuilder, PasswordPolicy};
-use db_core::prelude::*;
-use db_sqlx_postgres::{ConnectionOptions, Fresh};
 use lettre::transport::smtp::authentication::Mechanism;
 use lettre::{
     transport::smtp::authentication::Credentials, AsyncSmtpTransport, Tokio1Executor,
@@ -40,10 +38,8 @@ use libmcaptcha::{
     pow::Work,
     system::{System, SystemBuilder},
 };
-use sqlx::postgres::PgPoolOptions;
 
-use db_core::MCDatabase;
-
+use crate::db::{self, BoxDB};
 use crate::errors::ServiceResult;
 use crate::settings::Settings;
 use crate::stats::{Dummy, Real, Stats};
@@ -149,7 +145,7 @@ impl SystemGroup {
 /// App data
 pub struct Data {
     /// database ops defined by db crates
-    pub db: Box<dyn MCDatabase>,
+    pub db: BoxDB,
     /// credential management configuration
     pub creds: Config,
     /// mCaptcha system: Redis cache, etc.
@@ -185,15 +181,10 @@ impl Data {
             log::info!("Initialized credential manager");
         });
 
-        let pool = s.database.pool;
-        let pool_options = PgPoolOptions::new().max_connections(pool);
-        let connection_options = ConnectionOptions::Fresh(Fresh {
-            pool_options,
-            url: s.database.url.clone(),
-            disable_logging: !s.debug,
-        });
-        let db = connection_options.connect().await.unwrap();
-        db.migrate().await.unwrap();
+        let db = match s.database.database_type {
+            crate::settings::DBType::Maria => db::maria::get_data(Some(s.clone())).await,
+            crate::settings::DBType::Postgres => db::pg::get_data(Some(s.clone())).await,
+        };
 
         let stats: Box<dyn Stats> = if s.captcha.enable_stats {
             Box::new(Real::default())
@@ -203,7 +194,7 @@ impl Data {
 
         let data = Data {
             creds,
-            db: Box::new(db),
+            db,
             captcha: SystemGroup::new(s).await,
             mailer: Self::get_mailer(s),
             settings: s.clone(),

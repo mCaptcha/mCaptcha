@@ -22,6 +22,9 @@ check: ## Check for syntax errors on all workspaces
 	cd db/db-sqlx-postgres &&\
 		DATABASE_URL=${POSTGRES_DATABASE_URL}\
 		cargo check
+	cd db/db-sqlx-maria &&\
+		DATABASE_URL=${MARIA_DATABASE_URL}\
+		cargo check
 	cd db/db-core/ && cargo check
 
 cache-bust: ## Run cache buster on static assets
@@ -105,6 +108,9 @@ sqlx-offline-data: ## prepare sqlx offline data
 	cd db/db-sqlx-postgres && cargo sqlx prepare  \
 		--database-url=${POSTGRES_DATABASE_URL} -- \
 		--all-features
+	cd db/db-sqlx-maria && cargo sqlx prepare  \
+		--database-url=${MARIA_DATABASE_URL} -- \
+		--all-features
 #	cd db/db-sqlx-sqlite/ \
 #		&& DATABASE_URL=${SQLITE_DATABASE_URL} cargo sqlx prepare
 
@@ -117,7 +123,11 @@ test: frontend-test frontend ## Run all available tests
 	cd db/db-sqlx-postgres &&\
 		DATABASE_URL=${POSTGRES_DATABASE_URL}\
 		cargo test --no-fail-fast
-	cargo test --all-features --no-fail-fast
+	cd db/db-sqlx-maria &&\
+		DATABASE_URL=${MARIA_DATABASE_URL}\
+		cargo test --no-fail-fast
+	DATABASE_URL=${MARIA_DATABASE_URL} cargo test --no-fail-fast
+	DATABASE_URL=${POSTGRES_DATABASE_URL} cargo test --no-fail-fast
 #	./scripts/tests.sh
 
 xml-test-coverage: migrate ## Generate code coverage report in XML format
