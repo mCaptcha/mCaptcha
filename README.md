@@ -104,7 +104,7 @@ Clone the repo and run the following from the root of the repo:
 
 ```bash
 git clone https://github.com/mCaptcha/mCaptcha.git
-docker-compose -d up
+docker-compose up -d
 ```
 
 After the containers are up, visit [http://localhost:7000](http://localhost:7000) and login with the default credentials:
