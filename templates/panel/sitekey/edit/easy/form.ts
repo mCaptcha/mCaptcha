@@ -25,10 +25,10 @@ import { validate, FORM } from "../../add/novice/ts/form";
 const SUBMIT_BTN = <HTMLButtonElement>(
   document.querySelector(".sitekey-form__submit")
 );
-const key = SUBMIT_BTN.dataset.sitekey;
 const submit = async (e: Event) => {
   e.preventDefault();
 
+  const key = SUBMIT_BTN.dataset.sitekey;
   const formUrl = getFormUrl(FORM);
   const payload = {
     pattern: validate(e),

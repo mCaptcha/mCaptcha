@@ -47,10 +47,16 @@ router.register(VIEWS.registerUser, register.index);
 router.register(VIEWS.loginUser, login.index);
 router.register(VIEWS.notifications, notidications.index);
 router.register(VIEWS.listSitekey, listSitekeys.index);
-router.register(VIEWS.addSiteKeyAdvance,addSiteKeyAdvance.index);
+router.register(VIEWS.addSiteKeyAdvance, addSiteKeyAdvance.index);
 router.register(VIEWS.addSiteKeyEasy, addSiteKeyEasy.index);
-router.register(VIEWS.editSitekeyAdvance("[A-Z),a-z,0-9]+"), editSitekeyAdvance.index);
-router.register(VIEWS.editSitekeyEasy("[A-Z),a-z,0-9]+"), editSitekeyEasy.index);
+router.register(
+  VIEWS.editSitekeyAdvance("[A-Z),a-z,0-9]+"),
+  editSitekeyAdvance.index
+);
+router.register(
+  VIEWS.editSitekeyEasy("[A-Z),a-z,0-9]+"),
+  editSitekeyEasy.index
+);
 router.register(VIEWS.deleteSitekey("[A-Z),a-z,0-9]+"), deleteSitekey.index);
 
 try {

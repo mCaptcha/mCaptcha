@@ -30,14 +30,6 @@ export const FORM = <HTMLFormElement>(
   document.querySelector(`.${SITE_KEY_FORM_CLASS}`)
 );
 
-export const AVG_TRAFFIC = <HTMLInputElement>FORM.querySelector("#avg_traffic");
-export const PEAK_TRAFFIC = <HTMLInputElement>(
-  FORM.querySelector("#peak_sustainable_traffic")
-);
-export const BROKE_MY_SITE_TRAFFIC = <HTMLInputElement>(
-  FORM.querySelector("#broke_my_site_traffic")
-);
-
 export const addSubmitEventListener = (): void =>
   FORM.addEventListener("submit", submit, true);
 
@@ -56,6 +48,16 @@ export const validate = (e: Event): TrafficPattern => {
   const description = validateDescription(e);
 
   let broke_is_set = false;
+
+  const AVG_TRAFFIC = <HTMLInputElement>(
+    FORM.querySelector("#avg_traffic")
+  );
+  const PEAK_TRAFFIC = <HTMLInputElement>(
+    FORM.querySelector("#peak_sustainable_traffic")
+  );
+  const BROKE_MY_SITE_TRAFFIC = <HTMLInputElement>(
+    FORM.querySelector("#broke_my_site_traffic")
+  );
 
   isBlankString(AVG_TRAFFIC.value, avg_traffic_name);
   isBlankString(PEAK_TRAFFIC.value, peak_traffic_name);
