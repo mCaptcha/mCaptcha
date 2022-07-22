@@ -55,15 +55,14 @@ jobs:
             target
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
-
       - name: load env
         run: |
           source .env_sample \
-            && echo "POSTGRES_DATABASE_URL=$POSTGRES_DATABASE_URL" >> $GITHUB_ENV 
+            && echo "POSTGRES_DATABASE_URL=$POSTGRES_DATABASE_URL" >> $GITHUB_ENV
 
       - uses: actions/setup-node@v2
         with:
-          node-version: '16.x'
+          node-version: "16.x"
 
       - name: start smtp server
         run: docker run -d -p 1080:1080 -p 10025:1025  maildev/maildev --incoming-user admin --incoming-pass password
@@ -83,7 +82,8 @@ jobs:
       - name: build
         run: make
         env:
-          POSTGRES_DATABASE_URL: "${{ env.POSTGRES_DATABASE_URL }}"
+          POSTGRES_DATABASE_URL:
+            "${{ env.POSTGRES_DATABASE_URL }}"
 
             #      - name: build frontend
             #        run: make frontend
@@ -95,7 +95,18 @@ jobs:
         run: make test
         env:
           POSTGRES_DATABASE_URL: "${{ env.POSTGRES_DATABASE_URL }}"
-          
+
+      - name: Login to DockerHub
+        if: (github.ref == 'refs/heads/master' || github.event_name == 'push') && github.repository == 'mCaptcha/mCaptcha'
+        uses: docker/login-action@v1
+        with:
+          username: mcaptcha
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: publish docker images
+        if: (github.ref == 'refs/heads/master' || github.event_name == 'push') && github.repository == 'mCaptcha/mCaptcha'
+        run: make docker-publish
+
       - name: generate documentation
         if: matrix.version == 'stable' && (github.repository == 'mCaptcha/mCaptcha')
         run: make doc
