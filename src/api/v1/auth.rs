@@ -103,8 +103,9 @@ pub mod runners {
                 .get_password(&db_core::Login::Email(&payload.login))
                 .await?
         } else {
+            let username = data.creds.username(&payload.login)?;
             data.db
-                .get_password(&db_core::Login::Username(&payload.login))
+                .get_password(&db_core::Login::Username(&username))
                 .await?
         };
 
