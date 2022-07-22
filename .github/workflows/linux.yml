@@ -41,6 +41,15 @@ jobs:
         image: mcaptcha/cache
         ports:
           - 6379:6379
+      mcaptcha-smtp:
+        image: maildev/maildev
+        env: 
+          MAILDEV_WEB_PORT: "1080"
+          MAILDEV_INCOMING_USER: "admin"
+          MAILDEV_INCOMING_PASS: "password"
+        ports:
+          - 1080:1080
+          - 10025:1025
 
     steps:
       - uses: actions/checkout@v2
@@ -63,9 +72,6 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: "16.x"
-
-      - name: start smtp server
-        run: docker run -d -p 1080:1080 -p 10025:1025  maildev/maildev --incoming-user admin --incoming-pass password
 
       - name: Install ${{ matrix.version }}
         uses: actions-rs/toolchain@v1
