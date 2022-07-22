@@ -29,23 +29,41 @@ pub struct CaptchaValidateResp {
     pub valid: bool,
 }
 
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct VerifyCaptchaResultPayload {
+    pub secret: String,
+    pub key: String,
+    pub token: String,
+}
+
+impl From<VerifyCaptchaResultPayload> for VerifyCaptchaResult {
+    fn from(m: VerifyCaptchaResultPayload) -> Self {
+        VerifyCaptchaResult {
+            token: m.token,
+            key: m.key,
+        }
+    }
+}
+
 // API keys are mcaptcha actor names
 
 /// route hander that validates a PoW solution token
 #[my_codegen::post(path = "V1_API_ROUTES.pow.validate_captcha_token()")]
 pub async fn validate_captcha_token(
-    payload: web::Json<VerifyCaptchaResult>,
+    payload: web::Json<VerifyCaptchaResultPayload>,
     data: AppData,
 ) -> ServiceResult<impl Responder> {
+    let secret = data.db.get_secret_from_captcha(&payload.key).await?;
+    if secret.secret != payload.secret {
+        return Err(ServiceError::WrongPassword);
+    }
+    let payload: VerifyCaptchaResult = payload.into_inner().into();
     let key = payload.key.clone();
-    let res = data
-        .captcha
-        .validate_verification_tokens(payload.into_inner())
-        .await?;
-    let payload = CaptchaValidateResp { valid: res };
+    let res = data.captcha.validate_verification_tokens(payload).await?;
+    let resp = CaptchaValidateResp { valid: res };
     data.stats.record_confirm(&data, &key).await?;
     //println!("{:?}", &payload);
-    Ok(HttpResponse::Ok().json(payload))
+    Ok(HttpResponse::Ok().json(resp))
 }
 
 #[cfg(test)]
@@ -76,8 +94,21 @@ pub mod tests {
         delete_user(data, NAME).await;
 
         register_and_signin(data, NAME, EMAIL, PASSWORD).await;
-        let (_, _signin_resp, token_key) = add_levels_util(data, NAME, PASSWORD).await;
+        let (_, signin_resp, token_key) = add_levels_util(data, NAME, PASSWORD).await;
         let app = get_app!(data).await;
+        let cookies = get_cookie!(signin_resp);
+
+        let secret = test::call_service(
+            &app,
+            test::TestRequest::get()
+                .cookie(cookies.clone())
+                .uri(V1_API_ROUTES.account.get_secret)
+                .to_request(),
+        )
+        .await;
+        assert_eq!(secret.status(), StatusCode::OK);
+        let secret: db_core::Secret = test::read_body_json(secret).await;
+        let secret = secret.secret;
 
         let get_config_payload = GetConfigPayload {
             key: token_key.key.clone(),
@@ -116,10 +147,34 @@ pub mod tests {
         assert_eq!(pow_verify_resp.status(), StatusCode::OK);
         let client_token: ValidationToken = test::read_body_json(pow_verify_resp).await;
 
-        let validate_payload = VerifyCaptchaResult {
+        let mut validate_payload = VerifyCaptchaResultPayload {
             token: client_token.token.clone(),
             key: token_key.key.clone(),
+            secret: NAME.to_string(),
         };
+
+        // siteverify authentication failure
+        bad_post_req_test(
+            data,
+            NAME,
+            PASSWORD,
+            VERIFY_TOKEN_URL,
+            &validate_payload,
+            ServiceError::WrongPassword,
+        )
+        .await;
+        //       let validate_client_token = test::call_service(
+        //            &app,
+        //            post_request!(&validate_payload, VERIFY_TOKEN_URL).to_request(),
+        //        )
+        //        .await;
+        //        assert_eq!(validate_client_token.status(), StatusCode::OK);
+        //        let resp: CaptchaValidateResp =
+        //            test::read_body_json(validate_client_token).await;
+        //        assert!(resp.valid);
+
+        // verifying work
+        validate_payload.secret = secret.clone();
 
         let validate_client_token = test::call_service(
             &app,
@@ -138,20 +193,6 @@ pub mod tests {
         )
         .await;
         let resp: CaptchaValidateResp = test::read_body_json(string_not_found).await;
-        assert!(!resp.valid);
-
-        let validate_payload = VerifyCaptchaResult {
-            token: client_token.token.clone(),
-            key: client_token.token.clone(),
-        };
-
-        // key not found
-        let key_not_found = test::call_service(
-            &app,
-            post_request!(&validate_payload, VERIFY_TOKEN_URL).to_request(),
-        )
-        .await;
-        let resp: CaptchaValidateResp = test::read_body_json(key_not_found).await;
         assert!(!resp.valid);
     }
 }

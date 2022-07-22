@@ -134,6 +134,9 @@ pub trait MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
     /// get a user's secret
     async fn get_secret(&self, username: &str) -> DBResult<Secret>;
 
+    /// get a user's secret from a captcha key
+    async fn get_secret_from_captcha(&self, key: &str) -> DBResult<Secret>;
+
     /// update a user's secret
     async fn update_secret(&self, username: &str, secret: &str) -> DBResult<()>;
 

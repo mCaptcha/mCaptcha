@@ -176,6 +176,10 @@ pub async fn database_works<'a, T: MCDatabase>(
     assert!(db.captcha_exists(None, c.key).await.unwrap());
     assert!(db.captcha_exists(Some(p.username), c.key).await.unwrap());
 
+    // get secret from captcha key
+    let secret_from_captcha = db.get_secret_from_captcha(&c.key).await.unwrap();
+    assert_eq!(secret_from_captcha.secret, p.secret, "user secret matches");
+
     // get captcha configuration
     let captcha = db.get_captcha_config(p.username, c.key).await.unwrap();
     assert_eq!(captcha.key, c.key);

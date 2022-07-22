@@ -299,6 +299,22 @@ impl MCDatabase for Database {
         Ok(secret)
     }
 
+    /// get a user's secret from a captcha key
+    async fn get_secret_from_captcha(&self, key: &str) -> DBResult<Secret> {
+        let secret = sqlx::query_as!(
+            Secret,
+            r#"SELECT secret  FROM mcaptcha_users WHERE ID = (
+                    SELECT user_id FROM mcaptcha_config WHERE key = $1
+                    )"#,
+            key,
+        )
+        .fetch_one(&self.pool)
+        .await
+        .map_err(|e| map_row_not_found_err(e, DBError::AccountNotFound))?;
+
+        Ok(secret)
+    }
+
     /// update a user's secret
     async fn update_secret(&self, username: &str, secret: &str) -> DBResult<()> {
         sqlx::query!(
