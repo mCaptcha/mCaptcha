@@ -270,6 +270,26 @@
     },
     "query": "SELECT EXISTS (SELECT 1 from mcaptcha_users WHERE email = $1)"
   },
+  "494d2aed281e1408aeda3606b0814db75aea2878783a2e2f11a4feb6fc48e938": {
+    "describe": {
+      "columns": [
+        {
+          "name": "secret",
+          "ordinal": 0,
+          "type_info": "Varchar"
+        }
+      ],
+      "nullable": [
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      }
+    },
+    "query": "SELECT secret  FROM mcaptcha_users WHERE ID = (\n                    SELECT user_id FROM mcaptcha_config WHERE key = $1\n                    )"
+  },
   "4a5dfbc5aeb2bab290a09640cc25223d484fbc7549e5bc54f33bab8616725031": {
     "describe": {
       "columns": [

@@ -1,3 +1,761 @@
 {
-  "db": "PostgreSQL"
+  "db": "PostgreSQL",
+  "02deb524bb12632af9b7883975f75fdc30d6775d836aff647add1dffd1a4bc00": {
+    "describe": {
+      "columns": [
+        {
+          "name": "config_id",
+          "ordinal": 0,
+          "type_info": "Int4"
+        },
+        {
+          "name": "duration",
+          "ordinal": 1,
+          "type_info": "Int4"
+        },
+        {
+          "name": "name",
+          "ordinal": 2,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "key",
+          "ordinal": 3,
+          "type_info": "Varchar"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Text"
+        ]
+      }
+    },
+    "query": "SELECT config_id, duration, name, key from mcaptcha_config WHERE\n                        key = $1 AND\n                        user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2) "
+  },
+  "044e2036a518de2ccac9318ccba07f7ce10e4a1c1d51d0128ea5e8cb94358ac5": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Timestamptz"
+        ]
+      }
+    },
+    "query": "INSERT INTO mcaptcha_pow_confirmed_stats \n        (config_id, time) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1), $2)"
+  },
+  "0840af95cc17c8ea6fc994e53696d4dec39ef9b4b6dd6c58c21cc44ccbb4bd09": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Text",
+          "Int4",
+          "Int4",
+          "Int4"
+        ]
+      }
+    },
+    "query": "INSERT INTO mcaptcha_sitekey_user_provided_avg_traffic (\n            config_id,\n            avg_traffic,\n            peak_sustainable_traffic,\n            broke_my_site_traffic\n            ) VALUES ( \n             (SELECT config_id FROM mcaptcha_config WHERE key = ($1)\n             AND user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2)\n            ), $3, $4, $5)"
+  },
+  "0e7a1a38019c5e88ebd096fc5f6031aaa7f337fe735aa44c4e31bd6e51163749": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Text"
+        ]
+      }
+    },
+    "query": "DELETE FROM mcaptcha_sitekey_user_provided_avg_traffic\n        WHERE config_id = (\n            SELECT config_id \n            FROM \n                mcaptcha_config \n            WHERE\n                key = ($1) \n            AND \n                user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2)\n            );"
+  },
+  "16864df9cf9a69c299d9ab68bac559c48f4fc433541a10f7c1b60717df2b820e": {
+    "describe": {
+      "columns": [
+        {
+          "name": "key",
+          "ordinal": 0,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "name",
+          "ordinal": 1,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "config_id",
+          "ordinal": 2,
+          "type_info": "Int4"
+        },
+        {
+          "name": "duration",
+          "ordinal": 3,
+          "type_info": "Int4"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      }
+    },
+    "query": "SELECT key, name, config_id, duration FROM mcaptcha_config WHERE\n            user_id = (SELECT ID FROM mcaptcha_users WHERE name = $1) "
+  },
+  "1e9fe69b23e4bfa7bb369455753100307e334e8dbaf02ff37cda08992fe95910": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Text"
+        ]
+      }
+    },
+    "query": "UPDATE mcaptcha_users set name = $1\n            WHERE name = $2"
+  },
+  "2b319a202bb983d5f28979d1e371f399125da1122fbda36a5a55b75b9c743451": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Int4",
+          "Text"
+        ]
+      }
+    },
+    "query": "--  mark a notification as read\nUPDATE mcaptcha_notifications\n    SET read = TRUE\nWHERE \n    mcaptcha_notifications.id = $1\nAND\n    mcaptcha_notifications.rx = (\n        SELECT\n            id\n        FROM\n            mcaptcha_users\n        WHERE\n        name = $2\n    );\n"
+  },
+  "307245aaf5b0d692448b80358d6916aa50c507b35e724d66c9b16a16b60e1b38": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Text",
+          "Int4",
+          "Varchar"
+        ]
+      }
+    },
+    "query": "INSERT INTO mcaptcha_config\n        (key, user_id, duration, name)\n        VALUES ($1, (SELECT ID FROM mcaptcha_users WHERE name = $2), $3, $4)"
+  },
+  "30ba202b601dd07f41798775c7c59fde7deeae759ec959df46734a66ffd78df7": {
+    "describe": {
+      "columns": [
+        {
+          "name": "email",
+          "ordinal": 0,
+          "type_info": "Varchar"
+        }
+      ],
+      "nullable": [
+        true
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      }
+    },
+    "query": "SELECT email FROM mcaptcha_users WHERE name = $1"
+  },
+  "3b1c8128fc48b16d8e8ea6957dd4fbc0eb19ae64748fd7824e9f5e1901dd1726": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Text"
+        ]
+      }
+    },
+    "query": "UPDATE mcaptcha_users set secret = $1\n        WHERE name = $2"
+  },
+  "3eb1c43ffd2378c4dd59975568c3a180b72d13008f294a91f3e76b785dba295b": {
+    "describe": {
+      "columns": [
+        {
+          "name": "exists",
+          "ordinal": 0,
+          "type_info": "Bool"
+        }
+      ],
+      "nullable": [
+        null
+      ],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Text"
+        ]
+      }
+    },
+    "query": "SELECT EXISTS (\n            SELECT 1 from mcaptcha_config WHERE key = $1 \n            AND user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2)\n            )"
+  },
+  "4303f5c6ef98e0de9d8d3c2d781d3ffaa3dee5f7d27db831d327b26f03ba9d68": {
+    "describe": {
+      "columns": [
+        {
+          "name": "time",
+          "ordinal": 0,
+          "type_info": "Timestamptz"
+        }
+      ],
+      "nullable": [
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Text"
+        ]
+      }
+    },
+    "query": "SELECT time FROM mcaptcha_pow_confirmed_stats \n            WHERE \n                config_id = (\n                    SELECT config_id FROM mcaptcha_config \n                WHERE \n                    key = $1\n                AND\n                     user_id = (\n                        SELECT \n                            ID FROM mcaptcha_users WHERE name = $2))\n                ORDER BY time DESC"
+  },
+  "45d9e9fb6344fe3a18c2529d50c935d3837bfe25c96595beb6970d6067720578": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Text",
+          "Varchar",
+          "Varchar"
+        ]
+      }
+    },
+    "query": "insert into mcaptcha_users \n        (name , password, email, secret) values ($1, $2, $3, $4)"
+  },
+  "47fa50aecfb1499b0a18fa9299643017a1a8d69d4e9980032e0d8f745465d14f": {
+    "describe": {
+      "columns": [
+        {
+          "name": "exists",
+          "ordinal": 0,
+          "type_info": "Bool"
+        }
+      ],
+      "nullable": [
+        null
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      }
+    },
+    "query": "SELECT EXISTS (SELECT 1 from mcaptcha_users WHERE email = $1)"
+  },
+  "494d2aed281e1408aeda3606b0814db75aea2878783a2e2f11a4feb6fc48e938": {
+    "describe": {
+      "columns": [
+        {
+          "name": "secret",
+          "ordinal": 0,
+          "type_info": "Varchar"
+        }
+      ],
+      "nullable": [
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      }
+    },
+    "query": "SELECT secret  FROM mcaptcha_users WHERE ID = (\n                    SELECT user_id FROM mcaptcha_config WHERE key = $1\n                    )"
+  },
+  "4a5dfbc5aeb2bab290a09640cc25223d484fbc7549e5bc54f33bab8616725031": {
+    "describe": {
+      "columns": [
+        {
+          "name": "exists",
+          "ordinal": 0,
+          "type_info": "Bool"
+        }
+      ],
+      "nullable": [
+        null
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      }
+    },
+    "query": "SELECT EXISTS (SELECT 1 from mcaptcha_config WHERE key = $1)"
+  },
+  "507bea10c7f8417c5b1430211d0137299cd561333bf47f7b4887d0ef801d1ea4": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Text",
+          "Text"
+        ]
+      }
+    },
+    "query": "UPDATE mcaptcha_config SET key = $1 \n        WHERE key = $2 AND user_id = (SELECT ID FROM mcaptcha_users WHERE name = $3)"
+  },
+  "570c22f19fe0b97d78086038c8ef82509dce0bae704d80f9f031c1c47e6a6572": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int4",
+          "Text",
+          "Text"
+        ]
+      }
+    },
+    "query": "UPDATE mcaptcha_config SET name = $1, duration = $2\n            WHERE user_id = (SELECT ID FROM mcaptcha_users WHERE name = $3)\n            AND key = $4"
+  },
+  "717771c42737feb3f4ca13f2ab11361073ea17b55562a103f660149bf049c5c6": {
+    "describe": {
+      "columns": [
+        {
+          "name": "difficulty_factor",
+          "ordinal": 0,
+          "type_info": "Int4"
+        },
+        {
+          "name": "visitor_threshold",
+          "ordinal": 1,
+          "type_info": "Int4"
+        }
+      ],
+      "nullable": [
+        false,
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Text"
+        ]
+      }
+    },
+    "query": "SELECT difficulty_factor, visitor_threshold FROM mcaptcha_levels  WHERE\n            config_id = (\n                SELECT config_id FROM mcaptcha_config WHERE key = ($1)\n                AND user_id = (SELECT ID from mcaptcha_users WHERE name = $2)\n                )\n            ORDER BY difficulty_factor ASC;"
+  },
+  "726a794f7599b78ab749d9f887f5c28db38f072b41f691bde35d23ba0dd72409": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Timestamptz"
+        ]
+      }
+    },
+    "query": "INSERT INTO mcaptcha_pow_fetched_stats \n        (config_id, time) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1), $2)"
+  },
+  "7c96ae73dd73c1b0e073e3ac78f87f4cba23fdb2cdbed9ba9b0d55f33655582e": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Text"
+        ]
+      }
+    },
+    "query": "DELETE FROM mcaptcha_levels \n        WHERE config_id = (\n            SELECT config_id FROM mcaptcha_config where key = ($1) \n            AND user_id = (\n            SELECT ID from mcaptcha_users WHERE name = $2\n            )\n            )"
+  },
+  "81c779ed4bb59f8b94dea730cbda31f7733ef16d509a3ed607388b5ddef74638": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Text",
+          "Varchar"
+        ]
+      }
+    },
+    "query": "INSERT INTO mcaptcha_users \n        (name , password,  secret) VALUES ($1, $2, $3)"
+  },
+  "84484cb6892db29121816bc5bff5702b9e857e20aa14e79d080d78ae7593153b": {
+    "describe": {
+      "columns": [
+        {
+          "name": "time",
+          "ordinal": 0,
+          "type_info": "Timestamptz"
+        }
+      ],
+      "nullable": [
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Text"
+        ]
+      }
+    },
+    "query": "SELECT time FROM mcaptcha_pow_solved_stats \n            WHERE config_id = (\n                SELECT config_id FROM mcaptcha_config \n                WHERE \n                    key = $1\n                AND\n                     user_id = (\n                        SELECT \n                            ID FROM mcaptcha_users WHERE name = $2)) \n                ORDER BY time DESC"
+  },
+  "9753721856a47438c5e72f28fd9d149db10c48e677b4613bf3f1e8487908aac8": {
+    "describe": {
+      "columns": [
+        {
+          "name": "difficulty_factor",
+          "ordinal": 0,
+          "type_info": "Int4"
+        },
+        {
+          "name": "visitor_threshold",
+          "ordinal": 1,
+          "type_info": "Int4"
+        }
+      ],
+      "nullable": [
+        false,
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      }
+    },
+    "query": "SELECT difficulty_factor, visitor_threshold FROM mcaptcha_levels  WHERE\n            config_id = (\n                SELECT config_id FROM mcaptcha_config WHERE key = ($1)\n                ) ORDER BY difficulty_factor ASC;"
+  },
+  "ad196ab3ef9dc32f6de2313577ccd6c26eae9ab19df5f71ce182651983efb99a": {
+    "describe": {
+      "columns": [
+        {
+          "name": "duration",
+          "ordinal": 0,
+          "type_info": "Int4"
+        }
+      ],
+      "nullable": [
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      }
+    },
+    "query": "SELECT duration FROM mcaptcha_config  \n            WHERE key = $1"
+  },
+  "ad23588ee4bcbb13e208460ce21e2fa9f1373893934b530b339fea10360b34a8": {
+    "describe": {
+      "columns": [
+        {
+          "name": "exists",
+          "ordinal": 0,
+          "type_info": "Bool"
+        }
+      ],
+      "nullable": [
+        null
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      }
+    },
+    "query": "SELECT EXISTS (SELECT 1 from mcaptcha_users WHERE name = $1)"
+  },
+  "b97d810814fbeb2df19f47bcfa381bc6fb7ac6832d040b377cf4fca2ca896cfb": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Text"
+        ]
+      }
+    },
+    "query": "UPDATE mcaptcha_users set email = $1\n            WHERE name = $2"
+  },
+  "bb6443e1df704294abbbdb563f1bf46660d0f3462c0c35c10a533446fc7c53e8": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Text"
+        ]
+      }
+    },
+    "query": "DELETE FROM mcaptcha_config WHERE key = ($1)\n                AND\n            user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2)"
+  },
+  "bdf2e2781bfa2e9c81c18ef8df7230809d3b20274685a35b1c544804f2a58241": {
+    "describe": {
+      "columns": [
+        {
+          "name": "name",
+          "ordinal": 0,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "password",
+          "ordinal": 1,
+          "type_info": "Text"
+        }
+      ],
+      "nullable": [
+        false,
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      }
+    },
+    "query": "SELECT name, password  FROM mcaptcha_users WHERE email = ($1)"
+  },
+  "c2e167e56242de7e0a835e25004b15ca8340545fa0ca7ac8f3293157d2d03d98": {
+    "describe": {
+      "columns": [
+        {
+          "name": "avg_traffic",
+          "ordinal": 0,
+          "type_info": "Int4"
+        },
+        {
+          "name": "peak_sustainable_traffic",
+          "ordinal": 1,
+          "type_info": "Int4"
+        },
+        {
+          "name": "broke_my_site_traffic",
+          "ordinal": 2,
+          "type_info": "Int4"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        true
+      ],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Text"
+        ]
+      }
+    },
+    "query": "SELECT \n          avg_traffic, \n          peak_sustainable_traffic, \n          broke_my_site_traffic \n        FROM \n          mcaptcha_sitekey_user_provided_avg_traffic \n        WHERE \n          config_id = (\n            SELECT \n              config_id \n            FROM \n              mcaptcha_config \n            WHERE \n              KEY = $1 \n              AND user_id = (\n                SELECT \n                  id \n                FROM \n                  mcaptcha_users \n                WHERE \n                  NAME = $2\n              )\n          )\n        "
+  },
+  "c399efd5db1284dcb470c40f9b076851f77498c75a63a3b151d4a111bd3e2957": {
+    "describe": {
+      "columns": [
+        {
+          "name": "time",
+          "ordinal": 0,
+          "type_info": "Timestamptz"
+        }
+      ],
+      "nullable": [
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Text"
+        ]
+      }
+    },
+    "query": "SELECT time FROM mcaptcha_pow_fetched_stats\n            WHERE \n                config_id = (\n                    SELECT \n                        config_id FROM mcaptcha_config \n                    WHERE \n                        key = $1\n                    AND\n                        user_id = (\n                        SELECT \n                            ID FROM mcaptcha_users WHERE name = $2))\n                ORDER BY time DESC"
+  },
+  "ca9d5241f1234d1825f7ead391ebe9099fca776e7101ac6e1761881606def5fa": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      }
+    },
+    "query": "DELETE FROM mcaptcha_users WHERE name = ($1)"
+  },
+  "d7dd6cd6a7626e79c62377b2d59115067c5851ec044911ff8833779a08bbb8f7": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Varchar",
+          "Text",
+          "Text",
+          "Timestamptz"
+        ]
+      }
+    },
+    "query": "INSERT INTO mcaptcha_notifications (\n              heading, message, tx, rx, received)\n              VALUES  (\n              $1, $2,\n                  (SELECT ID FROM mcaptcha_users WHERE name = $3),\n                  (SELECT ID FROM mcaptcha_users WHERE name = $4),\n                  $5\n                      );"
+  },
+  "dbe4307651d94bc6db4f1d8b2c6d076fde6280983d59593216d7765cbbdd669c": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Timestamptz"
+        ]
+      }
+    },
+    "query": "INSERT INTO mcaptcha_pow_solved_stats \n        (config_id, time) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1), $2)"
+  },
+  "dcf0d4f9d803dcb1d6f775899f79595f9c78d46633e0ec822303284430df7a3d": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Int4"
+        },
+        {
+          "name": "heading",
+          "ordinal": 1,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "message",
+          "ordinal": 2,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "received",
+          "ordinal": 3,
+          "type_info": "Timestamptz"
+        },
+        {
+          "name": "name",
+          "ordinal": 4,
+          "type_info": "Varchar"
+        }
+      ],
+      "nullable": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      }
+    },
+    "query": "-- gets all unread notifications a user has\nSELECT \n    mcaptcha_notifications.id,\n    mcaptcha_notifications.heading,\n    mcaptcha_notifications.message,\n    mcaptcha_notifications.received,\n    mcaptcha_users.name\nFROM\n    mcaptcha_notifications \nINNER JOIN \n    mcaptcha_users \nON \n    mcaptcha_notifications.tx = mcaptcha_users.id\nWHERE \n    mcaptcha_notifications.rx = (\n        SELECT \n            id \n        FROM \n            mcaptcha_users\n        WHERE\n            name = $1\n        )\nAND \n    mcaptcha_notifications.read IS NULL;\n"
+  },
+  "e4c710d33b709aee262fa0704372ac216d98851447ef4fbe221740b7ae4ea422": {
+    "describe": {
+      "columns": [
+        {
+          "name": "secret",
+          "ordinal": 0,
+          "type_info": "Varchar"
+        }
+      ],
+      "nullable": [
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      }
+    },
+    "query": "SELECT secret  FROM mcaptcha_users WHERE name = ($1)"
+  },
+  "e9ed973dfd2bfef36d5a4724aef4993328e1d8d3ca397fe6d5408a780efc775a": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Text"
+        ]
+      }
+    },
+    "query": "UPDATE mcaptcha_users set password = $1\n            WHERE name = $2"
+  },
+  "f330cb94c53d33495df94aacec7e4e91d8a920742b89a63d1c59a8ea8937c5c8": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Int4",
+          "Int4",
+          "Text",
+          "Text"
+        ]
+      }
+    },
+    "query": "INSERT INTO mcaptcha_levels (\n            difficulty_factor, \n            visitor_threshold,\n            config_id) VALUES  (\n            $1, $2, (\n                SELECT config_id FROM mcaptcha_config WHERE\n                key = ($3) AND user_id = (\n                SELECT ID FROM mcaptcha_users WHERE name = $4\n                    )));"
+  },
+  "f3dee60b85be2ae861b6695286e387529dabf3d11202fb2eeb7e75a7bb3bd0a4": {
+    "describe": {
+      "columns": [
+        {
+          "name": "name",
+          "ordinal": 0,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "password",
+          "ordinal": 1,
+          "type_info": "Text"
+        }
+      ],
+      "nullable": [
+        false,
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      }
+    },
+    "query": "SELECT name, password  FROM mcaptcha_users WHERE name = ($1)"
+  }
 }
