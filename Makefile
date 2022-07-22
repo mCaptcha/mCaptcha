@@ -92,6 +92,7 @@ release: frontend ## Build app with release optimizations
 	cargo build --release
 
 run: frontend ## Run app in debug mode
+	$(call cache_bust)
 	cargo run
 
 
