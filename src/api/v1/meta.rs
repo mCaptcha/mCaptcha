@@ -121,9 +121,19 @@ pub mod tests {
     }
 
     #[actix_rt::test]
-    pub async fn health_works() {
+    async fn health_works_pg() {
+        let data = crate::tests::pg::get_data().await;
+        health_works(data).await;
+    }
+
+    #[actix_rt::test]
+    async fn health_works_maria() {
+        let data = crate::tests::maria::get_data().await;
+        health_works(data).await;
+    }
+
+    pub async fn health_works(data: ArcData) {
         println!("{}", V1_API_ROUTES.meta.health);
-        let data = crate::tests::get_data().await;
         let data = &data;
         let app = get_app!(data).await;
 

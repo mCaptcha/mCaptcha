@@ -37,11 +37,47 @@ use crate::ArcData;
 pub fn get_settings() -> Settings {
     Settings::new().unwrap()
 }
-pub async fn get_data() -> ArcData {
-    let settings = get_settings();
-    let data = Data::new(&settings).await;
-    data
+pub mod pg {
+    use std::env;
+
+    use crate::data::Data;
+    use crate::settings::*;
+    use crate::ArcData;
+
+    use super::get_settings;
+
+    pub async fn get_data() -> ArcData {
+        let url = env::var("POSTGRES_DATABASE_URL").unwrap();
+        let mut settings = get_settings();
+        settings.database.url = url.clone();
+        settings.database.database_type = DBType::Postgres;
+        let data = Data::new(&settings).await;
+        data
+    }
 }
+pub mod maria {
+    use std::env;
+
+    use crate::data::Data;
+    use crate::settings::*;
+    use crate::ArcData;
+
+    use super::get_settings;
+
+    pub async fn get_data() -> ArcData {
+        let url = env::var("MARIA_DATABASE_URL").unwrap();
+        let mut settings = get_settings();
+        settings.database.url = url.clone();
+        settings.database.database_type = DBType::Maria;
+        let data = Data::new(&settings).await;
+        data
+    }
+}
+//pub async fn get_data() -> ArcData {
+//    let settings = get_settings();
+//    let data = Data::new(&settings).await;
+//    data
+//}
 
 #[macro_export]
 macro_rules! get_cookie {

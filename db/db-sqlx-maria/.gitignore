@@ -1,0 +1,16 @@
+/target
+tarpaulin-report.html
+.env
+.env
+cobertura.xml
+prod/
+node_modules/
+/static-assets/bundle
+static/cache/bundle
+./templates/**/*.js
+/static-assets/bundle/*
+src/cache_buster_data.json
+coverage
+dist
+assets
+yarn-error.log

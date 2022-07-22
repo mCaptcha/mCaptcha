@@ -114,8 +114,18 @@ mod tests {
     const DURATION: u64 = 5;
 
     #[actix_rt::test]
-    async fn demo_account_works() {
-        let data_inner = get_data().await;
+    async fn demo_account_works_pg() {
+        let data = crate::tests::pg::get_data().await;
+        demo_account_works(data).await;
+    }
+
+    #[actix_rt::test]
+    async fn demo_account_works_maria() {
+        let data = crate::tests::maria::get_data().await;
+        demo_account_works(data).await;
+    }
+
+    async fn demo_account_works(data_inner: ArcData) {
         let data_inner = &data_inner;
         let data = AppData::new(data_inner.clone());
         crate::tests::delete_user(data_inner, DEMO_USER).await;

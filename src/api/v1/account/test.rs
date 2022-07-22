@@ -29,11 +29,21 @@ use crate::errors::*;
 use crate::tests::*;
 
 #[actix_rt::test]
-pub async fn uname_email_exists_works() {
+async fn uname_email_exists_works_pg() {
+    let data = crate::tests::pg::get_data().await;
+    uname_email_exists_works(data).await;
+}
+
+#[actix_rt::test]
+async fn uname_email_exists_works_maria() {
+    let data = crate::tests::maria::get_data().await;
+    uname_email_exists_works(data).await;
+}
+
+pub async fn uname_email_exists_works(data: ArcData) {
     const NAME: &str = "testuserexists";
     const PASSWORD: &str = "longpassword2";
     const EMAIL: &str = "testuserexists@a.com2";
-    let data = get_data().await;
     let data = &data;
     delete_user(data, NAME).await;
 
@@ -115,14 +125,24 @@ pub async fn uname_email_exists_works() {
 }
 
 #[actix_rt::test]
-pub async fn email_udpate_password_validation_del_userworks() {
+async fn email_udpate_password_validation_del_userworks_pg() {
+    let data = crate::tests::pg::get_data().await;
+    email_udpate_password_validation_del_userworks(data).await;
+}
+
+#[actix_rt::test]
+async fn email_udpate_password_validation_del_userworks_maria() {
+    let data = crate::tests::maria::get_data().await;
+    email_udpate_password_validation_del_userworks(data).await;
+}
+
+pub async fn email_udpate_password_validation_del_userworks(data: ArcData) {
     const NAME: &str = "testuser2";
     const PASSWORD: &str = "longpassword2";
     const EMAIL: &str = "testuser1@a.com2";
     const NAME2: &str = "eupdauser";
     const EMAIL2: &str = "eupdauser@a.com";
 
-    let data = get_data().await;
     let data = &data;
     delete_user(data, NAME).await;
     delete_user(data, NAME2).await;
@@ -198,7 +218,18 @@ pub async fn email_udpate_password_validation_del_userworks() {
 }
 
 #[actix_rt::test]
-pub async fn username_update_works() {
+async fn username_update_works_pg() {
+    let data = crate::tests::pg::get_data().await;
+    username_update_works(data).await;
+}
+
+#[actix_rt::test]
+async fn username_update_works_maria() {
+    let data = crate::tests::maria::get_data().await;
+    username_update_works(data).await;
+}
+
+pub async fn username_update_works(data: ArcData) {
     const NAME: &str = "testuserupda";
     const EMAIL: &str = "testuserupda@sss.com";
     const EMAIL2: &str = "testuserupda2@sss.com";
@@ -206,7 +237,6 @@ pub async fn username_update_works() {
     const NAME2: &str = "terstusrtds";
     const NAME_CHANGE: &str = "terstusrtdsxx";
 
-    let data = get_data().await;
     let data = &data;
 
     futures::join!(

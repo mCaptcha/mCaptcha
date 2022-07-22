@@ -147,7 +147,18 @@ pub mod tests {
     use libmcaptcha::pow::PoWConfig;
 
     #[actix_rt::test]
-    pub async fn get_pow_config_works() {
+    async fn get_pow_config_works_pg() {
+        let data = crate::tests::pg::get_data().await;
+        get_pow_config_works(data).await;
+    }
+
+    #[actix_rt::test]
+    async fn get_pow_config_works_maria() {
+        let data = crate::tests::maria::get_data().await;
+        get_pow_config_works(data).await;
+    }
+
+    pub async fn get_pow_config_works(data: ArcData) {
         use super::*;
         use crate::tests::*;
         use crate::*;
@@ -157,7 +168,6 @@ pub mod tests {
         const PASSWORD: &str = "testingpas";
         const EMAIL: &str = "randomuser@a.com";
 
-        let data = get_data().await;
         let data = &data;
 
         delete_user(data, NAME).await;
@@ -186,7 +196,20 @@ pub mod tests {
     }
 
     #[actix_rt::test]
-    pub async fn pow_difficulty_factor_increases_on_visitor_count_increase() {
+    async fn pow_difficulty_factor_increases_on_visitor_count_increase_pg() {
+        let data = crate::tests::pg::get_data().await;
+        pow_difficulty_factor_increases_on_visitor_count_increase(data).await;
+    }
+
+    #[actix_rt::test]
+    async fn pow_difficulty_factor_increases_on_visitor_count_increase_maria() {
+        let data = crate::tests::maria::get_data().await;
+        pow_difficulty_factor_increases_on_visitor_count_increase(data).await;
+    }
+
+    pub async fn pow_difficulty_factor_increases_on_visitor_count_increase(
+        data: ArcData,
+    ) {
         use super::*;
         use crate::tests::*;
         use crate::*;
@@ -214,7 +237,6 @@ pub mod tests {
             visitor_threshold: 30,
         };
 
-        let data = get_data().await;
         let data = &data;
         let levels = [L1, L2, L3];
 

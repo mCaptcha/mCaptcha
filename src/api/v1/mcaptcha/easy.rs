@@ -263,11 +263,21 @@ pub mod tests {
     }
 
     #[actix_rt::test]
-    pub async fn easy_works() {
+    async fn easy_works_pg() {
+        let data = crate::tests::pg::get_data().await;
+        easy_works(data).await;
+    }
+
+    #[actix_rt::test]
+    async fn easy_works_maria() {
+        let data = crate::tests::maria::get_data().await;
+        easy_works(data).await;
+    }
+
+    pub async fn easy_works(data: ArcData) {
         const NAME: &str = "defaultuserconfgworks";
         const PASSWORD: &str = "longpassworddomain";
         const EMAIL: &str = "defaultuserconfgworks@a.com";
-        let data = crate::tests::get_data().await;
         let data = &data;
 
         delete_user(data, NAME).await;

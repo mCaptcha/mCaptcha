@@ -59,11 +59,21 @@ pub mod tests {
     use crate::*;
 
     #[actix_rt::test]
-    pub async fn verify_pow_works() {
+    async fn verify_pow_works_pg() {
+        let data = crate::tests::pg::get_data().await;
+        verify_pow_works(data).await;
+    }
+
+    #[actix_rt::test]
+    async fn verify_pow_works_maria() {
+        let data = crate::tests::maria::get_data().await;
+        verify_pow_works(data).await;
+    }
+
+    pub async fn verify_pow_works(data: ArcData) {
         const NAME: &str = "powverifyusr";
         const PASSWORD: &str = "testingpas";
         const EMAIL: &str = "verifyuser@a.com";
-        let data = get_data().await;
         let data = &data;
 
         delete_user(data, NAME).await;

@@ -106,12 +106,22 @@ pub mod tests {
     use crate::tests::*;
 
     #[actix_rt::test]
-    pub async fn update_password_works() {
+    async fn update_password_works_pg() {
+        let data = crate::tests::pg::get_data().await;
+        update_password_works(data).await;
+    }
+
+    #[actix_rt::test]
+    async fn update_password_works_maria() {
+        let data = crate::tests::maria::get_data().await;
+        update_password_works(data).await;
+    }
+
+    pub async fn update_password_works(data: ArcData) {
         const NAME: &str = "updatepassuser";
         const PASSWORD: &str = "longpassword2";
         const EMAIL: &str = "updatepassuser@a.com";
 
-        let data = get_data().await;
         let data = &data;
 
         delete_user(data, NAME).await;

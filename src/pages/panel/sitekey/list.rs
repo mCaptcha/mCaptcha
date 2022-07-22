@@ -62,12 +62,22 @@ mod test {
     use crate::*;
 
     #[actix_rt::test]
-    async fn list_sitekeys_work() {
+    async fn list_sitekeys_work_pg() {
+        let data = pg::get_data().await;
+        list_sitekeys_work(data).await;
+    }
+
+    #[actix_rt::test]
+    async fn protected_routes_work_maria() {
+        let data = maria::get_data().await;
+        list_sitekeys_work(data).await;
+    }
+
+    async fn list_sitekeys_work(data: ArcData) {
         const NAME: &str = "listsitekeyuser";
         const PASSWORD: &str = "longpassworddomain";
         const EMAIL: &str = "listsitekeyuser@a.com";
 
-        let data = get_data().await;
         let data = &data;
         delete_user(data, NAME).await;
 

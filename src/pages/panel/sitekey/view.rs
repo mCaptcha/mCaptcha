@@ -89,12 +89,22 @@ mod test {
     use crate::*;
 
     #[actix_rt::test]
-    async fn view_sitekey_work() {
+    async fn view_sitekey_work_pg_test() {
+        let data = pg::get_data().await;
+        view_sitekey_work(data).await;
+    }
+
+    #[actix_rt::test]
+    async fn view_sitekey_work_maria_test() {
+        let data = maria::get_data().await;
+        view_sitekey_work(data).await;
+    }
+
+    async fn view_sitekey_work(data: ArcData) {
         const NAME: &str = "viewsitekeyuser";
         const PASSWORD: &str = "longpassworddomain";
         const EMAIL: &str = "viewsitekeyuser@a.com";
 
-        let data = get_data().await;
         let data = &data;
         delete_user(data, NAME).await;
 

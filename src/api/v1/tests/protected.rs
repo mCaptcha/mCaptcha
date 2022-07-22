@@ -23,11 +23,21 @@ use crate::*;
 use crate::tests::*;
 
 #[actix_rt::test]
-async fn protected_routes_work() {
+async fn protected_routes_work_pg() {
+    let data = pg::get_data().await;
+    protected_routes_work(data).await;
+}
+
+#[actix_rt::test]
+async fn protected_routes_work_maria() {
+    let data = maria::get_data().await;
+    protected_routes_work(data).await;
+}
+
+async fn protected_routes_work(data: ArcData) {
     const NAME: &str = "testuser619";
     const PASSWORD: &str = "longpassword2";
     const EMAIL: &str = "testuser119@a.com2";
-    let data = get_data().await;
     let data = &data;
 
     let _post_protected_urls = [

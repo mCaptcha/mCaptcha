@@ -126,8 +126,7 @@ test: frontend-test frontend ## Run all available tests
 	cd db/db-sqlx-maria &&\
 		DATABASE_URL=${MARIA_DATABASE_URL}\
 		cargo test --no-fail-fast
-	DATABASE_URL=${MARIA_DATABASE_URL} cargo test --no-fail-fast
-	DATABASE_URL=${POSTGRES_DATABASE_URL} cargo test --no-fail-fast
+	cargo test --no-fail-fast
 #	./scripts/tests.sh
 
 xml-test-coverage: migrate ## Generate code coverage report in XML format

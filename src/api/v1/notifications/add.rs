@@ -66,14 +66,24 @@ pub mod tests {
     use crate::*;
 
     #[actix_rt::test]
-    pub async fn notification_works() {
+    async fn notification_works_pg() {
+        let data = pg::get_data().await;
+        notification_works(data).await;
+    }
+
+    #[actix_rt::test]
+    async fn notification_works_maria() {
+        let data = maria::get_data().await;
+        notification_works(data).await;
+    }
+
+    pub async fn notification_works(data: ArcData) {
         const NAME1: &str = "notifuser1";
         const NAME2: &str = "notiuser2";
         const PASSWORD: &str = "longpassworddomain";
         const EMAIL1: &str = "testnotification1@a.com";
         const EMAIL2: &str = "testnotification2@a.com";
 
-        let data = get_data().await;
         let data = &data;
 
         delete_user(data, NAME1).await;

@@ -155,11 +155,21 @@ mod tests {
     use crate::*;
 
     #[actix_rt::test]
-    async fn update_and_get_mcaptcha_works() {
+    async fn update_and_get_mcaptcha_works_pg() {
+        let data = crate::tests::pg::get_data().await;
+        update_and_get_mcaptcha_works(data).await;
+    }
+
+    #[actix_rt::test]
+    async fn update_and_get_mcaptcha_works_maria() {
+        let data = crate::tests::maria::get_data().await;
+        update_and_get_mcaptcha_works(data).await;
+    }
+
+    async fn update_and_get_mcaptcha_works(data: ArcData) {
         const NAME: &str = "updateusermcaptcha";
         const PASSWORD: &str = "longpassworddomain";
         const EMAIL: &str = "testupdateusermcaptcha@a.com";
-        let data = get_data().await;
         let data = &data;
         delete_user(data, NAME).await;
 

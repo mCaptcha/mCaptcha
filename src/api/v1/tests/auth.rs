@@ -26,12 +26,22 @@ use crate::*;
 use crate::tests::*;
 
 #[actix_rt::test]
-pub async fn auth_works() {
+async fn auth_works_pg_test() {
+    let data = pg::get_data().await;
+    auth_works(data).await;
+}
+
+#[actix_rt::test]
+async fn auth_works_maria_test() {
+    let data = maria::get_data().await;
+    auth_works(data).await;
+}
+
+pub async fn auth_works(data: ArcData) {
     const NAME: &str = "testuser";
     const PASSWORD: &str = "longpassword";
     const EMAIL: &str = "testuser1@a.com";
 
-    let data = get_data().await;
     let data = &data;
 
     let app = get_app!(data).await;
@@ -143,11 +153,21 @@ pub async fn auth_works() {
 }
 
 #[actix_rt::test]
-pub async fn serverside_password_validation_works() {
+async fn serverside_password_validation_works_pg() {
+    let data = pg::get_data().await;
+    serverside_password_validation_works(data).await;
+}
+
+#[actix_rt::test]
+async fn serverside_password_validation_works_maria() {
+    let data = maria::get_data().await;
+    serverside_password_validation_works(data).await;
+}
+
+pub async fn serverside_password_validation_works(data: ArcData) {
     const NAME: &str = "testuser542";
     const PASSWORD: &str = "longpassword2";
 
-    let data = get_data().await;
     let data = &data;
     delete_user(data, NAME).await;
 

@@ -101,10 +101,20 @@ mod tests {
     use awc::Client;
 
     #[actix_rt::test]
-    async fn email_verification_works() {
+    async fn email_verification_works_pg() {
+        let data = crate::tests::pg::get_data().await;
+        email_verification_works(data).await;
+    }
+
+    #[actix_rt::test]
+    async fn email_verification_works_maria() {
+        let data = crate::tests::maria::get_data().await;
+        email_verification_works(data).await;
+    }
+
+    async fn email_verification_works(data: crate::ArcData) {
         const TO_ADDR: &str = "Hello <realaravinth@localhost>";
         const VERIFICATION_LINK: &str = "https://localhost";
-        let data = crate::tests::get_data().await;
         let settings = &data.settings;
         verification(&data, TO_ADDR, VERIFICATION_LINK)
             .await

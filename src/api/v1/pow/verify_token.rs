@@ -80,7 +80,18 @@ pub mod tests {
     use crate::*;
 
     #[actix_rt::test]
-    pub async fn validate_captcha_token_works() {
+    async fn validate_captcha_token_works_pg() {
+        let data = crate::tests::pg::get_data().await;
+        validate_captcha_token_works(data).await;
+    }
+
+    #[actix_rt::test]
+    async fn validate_captcha_token_works_maria() {
+        let data = crate::tests::maria::get_data().await;
+        validate_captcha_token_works(data).await;
+    }
+
+    pub async fn validate_captcha_token_works(data: ArcData) {
         const NAME: &str = "enterprisetken";
         const PASSWORD: &str = "testingpas";
         const EMAIL: &str = "verifyuser@enter.com";
@@ -89,7 +100,6 @@ pub mod tests {
         const VERIFY_TOKEN_URL: &str = "/api/v1/pow/siteverify";
         //        const UPDATE_URL: &str = "/api/v1/mcaptcha/domain/token/duration/update";
 
-        let data = get_data().await;
         let data = &data;
         delete_user(data, NAME).await;
 

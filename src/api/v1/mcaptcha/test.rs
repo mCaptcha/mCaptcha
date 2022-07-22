@@ -37,11 +37,21 @@ const L2: Level = Level {
 };
 
 #[actix_rt::test]
-pub async fn level_routes_work() {
+async fn level_routes_work_pg() {
+    let data = crate::tests::pg::get_data().await;
+    level_routes_work(data).await;
+}
+
+#[actix_rt::test]
+async fn level_routes_work_maria() {
+    let data = crate::tests::maria::get_data().await;
+    level_routes_work(data).await;
+}
+
+pub async fn level_routes_work(data: ArcData) {
     const NAME: &str = "testuserlevelroutes";
     const PASSWORD: &str = "longpassworddomain";
     const EMAIL: &str = "testuserlevelrouts@a.com";
-    let data = get_data().await;
     let data = &data;
 
     delete_user(data, NAME).await;
