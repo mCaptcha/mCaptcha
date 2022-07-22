@@ -355,6 +355,9 @@
 <span id="350">350</span>
 <span id="351">351</span>
 <span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
  *
@@ -490,6 +493,9 @@
 
     <span class="doccomment">/// get a user&#39;s secret</span>
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_secret</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident">Secret</span><span class="op">&gt;</span>;
+
+    <span class="doccomment">/// get a user&#39;s secret from a captcha key</span>
+    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_secret_from_captcha</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident">Secret</span><span class="op">&gt;</span>;
 
     <span class="doccomment">/// update a user&#39;s secret</span>
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_secret</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">secret</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
