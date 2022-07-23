@@ -9,7 +9,7 @@ on:
     branches:
       - master
       - "*"
-      - !gh-pages
+      - '!gh-pages'
 
 jobs:
   build_and_test:
@@ -55,10 +55,11 @@ jobs:
 
       maria:
         image: mariadb
-        env: MARIADB_USER:maria
-          MARIADB_PASSWORD:password
-          MARIADB_ROOT_PASSWORD:password
-          MARIADB_DATABASE:maria
+        env: 
+          MARIADB_USER: "maria"
+          MARIADB_PASSWORD: "password"
+          MARIADB_ROOT_PASSWORD: "password"
+          MARIADB_DATABASE: "maria"
         options: >-
           --health-cmd="mysqladmin ping"
           --health-interval=10s
