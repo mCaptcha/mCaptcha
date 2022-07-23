@@ -245,6 +245,12 @@
 <span id="240">240</span>
 <span id="241">241</span>
 <span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
  *
@@ -265,8 +271,9 @@
 <span class="kw">use</span> <span class="ident">std::path::Path</span>;
 
 <span class="kw">use</span> <span class="ident">config</span>::{<span class="ident">Config</span>, <span class="ident">ConfigError</span>, <span class="ident">Environment</span>, <span class="ident">File</span>};
+<span class="kw">use</span> <span class="ident">derive_more::Display</span>;
 <span class="kw">use</span> <span class="ident">log</span>::{<span class="ident">debug</span>, <span class="ident">warn</span>};
-<span class="kw">use</span> <span class="ident">serde::Deserialize</span>;
+<span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 <span class="kw">use</span> <span class="ident">url::Url</span>;
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Deserialize</span>)]</span>
@@ -312,28 +319,47 @@
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="kw">struct</span> <span class="ident">DatabaseBuilder</span> {
-    <span class="kw">pub</span> <span class="ident">port</span>: <span class="ident">u32</span>,
-    <span class="kw">pub</span> <span class="ident">hostname</span>: <span class="ident">String</span>,
-    <span class="kw">pub</span> <span class="ident">username</span>: <span class="ident">String</span>,
-    <span class="kw">pub</span> <span class="ident">password</span>: <span class="ident">String</span>,
-    <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">String</span>,
+<span class="comment">//#[derive(Debug, Clone, Deserialize)]</span>
+<span class="comment">//struct DatabaseBuilder {</span>
+<span class="comment">//    pub port: u32,</span>
+<span class="comment">//    pub hostname: String,</span>
+<span class="comment">//    pub username: String,</span>
+<span class="comment">//    pub password: String,</span>
+<span class="comment">//    pub name: String,</span>
+<span class="comment">//}</span>
+
+<span class="comment">//impl DatabaseBuilder {</span>
+<span class="comment">//    #[cfg(not(tarpaulin_include))]</span>
+<span class="comment">//    fn extract_database_url(url: &amp;Url) -&gt; Self {</span>
+<span class="comment">//        debug!(&quot;Databse name: {}&quot;, url.path());</span>
+<span class="comment">//        let mut path = url.path().split(&#39;/&#39;);</span>
+<span class="comment">//        path.next();</span>
+<span class="comment">//        let name = path.next().expect(&quot;no database name&quot;).to_string();</span>
+<span class="comment">//        DatabaseBuilder {</span>
+<span class="comment">//            port: url.port().expect(&quot;Enter database port&quot;).into(),</span>
+<span class="comment">//            hostname: url.host().expect(&quot;Enter database host&quot;).to_string(),</span>
+<span class="comment">//            username: url.username().into(),</span>
+<span class="comment">//            password: url.password().expect(&quot;Enter database password&quot;).into(),</span>
+<span class="comment">//            name,</span>
+<span class="comment">//        }</span>
+<span class="comment">//    }</span>
+<span class="comment">//}</span>
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Display</span>, <span class="ident">PartialEq</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename_all</span> <span class="op">=</span> <span class="string">&quot;lowercase&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">DBType</span> {
+    <span class="attribute">#[<span class="ident">display</span>(<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;postgres&quot;</span>)]</span>
+    <span class="ident">Postgres</span>,
+    <span class="attribute">#[<span class="ident">display</span>(<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;maria&quot;</span>)]</span>
+    <span class="ident">Maria</span>,
 }
 
-<span class="kw">impl</span> <span class="ident">DatabaseBuilder</span> {
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
-    <span class="kw">fn</span> <span class="ident">extract_database_url</span>(<span class="ident">url</span>: <span class="kw-2">&amp;</span><span class="ident">Url</span>) -&gt; <span class="self">Self</span> {
-        <span class="macro">debug!</span>(<span class="string">&quot;Databse name: {}&quot;</span>, <span class="ident">url</span>.<span class="ident">path</span>());
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">url</span>.<span class="ident">path</span>().<span class="ident">split</span>(<span class="string">&#39;/&#39;</span>);
-        <span class="ident">path</span>.<span class="ident">next</span>();
-        <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">path</span>.<span class="ident">next</span>().<span class="ident">expect</span>(<span class="string">&quot;no database name&quot;</span>).<span class="ident">to_string</span>();
-        <span class="ident">DatabaseBuilder</span> {
-            <span class="ident">port</span>: <span class="ident">url</span>.<span class="ident">port</span>().<span class="ident">expect</span>(<span class="string">&quot;Enter database port&quot;</span>).<span class="ident">into</span>(),
-            <span class="ident">hostname</span>: <span class="ident">url</span>.<span class="ident">host</span>().<span class="ident">expect</span>(<span class="string">&quot;Enter database host&quot;</span>).<span class="ident">to_string</span>(),
-            <span class="ident">username</span>: <span class="ident">url</span>.<span class="ident">username</span>().<span class="ident">into</span>(),
-            <span class="ident">password</span>: <span class="ident">url</span>.<span class="ident">password</span>().<span class="ident">expect</span>(<span class="string">&quot;Enter database password&quot;</span>).<span class="ident">into</span>(),
-            <span class="ident">name</span>,
+<span class="kw">impl</span> <span class="ident">DBType</span> {
+    <span class="kw">fn</span> <span class="ident">from_url</span>(<span class="ident">url</span>: <span class="kw-2">&amp;</span><span class="ident">Url</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">ConfigError</span><span class="op">&gt;</span> {
+        <span class="kw">match</span> <span class="ident">url</span>.<span class="ident">scheme</span>() {
+            <span class="string">&quot;mysql&quot;</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::Maria</span>),
+            <span class="string">&quot;postgres&quot;</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::Postgres</span>),
+            <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">ConfigError::Message</span>(<span class="string">&quot;Unknown database type&quot;</span>.<span class="ident">into</span>())),
         }
     }
 }
@@ -342,6 +368,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Database</span> {
     <span class="kw">pub</span> <span class="ident">url</span>: <span class="ident">String</span>,
     <span class="kw">pub</span> <span class="ident">pool</span>: <span class="ident">u32</span>,
+    <span class="kw">pub</span> <span class="ident">database_type</span>: <span class="ident">DBType</span>,
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Deserialize</span>)]</span>
@@ -400,13 +427,12 @@
         <span class="kw">match</span> <span class="ident">env::var</span>(<span class="string">&quot;DATABASE_URL&quot;</span>) {
             <span class="prelude-val">Ok</span>(<span class="ident">val</span>) =&gt; {
                 <span class="kw">let</span> <span class="ident">url</span> <span class="op">=</span> <span class="ident">Url::parse</span>(<span class="kw-2">&amp;</span><span class="ident">val</span>).<span class="ident">expect</span>(<span class="string">&quot;couldn&#39;t parse Database URL&quot;</span>);
-                <span class="kw">let</span> <span class="ident">database_conf</span> <span class="op">=</span> <span class="ident">DatabaseBuilder::extract_database_url</span>(<span class="kw-2">&amp;</span><span class="ident">url</span>);
-                <span class="ident">set_from_database_url</span>(<span class="kw-2">&amp;mut</span> <span class="ident">s</span>, <span class="kw-2">&amp;</span><span class="ident">database_conf</span>);
+                <span class="ident">s</span>.<span class="ident">set</span>(<span class="string">&quot;database.url&quot;</span>, <span class="ident">url</span>.<span class="ident">to_string</span>()).<span class="ident">unwrap</span>();
             }
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="macro">warn!</span>(<span class="string">&quot;couldn&#39;t interpret DATABASE_URL: {}&quot;</span>, <span class="ident">e</span>),
+            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
+                <span class="ident">set_database_url</span>(<span class="kw-2">&amp;mut</span> <span class="ident">s</span>);
+            }
         }
-
-        <span class="ident">set_database_url</span>(<span class="kw-2">&amp;mut</span> <span class="ident">s</span>);
 
         <span class="comment">// setting default values</span>
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
@@ -427,20 +453,6 @@
         .<span class="ident">expect</span>(<span class="string">&quot;Couldn&#39;t access source_code&quot;</span>);
 
     <span class="ident">Url::parse</span>(<span class="kw-2">&amp;</span><span class="ident">url</span>).<span class="ident">expect</span>(<span class="string">&quot;Please enter a URL for source_code in settings&quot;</span>);
-}
-
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
-<span class="kw">fn</span> <span class="ident">set_from_database_url</span>(<span class="ident">s</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Config</span>, <span class="ident">database_conf</span>: <span class="kw-2">&amp;</span><span class="ident">DatabaseBuilder</span>) {
-    <span class="ident">s</span>.<span class="ident">set</span>(<span class="string">&quot;database.username&quot;</span>, <span class="ident">database_conf</span>.<span class="ident">username</span>.<span class="ident">clone</span>())
-        .<span class="ident">expect</span>(<span class="string">&quot;Couldn&#39;t set database username&quot;</span>);
-    <span class="ident">s</span>.<span class="ident">set</span>(<span class="string">&quot;database.password&quot;</span>, <span class="ident">database_conf</span>.<span class="ident">password</span>.<span class="ident">clone</span>())
-        .<span class="ident">expect</span>(<span class="string">&quot;Couldn&#39;t access database password&quot;</span>);
-    <span class="ident">s</span>.<span class="ident">set</span>(<span class="string">&quot;database.hostname&quot;</span>, <span class="ident">database_conf</span>.<span class="ident">hostname</span>.<span class="ident">clone</span>())
-        .<span class="ident">expect</span>(<span class="string">&quot;Couldn&#39;t access database hostname&quot;</span>);
-    <span class="ident">s</span>.<span class="ident">set</span>(<span class="string">&quot;database.port&quot;</span>, <span class="ident">database_conf</span>.<span class="ident">port</span> <span class="kw">as</span> <span class="ident">i64</span>)
-        .<span class="ident">expect</span>(<span class="string">&quot;Couldn&#39;t access database port&quot;</span>);
-    <span class="ident">s</span>.<span class="ident">set</span>(<span class="string">&quot;database.name&quot;</span>, <span class="ident">database_conf</span>.<span class="ident">name</span>.<span class="ident">clone</span>())
-        .<span class="ident">expect</span>(<span class="string">&quot;Couldn&#39;t access database name&quot;</span>);
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>

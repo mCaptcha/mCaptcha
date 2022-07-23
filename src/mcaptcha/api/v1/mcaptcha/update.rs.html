@@ -210,6 +210,16 @@
 <span id="205">205</span>
 <span id="206">206</span>
 <span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
  *
@@ -367,11 +377,21 @@
     <span class="kw">use</span> <span class="kw">crate</span>::<span class="kw-2">*</span>;
 
     <span class="attribute">#[<span class="ident">actix_rt::test</span>]</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_and_get_mcaptcha_works</span>() {
+    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_and_get_mcaptcha_works_pg</span>() {
+        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::tests::pg::get_data</span>().<span class="kw">await</span>;
+        <span class="ident">update_and_get_mcaptcha_works</span>(<span class="ident">data</span>).<span class="kw">await</span>;
+    }
+
+    <span class="attribute">#[<span class="ident">actix_rt::test</span>]</span>
+    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_and_get_mcaptcha_works_maria</span>() {
+        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::tests::maria::get_data</span>().<span class="kw">await</span>;
+        <span class="ident">update_and_get_mcaptcha_works</span>(<span class="ident">data</span>).<span class="kw">await</span>;
+    }
+
+    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_and_get_mcaptcha_works</span>(<span class="ident">data</span>: <span class="ident">ArcData</span>) {
         <span class="kw">const</span> <span class="ident">NAME</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;updateusermcaptcha&quot;</span>;
         <span class="kw">const</span> <span class="ident">PASSWORD</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;longpassworddomain&quot;</span>;
         <span class="kw">const</span> <span class="ident">EMAIL</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;testupdateusermcaptcha@a.com&quot;</span>;
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">get_data</span>().<span class="kw">await</span>;
         <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">data</span>;
         <span class="ident">delete_user</span>(<span class="ident">data</span>, <span class="ident">NAME</span>).<span class="kw">await</span>;
 

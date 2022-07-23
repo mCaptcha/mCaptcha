@@ -1,0 +1,1 @@
+initSidebarItems({"trait":[["Connect","Create databse connection"],["DBOps","Database operations trait(migrations, pool creation and fetching connection from pool)"],["GetConnection","Get database connection"],["Migrate","database migrations"]]});

@@ -1,1 +1,1 @@
-window.ALL_CRATES = ["db_core","db_sqlx_postgres","mcaptcha"];
+window.ALL_CRATES = ["db_core","db_sqlx_maria","db_sqlx_postgres","mcaptcha"];

@@ -241,15 +241,6 @@
 <span id="236">236</span>
 <span id="237">237</span>
 <span id="238">238</span>
-<span id="239">239</span>
-<span id="240">240</span>
-<span id="241">241</span>
-<span id="242">242</span>
-<span id="243">243</span>
-<span id="244">244</span>
-<span id="245">245</span>
-<span id="246">246</span>
-<span id="247">247</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
  *
@@ -271,8 +262,6 @@
 
 <span class="kw">use</span> <span class="ident">actix::prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">argon2_creds</span>::{<span class="ident">Config</span>, <span class="ident">ConfigBuilder</span>, <span class="ident">PasswordPolicy</span>};
-<span class="kw">use</span> <span class="ident">db_core::prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">db_sqlx_postgres</span>::{<span class="ident">ConnectionOptions</span>, <span class="ident">Fresh</span>};
 <span class="kw">use</span> <span class="ident">lettre::transport::smtp::authentication::Mechanism</span>;
 <span class="kw">use</span> <span class="ident">lettre</span>::{
     <span class="ident">transport::smtp::authentication::Credentials</span>, <span class="ident">AsyncSmtpTransport</span>, <span class="ident">Tokio1Executor</span>,
@@ -292,10 +281,8 @@
     <span class="ident">pow::Work</span>,
     <span class="ident">system</span>::{<span class="ident">System</span>, <span class="ident">SystemBuilder</span>},
 };
-<span class="kw">use</span> <span class="ident">sqlx::postgres::PgPoolOptions</span>;
 
-<span class="kw">use</span> <span class="ident">db_core::MCDatabase</span>;
-
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::db</span>::{<span class="self">self</span>, <span class="ident">BoxDB</span>};
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::errors::ServiceResult</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::settings::Settings</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::stats</span>::{<span class="ident">Dummy</span>, <span class="ident">Real</span>, <span class="ident">Stats</span>};
@@ -401,7 +388,7 @@
 <span class="doccomment">/// App data</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Data</span> {
     <span class="doccomment">/// database ops defined by db crates</span>
-    <span class="kw">pub</span> <span class="ident">db</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">MCDatabase</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">db</span>: <span class="ident">BoxDB</span>,
     <span class="doccomment">/// credential management configuration</span>
     <span class="kw">pub</span> <span class="ident">creds</span>: <span class="ident">Config</span>,
     <span class="doccomment">/// mCaptcha system: Redis cache, etc.</span>
@@ -437,15 +424,10 @@
             <span class="macro">log::info!</span>(<span class="string">&quot;Initialized credential manager&quot;</span>);
         });
 
-        <span class="kw">let</span> <span class="ident">pool</span> <span class="op">=</span> <span class="ident">s</span>.<span class="ident">database</span>.<span class="ident">pool</span>;
-        <span class="kw">let</span> <span class="ident">pool_options</span> <span class="op">=</span> <span class="ident">PgPoolOptions::new</span>().<span class="ident">max_connections</span>(<span class="ident">pool</span>);
-        <span class="kw">let</span> <span class="ident">connection_options</span> <span class="op">=</span> <span class="ident">ConnectionOptions::Fresh</span>(<span class="ident">Fresh</span> {
-            <span class="ident">pool_options</span>,
-            <span class="ident">url</span>: <span class="ident">s</span>.<span class="ident">database</span>.<span class="ident">url</span>.<span class="ident">clone</span>(),
-            <span class="ident">disable_logging</span>: <span class="op">!</span><span class="ident">s</span>.<span class="ident">debug</span>,
-        });
-        <span class="kw">let</span> <span class="ident">db</span> <span class="op">=</span> <span class="ident">connection_options</span>.<span class="ident">connect</span>().<span class="kw">await</span>.<span class="ident">unwrap</span>();
-        <span class="ident">db</span>.<span class="ident">migrate</span>().<span class="kw">await</span>.<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">db</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">s</span>.<span class="ident">database</span>.<span class="ident">database_type</span> {
+            <span class="ident"><span class="kw">crate</span>::settings::DBType::Maria</span> =&gt; <span class="ident">db::maria::get_data</span>(<span class="prelude-val">Some</span>(<span class="ident">s</span>.<span class="ident">clone</span>())).<span class="kw">await</span>,
+            <span class="ident"><span class="kw">crate</span>::settings::DBType::Postgres</span> =&gt; <span class="ident">db::pg::get_data</span>(<span class="prelude-val">Some</span>(<span class="ident">s</span>.<span class="ident">clone</span>())).<span class="kw">await</span>,
+        };
 
         <span class="kw">let</span> <span class="ident">stats</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Stats</span><span class="op">&gt;</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">s</span>.<span class="ident">captcha</span>.<span class="ident">enable_stats</span> {
             <span class="ident">Box::new</span>(<span class="ident">Real::default</span>())
@@ -455,7 +437,7 @@
 
         <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">Data</span> {
             <span class="ident">creds</span>,
-            <span class="ident">db</span>: <span class="ident">Box::new</span>(<span class="ident">db</span>),
+            <span class="ident">db</span>,
             <span class="ident">captcha</span>: <span class="ident">SystemGroup::new</span>(<span class="ident">s</span>).<span class="kw">await</span>,
             <span class="ident">mailer</span>: <span class="ident"><span class="self">Self</span>::get_mailer</span>(<span class="ident">s</span>),
             <span class="ident">settings</span>: <span class="ident">s</span>.<span class="ident">clone</span>(),

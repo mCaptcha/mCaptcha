@@ -1,3 +1,4 @@
 (function() {var implementors = {};
+implementors["db_sqlx_maria"] = [{"text":"impl <a class=\"trait\" href=\"db_sqlx_maria/prelude/trait.Connect.html\" title=\"trait db_sqlx_maria::prelude::Connect\">Connect</a> for <a class=\"enum\" href=\"db_sqlx_maria/enum.ConnectionOptions.html\" title=\"enum db_sqlx_maria::ConnectionOptions\">ConnectionOptions</a>","synthetic":false,"types":["db_sqlx_maria::ConnectionOptions"]}];
 implementors["db_sqlx_postgres"] = [{"text":"impl <a class=\"trait\" href=\"db_sqlx_postgres/prelude/trait.Connect.html\" title=\"trait db_sqlx_postgres::prelude::Connect\">Connect</a> for <a class=\"enum\" href=\"db_sqlx_postgres/enum.ConnectionOptions.html\" title=\"enum db_sqlx_postgres::ConnectionOptions\">ConnectionOptions</a>","synthetic":false,"types":["db_sqlx_postgres::ConnectionOptions"]}];
 if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
