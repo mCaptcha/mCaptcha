@@ -28,6 +28,7 @@ pub async fn database_works<'a, T: MCDatabase>(
     an: &AddNotification<'a>,
 ) {
     assert!(db.ping().await, "ping test");
+
     if db.username_exists(p.username).await.unwrap() {
         db.delete_user(p.username).await.unwrap();
         assert!(
@@ -35,7 +36,15 @@ pub async fn database_works<'a, T: MCDatabase>(
             "user is deleted so username shouldn't exsit"
         );
     }
+
+    assert!(matches!(
+        db.get_secret(&p.username).await,
+        Err(DBError::AccountNotFound)
+    ));
+
     db.register(p).await.unwrap();
+
+    assert!(matches!(db.register(&p).await, Err(DBError::UsernameTaken)));
 
     // testing get secret
     let secret = db.get_secret(p.username).await.unwrap();
@@ -43,6 +52,7 @@ pub async fn database_works<'a, T: MCDatabase>(
 
     // testing update secret: setting secret = username
     db.update_secret(p.username, p.username).await.unwrap();
+
     let secret = db.get_secret(p.username).await.unwrap();
     assert_eq!(
         secret.secret, p.username,
