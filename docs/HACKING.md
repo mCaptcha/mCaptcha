@@ -13,13 +13,13 @@ $ docker-compose -d up
 
 ### Logs from docker:
 
-- Logs from database and web server as they are generated:
+-   Logs from database and web server as they are generated:
 
 ```bash
 $ docker-compose logs -f
 ```
 
-- from just webserver:
+-   from just webserver:
 
 ```bash
 $ docker-compose logs -f mcaptcha
@@ -60,11 +60,16 @@ refer to [official instructions](https://www.gnu.org/software/make/)
 
 ### External Dependencies:
 
-### Postgres database:
+mCaptcha currently implements support for the following database:
 
-The backend requires a Postgres database. We have
-compiletime SQL checks so without a database available, you won't be
-able to build the project.
+1. Postgres
+2. mariadb(MySQL)
+
+For development purposes, currently it is recommended to setup both
+databases as tests will break without it. In future, mechanisms will be
+implemented for working with select databases.
+
+### Postgres database:
 
 I use Postgres in Docker.
 
@@ -88,23 +93,53 @@ $ docker start mcaptcha-postgres
 4. Set configurations:
 
 ```bash
-$ cd mcaptcha # your copy of https://github.com/mCaptcha/mcaptcha
-$ echo 'export DATABASE_URL="postgres://postgres:password@localhost:5432/postgres"' > .env
+cd mcaptcha # your copy of https://github.com/mCaptcha/mcaptcha
+echo 'export POSTGRES_DATABASE_URL="postgres://postgres:password@localhost:5432/postgres"' >> .env
 ```
 
-**NOTE: Don't use this database for other projects**
+### mariadb database
 
-5. Run migrations:
-   This step is only required when migrations are updated. The server
-   binary has inbuilt migrations manager but that can only be used after
-   the server is compiled. Since we are trying to compile the server here,
-   we can't use that.
+I use mariadb also in Docker
 
-However, this project ships with a utility to run migrations!
+1. To install Docker, please refer to [official
+   instructions](https://docs.docker.com/engine/install/].
+
+2. Create create database user:
+
+```bash
+docker create
+	-p 3306:3306 \
+	--name some-mariadb \
+	--env MARIADB_USER=maria \
+	--env MARIADB_PASSWORD=password \
+	--env MARIADB_ROOT_PASSWORD=password \
+	--env MARIADB_DATABASE=maria  \
+	mariadb:latest
+```
+
+3. Start database container:
+
+```bash
+docker start mcaptcha-mariadb
+```
+
+4. Set configurations:
+
+```bash
+cd mcaptcha # your copy of https://github.com/mCaptcha/mcaptcha
+echo 'export MARIA_DATABASE_URL="mysql://maria:password@localhost/maria"' >> .env
+```
+
+### Database migrations
+
+This step is only required when migrations are updated. The server
+binary has inbuilt migrations manager but that can only be used after
+the server is compiled. Since we are trying to compile the server here,
+we can't use that. However, this project ships with a utility to run migrations!
 
 ```bash
 $ cd mcaptcha # your copy of https://github.com/mCaptcha/mcaptcha
-$ cargo run --bin tests-migrate
+make migrate
 ```
 
 That's it, you are all set!
