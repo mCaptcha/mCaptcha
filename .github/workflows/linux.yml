@@ -83,7 +83,8 @@ jobs:
       - name: load env
         run: |
           source .env_sample \
-            && echo "POSTGRES_DATABASE_URL=$POSTGRES_DATABASE_URL" >> $GITHUB_ENV
+            && echo "POSTGRES_DATABASE_URL=$POSTGRES_DATABASE_URL" >> $GITHUB_ENV \
+            && echo "MARIA_DATABASE_URL=$MARIA_DATABASE_URL" >> $GITHUB_ENV
 
       - uses: actions/setup-node@v2
         with:
@@ -100,12 +101,13 @@ jobs:
         run: make migrate
         env:
           POSTGRES_DATABASE_URL: "${{ env.POSTGRES_DATABASE_URL }}"
+          MARIA_DATABASE_URL: "${{ env.MARIA_DATABASE_URL }}"
 
       - name: build
         run: make
         env:
-          POSTGRES_DATABASE_URL:
-            "${{ env.POSTGRES_DATABASE_URL }}"
+          POSTGRES_DATABASE_URL: "${{ env.POSTGRES_DATABASE_URL }}"
+          MARIA_DATABASE_URL: "${{ env.MARIA_DATABASE_URL }}"
 
             #      - name: build frontend
             #        run: make frontend
@@ -117,6 +119,7 @@ jobs:
         run: make test
         env:
           POSTGRES_DATABASE_URL: "${{ env.POSTGRES_DATABASE_URL }}"
+          MARIA_DATABASE_URL: "${{ env.MARIA_DATABASE_URL }}"
 
       - name: Login to DockerHub
         if: (github.ref == 'refs/heads/master' || github.event_name == 'push') && github.repository == 'mCaptcha/mCaptcha'
@@ -134,6 +137,7 @@ jobs:
         run: make doc
         env:
           POSTGRES_DATABASE_URL: "${{ env.POSTGRES_DATABASE_URL }}"
+          MARIA_DATABASE_URL: "${{ env.MARIA_DATABASE_URL }}"
           GIT_HASH: 8e77345f1597e40c2e266cb4e6dee74888918a61 # dummy value
           COMPILED_DATE: "2021-07-21"
 

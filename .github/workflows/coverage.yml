@@ -40,6 +40,17 @@ jobs:
         ports:
           - 6379:6379
 
+      mcaptcha-smtp:
+        image: maildev/maildev
+        env:
+          MAILDEV_WEB_PORT: "1080"
+          MAILDEV_INCOMING_USER: "admin"
+          MAILDEV_INCOMING_PASS: "password"
+        ports:
+          - 1080:1080
+          - 10025:1025
+
+
       maria:
         image: mariadb
         env: MARIADB_USER:maria
@@ -72,14 +83,13 @@ jobs:
       - name: load env
         run: |
           source .env_sample \
-            && echo "POSTGRES_DATABASE_URL=$POSTGRES_DATABASE_URL" >> $GITHUB_ENV 
+            && echo "POSTGRES_DATABASE_URL=$POSTGRES_DATABASE_URL" >> $GITHUB_ENV \
+            && echo "MARIA_DATABASE_URL=$MARIA_DATABASE_URL" >> $GITHUB_ENV
+
 
       - uses: actions/setup-node@v2
         with:
           node-version: "16.x"
-
-      - name: start smtp server
-        run: docker run -d -p 1080:1080 -p 10025:1025  maildev/maildev --incoming-user admin --incoming-pass password
 
       - name: Install ${{ matrix.version }}
         uses: actions-rs/toolchain@v1
@@ -98,6 +108,7 @@ jobs:
         run: make migrate
         env:
           POSTGRES_DATABASE_URL: "${{ env.POSTGRES_DATABASE_URL }}"
+          MARIA_DATABASE_URL: "${{ env.MARIA_DATABASE_URL }}"
 
       - name: build frontend
         run: make frontend
@@ -110,6 +121,7 @@ jobs:
           args: "-t 1200"
         env:
           POSTGRES_DATABASE_URL: "${{ env.POSTGRES_DATABASE_URL }}"
+          MARIA_DATABASE_URL: "${{ env.MARIA_DATABASE_URL }}"
           # GIT_HASH is dummy value. I guess build.rs is skipped in tarpaulin
           # execution so this value is required for preventing meta tests from
           # panicking
