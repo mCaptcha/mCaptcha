@@ -87,8 +87,7 @@ lint: ## Lint codebase
 	cd $(OPENAPI)&& yarn test
 
 migrate: ## Run database migrations
-	cd db/db-migrations/ && \
-		DATABASE_URL=${POSTGRES_DATABASE_URL} cargo run
+	cd db/db-migrations/ && cargo run
 
 release: frontend ## Build app with release optimizations
 	$(call cache_bust)
@@ -100,11 +99,6 @@ run: frontend ## Run app in debug mode
 
 
 sqlx-offline-data: ## prepare sqlx offline data
-	cargo sqlx prepare  --database-url=${POSTGRES_DATABASE_URL} -- --bin mcaptcha \
-		--all-features
-	cd db/db-migrations && cargo sqlx prepare  \
-		--database-url=${POSTGRES_DATABASE_URL} -- --bin db-migrations \
-		--all-features
 	cd db/db-sqlx-postgres && cargo sqlx prepare  \
 		--database-url=${POSTGRES_DATABASE_URL} -- \
 		--all-features
