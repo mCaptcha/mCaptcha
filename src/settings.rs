@@ -175,6 +175,9 @@ impl Settings {
             Ok(val) => {
                 let url = Url::parse(&val).expect("couldn't parse Database URL");
                 s.set("database.url", url.to_string()).unwrap();
+                let database_type = DBType::from_url(&url).unwrap();
+                s.set("database.database_type", database_type.to_string())
+                    .unwrap();
             }
             Err(e) => {
                 set_database_url(&mut s);
