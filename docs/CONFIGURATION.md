@@ -29,15 +29,16 @@ you will be overriding the values set in the configuration files.
 
 #### Database
 
-| Name                                 | Value                                                         |
-| ------------------------------------ | ------------------------------------------------------------- |
-| `MCAPTCHA_DATEBASE_PASSWORD`         | Postgres password                                             |
-| `MCAPTCHA_DATEBASE_NAME`             | Postgres database name                                        |
-| `MCAPTCHA_DATEBASE_PORT`             | Postgres port                                                 |
-| `MCAPTCHA_DATEBASE_HOSTNAME`         | Postgres hostname                                             |
-| `MCAPTCHA_DATEBASE_USERNAME`         | Postgres username                                             |
-| `MCAPTCHA_DATEBASE_POOL`             | Postgres database connection pool size                        |
-| `DATABSE_URL` (overrides above vars) | databse URL in `postgres://user:pass@host:port/dbname` format |
+| Name                                 | Value                                                          |
+| ------------------------------------ | -------------------------------------------------------------- |
+| `MCAPTCHA_DATEBASE_PASSWORD`         | database user password                                         |
+| `MCAPTCHA_DATEBASE_NAME`             | database name                                                  |
+| `MCAPTCHA_DATEBASE_PORT`             | port on which the DBMS is running                              |
+| `MCAPTCHA_DATEBASE_HOSTNAME`         | hostname of the DBMS                                           |
+| `MCAPTCHA_DATEBASE_USERNAME`         | database username                                              |
+| `MCAPTCHA_DATEBASE_POOL`             | database connection pool size                                  |
+| `MCAPTCHA_DATEBASE_DATABASE_TYPE`    | database tpye: "postgres" or "maria"                           |
+| `DATABSE_URL` (overrides above vars) | database URL in `postgres://user:pass@host:port/dbname` format |
 
 #### Redis
 
@@ -61,10 +62,10 @@ you will be overriding the values set in the configuration files.
 
 ### Captcha
 
-| Name                                                | Value                                                                                               |
-| --------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| `MCAPTCHA_CAPTCHA_SALT`                             | Salt has to be long and random                                                                      |
-| `MCAPTCHA_CAPTCHA_GC`                               | Garbage collection duration in seconds, requires tuning but 30 is a good starting point             |
+| Name                                                 | Value                                                                                               |
+| ---------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `MCAPTCHA_CAPTCHA_SALT`                              | Salt has to be long and random                                                                      |
+| `MCAPTCHA_CAPTCHA_GC`                                | Garbage collection duration in seconds, requires tuning but 30 is a good starting point             |
 | `MCAPTCHA_CAPTCHA_AVG_TRAFFIC_DIFFICULTY`%           | Difficulty factor to use in CAPTCHA configuration estimation for average traffic metric             |
 | `MCAPTCHA_CAPTCHA_PEAK_TRAFFIC_DIFFICULTY`%          | Difficulty factor to use in CAPTCHA configuration estimation for peak traffic metric                |
 | `MCAPTCHA_CAPTCHA_BROKE_MY_SITE_TRAFFIC_DIFFICULTY`% | Difficulty factor to use in CAPTCHA configuration estimation for traffic that took the website down |
