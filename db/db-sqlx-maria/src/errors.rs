@@ -33,16 +33,15 @@ pub fn map_row_not_found_err(e: Error, row_not_found: DBError) -> DBError {
 /// map postgres errors to [DBError](DBError) types
 pub fn map_register_err(e: Error) -> DBError {
     if let Error::Database(err) = e {
-        if err.code() == Some(Cow::from("1602")) {
+        if err.code() == Some(Cow::from("23000")) {
             let msg = err.message();
-            println!("{}", msg);
-            if msg.contains("name") {
+            if msg.contains("for key 'name'") {
                 DBError::UsernameTaken
-            } else if msg.contains("email") {
+            } else if msg.contains("for key 'email'") {
                 DBError::EmailTaken
-            } else if msg.contains("secret") {
+            } else if msg.contains("for key 'secret'") {
                 DBError::SecretTaken
-            } else if msg.contains("captcha_key") {
+            } else if msg.contains("for key 'captcha_key'") {
                 DBError::CaptchaKeyTaken
             } else {
                 DBError::DBError(Box::new(Error::Database(err)))
