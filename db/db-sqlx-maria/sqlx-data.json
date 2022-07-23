@@ -431,6 +431,31 @@
     },
     "query": "SELECT config_id from mcaptcha_config WHERE captcha_key = ?"
   },
+  "b9258c2494d95701d19703cf5cd05a222057a0ccad943192138b1a4a94bf823b": {
+    "describe": {
+      "columns": [
+        {
+          "name": "secret",
+          "ordinal": 0,
+          "type_info": {
+            "char_set": 224,
+            "flags": {
+              "bits": 4101
+            },
+            "max_size": 200,
+            "type": "VarString"
+          }
+        }
+      ],
+      "nullable": [
+        false
+      ],
+      "parameters": {
+        "Right": 1
+      }
+    },
+    "query": "SELECT secret  FROM mcaptcha_users WHERE ID = (\n                    SELECT user_id FROM mcaptcha_config WHERE captcha_key = ?\n                    )"
+  },
   "b95e5a60a202cb646d5e76df8c7395e4bf881a6dd14e28e6f2e8b93e0536b331": {
     "describe": {
       "columns": [],
