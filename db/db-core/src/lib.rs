@@ -26,7 +26,7 @@
 //!
 //! ## Organisation
 //!
-//! Database functionallity is divided accross various modules:
+//! Database functionality is divided across various modules:
 //!
 //! - [errors](crate::auth): error data structures used in this crate
 //! - [ops](crate::ops): meta operations like connection pool creation, migrations and getting
@@ -242,13 +242,13 @@ pub trait MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
     /// record PoWConfig confirms
     async fn record_confirm(&self, key: &str) -> DBResult<()>;
 
-    /// featch PoWConfig fetches
+    /// fetch PoWConfig fetches
     async fn fetch_config_fetched(&self, user: &str, key: &str) -> DBResult<Vec<i64>>;
 
-    /// featch PoWConfig solves
+    /// fetch PoWConfig solves
     async fn fetch_solve(&self, user: &str, key: &str) -> DBResult<Vec<i64>>;
 
-    /// featch PoWConfig confirms
+    /// fetch PoWConfig confirms
     async fn fetch_confirm(&self, user: &str, key: &str) -> DBResult<Vec<i64>>;
 }
 
@@ -287,7 +287,7 @@ pub struct AddNotification<'a> {
     pub from: &'a str,
     /// heading of the notification
     pub heading: &'a str,
-    /// mesage of the notification
+    /// message of the notification
     pub message: &'a str,
 }
 
@@ -298,12 +298,12 @@ pub struct TrafficPattern {
     pub avg_traffic: u32,
     /// the peak traffic that the user's website can handle
     pub peak_sustainable_traffic: u32,
-    /// trafic that bought the user's website down; optional
+    /// traffic that bought the user's website down; optional
     pub broke_my_site_traffic: Option<u32>,
 }
 
 #[derive(Clone, Debug, Default, PartialEq, Deserialize, Serialize)]
-/// data requried to create new captcha
+/// data required to create new captcha
 pub struct CreateCaptcha<'a> {
     /// cool down duration
     pub duration: i32,

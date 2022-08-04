@@ -35,7 +35,7 @@ pub struct Database {
 /// Use an existing database pool
 pub struct Conn(pub MySqlPool);
 
-/// Connect to databse
+/// Connect to database
 pub enum ConnectionOptions {
     /// fresh connection
     Fresh(Fresh),
@@ -824,7 +824,7 @@ impl MCDatabase for Database {
         Ok(())
     }
 
-    /// featch PoWConfig fetches
+    /// fetch PoWConfig fetches
     async fn fetch_config_fetched(&self, user: &str, key: &str) -> DBResult<Vec<i64>> {
         let records = sqlx::query_as!(
             Date,
@@ -850,7 +850,7 @@ impl MCDatabase for Database {
         Ok(Date::dates_to_unix(records))
     }
 
-    /// featch PoWConfig solves
+    /// fetch PoWConfig solves
     async fn fetch_solve(&self, user: &str, key: &str) -> DBResult<Vec<i64>> {
         let records = sqlx::query_as!(
             Date,
@@ -874,7 +874,7 @@ impl MCDatabase for Database {
         Ok(Date::dates_to_unix(records))
     }
 
-    /// featch PoWConfig confirms
+    /// fetch PoWConfig confirms
     async fn fetch_confirm(&self, user: &str, key: &str) -> DBResult<Vec<i64>> {
         let records = sqlx::query_as!(
             Date,

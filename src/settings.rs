@@ -78,7 +78,7 @@ impl Server {
 //impl DatabaseBuilder {
 //    #[cfg(not(tarpaulin_include))]
 //    fn extract_database_url(url: &Url) -> Self {
-//        debug!("Databse name: {}", url.path());
+//        debug!("Database name: {}", url.path());
 //        let mut path = url.path().split('/');
 //        path.next();
 //        let name = path.next().expect("no database name").to_string();
@@ -223,7 +223,7 @@ fn set_database_url(s: &mut Config) {
                 .expect("Couldn't access database name")
         ),
     )
-    .expect("Couldn't set databse url");
+    .expect("Couldn't set database url");
 }
 
 //#[cfg(test)]

@@ -56,7 +56,7 @@ pub struct TrafficPatternRequest {
     pub avg_traffic: u32,
     /// the peak traffic that the user's website can handle
     pub peak_sustainable_traffic: u32,
-    /// trafic that bought the user's website down; optional
+    /// traffic that bought the user's website down; optional
     pub broke_my_site_traffic: Option<u32>,
     /// Captcha description
     pub description: String,

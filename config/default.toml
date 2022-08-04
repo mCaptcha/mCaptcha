@@ -11,7 +11,7 @@ cookie_secret = "Zae0OOxf^bOJ#zN^&k7VozgW&QAx%n02TQFXpRMG4cCU0xMzgu3dna@tQ9dvc&T
 # The port at which you want authentication to listen to
 # takes a number, choose from 1000-10000 if you dont know what you are doing
 port = 7000
-#IP address. Enter 0.0.0.0 to listen on all availale addresses
+#IP address. Enter 0.0.0.0 to listen on all available addresses
 ip= "0.0.0.0" 
 # enter your hostname, eg: example.com
 domain = "localhost"

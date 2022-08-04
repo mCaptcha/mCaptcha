@@ -69,7 +69,7 @@ macro_rules! enum_system_wrapper {
 
 /// Represents mCaptcha cache and master system.
 /// When Redis is configured, [SystemGroup::Redis] is used and
-/// in its absense, [SystemGroup::Embedded] is used
+/// in its absence, [SystemGroup::Embedded] is used
 pub enum SystemGroup {
     Embedded(System<HashCache, EmbeddedMaster>),
     Redis(System<RedisCache, RedisMaster>),

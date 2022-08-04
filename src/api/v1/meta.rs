@@ -46,7 +46,7 @@ pub mod routes {
     }
 }
 
-/// emmits build details of the bninary
+/// emits build details of the bninary
 #[my_codegen::get(path = "crate::V1_API_ROUTES.meta.build_details")]
 async fn build_details() -> impl Responder {
     let build = BuildDetails {

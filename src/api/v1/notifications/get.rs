@@ -68,7 +68,7 @@ pub async fn get_notification(
     id: Identity,
 ) -> ServiceResult<impl Responder> {
     let receiver = id.identity().unwrap();
-    // TODO handle error where payload.to doesnt exist
+    // TODO handle error where payload.to doesn't exist
 
     let notifications = data.db.get_all_unread_notifications(&receiver).await?;
     let notifications = NotificationResp::from_notifications(notifications);
