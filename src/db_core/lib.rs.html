@@ -386,7 +386,7 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ## Organisation</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! Database functionallity is divided accross various modules:</span>
+<span class="doccomment">//! Database functionality is divided across various modules:</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! - [errors](crate::auth): error data structures used in this crate</span>
 <span class="doccomment">//! - [ops](crate::ops): meta operations like connection pool creation, migrations and getting</span>
@@ -602,13 +602,13 @@
     <span class="doccomment">/// record PoWConfig confirms</span>
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">record_confirm</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
 
-    <span class="doccomment">/// featch PoWConfig fetches</span>
+    <span class="doccomment">/// fetch PoWConfig fetches</span>
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">fetch_config_fetched</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">user</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 
-    <span class="doccomment">/// featch PoWConfig solves</span>
+    <span class="doccomment">/// fetch PoWConfig solves</span>
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">fetch_solve</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">user</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 
-    <span class="doccomment">/// featch PoWConfig confirms</span>
+    <span class="doccomment">/// fetch PoWConfig confirms</span>
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">fetch_confirm</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">user</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 }
 
@@ -647,7 +647,7 @@
     <span class="kw">pub</span> <span class="ident">from</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>,
     <span class="doccomment">/// heading of the notification</span>
     <span class="kw">pub</span> <span class="ident">heading</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>,
-    <span class="doccomment">/// mesage of the notification</span>
+    <span class="doccomment">/// message of the notification</span>
     <span class="kw">pub</span> <span class="ident">message</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>,
 }
 
@@ -658,12 +658,12 @@
     <span class="kw">pub</span> <span class="ident">avg_traffic</span>: <span class="ident">u32</span>,
     <span class="doccomment">/// the peak traffic that the user&#39;s website can handle</span>
     <span class="kw">pub</span> <span class="ident">peak_sustainable_traffic</span>: <span class="ident">u32</span>,
-    <span class="doccomment">/// trafic that bought the user&#39;s website down; optional</span>
+    <span class="doccomment">/// traffic that bought the user&#39;s website down; optional</span>
     <span class="kw">pub</span> <span class="ident">broke_my_site_traffic</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Default</span>, <span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
-<span class="doccomment">/// data requried to create new captcha</span>
+<span class="doccomment">/// data required to create new captcha</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreateCaptcha</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="doccomment">/// cool down duration</span>
     <span class="kw">pub</span> <span class="ident">duration</span>: <span class="ident">i32</span>,

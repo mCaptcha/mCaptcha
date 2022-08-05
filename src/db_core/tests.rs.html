@@ -336,7 +336,7 @@
         <span class="ident">db</span>.<span class="ident">delete_user</span>(<span class="ident">p</span>.<span class="ident">username</span>).<span class="kw">await</span>.<span class="ident">unwrap</span>();
         <span class="macro">assert!</span>(
             <span class="op">!</span><span class="ident">db</span>.<span class="ident">username_exists</span>(<span class="ident">p</span>.<span class="ident">username</span>).<span class="kw">await</span>.<span class="ident">unwrap</span>(),
-            <span class="string">&quot;user is deleted so username shouldn&#39;t exsit&quot;</span>
+            <span class="string">&quot;user is deleted so username shouldn&#39;t exist&quot;</span>
         );
     }
 
@@ -392,11 +392,11 @@
     <span class="comment">// testing email exists</span>
     <span class="macro">assert!</span>(
         <span class="ident">db</span>.<span class="ident">email_exists</span>(<span class="ident">p</span>.<span class="ident">email</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>()).<span class="kw">await</span>.<span class="ident">unwrap</span>(),
-        <span class="string">&quot;user is registered so email should exsit&quot;</span>
+        <span class="string">&quot;user is registered so email should exist&quot;</span>
     );
     <span class="macro">assert!</span>(
         <span class="ident">db</span>.<span class="ident">username_exists</span>(<span class="ident">p</span>.<span class="ident">username</span>).<span class="kw">await</span>.<span class="ident">unwrap</span>(),
-        <span class="string">&quot;user is registered so username should exsit&quot;</span>
+        <span class="string">&quot;user is registered so username should exist&quot;</span>
     );
 
     <span class="comment">// update password test. setting password = username</span>
@@ -427,7 +427,7 @@
     <span class="ident">db</span>.<span class="ident">delete_user</span>(<span class="ident">p</span>.<span class="ident">email</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>()).<span class="kw">await</span>.<span class="ident">unwrap</span>();
     <span class="macro">assert!</span>(
         <span class="op">!</span><span class="ident">db</span>.<span class="ident">username_exists</span>(<span class="ident">p</span>.<span class="ident">email</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>()).<span class="kw">await</span>.<span class="ident">unwrap</span>(),
-        <span class="string">&quot;user is deleted so username shouldn&#39;t exsit&quot;</span>
+        <span class="string">&quot;user is deleted so username shouldn&#39;t exist&quot;</span>
     );
 
     <span class="comment">// register with email = None</span>
@@ -436,11 +436,11 @@
     <span class="ident">db</span>.<span class="ident">register</span>(<span class="kw-2">&amp;</span><span class="ident">p2</span>).<span class="kw">await</span>.<span class="ident">unwrap</span>();
     <span class="macro">assert!</span>(
         <span class="ident">db</span>.<span class="ident">username_exists</span>(<span class="ident">p2</span>.<span class="ident">username</span>).<span class="kw">await</span>.<span class="ident">unwrap</span>(),
-        <span class="string">&quot;user is registered so username should exsit&quot;</span>
+        <span class="string">&quot;user is registered so username should exist&quot;</span>
     );
     <span class="macro">assert!</span>(
         <span class="op">!</span><span class="ident">db</span>.<span class="ident">email_exists</span>(<span class="ident">p</span>.<span class="ident">email</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>()).<span class="kw">await</span>.<span class="ident">unwrap</span>(),
-        <span class="string">&quot;user registration with email is deleted; so email shouldn&#39;t exsit&quot;</span>
+        <span class="string">&quot;user registration with email is deleted; so email shouldn&#39;t exist&quot;</span>
     );
 
     <span class="comment">// testing get_email = None</span>
@@ -458,7 +458,7 @@
     );
     <span class="macro">assert!</span>(
         <span class="ident">db</span>.<span class="ident">email_exists</span>(<span class="ident">p</span>.<span class="ident">email</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>()).<span class="kw">await</span>.<span class="ident">unwrap</span>(),
-        <span class="string">&quot;user was with empty email but email is set; so email should exsit&quot;</span>
+        <span class="string">&quot;user was with empty email but email is set; so email should exist&quot;</span>
     );
 
     <span class="comment">/*

@@ -312,7 +312,7 @@
 
 <span class="doccomment">/// Represents mCaptcha cache and master system.</span>
 <span class="doccomment">/// When Redis is configured, [SystemGroup::Redis] is used and</span>
-<span class="doccomment">/// in its absense, [SystemGroup::Embedded] is used</span>
+<span class="doccomment">/// in its absence, [SystemGroup::Embedded] is used</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">SystemGroup</span> {
     <span class="ident">Embedded</span>(<span class="ident">System</span><span class="op">&lt;</span><span class="ident">HashCache</span>, <span class="ident">EmbeddedMaster</span><span class="op">&gt;</span>),
     <span class="ident">Redis</span>(<span class="ident">System</span><span class="op">&lt;</span><span class="ident">RedisCache</span>, <span class="ident">RedisMaster</span><span class="op">&gt;</span>),

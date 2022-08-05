@@ -334,7 +334,7 @@
 <span class="comment">//impl DatabaseBuilder {</span>
 <span class="comment">//    #[cfg(not(tarpaulin_include))]</span>
 <span class="comment">//    fn extract_database_url(url: &amp;Url) -&gt; Self {</span>
-<span class="comment">//        debug!(&quot;Databse name: {}&quot;, url.path());</span>
+<span class="comment">//        debug!(&quot;Database name: {}&quot;, url.path());</span>
 <span class="comment">//        let mut path = url.path().split(&#39;/&#39;);</span>
 <span class="comment">//        path.next();</span>
 <span class="comment">//        let name = path.next().expect(&quot;no database name&quot;).to_string();</span>
@@ -479,7 +479,7 @@
                 .<span class="ident">expect</span>(<span class="string">&quot;Couldn&#39;t access database name&quot;</span>)
         ),
     )
-    .<span class="ident">expect</span>(<span class="string">&quot;Couldn&#39;t set databse url&quot;</span>);
+    .<span class="ident">expect</span>(<span class="string">&quot;Couldn&#39;t set database url&quot;</span>);
 }
 
 <span class="comment">//#[cfg(test)]</span>
