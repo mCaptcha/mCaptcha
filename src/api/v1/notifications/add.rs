@@ -42,7 +42,7 @@ pub async fn add_notification(
     id: Identity,
 ) -> ServiceResult<impl Responder> {
     let sender = id.identity().unwrap();
-    // TODO handle error where payload.to doesnt exist
+    // TODO handle error where payload.to doesn't exist
 
     let p = AddNotification {
         from: &sender,
@@ -98,7 +98,7 @@ pub mod tests {
         let msg = AddNotificationRequest {
             to: NAME2.into(),
             heading: "Test notification".into(),
-            message: "Testeing notifications with a dummy message".into(),
+            message: "Testing notifications with a dummy message".into(),
         };
 
         let send_notification_resp = test::call_service(

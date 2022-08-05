@@ -51,7 +51,7 @@ pub async fn uname_email_exists_works(data: ArcData) {
     let cookies = get_cookie!(signin_resp);
     let app = get_app!(data).await;
 
-    // chech if get user secret works
+    // check if get user secret works
     let resp = test::call_service(
         &app,
         test::TestRequest::get()
@@ -62,7 +62,7 @@ pub async fn uname_email_exists_works(data: ArcData) {
     .await;
     assert_eq!(resp.status(), StatusCode::OK);
 
-    // chech if get user secret works
+    // check if get user secret works
     let resp = test::call_service(
         &app,
         test::TestRequest::post()
@@ -178,7 +178,7 @@ pub async fn email_udpate_password_validation_del_userworks(data: ArcData) {
     )
     .await;
 
-    // wrong password while deleteing account
+    // wrong password while deleting account
     let mut payload = Password {
         password: NAME.into(),
     };

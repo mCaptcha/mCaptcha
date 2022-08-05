@@ -38,7 +38,7 @@ pub async fn mark_read(
     id: Identity,
 ) -> ServiceResult<impl Responder> {
     let receiver = id.identity().unwrap();
-    // TODO handle error where payload.to doesnt exist
+    // TODO handle error where payload.to doesn't exist
 
     // TODO get payload from path /api/v1/notifications/{id}/read"
     data.db

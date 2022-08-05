@@ -191,7 +191,7 @@ mod tests {
         let updated_token: MCaptchaDetails =
             test::read_body_json(update_token_resp).await;
 
-        // get levels with udpated key
+        // get levels with updated key
         let get_token_resp = test::call_service(
             &app,
             post_request!(&updated_token, ROUTES.captcha.get)
@@ -199,7 +199,7 @@ mod tests {
                 .to_request(),
         )
         .await;
-        // if updated key doesn't exist in databse, a non 200 result will bereturned
+        // if updated key doesn't exist in database, a non 200 result will bereturned
         assert_eq!(get_token_resp.status(), StatusCode::OK);
 
         // get stats
@@ -211,7 +211,7 @@ mod tests {
                 .to_request(),
         )
         .await;
-        // if updated key doesn't exist in databse, a non 200 result will bereturned
+        // if updated key doesn't exist in database, a non 200 result will bereturned
         assert_eq!(get_statis_resp.status(), StatusCode::OK);
     }
 }

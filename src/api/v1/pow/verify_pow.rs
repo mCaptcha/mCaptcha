@@ -135,7 +135,7 @@ pub mod tests {
         // .await;
         // assert_eq!(pow_config_resp.status(), StatusCode::OK);
         // I'm not checking for errors because changing work.result triggered
-        // InssuficientDifficulty, which is possible becuase libmcaptcha calculates
+        // InssuficientDifficulty, which is possible because libmcaptcha calculates
         // difficulty with the submitted result. Besides, this endpoint is merely
         // propagating errors from libmcaptcha and libmcaptcha has tests covering the
         // pow aspects ¯\_(ツ)_/¯

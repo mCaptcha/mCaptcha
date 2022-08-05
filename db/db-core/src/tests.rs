@@ -33,7 +33,7 @@ pub async fn database_works<'a, T: MCDatabase>(
         db.delete_user(p.username).await.unwrap();
         assert!(
             !db.username_exists(p.username).await.unwrap(),
-            "user is deleted so username shouldn't exsit"
+            "user is deleted so username shouldn't exist"
         );
     }
 
@@ -89,11 +89,11 @@ pub async fn database_works<'a, T: MCDatabase>(
     // testing email exists
     assert!(
         db.email_exists(p.email.as_ref().unwrap()).await.unwrap(),
-        "user is registered so email should exsit"
+        "user is registered so email should exist"
     );
     assert!(
         db.username_exists(p.username).await.unwrap(),
-        "user is registered so username should exsit"
+        "user is registered so username should exist"
     );
 
     // update password test. setting password = username
@@ -124,7 +124,7 @@ pub async fn database_works<'a, T: MCDatabase>(
     db.delete_user(p.email.as_ref().unwrap()).await.unwrap();
     assert!(
         !db.username_exists(p.email.as_ref().unwrap()).await.unwrap(),
-        "user is deleted so username shouldn't exsit"
+        "user is deleted so username shouldn't exist"
     );
 
     // register with email = None
@@ -133,11 +133,11 @@ pub async fn database_works<'a, T: MCDatabase>(
     db.register(&p2).await.unwrap();
     assert!(
         db.username_exists(p2.username).await.unwrap(),
-        "user is registered so username should exsit"
+        "user is registered so username should exist"
     );
     assert!(
         !db.email_exists(p.email.as_ref().unwrap()).await.unwrap(),
-        "user registration with email is deleted; so email shouldn't exsit"
+        "user registration with email is deleted; so email shouldn't exist"
     );
 
     // testing get_email = None
@@ -155,7 +155,7 @@ pub async fn database_works<'a, T: MCDatabase>(
     );
     assert!(
         db.email_exists(p.email.as_ref().unwrap()).await.unwrap(),
-        "user was with empty email but email is set; so email should exsit"
+        "user was with empty email but email is set; so email should exist"
     );
 
     /*

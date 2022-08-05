@@ -86,7 +86,7 @@ pub mod runners {
         pub password: String,
     }
 
-    /// returns Ok(()) when everything checks out and the user is authenticated. Erros otherwise
+    /// returns Ok(()) when everything checks out and the user is authenticated. Errors otherwise
     pub async fn login_runner(payload: Login, data: &AppData) -> ServiceResult<String> {
         use argon2_creds::Config;
 

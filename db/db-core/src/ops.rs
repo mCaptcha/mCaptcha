@@ -30,7 +30,7 @@ pub trait GetConnection {
     async fn get_conn(&self) -> DBResult<Self::Conn>;
 }
 
-/// Create databse connection
+/// Create database connection
 #[async_trait]
 pub trait Connect {
     /// database specific pool-type

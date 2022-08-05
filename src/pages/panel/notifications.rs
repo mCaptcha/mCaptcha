@@ -71,7 +71,7 @@ const PAGE: &str = "Notifications";
 )]
 pub async fn notifications(data: AppData, id: Identity) -> PageResult<impl Responder> {
     let receiver = id.identity().unwrap();
-    // TODO handle error where payload.to doesnt exist
+    // TODO handle error where payload.to doesn't exist
 
     //    let mut notifications = runner::get_notification(&data, &receiver).await?;
     let mut notifications = data.db.get_all_unread_notifications(&receiver).await?;
