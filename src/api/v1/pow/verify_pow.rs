@@ -16,6 +16,7 @@
  */
 //! PoW Verification module
 
+use actix_web::HttpRequest;
 use actix_web::{web, HttpResponse, Responder};
 use libmcaptcha::pow::Work;
 use serde::{Deserialize, Serialize};
@@ -37,11 +38,13 @@ pub struct ValidationToken {
 /// if verification is successful
 #[my_codegen::post(path = "V1_API_ROUTES.pow.verify_pow()")]
 pub async fn verify_pow(
+    req: HttpRequest,
     payload: web::Json<Work>,
     data: AppData,
 ) -> ServiceResult<impl Responder> {
+    let ip = req.connection_info().peer_addr().unwrap().to_string();
     let key = payload.key.clone();
-    let res = data.captcha.verify_pow(payload.into_inner()).await?;
+    let res = data.captcha.verify_pow(payload.into_inner(), ip).await?;
     data.stats.record_solve(&data, &key).await?;
     let payload = ValidationToken { token: res };
     Ok(HttpResponse::Ok().json(payload))

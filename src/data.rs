@@ -83,7 +83,12 @@ impl SystemGroup {
     enum_system_wrapper!(get_pow, String, CaptchaResult<Option<PoWConfig>>);
 
     // utility function to verify [Work]
-    enum_system_wrapper!(verify_pow, Work, CaptchaResult<String>);
+    pub async fn verify_pow(&self, msg: Work, ip: String) -> CaptchaResult<String> {
+        match self {
+            Self::Embedded(val) => val.verify_pow(msg, ip).await,
+            Self::Redis(val) => val.verify_pow(msg, ip).await,
+        }
+    }
 
     // utility function to validate verification tokens
     enum_system_wrapper!(
@@ -111,7 +116,12 @@ impl SystemGroup {
             .build()
             .unwrap();
 
-        SystemBuilder::default().pow(pow).cache(c).master(m).build()
+        SystemBuilder::default()
+            .pow(pow)
+            .cache(c)
+            .master(m)
+            .runners(num_cpus::get_physical())
+            .build()
     }
 
     // read settings, if Redis is configured then produce a Redis mCaptcha cache
