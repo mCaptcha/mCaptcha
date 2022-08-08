@@ -59,7 +59,7 @@ log = "0.4"
 lazy_static = "1.4"
 
 
-libmcaptcha = { branch = "master", git = "https://github.com/mCaptcha/libmcaptcha", features = ["full"] }
+libmcaptcha = { version = "0.2.1", git = "https://github.com/mCaptcha/libmcaptcha", features = ["full"], tag ="0.2.1" }
 #libmcaptcha = { path = "../libmcaptcha", features = ["full"]}
 
 rand = "0.8"
@@ -67,6 +67,8 @@ rand = "0.8"
 sailfish = "0.4.0"
 
 mime = "0.3.16"
+
+num_cpus = "1.13.1"
 
 lettre = { version = "0.10.0-rc.3", features = [
 "builder", 
@@ -101,7 +103,7 @@ serde_json = "1"
 sqlx = { version = "0.5.13", features = [ "runtime-actix-rustls", "postgres", "time", "offline", "mysql" ] }
 
 [dev-dependencies]
-pow_sha256 = { version = "0.2.1", git = "https://github.com/mcaptcha/pow_sha256" }
+pow_sha256 = { version = "0.3.1", git = "https://github.com/mcaptcha/pow_sha256", tag="0.3.1" }
 awc = "3.0.0"
 
 
