@@ -28,6 +28,8 @@ salt = "asdl;kjfhjawehfpa;osdkjasdvjaksndfpoanjdfainsdfaijdsfajlkjdsaf;ajsdfwero
 # garbage collection period to manage mCaptcha system
 # leave untouched if you don't know what you are doing
 gc = 30
+runners = 4
+queue_length = 2000
 enable_stats = true
 
 [captcha.default_difficulty_strategy]

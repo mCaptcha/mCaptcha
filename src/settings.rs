@@ -37,6 +37,8 @@ pub struct Server {
 pub struct Captcha {
     pub salt: String,
     pub gc: u64,
+    pub runners: Option<usize>,
+    pub queue_length: usize,
     pub enable_stats: bool,
     pub default_difficulty_strategy: DefaultDifficultyStrategy,
 }
