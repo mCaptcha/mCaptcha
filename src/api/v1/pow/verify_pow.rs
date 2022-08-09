@@ -42,7 +42,15 @@ pub async fn verify_pow(
     payload: web::Json<Work>,
     data: AppData,
 ) -> ServiceResult<impl Responder> {
+    #[cfg(not(test))]
     let ip = req.connection_info().peer_addr().unwrap().to_string();
+    // From actix-web docs:
+    //  Will only return None when called in unit tests unless TestRequest::peer_addr is used.
+    //
+    // ref: https://docs.rs/actix-web/latest/actix_web/struct.HttpRequest.html#method.peer_addr
+    #[cfg(test)]
+    let ip = "127.0.1.1".into();
+
     let key = payload.key.clone();
     let res = data.captcha.verify_pow(payload.into_inner(), ip).await?;
     data.stats.record_solve(&data, &key).await?;
