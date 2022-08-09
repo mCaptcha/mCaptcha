@@ -116,11 +116,17 @@ impl SystemGroup {
             .build()
             .unwrap();
 
+        let runners = if let Some(runners) = s.captcha.runners {
+            runners
+        } else {
+            num_cpus::get_physical()
+        };
         SystemBuilder::default()
             .pow(pow)
             .cache(c)
             .master(m)
-            .runners(num_cpus::get_physical())
+            .runners(runners)
+            .queue_length(s.captcha.queue_length)
             .build()
     }
 

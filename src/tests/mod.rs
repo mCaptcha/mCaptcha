@@ -49,6 +49,7 @@ pub mod pg {
     pub async fn get_data() -> ArcData {
         let url = env::var("POSTGRES_DATABASE_URL").unwrap();
         let mut settings = get_settings();
+        settings.captcha.runners = Some(1);
         settings.database.url = url.clone();
         settings.database.database_type = DBType::Postgres;
         let data = Data::new(&settings).await;
@@ -67,6 +68,7 @@ pub mod maria {
     pub async fn get_data() -> ArcData {
         let url = env::var("MARIA_DATABASE_URL").unwrap();
         let mut settings = get_settings();
+        settings.captcha.runners = Some(1);
         settings.database.url = url.clone();
         settings.database.database_type = DBType::Maria;
         let data = Data::new(&settings).await;

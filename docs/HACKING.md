@@ -107,7 +107,7 @@ I use mariadb also in Docker
 2. Create create database user:
 
 ```bash
-docker create
+docker create \
 	-p 3306:3306 \
 	--name some-mariadb \
 	--env MARIADB_USER=maria \
