@@ -111,7 +111,7 @@ mod tests {
     use super::*;
     use crate::tests::*;
 
-    const DURATION: u64 = 5;
+    const DURATION: u64 = 25;
 
     #[actix_rt::test]
     async fn demo_account_works_pg() {
