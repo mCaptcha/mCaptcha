@@ -241,6 +241,22 @@
 <span id="236">236</span>
 <span id="237">237</span>
 <span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
  *
@@ -326,7 +342,12 @@
     <span class="macro">enum_system_wrapper!</span>(<span class="ident">get_pow</span>, <span class="ident">String</span>, <span class="ident">CaptchaResult</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PoWConfig</span><span class="op">&gt;</span><span class="op">&gt;</span>);
 
     <span class="comment">// utility function to verify [Work]</span>
-    <span class="macro">enum_system_wrapper!</span>(<span class="ident">verify_pow</span>, <span class="ident">Work</span>, <span class="ident">CaptchaResult</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>);
+    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">verify_pow</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">msg</span>: <span class="ident">Work</span>, <span class="ident">ip</span>: <span class="ident">String</span>) -&gt; <span class="ident">CaptchaResult</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+        <span class="kw">match</span> <span class="self">self</span> {
+            <span class="ident"><span class="self">Self</span>::Embedded</span>(<span class="ident">val</span>) =&gt; <span class="ident">val</span>.<span class="ident">verify_pow</span>(<span class="ident">msg</span>, <span class="ident">ip</span>).<span class="kw">await</span>,
+            <span class="ident"><span class="self">Self</span>::Redis</span>(<span class="ident">val</span>) =&gt; <span class="ident">val</span>.<span class="ident">verify_pow</span>(<span class="ident">msg</span>, <span class="ident">ip</span>).<span class="kw">await</span>,
+        }
+    }
 
     <span class="comment">// utility function to validate verification tokens</span>
     <span class="macro">enum_system_wrapper!</span>(
@@ -354,7 +375,18 @@
             .<span class="ident">build</span>()
             .<span class="ident">unwrap</span>();
 
-        <span class="ident">SystemBuilder::default</span>().<span class="ident">pow</span>(<span class="ident">pow</span>).<span class="ident">cache</span>(<span class="ident">c</span>).<span class="ident">master</span>(<span class="ident">m</span>).<span class="ident">build</span>()
+        <span class="kw">let</span> <span class="ident">runners</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">runners</span>) <span class="op">=</span> <span class="ident">s</span>.<span class="ident">captcha</span>.<span class="ident">runners</span> {
+            <span class="ident">runners</span>
+        } <span class="kw">else</span> {
+            <span class="ident">num_cpus::get_physical</span>()
+        };
+        <span class="ident">SystemBuilder::default</span>()
+            .<span class="ident">pow</span>(<span class="ident">pow</span>)
+            .<span class="ident">cache</span>(<span class="ident">c</span>)
+            .<span class="ident">master</span>(<span class="ident">m</span>)
+            .<span class="ident">runners</span>(<span class="ident">runners</span>)
+            .<span class="ident">queue_length</span>(<span class="ident">s</span>.<span class="ident">captcha</span>.<span class="ident">queue_length</span>)
+            .<span class="ident">build</span>()
     }
 
     <span class="comment">// read settings, if Redis is configured then produce a Redis mCaptcha cache</span>

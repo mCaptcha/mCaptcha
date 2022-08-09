@@ -254,6 +254,8 @@
 <span id="249">249</span>
 <span id="250">250</span>
 <span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
  *
@@ -293,6 +295,8 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Captcha</span> {
     <span class="kw">pub</span> <span class="ident">salt</span>: <span class="ident">String</span>,
     <span class="kw">pub</span> <span class="ident">gc</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">runners</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">queue_length</span>: <span class="ident">usize</span>,
     <span class="kw">pub</span> <span class="ident">enable_stats</span>: <span class="ident">bool</span>,
     <span class="kw">pub</span> <span class="ident">default_difficulty_strategy</span>: <span class="ident">DefaultDifficultyStrategy</span>,
 }
