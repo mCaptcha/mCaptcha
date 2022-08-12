@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["routes",""]],"struct":[["StatsPayload",""],["get",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["routes",""]],"struct":[["StatsPayload",""],["get",""]]};

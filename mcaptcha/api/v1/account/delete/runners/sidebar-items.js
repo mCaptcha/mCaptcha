@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["delete_user",""]]});
+window.SIDEBAR_ITEMS = {"fn":[["delete_user",""]]};

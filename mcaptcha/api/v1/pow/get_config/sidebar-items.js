@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["init_mcaptcha","Call this when [MCaptcha][libmcaptcha::MCaptcha] is not in master."]],"struct":[["GetConfigPayload",""],["get_config","get PoW configuration for an mcaptcha key"]]});
+window.SIDEBAR_ITEMS = {"fn":[["init_mcaptcha","Call this when [MCaptcha][libmcaptcha::MCaptcha] is not in master."]],"struct":[["GetConfigPayload",""],["get_config","get PoW configuration for an mcaptcha key"]]};

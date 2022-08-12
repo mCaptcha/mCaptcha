@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["DeleteCaptcha",""],["delete",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["DeleteCaptcha",""],["delete",""]]};

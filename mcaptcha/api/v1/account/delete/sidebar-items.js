@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["services",""]],"mod":[["runners",""]],"struct":[["delete_account",""]]});
+window.SIDEBAR_ITEMS = {"fn":[["services",""]],"mod":[["runners",""]],"struct":[["delete_account",""]]};

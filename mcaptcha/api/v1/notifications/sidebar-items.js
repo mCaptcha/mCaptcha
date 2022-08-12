@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["services",""]],"mod":[["add",""],["get",""],["mark_read",""],["routes",""]]});
+window.SIDEBAR_ITEMS = {"fn":[["services",""]],"mod":[["add",""],["get",""],["mark_read",""],["routes",""]]};

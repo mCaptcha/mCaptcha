@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["PAGE",""]],"struct":[["IndexPage",""],["list_sitekeys","render a list of all sitekeys that a user has"]]});
+window.SIDEBAR_ITEMS = {"constant":[["PAGE",""]],"struct":[["IndexPage",""],["list_sitekeys","render a list of all sitekeys that a user has"]]};

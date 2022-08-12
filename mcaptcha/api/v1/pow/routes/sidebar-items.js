@@ -1,1 +1,1 @@
-initSidebarItems({"macro":[["rm_scope",""]],"struct":[["PoW",""]]});
+window.SIDEBAR_ITEMS = {"macro":[["rm_scope",""]],"struct":[["PoW",""]]};

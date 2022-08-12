@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["BAR_CHART",""],["CREDIT_CARD",""],["DOCS_ICON",""],["GITHUB",""],["HELP_CIRCLE",""],["HOME",""],["KEY",""],["MCAPTCHA_TRANS_ICON",""],["MESSAGE",""],["SETTINGS_ICON",""]],"type":[["Img",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["BAR_CHART",""],["CREDIT_CARD",""],["DOCS_ICON",""],["GITHUB",""],["HELP_CIRCLE",""],["HOME",""],["KEY",""],["MCAPTCHA_TRANS_ICON",""],["MESSAGE",""],["SETTINGS_ICON",""]],"type":[["Img",""]]};

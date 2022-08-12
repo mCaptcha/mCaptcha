@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["PAGE",""]],"struct":[["SudoPage",""]]});
+window.SIDEBAR_ITEMS = {"constant":[["PAGE",""]],"struct":[["SudoPage",""]]};

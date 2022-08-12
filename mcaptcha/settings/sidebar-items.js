@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["DBType",""]],"fn":[["check_url",""],["set_database_url",""]],"struct":[["Captcha",""],["Database",""],["DefaultDifficultyStrategy",""],["Redis",""],["Server",""],["Settings",""],["Smtp",""]]});
+window.SIDEBAR_ITEMS = {"enum":[["DBType",""]],"fn":[["check_url",""],["set_database_url",""]],"struct":[["Captcha",""],["Database",""],["DefaultDifficultyStrategy",""],["Redis",""],["Server",""],["Settings",""],["Smtp",""]]};

@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["handle_assets",""],["handle_favicons",""]],"mod":[["assets",""]],"struct":[["Asset",""],["Favicons",""],["favicons",""],["static_files",""]]});
+window.SIDEBAR_ITEMS = {"fn":[["handle_assets",""],["handle_favicons",""]],"mod":[["assets",""]],"struct":[["Asset",""],["Favicons",""],["favicons",""],["static_files",""]]};

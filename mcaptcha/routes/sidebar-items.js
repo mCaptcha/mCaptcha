@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["services",""]]});
+window.SIDEBAR_ITEMS = {"fn":[["services",""]]};

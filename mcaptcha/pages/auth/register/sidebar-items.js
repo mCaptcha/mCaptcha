@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["PAGE",""]],"struct":[["INDEX",""],["IndexPage",""],["join",""]]});
+window.SIDEBAR_ITEMS = {"constant":[["PAGE",""]],"struct":[["INDEX",""],["IndexPage",""],["join",""]]};

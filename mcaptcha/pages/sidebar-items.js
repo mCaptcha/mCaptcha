@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["NAME",""]],"fn":[["get_middleware",""],["services",""]],"mod":[["auth",""],["errors",""],["panel",""],["routes",""],["sitemap",""]]});
+window.SIDEBAR_ITEMS = {"constant":[["NAME",""]],"fn":[["get_middleware",""],["services",""]],"mod":[["auth",""],["errors",""],["panel",""],["routes",""],["sitemap",""]]};

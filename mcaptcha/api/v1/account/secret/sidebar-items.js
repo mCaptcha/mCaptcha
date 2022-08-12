@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["services",""]],"struct":[["get_secret",""],["update_user_secret",""]]});
+window.SIDEBAR_ITEMS = {"fn":[["services",""]],"struct":[["get_secret",""],["update_user_secret",""]]};

@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Notifications",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["Notifications",""]]};

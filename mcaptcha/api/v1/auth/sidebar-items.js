@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["services",""]],"mod":[["routes",""],["runners",""]],"struct":[["login",""],["register",""],["signout",""]]});
+window.SIDEBAR_ITEMS = {"fn":[["services",""]],"mod":[["routes",""],["runners",""]],"struct":[["login",""],["register",""],["signout",""]]};

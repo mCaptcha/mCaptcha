@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["runner",""]],"struct":[["CreateCaptcha",""],["MCaptchaDetails",""],["create",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["runner",""]],"struct":[["CreateCaptcha",""],["MCaptchaDetails",""],["create",""]]};

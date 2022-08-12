@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["PAGE",""],["WIDGET_ROUTES",""]],"fn":[["services","widget services"]],"mod":[["routes",""]],"struct":[["INDEX_PAGE",""],["IndexPage",""],["show_widget","render a client side widget for CAPTCHA verification"]]});
+window.SIDEBAR_ITEMS = {"constant":[["PAGE",""],["WIDGET_ROUTES",""]],"fn":[["services","widget services"]],"mod":[["routes",""]],"struct":[["INDEX_PAGE",""],["IndexPage",""],["show_widget","render a client side widget for CAPTCHA verification"]]};

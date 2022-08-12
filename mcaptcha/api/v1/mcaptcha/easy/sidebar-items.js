@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["calculate",""],["services",""]],"mod":[["routes",""]],"struct":[["TrafficPatternRequest","User’s traffic pattern; used in generating a captcha configuration"],["UpdateTrafficPattern",""],["create",""],["update",""]]});
+window.SIDEBAR_ITEMS = {"fn":[["calculate",""],["services",""]],"mod":[["routes",""]],"struct":[["TrafficPatternRequest","User’s traffic pattern; used in generating a captcha configuration"],["UpdateTrafficPattern",""],["create",""],["update",""]]};

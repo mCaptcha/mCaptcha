@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["services",""],["update_password_runner",""]],"struct":[["ChangePasswordReqest",""],["UpdatePassword",""],["update_user_password",""]]});
+window.SIDEBAR_ITEMS = {"fn":[["services",""],["update_password_runner",""]],"struct":[["ChangePasswordReqest",""],["UpdatePassword",""],["update_user_password",""]]};

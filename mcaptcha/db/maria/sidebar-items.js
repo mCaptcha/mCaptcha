@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["get_data",""]]});
+window.SIDEBAR_ITEMS = {"fn":[["get_data",""]]};

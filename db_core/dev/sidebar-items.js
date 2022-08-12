@@ -1,1 +1,1 @@
-initSidebarItems({"attr":[["async_trait",""]]});
+window.SIDEBAR_ITEMS = {"attr":[["async_trait",""]]};

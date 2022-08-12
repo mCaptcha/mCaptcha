@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["database_works","test all database functions"]]});
+window.SIDEBAR_ITEMS = {"fn":[["database_works","test all database functions"]]};

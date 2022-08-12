@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["delete_sitekey",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["delete_sitekey",""]]};

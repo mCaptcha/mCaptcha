@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["username_exists",""]]});
+window.SIDEBAR_ITEMS = {"fn":[["username_exists",""]]};

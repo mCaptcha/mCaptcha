@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["PAGE",""]],"struct":[["IndexPage",""],["view_sitekey","route handler that renders individual views for sitekeys"]]});
+window.SIDEBAR_ITEMS = {"constant":[["PAGE",""]],"struct":[["IndexPage",""],["view_sitekey","route handler that renders individual views for sitekeys"]]};

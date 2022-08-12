@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["PAGE",""]],"struct":[["ADVANCE_INDEX",""],["AdvanceIndexPage",""],["EASY_INDEX",""],["EasyIndexPage",""],["advance",""],["easy",""]]});
+window.SIDEBAR_ITEMS = {"constant":[["PAGE",""]],"struct":[["ADVANCE_INDEX",""],["AdvanceIndexPage",""],["EASY_INDEX",""],["EasyIndexPage",""],["advance",""],["easy",""]]};
