@@ -104,7 +104,7 @@ upload_dist() {
 	do
 		curl -v \
 			-F upload=@$file  \
-			"$DUMBSERVE_HOST/api/v1/files/upload?path=$1/"
+			"$DUMBSERVE_HOST/api/v1/files/upload?path=mCaptcha/$1/"
 	done
 	popd
 }
