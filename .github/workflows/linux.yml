@@ -82,7 +82,7 @@ jobs:
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
       - name: configure GPG key
-        if: (github.ref == 'refs/heads/master' || github.event_name == 'push') && github.repository == 'realaravinth/dumbserve'
+        if: (github.ref == 'refs/heads/master' || github.event_name == 'push') && github.repository == 'mCaptcha/mCaptcha'
         run: echo -n "$RELEASE_BOT_GPG_SIGNING_KEY" | gpg --batch --import --pinentry-mode loopback
         env:
           RELEASE_BOT_GPG_SIGNING_KEY: ${{ secrets.RELEASE_BOT_GPG_SIGNING_KEY }}
