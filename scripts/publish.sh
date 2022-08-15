@@ -97,14 +97,15 @@ delete_dir() {
 }
 
 upload_dist() {
-	delete_dir $1
+	upload_dir="mCaptcha/$1"
+	delete_dir $upload_dir
 
 	pushd $TMP_DIR
 	for file in $TARBALL $TARBALL.asc $TARBALL.sha256
 	do
 		curl -v \
 			-F upload=@$file  \
-			"$DUMBSERVE_HOST/api/v1/files/upload?path=mCaptcha/$1/"
+			"$DUMBSERVE_HOST/api/v1/files/upload?path=$upload_dir"
 	done
 	popd
 }
