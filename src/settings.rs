@@ -170,7 +170,7 @@ impl Settings {
             Ok(val) => {
                 s.set("server.port", val).unwrap();
             }
-            Err(e) => warn!("couldn't interpret PORT: {}", e),
+            _ => (),
         }
 
         match env::var("DATABASE_URL") {
