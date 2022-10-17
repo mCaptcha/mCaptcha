@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-use std::env;
 use std::path::Path;
+use std::{env, fs};
 
 use config::{Config, ConfigError, Environment, File};
 use derive_more::Display;
@@ -152,25 +152,29 @@ impl Settings {
             .expect("unable to set capatcha.enable_stats default config");
 
         if let Ok(path) = env::var("MCAPTCHA_CONFIG") {
-            s.merge(File::with_name(&path))?;
+            let absolute_path =
+                Path::new(&path).canonicalize().unwrap().to_str().unwrap();
+            log::info!("{}", format!("Loading config file from {}", absolute_path));
+            s.merge(File::with_name(absolute_path))?;
         } else if Path::new(CURRENT_DIR).exists() {
+            let absolute_path = fs::canonicalize(CURRENT_DIR).unwrap().to_str().unwrap();
+            log::info!("{}", format!("Loading config file from {}", absolute_path));
             // merging default config from file
-            s.merge(File::with_name(CURRENT_DIR))?;
+            s.merge(File::with_name(absolute_path))?;
         } else if Path::new(ETC).exists() {
+            log::info!("{}", format!("Loading config file from {}", ETC));
             s.merge(File::with_name(ETC))?;
         } else {
-            log::warn!("configuration file not found");
+            log::warn!("Configuration file not found");
         }
 
         s.merge(Environment::with_prefix("MCAPTCHA").separator("_"))?;
 
         check_url(&s);
 
-        match env::var("PORT") {
-            Ok(val) => {
-                s.set("server.port", val).unwrap();
-            }
-            _ => (),
+        if let Ok(val) = env::var("PORT") {
+            s.set("server.port", val).unwrap();
+            log::info!("Overriding [server].port with environment variable");
         }
 
         match env::var("DATABASE_URL") {
@@ -180,6 +184,7 @@ impl Settings {
                 let database_type = DBType::from_url(&url).unwrap();
                 s.set("database.database_type", database_type.to_string())
                     .unwrap();
+                log::info!("Overriding [database].url and [database].database_type with environment variable");
             }
             Err(e) => {
                 set_database_url(&mut s);
