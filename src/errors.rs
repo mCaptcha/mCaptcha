@@ -58,7 +58,7 @@ pub enum ServiceError {
     InternalServerError,
 
     #[display(
-        fmt = "This server is is closed for registration. Contact admin if this is unexpecter"
+        fmt = "This server is is closed for registration. Contact admin if this is unexpected"
     )]
     ClosedForRegistration,
 
