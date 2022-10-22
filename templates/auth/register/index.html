@@ -8,6 +8,16 @@
     class="auth__logo" alt="mcaptcha logo" />
 
 
+    <. if !crate::SETTINGS.allow_registration { .>
+      <table class="reg-closed__table">
+        <thead class="reg-closed__table-heading">
+          <tr><th colspan="4" class="reg-closed__table-title-text">Registration closed</th></tr>
+        </thead>
+        <tbody class="reg-closed__body">
+          <tr><td class="reg-closed__body-text">This mCaptcha instance is closed for registrations.</td></tr>
+        </tbody>
+      </table>
+    <. } else {.>
   <form
 	  method="POST"
 	  action="<.= crate::V1_API_ROUTES.auth.register .>"
@@ -73,5 +83,6 @@
       <a href="<.= crate::PAGES.auth.login .>" class="auth__secondary-action__link">Log in</a>
     </p>
 	<. include!("../demo-user-banner.html"); .>
+  <. } .>
 </div>
 <. include!("../../components/footers.html"); .>
