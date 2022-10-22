@@ -152,15 +152,26 @@ impl Settings {
             .expect("unable to set capatcha.enable_stats default config");
 
         if let Ok(path) = env::var("MCAPTCHA_CONFIG") {
-            let absolute_path =
-                Path::new(&path).canonicalize().unwrap().to_str().unwrap();
-            log::info!("{}", format!("Loading config file from {}", absolute_path));
-            s.merge(File::with_name(absolute_path))?;
+            let absolute_path = Path::new(&path).canonicalize().unwrap();
+            log::info!(
+                "{}",
+                format!(
+                    "Loading config file from {}",
+                    absolute_path.to_str().unwrap()
+                )
+            );
+            s.merge(File::with_name(absolute_path.to_str().unwrap()))?;
         } else if Path::new(CURRENT_DIR).exists() {
-            let absolute_path = fs::canonicalize(CURRENT_DIR).unwrap().to_str().unwrap();
-            log::info!("{}", format!("Loading config file from {}", absolute_path));
+            let absolute_path = fs::canonicalize(CURRENT_DIR).unwrap();
+            log::info!(
+                "{}",
+                format!(
+                    "Loading config file from {}",
+                    absolute_path.to_str().unwrap()
+                )
+            );
             // merging default config from file
-            s.merge(File::with_name(absolute_path))?;
+            s.merge(File::with_name(absolute_path.to_str().unwrap()))?;
         } else if Path::new(ETC).exists() {
             log::info!("{}", format!("Loading config file from {}", ETC));
             s.merge(File::with_name(ETC))?;
@@ -220,8 +231,11 @@ fn set_database_url(s: &mut Config) {
             r"postgres://{}:{}@{}:{}/{}",
             s.get::<String>("database.username")
                 .expect("Couldn't access database username"),
-            s.get::<String>("database.password")
-                .expect("Couldn't access database password"),
+            urlencoding::encode(
+                s.get::<String>("database.password")
+                    .expect("Couldn't access database password")
+                    .as_str()
+            ),
             s.get::<String>("database.hostname")
                 .expect("Couldn't access database hostname"),
             s.get::<String>("database.port")

@@ -68,10 +68,8 @@ impl Connect for ConnectionOptions {
     async fn connect(self) -> DBResult<Self::Pool> {
         let pool = match self {
             Self::Fresh(fresh) => {
-                let mut connect_options = sqlx::postgres::PgConnectOptions::from_str(
-                    &urlencoding::encode(&fresh.url),
-                )
-                .unwrap();
+                let mut connect_options =
+                    sqlx::postgres::PgConnectOptions::from_str(&fresh.url).unwrap();
                 if fresh.disable_logging {
                     connect_options.disable_statement_logging();
                 }
