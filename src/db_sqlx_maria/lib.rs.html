@@ -960,9 +960,6 @@
 <span id="960">960</span>
 <span id="961">961</span>
 <span id="962">962</span>
-<span id="963">963</span>
-<span id="964">964</span>
-<span id="965">965</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
  *
@@ -1038,9 +1035,6 @@
                 <span class="kw">if</span> <span class="ident">fresh</span>.<span class="ident">disable_logging</span> {
                     <span class="ident">connect_options</span>.<span class="ident">disable_statement_logging</span>();
                 }
-                <span class="ident">sqlx::mysql::MySqlConnectOptions::from_str</span>(<span class="kw-2">&amp;</span><span class="ident">fresh</span>.<span class="ident">url</span>)
-                    .<span class="ident">unwrap</span>()
-                    .<span class="ident">disable_statement_logging</span>();
                 <span class="ident">fresh</span>
                     .<span class="ident">pool_options</span>
                     .<span class="ident">connect_with</span>(<span class="ident">connect_options</span>)

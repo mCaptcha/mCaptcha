@@ -966,9 +966,6 @@
 <span id="966">966</span>
 <span id="967">967</span>
 <span id="968">968</span>
-<span id="969">969</span>
-<span id="970">970</span>
-<span id="971">971</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
  *
@@ -1044,9 +1041,6 @@
                 <span class="kw">if</span> <span class="ident">fresh</span>.<span class="ident">disable_logging</span> {
                     <span class="ident">connect_options</span>.<span class="ident">disable_statement_logging</span>();
                 }
-                <span class="ident">sqlx::postgres::PgConnectOptions::from_str</span>(<span class="kw-2">&amp;</span><span class="ident">fresh</span>.<span class="ident">url</span>)
-                    .<span class="ident">unwrap</span>()
-                    .<span class="ident">disable_statement_logging</span>();
                 <span class="ident">fresh</span>
                     .<span class="ident">pool_options</span>
                     .<span class="ident">connect_with</span>(<span class="ident">connect_options</span>)
