@@ -154,21 +154,15 @@ impl Settings {
         if let Ok(path) = env::var("MCAPTCHA_CONFIG") {
             let absolute_path = Path::new(&path).canonicalize().unwrap();
             log::info!(
-                "{}",
-                format!(
-                    "Loading config file from {}",
-                    absolute_path.to_str().unwrap()
-                )
+                "Loading config file from {}",
+                absolute_path.to_str().unwrap()
             );
             s.merge(File::with_name(absolute_path.to_str().unwrap()))?;
         } else if Path::new(CURRENT_DIR).exists() {
             let absolute_path = fs::canonicalize(CURRENT_DIR).unwrap();
             log::info!(
-                "{}",
-                format!(
-                    "Loading config file from {}",
-                    absolute_path.to_str().unwrap()
-                )
+                "Loading config file from {}",
+                absolute_path.to_str().unwrap()
             );
             // merging default config from file
             s.merge(File::with_name(absolute_path.to_str().unwrap()))?;
