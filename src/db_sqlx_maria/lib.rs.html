@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `db/db-sqlx-maria/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../db_sqlx_maria/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../db_sqlx_maria/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../db_sqlx_maria/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `db/db-sqlx-maria/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../db_sqlx_maria/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../db_sqlx_maria/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../db_sqlx_maria/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -975,419 +975,419 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
- */</span>
-<span class="kw">use</span> <span class="ident">std::str::FromStr</span>;
+ */
+</span><span class="kw">use </span>std::str::FromStr;
 
-<span class="kw">use</span> <span class="ident">db_core::dev</span>::<span class="kw-2">*</span>;
+<span class="kw">use </span>db_core::dev::<span class="kw-2">*</span>;
 
-<span class="kw">use</span> <span class="ident">sqlx::mysql::MySqlPoolOptions</span>;
-<span class="kw">use</span> <span class="ident">sqlx::types::time::OffsetDateTime</span>;
-<span class="kw">use</span> <span class="ident">sqlx::ConnectOptions</span>;
-<span class="kw">use</span> <span class="ident">sqlx::MySqlPool</span>;
+<span class="kw">use </span>sqlx::mysql::MySqlPoolOptions;
+<span class="kw">use </span>sqlx::types::time::OffsetDateTime;
+<span class="kw">use </span>sqlx::ConnectOptions;
+<span class="kw">use </span>sqlx::MySqlPool;
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">errors</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">tests</span>;
+<span class="kw">pub mod </span>errors;
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">pub mod </span>tests;
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Database</span> {
-    <span class="kw">pub</span> <span class="ident">pool</span>: <span class="ident">MySqlPool</span>,
+<span class="attribute">#[derive(Clone)]
+</span><span class="kw">pub struct </span>Database {
+    <span class="kw">pub </span>pool: MySqlPool,
 }
 
-<span class="doccomment">/// Use an existing database pool</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Conn</span>(<span class="kw">pub</span> <span class="ident">MySqlPool</span>);
+<span class="doccomment">/// Use an existing database pool
+</span><span class="kw">pub struct </span>Conn(<span class="kw">pub </span>MySqlPool);
 
-<span class="doccomment">/// Connect to database</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ConnectionOptions</span> {
-    <span class="doccomment">/// fresh connection</span>
-    <span class="ident">Fresh</span>(<span class="ident">Fresh</span>),
-    <span class="doccomment">/// existing connection</span>
-    <span class="ident">Existing</span>(<span class="ident">Conn</span>),
+<span class="doccomment">/// Connect to database
+</span><span class="kw">pub enum </span>ConnectionOptions {
+    <span class="doccomment">/// fresh connection
+    </span>Fresh(Fresh),
+    <span class="doccomment">/// existing connection
+    </span>Existing(Conn),
 }
 
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Fresh</span> {
-    <span class="kw">pub</span> <span class="ident">pool_options</span>: <span class="ident">MySqlPoolOptions</span>,
-    <span class="kw">pub</span> <span class="ident">disable_logging</span>: <span class="ident">bool</span>,
-    <span class="kw">pub</span> <span class="ident">url</span>: <span class="ident">String</span>,
+<span class="kw">pub struct </span>Fresh {
+    <span class="kw">pub </span>pool_options: MySqlPoolOptions,
+    <span class="kw">pub </span>disable_logging: bool,
+    <span class="kw">pub </span>url: String,
 }
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">dev</span> {
-    <span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::errors</span>::<span class="kw-2">*</span>;
-    <span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::Database</span>;
-    <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">db_core::dev</span>::<span class="kw-2">*</span>;
-    <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">prelude</span>::<span class="kw-2">*</span>;
-    <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sqlx::Error</span>;
+<span class="kw">pub mod </span>dev {
+    <span class="kw">pub use </span><span class="kw">super</span>::errors::<span class="kw-2">*</span>;
+    <span class="kw">pub use </span><span class="kw">super</span>::Database;
+    <span class="kw">pub use </span>db_core::dev::<span class="kw-2">*</span>;
+    <span class="kw">pub use </span>prelude::<span class="kw-2">*</span>;
+    <span class="kw">pub use </span>sqlx::Error;
 }
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">prelude</span> {
-    <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">db_core::prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">pub mod </span>prelude {
+    <span class="kw">pub use super</span>::<span class="kw-2">*</span>;
+    <span class="kw">pub use </span>db_core::prelude::<span class="kw-2">*</span>;
 }
 
-<span class="attribute">#[<span class="ident">async_trait</span>]</span>
-<span class="kw">impl</span> <span class="ident">Connect</span> <span class="kw">for</span> <span class="ident">ConnectionOptions</span> {
-    <span class="kw">type</span> <span class="ident">Pool</span> <span class="op">=</span> <span class="ident">Database</span>;
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">connect</span>(<span class="self">self</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Pool</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">pool</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident"><span class="self">Self</span>::Fresh</span>(<span class="ident">fresh</span>) =&gt; {
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">connect_options</span> <span class="op">=</span>
-                    <span class="ident">sqlx::mysql::MySqlConnectOptions::from_str</span>(<span class="kw-2">&amp;</span><span class="ident">fresh</span>.<span class="ident">url</span>).<span class="ident">unwrap</span>();
-                <span class="kw">if</span> <span class="ident">fresh</span>.<span class="ident">disable_logging</span> {
-                    <span class="ident">connect_options</span>.<span class="ident">disable_statement_logging</span>();
+<span class="attribute">#[async_trait]
+</span><span class="kw">impl </span>Connect <span class="kw">for </span>ConnectionOptions {
+    <span class="kw">type </span>Pool = Database;
+    <span class="kw">async fn </span>connect(<span class="self">self</span>) -&gt; DBResult&lt;<span class="self">Self</span>::Pool&gt; {
+        <span class="kw">let </span>pool = <span class="kw">match </span><span class="self">self </span>{
+            <span class="self">Self</span>::Fresh(fresh) =&gt; {
+                <span class="kw">let </span><span class="kw-2">mut </span>connect_options =
+                    sqlx::mysql::MySqlConnectOptions::from_str(<span class="kw-2">&amp;</span>fresh.url).unwrap();
+                <span class="kw">if </span>fresh.disable_logging {
+                    connect_options.disable_statement_logging();
                 }
-                <span class="ident">fresh</span>
-                    .<span class="ident">pool_options</span>
-                    .<span class="ident">connect_with</span>(<span class="ident">connect_options</span>)
-                    .<span class="kw">await</span>
-                    .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">DBError::DBError</span>(<span class="ident">Box::new</span>(<span class="ident">e</span>)))<span class="question-mark">?</span>
-            }
+                fresh
+                    .pool_options
+                    .connect_with(connect_options)
+                    .<span class="kw">await
+                    </span>.map_err(|e| DBError::DBError(Box::new(e)))<span class="question-mark">?
+            </span>}
 
-            <span class="ident"><span class="self">Self</span>::Existing</span>(<span class="ident">conn</span>) =&gt; <span class="ident">conn</span>.<span class="number">0</span>,
+            <span class="self">Self</span>::Existing(conn) =&gt; conn.<span class="number">0</span>,
         };
-        <span class="prelude-val">Ok</span>(<span class="ident">Database</span> { <span class="ident">pool</span> })
+        <span class="prelude-val">Ok</span>(Database { pool })
     }
 }
 
-<span class="kw">use</span> <span class="ident">dev</span>::<span class="kw-2">*</span>;
+<span class="kw">use </span>dev::<span class="kw-2">*</span>;
 
-<span class="attribute">#[<span class="ident">async_trait</span>]</span>
-<span class="kw">impl</span> <span class="ident">Migrate</span> <span class="kw">for</span> <span class="ident">Database</span> {
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">migrate</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="attribute">#[async_trait]
+</span><span class="kw">impl </span>Migrate <span class="kw">for </span>Database {
+    <span class="kw">async fn </span>migrate(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; DBResult&lt;()&gt; {
         <span class="macro">sqlx::migrate!</span>(<span class="string">&quot;./migrations/&quot;</span>)
-            .<span class="ident">run</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-            .<span class="kw">await</span>
-            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">DBError::DBError</span>(<span class="ident">Box::new</span>(<span class="ident">e</span>)))<span class="question-mark">?</span>;
+            .run(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+            .<span class="kw">await
+            </span>.map_err(|e| DBError::DBError(Box::new(e)))<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(())
     }
 }
 
-<span class="attribute">#[<span class="ident">async_trait</span>]</span>
-<span class="kw">impl</span> <span class="ident">MCDatabase</span> <span class="kw">for</span> <span class="ident">Database</span> {
-    <span class="doccomment">/// ping DB</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">ping</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">use</span> <span class="ident">sqlx::Connection</span>;
+<span class="attribute">#[async_trait]
+</span><span class="kw">impl </span>MCDatabase <span class="kw">for </span>Database {
+    <span class="doccomment">/// ping DB
+    </span><span class="kw">async fn </span>ping(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">use </span>sqlx::Connection;
 
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="kw-2">mut</span> <span class="ident">con</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">pool</span>.<span class="ident">acquire</span>().<span class="kw">await</span> {
-            <span class="ident">con</span>.<span class="ident">ping</span>().<span class="kw">await</span>.<span class="ident">is_ok</span>()
-        } <span class="kw">else</span> {
-            <span class="bool-val">false</span>
-        }
+        <span class="kw">if let </span><span class="prelude-val">Ok</span>(<span class="kw-2">mut </span>con) = <span class="self">self</span>.pool.acquire().<span class="kw">await </span>{
+            con.ping().<span class="kw">await</span>.is_ok()
+        } <span class="kw">else </span>{
+            <span class="bool-val">false
+        </span>}
     }
 
-    <span class="doccomment">/// register a new user</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">register</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw-2">&amp;</span><span class="ident">Register</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">email</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">p</span>.<span class="ident">email</span> {
+    <span class="doccomment">/// register a new user
+    </span><span class="kw">async fn </span>register(<span class="kw-2">&amp;</span><span class="self">self</span>, p: <span class="kw-2">&amp;</span>Register) -&gt; DBResult&lt;()&gt; {
+        <span class="kw">let </span>res = <span class="kw">if let </span><span class="prelude-val">Some</span>(email) = <span class="kw-2">&amp;</span>p.email {
             <span class="macro">sqlx::query!</span>(
                 <span class="string">&quot;insert into mcaptcha_users 
         (name , password, email, secret) values (?, ?, ?, ?)&quot;</span>,
-                <span class="kw-2">&amp;</span><span class="ident">p</span>.<span class="ident">username</span>,
-                <span class="kw-2">&amp;</span><span class="ident">p</span>.<span class="ident">hash</span>,
-                <span class="kw-2">&amp;</span><span class="ident">email</span>,
-                <span class="kw-2">&amp;</span><span class="ident">p</span>.<span class="ident">secret</span>,
+                <span class="kw-2">&amp;</span>p.username,
+                <span class="kw-2">&amp;</span>p.hash,
+                <span class="kw-2">&amp;</span>email,
+                <span class="kw-2">&amp;</span>p.secret,
             )
-            .<span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-            .<span class="kw">await</span>
-        } <span class="kw">else</span> {
+            .execute(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+            .<span class="kw">await
+        </span>} <span class="kw">else </span>{
             <span class="macro">sqlx::query!</span>(
                 <span class="string">&quot;INSERT INTO mcaptcha_users 
         (name , password,  secret) VALUES (?, ?, ?)&quot;</span>,
-                <span class="kw-2">&amp;</span><span class="ident">p</span>.<span class="ident">username</span>,
-                <span class="kw-2">&amp;</span><span class="ident">p</span>.<span class="ident">hash</span>,
-                <span class="kw-2">&amp;</span><span class="ident">p</span>.<span class="ident">secret</span>,
+                <span class="kw-2">&amp;</span>p.username,
+                <span class="kw-2">&amp;</span>p.hash,
+                <span class="kw-2">&amp;</span>p.secret,
             )
-            .<span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-            .<span class="kw">await</span>
-        };
-        <span class="ident">res</span>.<span class="ident">map_err</span>(<span class="ident">map_register_err</span>)<span class="question-mark">?</span>;
+            .execute(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+            .<span class="kw">await
+        </span>};
+        res.map_err(map_register_err)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="doccomment">/// delete a user</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_user</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="macro">sqlx::query!</span>(<span class="string">&quot;DELETE FROM mcaptcha_users WHERE name = (?)&quot;</span>, <span class="ident">username</span>)
-            .<span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-            .<span class="kw">await</span>
-            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">map_row_not_found_err</span>(<span class="ident">e</span>, <span class="ident">DBError::AccountNotFound</span>))<span class="question-mark">?</span>;
+    <span class="doccomment">/// delete a user
+    </span><span class="kw">async fn </span>delete_user(<span class="kw-2">&amp;</span><span class="self">self</span>, username: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;()&gt; {
+        <span class="macro">sqlx::query!</span>(<span class="string">&quot;DELETE FROM mcaptcha_users WHERE name = (?)&quot;</span>, username)
+            .execute(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+            .<span class="kw">await
+            </span>.map_err(|e| map_row_not_found_err(e, DBError::AccountNotFound))<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="doccomment">/// check if username exists</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">username_exists</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> {
-        <span class="kw">match</span> <span class="macro">sqlx::query!</span>(<span class="string">&quot;SELECT name from mcaptcha_users WHERE name = ?&quot;</span>, <span class="ident">username</span>,)
-            .<span class="ident">fetch_one</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-            .<span class="kw">await</span>
-        {
+    <span class="doccomment">/// check if username exists
+    </span><span class="kw">async fn </span>username_exists(<span class="kw-2">&amp;</span><span class="self">self</span>, username: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;bool&gt; {
+        <span class="kw">match </span><span class="macro">sqlx::query!</span>(<span class="string">&quot;SELECT name from mcaptcha_users WHERE name = ?&quot;</span>, username,)
+            .fetch_one(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+            .<span class="kw">await
+        </span>{
             <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="bool-val">true</span>),
-            <span class="prelude-val">Err</span>(<span class="ident">sqlx::Error::RowNotFound</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="bool-val">false</span>),
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">map_register_err</span>(<span class="ident">e</span>)),
+            <span class="prelude-val">Err</span>(sqlx::Error::RowNotFound) =&gt; <span class="prelude-val">Ok</span>(<span class="bool-val">false</span>),
+            <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(map_register_err(e)),
         }
     }
 
-    <span class="doccomment">/// get user email</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_email</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">struct</span> <span class="ident">Email</span> {
-            <span class="ident">email</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// get user email
+    </span><span class="kw">async fn </span>get_email(<span class="kw-2">&amp;</span><span class="self">self</span>, username: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;<span class="prelude-ty">Option</span>&lt;String&gt;&gt; {
+        <span class="kw">struct </span>Email {
+            email: <span class="prelude-ty">Option</span>&lt;String&gt;,
         }
 
-        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="macro">sqlx::query_as!</span>(
-            <span class="ident">Email</span>,
+        <span class="kw">let </span>res = <span class="macro">sqlx::query_as!</span>(
+            Email,
             <span class="string">&quot;SELECT email FROM mcaptcha_users WHERE name = ?&quot;</span>,
-            <span class="ident">username</span>
+            username
         )
-        .<span class="ident">fetch_one</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-        .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">map_row_not_found_err</span>(<span class="ident">e</span>, <span class="ident">DBError::AccountNotFound</span>))<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(<span class="ident">res</span>.<span class="ident">email</span>)
+        .fetch_one(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+        .<span class="kw">await
+        </span>.map_err(|e| map_row_not_found_err(e, DBError::AccountNotFound))<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(res.email)
     }
 
-    <span class="doccomment">/// check if email exists</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">email_exists</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">email</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> {
-        <span class="kw">match</span> <span class="macro">sqlx::query!</span>(<span class="string">&quot;SELECT name from mcaptcha_users WHERE email = ?&quot;</span>, <span class="ident">email</span>)
-            .<span class="ident">fetch_one</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-            .<span class="kw">await</span>
-        {
+    <span class="doccomment">/// check if email exists
+    </span><span class="kw">async fn </span>email_exists(<span class="kw-2">&amp;</span><span class="self">self</span>, email: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;bool&gt; {
+        <span class="kw">match </span><span class="macro">sqlx::query!</span>(<span class="string">&quot;SELECT name from mcaptcha_users WHERE email = ?&quot;</span>, email)
+            .fetch_one(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+            .<span class="kw">await
+        </span>{
             <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="bool-val">true</span>),
-            <span class="prelude-val">Err</span>(<span class="ident">sqlx::Error::RowNotFound</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="bool-val">false</span>),
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">map_register_err</span>(<span class="ident">e</span>)),
+            <span class="prelude-val">Err</span>(sqlx::Error::RowNotFound) =&gt; <span class="prelude-val">Ok</span>(<span class="bool-val">false</span>),
+            <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(map_register_err(e)),
         }
     }
 
-    <span class="doccomment">/// update a user&#39;s email</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_email</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw-2">&amp;</span><span class="ident">UpdateEmail</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="doccomment">/// update a user&#39;s email
+    </span><span class="kw">async fn </span>update_email(<span class="kw-2">&amp;</span><span class="self">self</span>, p: <span class="kw-2">&amp;</span>UpdateEmail) -&gt; DBResult&lt;()&gt; {
         <span class="macro">sqlx::query!</span>(
             <span class="string">&quot;UPDATE mcaptcha_users set email = ?
             WHERE name = ?&quot;</span>,
-            <span class="kw-2">&amp;</span><span class="ident">p</span>.<span class="ident">new_email</span>,
-            <span class="kw-2">&amp;</span><span class="ident">p</span>.<span class="ident">username</span>,
+            <span class="kw-2">&amp;</span>p.new_email,
+            <span class="kw-2">&amp;</span>p.username,
         )
-        .<span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-        .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">map_row_not_found_err</span>(<span class="ident">e</span>, <span class="ident">DBError::AccountNotFound</span>))<span class="question-mark">?</span>;
+        .execute(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+        .<span class="kw">await
+        </span>.map_err(|e| map_row_not_found_err(e, DBError::AccountNotFound))<span class="question-mark">?</span>;
 
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="doccomment">/// get a user&#39;s password</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_password</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">l</span>: <span class="kw-2">&amp;</span><span class="ident">Login</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident">NameHash</span><span class="op">&gt;</span> {
-        <span class="kw">struct</span> <span class="ident">Password</span> {
-            <span class="ident">name</span>: <span class="ident">String</span>,
-            <span class="ident">password</span>: <span class="ident">String</span>,
+    <span class="doccomment">/// get a user&#39;s password
+    </span><span class="kw">async fn </span>get_password(<span class="kw-2">&amp;</span><span class="self">self</span>, l: <span class="kw-2">&amp;</span>Login) -&gt; DBResult&lt;NameHash&gt; {
+        <span class="kw">struct </span>Password {
+            name: String,
+            password: String,
         }
 
-        <span class="kw">let</span> <span class="ident">rec</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">l</span> {
-            <span class="ident">Login::Username</span>(<span class="ident">u</span>) =&gt; <span class="macro">sqlx::query_as!</span>(
-                <span class="ident">Password</span>,
+        <span class="kw">let </span>rec = <span class="kw">match </span>l {
+            Login::Username(u) =&gt; <span class="macro">sqlx::query_as!</span>(
+                Password,
                 <span class="string">r#&quot;SELECT name, password  FROM mcaptcha_users WHERE name = ?&quot;#</span>,
-                <span class="ident">u</span>,
+                u,
             )
-            .<span class="ident">fetch_one</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-            .<span class="kw">await</span>
-            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">map_row_not_found_err</span>(<span class="ident">e</span>, <span class="ident">DBError::AccountNotFound</span>))<span class="question-mark">?</span>,
+            .fetch_one(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+            .<span class="kw">await
+            </span>.map_err(|e| map_row_not_found_err(e, DBError::AccountNotFound))<span class="question-mark">?</span>,
 
-            <span class="ident">Login::Email</span>(<span class="ident">e</span>) =&gt; <span class="macro">sqlx::query_as!</span>(
-                <span class="ident">Password</span>,
+            Login::Email(e) =&gt; <span class="macro">sqlx::query_as!</span>(
+                Password,
                 <span class="string">r#&quot;SELECT name, password  FROM mcaptcha_users WHERE email = ?&quot;#</span>,
-                <span class="ident">e</span>,
+                e,
             )
-            .<span class="ident">fetch_one</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-            .<span class="kw">await</span>
-            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">map_row_not_found_err</span>(<span class="ident">e</span>, <span class="ident">DBError::AccountNotFound</span>))<span class="question-mark">?</span>,
+            .fetch_one(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+            .<span class="kw">await
+            </span>.map_err(|e| map_row_not_found_err(e, DBError::AccountNotFound))<span class="question-mark">?</span>,
         };
 
-        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">NameHash</span> {
-            <span class="ident">hash</span>: <span class="ident">rec</span>.<span class="ident">password</span>,
-            <span class="ident">username</span>: <span class="ident">rec</span>.<span class="ident">name</span>,
+        <span class="kw">let </span>res = NameHash {
+            hash: rec.password,
+            username: rec.name,
         };
 
-        <span class="prelude-val">Ok</span>(<span class="ident">res</span>)
+        <span class="prelude-val">Ok</span>(res)
     }
 
-    <span class="doccomment">/// update user&#39;s password</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_password</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw-2">&amp;</span><span class="ident">NameHash</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="doccomment">/// update user&#39;s password
+    </span><span class="kw">async fn </span>update_password(<span class="kw-2">&amp;</span><span class="self">self</span>, p: <span class="kw-2">&amp;</span>NameHash) -&gt; DBResult&lt;()&gt; {
         <span class="macro">sqlx::query!</span>(
             <span class="string">&quot;UPDATE mcaptcha_users set password = ?
             WHERE name = ?&quot;</span>,
-            <span class="kw-2">&amp;</span><span class="ident">p</span>.<span class="ident">hash</span>,
-            <span class="kw-2">&amp;</span><span class="ident">p</span>.<span class="ident">username</span>,
+            <span class="kw-2">&amp;</span>p.hash,
+            <span class="kw-2">&amp;</span>p.username,
         )
-        .<span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-        .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">map_row_not_found_err</span>(<span class="ident">e</span>, <span class="ident">DBError::AccountNotFound</span>))<span class="question-mark">?</span>;
+        .execute(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+        .<span class="kw">await
+        </span>.map_err(|e| map_row_not_found_err(e, DBError::AccountNotFound))<span class="question-mark">?</span>;
 
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="doccomment">/// update username</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_username</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">current</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">new</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="doccomment">/// update username
+    </span><span class="kw">async fn </span>update_username(<span class="kw-2">&amp;</span><span class="self">self</span>, current: <span class="kw-2">&amp;</span>str, new: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;()&gt; {
         <span class="macro">sqlx::query!</span>(
             <span class="string">&quot;UPDATE mcaptcha_users set name = ?
             WHERE name = ?&quot;</span>,
-            <span class="ident">new</span>,
-            <span class="ident">current</span>,
+            new,
+            current,
         )
-        .<span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-        .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">map_row_not_found_err</span>(<span class="ident">e</span>, <span class="ident">DBError::AccountNotFound</span>))<span class="question-mark">?</span>;
+        .execute(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+        .<span class="kw">await
+        </span>.map_err(|e| map_row_not_found_err(e, DBError::AccountNotFound))<span class="question-mark">?</span>;
 
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="doccomment">/// get a user&#39;s secret</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_secret</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident">Secret</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">secret</span> <span class="op">=</span> <span class="macro">sqlx::query_as!</span>(
-            <span class="ident">Secret</span>,
+    <span class="doccomment">/// get a user&#39;s secret
+    </span><span class="kw">async fn </span>get_secret(<span class="kw-2">&amp;</span><span class="self">self</span>, username: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;Secret&gt; {
+        <span class="kw">let </span>secret = <span class="macro">sqlx::query_as!</span>(
+            Secret,
             <span class="string">r#&quot;SELECT secret  FROM mcaptcha_users WHERE name = ?&quot;#</span>,
-            <span class="ident">username</span>,
+            username,
         )
-        .<span class="ident">fetch_one</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-        .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">map_row_not_found_err</span>(<span class="ident">e</span>, <span class="ident">DBError::AccountNotFound</span>))<span class="question-mark">?</span>;
+        .fetch_one(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+        .<span class="kw">await
+        </span>.map_err(|e| map_row_not_found_err(e, DBError::AccountNotFound))<span class="question-mark">?</span>;
 
-        <span class="prelude-val">Ok</span>(<span class="ident">secret</span>)
+        <span class="prelude-val">Ok</span>(secret)
     }
 
-    <span class="doccomment">/// get a user&#39;s secret from a captcha key</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_secret_from_captcha</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident">Secret</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">secret</span> <span class="op">=</span> <span class="macro">sqlx::query_as!</span>(
-            <span class="ident">Secret</span>,
+    <span class="doccomment">/// get a user&#39;s secret from a captcha key
+    </span><span class="kw">async fn </span>get_secret_from_captcha(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;Secret&gt; {
+        <span class="kw">let </span>secret = <span class="macro">sqlx::query_as!</span>(
+            Secret,
             <span class="string">r#&quot;SELECT secret  FROM mcaptcha_users WHERE ID = (
                     SELECT user_id FROM mcaptcha_config WHERE captcha_key = ?
                     )&quot;#</span>,
-            <span class="ident">key</span>,
+            key,
         )
-        .<span class="ident">fetch_one</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-        .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">map_row_not_found_err</span>(<span class="ident">e</span>, <span class="ident">DBError::AccountNotFound</span>))<span class="question-mark">?</span>;
+        .fetch_one(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+        .<span class="kw">await
+        </span>.map_err(|e| map_row_not_found_err(e, DBError::AccountNotFound))<span class="question-mark">?</span>;
 
-        <span class="prelude-val">Ok</span>(<span class="ident">secret</span>)
+        <span class="prelude-val">Ok</span>(secret)
     }
 
-    <span class="doccomment">/// update a user&#39;s secret</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_secret</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">secret</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="doccomment">/// update a user&#39;s secret
+    </span><span class="kw">async fn </span>update_secret(<span class="kw-2">&amp;</span><span class="self">self</span>, username: <span class="kw-2">&amp;</span>str, secret: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;()&gt; {
         <span class="macro">sqlx::query!</span>(
             <span class="string">&quot;UPDATE mcaptcha_users set secret = ?
         WHERE name = ?&quot;</span>,
-            <span class="kw-2">&amp;</span><span class="ident">secret</span>,
-            <span class="kw-2">&amp;</span><span class="ident">username</span>,
+            <span class="kw-2">&amp;</span>secret,
+            <span class="kw-2">&amp;</span>username,
         )
-        .<span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-        .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">map_row_not_found_err</span>(<span class="ident">e</span>, <span class="ident">DBError::AccountNotFound</span>))<span class="question-mark">?</span>;
+        .execute(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+        .<span class="kw">await
+        </span>.map_err(|e| map_row_not_found_err(e, DBError::AccountNotFound))<span class="question-mark">?</span>;
 
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="doccomment">/// create new captcha</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_captcha</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">p</span>: <span class="kw-2">&amp;</span><span class="ident">CreateCaptcha</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="doccomment">/// create new captcha
+    </span><span class="kw">async fn </span>create_captcha(<span class="kw-2">&amp;</span><span class="self">self</span>, username: <span class="kw-2">&amp;</span>str, p: <span class="kw-2">&amp;</span>CreateCaptcha) -&gt; DBResult&lt;()&gt; {
         <span class="macro">sqlx::query!</span>(
             <span class="string">&quot;INSERT INTO mcaptcha_config
         (`captcha_key`, `user_id`, `duration`, `name`)
         VALUES (?, (SELECT ID FROM mcaptcha_users WHERE name = ?), ?, ?)&quot;</span>,
-            <span class="ident">p</span>.<span class="ident">key</span>,
-            <span class="ident">username</span>,
-            <span class="ident">p</span>.<span class="ident">duration</span> <span class="kw">as</span> <span class="ident">i32</span>,
-            <span class="ident">p</span>.<span class="ident">description</span>,
+            p.key,
+            username,
+            p.duration <span class="kw">as </span>i32,
+            p.description,
         )
-        .<span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-        .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">map_row_not_found_err</span>(<span class="ident">e</span>, <span class="ident">DBError::AccountNotFound</span>))<span class="question-mark">?</span>;
+        .execute(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+        .<span class="kw">await
+        </span>.map_err(|e| map_row_not_found_err(e, DBError::AccountNotFound))<span class="question-mark">?</span>;
 
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="doccomment">/// Get captcha config</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_captcha_config</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident">Captcha</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">captcha</span> <span class="op">=</span> <span class="macro">sqlx::query_as!</span>(
-            <span class="ident">InternaleCaptchaConfig</span>,
+    <span class="doccomment">/// Get captcha config
+    </span><span class="kw">async fn </span>get_captcha_config(<span class="kw-2">&amp;</span><span class="self">self</span>, username: <span class="kw-2">&amp;</span>str, key: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;Captcha&gt; {
+        <span class="kw">let </span>captcha = <span class="macro">sqlx::query_as!</span>(
+            InternaleCaptchaConfig,
             <span class="string">&quot;SELECT `config_id`, `duration`, `name`, `captcha_key` from mcaptcha_config WHERE
                         `captcha_key` = ? AND
                         user_id = (SELECT ID FROM mcaptcha_users WHERE name = ?) &quot;</span>,
-            <span class="kw-2">&amp;</span><span class="ident">key</span>,
-            <span class="kw-2">&amp;</span><span class="ident">username</span>,
+            <span class="kw-2">&amp;</span>key,
+            <span class="kw-2">&amp;</span>username,
         )
-        .<span class="ident">fetch_one</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-        .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">map_row_not_found_err</span>(<span class="ident">e</span>, <span class="ident">DBError::CaptchaNotFound</span>))<span class="question-mark">?</span>;
+        .fetch_one(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+        .<span class="kw">await
+        </span>.map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))<span class="question-mark">?</span>;
 
-        <span class="prelude-val">Ok</span>(<span class="ident">captcha</span>.<span class="ident">into</span>())
+        <span class="prelude-val">Ok</span>(captcha.into())
     }
 
-    <span class="doccomment">/// Get all captchas belonging to user</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_all_user_captchas</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Captcha</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">res</span> <span class="op">=</span> <span class="macro">sqlx::query_as!</span>(
-            <span class="ident">InternaleCaptchaConfig</span>,
+    <span class="doccomment">/// Get all captchas belonging to user
+    </span><span class="kw">async fn </span>get_all_user_captchas(<span class="kw-2">&amp;</span><span class="self">self</span>, username: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;Vec&lt;Captcha&gt;&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>res = <span class="macro">sqlx::query_as!</span>(
+            InternaleCaptchaConfig,
             <span class="string">&quot;SELECT captcha_key, name, config_id, duration FROM mcaptcha_config WHERE
             user_id = (SELECT ID FROM mcaptcha_users WHERE name = ?) &quot;</span>,
-            <span class="kw-2">&amp;</span><span class="ident">username</span>,
+            <span class="kw-2">&amp;</span>username,
         )
-        .<span class="ident">fetch_all</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-        .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">map_row_not_found_err</span>(<span class="ident">e</span>, <span class="ident">DBError::AccountNotFound</span>))<span class="question-mark">?</span>;
+        .fetch_all(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+        .<span class="kw">await
+        </span>.map_err(|e| map_row_not_found_err(e, DBError::AccountNotFound))<span class="question-mark">?</span>;
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">captchas</span> <span class="op">=</span> <span class="ident">Vec::with_capacity</span>(<span class="ident">res</span>.<span class="ident">len</span>());
+        <span class="kw">let </span><span class="kw-2">mut </span>captchas = Vec::with_capacity(res.len());
 
-        <span class="ident">res</span>.<span class="ident">drain</span>(<span class="number">0</span>..).<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="ident">captchas</span>.<span class="ident">push</span>(<span class="ident">r</span>.<span class="ident">into</span>()));
+        res.drain(<span class="number">0</span>..).for_each(|r| captchas.push(r.into()));
 
-        <span class="prelude-val">Ok</span>(<span class="ident">captchas</span>)
+        <span class="prelude-val">Ok</span>(captchas)
     }
 
-    <span class="doccomment">/// update captcha metadata; doesn&#39;t change captcha key</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_captcha_metadata</span>(
+    <span class="doccomment">/// update captcha metadata; doesn&#39;t change captcha key
+    </span><span class="kw">async fn </span>update_captcha_metadata(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">p</span>: <span class="kw-2">&amp;</span><span class="ident">CreateCaptcha</span>,
-    ) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+        username: <span class="kw-2">&amp;</span>str,
+        p: <span class="kw-2">&amp;</span>CreateCaptcha,
+    ) -&gt; DBResult&lt;()&gt; {
         <span class="macro">sqlx::query!</span>(
             <span class="string">&quot;UPDATE mcaptcha_config SET name = ?, duration = ?
             WHERE user_id = (SELECT ID FROM mcaptcha_users WHERE name = ?)
             AND captcha_key = ?&quot;</span>,
-            <span class="ident">p</span>.<span class="ident">description</span>,
-            <span class="ident">p</span>.<span class="ident">duration</span>,
-            <span class="ident">username</span>,
-            <span class="ident">p</span>.<span class="ident">key</span>,
+            p.description,
+            p.duration,
+            username,
+            p.key,
         )
-        .<span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-        .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">map_row_not_found_err</span>(<span class="ident">e</span>, <span class="ident">DBError::CaptchaNotFound</span>))<span class="question-mark">?</span>;
+        .execute(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+        .<span class="kw">await
+        </span>.map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))<span class="question-mark">?</span>;
 
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="doccomment">/// update captcha key; doesn&#39;t change metadata</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_captcha_key</span>(
+    <span class="doccomment">/// update captcha key; doesn&#39;t change metadata
+    </span><span class="kw">async fn </span>update_captcha_key(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">old_key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">new_key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+        username: <span class="kw-2">&amp;</span>str,
+        old_key: <span class="kw-2">&amp;</span>str,
+        new_key: <span class="kw-2">&amp;</span>str,
+    ) -&gt; DBResult&lt;()&gt; {
         <span class="macro">sqlx::query!</span>(
             <span class="string">&quot;UPDATE mcaptcha_config SET captcha_key = ? 
         WHERE captcha_key = ? AND user_id = (SELECT ID FROM mcaptcha_users WHERE name = ?)&quot;</span>,
-            <span class="ident">new_key</span>,
-            <span class="ident">old_key</span>,
-            <span class="ident">username</span>,
+            new_key,
+            old_key,
+            username,
         )
-        .<span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-        .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">map_row_not_found_err</span>(<span class="ident">e</span>, <span class="ident">DBError::CaptchaNotFound</span>))<span class="question-mark">?</span>;
+        .execute(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+        .<span class="kw">await
+        </span>.map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))<span class="question-mark">?</span>;
 
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="doccomment">/// Add levels to captcha</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">add_captcha_levels</span>(
+    <span class="doccomment">/// Add levels to captcha
+    </span><span class="kw">async fn </span>add_captcha_levels(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">captcha_key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">levels</span>: <span class="kw-2">&amp;</span>[<span class="ident">Level</span>],
-    ) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="kw">use</span> <span class="ident">futures::future::try_join_all</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">futs</span> <span class="op">=</span> <span class="ident">Vec::with_capacity</span>(<span class="ident">levels</span>.<span class="ident">len</span>());
+        username: <span class="kw-2">&amp;</span>str,
+        captcha_key: <span class="kw-2">&amp;</span>str,
+        levels: <span class="kw-2">&amp;</span>[Level],
+    ) -&gt; DBResult&lt;()&gt; {
+        <span class="kw">use </span>futures::future::try_join_all;
+        <span class="kw">let </span><span class="kw-2">mut </span>futs = Vec::with_capacity(levels.len());
 
-        <span class="kw">for</span> <span class="ident">level</span> <span class="kw">in</span> <span class="ident">levels</span>.<span class="ident">iter</span>() {
-            <span class="kw">let</span> <span class="ident">difficulty_factor</span> <span class="op">=</span> <span class="ident">level</span>.<span class="ident">difficulty_factor</span> <span class="kw">as</span> <span class="ident">i32</span>;
-            <span class="kw">let</span> <span class="ident">visitor_threshold</span> <span class="op">=</span> <span class="ident">level</span>.<span class="ident">visitor_threshold</span> <span class="kw">as</span> <span class="ident">i32</span>;
-            <span class="kw">let</span> <span class="ident">fut</span> <span class="op">=</span> <span class="macro">sqlx::query!</span>(
+        <span class="kw">for </span>level <span class="kw">in </span>levels.iter() {
+            <span class="kw">let </span>difficulty_factor = level.difficulty_factor <span class="kw">as </span>i32;
+            <span class="kw">let </span>visitor_threshold = level.visitor_threshold <span class="kw">as </span>i32;
+            <span class="kw">let </span>fut = <span class="macro">sqlx::query!</span>(
                 <span class="string">&quot;INSERT INTO mcaptcha_levels (
             difficulty_factor, 
             visitor_threshold,
@@ -1397,77 +1397,77 @@
                 captcha_key = (?) AND user_id = (
                 SELECT ID FROM mcaptcha_users WHERE name = ?
                     )));&quot;</span>,
-                <span class="ident">difficulty_factor</span>,
-                <span class="ident">visitor_threshold</span>,
-                <span class="kw-2">&amp;</span><span class="ident">captcha_key</span>,
-                <span class="ident">username</span>,
+                difficulty_factor,
+                visitor_threshold,
+                <span class="kw-2">&amp;</span>captcha_key,
+                username,
             )
-            .<span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>);
-            <span class="ident">futs</span>.<span class="ident">push</span>(<span class="ident">fut</span>);
+            .execute(<span class="kw-2">&amp;</span><span class="self">self</span>.pool);
+            futs.push(fut);
         }
 
-        <span class="ident">try_join_all</span>(<span class="ident">futs</span>)
-            .<span class="kw">await</span>
-            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">map_row_not_found_err</span>(<span class="ident">e</span>, <span class="ident">DBError::CaptchaNotFound</span>))<span class="question-mark">?</span>;
+        try_join_all(futs)
+            .<span class="kw">await
+            </span>.map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))<span class="question-mark">?</span>;
 
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="doccomment">/// check if captcha exists</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">captcha_exists</span>(
+    <span class="doccomment">/// check if captcha exists
+    </span><span class="kw">async fn </span>captcha_exists(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">username</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>,
-        <span class="ident">captcha_key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> {
-        <span class="comment">//        let mut exists = false;</span>
+        username: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
+        captcha_key: <span class="kw-2">&amp;</span>str,
+    ) -&gt; DBResult&lt;bool&gt; {
+        <span class="comment">//        let mut exists = false;
 
-        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
-        <span class="kw">struct</span> <span class="ident">ConfigId</span> {
-            <span class="ident">config_id</span>: <span class="ident">i32</span>,
+        </span><span class="attribute">#[allow(dead_code)]
+        </span><span class="kw">struct </span>ConfigId {
+            config_id: i32,
         }
-        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">username</span> {
-            <span class="prelude-val">Some</span>(<span class="ident">username</span>) =&gt; {
+        <span class="kw">let </span>res = <span class="kw">match </span>username {
+            <span class="prelude-val">Some</span>(username) =&gt; {
                 <span class="macro">sqlx::query_as!</span>(
-                    <span class="ident">ConfigId</span>,
+                    ConfigId,
                     <span class="string">&quot;SELECT config_id FROM mcaptcha_config
                         WHERE
                             captcha_key = ? 
                         AND user_id = (SELECT ID FROM mcaptcha_users WHERE name = ?)&quot;</span>,
-                    <span class="ident">captcha_key</span>,
-                    <span class="ident">username</span>
+                    captcha_key,
+                    username
                 )
-                .<span class="ident">fetch_one</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-                .<span class="kw">await</span>
-                <span class="comment">//                if let Some(x) = x.exists {</span>
-                <span class="comment">//                    exists = x;</span>
-                <span class="comment">//                };</span>
-            }
+                .fetch_one(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+                .<span class="kw">await
+                </span><span class="comment">//                if let Some(x) = x.exists {
+                //                    exists = x;
+                //                };
+            </span>}
 
-            <span class="prelude-val">None</span> =&gt; {
+            <span class="prelude-val">None </span>=&gt; {
                 <span class="macro">sqlx::query_as!</span>(
-                    <span class="ident">ConfigId</span>,
+                    ConfigId,
                     <span class="string">&quot;SELECT config_id from mcaptcha_config WHERE captcha_key = ?&quot;</span>,
-                    <span class="kw-2">&amp;</span><span class="ident">captcha_key</span>,
+                    <span class="kw-2">&amp;</span>captcha_key,
                 )
-                .<span class="ident">fetch_one</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-                .<span class="kw">await</span>
-            } <span class="comment">//if let Some(x) = x.exists {</span>
-              <span class="comment">//    exists = x;</span>
-              <span class="comment">//};</span>
-        };
-        <span class="kw">match</span> <span class="ident">res</span> {
+                .fetch_one(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+                .<span class="kw">await
+            </span>} <span class="comment">//if let Some(x) = x.exists {
+              //    exists = x;
+              //};
+        </span>};
+        <span class="kw">match </span>res {
             <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="bool-val">true</span>),
-            <span class="prelude-val">Err</span>(<span class="ident">sqlx::Error::RowNotFound</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="bool-val">false</span>),
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">map_register_err</span>(<span class="ident">e</span>)),
+            <span class="prelude-val">Err</span>(sqlx::Error::RowNotFound) =&gt; <span class="prelude-val">Ok</span>(<span class="bool-val">false</span>),
+            <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(map_register_err(e)),
         }
     }
 
-    <span class="doccomment">/// Delete all levels of a captcha</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_captcha_levels</span>(
+    <span class="doccomment">/// Delete all levels of a captcha
+    </span><span class="kw">async fn </span>delete_captcha_levels(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">captcha_key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+        username: <span class="kw-2">&amp;</span>str,
+        captcha_key: <span class="kw-2">&amp;</span>str,
+    ) -&gt; DBResult&lt;()&gt; {
         <span class="macro">sqlx::query!</span>(
             <span class="string">&quot;DELETE FROM mcaptcha_levels 
         WHERE config_id = (
@@ -1476,106 +1476,106 @@
             SELECT ID from mcaptcha_users WHERE name = ?
             )
             )&quot;</span>,
-            <span class="ident">captcha_key</span>,
-            <span class="ident">username</span>
+            captcha_key,
+            username
         )
-        .<span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-        .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">map_row_not_found_err</span>(<span class="ident">e</span>, <span class="ident">DBError::CaptchaNotFound</span>))<span class="question-mark">?</span>;
+        .execute(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+        .<span class="kw">await
+        </span>.map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))<span class="question-mark">?</span>;
 
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="doccomment">/// Delete captcha</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_captcha</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">captcha_key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="doccomment">/// Delete captcha
+    </span><span class="kw">async fn </span>delete_captcha(<span class="kw-2">&amp;</span><span class="self">self</span>, username: <span class="kw-2">&amp;</span>str, captcha_key: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;()&gt; {
         <span class="macro">sqlx::query!</span>(
             <span class="string">&quot;DELETE FROM mcaptcha_config where captcha_key= (?)
                 AND
             user_id = (SELECT ID FROM mcaptcha_users WHERE name = ?)&quot;</span>,
-            <span class="ident">captcha_key</span>,
-            <span class="ident">username</span>,
+            captcha_key,
+            username,
         )
-        .<span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-        .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">map_row_not_found_err</span>(<span class="ident">e</span>, <span class="ident">DBError::CaptchaNotFound</span>))<span class="question-mark">?</span>;
+        .execute(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+        .<span class="kw">await
+        </span>.map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))<span class="question-mark">?</span>;
 
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="doccomment">/// Get captcha levels</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_captcha_levels</span>(
+    <span class="doccomment">/// Get captcha levels
+    </span><span class="kw">async fn </span>get_captcha_levels(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">username</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>,
-        <span class="ident">captcha_key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Level</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">struct</span> <span class="ident">I32Levels</span> {
-            <span class="ident">difficulty_factor</span>: <span class="ident">i32</span>,
-            <span class="ident">visitor_threshold</span>: <span class="ident">i32</span>,
+        username: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
+        captcha_key: <span class="kw-2">&amp;</span>str,
+    ) -&gt; DBResult&lt;Vec&lt;Level&gt;&gt; {
+        <span class="kw">struct </span>I32Levels {
+            difficulty_factor: i32,
+            visitor_threshold: i32,
         }
-        <span class="kw">let</span> <span class="ident">levels</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">username</span> {
-            <span class="prelude-val">None</span> =&gt; <span class="macro">sqlx::query_as!</span>(
-                <span class="ident">I32Levels</span>,
+        <span class="kw">let </span>levels = <span class="kw">match </span>username {
+            <span class="prelude-val">None </span>=&gt; <span class="macro">sqlx::query_as!</span>(
+                I32Levels,
                 <span class="string">&quot;SELECT difficulty_factor, visitor_threshold FROM mcaptcha_levels  WHERE
             config_id = (
                 SELECT config_id FROM mcaptcha_config where captcha_key= (?)
                 ) ORDER BY difficulty_factor ASC;&quot;</span>,
-                <span class="ident">captcha_key</span>,
+                captcha_key,
             )
-            .<span class="ident">fetch_all</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-            .<span class="kw">await</span>
-            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">map_row_not_found_err</span>(<span class="ident">e</span>, <span class="ident">DBError::CaptchaNotFound</span>))<span class="question-mark">?</span>,
+            .fetch_all(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+            .<span class="kw">await
+            </span>.map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))<span class="question-mark">?</span>,
 
-            <span class="prelude-val">Some</span>(<span class="ident">username</span>) =&gt; <span class="macro">sqlx::query_as!</span>(
-                <span class="ident">I32Levels</span>,
+            <span class="prelude-val">Some</span>(username) =&gt; <span class="macro">sqlx::query_as!</span>(
+                I32Levels,
                 <span class="string">&quot;SELECT difficulty_factor, visitor_threshold FROM mcaptcha_levels  WHERE
             config_id = (
                 SELECT config_id FROM mcaptcha_config where captcha_key= (?)
                 AND user_id = (SELECT ID from mcaptcha_users WHERE name = ?)
                 )
             ORDER BY difficulty_factor ASC;&quot;</span>,
-                <span class="ident">captcha_key</span>,
-                <span class="ident">username</span>
+                captcha_key,
+                username
             )
-            .<span class="ident">fetch_all</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-            .<span class="kw">await</span>
-            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">map_row_not_found_err</span>(<span class="ident">e</span>, <span class="ident">DBError::CaptchaNotFound</span>))<span class="question-mark">?</span>,
+            .fetch_all(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+            .<span class="kw">await
+            </span>.map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))<span class="question-mark">?</span>,
         };
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">new_levels</span> <span class="op">=</span> <span class="ident">Vec::with_capacity</span>(<span class="ident">levels</span>.<span class="ident">len</span>());
-        <span class="kw">for</span> <span class="ident">l</span> <span class="kw">in</span> <span class="ident">levels</span>.<span class="ident">iter</span>() {
-            <span class="ident">new_levels</span>.<span class="ident">push</span>(<span class="ident">Level</span> {
-                <span class="ident">difficulty_factor</span>: <span class="ident">l</span>.<span class="ident">difficulty_factor</span> <span class="kw">as</span> <span class="ident">u32</span>,
-                <span class="ident">visitor_threshold</span>: <span class="ident">l</span>.<span class="ident">visitor_threshold</span> <span class="kw">as</span> <span class="ident">u32</span>,
+        <span class="kw">let </span><span class="kw-2">mut </span>new_levels = Vec::with_capacity(levels.len());
+        <span class="kw">for </span>l <span class="kw">in </span>levels.iter() {
+            new_levels.push(Level {
+                difficulty_factor: l.difficulty_factor <span class="kw">as </span>u32,
+                visitor_threshold: l.visitor_threshold <span class="kw">as </span>u32,
             });
         }
-        <span class="prelude-val">Ok</span>(<span class="ident">new_levels</span>)
+        <span class="prelude-val">Ok</span>(new_levels)
     }
 
-    <span class="doccomment">/// Get captcha&#39;s cooldown period</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_captcha_cooldown</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">captcha_key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span> {
-        <span class="kw">struct</span> <span class="ident">DurationResp</span> {
-            <span class="ident">duration</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// Get captcha&#39;s cooldown period
+    </span><span class="kw">async fn </span>get_captcha_cooldown(<span class="kw-2">&amp;</span><span class="self">self</span>, captcha_key: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;i32&gt; {
+        <span class="kw">struct </span>DurationResp {
+            duration: i32,
         }
 
-        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="macro">sqlx::query_as!</span>(
-            <span class="ident">DurationResp</span>,
+        <span class="kw">let </span>resp = <span class="macro">sqlx::query_as!</span>(
+            DurationResp,
             <span class="string">&quot;SELECT duration FROM mcaptcha_config  
             where captcha_key= ?&quot;</span>,
-            <span class="ident">captcha_key</span>,
+            captcha_key,
         )
-        .<span class="ident">fetch_one</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-        .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">map_row_not_found_err</span>(<span class="ident">e</span>, <span class="ident">DBError::CaptchaNotFound</span>))<span class="question-mark">?</span>;
+        .fetch_one(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+        .<span class="kw">await
+        </span>.map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))<span class="question-mark">?</span>;
 
-        <span class="prelude-val">Ok</span>(<span class="ident">resp</span>.<span class="ident">duration</span>)
+        <span class="prelude-val">Ok</span>(resp.duration)
     }
-    <span class="doccomment">/// Add traffic configuration</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">add_traffic_pattern</span>(
+    <span class="doccomment">/// Add traffic configuration
+    </span><span class="kw">async fn </span>add_traffic_pattern(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">captcha_key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">pattern</span>: <span class="kw-2">&amp;</span><span class="ident">TrafficPattern</span>,
-    ) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+        username: <span class="kw-2">&amp;</span>str,
+        captcha_key: <span class="kw-2">&amp;</span>str,
+        pattern: <span class="kw-2">&amp;</span>TrafficPattern,
+    ) -&gt; DBResult&lt;()&gt; {
         <span class="macro">sqlx::query!</span>(
             <span class="string">&quot;INSERT INTO mcaptcha_sitekey_user_provided_avg_traffic (
             config_id,
@@ -1586,32 +1586,32 @@
              (SELECT config_id FROM mcaptcha_config where captcha_key= (?)
              AND user_id = (SELECT ID FROM mcaptcha_users WHERE name = ?)
             ), ?, ?, ?)&quot;</span>,
-            <span class="comment">//payload.avg_traffic,</span>
-            <span class="ident">captcha_key</span>,
-            <span class="ident">username</span>,
-            <span class="ident">pattern</span>.<span class="ident">avg_traffic</span> <span class="kw">as</span> <span class="ident">i32</span>,
-            <span class="ident">pattern</span>.<span class="ident">peak_sustainable_traffic</span> <span class="kw">as</span> <span class="ident">i32</span>,
-            <span class="ident">pattern</span>.<span class="ident">broke_my_site_traffic</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">v</span> <span class="kw">as</span> <span class="ident">i32</span>),
+            <span class="comment">//payload.avg_traffic,
+            </span>captcha_key,
+            username,
+            pattern.avg_traffic <span class="kw">as </span>i32,
+            pattern.peak_sustainable_traffic <span class="kw">as </span>i32,
+            pattern.broke_my_site_traffic.as_ref().map(|v| <span class="kw-2">*</span>v <span class="kw">as </span>i32),
         )
-        .<span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-        .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">map_row_not_found_err</span>(<span class="ident">e</span>, <span class="ident">DBError::CaptchaNotFound</span>))<span class="question-mark">?</span>;
+        .execute(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+        .<span class="kw">await
+        </span>.map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="doccomment">/// Get traffic configuration</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_traffic_pattern</span>(
+    <span class="doccomment">/// Get traffic configuration
+    </span><span class="kw">async fn </span>get_traffic_pattern(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">captcha_key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident">TrafficPattern</span><span class="op">&gt;</span> {
-        <span class="kw">struct</span> <span class="ident">Traffic</span> {
-            <span class="ident">peak_sustainable_traffic</span>: <span class="ident">i32</span>,
-            <span class="ident">avg_traffic</span>: <span class="ident">i32</span>,
-            <span class="ident">broke_my_site_traffic</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>,
+        username: <span class="kw-2">&amp;</span>str,
+        captcha_key: <span class="kw-2">&amp;</span>str,
+    ) -&gt; DBResult&lt;TrafficPattern&gt; {
+        <span class="kw">struct </span>Traffic {
+            peak_sustainable_traffic: i32,
+            avg_traffic: i32,
+            broke_my_site_traffic: <span class="prelude-ty">Option</span>&lt;i32&gt;,
         }
-        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="macro">sqlx::query_as!</span>(
-            <span class="ident">Traffic</span>,
+        <span class="kw">let </span>res = <span class="macro">sqlx::query_as!</span>(
+            Traffic,
             <span class="string">&quot;SELECT 
           avg_traffic, 
           peak_sustainable_traffic, 
@@ -1636,25 +1636,25 @@
               )
           )
         &quot;</span>,
-            <span class="ident">captcha_key</span>,
-            <span class="ident">username</span>
+            captcha_key,
+            username
         )
-        .<span class="ident">fetch_one</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-        .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">map_row_not_found_err</span>(<span class="ident">e</span>, <span class="ident">DBError::TrafficPatternNotFound</span>))<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(<span class="ident">TrafficPattern</span> {
-            <span class="ident">broke_my_site_traffic</span>: <span class="ident">res</span>.<span class="ident">broke_my_site_traffic</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">v</span> <span class="kw">as</span> <span class="ident">u32</span>),
-            <span class="ident">avg_traffic</span>: <span class="ident">res</span>.<span class="ident">avg_traffic</span> <span class="kw">as</span> <span class="ident">u32</span>,
-            <span class="ident">peak_sustainable_traffic</span>: <span class="ident">res</span>.<span class="ident">peak_sustainable_traffic</span> <span class="kw">as</span> <span class="ident">u32</span>,
+        .fetch_one(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+        .<span class="kw">await
+        </span>.map_err(|e| map_row_not_found_err(e, DBError::TrafficPatternNotFound))<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(TrafficPattern {
+            broke_my_site_traffic: res.broke_my_site_traffic.as_ref().map(|v| <span class="kw-2">*</span>v <span class="kw">as </span>u32),
+            avg_traffic: res.avg_traffic <span class="kw">as </span>u32,
+            peak_sustainable_traffic: res.peak_sustainable_traffic <span class="kw">as </span>u32,
         })
     }
 
-    <span class="doccomment">/// Delete traffic configuration</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_traffic_pattern</span>(
+    <span class="doccomment">/// Delete traffic configuration
+    </span><span class="kw">async fn </span>delete_traffic_pattern(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">captcha_key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+        username: <span class="kw-2">&amp;</span>str,
+        captcha_key: <span class="kw-2">&amp;</span>str,
+    ) -&gt; DBResult&lt;()&gt; {
         <span class="macro">sqlx::query!</span>(
             <span class="string">&quot;DELETE FROM mcaptcha_sitekey_user_provided_avg_traffic
         WHERE config_id = (
@@ -1666,18 +1666,18 @@
             AND 
                 user_id = (SELECT ID FROM mcaptcha_users WHERE name = ?)
             );&quot;</span>,
-            <span class="ident">captcha_key</span>,
-            <span class="ident">username</span>,
+            captcha_key,
+            username,
         )
-        .<span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-        .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">map_row_not_found_err</span>(<span class="ident">e</span>, <span class="ident">DBError::TrafficPatternNotFound</span>))<span class="question-mark">?</span>;
+        .execute(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+        .<span class="kw">await
+        </span>.map_err(|e| map_row_not_found_err(e, DBError::TrafficPatternNotFound))<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="doccomment">/// create new notification</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_notification</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw-2">&amp;</span><span class="ident">AddNotification</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">now</span> <span class="op">=</span> <span class="ident">now_unix_time_stamp</span>();
+    <span class="doccomment">/// create new notification
+    </span><span class="kw">async fn </span>create_notification(<span class="kw-2">&amp;</span><span class="self">self</span>, p: <span class="kw-2">&amp;</span>AddNotification) -&gt; DBResult&lt;()&gt; {
+        <span class="kw">let </span>now = now_unix_time_stamp();
         <span class="macro">sqlx::query!</span>(
             <span class="string">&quot;INSERT INTO mcaptcha_notifications (
               heading, message, tx, rx, received)
@@ -1687,106 +1687,106 @@
                   (SELECT ID FROM mcaptcha_users WHERE name = ?),
                   ?
                       );&quot;</span>,
-            <span class="ident">p</span>.<span class="ident">heading</span>,
-            <span class="ident">p</span>.<span class="ident">message</span>,
-            <span class="ident">p</span>.<span class="ident">from</span>,
-            <span class="ident">p</span>.<span class="ident">to</span>,
-            <span class="ident">now</span>
+            p.heading,
+            p.message,
+            p.from,
+            p.to,
+            now
         )
-        .<span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-        .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="ident">map_register_err</span>)<span class="question-mark">?</span>;
+        .execute(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+        .<span class="kw">await
+        </span>.map_err(map_register_err)<span class="question-mark">?</span>;
 
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="doccomment">/// get all unread notifications</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_all_unread_notifications</span>(
+    <span class="doccomment">/// get all unread notifications
+    </span><span class="kw">async fn </span>get_all_unread_notifications(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Notification</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">inner_notifications</span> <span class="op">=</span> <span class="macro">sqlx::query_file_as!</span>(
-            <span class="ident">InnerNotification</span>,
+        username: <span class="kw-2">&amp;</span>str,
+    ) -&gt; DBResult&lt;Vec&lt;Notification&gt;&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>inner_notifications = <span class="macro">sqlx::query_file_as!</span>(
+            InnerNotification,
             <span class="string">&quot;./src/get_all_unread_notifications.sql&quot;</span>,
-            <span class="kw-2">&amp;</span><span class="ident">username</span>
+            <span class="kw-2">&amp;</span>username
         )
-        .<span class="ident">fetch_all</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-        .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">map_row_not_found_err</span>(<span class="ident">e</span>, <span class="ident">DBError::AccountNotFound</span>))<span class="question-mark">?</span>;
+        .fetch_all(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+        .<span class="kw">await
+        </span>.map_err(|e| map_row_not_found_err(e, DBError::AccountNotFound))<span class="question-mark">?</span>;
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">notifications</span> <span class="op">=</span> <span class="ident">Vec::with_capacity</span>(<span class="ident">inner_notifications</span>.<span class="ident">len</span>());
+        <span class="kw">let </span><span class="kw-2">mut </span>notifications = Vec::with_capacity(inner_notifications.len());
 
-        <span class="ident">inner_notifications</span>
-            .<span class="ident">drain</span>(<span class="number">0</span>..)
-            .<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">n</span><span class="op">|</span> <span class="ident">notifications</span>.<span class="ident">push</span>(<span class="ident">n</span>.<span class="ident">into</span>()));
+        inner_notifications
+            .drain(<span class="number">0</span>..)
+            .for_each(|n| notifications.push(n.into()));
 
-        <span class="prelude-val">Ok</span>(<span class="ident">notifications</span>)
+        <span class="prelude-val">Ok</span>(notifications)
     }
 
-    <span class="doccomment">/// mark a notification read</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">mark_notification_read</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">id</span>: <span class="ident">i32</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="doccomment">/// mark a notification read
+    </span><span class="kw">async fn </span>mark_notification_read(<span class="kw-2">&amp;</span><span class="self">self</span>, username: <span class="kw-2">&amp;</span>str, id: i32) -&gt; DBResult&lt;()&gt; {
         <span class="macro">sqlx::query_file_as!</span>(
-            <span class="ident">Notification</span>,
+            Notification,
             <span class="string">&quot;./src/mark_notification_read.sql&quot;</span>,
-            <span class="ident">id</span>,
-            <span class="kw-2">&amp;</span><span class="ident">username</span>
+            id,
+            <span class="kw-2">&amp;</span>username
         )
-        .<span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-        .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">map_row_not_found_err</span>(<span class="ident">e</span>, <span class="ident">DBError::NotificationNotFound</span>))<span class="question-mark">?</span>;
+        .execute(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+        .<span class="kw">await
+        </span>.map_err(|e| map_row_not_found_err(e, DBError::NotificationNotFound))<span class="question-mark">?</span>;
 
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="doccomment">/// record PoWConfig fetches</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">record_fetch</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">now</span> <span class="op">=</span> <span class="ident">now_unix_time_stamp</span>();
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="macro">sqlx::query!</span>(
+    <span class="doccomment">/// record PoWConfig fetches
+    </span><span class="kw">async fn </span>record_fetch(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;()&gt; {
+        <span class="kw">let </span>now = now_unix_time_stamp();
+        <span class="kw">let _ </span>= <span class="macro">sqlx::query!</span>(
         <span class="string">&quot;INSERT INTO mcaptcha_pow_fetched_stats 
         (config_id, time) VALUES ((SELECT config_id FROM mcaptcha_config where captcha_key= ?), ?)&quot;</span>,
-        <span class="ident">key</span>,
-        <span class="kw-2">&amp;</span><span class="ident">now</span>,
+        key,
+        <span class="kw-2">&amp;</span>now,
     )
-    .<span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-    .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">map_row_not_found_err</span>(<span class="ident">e</span>, <span class="ident">DBError::CaptchaNotFound</span>))<span class="question-mark">?</span>;
+    .execute(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+    .<span class="kw">await
+        </span>.map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="doccomment">/// record PoWConfig solves</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">record_solve</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">now</span> <span class="op">=</span> <span class="ident">OffsetDateTime::now_utc</span>();
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="macro">sqlx::query!</span>(
+    <span class="doccomment">/// record PoWConfig solves
+    </span><span class="kw">async fn </span>record_solve(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;()&gt; {
+        <span class="kw">let </span>now = OffsetDateTime::now_utc();
+        <span class="kw">let _ </span>= <span class="macro">sqlx::query!</span>(
         <span class="string">&quot;INSERT INTO mcaptcha_pow_solved_stats 
         (config_id, time) VALUES ((SELECT config_id FROM mcaptcha_config where captcha_key= ?), ?)&quot;</span>,
-        <span class="ident">key</span>,
-        <span class="kw-2">&amp;</span><span class="ident">now</span>,
+        key,
+        <span class="kw-2">&amp;</span>now,
     )
-    .<span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-    .<span class="kw">await</span>
-    .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">map_row_not_found_err</span>(<span class="ident">e</span>, <span class="ident">DBError::CaptchaNotFound</span>))<span class="question-mark">?</span>;
+    .execute(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+    .<span class="kw">await
+    </span>.map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="doccomment">/// record PoWConfig confirms</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">record_confirm</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">now</span> <span class="op">=</span> <span class="ident">now_unix_time_stamp</span>();
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="macro">sqlx::query!</span>(
+    <span class="doccomment">/// record PoWConfig confirms
+    </span><span class="kw">async fn </span>record_confirm(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;()&gt; {
+        <span class="kw">let </span>now = now_unix_time_stamp();
+        <span class="kw">let _ </span>= <span class="macro">sqlx::query!</span>(
         <span class="string">&quot;INSERT INTO mcaptcha_pow_confirmed_stats 
         (config_id, time) VALUES ((SELECT config_id FROM mcaptcha_config where captcha_key= ?), ?)&quot;</span>,
-        <span class="ident">key</span>,
-        <span class="kw-2">&amp;</span><span class="ident">now</span>
+        key,
+        <span class="kw-2">&amp;</span>now
     )
-    .<span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-    .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">map_row_not_found_err</span>(<span class="ident">e</span>, <span class="ident">DBError::CaptchaNotFound</span>))<span class="question-mark">?</span>;
+    .execute(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+    .<span class="kw">await
+        </span>.map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="doccomment">/// fetch PoWConfig fetches</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">fetch_config_fetched</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">user</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">records</span> <span class="op">=</span> <span class="macro">sqlx::query_as!</span>(
-            <span class="ident">Date</span>,
+    <span class="doccomment">/// fetch PoWConfig fetches
+    </span><span class="kw">async fn </span>fetch_config_fetched(<span class="kw-2">&amp;</span><span class="self">self</span>, user: <span class="kw-2">&amp;</span>str, key: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;Vec&lt;i64&gt;&gt; {
+        <span class="kw">let </span>records = <span class="macro">sqlx::query_as!</span>(
+            Date,
             <span class="string">&quot;SELECT time FROM mcaptcha_pow_fetched_stats
             WHERE 
                 config_id = (
@@ -1799,20 +1799,20 @@
                         SELECT 
                             ID FROM mcaptcha_users WHERE name = ?))
                 ORDER BY time DESC&quot;</span>,
-            <span class="kw-2">&amp;</span><span class="ident">key</span>,
-            <span class="kw-2">&amp;</span><span class="ident">user</span>,
+            <span class="kw-2">&amp;</span>key,
+            <span class="kw-2">&amp;</span>user,
         )
-        .<span class="ident">fetch_all</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-        .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">map_row_not_found_err</span>(<span class="ident">e</span>, <span class="ident">DBError::CaptchaNotFound</span>))<span class="question-mark">?</span>;
+        .fetch_all(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+        .<span class="kw">await
+        </span>.map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))<span class="question-mark">?</span>;
 
-        <span class="prelude-val">Ok</span>(<span class="ident">Date::dates_to_unix</span>(<span class="ident">records</span>))
+        <span class="prelude-val">Ok</span>(Date::dates_to_unix(records))
     }
 
-    <span class="doccomment">/// fetch PoWConfig solves</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">fetch_solve</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">user</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">records</span> <span class="op">=</span> <span class="macro">sqlx::query_as!</span>(
-            <span class="ident">Date</span>,
+    <span class="doccomment">/// fetch PoWConfig solves
+    </span><span class="kw">async fn </span>fetch_solve(<span class="kw-2">&amp;</span><span class="self">self</span>, user: <span class="kw-2">&amp;</span>str, key: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;Vec&lt;i64&gt;&gt; {
+        <span class="kw">let </span>records = <span class="macro">sqlx::query_as!</span>(
+            Date,
             <span class="string">&quot;SELECT time FROM mcaptcha_pow_solved_stats 
             WHERE config_id = (
                 SELECT config_id FROM mcaptcha_config 
@@ -1823,20 +1823,20 @@
                         SELECT 
                             ID FROM mcaptcha_users WHERE name = ?)) 
                 ORDER BY time DESC&quot;</span>,
-            <span class="kw-2">&amp;</span><span class="ident">key</span>,
-            <span class="kw-2">&amp;</span><span class="ident">user</span>
+            <span class="kw-2">&amp;</span>key,
+            <span class="kw-2">&amp;</span>user
         )
-        .<span class="ident">fetch_all</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-        .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">map_row_not_found_err</span>(<span class="ident">e</span>, <span class="ident">DBError::CaptchaNotFound</span>))<span class="question-mark">?</span>;
+        .fetch_all(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+        .<span class="kw">await
+        </span>.map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))<span class="question-mark">?</span>;
 
-        <span class="prelude-val">Ok</span>(<span class="ident">Date::dates_to_unix</span>(<span class="ident">records</span>))
+        <span class="prelude-val">Ok</span>(Date::dates_to_unix(records))
     }
 
-    <span class="doccomment">/// fetch PoWConfig confirms</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">fetch_confirm</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">user</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">records</span> <span class="op">=</span> <span class="macro">sqlx::query_as!</span>(
-            <span class="ident">Date</span>,
+    <span class="doccomment">/// fetch PoWConfig confirms
+    </span><span class="kw">async fn </span>fetch_confirm(<span class="kw-2">&amp;</span><span class="self">self</span>, user: <span class="kw-2">&amp;</span>str, key: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;Vec&lt;i64&gt;&gt; {
+        <span class="kw">let </span>records = <span class="macro">sqlx::query_as!</span>(
+            Date,
             <span class="string">&quot;SELECT time FROM mcaptcha_pow_confirmed_stats 
             WHERE 
                 config_id = (
@@ -1848,79 +1848,79 @@
                         SELECT 
                             ID FROM mcaptcha_users WHERE name = ?))
                 ORDER BY time DESC&quot;</span>,
-            <span class="kw-2">&amp;</span><span class="ident">key</span>,
-            <span class="kw-2">&amp;</span><span class="ident">user</span>
+            <span class="kw-2">&amp;</span>key,
+            <span class="kw-2">&amp;</span>user
         )
-        .<span class="ident">fetch_all</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pool</span>)
-        .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">map_row_not_found_err</span>(<span class="ident">e</span>, <span class="ident">DBError::CaptchaNotFound</span>))<span class="question-mark">?</span>;
+        .fetch_all(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+        .<span class="kw">await
+        </span>.map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))<span class="question-mark">?</span>;
 
-        <span class="prelude-val">Ok</span>(<span class="ident">Date::dates_to_unix</span>(<span class="ident">records</span>))
+        <span class="prelude-val">Ok</span>(Date::dates_to_unix(records))
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
-<span class="kw">struct</span> <span class="ident">Date</span> {
-    <span class="ident">time</span>: <span class="ident">OffsetDateTime</span>,
+<span class="attribute">#[derive(Clone)]
+</span><span class="kw">struct </span>Date {
+    time: OffsetDateTime,
 }
 
-<span class="kw">impl</span> <span class="ident">Date</span> {
-    <span class="kw">fn</span> <span class="ident">dates_to_unix</span>(<span class="kw-2">mut</span> <span class="ident">d</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dates</span> <span class="op">=</span> <span class="ident">Vec::with_capacity</span>(<span class="ident">d</span>.<span class="ident">len</span>());
-        <span class="ident">d</span>.<span class="ident">drain</span>(<span class="number">0</span>..)
-            .<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">dates</span>.<span class="ident">push</span>(<span class="ident">x</span>.<span class="ident">time</span>.<span class="ident">unix_timestamp</span>()));
-        <span class="ident">dates</span>
+<span class="kw">impl </span>Date {
+    <span class="kw">fn </span>dates_to_unix(<span class="kw-2">mut </span>d: Vec&lt;<span class="self">Self</span>&gt;) -&gt; Vec&lt;i64&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>dates = Vec::with_capacity(d.len());
+        d.drain(<span class="number">0</span>..)
+            .for_each(|x| dates.push(x.time.unix_timestamp()));
+        dates
     }
 }
 
-<span class="kw">fn</span> <span class="ident">now_unix_time_stamp</span>() -&gt; <span class="ident">OffsetDateTime</span> {
-    <span class="ident">OffsetDateTime::now_utc</span>()
+<span class="kw">fn </span>now_unix_time_stamp() -&gt; OffsetDateTime {
+    OffsetDateTime::now_utc()
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
-<span class="doccomment">/// Represents notification</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">InnerNotification</span> {
-    <span class="doccomment">/// receiver name  of the notification</span>
-    <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// heading of the notification</span>
-    <span class="kw">pub</span> <span class="ident">heading</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// message of the notification</span>
-    <span class="kw">pub</span> <span class="ident">message</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// when notification was received</span>
-    <span class="kw">pub</span> <span class="ident">received</span>: <span class="ident">OffsetDateTime</span>,
-    <span class="doccomment">/// db assigned ID of the notification</span>
-    <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">i32</span>,
+<span class="attribute">#[derive(Debug, Clone, PartialEq)]
+</span><span class="doccomment">/// Represents notification
+</span><span class="kw">pub struct </span>InnerNotification {
+    <span class="doccomment">/// receiver name  of the notification
+    </span><span class="kw">pub </span>name: String,
+    <span class="doccomment">/// heading of the notification
+    </span><span class="kw">pub </span>heading: String,
+    <span class="doccomment">/// message of the notification
+    </span><span class="kw">pub </span>message: String,
+    <span class="doccomment">/// when notification was received
+    </span><span class="kw">pub </span>received: OffsetDateTime,
+    <span class="doccomment">/// db assigned ID of the notification
+    </span><span class="kw">pub </span>id: i32,
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">InnerNotification</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Notification</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">n</span>: <span class="ident">InnerNotification</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident">Notification</span> {
-            <span class="ident">name</span>: <span class="prelude-val">Some</span>(<span class="ident">n</span>.<span class="ident">name</span>),
-            <span class="ident">heading</span>: <span class="prelude-val">Some</span>(<span class="ident">n</span>.<span class="ident">heading</span>),
-            <span class="ident">message</span>: <span class="prelude-val">Some</span>(<span class="ident">n</span>.<span class="ident">message</span>),
-            <span class="ident">received</span>: <span class="prelude-val">Some</span>(<span class="ident">n</span>.<span class="ident">received</span>.<span class="ident">unix_timestamp</span>()),
-            <span class="ident">id</span>: <span class="prelude-val">Some</span>(<span class="ident">n</span>.<span class="ident">id</span>),
+<span class="kw">impl </span>From&lt;InnerNotification&gt; <span class="kw">for </span>Notification {
+    <span class="kw">fn </span>from(n: InnerNotification) -&gt; <span class="self">Self </span>{
+        Notification {
+            name: <span class="prelude-val">Some</span>(n.name),
+            heading: <span class="prelude-val">Some</span>(n.heading),
+            message: <span class="prelude-val">Some</span>(n.message),
+            received: <span class="prelude-val">Some</span>(n.received.unix_timestamp()),
+            id: <span class="prelude-val">Some</span>(n.id),
         }
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
-<span class="kw">struct</span> <span class="ident">InternaleCaptchaConfig</span> {
-    <span class="ident">config_id</span>: <span class="ident">i32</span>,
-    <span class="ident">duration</span>: <span class="ident">i32</span>,
-    <span class="ident">name</span>: <span class="ident">String</span>,
-    <span class="ident">captcha_key</span>: <span class="ident">String</span>,
+<span class="attribute">#[derive(Clone)]
+</span><span class="kw">struct </span>InternaleCaptchaConfig {
+    config_id: i32,
+    duration: i32,
+    name: String,
+    captcha_key: String,
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">InternaleCaptchaConfig</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Captcha</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">i</span>: <span class="ident">InternaleCaptchaConfig</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">config_id</span>: <span class="ident">i</span>.<span class="ident">config_id</span>,
-            <span class="ident">duration</span>: <span class="ident">i</span>.<span class="ident">duration</span>,
-            <span class="ident">description</span>: <span class="ident">i</span>.<span class="ident">name</span>,
-            <span class="ident">key</span>: <span class="ident">i</span>.<span class="ident">captcha_key</span>,
+<span class="kw">impl </span>From&lt;InternaleCaptchaConfig&gt; <span class="kw">for </span>Captcha {
+    <span class="kw">fn </span>from(i: InternaleCaptchaConfig) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            config_id: i.config_id,
+            duration: i.duration,
+            description: i.name,
+            key: i.captcha_key,
         }
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="db_sqlx_maria" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="db_sqlx_maria" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

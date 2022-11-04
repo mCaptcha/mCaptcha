@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/api/v1/notifications/mark_read.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mark_read.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../../mcaptcha/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/api/v1/notifications/mark_read.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mark_read.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../../mcaptcha/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -165,142 +165,142 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
- */</span>
+ */
 
-<span class="kw">use</span> <span class="ident">actix_identity::Identity</span>;
-<span class="kw">use</span> <span class="ident">actix_web</span>::{<span class="ident">web</span>, <span class="ident">HttpResponse</span>, <span class="ident">Responder</span>};
-<span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
+</span><span class="kw">use </span>actix_identity::Identity;
+<span class="kw">use </span>actix_web::{web, HttpResponse, Responder};
+<span class="kw">use </span>serde::{Deserialize, Serialize};
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::errors</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::AppData</span>;
+<span class="kw">use </span><span class="kw">crate</span>::errors::<span class="kw-2">*</span>;
+<span class="kw">use </span><span class="kw">crate</span>::AppData;
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MarkReadReq</span> {
-    <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">i32</span>,
+<span class="attribute">#[derive(Deserialize, Serialize)]
+</span><span class="kw">pub struct </span>MarkReadReq {
+    <span class="kw">pub </span>id: i32,
 }
 
-<span class="doccomment">/// route handler that marks a notification read</span>
-<span class="attribute">#[<span class="ident">my_codegen::post</span>(
-    <span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;crate::V1_API_ROUTES.notifications.mark_read&quot;</span>,
-    <span class="ident">wrap</span> <span class="op">=</span> <span class="string">&quot;crate::api::v1::get_middleware()&quot;</span>
-)]</span>
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">mark_read</span>(
-    <span class="ident">data</span>: <span class="ident">AppData</span>,
-    <span class="ident">payload</span>: <span class="ident">web::Json</span><span class="op">&lt;</span><span class="ident">MarkReadReq</span><span class="op">&gt;</span>,
-    <span class="ident">id</span>: <span class="ident">Identity</span>,
-) -&gt; <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">receiver</span> <span class="op">=</span> <span class="ident">id</span>.<span class="ident">identity</span>().<span class="ident">unwrap</span>();
-    <span class="comment">// TODO handle error where payload.to doesn&#39;t exist</span>
+<span class="doccomment">/// route handler that marks a notification read
+</span><span class="attribute">#[my_codegen::post(
+    path = <span class="string">&quot;crate::V1_API_ROUTES.notifications.mark_read&quot;</span>,
+    wrap = <span class="string">&quot;crate::api::v1::get_middleware()&quot;
+</span>)]
+</span><span class="kw">pub async fn </span>mark_read(
+    data: AppData,
+    payload: web::Json&lt;MarkReadReq&gt;,
+    id: Identity,
+) -&gt; ServiceResult&lt;<span class="kw">impl </span>Responder&gt; {
+    <span class="kw">let </span>receiver = id.identity().unwrap();
+    <span class="comment">// TODO handle error where payload.to doesn&#39;t exist
 
-    <span class="comment">// TODO get payload from path /api/v1/notifications/{id}/read&quot;</span>
-    <span class="ident">data</span>.<span class="ident">db</span>
-        .<span class="ident">mark_notification_read</span>(<span class="kw-2">&amp;</span><span class="ident">receiver</span>, <span class="ident">payload</span>.<span class="ident">id</span>)
+    // TODO get payload from path /api/v1/notifications/{id}/read&quot;
+    </span>data.db
+        .mark_notification_read(<span class="kw-2">&amp;</span>receiver, payload.id)
         .<span class="kw">await</span><span class="question-mark">?</span>;
 
-    <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse::Ok</span>())
+    <span class="prelude-val">Ok</span>(HttpResponse::Ok())
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="ident">actix_web::http::StatusCode</span>;
-    <span class="kw">use</span> <span class="ident">actix_web::test</span>;
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">pub mod </span>tests {
+    <span class="kw">use </span>actix_web::http::StatusCode;
+    <span class="kw">use </span>actix_web::test;
 
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::api::v1::notifications::add::AddNotificationRequest</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::api::v1::notifications::get::NotificationResp</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::tests</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="kw-2">*</span>;
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
+    <span class="kw">use </span><span class="kw">crate</span>::api::v1::notifications::add::AddNotificationRequest;
+    <span class="kw">use </span><span class="kw">crate</span>::api::v1::notifications::get::NotificationResp;
+    <span class="kw">use </span><span class="kw">crate</span>::tests::<span class="kw-2">*</span>;
+    <span class="kw">use crate</span>::<span class="kw-2">*</span>;
 
-    <span class="attribute">#[<span class="ident">actix_rt::test</span>]</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">notification_mark_read_works_pg</span>() {
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">pg::get_data</span>().<span class="kw">await</span>;
-        <span class="ident">notification_mark_read_works</span>(<span class="ident">data</span>).<span class="kw">await</span>;
+    <span class="attribute">#[actix_rt::test]
+    </span><span class="kw">async fn </span>notification_mark_read_works_pg() {
+        <span class="kw">let </span>data = pg::get_data().<span class="kw">await</span>;
+        notification_mark_read_works(data).<span class="kw">await</span>;
     }
 
-    <span class="attribute">#[<span class="ident">actix_rt::test</span>]</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">notification_mark_read_works_maria</span>() {
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">maria::get_data</span>().<span class="kw">await</span>;
-        <span class="ident">notification_mark_read_works</span>(<span class="ident">data</span>).<span class="kw">await</span>;
+    <span class="attribute">#[actix_rt::test]
+    </span><span class="kw">async fn </span>notification_mark_read_works_maria() {
+        <span class="kw">let </span>data = maria::get_data().<span class="kw">await</span>;
+        notification_mark_read_works(data).<span class="kw">await</span>;
     }
 
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">notification_mark_read_works</span>(<span class="ident">data</span>: <span class="ident">ArcData</span>) {
-        <span class="kw">const</span> <span class="ident">NAME1</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;notifuser122&quot;</span>;
-        <span class="kw">const</span> <span class="ident">NAME2</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;notiuser222&quot;</span>;
-        <span class="kw">const</span> <span class="ident">PASSWORD</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;longpassworddomain&quot;</span>;
-        <span class="kw">const</span> <span class="ident">EMAIL1</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;testnotification122@a.com&quot;</span>;
-        <span class="kw">const</span> <span class="ident">EMAIL2</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;testnotification222@a.com&quot;</span>;
-        <span class="kw">const</span> <span class="ident">HEADING</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;testing notifications get&quot;</span>;
-        <span class="kw">const</span> <span class="ident">MESSAGE</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;testing notifications get message&quot;</span>;
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">data</span>;
+    <span class="kw">pub async fn </span>notification_mark_read_works(data: ArcData) {
+        <span class="kw">const </span>NAME1: <span class="kw-2">&amp;</span>str = <span class="string">&quot;notifuser122&quot;</span>;
+        <span class="kw">const </span>NAME2: <span class="kw-2">&amp;</span>str = <span class="string">&quot;notiuser222&quot;</span>;
+        <span class="kw">const </span>PASSWORD: <span class="kw-2">&amp;</span>str = <span class="string">&quot;longpassworddomain&quot;</span>;
+        <span class="kw">const </span>EMAIL1: <span class="kw-2">&amp;</span>str = <span class="string">&quot;testnotification122@a.com&quot;</span>;
+        <span class="kw">const </span>EMAIL2: <span class="kw-2">&amp;</span>str = <span class="string">&quot;testnotification222@a.com&quot;</span>;
+        <span class="kw">const </span>HEADING: <span class="kw-2">&amp;</span>str = <span class="string">&quot;testing notifications get&quot;</span>;
+        <span class="kw">const </span>MESSAGE: <span class="kw-2">&amp;</span>str = <span class="string">&quot;testing notifications get message&quot;</span>;
+        <span class="kw">let </span>data = <span class="kw-2">&amp;</span>data;
 
-        <span class="ident">delete_user</span>(<span class="ident">data</span>, <span class="ident">NAME1</span>).<span class="kw">await</span>;
-        <span class="ident">delete_user</span>(<span class="ident">data</span>, <span class="ident">NAME2</span>).<span class="kw">await</span>;
+        delete_user(data, NAME1).<span class="kw">await</span>;
+        delete_user(data, NAME2).<span class="kw">await</span>;
 
-        <span class="ident">register_and_signin</span>(<span class="ident">data</span>, <span class="ident">NAME1</span>, <span class="ident">EMAIL1</span>, <span class="ident">PASSWORD</span>).<span class="kw">await</span>;
-        <span class="ident">register_and_signin</span>(<span class="ident">data</span>, <span class="ident">NAME2</span>, <span class="ident">EMAIL2</span>, <span class="ident">PASSWORD</span>).<span class="kw">await</span>;
-        <span class="kw">let</span> (<span class="ident">_creds</span>, <span class="ident">signin_resp</span>) <span class="op">=</span> <span class="ident">signin</span>(<span class="ident">data</span>, <span class="ident">NAME1</span>, <span class="ident">PASSWORD</span>).<span class="kw">await</span>;
-        <span class="kw">let</span> (<span class="ident">_creds2</span>, <span class="ident">signin_resp2</span>) <span class="op">=</span> <span class="ident">signin</span>(<span class="ident">data</span>, <span class="ident">NAME2</span>, <span class="ident">PASSWORD</span>).<span class="kw">await</span>;
-        <span class="kw">let</span> <span class="ident">cookies</span> <span class="op">=</span> <span class="macro">get_cookie!</span>(<span class="ident">signin_resp</span>);
-        <span class="kw">let</span> <span class="ident">cookies2</span> <span class="op">=</span> <span class="macro">get_cookie!</span>(<span class="ident">signin_resp2</span>);
-        <span class="kw">let</span> <span class="ident">app</span> <span class="op">=</span> <span class="macro">get_app!</span>(<span class="ident">data</span>).<span class="kw">await</span>;
+        register_and_signin(data, NAME1, EMAIL1, PASSWORD).<span class="kw">await</span>;
+        register_and_signin(data, NAME2, EMAIL2, PASSWORD).<span class="kw">await</span>;
+        <span class="kw">let </span>(_creds, signin_resp) = signin(data, NAME1, PASSWORD).<span class="kw">await</span>;
+        <span class="kw">let </span>(_creds2, signin_resp2) = signin(data, NAME2, PASSWORD).<span class="kw">await</span>;
+        <span class="kw">let </span>cookies = <span class="macro">get_cookie!</span>(signin_resp);
+        <span class="kw">let </span>cookies2 = <span class="macro">get_cookie!</span>(signin_resp2);
+        <span class="kw">let </span>app = <span class="macro">get_app!</span>(data).<span class="kw">await</span>;
 
-        <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="ident">AddNotificationRequest</span> {
-            <span class="ident">to</span>: <span class="ident">NAME2</span>.<span class="ident">into</span>(),
-            <span class="ident">heading</span>: <span class="ident">HEADING</span>.<span class="ident">into</span>(),
-            <span class="ident">message</span>: <span class="ident">MESSAGE</span>.<span class="ident">into</span>(),
+        <span class="kw">let </span>msg = AddNotificationRequest {
+            to: NAME2.into(),
+            heading: HEADING.into(),
+            message: MESSAGE.into(),
         };
 
-        <span class="kw">let</span> <span class="ident">send_notification_resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="ident">app</span>,
-            <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span><span class="ident">msg</span>, <span class="ident">V1_API_ROUTES</span>.<span class="ident">notifications</span>.<span class="ident">add</span>)
-                .<span class="ident">cookie</span>(<span class="ident">cookies</span>.<span class="ident">clone</span>())
-                .<span class="ident">to_request</span>(),
+        <span class="kw">let </span>send_notification_resp = test::call_service(
+            <span class="kw-2">&amp;</span>app,
+            <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span>msg, V1_API_ROUTES.notifications.add)
+                .cookie(cookies.clone())
+                .to_request(),
         )
         .<span class="kw">await</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">send_notification_resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::OK</span>);
+        <span class="macro">assert_eq!</span>(send_notification_resp.status(), StatusCode::OK);
 
-        <span class="kw">let</span> <span class="ident">get_notifications_resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="ident">app</span>,
-            <span class="ident">test::TestRequest::get</span>()
-                .<span class="ident">uri</span>(<span class="ident">V1_API_ROUTES</span>.<span class="ident">notifications</span>.<span class="ident">get</span>)
-                .<span class="ident">cookie</span>(<span class="ident">cookies2</span>.<span class="ident">clone</span>())
-                .<span class="ident">to_request</span>(),
+        <span class="kw">let </span>get_notifications_resp = test::call_service(
+            <span class="kw-2">&amp;</span>app,
+            test::TestRequest::get()
+                .uri(V1_API_ROUTES.notifications.get)
+                .cookie(cookies2.clone())
+                .to_request(),
         )
         .<span class="kw">await</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">get_notifications_resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::OK</span>);
+        <span class="macro">assert_eq!</span>(get_notifications_resp.status(), StatusCode::OK);
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">notifications</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">NotificationResp</span><span class="op">&gt;</span> <span class="op">=</span>
-            <span class="ident">test::read_body_json</span>(<span class="ident">get_notifications_resp</span>).<span class="kw">await</span>;
-        <span class="kw">let</span> <span class="ident">notification</span> <span class="op">=</span> <span class="ident">notifications</span>.<span class="ident">pop</span>().<span class="ident">unwrap</span>();
-        <span class="macro">assert_eq!</span>(<span class="ident">notification</span>.<span class="ident">name</span>, <span class="ident">NAME1</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">notification</span>.<span class="ident">message</span>, <span class="ident">MESSAGE</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">notification</span>.<span class="ident">heading</span>, <span class="ident">HEADING</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>notifications: Vec&lt;NotificationResp&gt; =
+            test::read_body_json(get_notifications_resp).<span class="kw">await</span>;
+        <span class="kw">let </span>notification = notifications.pop().unwrap();
+        <span class="macro">assert_eq!</span>(notification.name, NAME1);
+        <span class="macro">assert_eq!</span>(notification.message, MESSAGE);
+        <span class="macro">assert_eq!</span>(notification.heading, HEADING);
 
-        <span class="kw">let</span> <span class="ident">mark_read_payload</span> <span class="op">=</span> <span class="ident">MarkReadReq</span> {
-            <span class="ident">id</span>: <span class="ident">notification</span>.<span class="ident">id</span>,
+        <span class="kw">let </span>mark_read_payload = MarkReadReq {
+            id: notification.id,
         };
-        <span class="kw">let</span> <span class="ident">mark_read_resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="ident">app</span>,
-            <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span><span class="ident">mark_read_payload</span>, <span class="ident">V1_API_ROUTES</span>.<span class="ident">notifications</span>.<span class="ident">mark_read</span>)
-                .<span class="ident">cookie</span>(<span class="ident">cookies2</span>.<span class="ident">clone</span>())
-                .<span class="ident">to_request</span>(),
+        <span class="kw">let </span>mark_read_resp = test::call_service(
+            <span class="kw-2">&amp;</span>app,
+            <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span>mark_read_payload, V1_API_ROUTES.notifications.mark_read)
+                .cookie(cookies2.clone())
+                .to_request(),
         )
         .<span class="kw">await</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">mark_read_resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::OK</span>);
+        <span class="macro">assert_eq!</span>(mark_read_resp.status(), StatusCode::OK);
 
-        <span class="kw">let</span> <span class="ident">get_notifications_resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="ident">app</span>,
-            <span class="ident">test::TestRequest::get</span>()
-                .<span class="ident">uri</span>(<span class="ident">V1_API_ROUTES</span>.<span class="ident">notifications</span>.<span class="ident">get</span>)
-                .<span class="ident">cookie</span>(<span class="ident">cookies2</span>.<span class="ident">clone</span>())
-                .<span class="ident">to_request</span>(),
+        <span class="kw">let </span>get_notifications_resp = test::call_service(
+            <span class="kw-2">&amp;</span>app,
+            test::TestRequest::get()
+                .uri(V1_API_ROUTES.notifications.get)
+                .cookie(cookies2.clone())
+                .to_request(),
         )
         .<span class="kw">await</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">get_notifications_resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::OK</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">notifications</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">NotificationResp</span><span class="op">&gt;</span> <span class="op">=</span>
-            <span class="ident">test::read_body_json</span>(<span class="ident">get_notifications_resp</span>).<span class="kw">await</span>;
-        <span class="macro">assert!</span>(<span class="ident">notifications</span>.<span class="ident">pop</span>().<span class="ident">is_none</span>());
+        <span class="macro">assert_eq!</span>(get_notifications_resp.status(), StatusCode::OK);
+        <span class="kw">let </span><span class="kw-2">mut </span>notifications: Vec&lt;NotificationResp&gt; =
+            test::read_body_json(get_notifications_resp).<span class="kw">await</span>;
+        <span class="macro">assert!</span>(notifications.pop().is_none());
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="mcaptcha" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="mcaptcha" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/settings.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>settings.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../mcaptcha/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/settings.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>settings.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../mcaptcha/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -279,256 +279,256 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
- */</span>
-<span class="kw">use</span> <span class="ident">std::path::Path</span>;
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">env</span>, <span class="ident">fs</span>};
+ */
+</span><span class="kw">use </span>std::path::Path;
+<span class="kw">use </span>std::{env, fs};
 
-<span class="kw">use</span> <span class="ident">config</span>::{<span class="ident">Config</span>, <span class="ident">ConfigError</span>, <span class="ident">Environment</span>, <span class="ident">File</span>};
-<span class="kw">use</span> <span class="ident">derive_more::Display</span>;
-<span class="kw">use</span> <span class="ident">log</span>::{<span class="ident">debug</span>, <span class="ident">warn</span>};
-<span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
-<span class="kw">use</span> <span class="ident">url::Url</span>;
+<span class="kw">use </span>config::{Config, ConfigError, Environment, File};
+<span class="kw">use </span>derive_more::Display;
+<span class="kw">use </span>log::{debug, warn};
+<span class="kw">use </span>serde::{Deserialize, Serialize};
+<span class="kw">use </span>url::Url;
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Server</span> {
-    <span class="kw">pub</span> <span class="ident">port</span>: <span class="ident">u32</span>,
-    <span class="kw">pub</span> <span class="ident">domain</span>: <span class="ident">String</span>,
-    <span class="kw">pub</span> <span class="ident">cookie_secret</span>: <span class="ident">String</span>,
-    <span class="kw">pub</span> <span class="ident">ip</span>: <span class="ident">String</span>,
-    <span class="kw">pub</span> <span class="ident">url_prefix</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-    <span class="kw">pub</span> <span class="ident">proxy_has_tls</span>: <span class="ident">bool</span>,
+<span class="attribute">#[derive(Debug, Clone, Deserialize)]
+</span><span class="kw">pub struct </span>Server {
+    <span class="kw">pub </span>port: u32,
+    <span class="kw">pub </span>domain: String,
+    <span class="kw">pub </span>cookie_secret: String,
+    <span class="kw">pub </span>ip: String,
+    <span class="kw">pub </span>url_prefix: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    <span class="kw">pub </span>proxy_has_tls: bool,
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Captcha</span> {
-    <span class="kw">pub</span> <span class="ident">salt</span>: <span class="ident">String</span>,
-    <span class="kw">pub</span> <span class="ident">gc</span>: <span class="ident">u64</span>,
-    <span class="kw">pub</span> <span class="ident">runners</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
-    <span class="kw">pub</span> <span class="ident">queue_length</span>: <span class="ident">usize</span>,
-    <span class="kw">pub</span> <span class="ident">enable_stats</span>: <span class="ident">bool</span>,
-    <span class="kw">pub</span> <span class="ident">default_difficulty_strategy</span>: <span class="ident">DefaultDifficultyStrategy</span>,
+<span class="attribute">#[derive(Debug, Clone, Deserialize)]
+</span><span class="kw">pub struct </span>Captcha {
+    <span class="kw">pub </span>salt: String,
+    <span class="kw">pub </span>gc: u64,
+    <span class="kw">pub </span>runners: <span class="prelude-ty">Option</span>&lt;usize&gt;,
+    <span class="kw">pub </span>queue_length: usize,
+    <span class="kw">pub </span>enable_stats: bool,
+    <span class="kw">pub </span>default_difficulty_strategy: DefaultDifficultyStrategy,
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DefaultDifficultyStrategy</span> {
-    <span class="kw">pub</span> <span class="ident">avg_traffic_difficulty</span>: <span class="ident">u32</span>,
-    <span class="kw">pub</span> <span class="ident">broke_my_site_traffic_difficulty</span>: <span class="ident">u32</span>,
-    <span class="kw">pub</span> <span class="ident">peak_sustainable_traffic_difficulty</span>: <span class="ident">u32</span>,
-    <span class="kw">pub</span> <span class="ident">duration</span>: <span class="ident">u32</span>,
+<span class="attribute">#[derive(Debug, Clone, Deserialize)]
+</span><span class="kw">pub struct </span>DefaultDifficultyStrategy {
+    <span class="kw">pub </span>avg_traffic_difficulty: u32,
+    <span class="kw">pub </span>broke_my_site_traffic_difficulty: u32,
+    <span class="kw">pub </span>peak_sustainable_traffic_difficulty: u32,
+    <span class="kw">pub </span>duration: u32,
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Smtp</span> {
-    <span class="kw">pub</span> <span class="ident">from</span>: <span class="ident">String</span>,
-    <span class="kw">pub</span> <span class="ident">reply</span>: <span class="ident">String</span>,
-    <span class="kw">pub</span> <span class="ident">url</span>: <span class="ident">String</span>,
-    <span class="kw">pub</span> <span class="ident">username</span>: <span class="ident">String</span>,
-    <span class="kw">pub</span> <span class="ident">password</span>: <span class="ident">String</span>,
-    <span class="kw">pub</span> <span class="ident">port</span>: <span class="ident">u16</span>,
+<span class="attribute">#[derive(Debug, Clone, Deserialize)]
+</span><span class="kw">pub struct </span>Smtp {
+    <span class="kw">pub </span>from: String,
+    <span class="kw">pub </span>reply: String,
+    <span class="kw">pub </span>url: String,
+    <span class="kw">pub </span>username: String,
+    <span class="kw">pub </span>password: String,
+    <span class="kw">pub </span>port: u16,
 }
 
-<span class="kw">impl</span> <span class="ident">Server</span> {
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_ip</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">String</span> {
-        <span class="macro">format!</span>(<span class="string">&quot;{}:{}&quot;</span>, <span class="self">self</span>.<span class="ident">ip</span>, <span class="self">self</span>.<span class="ident">port</span>)
+<span class="kw">impl </span>Server {
+    <span class="attribute">#[cfg(not(tarpaulin_include))]
+    </span><span class="kw">pub fn </span>get_ip(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
+        <span class="macro">format!</span>(<span class="string">&quot;{}:{}&quot;</span>, <span class="self">self</span>.ip, <span class="self">self</span>.port)
     }
 }
 
-<span class="comment">//#[derive(Debug, Clone, Deserialize)]</span>
-<span class="comment">//struct DatabaseBuilder {</span>
-<span class="comment">//    pub port: u32,</span>
-<span class="comment">//    pub hostname: String,</span>
-<span class="comment">//    pub username: String,</span>
-<span class="comment">//    pub password: String,</span>
-<span class="comment">//    pub name: String,</span>
-<span class="comment">//}</span>
+<span class="comment">//#[derive(Debug, Clone, Deserialize)]
+//struct DatabaseBuilder {
+//    pub port: u32,
+//    pub hostname: String,
+//    pub username: String,
+//    pub password: String,
+//    pub name: String,
+//}
 
-<span class="comment">//impl DatabaseBuilder {</span>
-<span class="comment">//    #[cfg(not(tarpaulin_include))]</span>
-<span class="comment">//    fn extract_database_url(url: &amp;Url) -&gt; Self {</span>
-<span class="comment">//        debug!(&quot;Database name: {}&quot;, url.path());</span>
-<span class="comment">//        let mut path = url.path().split(&#39;/&#39;);</span>
-<span class="comment">//        path.next();</span>
-<span class="comment">//        let name = path.next().expect(&quot;no database name&quot;).to_string();</span>
-<span class="comment">//        DatabaseBuilder {</span>
-<span class="comment">//            port: url.port().expect(&quot;Enter database port&quot;).into(),</span>
-<span class="comment">//            hostname: url.host().expect(&quot;Enter database host&quot;).to_string(),</span>
-<span class="comment">//            username: url.username().into(),</span>
-<span class="comment">//            password: url.password().expect(&quot;Enter database password&quot;).into(),</span>
-<span class="comment">//            name,</span>
-<span class="comment">//        }</span>
-<span class="comment">//    }</span>
-<span class="comment">//}</span>
+//impl DatabaseBuilder {
+//    #[cfg(not(tarpaulin_include))]
+//    fn extract_database_url(url: &amp;Url) -&gt; Self {
+//        debug!(&quot;Database name: {}&quot;, url.path());
+//        let mut path = url.path().split(&#39;/&#39;);
+//        path.next();
+//        let name = path.next().expect(&quot;no database name&quot;).to_string();
+//        DatabaseBuilder {
+//            port: url.port().expect(&quot;Enter database port&quot;).into(),
+//            hostname: url.host().expect(&quot;Enter database host&quot;).to_string(),
+//            username: url.username().into(),
+//            password: url.password().expect(&quot;Enter database password&quot;).into(),
+//            name,
+//        }
+//    }
+//}
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Display</span>, <span class="ident">PartialEq</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename_all</span> <span class="op">=</span> <span class="string">&quot;lowercase&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">DBType</span> {
-    <span class="attribute">#[<span class="ident">display</span>(<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;postgres&quot;</span>)]</span>
-    <span class="ident">Postgres</span>,
-    <span class="attribute">#[<span class="ident">display</span>(<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;maria&quot;</span>)]</span>
-    <span class="ident">Maria</span>,
+</span><span class="attribute">#[derive(Deserialize, Serialize, Display, PartialEq, Clone, Debug)]
+#[serde(rename_all = <span class="string">&quot;lowercase&quot;</span>)]
+</span><span class="kw">pub enum </span>DBType {
+    <span class="attribute">#[display(fmt = <span class="string">&quot;postgres&quot;</span>)]
+    </span>Postgres,
+    <span class="attribute">#[display(fmt = <span class="string">&quot;maria&quot;</span>)]
+    </span>Maria,
 }
 
-<span class="kw">impl</span> <span class="ident">DBType</span> {
-    <span class="kw">fn</span> <span class="ident">from_url</span>(<span class="ident">url</span>: <span class="kw-2">&amp;</span><span class="ident">Url</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">ConfigError</span><span class="op">&gt;</span> {
-        <span class="kw">match</span> <span class="ident">url</span>.<span class="ident">scheme</span>() {
-            <span class="string">&quot;mysql&quot;</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::Maria</span>),
-            <span class="string">&quot;postgres&quot;</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::Postgres</span>),
-            <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">ConfigError::Message</span>(<span class="string">&quot;Unknown database type&quot;</span>.<span class="ident">into</span>())),
+<span class="kw">impl </span>DBType {
+    <span class="kw">fn </span>from_url(url: <span class="kw-2">&amp;</span>Url) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, ConfigError&gt; {
+        <span class="kw">match </span>url.scheme() {
+            <span class="string">&quot;mysql&quot; </span>=&gt; <span class="prelude-val">Ok</span>(<span class="self">Self</span>::Maria),
+            <span class="string">&quot;postgres&quot; </span>=&gt; <span class="prelude-val">Ok</span>(<span class="self">Self</span>::Postgres),
+            <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(ConfigError::Message(<span class="string">&quot;Unknown database type&quot;</span>.into())),
         }
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Database</span> {
-    <span class="kw">pub</span> <span class="ident">url</span>: <span class="ident">String</span>,
-    <span class="kw">pub</span> <span class="ident">pool</span>: <span class="ident">u32</span>,
-    <span class="kw">pub</span> <span class="ident">database_type</span>: <span class="ident">DBType</span>,
+<span class="attribute">#[derive(Debug, Clone, Deserialize)]
+</span><span class="kw">pub struct </span>Database {
+    <span class="kw">pub </span>url: String,
+    <span class="kw">pub </span>pool: u32,
+    <span class="kw">pub </span>database_type: DBType,
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Redis</span> {
-    <span class="kw">pub</span> <span class="ident">url</span>: <span class="ident">String</span>,
-    <span class="kw">pub</span> <span class="ident">pool</span>: <span class="ident">u32</span>,
+<span class="attribute">#[derive(Debug, Clone, Deserialize)]
+</span><span class="kw">pub struct </span>Redis {
+    <span class="kw">pub </span>url: String,
+    <span class="kw">pub </span>pool: u32,
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Settings</span> {
-    <span class="kw">pub</span> <span class="ident">debug</span>: <span class="ident">bool</span>,
-    <span class="kw">pub</span> <span class="ident">commercial</span>: <span class="ident">bool</span>,
-    <span class="kw">pub</span> <span class="ident">database</span>: <span class="ident">Database</span>,
-    <span class="kw">pub</span> <span class="ident">redis</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Redis</span><span class="op">&gt;</span>,
-    <span class="kw">pub</span> <span class="ident">server</span>: <span class="ident">Server</span>,
-    <span class="kw">pub</span> <span class="ident">captcha</span>: <span class="ident">Captcha</span>,
-    <span class="kw">pub</span> <span class="ident">source_code</span>: <span class="ident">String</span>,
-    <span class="kw">pub</span> <span class="ident">smtp</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Smtp</span><span class="op">&gt;</span>,
-    <span class="kw">pub</span> <span class="ident">allow_registration</span>: <span class="ident">bool</span>,
-    <span class="kw">pub</span> <span class="ident">allow_demo</span>: <span class="ident">bool</span>,
+<span class="attribute">#[derive(Debug, Clone, Deserialize)]
+</span><span class="kw">pub struct </span>Settings {
+    <span class="kw">pub </span>debug: bool,
+    <span class="kw">pub </span>commercial: bool,
+    <span class="kw">pub </span>database: Database,
+    <span class="kw">pub </span>redis: <span class="prelude-ty">Option</span>&lt;Redis&gt;,
+    <span class="kw">pub </span>server: Server,
+    <span class="kw">pub </span>captcha: Captcha,
+    <span class="kw">pub </span>source_code: String,
+    <span class="kw">pub </span>smtp: <span class="prelude-ty">Option</span>&lt;Smtp&gt;,
+    <span class="kw">pub </span>allow_registration: bool,
+    <span class="kw">pub </span>allow_demo: bool,
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
-<span class="kw">impl</span> <span class="ident">Settings</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">ConfigError</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">Config::new</span>();
+<span class="attribute">#[cfg(not(tarpaulin_include))]
+</span><span class="kw">impl </span>Settings {
+    <span class="kw">pub fn </span>new() -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, ConfigError&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>s = Config::new();
 
-        <span class="kw">const</span> <span class="ident">CURRENT_DIR</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;./config/default.toml&quot;</span>;
-        <span class="kw">const</span> <span class="ident">ETC</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;/etc/mcaptcha/config.toml&quot;</span>;
+        <span class="kw">const </span>CURRENT_DIR: <span class="kw-2">&amp;</span>str = <span class="string">&quot;./config/default.toml&quot;</span>;
+        <span class="kw">const </span>ETC: <span class="kw-2">&amp;</span>str = <span class="string">&quot;/etc/mcaptcha/config.toml&quot;</span>;
 
-        <span class="ident">s</span>.<span class="ident">set</span>(<span class="string">&quot;capatcha.enable_stats&quot;</span>, <span class="bool-val">true</span>.<span class="ident">to_string</span>())
-            .<span class="ident">expect</span>(<span class="string">&quot;unable to set capatcha.enable_stats default config&quot;</span>);
+        s.set(<span class="string">&quot;capatcha.enable_stats&quot;</span>, <span class="bool-val">true</span>.to_string())
+            .expect(<span class="string">&quot;unable to set capatcha.enable_stats default config&quot;</span>);
 
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">path</span>) <span class="op">=</span> <span class="ident">env::var</span>(<span class="string">&quot;MCAPTCHA_CONFIG&quot;</span>) {
-            <span class="kw">let</span> <span class="ident">absolute_path</span> <span class="op">=</span> <span class="ident">Path::new</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>).<span class="ident">canonicalize</span>().<span class="ident">unwrap</span>();
+        <span class="kw">if let </span><span class="prelude-val">Ok</span>(path) = env::var(<span class="string">&quot;MCAPTCHA_CONFIG&quot;</span>) {
+            <span class="kw">let </span>absolute_path = Path::new(<span class="kw-2">&amp;</span>path).canonicalize().unwrap();
             <span class="macro">log::info!</span>(
                 <span class="string">&quot;Loading config file from {}&quot;</span>,
-                <span class="ident">absolute_path</span>.<span class="ident">to_str</span>().<span class="ident">unwrap</span>()
+                absolute_path.to_str().unwrap()
             );
-            <span class="ident">s</span>.<span class="ident">merge</span>(<span class="ident">File::with_name</span>(<span class="ident">absolute_path</span>.<span class="ident">to_str</span>().<span class="ident">unwrap</span>()))<span class="question-mark">?</span>;
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">Path::new</span>(<span class="ident">CURRENT_DIR</span>).<span class="ident">exists</span>() {
-            <span class="kw">let</span> <span class="ident">absolute_path</span> <span class="op">=</span> <span class="ident">fs::canonicalize</span>(<span class="ident">CURRENT_DIR</span>).<span class="ident">unwrap</span>();
+            s.merge(File::with_name(absolute_path.to_str().unwrap()))<span class="question-mark">?</span>;
+        } <span class="kw">else if </span>Path::new(CURRENT_DIR).exists() {
+            <span class="kw">let </span>absolute_path = fs::canonicalize(CURRENT_DIR).unwrap();
             <span class="macro">log::info!</span>(
                 <span class="string">&quot;Loading config file from {}&quot;</span>,
-                <span class="ident">absolute_path</span>.<span class="ident">to_str</span>().<span class="ident">unwrap</span>()
+                absolute_path.to_str().unwrap()
             );
-            <span class="comment">// merging default config from file</span>
-            <span class="ident">s</span>.<span class="ident">merge</span>(<span class="ident">File::with_name</span>(<span class="ident">absolute_path</span>.<span class="ident">to_str</span>().<span class="ident">unwrap</span>()))<span class="question-mark">?</span>;
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">Path::new</span>(<span class="ident">ETC</span>).<span class="ident">exists</span>() {
-            <span class="macro">log::info!</span>(<span class="string">&quot;{}&quot;</span>, <span class="macro">format!</span>(<span class="string">&quot;Loading config file from {}&quot;</span>, <span class="ident">ETC</span>));
-            <span class="ident">s</span>.<span class="ident">merge</span>(<span class="ident">File::with_name</span>(<span class="ident">ETC</span>))<span class="question-mark">?</span>;
-        } <span class="kw">else</span> {
+            <span class="comment">// merging default config from file
+            </span>s.merge(File::with_name(absolute_path.to_str().unwrap()))<span class="question-mark">?</span>;
+        } <span class="kw">else if </span>Path::new(ETC).exists() {
+            <span class="macro">log::info!</span>(<span class="string">&quot;{}&quot;</span>, <span class="macro">format!</span>(<span class="string">&quot;Loading config file from {}&quot;</span>, ETC));
+            s.merge(File::with_name(ETC))<span class="question-mark">?</span>;
+        } <span class="kw">else </span>{
             <span class="macro">log::warn!</span>(<span class="string">&quot;Configuration file not found&quot;</span>);
         }
 
-        <span class="ident">s</span>.<span class="ident">merge</span>(<span class="ident">Environment::with_prefix</span>(<span class="string">&quot;MCAPTCHA&quot;</span>).<span class="ident">separator</span>(<span class="string">&quot;_&quot;</span>))<span class="question-mark">?</span>;
+        s.merge(Environment::with_prefix(<span class="string">&quot;MCAPTCHA&quot;</span>).separator(<span class="string">&quot;_&quot;</span>))<span class="question-mark">?</span>;
 
-        <span class="ident">check_url</span>(<span class="kw-2">&amp;</span><span class="ident">s</span>);
+        check_url(<span class="kw-2">&amp;</span>s);
 
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">val</span>) <span class="op">=</span> <span class="ident">env::var</span>(<span class="string">&quot;PORT&quot;</span>) {
-            <span class="ident">s</span>.<span class="ident">set</span>(<span class="string">&quot;server.port&quot;</span>, <span class="ident">val</span>).<span class="ident">unwrap</span>();
+        <span class="kw">if let </span><span class="prelude-val">Ok</span>(val) = env::var(<span class="string">&quot;PORT&quot;</span>) {
+            s.set(<span class="string">&quot;server.port&quot;</span>, val).unwrap();
             <span class="macro">log::info!</span>(<span class="string">&quot;Overriding [server].port with environment variable&quot;</span>);
         }
 
-        <span class="kw">match</span> <span class="ident">env::var</span>(<span class="string">&quot;DATABASE_URL&quot;</span>) {
-            <span class="prelude-val">Ok</span>(<span class="ident">val</span>) =&gt; {
-                <span class="kw">let</span> <span class="ident">url</span> <span class="op">=</span> <span class="ident">Url::parse</span>(<span class="kw-2">&amp;</span><span class="ident">val</span>).<span class="ident">expect</span>(<span class="string">&quot;couldn&#39;t parse Database URL&quot;</span>);
-                <span class="ident">s</span>.<span class="ident">set</span>(<span class="string">&quot;database.url&quot;</span>, <span class="ident">url</span>.<span class="ident">to_string</span>()).<span class="ident">unwrap</span>();
-                <span class="kw">let</span> <span class="ident">database_type</span> <span class="op">=</span> <span class="ident">DBType::from_url</span>(<span class="kw-2">&amp;</span><span class="ident">url</span>).<span class="ident">unwrap</span>();
-                <span class="ident">s</span>.<span class="ident">set</span>(<span class="string">&quot;database.database_type&quot;</span>, <span class="ident">database_type</span>.<span class="ident">to_string</span>())
-                    .<span class="ident">unwrap</span>();
+        <span class="kw">match </span>env::var(<span class="string">&quot;DATABASE_URL&quot;</span>) {
+            <span class="prelude-val">Ok</span>(val) =&gt; {
+                <span class="kw">let </span>url = Url::parse(<span class="kw-2">&amp;</span>val).expect(<span class="string">&quot;couldn&#39;t parse Database URL&quot;</span>);
+                s.set(<span class="string">&quot;database.url&quot;</span>, url.to_string()).unwrap();
+                <span class="kw">let </span>database_type = DBType::from_url(<span class="kw-2">&amp;</span>url).unwrap();
+                s.set(<span class="string">&quot;database.database_type&quot;</span>, database_type.to_string())
+                    .unwrap();
                 <span class="macro">log::info!</span>(<span class="string">&quot;Overriding [database].url and [database].database_type with environment variable&quot;</span>);
             }
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
-                <span class="ident">set_database_url</span>(<span class="kw-2">&amp;mut</span> <span class="ident">s</span>);
+            <span class="prelude-val">Err</span>(e) =&gt; {
+                set_database_url(<span class="kw-2">&amp;mut </span>s);
             }
         }
 
-        <span class="comment">// setting default values</span>
-        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-        <span class="ident">s</span>.<span class="ident">set</span>(<span class="string">&quot;database.pool&quot;</span>, <span class="number">2</span>.<span class="ident">to_string</span>())
-            .<span class="ident">expect</span>(<span class="string">&quot;Couldn&#39;t set database pool count&quot;</span>);
+        <span class="comment">// setting default values
+        </span><span class="attribute">#[cfg(test)]
+        </span>s.set(<span class="string">&quot;database.pool&quot;</span>, <span class="number">2</span>.to_string())
+            .expect(<span class="string">&quot;Couldn&#39;t set database pool count&quot;</span>);
 
-        <span class="kw">match</span> <span class="ident">s</span>.<span class="ident">try_into</span>() {
-            <span class="prelude-val">Ok</span>(<span class="ident">val</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="ident">val</span>),
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">ConfigError::Message</span>(<span class="macro">format!</span>(<span class="string">&quot;\n\nError: {}. If it says missing fields, then please refer to https://github.com/mCaptcha/mcaptcha#configuration to learn more about how mcaptcha reads configuration\n\n&quot;</span>, <span class="ident">e</span>))),
+        <span class="kw">match </span>s.try_into() {
+            <span class="prelude-val">Ok</span>(val) =&gt; <span class="prelude-val">Ok</span>(val),
+            <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(ConfigError::Message(<span class="macro">format!</span>(<span class="string">&quot;\n\nError: {}. If it says missing fields, then please refer to https://github.com/mCaptcha/mcaptcha#configuration to learn more about how mcaptcha reads configuration\n\n&quot;</span>, e))),
         }
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
-<span class="kw">fn</span> <span class="ident">check_url</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">Config</span>) {
-    <span class="kw">let</span> <span class="ident">url</span> <span class="op">=</span> <span class="ident">s</span>
-        .<span class="ident">get</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>(<span class="string">&quot;source_code&quot;</span>)
-        .<span class="ident">expect</span>(<span class="string">&quot;Couldn&#39;t access source_code&quot;</span>);
+<span class="attribute">#[cfg(not(tarpaulin_include))]
+</span><span class="kw">fn </span>check_url(s: <span class="kw-2">&amp;</span>Config) {
+    <span class="kw">let </span>url = s
+        .get::&lt;String&gt;(<span class="string">&quot;source_code&quot;</span>)
+        .expect(<span class="string">&quot;Couldn&#39;t access source_code&quot;</span>);
 
-    <span class="ident">Url::parse</span>(<span class="kw-2">&amp;</span><span class="ident">url</span>).<span class="ident">expect</span>(<span class="string">&quot;Please enter a URL for source_code in settings&quot;</span>);
+    Url::parse(<span class="kw-2">&amp;</span>url).expect(<span class="string">&quot;Please enter a URL for source_code in settings&quot;</span>);
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
-<span class="kw">fn</span> <span class="ident">set_database_url</span>(<span class="ident">s</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Config</span>) {
-    <span class="ident">s</span>.<span class="ident">set</span>(
+<span class="attribute">#[cfg(not(tarpaulin_include))]
+</span><span class="kw">fn </span>set_database_url(s: <span class="kw-2">&amp;mut </span>Config) {
+    s.set(
         <span class="string">&quot;database.url&quot;</span>,
         <span class="macro">format!</span>(
             <span class="string">r&quot;postgres://{}:{}@{}:{}/{}&quot;</span>,
-            <span class="ident">s</span>.<span class="ident">get</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>(<span class="string">&quot;database.username&quot;</span>)
-                .<span class="ident">expect</span>(<span class="string">&quot;Couldn&#39;t access database username&quot;</span>),
-            <span class="ident">urlencoding::encode</span>(
-                <span class="ident">s</span>.<span class="ident">get</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>(<span class="string">&quot;database.password&quot;</span>)
-                    .<span class="ident">expect</span>(<span class="string">&quot;Couldn&#39;t access database password&quot;</span>)
-                    .<span class="ident">as_str</span>()
+            s.get::&lt;String&gt;(<span class="string">&quot;database.username&quot;</span>)
+                .expect(<span class="string">&quot;Couldn&#39;t access database username&quot;</span>),
+            urlencoding::encode(
+                s.get::&lt;String&gt;(<span class="string">&quot;database.password&quot;</span>)
+                    .expect(<span class="string">&quot;Couldn&#39;t access database password&quot;</span>)
+                    .as_str()
             ),
-            <span class="ident">s</span>.<span class="ident">get</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>(<span class="string">&quot;database.hostname&quot;</span>)
-                .<span class="ident">expect</span>(<span class="string">&quot;Couldn&#39;t access database hostname&quot;</span>),
-            <span class="ident">s</span>.<span class="ident">get</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>(<span class="string">&quot;database.port&quot;</span>)
-                .<span class="ident">expect</span>(<span class="string">&quot;Couldn&#39;t access database port&quot;</span>),
-            <span class="ident">s</span>.<span class="ident">get</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>(<span class="string">&quot;database.name&quot;</span>)
-                .<span class="ident">expect</span>(<span class="string">&quot;Couldn&#39;t access database name&quot;</span>)
+            s.get::&lt;String&gt;(<span class="string">&quot;database.hostname&quot;</span>)
+                .expect(<span class="string">&quot;Couldn&#39;t access database hostname&quot;</span>),
+            s.get::&lt;String&gt;(<span class="string">&quot;database.port&quot;</span>)
+                .expect(<span class="string">&quot;Couldn&#39;t access database port&quot;</span>),
+            s.get::&lt;String&gt;(<span class="string">&quot;database.name&quot;</span>)
+                .expect(<span class="string">&quot;Couldn&#39;t access database name&quot;</span>)
         ),
     )
-    .<span class="ident">expect</span>(<span class="string">&quot;Couldn&#39;t set database url&quot;</span>);
+    .expect(<span class="string">&quot;Couldn&#39;t set database url&quot;</span>);
 }
 
-<span class="comment">//#[cfg(test)]</span>
-<span class="comment">//mod tests {</span>
-<span class="comment">//    use super::*;</span>
-<span class="comment">//</span>
-<span class="comment">//    #[test]</span>
-<span class="comment">//    fn url_prefix_test() {</span>
-<span class="comment">//        let mut settings = Settings::new().unwrap();</span>
-<span class="comment">//        assert!(settings.server.url_prefix.is_none());</span>
-<span class="comment">//        settings.server.url_prefix = Some(&quot;test&quot;.into());</span>
-<span class="comment">//        settings.server.check_url_prefix();</span>
-<span class="comment">//        settings.server.url_prefix = Some(&quot;    &quot;.into());</span>
-<span class="comment">//        settings.server.check_url_prefix();</span>
-<span class="comment">//        assert!(settings.server.url_prefix.is_none());</span>
-<span class="comment">//    }</span>
-<span class="comment">//</span>
-<span class="comment">//    #[test]</span>
-<span class="comment">//    fn smtp_config_works() {</span>
-<span class="comment">//        let settings = Settings::new().unwrap();</span>
-<span class="comment">//        assert!(settings.smtp.is_some());</span>
-<span class="comment">//        assert_eq!(settings.smtp.as_ref().unwrap().password, &quot;password&quot;);</span>
-<span class="comment">//        assert_eq!(settings.smtp.as_ref().unwrap().username, &quot;admin&quot;);</span>
-<span class="comment">//    }</span>
-<span class="comment">//}</span>
-</code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="mcaptcha" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+<span class="comment">//#[cfg(test)]
+//mod tests {
+//    use super::*;
+//
+//    #[test]
+//    fn url_prefix_test() {
+//        let mut settings = Settings::new().unwrap();
+//        assert!(settings.server.url_prefix.is_none());
+//        settings.server.url_prefix = Some(&quot;test&quot;.into());
+//        settings.server.check_url_prefix();
+//        settings.server.url_prefix = Some(&quot;    &quot;.into());
+//        settings.server.check_url_prefix();
+//        assert!(settings.server.url_prefix.is_none());
+//    }
+//
+//    #[test]
+//    fn smtp_config_works() {
+//        let settings = Settings::new().unwrap();
+//        assert!(settings.smtp.is_some());
+//        assert_eq!(settings.smtp.as_ref().unwrap().password, &quot;password&quot;);
+//        assert_eq!(settings.smtp.as_ref().unwrap().username, &quot;admin&quot;);
+//    }
+//}
+</span></code></pre></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="mcaptcha" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

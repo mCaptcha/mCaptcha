@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `db/db-core/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../db_core/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../db_core/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../db_core/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `db/db-core/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../db_core/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../db_core/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../db_core/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -368,345 +368,345 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
- */</span>
+ */
 
-<span class="attribute">#![<span class="ident">warn</span>(<span class="ident">missing_docs</span>)]</span>
-<span class="doccomment">//! # `mCaptcha` database operations</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! Traits and datastructures used in mCaptcha to interact with database.</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! To use an unsupported database with mCaptcha, traits present within this crate should be</span>
-<span class="doccomment">//! implemented.</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ## Organisation</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! Database functionality is divided across various modules:</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! - [errors](crate::auth): error data structures used in this crate</span>
-<span class="doccomment">//! - [ops](crate::ops): meta operations like connection pool creation, migrations and getting</span>
-<span class="doccomment">//! connection from pool</span>
-<span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
+</span><span class="attribute">#![warn(missing_docs)]
+</span><span class="doccomment">//! # `mCaptcha` database operations
+//!
+//! Traits and datastructures used in mCaptcha to interact with database.
+//!
+//! To use an unsupported database with mCaptcha, traits present within this crate should be
+//! implemented.
+//!
+//!
+//! ## Organisation
+//!
+//! Database functionality is divided across various modules:
+//!
+//! - [errors](crate::auth): error data structures used in this crate
+//! - [ops](crate::ops): meta operations like connection pool creation, migrations and getting
+//! connection from pool
+</span><span class="kw">use </span>serde::{Deserialize, Serialize};
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">libmcaptcha::defense::Level</span>;
+<span class="kw">pub use </span>libmcaptcha::defense::Level;
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">errors</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">ops</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;test&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">tests</span>;
+<span class="kw">pub mod </span>errors;
+<span class="kw">pub mod </span>ops;
+<span class="attribute">#[cfg(feature = <span class="string">&quot;test&quot;</span>)]
+</span><span class="kw">pub mod </span>tests;
 
-<span class="kw">use</span> <span class="ident">dev</span>::<span class="kw-2">*</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">ops::GetConnection</span>;
+<span class="kw">use </span>dev::<span class="kw-2">*</span>;
+<span class="kw">pub use </span>ops::GetConnection;
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">prelude</span> {
-    <span class="doccomment">//! useful imports for users working with a supported database</span>
+<span class="kw">pub mod </span>prelude {
+    <span class="doccomment">//! useful imports for users working with a supported database
 
-    <span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::errors</span>::<span class="kw-2">*</span>;
-    <span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::ops</span>::<span class="kw-2">*</span>;
-    <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
+    </span><span class="kw">pub use </span><span class="kw">super</span>::errors::<span class="kw-2">*</span>;
+    <span class="kw">pub use </span><span class="kw">super</span>::ops::<span class="kw-2">*</span>;
+    <span class="kw">pub use super</span>::<span class="kw-2">*</span>;
 }
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">dev</span> {
-    <span class="doccomment">//! useful imports for supporting a new database</span>
-    <span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::prelude</span>::<span class="kw-2">*</span>;
-    <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">async_trait::async_trait</span>;
+<span class="kw">pub mod </span>dev {
+    <span class="doccomment">//! useful imports for supporting a new database
+    </span><span class="kw">pub use </span><span class="kw">super</span>::prelude::<span class="kw-2">*</span>;
+    <span class="kw">pub use </span>async_trait::async_trait;
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">PartialEq</span>)]</span>
-<span class="doccomment">/// Data required to register a new user</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Register</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// username of new user</span>
-    <span class="kw">pub</span> <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>,
-    <span class="doccomment">/// secret of new user</span>
-    <span class="kw">pub</span> <span class="ident">secret</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>,
-    <span class="doccomment">/// hashed password of new use</span>
-    <span class="kw">pub</span> <span class="ident">hash</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>,
-    <span class="doccomment">/// Optionally, email of new use</span>
-    <span class="kw">pub</span> <span class="ident">email</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span>,
+<span class="attribute">#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
+</span><span class="doccomment">/// Data required to register a new user
+</span><span class="kw">pub struct </span>Register&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="doccomment">/// username of new user
+    </span><span class="kw">pub </span>username: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
+    <span class="doccomment">/// secret of new user
+    </span><span class="kw">pub </span>secret: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
+    <span class="doccomment">/// hashed password of new use
+    </span><span class="kw">pub </span>hash: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
+    <span class="doccomment">/// Optionally, email of new use
+    </span><span class="kw">pub </span>email: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str&gt;,
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">PartialEq</span>)]</span>
-<span class="doccomment">/// data required to update them email of a user</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UpdateEmail</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// username of the user</span>
-    <span class="kw">pub</span> <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>,
-    <span class="doccomment">/// new email address of the user</span>
-    <span class="kw">pub</span> <span class="ident">new_email</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>,
+<span class="attribute">#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
+</span><span class="doccomment">/// data required to update them email of a user
+</span><span class="kw">pub struct </span>UpdateEmail&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="doccomment">/// username of the user
+    </span><span class="kw">pub </span>username: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
+    <span class="doccomment">/// new email address of the user
+    </span><span class="kw">pub </span>new_email: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">PartialEq</span>)]</span>
-<span class="doccomment">/// types of credentials used as identifiers during login</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Login</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// username as login</span>
-    <span class="ident">Username</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>),
-    <span class="doccomment">/// email as login</span>
-    <span class="ident">Email</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>),
+<span class="attribute">#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
+</span><span class="doccomment">/// types of credentials used as identifiers during login
+</span><span class="kw">pub enum </span>Login&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="doccomment">/// username as login
+    </span>Username(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str),
+    <span class="doccomment">/// email as login
+    </span>Email(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str),
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">PartialEq</span>)]</span>
-<span class="doccomment">/// type encapsulating username and hashed password of a user</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NameHash</span> {
-    <span class="doccomment">/// username</span>
-    <span class="kw">pub</span> <span class="ident">username</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// hashed password</span>
-    <span class="kw">pub</span> <span class="ident">hash</span>: <span class="ident">String</span>,
+<span class="attribute">#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
+</span><span class="doccomment">/// type encapsulating username and hashed password of a user
+</span><span class="kw">pub struct </span>NameHash {
+    <span class="doccomment">/// username
+    </span><span class="kw">pub </span>username: String,
+    <span class="doccomment">/// hashed password
+    </span><span class="kw">pub </span>hash: String,
 }
 
-<span class="attribute">#[<span class="ident">async_trait</span>]</span>
-<span class="doccomment">/// mCaptcha&#39;s database requirements. To implement support for $Database, kindly implement this</span>
-<span class="doccomment">/// trait.</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">MCDatabase</span>: <span class="ident">std::marker::Send</span> <span class="op">+</span> <span class="ident">std::marker::Sync</span> <span class="op">+</span> <span class="ident">CloneSPDatabase</span> {
-    <span class="doccomment">/// ping DB</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">ping</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span>;
+<span class="attribute">#[async_trait]
+</span><span class="doccomment">/// mCaptcha&#39;s database requirements. To implement support for $Database, kindly implement this
+/// trait.
+</span><span class="kw">pub trait </span>MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
+    <span class="doccomment">/// ping DB
+    </span><span class="kw">async fn </span>ping(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool;
 
-    <span class="doccomment">/// register a new user</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">register</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw-2">&amp;</span><span class="ident">Register</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+    <span class="doccomment">/// register a new user
+    </span><span class="kw">async fn </span>register(<span class="kw-2">&amp;</span><span class="self">self</span>, p: <span class="kw-2">&amp;</span>Register) -&gt; DBResult&lt;()&gt;;
 
-    <span class="doccomment">/// delete a user</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_user</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+    <span class="doccomment">/// delete a user
+    </span><span class="kw">async fn </span>delete_user(<span class="kw-2">&amp;</span><span class="self">self</span>, username: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;()&gt;;
 
-    <span class="doccomment">/// check if username exists</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">username_exists</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// check if username exists
+    </span><span class="kw">async fn </span>username_exists(<span class="kw-2">&amp;</span><span class="self">self</span>, username: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;bool&gt;;
 
-    <span class="doccomment">/// get user email</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_email</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// get user email
+    </span><span class="kw">async fn </span>get_email(<span class="kw-2">&amp;</span><span class="self">self</span>, username: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;<span class="prelude-ty">Option</span>&lt;String&gt;&gt;;
 
-    <span class="doccomment">/// check if email exists</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">email_exists</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">email</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// check if email exists
+    </span><span class="kw">async fn </span>email_exists(<span class="kw-2">&amp;</span><span class="self">self</span>, email: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;bool&gt;;
 
-    <span class="doccomment">/// update a user&#39;s email</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_email</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw-2">&amp;</span><span class="ident">UpdateEmail</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+    <span class="doccomment">/// update a user&#39;s email
+    </span><span class="kw">async fn </span>update_email(<span class="kw-2">&amp;</span><span class="self">self</span>, p: <span class="kw-2">&amp;</span>UpdateEmail) -&gt; DBResult&lt;()&gt;;
 
-    <span class="doccomment">/// get a user&#39;s password</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_password</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">l</span>: <span class="kw-2">&amp;</span><span class="ident">Login</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident">NameHash</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// get a user&#39;s password
+    </span><span class="kw">async fn </span>get_password(<span class="kw-2">&amp;</span><span class="self">self</span>, l: <span class="kw-2">&amp;</span>Login) -&gt; DBResult&lt;NameHash&gt;;
 
-    <span class="doccomment">/// update user&#39;s password</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_password</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw-2">&amp;</span><span class="ident">NameHash</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+    <span class="doccomment">/// update user&#39;s password
+    </span><span class="kw">async fn </span>update_password(<span class="kw-2">&amp;</span><span class="self">self</span>, p: <span class="kw-2">&amp;</span>NameHash) -&gt; DBResult&lt;()&gt;;
 
-    <span class="doccomment">/// update username</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_username</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">current</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">new</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+    <span class="doccomment">/// update username
+    </span><span class="kw">async fn </span>update_username(<span class="kw-2">&amp;</span><span class="self">self</span>, current: <span class="kw-2">&amp;</span>str, new: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;()&gt;;
 
-    <span class="doccomment">/// get a user&#39;s secret</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_secret</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident">Secret</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// get a user&#39;s secret
+    </span><span class="kw">async fn </span>get_secret(<span class="kw-2">&amp;</span><span class="self">self</span>, username: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;Secret&gt;;
 
-    <span class="doccomment">/// get a user&#39;s secret from a captcha key</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_secret_from_captcha</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident">Secret</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// get a user&#39;s secret from a captcha key
+    </span><span class="kw">async fn </span>get_secret_from_captcha(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;Secret&gt;;
 
-    <span class="doccomment">/// update a user&#39;s secret</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_secret</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">secret</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+    <span class="doccomment">/// update a user&#39;s secret
+    </span><span class="kw">async fn </span>update_secret(<span class="kw-2">&amp;</span><span class="self">self</span>, username: <span class="kw-2">&amp;</span>str, secret: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;()&gt;;
 
-    <span class="doccomment">/// create new captcha</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_captcha</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">p</span>: <span class="kw-2">&amp;</span><span class="ident">CreateCaptcha</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+    <span class="doccomment">/// create new captcha
+    </span><span class="kw">async fn </span>create_captcha(<span class="kw-2">&amp;</span><span class="self">self</span>, username: <span class="kw-2">&amp;</span>str, p: <span class="kw-2">&amp;</span>CreateCaptcha) -&gt; DBResult&lt;()&gt;;
 
-    <span class="doccomment">/// Get captcha config</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_captcha_config</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident">Captcha</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Get captcha config
+    </span><span class="kw">async fn </span>get_captcha_config(<span class="kw-2">&amp;</span><span class="self">self</span>, username: <span class="kw-2">&amp;</span>str, key: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;Captcha&gt;;
 
-    <span class="doccomment">/// Get all captchas belonging to user</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_all_user_captchas</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Captcha</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Get all captchas belonging to user
+    </span><span class="kw">async fn </span>get_all_user_captchas(<span class="kw-2">&amp;</span><span class="self">self</span>, username: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;Vec&lt;Captcha&gt;&gt;;
 
-    <span class="doccomment">/// update captcha metadata; doesn&#39;t change captcha key</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_captcha_metadata</span>(
+    <span class="doccomment">/// update captcha metadata; doesn&#39;t change captcha key
+    </span><span class="kw">async fn </span>update_captcha_metadata(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">p</span>: <span class="kw-2">&amp;</span><span class="ident">CreateCaptcha</span>,
-    ) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+        username: <span class="kw-2">&amp;</span>str,
+        p: <span class="kw-2">&amp;</span>CreateCaptcha,
+    ) -&gt; DBResult&lt;()&gt;;
 
-    <span class="doccomment">/// update captcha key; doesn&#39;t change metadata</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_captcha_key</span>(
+    <span class="doccomment">/// update captcha key; doesn&#39;t change metadata
+    </span><span class="kw">async fn </span>update_captcha_key(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">old_key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">new_key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+        username: <span class="kw-2">&amp;</span>str,
+        old_key: <span class="kw-2">&amp;</span>str,
+        new_key: <span class="kw-2">&amp;</span>str,
+    ) -&gt; DBResult&lt;()&gt;;
 
-    <span class="doccomment">/// Add levels to captcha</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">add_captcha_levels</span>(
+    <span class="doccomment">/// Add levels to captcha
+    </span><span class="kw">async fn </span>add_captcha_levels(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">captcha_key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">levels</span>: <span class="kw-2">&amp;</span>[<span class="ident">Level</span>],
-    ) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+        username: <span class="kw-2">&amp;</span>str,
+        captcha_key: <span class="kw-2">&amp;</span>str,
+        levels: <span class="kw-2">&amp;</span>[Level],
+    ) -&gt; DBResult&lt;()&gt;;
 
-    <span class="doccomment">/// check if captcha exists</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">captcha_exists</span>(
+    <span class="doccomment">/// check if captcha exists
+    </span><span class="kw">async fn </span>captcha_exists(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">username</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>,
-        <span class="ident">captcha_key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>;
+        username: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
+        captcha_key: <span class="kw-2">&amp;</span>str,
+    ) -&gt; DBResult&lt;bool&gt;;
 
-    <span class="doccomment">/// Delete all levels of a captcha</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_captcha_levels</span>(
+    <span class="doccomment">/// Delete all levels of a captcha
+    </span><span class="kw">async fn </span>delete_captcha_levels(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">captcha_key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+        username: <span class="kw-2">&amp;</span>str,
+        captcha_key: <span class="kw-2">&amp;</span>str,
+    ) -&gt; DBResult&lt;()&gt;;
 
-    <span class="doccomment">/// Delete captcha</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_captcha</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">captcha_key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+    <span class="doccomment">/// Delete captcha
+    </span><span class="kw">async fn </span>delete_captcha(<span class="kw-2">&amp;</span><span class="self">self</span>, username: <span class="kw-2">&amp;</span>str, captcha_key: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;()&gt;;
 
-    <span class="doccomment">/// Get captcha levels</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_captcha_levels</span>(
+    <span class="doccomment">/// Get captcha levels
+    </span><span class="kw">async fn </span>get_captcha_levels(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">username</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>,
-        <span class="ident">captcha_key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Level</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+        username: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
+        captcha_key: <span class="kw-2">&amp;</span>str,
+    ) -&gt; DBResult&lt;Vec&lt;Level&gt;&gt;;
 
-    <span class="doccomment">/// Get captcha&#39;s cooldown period</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_captcha_cooldown</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">captcha_key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Get captcha&#39;s cooldown period
+    </span><span class="kw">async fn </span>get_captcha_cooldown(<span class="kw-2">&amp;</span><span class="self">self</span>, captcha_key: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;i32&gt;;
 
-    <span class="doccomment">/// Add traffic configuration</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">add_traffic_pattern</span>(
+    <span class="doccomment">/// Add traffic configuration
+    </span><span class="kw">async fn </span>add_traffic_pattern(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">captcha_key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">pattern</span>: <span class="kw-2">&amp;</span><span class="ident">TrafficPattern</span>,
-    ) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+        username: <span class="kw-2">&amp;</span>str,
+        captcha_key: <span class="kw-2">&amp;</span>str,
+        pattern: <span class="kw-2">&amp;</span>TrafficPattern,
+    ) -&gt; DBResult&lt;()&gt;;
 
-    <span class="doccomment">/// Get traffic configuration</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_traffic_pattern</span>(
+    <span class="doccomment">/// Get traffic configuration
+    </span><span class="kw">async fn </span>get_traffic_pattern(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">captcha_key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident">TrafficPattern</span><span class="op">&gt;</span>;
+        username: <span class="kw-2">&amp;</span>str,
+        captcha_key: <span class="kw-2">&amp;</span>str,
+    ) -&gt; DBResult&lt;TrafficPattern&gt;;
 
-    <span class="doccomment">/// Delete traffic configuration</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_traffic_pattern</span>(
+    <span class="doccomment">/// Delete traffic configuration
+    </span><span class="kw">async fn </span>delete_traffic_pattern(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">captcha_key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+        username: <span class="kw-2">&amp;</span>str,
+        captcha_key: <span class="kw-2">&amp;</span>str,
+    ) -&gt; DBResult&lt;()&gt;;
 
-    <span class="doccomment">/// create new notification</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_notification</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw-2">&amp;</span><span class="ident">AddNotification</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+    <span class="doccomment">/// create new notification
+    </span><span class="kw">async fn </span>create_notification(<span class="kw-2">&amp;</span><span class="self">self</span>, p: <span class="kw-2">&amp;</span>AddNotification) -&gt; DBResult&lt;()&gt;;
 
-    <span class="doccomment">/// get all unread notifications</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_all_unread_notifications</span>(
+    <span class="doccomment">/// get all unread notifications
+    </span><span class="kw">async fn </span>get_all_unread_notifications(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Notification</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+        username: <span class="kw-2">&amp;</span>str,
+    ) -&gt; DBResult&lt;Vec&lt;Notification&gt;&gt;;
 
-    <span class="doccomment">/// mark a notification read</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">mark_notification_read</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">id</span>: <span class="ident">i32</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+    <span class="doccomment">/// mark a notification read
+    </span><span class="kw">async fn </span>mark_notification_read(<span class="kw-2">&amp;</span><span class="self">self</span>, username: <span class="kw-2">&amp;</span>str, id: i32) -&gt; DBResult&lt;()&gt;;
 
-    <span class="doccomment">/// record PoWConfig fetches</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">record_fetch</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+    <span class="doccomment">/// record PoWConfig fetches
+    </span><span class="kw">async fn </span>record_fetch(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;()&gt;;
 
-    <span class="doccomment">/// record PoWConfig solves</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">record_solve</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+    <span class="doccomment">/// record PoWConfig solves
+    </span><span class="kw">async fn </span>record_solve(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;()&gt;;
 
-    <span class="doccomment">/// record PoWConfig confirms</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">record_confirm</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+    <span class="doccomment">/// record PoWConfig confirms
+    </span><span class="kw">async fn </span>record_confirm(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;()&gt;;
 
-    <span class="doccomment">/// fetch PoWConfig fetches</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">fetch_config_fetched</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">user</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// fetch PoWConfig fetches
+    </span><span class="kw">async fn </span>fetch_config_fetched(<span class="kw-2">&amp;</span><span class="self">self</span>, user: <span class="kw-2">&amp;</span>str, key: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;Vec&lt;i64&gt;&gt;;
 
-    <span class="doccomment">/// fetch PoWConfig solves</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">fetch_solve</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">user</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// fetch PoWConfig solves
+    </span><span class="kw">async fn </span>fetch_solve(<span class="kw-2">&amp;</span><span class="self">self</span>, user: <span class="kw-2">&amp;</span>str, key: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;Vec&lt;i64&gt;&gt;;
 
-    <span class="doccomment">/// fetch PoWConfig confirms</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">fetch_confirm</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">user</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DBResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// fetch PoWConfig confirms
+    </span><span class="kw">async fn </span>fetch_confirm(<span class="kw-2">&amp;</span><span class="self">self</span>, user: <span class="kw-2">&amp;</span>str, key: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;Vec&lt;i64&gt;&gt;;
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Default</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">PartialEq</span>)]</span>
-<span class="doccomment">/// Captcha statistics with time recorded in UNIX epoch formats</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StatsUnixTimestamp</span> {
-    <span class="doccomment">/// times at which the configuration were fetched</span>
-    <span class="kw">pub</span> <span class="ident">config_fetches</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// times at which the PoW was solved</span>
-    <span class="kw">pub</span> <span class="ident">solves</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// times at which the PoW token was verified</span>
-    <span class="kw">pub</span> <span class="ident">confirms</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
+<span class="attribute">#[derive(Debug, Clone, Default, Deserialize, Serialize, PartialEq)]
+</span><span class="doccomment">/// Captcha statistics with time recorded in UNIX epoch formats
+</span><span class="kw">pub struct </span>StatsUnixTimestamp {
+    <span class="doccomment">/// times at which the configuration were fetched
+    </span><span class="kw">pub </span>config_fetches: Vec&lt;i64&gt;,
+    <span class="doccomment">/// times at which the PoW was solved
+    </span><span class="kw">pub </span>solves: Vec&lt;i64&gt;,
+    <span class="doccomment">/// times at which the PoW token was verified
+    </span><span class="kw">pub </span>confirms: Vec&lt;i64&gt;,
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Default</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">PartialEq</span>)]</span>
-<span class="doccomment">/// Represents notification</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Notification</span> {
-    <span class="doccomment">/// receiver name  of the notification</span>
-    <span class="kw">pub</span> <span class="ident">name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// heading of the notification</span>
-    <span class="kw">pub</span> <span class="ident">heading</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// message of the notification</span>
-    <span class="kw">pub</span> <span class="ident">message</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// when notification was received</span>
-    <span class="kw">pub</span> <span class="ident">received</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// db assigned ID of the notification</span>
-    <span class="kw">pub</span> <span class="ident">id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>,
+<span class="attribute">#[derive(Debug, Clone, Default, Deserialize, Serialize, PartialEq)]
+</span><span class="doccomment">/// Represents notification
+</span><span class="kw">pub struct </span>Notification {
+    <span class="doccomment">/// receiver name  of the notification
+    </span><span class="kw">pub </span>name: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    <span class="doccomment">/// heading of the notification
+    </span><span class="kw">pub </span>heading: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    <span class="doccomment">/// message of the notification
+    </span><span class="kw">pub </span>message: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    <span class="doccomment">/// when notification was received
+    </span><span class="kw">pub </span>received: <span class="prelude-ty">Option</span>&lt;i64&gt;,
+    <span class="doccomment">/// db assigned ID of the notification
+    </span><span class="kw">pub </span>id: <span class="prelude-ty">Option</span>&lt;i32&gt;,
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Default</span>, <span class="ident">PartialEq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="doccomment">/// Data required to add notification</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AddNotification</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// who is the notification addressed to?</span>
-    <span class="kw">pub</span> <span class="ident">to</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>,
-    <span class="doccomment">/// notification sender</span>
-    <span class="kw">pub</span> <span class="ident">from</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>,
-    <span class="doccomment">/// heading of the notification</span>
-    <span class="kw">pub</span> <span class="ident">heading</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>,
-    <span class="doccomment">/// message of the notification</span>
-    <span class="kw">pub</span> <span class="ident">message</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>,
+<span class="attribute">#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
+</span><span class="doccomment">/// Data required to add notification
+</span><span class="kw">pub struct </span>AddNotification&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="doccomment">/// who is the notification addressed to?
+    </span><span class="kw">pub </span>to: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
+    <span class="doccomment">/// notification sender
+    </span><span class="kw">pub </span>from: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
+    <span class="doccomment">/// heading of the notification
+    </span><span class="kw">pub </span>heading: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
+    <span class="doccomment">/// message of the notification
+    </span><span class="kw">pub </span>message: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Default</span>, <span class="ident">PartialEq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
-<span class="doccomment">/// User&#39;s traffic pattern; used in generating a captcha configuration</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TrafficPattern</span> {
-    <span class="doccomment">/// average traffic of user&#39;s website</span>
-    <span class="kw">pub</span> <span class="ident">avg_traffic</span>: <span class="ident">u32</span>,
-    <span class="doccomment">/// the peak traffic that the user&#39;s website can handle</span>
-    <span class="kw">pub</span> <span class="ident">peak_sustainable_traffic</span>: <span class="ident">u32</span>,
-    <span class="doccomment">/// traffic that bought the user&#39;s website down; optional</span>
-    <span class="kw">pub</span> <span class="ident">broke_my_site_traffic</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
+<span class="attribute">#[derive(Default, PartialEq, Serialize, Deserialize, Clone, Debug)]
+</span><span class="doccomment">/// User&#39;s traffic pattern; used in generating a captcha configuration
+</span><span class="kw">pub struct </span>TrafficPattern {
+    <span class="doccomment">/// average traffic of user&#39;s website
+    </span><span class="kw">pub </span>avg_traffic: u32,
+    <span class="doccomment">/// the peak traffic that the user&#39;s website can handle
+    </span><span class="kw">pub </span>peak_sustainable_traffic: u32,
+    <span class="doccomment">/// traffic that bought the user&#39;s website down; optional
+    </span><span class="kw">pub </span>broke_my_site_traffic: <span class="prelude-ty">Option</span>&lt;u32&gt;,
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Default</span>, <span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
-<span class="doccomment">/// data required to create new captcha</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreateCaptcha</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// cool down duration</span>
-    <span class="kw">pub</span> <span class="ident">duration</span>: <span class="ident">i32</span>,
-    <span class="doccomment">/// description of the captcha</span>
-    <span class="kw">pub</span> <span class="ident">description</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>,
-    <span class="doccomment">/// secret key of the captcha</span>
-    <span class="kw">pub</span> <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>,
+<span class="attribute">#[derive(Clone, Debug, Default, PartialEq, Deserialize, Serialize)]
+</span><span class="doccomment">/// data required to create new captcha
+</span><span class="kw">pub struct </span>CreateCaptcha&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="doccomment">/// cool down duration
+    </span><span class="kw">pub </span>duration: i32,
+    <span class="doccomment">/// description of the captcha
+    </span><span class="kw">pub </span>description: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
+    <span class="doccomment">/// secret key of the captcha
+    </span><span class="kw">pub </span>key: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Default</span>, <span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
-<span class="doccomment">/// Data representing a captcha</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Captcha</span> {
-    <span class="doccomment">/// Database assigned ID</span>
-    <span class="kw">pub</span> <span class="ident">config_id</span>: <span class="ident">i32</span>,
-    <span class="doccomment">/// cool down duration</span>
-    <span class="kw">pub</span> <span class="ident">duration</span>: <span class="ident">i32</span>,
-    <span class="doccomment">/// description of the captcha</span>
-    <span class="kw">pub</span> <span class="ident">description</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// secret key of the captcha</span>
-    <span class="kw">pub</span> <span class="ident">key</span>: <span class="ident">String</span>,
+<span class="attribute">#[derive(Clone, Debug, Default, PartialEq, Deserialize, Serialize)]
+</span><span class="doccomment">/// Data representing a captcha
+</span><span class="kw">pub struct </span>Captcha {
+    <span class="doccomment">/// Database assigned ID
+    </span><span class="kw">pub </span>config_id: i32,
+    <span class="doccomment">/// cool down duration
+    </span><span class="kw">pub </span>duration: i32,
+    <span class="doccomment">/// description of the captcha
+    </span><span class="kw">pub </span>description: String,
+    <span class="doccomment">/// secret key of the captcha
+    </span><span class="kw">pub </span>key: String,
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Default</span>, <span class="ident">Serialize</span>)]</span>
-<span class="doccomment">/// datastructure representing a user&#39;s secret</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Secret</span> {
-    <span class="doccomment">/// user&#39;s secret</span>
-    <span class="kw">pub</span> <span class="ident">secret</span>: <span class="ident">String</span>,
+<span class="attribute">#[derive(Clone, Debug, Deserialize, PartialEq, Default, Serialize)]
+</span><span class="doccomment">/// datastructure representing a user&#39;s secret
+</span><span class="kw">pub struct </span>Secret {
+    <span class="doccomment">/// user&#39;s secret
+    </span><span class="kw">pub </span>secret: String,
 }
 
-<span class="doccomment">/// Trait to clone MCDatabase</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">CloneSPDatabase</span> {
-    <span class="doccomment">/// clone DB</span>
-    <span class="kw">fn</span> <span class="ident">clone_db</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">MCDatabase</span><span class="op">&gt;</span>;
+<span class="doccomment">/// Trait to clone MCDatabase
+</span><span class="kw">pub trait </span>CloneSPDatabase {
+    <span class="doccomment">/// clone DB
+    </span><span class="kw">fn </span>clone_db(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Box&lt;<span class="kw">dyn </span>MCDatabase&gt;;
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">CloneSPDatabase</span> <span class="kw">for</span> <span class="ident">T</span>
-<span class="kw">where</span>
-    <span class="ident">T</span>: <span class="ident">MCDatabase</span> <span class="op">+</span> <span class="ident">Clone</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+<span class="kw">impl</span>&lt;T&gt; CloneSPDatabase <span class="kw">for </span>T
+<span class="kw">where
+    </span>T: MCDatabase + Clone + <span class="lifetime">&#39;static</span>,
 {
-    <span class="kw">fn</span> <span class="ident">clone_db</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">MCDatabase</span><span class="op">&gt;</span> {
-        <span class="ident">Box::new</span>(<span class="self">self</span>.<span class="ident">clone</span>())
+    <span class="kw">fn </span>clone_db(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Box&lt;<span class="kw">dyn </span>MCDatabase&gt; {
+        Box::new(<span class="self">self</span>.clone())
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Clone</span> <span class="kw">for</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">MCDatabase</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
-        (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">clone_db</span>()
+<span class="kw">impl </span>Clone <span class="kw">for </span>Box&lt;<span class="kw">dyn </span>MCDatabase&gt; {
+    <span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
+        (<span class="kw-2">**</span><span class="self">self</span>).clone_db()
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="db_core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="db_core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

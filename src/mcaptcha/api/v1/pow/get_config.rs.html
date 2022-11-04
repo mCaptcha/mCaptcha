@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/api/v1/pow/get_config.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>get_config.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../../mcaptcha/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/api/v1/pow/get_config.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>get_config.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../../mcaptcha/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -316,293 +316,293 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
- */</span>
+ */
 
-<span class="comment">//use actix::prelude::*;</span>
-<span class="kw">use</span> <span class="ident">actix_web</span>::{<span class="ident">web</span>, <span class="ident">HttpResponse</span>, <span class="ident">Responder</span>};
-<span class="kw">use</span> <span class="ident">libmcaptcha</span>::{
-    <span class="ident">defense::LevelBuilder</span>, <span class="ident">master::messages::AddSiteBuilder</span>, <span class="ident">DefenseBuilder</span>,
-    <span class="ident">MCaptchaBuilder</span>,
+//use actix::prelude::*;
+</span><span class="kw">use </span>actix_web::{web, HttpResponse, Responder};
+<span class="kw">use </span>libmcaptcha::{
+    defense::LevelBuilder, master::messages::AddSiteBuilder, DefenseBuilder,
+    MCaptchaBuilder,
 };
-<span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
+<span class="kw">use </span>serde::{Deserialize, Serialize};
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::errors</span>::<span class="kw-2">*</span>;
-<span class="comment">//use crate::stats::record::record_fetch;</span>
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::AppData</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::V1_API_ROUTES</span>;
+<span class="kw">use </span><span class="kw">crate</span>::errors::<span class="kw-2">*</span>;
+<span class="comment">//use crate::stats::record::record_fetch;
+</span><span class="kw">use </span><span class="kw">crate</span>::AppData;
+<span class="kw">use </span><span class="kw">crate</span>::V1_API_ROUTES;
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetConfigPayload</span> {
-    <span class="kw">pub</span> <span class="ident">key</span>: <span class="ident">String</span>,
+<span class="attribute">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="kw">pub struct </span>GetConfigPayload {
+    <span class="kw">pub </span>key: String,
 }
 
-<span class="comment">// API keys are mcaptcha actor names</span>
+<span class="comment">// API keys are mcaptcha actor names
 
-<span class="doccomment">/// get PoW configuration for an mcaptcha key</span>
-<span class="attribute">#[<span class="ident">my_codegen::post</span>(<span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;V1_API_ROUTES.pow.get_config()&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_config</span>(
-    <span class="ident">payload</span>: <span class="ident">web::Json</span><span class="op">&lt;</span><span class="ident">GetConfigPayload</span><span class="op">&gt;</span>,
-    <span class="ident">data</span>: <span class="ident">AppData</span>,
-) -&gt; <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
-    <span class="comment">//if res.exists.is_none() {</span>
-    <span class="kw">if</span> <span class="op">!</span><span class="ident">data</span>.<span class="ident">db</span>.<span class="ident">captcha_exists</span>(<span class="prelude-val">None</span>, <span class="kw-2">&amp;</span><span class="ident">payload</span>.<span class="ident">key</span>).<span class="kw">await</span><span class="question-mark">?</span> {
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ServiceError::TokenNotFound</span>);
+</span><span class="doccomment">/// get PoW configuration for an mcaptcha key
+</span><span class="attribute">#[my_codegen::post(path = <span class="string">&quot;V1_API_ROUTES.pow.get_config()&quot;</span>)]
+</span><span class="kw">pub async fn </span>get_config(
+    payload: web::Json&lt;GetConfigPayload&gt;,
+    data: AppData,
+) -&gt; ServiceResult&lt;<span class="kw">impl </span>Responder&gt; {
+    <span class="comment">//if res.exists.is_none() {
+    </span><span class="kw">if </span>!data.db.captcha_exists(<span class="prelude-val">None</span>, <span class="kw-2">&amp;</span>payload.key).<span class="kw">await</span><span class="question-mark">? </span>{
+        <span class="kw">return </span><span class="prelude-val">Err</span>(ServiceError::TokenNotFound);
     }
-    <span class="kw">let</span> <span class="ident">payload</span> <span class="op">=</span> <span class="ident">payload</span>.<span class="ident">into_inner</span>();
+    <span class="kw">let </span>payload = payload.into_inner();
 
-    <span class="kw">match</span> <span class="ident">data</span>.<span class="ident">captcha</span>.<span class="ident">get_pow</span>(<span class="ident">payload</span>.<span class="ident">key</span>.<span class="ident">clone</span>()).<span class="kw">await</span> {
-        <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">config</span>)) =&gt; {
-            <span class="ident">data</span>.<span class="ident">stats</span>.<span class="ident">record_fetch</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>, <span class="kw-2">&amp;</span><span class="ident">payload</span>.<span class="ident">key</span>).<span class="kw">await</span><span class="question-mark">?</span>;
-            <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse::Ok</span>().<span class="ident">json</span>(<span class="ident">config</span>))
+    <span class="kw">match </span>data.captcha.get_pow(payload.key.clone()).<span class="kw">await </span>{
+        <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(config)) =&gt; {
+            data.stats.record_fetch(<span class="kw-2">&amp;</span>data, <span class="kw-2">&amp;</span>payload.key).<span class="kw">await</span><span class="question-mark">?</span>;
+            <span class="prelude-val">Ok</span>(HttpResponse::Ok().json(config))
         }
         <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; {
-            <span class="ident">init_mcaptcha</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>, <span class="kw-2">&amp;</span><span class="ident">payload</span>.<span class="ident">key</span>).<span class="kw">await</span><span class="question-mark">?</span>;
-            <span class="kw">let</span> <span class="ident">config</span> <span class="op">=</span> <span class="ident">data</span>
-                .<span class="ident">captcha</span>
-                .<span class="ident">get_pow</span>(<span class="ident">payload</span>.<span class="ident">key</span>.<span class="ident">clone</span>())
-                .<span class="kw">await</span>
-                .<span class="ident">expect</span>(<span class="string">&quot;mcaptcha should be initialized and ready to go&quot;</span>);
-            <span class="comment">// background it. would require data::Data to be static</span>
-            <span class="comment">// to satidfy lifetime</span>
-            <span class="ident">data</span>.<span class="ident">stats</span>.<span class="ident">record_fetch</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>, <span class="kw-2">&amp;</span><span class="ident">payload</span>.<span class="ident">key</span>).<span class="kw">await</span><span class="question-mark">?</span>;
-            <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse::Ok</span>().<span class="ident">json</span>(<span class="ident">config</span>))
+            init_mcaptcha(<span class="kw-2">&amp;</span>data, <span class="kw-2">&amp;</span>payload.key).<span class="kw">await</span><span class="question-mark">?</span>;
+            <span class="kw">let </span>config = data
+                .captcha
+                .get_pow(payload.key.clone())
+                .<span class="kw">await
+                </span>.expect(<span class="string">&quot;mcaptcha should be initialized and ready to go&quot;</span>);
+            <span class="comment">// background it. would require data::Data to be static
+            // to satidfy lifetime
+            </span>data.stats.record_fetch(<span class="kw-2">&amp;</span>data, <span class="kw-2">&amp;</span>payload.key).<span class="kw">await</span><span class="question-mark">?</span>;
+            <span class="prelude-val">Ok</span>(HttpResponse::Ok().json(config))
         }
-        <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">e</span>.<span class="ident">into</span>()),
+        <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
     }
 
-    <span class="comment">//    match res.exists {</span>
-    <span class="comment">//        Some(true) =&gt; {</span>
-    <span class="comment">//            match data.captcha.get_pow(payload.key.clone()).await {</span>
-    <span class="comment">//                Ok(Some(config)) =&gt; {</span>
-    <span class="comment">//                    record_fetch(&amp;payload.key, &amp;data.db).await;</span>
-    <span class="comment">//                    Ok(HttpResponse::Ok().json(config))</span>
-    <span class="comment">//                }</span>
-    <span class="comment">//                Ok(None) =&gt; {</span>
-    <span class="comment">//                    init_mcaptcha(&amp;data, &amp;payload.key).await?;</span>
-    <span class="comment">//                    let config = data</span>
-    <span class="comment">//                        .captcha</span>
-    <span class="comment">//                        .get_pow(payload.key.clone())</span>
-    <span class="comment">//                        .await</span>
-    <span class="comment">//                        .expect(&quot;mcaptcha should be initialized and ready to go&quot;);</span>
-    <span class="comment">//                    // background it. would require data::Data to be static</span>
-    <span class="comment">//                    // to satidfy lifetime</span>
-    <span class="comment">//                    record_fetch(&amp;payload.key, &amp;data.db).await;</span>
-    <span class="comment">//                    Ok(HttpResponse::Ok().json(config))</span>
-    <span class="comment">//                }</span>
-    <span class="comment">//                Err(e) =&gt; Err(e.into()),</span>
-    <span class="comment">//            }</span>
-    <span class="comment">//        }</span>
-    <span class="comment">//</span>
-    <span class="comment">//        Some(false) =&gt; Err(ServiceError::TokenNotFound),</span>
-    <span class="comment">//        None =&gt; Err(ServiceError::TokenNotFound),</span>
-    <span class="comment">//    }</span>
-}
-<span class="doccomment">/// Call this when [MCaptcha][libmcaptcha::MCaptcha] is not in master.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// This fn gets mcaptcha config from database, builds [Defense][libmcaptcha::Defense],</span>
-<span class="doccomment">/// creates [MCaptcha][libmcaptcha::MCaptcha] and adds it to [Master][libmcaptcha::Defense]</span>
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">init_mcaptcha</span>(<span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="ident">AppData</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">ServiceResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="comment">//    match res.exists {
+    //        Some(true) =&gt; {
+    //            match data.captcha.get_pow(payload.key.clone()).await {
+    //                Ok(Some(config)) =&gt; {
+    //                    record_fetch(&amp;payload.key, &amp;data.db).await;
+    //                    Ok(HttpResponse::Ok().json(config))
+    //                }
+    //                Ok(None) =&gt; {
+    //                    init_mcaptcha(&amp;data, &amp;payload.key).await?;
+    //                    let config = data
+    //                        .captcha
+    //                        .get_pow(payload.key.clone())
+    //                        .await
+    //                        .expect(&quot;mcaptcha should be initialized and ready to go&quot;);
+    //                    // background it. would require data::Data to be static
+    //                    // to satidfy lifetime
+    //                    record_fetch(&amp;payload.key, &amp;data.db).await;
+    //                    Ok(HttpResponse::Ok().json(config))
+    //                }
+    //                Err(e) =&gt; Err(e.into()),
+    //            }
+    //        }
+    //
+    //        Some(false) =&gt; Err(ServiceError::TokenNotFound),
+    //        None =&gt; Err(ServiceError::TokenNotFound),
+    //    }
+</span>}
+<span class="doccomment">/// Call this when [MCaptcha][libmcaptcha::MCaptcha] is not in master.
+///
+/// This fn gets mcaptcha config from database, builds [Defense][libmcaptcha::Defense],
+/// creates [MCaptcha][libmcaptcha::MCaptcha] and adds it to [Master][libmcaptcha::Defense]
+</span><span class="kw">pub async fn </span>init_mcaptcha(data: <span class="kw-2">&amp;</span>AppData, key: <span class="kw-2">&amp;</span>str) -&gt; ServiceResult&lt;()&gt; {
     <span class="macro">println!</span>(<span class="string">&quot;Initializing captcha&quot;</span>);
-    <span class="comment">// get levels</span>
-    <span class="kw">let</span> <span class="ident">levels</span> <span class="op">=</span> <span class="ident">data</span>.<span class="ident">db</span>.<span class="ident">get_captcha_levels</span>(<span class="prelude-val">None</span>, <span class="ident">key</span>).<span class="kw">await</span><span class="question-mark">?</span>;
-    <span class="kw">let</span> <span class="ident">duration</span> <span class="op">=</span> <span class="ident">data</span>.<span class="ident">db</span>.<span class="ident">get_captcha_cooldown</span>(<span class="ident">key</span>).<span class="kw">await</span><span class="question-mark">?</span>;
+    <span class="comment">// get levels
+    </span><span class="kw">let </span>levels = data.db.get_captcha_levels(<span class="prelude-val">None</span>, key).<span class="kw">await</span><span class="question-mark">?</span>;
+    <span class="kw">let </span>duration = data.db.get_captcha_cooldown(key).<span class="kw">await</span><span class="question-mark">?</span>;
 
-    <span class="comment">// build defense</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">defense</span> <span class="op">=</span> <span class="ident">DefenseBuilder::default</span>();
+    <span class="comment">// build defense
+    </span><span class="kw">let </span><span class="kw-2">mut </span>defense = DefenseBuilder::default();
 
-    <span class="kw">for</span> <span class="ident">level</span> <span class="kw">in</span> <span class="ident">levels</span>.<span class="ident">iter</span>() {
-        <span class="kw">let</span> <span class="ident">level</span> <span class="op">=</span> <span class="ident">LevelBuilder::default</span>()
-            .<span class="ident">visitor_threshold</span>(<span class="ident">level</span>.<span class="ident">visitor_threshold</span> <span class="kw">as</span> <span class="ident">u32</span>)
-            .<span class="ident">difficulty_factor</span>(<span class="ident">level</span>.<span class="ident">difficulty_factor</span> <span class="kw">as</span> <span class="ident">u32</span>)
-            .<span class="ident">unwrap</span>()
-            .<span class="ident">build</span>()
-            .<span class="ident">unwrap</span>();
-        <span class="ident">defense</span>.<span class="ident">add_level</span>(<span class="ident">level</span>).<span class="ident">unwrap</span>();
+    <span class="kw">for </span>level <span class="kw">in </span>levels.iter() {
+        <span class="kw">let </span>level = LevelBuilder::default()
+            .visitor_threshold(level.visitor_threshold <span class="kw">as </span>u32)
+            .difficulty_factor(level.difficulty_factor <span class="kw">as </span>u32)
+            .unwrap()
+            .build()
+            .unwrap();
+        defense.add_level(level).unwrap();
     }
 
-    <span class="kw">let</span> <span class="ident">defense</span> <span class="op">=</span> <span class="ident">defense</span>.<span class="ident">build</span>()<span class="question-mark">?</span>;
-    <span class="macro">println!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">defense</span>);
+    <span class="kw">let </span>defense = defense.build()<span class="question-mark">?</span>;
+    <span class="macro">println!</span>(<span class="string">&quot;{:?}&quot;</span>, defense);
 
-    <span class="comment">// create captcha</span>
-    <span class="kw">let</span> <span class="ident">mcaptcha</span> <span class="op">=</span> <span class="ident">MCaptchaBuilder::default</span>()
-        .<span class="ident">defense</span>(<span class="ident">defense</span>)
-        <span class="comment">// leaky bucket algorithm&#39;s emission interval</span>
-        .<span class="ident">duration</span>(<span class="ident">duration</span> <span class="kw">as</span> <span class="ident">u64</span>)
-        <span class="comment">//   .cache(cache)</span>
-        .<span class="ident">build</span>()
-        .<span class="ident">unwrap</span>();
+    <span class="comment">// create captcha
+    </span><span class="kw">let </span>mcaptcha = MCaptchaBuilder::default()
+        .defense(defense)
+        <span class="comment">// leaky bucket algorithm&#39;s emission interval
+        </span>.duration(duration <span class="kw">as </span>u64)
+        <span class="comment">//   .cache(cache)
+        </span>.build()
+        .unwrap();
 
-    <span class="comment">// add captcha to master</span>
-    <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="ident">AddSiteBuilder::default</span>()
-        .<span class="ident">id</span>(<span class="ident">key</span>.<span class="ident">into</span>())
-        .<span class="ident">mcaptcha</span>(<span class="ident">mcaptcha</span>)
-        .<span class="ident">build</span>()
-        .<span class="ident">unwrap</span>();
+    <span class="comment">// add captcha to master
+    </span><span class="kw">let </span>msg = AddSiteBuilder::default()
+        .id(key.into())
+        .mcaptcha(mcaptcha)
+        .build()
+        .unwrap();
 
-    <span class="ident">data</span>.<span class="ident">captcha</span>.<span class="ident">add_site</span>(<span class="ident">msg</span>).<span class="kw">await</span><span class="question-mark">?</span>;
+    data.captcha.add_site(msg).<span class="kw">await</span><span class="question-mark">?</span>;
 
     <span class="prelude-val">Ok</span>(())
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident">libmcaptcha::pow::PoWConfig</span>;
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">pub mod </span>tests {
+    <span class="kw">use crate</span>::<span class="kw-2">*</span>;
+    <span class="kw">use </span>libmcaptcha::pow::PoWConfig;
 
-    <span class="attribute">#[<span class="ident">actix_rt::test</span>]</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_pow_config_works_pg</span>() {
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::tests::pg::get_data</span>().<span class="kw">await</span>;
-        <span class="ident">get_pow_config_works</span>(<span class="ident">data</span>).<span class="kw">await</span>;
+    <span class="attribute">#[actix_rt::test]
+    </span><span class="kw">async fn </span>get_pow_config_works_pg() {
+        <span class="kw">let </span>data = <span class="kw">crate</span>::tests::pg::get_data().<span class="kw">await</span>;
+        get_pow_config_works(data).<span class="kw">await</span>;
     }
 
-    <span class="attribute">#[<span class="ident">actix_rt::test</span>]</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_pow_config_works_maria</span>() {
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::tests::maria::get_data</span>().<span class="kw">await</span>;
-        <span class="ident">get_pow_config_works</span>(<span class="ident">data</span>).<span class="kw">await</span>;
+    <span class="attribute">#[actix_rt::test]
+    </span><span class="kw">async fn </span>get_pow_config_works_maria() {
+        <span class="kw">let </span>data = <span class="kw">crate</span>::tests::maria::get_data().<span class="kw">await</span>;
+        get_pow_config_works(data).<span class="kw">await</span>;
     }
 
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_pow_config_works</span>(<span class="ident">data</span>: <span class="ident">ArcData</span>) {
-        <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-        <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::tests</span>::<span class="kw-2">*</span>;
-        <span class="kw">use</span> <span class="kw">crate</span>::<span class="kw-2">*</span>;
-        <span class="kw">use</span> <span class="ident">actix_web::test</span>;
+    <span class="kw">pub async fn </span>get_pow_config_works(data: ArcData) {
+        <span class="kw">use super</span>::<span class="kw-2">*</span>;
+        <span class="kw">use </span><span class="kw">crate</span>::tests::<span class="kw-2">*</span>;
+        <span class="kw">use crate</span>::<span class="kw-2">*</span>;
+        <span class="kw">use </span>actix_web::test;
 
-        <span class="kw">const</span> <span class="ident">NAME</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;powusrworks&quot;</span>;
-        <span class="kw">const</span> <span class="ident">PASSWORD</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;testingpas&quot;</span>;
-        <span class="kw">const</span> <span class="ident">EMAIL</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;randomuser@a.com&quot;</span>;
+        <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span>str = <span class="string">&quot;powusrworks&quot;</span>;
+        <span class="kw">const </span>PASSWORD: <span class="kw-2">&amp;</span>str = <span class="string">&quot;testingpas&quot;</span>;
+        <span class="kw">const </span>EMAIL: <span class="kw-2">&amp;</span>str = <span class="string">&quot;randomuser@a.com&quot;</span>;
 
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">data</span>;
+        <span class="kw">let </span>data = <span class="kw-2">&amp;</span>data;
 
-        <span class="ident">delete_user</span>(<span class="ident">data</span>, <span class="ident">NAME</span>).<span class="kw">await</span>;
+        delete_user(data, NAME).<span class="kw">await</span>;
 
-        <span class="ident">register_and_signin</span>(<span class="ident">data</span>, <span class="ident">NAME</span>, <span class="ident">EMAIL</span>, <span class="ident">PASSWORD</span>).<span class="kw">await</span>;
-        <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">_signin_resp</span>, <span class="ident">token_key</span>) <span class="op">=</span> <span class="ident">add_levels_util</span>(<span class="ident">data</span>, <span class="ident">NAME</span>, <span class="ident">PASSWORD</span>).<span class="kw">await</span>;
-        <span class="kw">let</span> <span class="ident">app</span> <span class="op">=</span> <span class="macro">get_app!</span>(<span class="ident">data</span>).<span class="kw">await</span>;
+        register_and_signin(data, NAME, EMAIL, PASSWORD).<span class="kw">await</span>;
+        <span class="kw">let </span>(<span class="kw">_</span>, _signin_resp, token_key) = add_levels_util(data, NAME, PASSWORD).<span class="kw">await</span>;
+        <span class="kw">let </span>app = <span class="macro">get_app!</span>(data).<span class="kw">await</span>;
 
-        <span class="kw">let</span> <span class="ident">get_config_payload</span> <span class="op">=</span> <span class="ident">GetConfigPayload</span> {
-            <span class="ident">key</span>: <span class="ident">token_key</span>.<span class="ident">key</span>.<span class="ident">clone</span>(),
+        <span class="kw">let </span>get_config_payload = GetConfigPayload {
+            key: token_key.key.clone(),
         };
 
-        <span class="comment">// update and check changes</span>
+        <span class="comment">// update and check changes
 
-        <span class="kw">let</span> <span class="ident">url</span> <span class="op">=</span> <span class="ident">V1_API_ROUTES</span>.<span class="ident">pow</span>.<span class="ident">get_config</span>;
-        <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">url</span>);
-        <span class="kw">let</span> <span class="ident">get_config_resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="ident">app</span>,
-            <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span><span class="ident">get_config_payload</span>, <span class="ident">V1_API_ROUTES</span>.<span class="ident">pow</span>.<span class="ident">get_config</span>)
-                .<span class="ident">to_request</span>(),
+        </span><span class="kw">let </span>url = V1_API_ROUTES.pow.get_config;
+        <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="kw-2">&amp;</span>url);
+        <span class="kw">let </span>get_config_resp = test::call_service(
+            <span class="kw-2">&amp;</span>app,
+            <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span>get_config_payload, V1_API_ROUTES.pow.get_config)
+                .to_request(),
         )
         .<span class="kw">await</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">get_config_resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::OK</span>);
-        <span class="kw">let</span> <span class="ident">config</span>: <span class="ident">PoWConfig</span> <span class="op">=</span> <span class="ident">test::read_body_json</span>(<span class="ident">get_config_resp</span>).<span class="kw">await</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">config</span>.<span class="ident">difficulty_factor</span>, <span class="ident">L1</span>.<span class="ident">difficulty_factor</span>);
+        <span class="macro">assert_eq!</span>(get_config_resp.status(), StatusCode::OK);
+        <span class="kw">let </span>config: PoWConfig = test::read_body_json(get_config_resp).<span class="kw">await</span>;
+        <span class="macro">assert_eq!</span>(config.difficulty_factor, L1.difficulty_factor);
     }
 
-    <span class="attribute">#[<span class="ident">actix_rt::test</span>]</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">pow_difficulty_factor_increases_on_visitor_count_increase_pg</span>() {
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::tests::pg::get_data</span>().<span class="kw">await</span>;
-        <span class="ident">pow_difficulty_factor_increases_on_visitor_count_increase</span>(<span class="ident">data</span>).<span class="kw">await</span>;
+    <span class="attribute">#[actix_rt::test]
+    </span><span class="kw">async fn </span>pow_difficulty_factor_increases_on_visitor_count_increase_pg() {
+        <span class="kw">let </span>data = <span class="kw">crate</span>::tests::pg::get_data().<span class="kw">await</span>;
+        pow_difficulty_factor_increases_on_visitor_count_increase(data).<span class="kw">await</span>;
     }
 
-    <span class="attribute">#[<span class="ident">actix_rt::test</span>]</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">pow_difficulty_factor_increases_on_visitor_count_increase_maria</span>() {
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::tests::maria::get_data</span>().<span class="kw">await</span>;
-        <span class="ident">pow_difficulty_factor_increases_on_visitor_count_increase</span>(<span class="ident">data</span>).<span class="kw">await</span>;
+    <span class="attribute">#[actix_rt::test]
+    </span><span class="kw">async fn </span>pow_difficulty_factor_increases_on_visitor_count_increase_maria() {
+        <span class="kw">let </span>data = <span class="kw">crate</span>::tests::maria::get_data().<span class="kw">await</span>;
+        pow_difficulty_factor_increases_on_visitor_count_increase(data).<span class="kw">await</span>;
     }
 
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">pow_difficulty_factor_increases_on_visitor_count_increase</span>(
-        <span class="ident">data</span>: <span class="ident">ArcData</span>,
+    <span class="kw">pub async fn </span>pow_difficulty_factor_increases_on_visitor_count_increase(
+        data: ArcData,
     ) {
-        <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-        <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::tests</span>::<span class="kw-2">*</span>;
-        <span class="kw">use</span> <span class="kw">crate</span>::<span class="kw-2">*</span>;
-        <span class="kw">use</span> <span class="ident">actix_web::test</span>;
+        <span class="kw">use super</span>::<span class="kw-2">*</span>;
+        <span class="kw">use </span><span class="kw">crate</span>::tests::<span class="kw-2">*</span>;
+        <span class="kw">use crate</span>::<span class="kw-2">*</span>;
+        <span class="kw">use </span>actix_web::test;
 
-        <span class="kw">use</span> <span class="ident">libmcaptcha::defense::Level</span>;
+        <span class="kw">use </span>libmcaptcha::defense::Level;
 
-        <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::api::v1::mcaptcha::create::CreateCaptcha</span>;
-        <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::api::v1::mcaptcha::create::MCaptchaDetails</span>;
+        <span class="kw">use </span><span class="kw">crate</span>::api::v1::mcaptcha::create::CreateCaptcha;
+        <span class="kw">use </span><span class="kw">crate</span>::api::v1::mcaptcha::create::MCaptchaDetails;
 
-        <span class="kw">const</span> <span class="ident">NAME</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;powusrworks2&quot;</span>;
-        <span class="kw">const</span> <span class="ident">PASSWORD</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;testingpas&quot;</span>;
-        <span class="kw">const</span> <span class="ident">EMAIL</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;randomuser2@a.com&quot;</span>;
-        <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">L1</span>: <span class="ident">Level</span> <span class="op">=</span> <span class="ident">Level</span> {
-            <span class="ident">difficulty_factor</span>: <span class="number">10</span>,
-            <span class="ident">visitor_threshold</span>: <span class="number">10</span>,
+        <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span>str = <span class="string">&quot;powusrworks2&quot;</span>;
+        <span class="kw">const </span>PASSWORD: <span class="kw-2">&amp;</span>str = <span class="string">&quot;testingpas&quot;</span>;
+        <span class="kw">const </span>EMAIL: <span class="kw-2">&amp;</span>str = <span class="string">&quot;randomuser2@a.com&quot;</span>;
+        <span class="kw">pub const </span>L1: Level = Level {
+            difficulty_factor: <span class="number">10</span>,
+            visitor_threshold: <span class="number">10</span>,
         };
-        <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">L2</span>: <span class="ident">Level</span> <span class="op">=</span> <span class="ident">Level</span> {
-            <span class="ident">difficulty_factor</span>: <span class="number">20</span>,
-            <span class="ident">visitor_threshold</span>: <span class="number">20</span>,
-        };
-
-        <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">L3</span>: <span class="ident">Level</span> <span class="op">=</span> <span class="ident">Level</span> {
-            <span class="ident">difficulty_factor</span>: <span class="number">30</span>,
-            <span class="ident">visitor_threshold</span>: <span class="number">30</span>,
+        <span class="kw">pub const </span>L2: Level = Level {
+            difficulty_factor: <span class="number">20</span>,
+            visitor_threshold: <span class="number">20</span>,
         };
 
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">data</span>;
-        <span class="kw">let</span> <span class="ident">levels</span> <span class="op">=</span> [<span class="ident">L1</span>, <span class="ident">L2</span>, <span class="ident">L3</span>];
-
-        <span class="ident">delete_user</span>(<span class="ident">data</span>, <span class="ident">NAME</span>).<span class="kw">await</span>;
-
-        <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">signin_resp</span>) <span class="op">=</span> <span class="ident">register_and_signin</span>(<span class="ident">data</span>, <span class="ident">NAME</span>, <span class="ident">EMAIL</span>, <span class="ident">PASSWORD</span>).<span class="kw">await</span>;
-        <span class="kw">let</span> <span class="ident">cookies</span> <span class="op">=</span> <span class="macro">get_cookie!</span>(<span class="ident">signin_resp</span>);
-        <span class="kw">let</span> <span class="ident">app</span> <span class="op">=</span> <span class="macro">get_app!</span>(<span class="ident">data</span>).<span class="kw">await</span>;
-
-        <span class="kw">let</span> <span class="ident">create_captcha</span> <span class="op">=</span> <span class="ident">CreateCaptcha</span> {
-            <span class="ident">levels</span>: <span class="ident">levels</span>.<span class="ident">into</span>(),
-            <span class="ident">duration</span>: <span class="number">30</span>,
-            <span class="ident">description</span>: <span class="string">&quot;dummy&quot;</span>.<span class="ident">into</span>(),
+        <span class="kw">pub const </span>L3: Level = Level {
+            difficulty_factor: <span class="number">30</span>,
+            visitor_threshold: <span class="number">30</span>,
         };
 
-        <span class="comment">// 1. add level</span>
-        <span class="kw">let</span> <span class="ident">add_token_resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="ident">app</span>,
-            <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span><span class="ident">create_captcha</span>, <span class="ident">V1_API_ROUTES</span>.<span class="ident">captcha</span>.<span class="ident">create</span>)
-                .<span class="ident">cookie</span>(<span class="ident">cookies</span>.<span class="ident">clone</span>())
-                .<span class="ident">to_request</span>(),
+        <span class="kw">let </span>data = <span class="kw-2">&amp;</span>data;
+        <span class="kw">let </span>levels = [L1, L2, L3];
+
+        delete_user(data, NAME).<span class="kw">await</span>;
+
+        <span class="kw">let </span>(<span class="kw">_</span>, signin_resp) = register_and_signin(data, NAME, EMAIL, PASSWORD).<span class="kw">await</span>;
+        <span class="kw">let </span>cookies = <span class="macro">get_cookie!</span>(signin_resp);
+        <span class="kw">let </span>app = <span class="macro">get_app!</span>(data).<span class="kw">await</span>;
+
+        <span class="kw">let </span>create_captcha = CreateCaptcha {
+            levels: levels.into(),
+            duration: <span class="number">30</span>,
+            description: <span class="string">&quot;dummy&quot;</span>.into(),
+        };
+
+        <span class="comment">// 1. add level
+        </span><span class="kw">let </span>add_token_resp = test::call_service(
+            <span class="kw-2">&amp;</span>app,
+            <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span>create_captcha, V1_API_ROUTES.captcha.create)
+                .cookie(cookies.clone())
+                .to_request(),
         )
         .<span class="kw">await</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">add_token_resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::OK</span>);
-        <span class="kw">let</span> <span class="ident">token_key</span>: <span class="ident">MCaptchaDetails</span> <span class="op">=</span> <span class="ident">test::read_body_json</span>(<span class="ident">add_token_resp</span>).<span class="kw">await</span>;
+        <span class="macro">assert_eq!</span>(add_token_resp.status(), StatusCode::OK);
+        <span class="kw">let </span>token_key: MCaptchaDetails = test::read_body_json(add_token_resp).<span class="kw">await</span>;
 
-        <span class="kw">let</span> <span class="ident">get_config_payload</span> <span class="op">=</span> <span class="ident">GetConfigPayload</span> {
-            <span class="ident">key</span>: <span class="ident">token_key</span>.<span class="ident">key</span>.<span class="ident">clone</span>(),
+        <span class="kw">let </span>get_config_payload = GetConfigPayload {
+            key: token_key.key.clone(),
         };
 
-        <span class="kw">let</span> <span class="ident">url</span> <span class="op">=</span> <span class="ident">V1_API_ROUTES</span>.<span class="ident">pow</span>.<span class="ident">get_config</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">prev</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="kw">for</span> (<span class="ident">count</span>, <span class="ident">l</span>) <span class="kw">in</span> <span class="ident">levels</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
-            <span class="kw">for</span> <span class="ident">l</span> <span class="kw">in</span> <span class="ident">prev</span>..<span class="ident">l</span>.<span class="ident">visitor_threshold</span> <span class="op">*</span> <span class="number">2</span> {
-                <span class="kw">let</span> <span class="ident">get_config_resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-                    <span class="kw-2">&amp;</span><span class="ident">app</span>,
-                    <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span><span class="ident">get_config_payload</span>, <span class="ident">V1_API_ROUTES</span>.<span class="ident">pow</span>.<span class="ident">get_config</span>)
-                        .<span class="ident">to_request</span>(),
+        <span class="kw">let </span>url = V1_API_ROUTES.pow.get_config;
+        <span class="kw">let </span><span class="kw-2">mut </span>prev = <span class="number">0</span>;
+        <span class="kw">for </span>(count, l) <span class="kw">in </span>levels.iter().enumerate() {
+            <span class="kw">for </span>l <span class="kw">in </span>prev..l.visitor_threshold * <span class="number">2 </span>{
+                <span class="kw">let </span>get_config_resp = test::call_service(
+                    <span class="kw-2">&amp;</span>app,
+                    <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span>get_config_payload, V1_API_ROUTES.pow.get_config)
+                        .to_request(),
                 )
                 .<span class="kw">await</span>;
             }
 
-            <span class="kw">let</span> <span class="ident">get_config_resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-                <span class="kw-2">&amp;</span><span class="ident">app</span>,
-                <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span><span class="ident">get_config_payload</span>, <span class="ident">V1_API_ROUTES</span>.<span class="ident">pow</span>.<span class="ident">get_config</span>)
-                    .<span class="ident">to_request</span>(),
+            <span class="kw">let </span>get_config_resp = test::call_service(
+                <span class="kw-2">&amp;</span>app,
+                <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span>get_config_payload, V1_API_ROUTES.pow.get_config)
+                    .to_request(),
             )
             .<span class="kw">await</span>;
 
-            <span class="kw">let</span> <span class="ident">config</span>: <span class="ident">PoWConfig</span> <span class="op">=</span> <span class="ident">test::read_body_json</span>(<span class="ident">get_config_resp</span>).<span class="kw">await</span>;
+            <span class="kw">let </span>config: PoWConfig = test::read_body_json(get_config_resp).<span class="kw">await</span>;
             <span class="macro">println!</span>(
                 <span class="string">&quot;[{count}] received difficulty_factor: {} prev difficulty_factor {}&quot;</span>,
-                <span class="ident">config</span>.<span class="ident">difficulty_factor</span>, <span class="ident">prev</span>
+                config.difficulty_factor, prev
             );
-            <span class="kw">if</span> <span class="ident">count</span> <span class="op">==</span> <span class="ident">levels</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="number">1</span> {
-                <span class="macro">assert!</span>(<span class="ident">config</span>.<span class="ident">difficulty_factor</span> <span class="op">==</span> <span class="ident">prev</span>);
-            } <span class="kw">else</span> {
-                <span class="macro">assert!</span>(<span class="ident">config</span>.<span class="ident">difficulty_factor</span> <span class="op">&gt;</span> <span class="ident">prev</span>);
+            <span class="kw">if </span>count == levels.len() - <span class="number">1 </span>{
+                <span class="macro">assert!</span>(config.difficulty_factor == prev);
+            } <span class="kw">else </span>{
+                <span class="macro">assert!</span>(config.difficulty_factor &gt; prev);
             }
-            <span class="ident">prev</span> <span class="op">=</span> <span class="ident">config</span>.<span class="ident">difficulty_factor</span>;
+            prev = config.difficulty_factor;
         }
-        <span class="comment">// update and check changes</span>
-    }
+        <span class="comment">// update and check changes
+    </span>}
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="mcaptcha" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="mcaptcha" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

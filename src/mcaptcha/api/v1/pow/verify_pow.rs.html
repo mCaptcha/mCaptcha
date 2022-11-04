@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/api/v1/pow/verify_pow.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>verify_pow.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../../mcaptcha/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/api/v1/pow/verify_pow.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>verify_pow.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../../mcaptcha/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -167,144 +167,144 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
- */</span>
-<span class="doccomment">//! PoW Verification module</span>
+ */
+</span><span class="doccomment">//! PoW Verification module
 
-<span class="kw">use</span> <span class="ident">actix_web::HttpRequest</span>;
-<span class="kw">use</span> <span class="ident">actix_web</span>::{<span class="ident">web</span>, <span class="ident">HttpResponse</span>, <span class="ident">Responder</span>};
-<span class="kw">use</span> <span class="ident">libmcaptcha::pow::Work</span>;
-<span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
+</span><span class="kw">use </span>actix_web::HttpRequest;
+<span class="kw">use </span>actix_web::{web, HttpResponse, Responder};
+<span class="kw">use </span>libmcaptcha::pow::Work;
+<span class="kw">use </span>serde::{Deserialize, Serialize};
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::errors</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::AppData</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::V1_API_ROUTES</span>;
+<span class="kw">use </span><span class="kw">crate</span>::errors::<span class="kw-2">*</span>;
+<span class="kw">use </span><span class="kw">crate</span>::AppData;
+<span class="kw">use </span><span class="kw">crate</span>::V1_API_ROUTES;
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
-<span class="doccomment">/// validation token that clients receive as proof for submiting</span>
-<span class="doccomment">/// valid PoW</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ValidationToken</span> {
-    <span class="kw">pub</span> <span class="ident">token</span>: <span class="ident">String</span>,
+<span class="attribute">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="doccomment">/// validation token that clients receive as proof for submiting
+/// valid PoW
+</span><span class="kw">pub struct </span>ValidationToken {
+    <span class="kw">pub </span>token: String,
 }
 
-<span class="comment">// API keys are mcaptcha actor names</span>
+<span class="comment">// API keys are mcaptcha actor names
 
-<span class="doccomment">/// route handler that verifies PoW and issues a solution token</span>
-<span class="doccomment">/// if verification is successful</span>
-<span class="attribute">#[<span class="ident">my_codegen::post</span>(<span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;V1_API_ROUTES.pow.verify_pow()&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">verify_pow</span>(
-    <span class="ident">req</span>: <span class="ident">HttpRequest</span>,
-    <span class="ident">payload</span>: <span class="ident">web::Json</span><span class="op">&lt;</span><span class="ident">Work</span><span class="op">&gt;</span>,
-    <span class="ident">data</span>: <span class="ident">AppData</span>,
-) -&gt; <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">test</span>))]</span>
-    <span class="kw">let</span> <span class="ident">ip</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">connection_info</span>().<span class="ident">peer_addr</span>().<span class="ident">unwrap</span>().<span class="ident">to_string</span>();
-    <span class="comment">// From actix-web docs:</span>
-    <span class="comment">//  Will only return None when called in unit tests unless TestRequest::peer_addr is used.</span>
-    <span class="comment">//</span>
-    <span class="comment">// ref: https://docs.rs/actix-web/latest/actix_web/struct.HttpRequest.html#method.peer_addr</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-    <span class="kw">let</span> <span class="ident">ip</span> <span class="op">=</span> <span class="string">&quot;127.0.1.1&quot;</span>.<span class="ident">into</span>();
+</span><span class="doccomment">/// route handler that verifies PoW and issues a solution token
+/// if verification is successful
+</span><span class="attribute">#[my_codegen::post(path = <span class="string">&quot;V1_API_ROUTES.pow.verify_pow()&quot;</span>)]
+</span><span class="kw">pub async fn </span>verify_pow(
+    req: HttpRequest,
+    payload: web::Json&lt;Work&gt;,
+    data: AppData,
+) -&gt; ServiceResult&lt;<span class="kw">impl </span>Responder&gt; {
+    <span class="attribute">#[cfg(not(test))]
+    </span><span class="kw">let </span>ip = req.connection_info().peer_addr().unwrap().to_string();
+    <span class="comment">// From actix-web docs:
+    //  Will only return None when called in unit tests unless TestRequest::peer_addr is used.
+    //
+    // ref: https://docs.rs/actix-web/latest/actix_web/struct.HttpRequest.html#method.peer_addr
+    </span><span class="attribute">#[cfg(test)]
+    </span><span class="kw">let </span>ip = <span class="string">&quot;127.0.1.1&quot;</span>.into();
 
-    <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">payload</span>.<span class="ident">key</span>.<span class="ident">clone</span>();
-    <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">data</span>.<span class="ident">captcha</span>.<span class="ident">verify_pow</span>(<span class="ident">payload</span>.<span class="ident">into_inner</span>(), <span class="ident">ip</span>).<span class="kw">await</span><span class="question-mark">?</span>;
-    <span class="ident">data</span>.<span class="ident">stats</span>.<span class="ident">record_solve</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>, <span class="kw-2">&amp;</span><span class="ident">key</span>).<span class="kw">await</span><span class="question-mark">?</span>;
-    <span class="kw">let</span> <span class="ident">payload</span> <span class="op">=</span> <span class="ident">ValidationToken</span> { <span class="ident">token</span>: <span class="ident">res</span> };
-    <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse::Ok</span>().<span class="ident">json</span>(<span class="ident">payload</span>))
+    <span class="kw">let </span>key = payload.key.clone();
+    <span class="kw">let </span>res = data.captcha.verify_pow(payload.into_inner(), ip).<span class="kw">await</span><span class="question-mark">?</span>;
+    data.stats.record_solve(<span class="kw-2">&amp;</span>data, <span class="kw-2">&amp;</span>key).<span class="kw">await</span><span class="question-mark">?</span>;
+    <span class="kw">let </span>payload = ValidationToken { token: res };
+    <span class="prelude-val">Ok</span>(HttpResponse::Ok().json(payload))
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="ident">actix_web::http::StatusCode</span>;
-    <span class="kw">use</span> <span class="ident">actix_web::test</span>;
-    <span class="kw">use</span> <span class="ident">libmcaptcha::pow::PoWConfig</span>;
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">pub mod </span>tests {
+    <span class="kw">use </span>actix_web::http::StatusCode;
+    <span class="kw">use </span>actix_web::test;
+    <span class="kw">use </span>libmcaptcha::pow::PoWConfig;
 
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::api::v1::pow::get_config::GetConfigPayload</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::tests</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="kw-2">*</span>;
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
+    <span class="kw">use </span><span class="kw">crate</span>::api::v1::pow::get_config::GetConfigPayload;
+    <span class="kw">use </span><span class="kw">crate</span>::tests::<span class="kw-2">*</span>;
+    <span class="kw">use crate</span>::<span class="kw-2">*</span>;
 
-    <span class="attribute">#[<span class="ident">actix_rt::test</span>]</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">verify_pow_works_pg</span>() {
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::tests::pg::get_data</span>().<span class="kw">await</span>;
-        <span class="ident">verify_pow_works</span>(<span class="ident">data</span>).<span class="kw">await</span>;
+    <span class="attribute">#[actix_rt::test]
+    </span><span class="kw">async fn </span>verify_pow_works_pg() {
+        <span class="kw">let </span>data = <span class="kw">crate</span>::tests::pg::get_data().<span class="kw">await</span>;
+        verify_pow_works(data).<span class="kw">await</span>;
     }
 
-    <span class="attribute">#[<span class="ident">actix_rt::test</span>]</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">verify_pow_works_maria</span>() {
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::tests::maria::get_data</span>().<span class="kw">await</span>;
-        <span class="ident">verify_pow_works</span>(<span class="ident">data</span>).<span class="kw">await</span>;
+    <span class="attribute">#[actix_rt::test]
+    </span><span class="kw">async fn </span>verify_pow_works_maria() {
+        <span class="kw">let </span>data = <span class="kw">crate</span>::tests::maria::get_data().<span class="kw">await</span>;
+        verify_pow_works(data).<span class="kw">await</span>;
     }
 
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">verify_pow_works</span>(<span class="ident">data</span>: <span class="ident">ArcData</span>) {
-        <span class="kw">const</span> <span class="ident">NAME</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;powverifyusr&quot;</span>;
-        <span class="kw">const</span> <span class="ident">PASSWORD</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;testingpas&quot;</span>;
-        <span class="kw">const</span> <span class="ident">EMAIL</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;verifyuser@a.com&quot;</span>;
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">data</span>;
+    <span class="kw">pub async fn </span>verify_pow_works(data: ArcData) {
+        <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span>str = <span class="string">&quot;powverifyusr&quot;</span>;
+        <span class="kw">const </span>PASSWORD: <span class="kw-2">&amp;</span>str = <span class="string">&quot;testingpas&quot;</span>;
+        <span class="kw">const </span>EMAIL: <span class="kw-2">&amp;</span>str = <span class="string">&quot;verifyuser@a.com&quot;</span>;
+        <span class="kw">let </span>data = <span class="kw-2">&amp;</span>data;
 
-        <span class="ident">delete_user</span>(<span class="ident">data</span>, <span class="ident">NAME</span>).<span class="kw">await</span>;
+        delete_user(data, NAME).<span class="kw">await</span>;
 
-        <span class="ident">register_and_signin</span>(<span class="ident">data</span>, <span class="ident">NAME</span>, <span class="ident">EMAIL</span>, <span class="ident">PASSWORD</span>).<span class="kw">await</span>;
-        <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">_signin_resp</span>, <span class="ident">token_key</span>) <span class="op">=</span> <span class="ident">add_levels_util</span>(<span class="ident">data</span>, <span class="ident">NAME</span>, <span class="ident">PASSWORD</span>).<span class="kw">await</span>;
-        <span class="kw">let</span> <span class="ident">app</span> <span class="op">=</span> <span class="macro">get_app!</span>(<span class="ident">data</span>).<span class="kw">await</span>;
+        register_and_signin(data, NAME, EMAIL, PASSWORD).<span class="kw">await</span>;
+        <span class="kw">let </span>(<span class="kw">_</span>, _signin_resp, token_key) = add_levels_util(data, NAME, PASSWORD).<span class="kw">await</span>;
+        <span class="kw">let </span>app = <span class="macro">get_app!</span>(data).<span class="kw">await</span>;
 
-        <span class="kw">let</span> <span class="ident">get_config_payload</span> <span class="op">=</span> <span class="ident">GetConfigPayload</span> {
-            <span class="ident">key</span>: <span class="ident">token_key</span>.<span class="ident">key</span>.<span class="ident">clone</span>(),
+        <span class="kw">let </span>get_config_payload = GetConfigPayload {
+            key: token_key.key.clone(),
         };
 
-        <span class="comment">// update and check changes</span>
+        <span class="comment">// update and check changes
 
-        <span class="kw">let</span> <span class="ident">get_config_resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="ident">app</span>,
-            <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span><span class="ident">get_config_payload</span>, <span class="ident">V1_API_ROUTES</span>.<span class="ident">pow</span>.<span class="ident">get_config</span>)
-                .<span class="ident">to_request</span>(),
+        </span><span class="kw">let </span>get_config_resp = test::call_service(
+            <span class="kw-2">&amp;</span>app,
+            <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span>get_config_payload, V1_API_ROUTES.pow.get_config)
+                .to_request(),
         )
         .<span class="kw">await</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">get_config_resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::OK</span>);
-        <span class="kw">let</span> <span class="ident">config</span>: <span class="ident">PoWConfig</span> <span class="op">=</span> <span class="ident">test::read_body_json</span>(<span class="ident">get_config_resp</span>).<span class="kw">await</span>;
+        <span class="macro">assert_eq!</span>(get_config_resp.status(), StatusCode::OK);
+        <span class="kw">let </span>config: PoWConfig = test::read_body_json(get_config_resp).<span class="kw">await</span>;
 
-        <span class="kw">let</span> <span class="ident">pow</span> <span class="op">=</span> <span class="ident">pow_sha256::ConfigBuilder::default</span>()
-            .<span class="ident">salt</span>(<span class="ident">config</span>.<span class="ident">salt</span>)
-            .<span class="ident">build</span>()
-            .<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">work</span> <span class="op">=</span> <span class="ident">pow</span>
-            .<span class="ident">prove_work</span>(<span class="kw-2">&amp;</span><span class="ident">config</span>.<span class="ident">string</span>.<span class="ident">clone</span>(), <span class="ident">config</span>.<span class="ident">difficulty_factor</span>)
-            .<span class="ident">unwrap</span>();
+        <span class="kw">let </span>pow = pow_sha256::ConfigBuilder::default()
+            .salt(config.salt)
+            .build()
+            .unwrap();
+        <span class="kw">let </span>work = pow
+            .prove_work(<span class="kw-2">&amp;</span>config.string.clone(), config.difficulty_factor)
+            .unwrap();
 
-        <span class="kw">let</span> <span class="ident">work</span> <span class="op">=</span> <span class="ident">Work</span> {
-            <span class="ident">string</span>: <span class="ident">config</span>.<span class="ident">string</span>.<span class="ident">clone</span>(),
-            <span class="ident">result</span>: <span class="ident">work</span>.<span class="ident">result</span>,
-            <span class="ident">nonce</span>: <span class="ident">work</span>.<span class="ident">nonce</span>,
-            <span class="ident">key</span>: <span class="ident">token_key</span>.<span class="ident">key</span>.<span class="ident">clone</span>(),
+        <span class="kw">let </span>work = Work {
+            string: config.string.clone(),
+            result: work.result,
+            nonce: work.nonce,
+            key: token_key.key.clone(),
         };
 
-        <span class="kw">let</span> <span class="ident">pow_verify_resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="ident">app</span>,
-            <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span><span class="ident">work</span>, <span class="ident">V1_API_ROUTES</span>.<span class="ident">pow</span>.<span class="ident">verify_pow</span>).<span class="ident">to_request</span>(),
+        <span class="kw">let </span>pow_verify_resp = test::call_service(
+            <span class="kw-2">&amp;</span>app,
+            <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span>work, V1_API_ROUTES.pow.verify_pow).to_request(),
         )
         .<span class="kw">await</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">pow_verify_resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::OK</span>);
+        <span class="macro">assert_eq!</span>(pow_verify_resp.status(), StatusCode::OK);
 
-        <span class="kw">let</span> <span class="ident">string_not_found</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="ident">app</span>,
-            <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span><span class="ident">work</span>, <span class="ident">V1_API_ROUTES</span>.<span class="ident">pow</span>.<span class="ident">verify_pow</span>).<span class="ident">to_request</span>(),
+        <span class="kw">let </span>string_not_found = test::call_service(
+            <span class="kw-2">&amp;</span>app,
+            <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span>work, V1_API_ROUTES.pow.verify_pow).to_request(),
         )
         .<span class="kw">await</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">string_not_found</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::BAD_REQUEST</span>);
-        <span class="kw">let</span> <span class="ident">err</span>: <span class="ident">ErrorToResponse</span> <span class="op">=</span> <span class="ident">test::read_body_json</span>(<span class="ident">string_not_found</span>).<span class="kw">await</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">err</span>.<span class="ident">error</span>, <span class="string">&quot;Challenge: not found&quot;</span>);
+        <span class="macro">assert_eq!</span>(string_not_found.status(), StatusCode::BAD_REQUEST);
+        <span class="kw">let </span>err: ErrorToResponse = test::read_body_json(string_not_found).<span class="kw">await</span>;
+        <span class="macro">assert_eq!</span>(err.error, <span class="string">&quot;Challenge: not found&quot;</span>);
 
-        <span class="comment">// let pow_config_resp = test::call_service(</span>
-        <span class="comment">//     &amp;app,</span>
-        <span class="comment">//     post_request!(&amp;get_config_payload, V1_API_ROUTES.pow.get_config).to_request(),</span>
-        <span class="comment">// )</span>
-        <span class="comment">// .await;</span>
-        <span class="comment">// assert_eq!(pow_config_resp.status(), StatusCode::OK);</span>
-        <span class="comment">// I&#39;m not checking for errors because changing work.result triggered</span>
-        <span class="comment">// InssuficientDifficulty, which is possible because libmcaptcha calculates</span>
-        <span class="comment">// difficulty with the submitted result. Besides, this endpoint is merely</span>
-        <span class="comment">// propagating errors from libmcaptcha and libmcaptcha has tests covering the</span>
-        <span class="comment">// pow aspects ¯\_(ツ)_/¯</span>
-    }
+        <span class="comment">// let pow_config_resp = test::call_service(
+        //     &amp;app,
+        //     post_request!(&amp;get_config_payload, V1_API_ROUTES.pow.get_config).to_request(),
+        // )
+        // .await;
+        // assert_eq!(pow_config_resp.status(), StatusCode::OK);
+        // I&#39;m not checking for errors because changing work.result triggered
+        // InssuficientDifficulty, which is possible because libmcaptcha calculates
+        // difficulty with the submitted result. Besides, this endpoint is merely
+        // propagating errors from libmcaptcha and libmcaptcha has tests covering the
+        // pow aspects ¯\_(ツ)_/¯
+    </span>}
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="mcaptcha" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="mcaptcha" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

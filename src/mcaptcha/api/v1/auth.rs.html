@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/api/v1/auth.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>auth.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../mcaptcha/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/api/v1/auth.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>auth.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../mcaptcha/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -215,139 +215,139 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
- */</span>
+ */
 
-<span class="kw">use</span> <span class="ident">actix_identity::Identity</span>;
-<span class="kw">use</span> <span class="ident">actix_web::http::header</span>;
-<span class="kw">use</span> <span class="ident">actix_web</span>::{<span class="ident">web</span>, <span class="ident">HttpResponse</span>, <span class="ident">Responder</span>};
-<span class="kw">use</span> <span class="ident">db_core::errors::DBError</span>;
-<span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
+</span><span class="kw">use </span>actix_identity::Identity;
+<span class="kw">use </span>actix_web::http::header;
+<span class="kw">use </span>actix_web::{web, HttpResponse, Responder};
+<span class="kw">use </span>db_core::errors::DBError;
+<span class="kw">use </span>serde::{Deserialize, Serialize};
 
-<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::mcaptcha::get_random</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::errors</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::AppData</span>;
+<span class="kw">use </span><span class="kw">super</span>::mcaptcha::get_random;
+<span class="kw">use </span><span class="kw">crate</span>::errors::<span class="kw-2">*</span>;
+<span class="kw">use </span><span class="kw">crate</span>::AppData;
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">routes</span> {
-    <span class="kw">use</span> <span class="ident">actix_auth_middleware::GetLoginRoute</span>;
+<span class="kw">pub mod </span>routes {
+    <span class="kw">use </span>actix_auth_middleware::GetLoginRoute;
 
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Auth</span> {
-        <span class="kw">pub</span> <span class="ident">logout</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
-        <span class="kw">pub</span> <span class="ident">login</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
-        <span class="kw">pub</span> <span class="ident">register</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
+    <span class="kw">pub struct </span>Auth {
+        <span class="kw">pub </span>logout: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        <span class="kw">pub </span>login: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        <span class="kw">pub </span>register: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
     }
 
-    <span class="kw">impl</span> <span class="ident">Auth</span> {
-        <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="ident">Auth</span> {
-            <span class="kw">let</span> <span class="ident">login</span> <span class="op">=</span> <span class="string">&quot;/api/v1/signin&quot;</span>;
-            <span class="kw">let</span> <span class="ident">logout</span> <span class="op">=</span> <span class="string">&quot;/logout&quot;</span>;
-            <span class="kw">let</span> <span class="ident">register</span> <span class="op">=</span> <span class="string">&quot;/api/v1/signup&quot;</span>;
-            <span class="ident">Auth</span> {
-                <span class="ident">logout</span>,
-                <span class="ident">login</span>,
-                <span class="ident">register</span>,
+    <span class="kw">impl </span>Auth {
+        <span class="kw">pub const fn </span>new() -&gt; Auth {
+            <span class="kw">let </span>login = <span class="string">&quot;/api/v1/signin&quot;</span>;
+            <span class="kw">let </span>logout = <span class="string">&quot;/logout&quot;</span>;
+            <span class="kw">let </span>register = <span class="string">&quot;/api/v1/signup&quot;</span>;
+            Auth {
+                logout,
+                login,
+                register,
             }
         }
     }
 
-    <span class="kw">impl</span> <span class="ident">GetLoginRoute</span> <span class="kw">for</span> <span class="ident">Auth</span> {
-        <span class="kw">fn</span> <span class="ident">get_login_route</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">src</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>) -&gt; <span class="ident">String</span> {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">redirect_to</span>) <span class="op">=</span> <span class="ident">src</span> {
+    <span class="kw">impl </span>GetLoginRoute <span class="kw">for </span>Auth {
+        <span class="kw">fn </span>get_login_route(<span class="kw-2">&amp;</span><span class="self">self</span>, src: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;) -&gt; String {
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(redirect_to) = src {
                 <span class="macro">format!</span>(
                     <span class="string">&quot;{}?redirect_to={}&quot;</span>,
-                    <span class="self">self</span>.<span class="ident">login</span>,
-                    <span class="ident">urlencoding::encode</span>(<span class="ident">redirect_to</span>)
+                    <span class="self">self</span>.login,
+                    urlencoding::encode(redirect_to)
                 )
-            } <span class="kw">else</span> {
-                <span class="self">self</span>.<span class="ident">login</span>.<span class="ident">to_string</span>()
+            } <span class="kw">else </span>{
+                <span class="self">self</span>.login.to_string()
             }
         }
     }
 }
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">runners</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
+<span class="kw">pub mod </span>runners {
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
-    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Register</span> {
-        <span class="kw">pub</span> <span class="ident">username</span>: <span class="ident">String</span>,
-        <span class="kw">pub</span> <span class="ident">password</span>: <span class="ident">String</span>,
-        <span class="kw">pub</span> <span class="ident">confirm_password</span>: <span class="ident">String</span>,
-        <span class="kw">pub</span> <span class="ident">email</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    <span class="attribute">#[derive(Clone, Debug, Deserialize, Serialize)]
+    </span><span class="kw">pub struct </span>Register {
+        <span class="kw">pub </span>username: String,
+        <span class="kw">pub </span>password: String,
+        <span class="kw">pub </span>confirm_password: String,
+        <span class="kw">pub </span>email: <span class="prelude-ty">Option</span>&lt;String&gt;,
     }
 
-    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Login</span> {
-        <span class="comment">// login accepts both username and email under &quot;username field&quot;</span>
-        <span class="comment">// TODO update all instances where login is used</span>
-        <span class="kw">pub</span> <span class="ident">login</span>: <span class="ident">String</span>,
-        <span class="kw">pub</span> <span class="ident">password</span>: <span class="ident">String</span>,
+    <span class="attribute">#[derive(Clone, Debug, Deserialize, Serialize)]
+    </span><span class="kw">pub struct </span>Login {
+        <span class="comment">// login accepts both username and email under &quot;username field&quot;
+        // TODO update all instances where login is used
+        </span><span class="kw">pub </span>login: String,
+        <span class="kw">pub </span>password: String,
     }
 
-    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Password</span> {
-        <span class="kw">pub</span> <span class="ident">password</span>: <span class="ident">String</span>,
+    <span class="attribute">#[derive(Clone, Debug, Deserialize, Serialize)]
+    </span><span class="kw">pub struct </span>Password {
+        <span class="kw">pub </span>password: String,
     }
 
-    <span class="doccomment">/// returns Ok(()) when everything checks out and the user is authenticated. Errors otherwise</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">login_runner</span>(<span class="ident">payload</span>: <span class="ident">Login</span>, <span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="ident">AppData</span>) -&gt; <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
-        <span class="kw">use</span> <span class="ident">argon2_creds::Config</span>;
+    <span class="doccomment">/// returns Ok(()) when everything checks out and the user is authenticated. Errors otherwise
+    </span><span class="kw">pub async fn </span>login_runner(payload: Login, data: <span class="kw-2">&amp;</span>AppData) -&gt; ServiceResult&lt;String&gt; {
+        <span class="kw">use </span>argon2_creds::Config;
 
-        <span class="kw">let</span> <span class="ident">verify</span> <span class="op">=</span> <span class="op">|</span><span class="ident">stored</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">received</span>: <span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">|</span> {
-            <span class="kw">if</span> <span class="ident">Config::verify</span>(<span class="ident">stored</span>, <span class="ident">received</span>)<span class="question-mark">?</span> {
+        <span class="kw">let </span>verify = |stored: <span class="kw-2">&amp;</span>str, received: <span class="kw-2">&amp;</span>str| {
+            <span class="kw">if </span>Config::verify(stored, received)<span class="question-mark">? </span>{
                 <span class="prelude-val">Ok</span>(())
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">ServiceError::WrongPassword</span>)
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(ServiceError::WrongPassword)
             }
         };
 
-        <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">payload</span>.<span class="ident">login</span>.<span class="ident">contains</span>(<span class="string">&#39;@&#39;</span>) {
-            <span class="ident">data</span>.<span class="ident">db</span>
-                .<span class="ident">get_password</span>(<span class="kw-2">&amp;</span><span class="ident">db_core::Login::Email</span>(<span class="kw-2">&amp;</span><span class="ident">payload</span>.<span class="ident">login</span>))
-                .<span class="kw">await</span><span class="question-mark">?</span>
-        } <span class="kw">else</span> {
-            <span class="kw">let</span> <span class="ident">username</span> <span class="op">=</span> <span class="ident">data</span>.<span class="ident">creds</span>.<span class="ident">username</span>(<span class="kw-2">&amp;</span><span class="ident">payload</span>.<span class="ident">login</span>)<span class="question-mark">?</span>;
-            <span class="ident">data</span>.<span class="ident">db</span>
-                .<span class="ident">get_password</span>(<span class="kw-2">&amp;</span><span class="ident">db_core::Login::Username</span>(<span class="kw-2">&amp;</span><span class="ident">username</span>))
-                .<span class="kw">await</span><span class="question-mark">?</span>
-        };
+        <span class="kw">let </span>s = <span class="kw">if </span>payload.login.contains(<span class="string">&#39;@&#39;</span>) {
+            data.db
+                .get_password(<span class="kw-2">&amp;</span>db_core::Login::Email(<span class="kw-2">&amp;</span>payload.login))
+                .<span class="kw">await</span><span class="question-mark">?
+        </span>} <span class="kw">else </span>{
+            <span class="kw">let </span>username = data.creds.username(<span class="kw-2">&amp;</span>payload.login)<span class="question-mark">?</span>;
+            data.db
+                .get_password(<span class="kw-2">&amp;</span>db_core::Login::Username(<span class="kw-2">&amp;</span>username))
+                .<span class="kw">await</span><span class="question-mark">?
+        </span>};
 
-        <span class="ident">verify</span>(<span class="kw-2">&amp;</span><span class="ident">s</span>.<span class="ident">hash</span>, <span class="kw-2">&amp;</span><span class="ident">payload</span>.<span class="ident">password</span>)<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(<span class="ident">s</span>.<span class="ident">username</span>)
+        verify(<span class="kw-2">&amp;</span>s.hash, <span class="kw-2">&amp;</span>payload.password)<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(s.username)
     }
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">register_runner</span>(
-        <span class="ident">payload</span>: <span class="kw-2">&amp;</span><span class="ident">Register</span>,
-        <span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="ident">AppData</span>,
-    ) -&gt; <span class="ident">ServiceResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="op">!</span><span class="ident">data</span>.<span class="ident">settings</span>.<span class="ident">allow_registration</span> {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ServiceError::ClosedForRegistration</span>);
+    <span class="kw">pub async fn </span>register_runner(
+        payload: <span class="kw-2">&amp;</span>Register,
+        data: <span class="kw-2">&amp;</span>AppData,
+    ) -&gt; ServiceResult&lt;()&gt; {
+        <span class="kw">if </span>!data.settings.allow_registration {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(ServiceError::ClosedForRegistration);
         }
 
-        <span class="kw">if</span> <span class="ident">payload</span>.<span class="ident">password</span> <span class="op">!</span><span class="op">=</span> <span class="ident">payload</span>.<span class="ident">confirm_password</span> {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ServiceError::PasswordsDontMatch</span>);
+        <span class="kw">if </span>payload.password != payload.confirm_password {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(ServiceError::PasswordsDontMatch);
         }
-        <span class="kw">let</span> <span class="ident">username</span> <span class="op">=</span> <span class="ident">data</span>.<span class="ident">creds</span>.<span class="ident">username</span>(<span class="kw-2">&amp;</span><span class="ident">payload</span>.<span class="ident">username</span>)<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">hash</span> <span class="op">=</span> <span class="ident">data</span>.<span class="ident">creds</span>.<span class="ident">password</span>(<span class="kw-2">&amp;</span><span class="ident">payload</span>.<span class="ident">password</span>)<span class="question-mark">?</span>;
+        <span class="kw">let </span>username = data.creds.username(<span class="kw-2">&amp;</span>payload.username)<span class="question-mark">?</span>;
+        <span class="kw">let </span>hash = data.creds.password(<span class="kw-2">&amp;</span>payload.password)<span class="question-mark">?</span>;
 
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">email</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">payload</span>.<span class="ident">email</span> {
-            <span class="ident">data</span>.<span class="ident">creds</span>.<span class="ident">email</span>(<span class="ident">email</span>)<span class="question-mark">?</span>;
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(email) = <span class="kw-2">&amp;</span>payload.email {
+            data.creds.email(email)<span class="question-mark">?</span>;
         }
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">secret</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>secret;
 
-        <span class="kw">loop</span> {
-            <span class="ident">secret</span> <span class="op">=</span> <span class="ident">get_random</span>(<span class="number">32</span>);
+        <span class="kw">loop </span>{
+            secret = get_random(<span class="number">32</span>);
 
-            <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">db_core::Register</span> {
-                <span class="ident">username</span>: <span class="kw-2">&amp;</span><span class="ident">username</span>,
-                <span class="ident">hash</span>: <span class="kw-2">&amp;</span><span class="ident">hash</span>,
-                <span class="ident">email</span>: <span class="ident">payload</span>.<span class="ident">email</span>.<span class="ident">as_deref</span>(),
-                <span class="ident">secret</span>: <span class="kw-2">&amp;</span><span class="ident">secret</span>,
+            <span class="kw">let </span>p = db_core::Register {
+                username: <span class="kw-2">&amp;</span>username,
+                hash: <span class="kw-2">&amp;</span>hash,
+                email: payload.email.as_deref(),
+                secret: <span class="kw-2">&amp;</span>secret,
             };
 
-            <span class="kw">match</span> <span class="ident">data</span>.<span class="ident">db</span>.<span class="ident">register</span>(<span class="kw-2">&amp;</span><span class="ident">p</span>).<span class="kw">await</span> {
+            <span class="kw">match </span>data.db.register(<span class="kw-2">&amp;</span>p).<span class="kw">await </span>{
                 <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="kw">break</span>,
-                <span class="prelude-val">Err</span>(<span class="ident">DBError::SecretTaken</span>) =&gt; <span class="kw">continue</span>,
-                <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>.<span class="ident">into</span>()),
+                <span class="prelude-val">Err</span>(DBError::SecretTaken) =&gt; <span class="kw">continue</span>,
+                <span class="prelude-val">Err</span>(e) =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(e.into()),
             }
         }
 
@@ -355,52 +355,52 @@
     }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">services</span>(<span class="ident">cfg</span>: <span class="kw-2">&amp;mut</span> <span class="ident">web::ServiceConfig</span>) {
-    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">register</span>);
-    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">login</span>);
-    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">signout</span>);
+<span class="kw">pub fn </span>services(cfg: <span class="kw-2">&amp;mut </span>web::ServiceConfig) {
+    cfg.service(register);
+    cfg.service(login);
+    cfg.service(signout);
 }
-<span class="attribute">#[<span class="ident">my_codegen::post</span>(<span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;crate::V1_API_ROUTES.auth.register&quot;</span>)]</span>
-<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">register</span>(
-    <span class="ident">payload</span>: <span class="ident">web::Json</span><span class="op">&lt;</span><span class="ident">runners::Register</span><span class="op">&gt;</span>,
-    <span class="ident">data</span>: <span class="ident">AppData</span>,
-) -&gt; <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
-    <span class="ident">runners::register_runner</span>(<span class="kw-2">&amp;</span><span class="ident">payload</span>, <span class="kw-2">&amp;</span><span class="ident">data</span>).<span class="kw">await</span><span class="question-mark">?</span>;
-    <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse::Ok</span>())
+<span class="attribute">#[my_codegen::post(path = <span class="string">&quot;crate::V1_API_ROUTES.auth.register&quot;</span>)]
+</span><span class="kw">async fn </span>register(
+    payload: web::Json&lt;runners::Register&gt;,
+    data: AppData,
+) -&gt; ServiceResult&lt;<span class="kw">impl </span>Responder&gt; {
+    runners::register_runner(<span class="kw-2">&amp;</span>payload, <span class="kw-2">&amp;</span>data).<span class="kw">await</span><span class="question-mark">?</span>;
+    <span class="prelude-val">Ok</span>(HttpResponse::Ok())
 }
 
-<span class="attribute">#[<span class="ident">my_codegen::post</span>(<span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;crate::V1_API_ROUTES.auth.login&quot;</span>)]</span>
-<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">login</span>(
-    <span class="ident">id</span>: <span class="ident">Identity</span>,
-    <span class="ident">payload</span>: <span class="ident">web::Json</span><span class="op">&lt;</span><span class="ident">runners::Login</span><span class="op">&gt;</span>,
-    <span class="ident">query</span>: <span class="ident">web::Query</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::RedirectQuery</span><span class="op">&gt;</span>,
-    <span class="ident">data</span>: <span class="ident">AppData</span>,
-) -&gt; <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">username</span> <span class="op">=</span> <span class="ident">runners::login_runner</span>(<span class="ident">payload</span>.<span class="ident">into_inner</span>(), <span class="kw-2">&amp;</span><span class="ident">data</span>).<span class="kw">await</span><span class="question-mark">?</span>;
-    <span class="ident">id</span>.<span class="ident">remember</span>(<span class="ident">username</span>);
-    <span class="comment">//    Ok(HttpResponse::Ok())</span>
+<span class="attribute">#[my_codegen::post(path = <span class="string">&quot;crate::V1_API_ROUTES.auth.login&quot;</span>)]
+</span><span class="kw">async fn </span>login(
+    id: Identity,
+    payload: web::Json&lt;runners::Login&gt;,
+    query: web::Query&lt;<span class="kw">super</span>::RedirectQuery&gt;,
+    data: AppData,
+) -&gt; ServiceResult&lt;<span class="kw">impl </span>Responder&gt; {
+    <span class="kw">let </span>username = runners::login_runner(payload.into_inner(), <span class="kw-2">&amp;</span>data).<span class="kw">await</span><span class="question-mark">?</span>;
+    id.remember(username);
+    <span class="comment">//    Ok(HttpResponse::Ok())
 
-    <span class="kw">let</span> <span class="ident">query</span> <span class="op">=</span> <span class="ident">query</span>.<span class="ident">into_inner</span>();
-    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">redirect_to</span>) <span class="op">=</span> <span class="ident">query</span>.<span class="ident">redirect_to</span> {
-        <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse::Found</span>()
-            .<span class="ident">append_header</span>((<span class="ident">header::LOCATION</span>, <span class="ident">redirect_to</span>))
-            .<span class="ident">finish</span>())
-    } <span class="kw">else</span> {
-        <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse::Ok</span>().<span class="ident">finish</span>())
+    </span><span class="kw">let </span>query = query.into_inner();
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(redirect_to) = query.redirect_to {
+        <span class="prelude-val">Ok</span>(HttpResponse::Found()
+            .append_header((header::LOCATION, redirect_to))
+            .finish())
+    } <span class="kw">else </span>{
+        <span class="prelude-val">Ok</span>(HttpResponse::Ok().finish())
     }
 }
 
-<span class="attribute">#[<span class="ident">my_codegen::get</span>(
-    <span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;crate::V1_API_ROUTES.auth.logout&quot;</span>,
-    <span class="ident">wrap</span> <span class="op">=</span> <span class="string">&quot;crate::api::v1::get_middleware()&quot;</span>
-)]</span>
-<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">signout</span>(<span class="ident">id</span>: <span class="ident">Identity</span>) -&gt; <span class="kw">impl</span> <span class="ident">Responder</span> {
-    <span class="kw">if</span> <span class="ident">id</span>.<span class="ident">identity</span>().<span class="ident">is_some</span>() {
-        <span class="ident">id</span>.<span class="ident">forget</span>();
+<span class="attribute">#[my_codegen::get(
+    path = <span class="string">&quot;crate::V1_API_ROUTES.auth.logout&quot;</span>,
+    wrap = <span class="string">&quot;crate::api::v1::get_middleware()&quot;
+</span>)]
+</span><span class="kw">async fn </span>signout(id: Identity) -&gt; <span class="kw">impl </span>Responder {
+    <span class="kw">if </span>id.identity().is_some() {
+        id.forget();
     }
-    <span class="ident">HttpResponse::Found</span>()
-        .<span class="ident">append_header</span>((<span class="ident">header::LOCATION</span>, <span class="ident"><span class="kw">crate</span>::PAGES</span>.<span class="ident">auth</span>.<span class="ident">login</span>))
-        .<span class="ident">finish</span>()
+    HttpResponse::Found()
+        .append_header((header::LOCATION, <span class="kw">crate</span>::PAGES.auth.login))
+        .finish()
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="mcaptcha" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="mcaptcha" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

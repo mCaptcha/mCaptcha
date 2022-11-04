@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/docs.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>docs.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../mcaptcha/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/docs.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>docs.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../mcaptcha/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -148,125 +148,125 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
- */</span>
-<span class="kw">use</span> <span class="ident">std::borrow::Cow</span>;
+ */
+</span><span class="kw">use </span>std::borrow::Cow;
 
-<span class="kw">use</span> <span class="ident">actix_web::body::BoxBody</span>;
-<span class="kw">use</span> <span class="ident">actix_web</span>::{<span class="ident">http::header</span>, <span class="ident">web</span>, <span class="ident">HttpResponse</span>, <span class="ident">Responder</span>};
-<span class="kw">use</span> <span class="ident">mime_guess::from_path</span>;
-<span class="kw">use</span> <span class="ident">rust_embed::RustEmbed</span>;
+<span class="kw">use </span>actix_web::body::BoxBody;
+<span class="kw">use </span>actix_web::{http::header, web, HttpResponse, Responder};
+<span class="kw">use </span>mime_guess::from_path;
+<span class="kw">use </span>rust_embed::RustEmbed;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::CACHE_AGE</span>;
+<span class="kw">use </span><span class="kw">crate</span>::CACHE_AGE;
 
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DOCS</span>: <span class="ident">routes::Docs</span> <span class="op">=</span> <span class="ident">routes::Docs::new</span>();
+<span class="kw">pub const </span>DOCS: routes::Docs = routes::Docs::new();
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">routes</span> {
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Docs</span> {
-        <span class="kw">pub</span> <span class="ident">home</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
-        <span class="kw">pub</span> <span class="ident">spec</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
-        <span class="kw">pub</span> <span class="ident">assets</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
+<span class="kw">pub mod </span>routes {
+    <span class="kw">pub struct </span>Docs {
+        <span class="kw">pub </span>home: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        <span class="kw">pub </span>spec: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        <span class="kw">pub </span>assets: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
     }
 
-    <span class="kw">impl</span> <span class="ident">Docs</span> {
-        <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
-            <span class="ident">Docs</span> {
-                <span class="ident">home</span>: <span class="string">&quot;/docs/&quot;</span>,
-                <span class="ident">spec</span>: <span class="string">&quot;/docs/openapi.yaml&quot;</span>,
-                <span class="ident">assets</span>: <span class="string">&quot;/docs/{_:.*}&quot;</span>,
+    <span class="kw">impl </span>Docs {
+        <span class="kw">pub const fn </span>new() -&gt; <span class="self">Self </span>{
+            Docs {
+                home: <span class="string">&quot;/docs/&quot;</span>,
+                spec: <span class="string">&quot;/docs/openapi.yaml&quot;</span>,
+                assets: <span class="string">&quot;/docs/{_:.*}&quot;</span>,
             }
         }
     }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">services</span>(<span class="ident">cfg</span>: <span class="kw-2">&amp;mut</span> <span class="ident">web::ServiceConfig</span>) {
-    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">index</span>).<span class="ident">service</span>(<span class="ident">spec</span>).<span class="ident">service</span>(<span class="ident">dist</span>);
+<span class="kw">pub fn </span>services(cfg: <span class="kw-2">&amp;mut </span>web::ServiceConfig) {
+    cfg.service(index).service(spec).service(dist);
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">RustEmbed</span>)]</span>
-<span class="attribute">#[<span class="ident">folder</span> <span class="op">=</span> <span class="string">&quot;static/openapi/&quot;</span>]</span>
-<span class="kw">struct</span> <span class="ident">Asset</span>;
+<span class="attribute">#[derive(RustEmbed)]
+#[folder = <span class="string">&quot;static/openapi/&quot;</span>]
+</span><span class="kw">struct </span>Asset;
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_embedded_file</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">HttpResponse</span> {
-    <span class="kw">match</span> <span class="ident">Asset::get</span>(<span class="ident">path</span>) {
-        <span class="prelude-val">Some</span>(<span class="ident">content</span>) =&gt; {
-            <span class="kw">let</span> <span class="ident">body</span>: <span class="ident">BoxBody</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">content</span>.<span class="ident">data</span> {
-                <span class="ident">Cow::Borrowed</span>(<span class="ident">bytes</span>) =&gt; <span class="ident">BoxBody::new</span>(<span class="ident">bytes</span>),
-                <span class="ident">Cow::Owned</span>(<span class="ident">bytes</span>) =&gt; <span class="ident">BoxBody::new</span>(<span class="ident">bytes</span>),
+<span class="kw">pub fn </span>handle_embedded_file(path: <span class="kw-2">&amp;</span>str) -&gt; HttpResponse {
+    <span class="kw">match </span>Asset::get(path) {
+        <span class="prelude-val">Some</span>(content) =&gt; {
+            <span class="kw">let </span>body: BoxBody = <span class="kw">match </span>content.data {
+                Cow::Borrowed(bytes) =&gt; BoxBody::new(bytes),
+                Cow::Owned(bytes) =&gt; BoxBody::new(bytes),
             };
 
-            <span class="ident">HttpResponse::Ok</span>()
-                .<span class="ident">insert_header</span>(<span class="ident">header::CacheControl</span>(<span class="macro">vec!</span>[
-                    <span class="ident">header::CacheDirective::Public</span>,
-                    <span class="ident">header::CacheDirective::Extension</span>(<span class="string">&quot;immutable&quot;</span>.<span class="ident">into</span>(), <span class="prelude-val">None</span>),
-                    <span class="ident">header::CacheDirective::MaxAge</span>(<span class="ident">CACHE_AGE</span>),
+            HttpResponse::Ok()
+                .insert_header(header::CacheControl(<span class="macro">vec!</span>[
+                    header::CacheDirective::Public,
+                    header::CacheDirective::Extension(<span class="string">&quot;immutable&quot;</span>.into(), <span class="prelude-val">None</span>),
+                    header::CacheDirective::MaxAge(CACHE_AGE),
                 ]))
-                .<span class="ident">content_type</span>(<span class="ident">from_path</span>(<span class="ident">path</span>).<span class="ident">first_or_octet_stream</span>().<span class="ident">as_ref</span>())
-                .<span class="ident">body</span>(<span class="ident">body</span>)
+                .content_type(from_path(path).first_or_octet_stream().as_ref())
+                .body(body)
         }
-        <span class="prelude-val">None</span> =&gt; <span class="ident">HttpResponse::NotFound</span>().<span class="ident">body</span>(<span class="string">&quot;404 Not Found&quot;</span>),
+        <span class="prelude-val">None </span>=&gt; HttpResponse::NotFound().body(<span class="string">&quot;404 Not Found&quot;</span>),
     }
 }
 
-<span class="attribute">#[<span class="ident">my_codegen::get</span>(<span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;DOCS.assets&quot;</span>)]</span>
-<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">dist</span>(<span class="ident">path</span>: <span class="ident">web::Path</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) -&gt; <span class="kw">impl</span> <span class="ident">Responder</span> {
-    <span class="ident">handle_embedded_file</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>)
+<span class="attribute">#[my_codegen::get(path = <span class="string">&quot;DOCS.assets&quot;</span>)]
+</span><span class="kw">async fn </span>dist(path: web::Path&lt;String&gt;) -&gt; <span class="kw">impl </span>Responder {
+    handle_embedded_file(<span class="kw-2">&amp;</span>path)
 }
-<span class="kw">const</span> <span class="ident">OPEN_API_SPEC</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="macro">include_str!</span>(<span class="string">&quot;../docs/openapi/dist/openapi.yaml&quot;</span>);
+<span class="kw">const </span>OPEN_API_SPEC: <span class="kw-2">&amp;</span>str = <span class="macro">include_str!</span>(<span class="string">&quot;../docs/openapi/dist/openapi.yaml&quot;</span>);
 
-<span class="attribute">#[<span class="ident">my_codegen::get</span>(<span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;DOCS.spec&quot;</span>)]</span>
-<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">spec</span>() -&gt; <span class="ident">HttpResponse</span> {
-    <span class="ident">HttpResponse::Ok</span>()
-        .<span class="ident">content_type</span>(<span class="string">&quot;text/yaml&quot;</span>)
-        .<span class="ident">body</span>(<span class="ident">OPEN_API_SPEC</span>)
-}
-
-<span class="attribute">#[<span class="ident">my_codegen::get</span>(<span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;&amp;DOCS.home[0..DOCS.home.len() -1]&quot;</span>)]</span>
-<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">index</span>() -&gt; <span class="ident">HttpResponse</span> {
-    <span class="ident">handle_embedded_file</span>(<span class="string">&quot;index.html&quot;</span>)
+<span class="attribute">#[my_codegen::get(path = <span class="string">&quot;DOCS.spec&quot;</span>)]
+</span><span class="kw">async fn </span>spec() -&gt; HttpResponse {
+    HttpResponse::Ok()
+        .content_type(<span class="string">&quot;text/yaml&quot;</span>)
+        .body(OPEN_API_SPEC)
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="ident">actix_web::http::StatusCode</span>;
-    <span class="kw">use</span> <span class="ident">actix_web::test</span>;
+<span class="attribute">#[my_codegen::get(path = <span class="string">&quot;&amp;DOCS.home[0..DOCS.home.len() -1]&quot;</span>)]
+</span><span class="kw">async fn </span>index() -&gt; HttpResponse {
+    handle_embedded_file(<span class="string">&quot;index.html&quot;</span>)
+}
 
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="kw-2">*</span>;
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>tests {
+    <span class="kw">use </span>actix_web::http::StatusCode;
+    <span class="kw">use </span>actix_web::test;
 
-    <span class="attribute">#[<span class="ident">actix_rt::test</span>]</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">docs_works</span>() {
-        <span class="kw">const</span> <span class="ident">FILE</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;favicon-32x32.png&quot;</span>;
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
+    <span class="kw">use crate</span>::<span class="kw-2">*</span>;
 
-        <span class="kw">let</span> <span class="ident">app</span> <span class="op">=</span> <span class="ident">test::init_service</span>(
-            <span class="ident">App::new</span>()
-                .<span class="ident">wrap</span>(<span class="ident">actix_middleware::NormalizePath::new</span>(
-                    <span class="ident">actix_middleware::TrailingSlash::Trim</span>,
+    <span class="attribute">#[actix_rt::test]
+    </span><span class="kw">async fn </span>docs_works() {
+        <span class="kw">const </span>FILE: <span class="kw-2">&amp;</span>str = <span class="string">&quot;favicon-32x32.png&quot;</span>;
+
+        <span class="kw">let </span>app = test::init_service(
+            App::new()
+                .wrap(actix_middleware::NormalizePath::new(
+                    actix_middleware::TrailingSlash::Trim,
                 ))
-                .<span class="ident">configure</span>(<span class="ident">services</span>),
+                .configure(services),
         )
         .<span class="kw">await</span>;
 
-        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="ident">app</span>,
-            <span class="ident">test::TestRequest::get</span>().<span class="ident">uri</span>(<span class="ident">DOCS</span>.<span class="ident">home</span>).<span class="ident">to_request</span>(),
+        <span class="kw">let </span>resp = test::call_service(
+            <span class="kw-2">&amp;</span>app,
+            test::TestRequest::get().uri(DOCS.home).to_request(),
         )
         .<span class="kw">await</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::OK</span>);
+        <span class="macro">assert_eq!</span>(resp.status(), StatusCode::OK);
 
-        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="ident">app</span>,
-            <span class="ident">test::TestRequest::get</span>().<span class="ident">uri</span>(<span class="ident">DOCS</span>.<span class="ident">spec</span>).<span class="ident">to_request</span>(),
+        <span class="kw">let </span>resp = test::call_service(
+            <span class="kw-2">&amp;</span>app,
+            test::TestRequest::get().uri(DOCS.spec).to_request(),
         )
         .<span class="kw">await</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::OK</span>);
+        <span class="macro">assert_eq!</span>(resp.status(), StatusCode::OK);
 
-        <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;{}{}&quot;</span>, <span class="ident">DOCS</span>.<span class="ident">home</span>, <span class="ident">FILE</span>);
+        <span class="kw">let </span>uri = <span class="macro">format!</span>(<span class="string">&quot;{}{}&quot;</span>, DOCS.home, FILE);
 
-        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span>
-            <span class="ident">test::call_service</span>(<span class="kw-2">&amp;</span><span class="ident">app</span>, <span class="ident">test::TestRequest::get</span>().<span class="ident">uri</span>(<span class="kw-2">&amp;</span><span class="ident">uri</span>).<span class="ident">to_request</span>())
+        <span class="kw">let </span>resp =
+            test::call_service(<span class="kw-2">&amp;</span>app, test::TestRequest::get().uri(<span class="kw-2">&amp;</span>uri).to_request())
                 .<span class="kw">await</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::OK</span>);
+        <span class="macro">assert_eq!</span>(resp.status(), StatusCode::OK);
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="mcaptcha" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="mcaptcha" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

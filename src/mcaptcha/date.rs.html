@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/date.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>date.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../mcaptcha/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/date.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>date.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../mcaptcha/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -128,105 +128,105 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
- */</span>
-<span class="kw">use</span> <span class="ident">std::fmt::Debug</span>;
+ */
+</span><span class="kw">use </span>std::fmt::Debug;
 
-<span class="kw">use</span> <span class="ident">sqlx::types::time::OffsetDateTime</span>;
+<span class="kw">use </span>sqlx::types::time::OffsetDateTime;
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Date</span> {
-    <span class="kw">pub</span> <span class="ident">time</span>: <span class="ident">OffsetDateTime</span>,
+<span class="attribute">#[derive(Clone)]
+</span><span class="kw">pub struct </span>Date {
+    <span class="kw">pub </span>time: OffsetDateTime,
 }
 
-<span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Date</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">std::fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Date&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;time&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">print_date</span>())
-            .<span class="ident">finish</span>()
+<span class="kw">impl </span>Debug <span class="kw">for </span>Date {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
+        f.debug_struct(<span class="string">&quot;Date&quot;</span>)
+            .field(<span class="string">&quot;time&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.print_date())
+            .finish()
     }
 }
 
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MINUTE</span>: <span class="ident">i64</span> <span class="op">=</span> <span class="number">60</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">HOUR</span>: <span class="ident">i64</span> <span class="op">=</span> <span class="ident">MINUTE</span> <span class="op">*</span> <span class="number">60</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DAY</span>: <span class="ident">i64</span> <span class="op">=</span> <span class="ident">HOUR</span> <span class="op">*</span> <span class="number">24</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">WEEK</span>: <span class="ident">i64</span> <span class="op">=</span> <span class="ident">DAY</span> <span class="op">*</span> <span class="number">7</span>;
+<span class="kw">pub const </span>MINUTE: i64 = <span class="number">60</span>;
+<span class="kw">pub const </span>HOUR: i64 = MINUTE * <span class="number">60</span>;
+<span class="kw">pub const </span>DAY: i64 = HOUR * <span class="number">24</span>;
+<span class="kw">pub const </span>WEEK: i64 = DAY * <span class="number">7</span>;
 
-<span class="kw">impl</span> <span class="ident">Date</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">format</span>(<span class="ident">date</span>: <span class="kw-2">&amp;</span><span class="ident">OffsetDateTime</span>) -&gt; <span class="ident">String</span> {
-        <span class="kw">let</span> <span class="ident">timestamp</span> <span class="op">=</span> <span class="ident">date</span>.<span class="ident">unix_timestamp</span>();
-        <span class="kw">let</span> <span class="ident">now</span> <span class="op">=</span> <span class="ident">OffsetDateTime::now_utc</span>().<span class="ident">unix_timestamp</span>();
+<span class="kw">impl </span>Date {
+    <span class="kw">pub fn </span>format(date: <span class="kw-2">&amp;</span>OffsetDateTime) -&gt; String {
+        <span class="kw">let </span>timestamp = date.unix_timestamp();
+        <span class="kw">let </span>now = OffsetDateTime::now_utc().unix_timestamp();
 
-        <span class="kw">let</span> <span class="ident">difference</span> <span class="op">=</span> <span class="ident">now</span> <span class="op">-</span> <span class="ident">timestamp</span>;
+        <span class="kw">let </span>difference = now - timestamp;
 
-        <span class="kw">if</span> <span class="ident">difference</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">3</span> <span class="op">*</span> <span class="ident">WEEK</span> {
-            <span class="ident">date</span>.<span class="ident">format</span>(<span class="string">&quot;%d-%m-%y&quot;</span>)
-        } <span class="kw">else</span> <span class="kw">if</span> (<span class="ident">DAY</span>..(<span class="number">3</span> <span class="op">*</span> <span class="ident">WEEK</span>)).<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">difference</span>) {
-            <span class="macro">format!</span>(<span class="string">&quot;{} days ago&quot;</span>, <span class="ident">date</span>.<span class="ident">hour</span>())
-        } <span class="kw">else</span> <span class="kw">if</span> (<span class="ident">HOUR</span>..<span class="ident">DAY</span>).<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">difference</span>) {
-            <span class="macro">format!</span>(<span class="string">&quot;{} hours ago&quot;</span>, <span class="ident">date</span>.<span class="ident">hour</span>())
-        } <span class="kw">else</span> <span class="kw">if</span> (<span class="ident">MINUTE</span>..<span class="ident">HOUR</span>).<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">difference</span>) {
-            <span class="macro">format!</span>(<span class="string">&quot;{} minutes ago&quot;</span>, <span class="ident">date</span>.<span class="ident">minute</span>())
-        } <span class="kw">else</span> {
-            <span class="macro">format!</span>(<span class="string">&quot;{} seconds ago&quot;</span>, <span class="ident">date</span>.<span class="ident">second</span>())
+        <span class="kw">if </span>difference &gt;= <span class="number">3 </span>* WEEK {
+            date.format(<span class="string">&quot;%d-%m-%y&quot;</span>)
+        } <span class="kw">else if </span>(DAY..(<span class="number">3 </span>* WEEK)).contains(<span class="kw-2">&amp;</span>difference) {
+            <span class="macro">format!</span>(<span class="string">&quot;{} days ago&quot;</span>, date.hour())
+        } <span class="kw">else if </span>(HOUR..DAY).contains(<span class="kw-2">&amp;</span>difference) {
+            <span class="macro">format!</span>(<span class="string">&quot;{} hours ago&quot;</span>, date.hour())
+        } <span class="kw">else if </span>(MINUTE..HOUR).contains(<span class="kw-2">&amp;</span>difference) {
+            <span class="macro">format!</span>(<span class="string">&quot;{} minutes ago&quot;</span>, date.minute())
+        } <span class="kw">else </span>{
+            <span class="macro">format!</span>(<span class="string">&quot;{} seconds ago&quot;</span>, date.second())
         }
     }
 
-    <span class="doccomment">/// print relative time from date</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">print_date</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">String</span> {
-        <span class="ident"><span class="self">Self</span>::format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">time</span>)
+    <span class="doccomment">/// print relative time from date
+    </span><span class="kw">pub fn </span>print_date(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
+        <span class="self">Self</span>::format(<span class="kw-2">&amp;</span><span class="self">self</span>.time)
     }
 
-    <span class="doccomment">/// print date</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">date</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">String</span> {
-        <span class="self">self</span>.<span class="ident">time</span>.<span class="ident">format</span>(<span class="string">&quot;%F %r %z&quot;</span>)
+    <span class="doccomment">/// print date
+    </span><span class="kw">pub fn </span>date(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
+        <span class="self">self</span>.time.format(<span class="string">&quot;%F %r %z&quot;</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">unix</span>: <span class="ident">i64</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">time</span>: <span class="ident">OffsetDateTime::from_unix_timestamp</span>(<span class="ident">unix</span>),
+    <span class="kw">pub fn </span>new(unix: i64) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            time: OffsetDateTime::from_unix_timestamp(unix),
         }
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>tests {
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">print_date_test</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">n</span> <span class="op">=</span> <span class="ident">Date</span> {
-            <span class="ident">time</span>: <span class="ident">OffsetDateTime::now_utc</span>(),
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>print_date_test() {
+        <span class="kw">let </span><span class="kw-2">mut </span>n = Date {
+            time: OffsetDateTime::now_utc(),
         };
 
-        <span class="kw">let</span> <span class="ident">timestamp</span> <span class="op">=</span> <span class="ident">n</span>.<span class="ident">time</span>.<span class="ident">unix_timestamp</span>();
-        <span class="macro">println!</span>(<span class="string">&quot;timestamp: {}&quot;</span>, <span class="ident">timestamp</span>);
+        <span class="kw">let </span>timestamp = n.time.unix_timestamp();
+        <span class="macro">println!</span>(<span class="string">&quot;timestamp: {}&quot;</span>, timestamp);
 
-        <span class="comment">// seconds test</span>
-        <span class="macro">assert!</span>(<span class="ident">n</span>.<span class="ident">print_date</span>().<span class="ident">contains</span>(<span class="string">&quot;seconds ago&quot;</span>));
-        <span class="ident">n</span>.<span class="ident">time</span> <span class="op">=</span> <span class="ident">OffsetDateTime::from_unix_timestamp</span>(<span class="ident">timestamp</span> <span class="op">-</span> <span class="number">5</span>);
-        <span class="macro">assert!</span>(<span class="ident">n</span>.<span class="ident">print_date</span>().<span class="ident">contains</span>(<span class="string">&quot;seconds ago&quot;</span>));
+        <span class="comment">// seconds test
+        </span><span class="macro">assert!</span>(n.print_date().contains(<span class="string">&quot;seconds ago&quot;</span>));
+        n.time = OffsetDateTime::from_unix_timestamp(timestamp - <span class="number">5</span>);
+        <span class="macro">assert!</span>(n.print_date().contains(<span class="string">&quot;seconds ago&quot;</span>));
 
-        <span class="comment">// minutes test</span>
-        <span class="ident">n</span>.<span class="ident">time</span> <span class="op">=</span> <span class="ident">OffsetDateTime::from_unix_timestamp</span>(<span class="ident">timestamp</span> <span class="op">-</span> <span class="ident">MINUTE</span> <span class="op">*</span> <span class="number">2</span>);
-        <span class="macro">assert!</span>(<span class="ident">n</span>.<span class="ident">print_date</span>().<span class="ident">contains</span>(<span class="string">&quot;minutes ago&quot;</span>));
-        <span class="ident">n</span>.<span class="ident">time</span> <span class="op">=</span> <span class="ident">OffsetDateTime::from_unix_timestamp</span>(<span class="ident">timestamp</span> <span class="op">-</span> <span class="ident">MINUTE</span> <span class="op">*</span> <span class="number">56</span>);
-        <span class="macro">assert!</span>(<span class="ident">n</span>.<span class="ident">print_date</span>().<span class="ident">contains</span>(<span class="string">&quot;minutes ago&quot;</span>));
+        <span class="comment">// minutes test
+        </span>n.time = OffsetDateTime::from_unix_timestamp(timestamp - MINUTE * <span class="number">2</span>);
+        <span class="macro">assert!</span>(n.print_date().contains(<span class="string">&quot;minutes ago&quot;</span>));
+        n.time = OffsetDateTime::from_unix_timestamp(timestamp - MINUTE * <span class="number">56</span>);
+        <span class="macro">assert!</span>(n.print_date().contains(<span class="string">&quot;minutes ago&quot;</span>));
 
-        <span class="comment">// hours test</span>
-        <span class="ident">n</span>.<span class="ident">time</span> <span class="op">=</span> <span class="ident">OffsetDateTime::from_unix_timestamp</span>(<span class="ident">timestamp</span> <span class="op">-</span> <span class="ident">HOUR</span>);
-        <span class="macro">assert!</span>(<span class="ident">n</span>.<span class="ident">print_date</span>().<span class="ident">contains</span>(<span class="string">&quot;hours ago&quot;</span>));
-        <span class="ident">n</span>.<span class="ident">time</span> <span class="op">=</span> <span class="ident">OffsetDateTime::from_unix_timestamp</span>(<span class="ident">timestamp</span> <span class="op">-</span> <span class="ident">HOUR</span> <span class="op">*</span> <span class="number">23</span>);
-        <span class="macro">assert!</span>(<span class="ident">n</span>.<span class="ident">print_date</span>().<span class="ident">contains</span>(<span class="string">&quot;hours ago&quot;</span>));
+        <span class="comment">// hours test
+        </span>n.time = OffsetDateTime::from_unix_timestamp(timestamp - HOUR);
+        <span class="macro">assert!</span>(n.print_date().contains(<span class="string">&quot;hours ago&quot;</span>));
+        n.time = OffsetDateTime::from_unix_timestamp(timestamp - HOUR * <span class="number">23</span>);
+        <span class="macro">assert!</span>(n.print_date().contains(<span class="string">&quot;hours ago&quot;</span>));
 
-        <span class="comment">// days test</span>
-        <span class="ident">n</span>.<span class="ident">time</span> <span class="op">=</span> <span class="ident">OffsetDateTime::from_unix_timestamp</span>(<span class="ident">timestamp</span> <span class="op">-</span> <span class="number">2</span> <span class="op">*</span> <span class="ident">WEEK</span>);
-        <span class="macro">assert!</span>(<span class="ident">n</span>.<span class="ident">print_date</span>().<span class="ident">contains</span>(<span class="string">&quot;days ago&quot;</span>));
+        <span class="comment">// days test
+        </span>n.time = OffsetDateTime::from_unix_timestamp(timestamp - <span class="number">2 </span>* WEEK);
+        <span class="macro">assert!</span>(n.print_date().contains(<span class="string">&quot;days ago&quot;</span>));
 
-        <span class="comment">// date test</span>
-        <span class="ident">n</span>.<span class="ident">time</span> <span class="op">=</span> <span class="ident">OffsetDateTime::from_unix_timestamp</span>(<span class="ident">timestamp</span> <span class="op">-</span> <span class="number">6</span> <span class="op">*</span> <span class="ident">WEEK</span>);
-        <span class="kw">let</span> <span class="ident">date</span> <span class="op">=</span> <span class="ident">n</span>.<span class="ident">time</span>.<span class="ident">format</span>(<span class="string">&quot;%d-%m-%y&quot;</span>);
-        <span class="macro">assert!</span>(<span class="ident">n</span>.<span class="ident">print_date</span>().<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">date</span>))
+        <span class="comment">// date test
+        </span>n.time = OffsetDateTime::from_unix_timestamp(timestamp - <span class="number">6 </span>* WEEK);
+        <span class="kw">let </span>date = n.time.format(<span class="string">&quot;%d-%m-%y&quot;</span>);
+        <span class="macro">assert!</span>(n.print_date().contains(<span class="kw-2">&amp;</span>date))
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="mcaptcha" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="mcaptcha" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/data.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>data.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../mcaptcha/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/data.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>data.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../mcaptcha/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -266,245 +266,245 @@
  * GNU Affero General Public License for more details.
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
- */</span>
-<span class="doccomment">//! App data: redis cache, database connections, etc.</span>
-<span class="kw">use</span> <span class="ident">std::sync::Arc</span>;
-<span class="kw">use</span> <span class="ident">std::thread</span>;
+ */
+</span><span class="doccomment">//! App data: redis cache, database connections, etc.
+</span><span class="kw">use </span>std::sync::Arc;
+<span class="kw">use </span>std::thread;
 
-<span class="kw">use</span> <span class="ident">actix::prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">argon2_creds</span>::{<span class="ident">Config</span>, <span class="ident">ConfigBuilder</span>, <span class="ident">PasswordPolicy</span>};
-<span class="kw">use</span> <span class="ident">lettre::transport::smtp::authentication::Mechanism</span>;
-<span class="kw">use</span> <span class="ident">lettre</span>::{
-    <span class="ident">transport::smtp::authentication::Credentials</span>, <span class="ident">AsyncSmtpTransport</span>, <span class="ident">Tokio1Executor</span>,
+<span class="kw">use </span>actix::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>argon2_creds::{Config, ConfigBuilder, PasswordPolicy};
+<span class="kw">use </span>lettre::transport::smtp::authentication::Mechanism;
+<span class="kw">use </span>lettre::{
+    transport::smtp::authentication::Credentials, AsyncSmtpTransport, Tokio1Executor,
 };
-<span class="kw">use</span> <span class="ident">libmcaptcha::cache::hashcache::HashCache</span>;
-<span class="kw">use</span> <span class="ident">libmcaptcha::cache::redis::RedisCache</span>;
-<span class="kw">use</span> <span class="ident">libmcaptcha::master::redis::master::Master</span> <span class="kw">as</span> <span class="ident">RedisMaster</span>;
-<span class="kw">use</span> <span class="ident">libmcaptcha::redis::RedisConfig</span>;
-<span class="kw">use</span> <span class="ident">libmcaptcha</span>::{
-    <span class="ident">cache::messages::VerifyCaptchaResult</span>,
-    <span class="ident">cache::Save</span>,
-    <span class="ident">errors::CaptchaResult</span>,
-    <span class="ident">master::messages</span>::{<span class="ident">AddSite</span>, <span class="ident">RemoveCaptcha</span>, <span class="ident">Rename</span>},
-    <span class="ident">master</span>::{<span class="ident">embedded::master::Master</span> <span class="kw">as</span> <span class="ident">EmbeddedMaster</span>, <span class="ident">Master</span> <span class="kw">as</span> <span class="ident">MasterTrait</span>},
-    <span class="ident">pow::ConfigBuilder</span> <span class="kw">as</span> <span class="ident">PoWConfigBuilder</span>,
-    <span class="ident">pow::PoWConfig</span>,
-    <span class="ident">pow::Work</span>,
-    <span class="ident">system</span>::{<span class="ident">System</span>, <span class="ident">SystemBuilder</span>},
+<span class="kw">use </span>libmcaptcha::cache::hashcache::HashCache;
+<span class="kw">use </span>libmcaptcha::cache::redis::RedisCache;
+<span class="kw">use </span>libmcaptcha::master::redis::master::Master <span class="kw">as </span>RedisMaster;
+<span class="kw">use </span>libmcaptcha::redis::RedisConfig;
+<span class="kw">use </span>libmcaptcha::{
+    cache::messages::VerifyCaptchaResult,
+    cache::Save,
+    errors::CaptchaResult,
+    master::messages::{AddSite, RemoveCaptcha, Rename},
+    master::{embedded::master::Master <span class="kw">as </span>EmbeddedMaster, Master <span class="kw">as </span>MasterTrait},
+    pow::ConfigBuilder <span class="kw">as </span>PoWConfigBuilder,
+    pow::PoWConfig,
+    pow::Work,
+    system::{System, SystemBuilder},
 };
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::db</span>::{<span class="self">self</span>, <span class="ident">BoxDB</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::errors::ServiceResult</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::settings::Settings</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::stats</span>::{<span class="ident">Dummy</span>, <span class="ident">Real</span>, <span class="ident">Stats</span>};
+<span class="kw">use </span><span class="kw">crate</span>::db::{<span class="self">self</span>, BoxDB};
+<span class="kw">use </span><span class="kw">crate</span>::errors::ServiceResult;
+<span class="kw">use </span><span class="kw">crate</span>::settings::Settings;
+<span class="kw">use </span><span class="kw">crate</span>::stats::{Dummy, Real, Stats};
 
-<span class="macro">macro_rules!</span> <span class="ident">enum_system_actor</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="kw">type</span>:<span class="macro-nonterminal">ident</span>) =&gt; {
-        <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">msg</span>: <span class="macro-nonterminal">$</span><span class="kw">type</span>) -&gt; <span class="macro-nonterminal">ServiceResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-            <span class="kw">match</span> <span class="self">self</span> {
-                <span class="ident"><span class="self">Self</span>::Embedded</span>(<span class="ident">val</span>) =&gt; <span class="ident">val</span>.<span class="ident">master</span>.<span class="ident">send</span>(<span class="ident">msg</span>).<span class="kw">await</span><span class="question-mark">?</span>.<span class="kw">await</span><span class="question-mark">?</span><span class="question-mark">?</span>,
-                <span class="ident"><span class="self">Self</span>::Redis</span>(<span class="ident">val</span>) =&gt; <span class="ident">val</span>.<span class="ident">master</span>.<span class="ident">send</span>(<span class="ident">msg</span>).<span class="kw">await</span><span class="question-mark">?</span>.<span class="kw">await</span><span class="question-mark">?</span><span class="question-mark">?</span>,
+<span class="macro">macro_rules! </span>enum_system_actor {
+    (<span class="macro-nonterminal">$name</span>:ident, <span class="macro-nonterminal">$</span><span class="kw">type</span>:<span class="macro-nonterminal">ident</span>) =&gt; {
+        <span class="kw">pub async fn </span><span class="macro-nonterminal">$name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, msg: <span class="macro-nonterminal">$</span><span class="kw">type</span>) -&gt; <span class="macro-nonterminal">ServiceResult</span>&lt;()&gt; {
+            <span class="kw">match </span><span class="self">self </span>{
+                <span class="self">Self</span>::Embedded(val) =&gt; val.master.send(msg).<span class="kw">await</span><span class="question-mark">?</span>.<span class="kw">await</span><span class="question-mark">??</span>,
+                <span class="self">Self</span>::Redis(val) =&gt; val.master.send(msg).<span class="kw">await</span><span class="question-mark">?</span>.<span class="kw">await</span><span class="question-mark">??</span>,
             };
             <span class="prelude-val">Ok</span>(())
         }
     };
 }
 
-<span class="macro">macro_rules!</span> <span class="ident">enum_system_wrapper</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="kw">type</span>:<span class="macro-nonterminal">ty</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">return_type</span>:<span class="ident">ty</span>) =&gt; {
-        <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">msg</span>: <span class="macro-nonterminal">$</span><span class="kw">type</span>) -&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">return_type</span> {
-            <span class="kw">match</span> <span class="self">self</span> {
-                <span class="ident"><span class="self">Self</span>::Embedded</span>(<span class="ident">val</span>) =&gt; <span class="ident">val</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>(<span class="ident">msg</span>).<span class="kw">await</span>,
-                <span class="ident"><span class="self">Self</span>::Redis</span>(<span class="ident">val</span>) =&gt; <span class="ident">val</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>(<span class="ident">msg</span>).<span class="kw">await</span>,
+<span class="macro">macro_rules! </span>enum_system_wrapper {
+    (<span class="macro-nonterminal">$name</span>:ident, <span class="macro-nonterminal">$</span><span class="kw">type</span>:<span class="macro-nonterminal">ty</span>, <span class="macro-nonterminal">$return_type</span>:ty) =&gt; {
+        <span class="kw">pub async fn </span><span class="macro-nonterminal">$name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, msg: <span class="macro-nonterminal">$</span><span class="kw">type</span>) -&gt; <span class="macro-nonterminal">$return_type </span>{
+            <span class="kw">match </span><span class="self">self </span>{
+                <span class="self">Self</span>::Embedded(val) =&gt; val.<span class="macro-nonterminal">$name</span>(msg).<span class="kw">await</span>,
+                <span class="self">Self</span>::Redis(val) =&gt; val.<span class="macro-nonterminal">$name</span>(msg).<span class="kw">await</span>,
             }
         }
     };
 }
 
-<span class="doccomment">/// Represents mCaptcha cache and master system.</span>
-<span class="doccomment">/// When Redis is configured, [SystemGroup::Redis] is used and</span>
-<span class="doccomment">/// in its absence, [SystemGroup::Embedded] is used</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">SystemGroup</span> {
-    <span class="ident">Embedded</span>(<span class="ident">System</span><span class="op">&lt;</span><span class="ident">HashCache</span>, <span class="ident">EmbeddedMaster</span><span class="op">&gt;</span>),
-    <span class="ident">Redis</span>(<span class="ident">System</span><span class="op">&lt;</span><span class="ident">RedisCache</span>, <span class="ident">RedisMaster</span><span class="op">&gt;</span>),
+<span class="doccomment">/// Represents mCaptcha cache and master system.
+/// When Redis is configured, [SystemGroup::Redis] is used and
+/// in its absence, [SystemGroup::Embedded] is used
+</span><span class="kw">pub enum </span>SystemGroup {
+    Embedded(System&lt;HashCache, EmbeddedMaster&gt;),
+    Redis(System&lt;RedisCache, RedisMaster&gt;),
 }
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_doc_comments</span>)]</span>
-<span class="kw">impl</span> <span class="ident">SystemGroup</span> {
-    <span class="comment">// TODO find a way to document these methods</span>
+<span class="attribute">#[allow(unused_doc_comments)]
+</span><span class="kw">impl </span>SystemGroup {
+    <span class="comment">// TODO find a way to document these methods
 
-    <span class="comment">// utility function to get difficulty factor of site `id` and cache it</span>
-    <span class="macro">enum_system_wrapper!</span>(<span class="ident">get_pow</span>, <span class="ident">String</span>, <span class="ident">CaptchaResult</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PoWConfig</span><span class="op">&gt;</span><span class="op">&gt;</span>);
+    // utility function to get difficulty factor of site `id` and cache it
+    </span><span class="macro">enum_system_wrapper!</span>(get_pow, String, CaptchaResult&lt;<span class="prelude-ty">Option</span>&lt;PoWConfig&gt;&gt;);
 
-    <span class="comment">// utility function to verify [Work]</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">verify_pow</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">msg</span>: <span class="ident">Work</span>, <span class="ident">ip</span>: <span class="ident">String</span>) -&gt; <span class="ident">CaptchaResult</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
-        <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident"><span class="self">Self</span>::Embedded</span>(<span class="ident">val</span>) =&gt; <span class="ident">val</span>.<span class="ident">verify_pow</span>(<span class="ident">msg</span>, <span class="ident">ip</span>).<span class="kw">await</span>,
-            <span class="ident"><span class="self">Self</span>::Redis</span>(<span class="ident">val</span>) =&gt; <span class="ident">val</span>.<span class="ident">verify_pow</span>(<span class="ident">msg</span>, <span class="ident">ip</span>).<span class="kw">await</span>,
+    <span class="comment">// utility function to verify [Work]
+    </span><span class="kw">pub async fn </span>verify_pow(<span class="kw-2">&amp;</span><span class="self">self</span>, msg: Work, ip: String) -&gt; CaptchaResult&lt;String&gt; {
+        <span class="kw">match </span><span class="self">self </span>{
+            <span class="self">Self</span>::Embedded(val) =&gt; val.verify_pow(msg, ip).<span class="kw">await</span>,
+            <span class="self">Self</span>::Redis(val) =&gt; val.verify_pow(msg, ip).<span class="kw">await</span>,
         }
     }
 
-    <span class="comment">// utility function to validate verification tokens</span>
-    <span class="macro">enum_system_wrapper!</span>(
-        <span class="ident">validate_verification_tokens</span>,
-        <span class="ident">VerifyCaptchaResult</span>,
-        <span class="ident">CaptchaResult</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>
+    <span class="comment">// utility function to validate verification tokens
+    </span><span class="macro">enum_system_wrapper!</span>(
+        validate_verification_tokens,
+        VerifyCaptchaResult,
+        CaptchaResult&lt;bool&gt;
     );
 
-    <span class="comment">// utility function to AddSite</span>
-    <span class="macro">enum_system_actor!</span>(<span class="ident">add_site</span>, <span class="ident">AddSite</span>);
+    <span class="comment">// utility function to AddSite
+    </span><span class="macro">enum_system_actor!</span>(add_site, AddSite);
 
-    <span class="comment">// utility function to rename captcha</span>
-    <span class="macro">enum_system_actor!</span>(<span class="ident">rename</span>, <span class="ident">Rename</span>);
+    <span class="comment">// utility function to rename captcha
+    </span><span class="macro">enum_system_actor!</span>(rename, Rename);
 
-    <span class="comment">// utility function to remove captcha</span>
-    <span class="macro">enum_system_actor!</span>(<span class="ident">remove</span>, <span class="ident">RemoveCaptcha</span>);
+    <span class="comment">// utility function to remove captcha
+    </span><span class="macro">enum_system_actor!</span>(remove, RemoveCaptcha);
 
-    <span class="kw">fn</span> <span class="ident">new_system</span><span class="op">&lt;</span><span class="ident">A</span>: <span class="ident">Save</span>, <span class="ident">B</span>: <span class="ident">MasterTrait</span><span class="op">&gt;</span>(
-        <span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">Settings</span>,
-        <span class="ident">m</span>: <span class="ident">Addr</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>,
-        <span class="ident">c</span>: <span class="ident">Addr</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="ident">System</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">pow</span> <span class="op">=</span> <span class="ident">PoWConfigBuilder::default</span>()
-            .<span class="ident">salt</span>(<span class="ident">s</span>.<span class="ident">captcha</span>.<span class="ident">salt</span>.<span class="ident">clone</span>())
-            .<span class="ident">build</span>()
-            .<span class="ident">unwrap</span>();
+    <span class="kw">fn </span>new_system&lt;A: Save, B: MasterTrait&gt;(
+        s: <span class="kw-2">&amp;</span>Settings,
+        m: Addr&lt;B&gt;,
+        c: Addr&lt;A&gt;,
+    ) -&gt; System&lt;A, B&gt; {
+        <span class="kw">let </span>pow = PoWConfigBuilder::default()
+            .salt(s.captcha.salt.clone())
+            .build()
+            .unwrap();
 
-        <span class="kw">let</span> <span class="ident">runners</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">runners</span>) <span class="op">=</span> <span class="ident">s</span>.<span class="ident">captcha</span>.<span class="ident">runners</span> {
-            <span class="ident">runners</span>
-        } <span class="kw">else</span> {
-            <span class="ident">num_cpus::get_physical</span>()
+        <span class="kw">let </span>runners = <span class="kw">if let </span><span class="prelude-val">Some</span>(runners) = s.captcha.runners {
+            runners
+        } <span class="kw">else </span>{
+            num_cpus::get_physical()
         };
-        <span class="ident">SystemBuilder::default</span>()
-            .<span class="ident">pow</span>(<span class="ident">pow</span>)
-            .<span class="ident">cache</span>(<span class="ident">c</span>)
-            .<span class="ident">master</span>(<span class="ident">m</span>)
-            .<span class="ident">runners</span>(<span class="ident">runners</span>)
-            .<span class="ident">queue_length</span>(<span class="ident">s</span>.<span class="ident">captcha</span>.<span class="ident">queue_length</span>)
-            .<span class="ident">build</span>()
+        SystemBuilder::default()
+            .pow(pow)
+            .cache(c)
+            .master(m)
+            .runners(runners)
+            .queue_length(s.captcha.queue_length)
+            .build()
     }
 
-    <span class="comment">// read settings, if Redis is configured then produce a Redis mCaptcha cache</span>
-    <span class="comment">// based SystemGroup</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">Settings</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">s</span>.<span class="ident">redis</span> {
-            <span class="prelude-val">Some</span>(<span class="ident">val</span>) =&gt; {
-                <span class="kw">let</span> <span class="ident">master</span> <span class="op">=</span> <span class="ident">RedisMaster::new</span>(<span class="ident">RedisConfig::Single</span>(<span class="ident">val</span>.<span class="ident">url</span>.<span class="ident">clone</span>()))
-                    .<span class="kw">await</span>
-                    .<span class="ident">unwrap</span>()
-                    .<span class="ident">start</span>();
-                <span class="kw">let</span> <span class="ident">cache</span> <span class="op">=</span> <span class="ident">RedisCache::new</span>(<span class="ident">RedisConfig::Single</span>(<span class="ident">val</span>.<span class="ident">url</span>.<span class="ident">clone</span>()))
-                    .<span class="kw">await</span>
-                    .<span class="ident">unwrap</span>()
-                    .<span class="ident">start</span>();
-                <span class="kw">let</span> <span class="ident">captcha</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::new_system</span>(<span class="ident">s</span>, <span class="ident">master</span>, <span class="ident">cache</span>);
+    <span class="comment">// read settings, if Redis is configured then produce a Redis mCaptcha cache
+    // based SystemGroup
+    </span><span class="kw">async fn </span>new(s: <span class="kw-2">&amp;</span>Settings) -&gt; <span class="self">Self </span>{
+        <span class="kw">match </span><span class="kw-2">&amp;</span>s.redis {
+            <span class="prelude-val">Some</span>(val) =&gt; {
+                <span class="kw">let </span>master = RedisMaster::new(RedisConfig::Single(val.url.clone()))
+                    .<span class="kw">await
+                    </span>.unwrap()
+                    .start();
+                <span class="kw">let </span>cache = RedisCache::new(RedisConfig::Single(val.url.clone()))
+                    .<span class="kw">await
+                    </span>.unwrap()
+                    .start();
+                <span class="kw">let </span>captcha = <span class="self">Self</span>::new_system(s, master, cache);
 
-                <span class="ident">SystemGroup::Redis</span>(<span class="ident">captcha</span>)
+                SystemGroup::Redis(captcha)
             }
-            <span class="prelude-val">None</span> =&gt; {
-                <span class="kw">let</span> <span class="ident">master</span> <span class="op">=</span> <span class="ident">EmbeddedMaster::new</span>(<span class="ident">s</span>.<span class="ident">captcha</span>.<span class="ident">gc</span>).<span class="ident">start</span>();
-                <span class="kw">let</span> <span class="ident">cache</span> <span class="op">=</span> <span class="ident">HashCache::default</span>().<span class="ident">start</span>();
-                <span class="kw">let</span> <span class="ident">captcha</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::new_system</span>(<span class="ident">s</span>, <span class="ident">master</span>, <span class="ident">cache</span>);
+            <span class="prelude-val">None </span>=&gt; {
+                <span class="kw">let </span>master = EmbeddedMaster::new(s.captcha.gc).start();
+                <span class="kw">let </span>cache = HashCache::default().start();
+                <span class="kw">let </span>captcha = <span class="self">Self</span>::new_system(s, master, cache);
 
-                <span class="ident">SystemGroup::Embedded</span>(<span class="ident">captcha</span>)
+                SystemGroup::Embedded(captcha)
             }
         }
     }
 }
 
-<span class="doccomment">/// App data</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Data</span> {
-    <span class="doccomment">/// database ops defined by db crates</span>
-    <span class="kw">pub</span> <span class="ident">db</span>: <span class="ident">BoxDB</span>,
-    <span class="doccomment">/// credential management configuration</span>
-    <span class="kw">pub</span> <span class="ident">creds</span>: <span class="ident">Config</span>,
-    <span class="doccomment">/// mCaptcha system: Redis cache, etc.</span>
-    <span class="kw">pub</span> <span class="ident">captcha</span>: <span class="ident">SystemGroup</span>,
-    <span class="doccomment">/// email client</span>
-    <span class="kw">pub</span> <span class="ident">mailer</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Mailer</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// app settings</span>
-    <span class="kw">pub</span> <span class="ident">settings</span>: <span class="ident">Settings</span>,
-    <span class="doccomment">/// stats recorder</span>
-    <span class="kw">pub</span> <span class="ident">stats</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Stats</span><span class="op">&gt;</span>,
+<span class="doccomment">/// App data
+</span><span class="kw">pub struct </span>Data {
+    <span class="doccomment">/// database ops defined by db crates
+    </span><span class="kw">pub </span>db: BoxDB,
+    <span class="doccomment">/// credential management configuration
+    </span><span class="kw">pub </span>creds: Config,
+    <span class="doccomment">/// mCaptcha system: Redis cache, etc.
+    </span><span class="kw">pub </span>captcha: SystemGroup,
+    <span class="doccomment">/// email client
+    </span><span class="kw">pub </span>mailer: <span class="prelude-ty">Option</span>&lt;Mailer&gt;,
+    <span class="doccomment">/// app settings
+    </span><span class="kw">pub </span>settings: Settings,
+    <span class="doccomment">/// stats recorder
+    </span><span class="kw">pub </span>stats: Box&lt;<span class="kw">dyn </span>Stats&gt;,
 }
 
-<span class="kw">impl</span> <span class="ident">Data</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_creds</span>() -&gt; <span class="ident">Config</span> {
-        <span class="ident">ConfigBuilder::default</span>()
-            .<span class="ident">username_case_mapped</span>(<span class="bool-val">true</span>)
-            .<span class="ident">profanity</span>(<span class="bool-val">true</span>)
-            .<span class="ident">blacklist</span>(<span class="bool-val">true</span>)
-            .<span class="ident">password_policy</span>(<span class="ident">PasswordPolicy::default</span>())
-            .<span class="ident">build</span>()
-            .<span class="ident">unwrap</span>()
+<span class="kw">impl </span>Data {
+    <span class="kw">pub fn </span>get_creds() -&gt; Config {
+        ConfigBuilder::default()
+            .username_case_mapped(<span class="bool-val">true</span>)
+            .profanity(<span class="bool-val">true</span>)
+            .blacklist(<span class="bool-val">true</span>)
+            .password_policy(PasswordPolicy::default())
+            .build()
+            .unwrap()
     }
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
-    <span class="doccomment">/// create new instance of app data</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">Settings</span>) -&gt; <span class="ident">Arc</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">creds</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::get_creds</span>();
-        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">creds</span>.<span class="ident">clone</span>();
+    <span class="attribute">#[cfg(not(tarpaulin_include))]
+    </span><span class="doccomment">/// create new instance of app data
+    </span><span class="kw">pub async fn </span>new(s: <span class="kw-2">&amp;</span>Settings) -&gt; Arc&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">let </span>creds = <span class="self">Self</span>::get_creds();
+        <span class="kw">let </span>c = creds.clone();
 
-        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_variables</span>)]</span>
-        <span class="kw">let</span> <span class="ident">init</span> <span class="op">=</span> <span class="ident">thread::spawn</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
+        <span class="attribute">#[allow(unused_variables)]
+        </span><span class="kw">let </span>init = thread::spawn(<span class="kw">move </span>|| {
             <span class="macro">log::info!</span>(<span class="string">&quot;Initializing credential manager&quot;</span>);
-            <span class="ident">c</span>.<span class="ident">init</span>();
+            c.init();
             <span class="macro">log::info!</span>(<span class="string">&quot;Initialized credential manager&quot;</span>);
         });
 
-        <span class="kw">let</span> <span class="ident">db</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">s</span>.<span class="ident">database</span>.<span class="ident">database_type</span> {
-            <span class="ident"><span class="kw">crate</span>::settings::DBType::Maria</span> =&gt; <span class="ident">db::maria::get_data</span>(<span class="prelude-val">Some</span>(<span class="ident">s</span>.<span class="ident">clone</span>())).<span class="kw">await</span>,
-            <span class="ident"><span class="kw">crate</span>::settings::DBType::Postgres</span> =&gt; <span class="ident">db::pg::get_data</span>(<span class="prelude-val">Some</span>(<span class="ident">s</span>.<span class="ident">clone</span>())).<span class="kw">await</span>,
+        <span class="kw">let </span>db = <span class="kw">match </span>s.database.database_type {
+            <span class="kw">crate</span>::settings::DBType::Maria =&gt; db::maria::get_data(<span class="prelude-val">Some</span>(s.clone())).<span class="kw">await</span>,
+            <span class="kw">crate</span>::settings::DBType::Postgres =&gt; db::pg::get_data(<span class="prelude-val">Some</span>(s.clone())).<span class="kw">await</span>,
         };
 
-        <span class="kw">let</span> <span class="ident">stats</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Stats</span><span class="op">&gt;</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">s</span>.<span class="ident">captcha</span>.<span class="ident">enable_stats</span> {
-            <span class="ident">Box::new</span>(<span class="ident">Real::default</span>())
-        } <span class="kw">else</span> {
-            <span class="ident">Box::new</span>(<span class="ident">Dummy::default</span>())
+        <span class="kw">let </span>stats: Box&lt;<span class="kw">dyn </span>Stats&gt; = <span class="kw">if </span>s.captcha.enable_stats {
+            Box::new(Real::default())
+        } <span class="kw">else </span>{
+            Box::new(Dummy::default())
         };
 
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">Data</span> {
-            <span class="ident">creds</span>,
-            <span class="ident">db</span>,
-            <span class="ident">captcha</span>: <span class="ident">SystemGroup::new</span>(<span class="ident">s</span>).<span class="kw">await</span>,
-            <span class="ident">mailer</span>: <span class="ident"><span class="self">Self</span>::get_mailer</span>(<span class="ident">s</span>),
-            <span class="ident">settings</span>: <span class="ident">s</span>.<span class="ident">clone</span>(),
-            <span class="ident">stats</span>,
+        <span class="kw">let </span>data = Data {
+            creds,
+            db,
+            captcha: SystemGroup::new(s).<span class="kw">await</span>,
+            mailer: <span class="self">Self</span>::get_mailer(s),
+            settings: s.clone(),
+            stats,
         };
 
-        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">debug_assertions</span>))]</span>
-        <span class="ident">init</span>.<span class="ident">join</span>().<span class="ident">unwrap</span>();
+        <span class="attribute">#[cfg(not(debug_assertions))]
+        </span>init.join().unwrap();
 
-        <span class="ident">Arc::new</span>(<span class="ident">data</span>)
+        Arc::new(data)
     }
 
-    <span class="kw">fn</span> <span class="ident">get_mailer</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">Settings</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Mailer</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">smtp</span>) <span class="op">=</span> <span class="ident">s</span>.<span class="ident">smtp</span>.<span class="ident">as_ref</span>() {
-            <span class="kw">let</span> <span class="ident">creds</span> <span class="op">=</span>
-                <span class="ident">Credentials::new</span>(<span class="ident">smtp</span>.<span class="ident">username</span>.<span class="ident">to_string</span>(), <span class="ident">smtp</span>.<span class="ident">password</span>.<span class="ident">to_string</span>()); <span class="comment">// &quot;smtp_username&quot;.to_string(), &quot;smtp_password&quot;.to_string());</span>
+    <span class="kw">fn </span>get_mailer(s: <span class="kw-2">&amp;</span>Settings) -&gt; <span class="prelude-ty">Option</span>&lt;Mailer&gt; {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(smtp) = s.smtp.as_ref() {
+            <span class="kw">let </span>creds =
+                Credentials::new(smtp.username.to_string(), smtp.password.to_string()); <span class="comment">// &quot;smtp_username&quot;.to_string(), &quot;smtp_password&quot;.to_string());
 
-            <span class="kw">let</span> <span class="ident">mailer</span>: <span class="ident">Mailer</span> <span class="op">=</span>
-                <span class="ident">AsyncSmtpTransport</span>::<span class="op">&lt;</span><span class="ident">Tokio1Executor</span><span class="op">&gt;</span><span class="ident">::builder_dangerous</span>(<span class="kw-2">&amp;</span><span class="ident">smtp</span>.<span class="ident">url</span>)
-                    .<span class="ident">port</span>(<span class="ident">smtp</span>.<span class="ident">port</span>)
-                    .<span class="ident">credentials</span>(<span class="ident">creds</span>)
-                    .<span class="ident">authentication</span>(<span class="macro">vec!</span>[
-                        <span class="ident">Mechanism::Login</span>,
-                        <span class="ident">Mechanism::Xoauth2</span>,
-                        <span class="ident">Mechanism::Plain</span>,
+            </span><span class="kw">let </span>mailer: Mailer =
+                AsyncSmtpTransport::&lt;Tokio1Executor&gt;::builder_dangerous(<span class="kw-2">&amp;</span>smtp.url)
+                    .port(smtp.port)
+                    .credentials(creds)
+                    .authentication(<span class="macro">vec!</span>[
+                        Mechanism::Login,
+                        Mechanism::Xoauth2,
+                        Mechanism::Plain,
                     ])
-                    .<span class="ident">build</span>();
+                    .build();
 
-            <span class="comment">//            let mailer: Mailer = AsyncSmtpTransport::&lt;Tokio1Executor&gt;::relay(&amp;smtp.url) //&quot;smtp.gmail.com&quot;)</span>
-            <span class="comment">//                .unwrap()</span>
-            <span class="comment">//                .credentials(creds)</span>
-            <span class="comment">//                .build();</span>
-            <span class="prelude-val">Some</span>(<span class="ident">mailer</span>)
-        } <span class="kw">else</span> {
-            <span class="prelude-val">None</span>
-        }
+            <span class="comment">//            let mailer: Mailer = AsyncSmtpTransport::&lt;Tokio1Executor&gt;::relay(&amp;smtp.url) //&quot;smtp.gmail.com&quot;)
+            //                .unwrap()
+            //                .credentials(creds)
+            //                .build();
+            </span><span class="prelude-val">Some</span>(mailer)
+        } <span class="kw">else </span>{
+            <span class="prelude-val">None
+        </span>}
     }
 }
 
-<span class="doccomment">/// Mailer data type AsyncSmtpTransport&lt;Tokio1Executor&gt;</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Mailer</span> <span class="op">=</span> <span class="ident">AsyncSmtpTransport</span><span class="op">&lt;</span><span class="ident">Tokio1Executor</span><span class="op">&gt;</span>;
+<span class="doccomment">/// Mailer data type AsyncSmtpTransport&lt;Tokio1Executor&gt;
+</span><span class="kw">pub type </span>Mailer = AsyncSmtpTransport&lt;Tokio1Executor&gt;;
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="mcaptcha" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="mcaptcha" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

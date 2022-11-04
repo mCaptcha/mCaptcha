@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/main.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>main.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../mcaptcha/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/main.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>main.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../mcaptcha/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -206,183 +206,183 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
- */</span>
-<span class="kw">use</span> <span class="ident">std::env</span>;
-<span class="kw">use</span> <span class="ident">std::sync::Arc</span>;
+ */
+</span><span class="kw">use </span>std::env;
+<span class="kw">use </span>std::sync::Arc;
 
-<span class="kw">use</span> <span class="ident">actix_identity</span>::{<span class="ident">CookieIdentityPolicy</span>, <span class="ident">IdentityService</span>};
-<span class="kw">use</span> <span class="ident">actix_web</span>::{
-    <span class="ident">error::InternalError</span>, <span class="ident">http::StatusCode</span>, <span class="ident">middleware</span> <span class="kw">as</span> <span class="ident">actix_middleware</span>,
-    <span class="ident">web::JsonConfig</span>, <span class="ident">App</span>, <span class="ident">HttpServer</span>,
+<span class="kw">use </span>actix_identity::{CookieIdentityPolicy, IdentityService};
+<span class="kw">use </span>actix_web::{
+    error::InternalError, http::StatusCode, middleware <span class="kw">as </span>actix_middleware,
+    web::JsonConfig, App, HttpServer,
 };
-<span class="kw">use</span> <span class="ident">lazy_static::lazy_static</span>;
-<span class="kw">use</span> <span class="ident">log::info</span>;
+<span class="kw">use </span>lazy_static::lazy_static;
+<span class="kw">use </span>log::info;
 
-<span class="kw">mod</span> <span class="ident">api</span>;
-<span class="kw">mod</span> <span class="ident">data</span>;
-<span class="kw">mod</span> <span class="ident">date</span>;
-<span class="kw">mod</span> <span class="ident">db</span>;
-<span class="kw">mod</span> <span class="ident">demo</span>;
-<span class="kw">mod</span> <span class="ident">docs</span>;
-<span class="kw">mod</span> <span class="ident">email</span>;
-<span class="kw">mod</span> <span class="ident">errors</span>;
-<span class="attribute">#[<span class="ident">macro_use</span>]</span>
-<span class="kw">mod</span> <span class="ident">pages</span>;
-<span class="attribute">#[<span class="ident">macro_use</span>]</span>
-<span class="kw">mod</span> <span class="ident">routes</span>;
-<span class="kw">mod</span> <span class="ident">settings</span>;
-<span class="kw">mod</span> <span class="ident">static_assets</span>;
-<span class="kw">mod</span> <span class="ident">stats</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="attribute">#[<span class="ident">macro_use</span>]</span>
-<span class="kw">mod</span> <span class="ident">tests</span>;
-<span class="kw">mod</span> <span class="ident">widget</span>;
+<span class="kw">mod </span>api;
+<span class="kw">mod </span>data;
+<span class="kw">mod </span>date;
+<span class="kw">mod </span>db;
+<span class="kw">mod </span>demo;
+<span class="kw">mod </span>docs;
+<span class="kw">mod </span>email;
+<span class="kw">mod </span>errors;
+<span class="attribute">#[macro_use]
+</span><span class="kw">mod </span>pages;
+<span class="attribute">#[macro_use]
+</span><span class="kw">mod </span>routes;
+<span class="kw">mod </span>settings;
+<span class="kw">mod </span>static_assets;
+<span class="kw">mod </span>stats;
+<span class="attribute">#[cfg(test)]
+#[macro_use]
+</span><span class="kw">mod </span>tests;
+<span class="kw">mod </span>widget;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::data::Data</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::static_assets::static_files::assets</span>::<span class="kw-2">*</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">api::v1::ROUTES</span> <span class="kw">as</span> <span class="ident">V1_API_ROUTES</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">docs::DOCS</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">pages::routes::ROUTES</span> <span class="kw">as</span> <span class="ident">PAGES</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">settings::Settings</span>;
-<span class="kw">use</span> <span class="ident">static_assets::FileMap</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">widget::WIDGET_ROUTES</span>;
+<span class="kw">pub use </span><span class="kw">crate</span>::data::Data;
+<span class="kw">pub use </span><span class="kw">crate</span>::static_assets::static_files::assets::<span class="kw-2">*</span>;
+<span class="kw">pub use </span>api::v1::ROUTES <span class="kw">as </span>V1_API_ROUTES;
+<span class="kw">pub use </span>docs::DOCS;
+<span class="kw">pub use </span>pages::routes::ROUTES <span class="kw">as </span>PAGES;
+<span class="kw">pub use </span>settings::Settings;
+<span class="kw">use </span>static_assets::FileMap;
+<span class="kw">pub use </span>widget::WIDGET_ROUTES;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::demo::DemoUser</span>;
+<span class="kw">use </span><span class="kw">crate</span>::demo::DemoUser;
 
-<span class="macro">lazy_static!</span> {
-    <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">SETTINGS</span>: <span class="ident">Settings</span> <span class="op">=</span> <span class="ident">Settings::new</span>().<span class="ident">unwrap</span>();
-<span class="comment">//    pub static ref S: String = env::var(&quot;S&quot;).unwrap();</span>
-    <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">FILES</span>: <span class="ident">FileMap</span> <span class="op">=</span> <span class="ident">FileMap::new</span>();
-    <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">JS</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span>
-        <span class="ident">FILES</span>.<span class="ident">get</span>(<span class="string">&quot;./static/cache/bundle/bundle.js&quot;</span>).<span class="ident">unwrap</span>();
-    <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">CSS</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span>
-        <span class="ident">FILES</span>.<span class="ident">get</span>(<span class="string">&quot;./static/cache/bundle/css/main.css&quot;</span>).<span class="ident">unwrap</span>();
-    <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">MOBILE_CSS</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span>
-        <span class="ident">FILES</span>.<span class="ident">get</span>(<span class="string">&quot;./static/cache/bundle/css/mobile.css&quot;</span>).<span class="ident">unwrap</span>();
+<span class="macro">lazy_static! </span>{
+    <span class="kw">pub static </span><span class="kw-2">ref </span>SETTINGS: Settings = Settings::new().unwrap();
+<span class="comment">//    pub static ref S: String = env::var(&quot;S&quot;).unwrap();
+    </span><span class="kw">pub static </span><span class="kw-2">ref </span>FILES: FileMap = FileMap::new();
+    <span class="kw">pub static </span><span class="kw-2">ref </span>JS: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str =
+        FILES.get(<span class="string">&quot;./static/cache/bundle/bundle.js&quot;</span>).unwrap();
+    <span class="kw">pub static </span><span class="kw-2">ref </span>CSS: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str =
+        FILES.get(<span class="string">&quot;./static/cache/bundle/css/main.css&quot;</span>).unwrap();
+    <span class="kw">pub static </span><span class="kw-2">ref </span>MOBILE_CSS: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str =
+        FILES.get(<span class="string">&quot;./static/cache/bundle/css/mobile.css&quot;</span>).unwrap();
 
-    <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">VERIFICATIN_WIDGET_JS</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span>
-        <span class="ident">FILES</span>.<span class="ident">get</span>(<span class="string">&quot;./static/cache/bundle/verificationWidget.js&quot;</span>).<span class="ident">unwrap</span>();
-    <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">VERIFICATIN_WIDGET_CSS</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span>
-        <span class="ident">FILES</span>.<span class="ident">get</span>(<span class="string">&quot;./static/cache/bundle/css/widget.css&quot;</span>).<span class="ident">unwrap</span>();
+    <span class="kw">pub static </span><span class="kw-2">ref </span>VERIFICATIN_WIDGET_JS: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str =
+        FILES.get(<span class="string">&quot;./static/cache/bundle/verificationWidget.js&quot;</span>).unwrap();
+    <span class="kw">pub static </span><span class="kw-2">ref </span>VERIFICATIN_WIDGET_CSS: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str =
+        FILES.get(<span class="string">&quot;./static/cache/bundle/css/widget.css&quot;</span>).unwrap();
 
-    <span class="doccomment">/// points to source files matching build commit</span>
-    <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">SOURCE_FILES_OF_INSTANCE</span>: <span class="ident">String</span> <span class="op">=</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">url</span> <span class="op">=</span> <span class="ident">SETTINGS</span>.<span class="ident">source_code</span>.<span class="ident">clone</span>();
-        <span class="kw">if</span> <span class="op">!</span><span class="ident">url</span>.<span class="ident">ends_with</span>(<span class="string">&#39;/&#39;</span>) {
-            <span class="ident">url</span>.<span class="ident">push</span>(<span class="string">&#39;/&#39;</span>);
+    <span class="doccomment">/// points to source files matching build commit
+    </span><span class="kw">pub static </span><span class="kw-2">ref </span>SOURCE_FILES_OF_INSTANCE: String = {
+        <span class="kw">let </span><span class="kw-2">mut </span>url = SETTINGS.source_code.clone();
+        <span class="kw">if </span>!url.ends_with(<span class="string">&#39;/&#39;</span>) {
+            url.push(<span class="string">&#39;/&#39;</span>);
         }
-        <span class="kw">let</span> <span class="kw-2">mut</span>  <span class="ident">base</span> <span class="op">=</span> <span class="ident">url::Url::parse</span>(<span class="kw-2">&amp;</span><span class="ident">url</span>).<span class="ident">unwrap</span>();
-        <span class="ident">base</span> <span class="op">=</span>  <span class="ident">base</span>.<span class="ident">join</span>(<span class="string">&quot;tree/&quot;</span>).<span class="ident">unwrap</span>();
-        <span class="ident">base</span> <span class="op">=</span>  <span class="ident">base</span>.<span class="ident">join</span>(<span class="ident">GIT_COMMIT_HASH</span>).<span class="ident">unwrap</span>();
-        <span class="ident">base</span>.<span class="ident">into</span>()
+        <span class="kw">let </span><span class="kw-2">mut  </span>base = url::Url::parse(<span class="kw-2">&amp;</span>url).unwrap();
+        base =  base.join(<span class="string">&quot;tree/&quot;</span>).unwrap();
+        base =  base.join(GIT_COMMIT_HASH).unwrap();
+        base.into()
     };
 
 }
 
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COMPILED_DATE</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="macro">env!</span>(<span class="string">&quot;COMPILED_DATE&quot;</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">GIT_COMMIT_HASH</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="macro">env!</span>(<span class="string">&quot;GIT_HASH&quot;</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">VERSION</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_VERSION&quot;</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PKG_NAME</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_NAME&quot;</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PKG_DESCRIPTION</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_DESCRIPTION&quot;</span>);
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PKG_HOMEPAGE</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_HOMEPAGE&quot;</span>);
+<span class="kw">pub const </span>COMPILED_DATE: <span class="kw-2">&amp;</span>str = <span class="macro">env!</span>(<span class="string">&quot;COMPILED_DATE&quot;</span>);
+<span class="kw">pub const </span>GIT_COMMIT_HASH: <span class="kw-2">&amp;</span>str = <span class="macro">env!</span>(<span class="string">&quot;GIT_HASH&quot;</span>);
+<span class="kw">pub const </span>VERSION: <span class="kw-2">&amp;</span>str = <span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_VERSION&quot;</span>);
+<span class="kw">pub const </span>PKG_NAME: <span class="kw-2">&amp;</span>str = <span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_NAME&quot;</span>);
+<span class="kw">pub const </span>PKG_DESCRIPTION: <span class="kw-2">&amp;</span>str = <span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_DESCRIPTION&quot;</span>);
+<span class="kw">pub const </span>PKG_HOMEPAGE: <span class="kw-2">&amp;</span>str = <span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_HOMEPAGE&quot;</span>);
 
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CACHE_AGE</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">604800</span>;
+<span class="kw">pub const </span>CACHE_AGE: u32 = <span class="number">604800</span>;
 
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">ArcData</span> <span class="op">=</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::data::Data</span><span class="op">&gt;</span>;
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">AppData</span> <span class="op">=</span> <span class="ident">actix_web::web::Data</span><span class="op">&lt;</span><span class="ident">ArcData</span><span class="op">&gt;</span>;
+<span class="kw">pub type </span>ArcData = Arc&lt;<span class="kw">crate</span>::data::Data&gt;;
+<span class="kw">pub type </span>AppData = actix_web::web::Data&lt;ArcData&gt;;
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
-<span class="attribute">#[<span class="ident">actix_web::main</span>]</span>
-<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">main</span>() -&gt; <span class="ident">std::io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-    <span class="kw">use</span> <span class="ident">std::time::Duration</span>;
+<span class="attribute">#[cfg(not(tarpaulin_include))]
+#[actix_web::main]
+</span><span class="kw">async fn </span>main() -&gt; std::io::Result&lt;()&gt; {
+    <span class="kw">use </span>std::time::Duration;
 
-    <span class="ident">env::set_var</span>(<span class="string">&quot;RUST_LOG&quot;</span>, <span class="string">&quot;info&quot;</span>);
+    env::set_var(<span class="string">&quot;RUST_LOG&quot;</span>, <span class="string">&quot;info&quot;</span>);
 
-    <span class="ident">pretty_env_logger::init</span>();
+    pretty_env_logger::init();
     <span class="macro">info!</span>(
         <span class="string">&quot;{}: {}.\nFor more information, see: {}\nBuild info:\nVersion: {} commit: {}&quot;</span>,
-        <span class="ident">PKG_NAME</span>, <span class="ident">PKG_DESCRIPTION</span>, <span class="ident">PKG_HOMEPAGE</span>, <span class="ident">VERSION</span>, <span class="ident">GIT_COMMIT_HASH</span>
+        PKG_NAME, PKG_DESCRIPTION, PKG_HOMEPAGE, VERSION, GIT_COMMIT_HASH
     );
 
-    <span class="kw">let</span> <span class="ident">settings</span> <span class="op">=</span> <span class="ident">Settings::new</span>().<span class="ident">unwrap</span>();
-    <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">Data::new</span>(<span class="kw-2">&amp;</span><span class="ident">settings</span>).<span class="kw">await</span>;
-    <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">actix_web::web::Data::new</span>(<span class="ident">data</span>);
+    <span class="kw">let </span>settings = Settings::new().unwrap();
+    <span class="kw">let </span>data = Data::new(<span class="kw-2">&amp;</span>settings).<span class="kw">await</span>;
+    <span class="kw">let </span>data = actix_web::web::Data::new(data);
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">demo_user</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DemoUser</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>demo_user: <span class="prelude-ty">Option</span>&lt;DemoUser&gt; = <span class="prelude-val">None</span>;
 
-    <span class="kw">if</span> <span class="ident">settings</span>.<span class="ident">allow_demo</span> <span class="op">&amp;&amp;</span> <span class="ident">settings</span>.<span class="ident">allow_registration</span> {
-        <span class="ident">demo_user</span> <span class="op">=</span> <span class="prelude-val">Some</span>(
-            <span class="ident">DemoUser::spawn</span>(<span class="ident">data</span>.<span class="ident">clone</span>(), <span class="ident">Duration::from_secs</span>(<span class="number">60</span> <span class="op">*</span> <span class="number">30</span>))
-                .<span class="kw">await</span>
-                .<span class="ident">unwrap</span>(),
+    <span class="kw">if </span>settings.allow_demo &amp;&amp; settings.allow_registration {
+        demo_user = <span class="prelude-val">Some</span>(
+            DemoUser::spawn(data.clone(), Duration::from_secs(<span class="number">60 </span>* <span class="number">30</span>))
+                .<span class="kw">await
+                </span>.unwrap(),
         );
     }
 
-    <span class="kw">let</span> <span class="ident">ip</span> <span class="op">=</span> <span class="ident">settings</span>.<span class="ident">server</span>.<span class="ident">get_ip</span>();
+    <span class="kw">let </span>ip = settings.server.get_ip();
     <span class="macro">println!</span>(<span class="string">&quot;Starting server on: http://{ip}&quot;</span>);
 
-    <span class="ident">HttpServer::new</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
-        <span class="ident">App::new</span>()
-            .<span class="ident">wrap</span>(<span class="ident">actix_middleware::Logger::default</span>())
-            .<span class="ident">wrap</span>(
-                <span class="ident">actix_middleware::DefaultHeaders::new</span>()
-                    .<span class="ident">add</span>((<span class="string">&quot;Permissions-Policy&quot;</span>, <span class="string">&quot;interest-cohort=()&quot;</span>)),
+    HttpServer::new(<span class="kw">move </span>|| {
+        App::new()
+            .wrap(actix_middleware::Logger::default())
+            .wrap(
+                actix_middleware::DefaultHeaders::new()
+                    .add((<span class="string">&quot;Permissions-Policy&quot;</span>, <span class="string">&quot;interest-cohort=()&quot;</span>)),
             )
-            .<span class="ident">wrap</span>(<span class="ident">get_identity_service</span>(<span class="kw-2">&amp;</span><span class="ident">settings</span>))
-            .<span class="ident">wrap</span>(<span class="ident">actix_middleware::Compress::default</span>())
-            .<span class="ident">app_data</span>(<span class="ident">data</span>.<span class="ident">clone</span>())
-            .<span class="ident">wrap</span>(<span class="ident">actix_middleware::NormalizePath::new</span>(
-                <span class="ident">actix_middleware::TrailingSlash::Trim</span>,
+            .wrap(get_identity_service(<span class="kw-2">&amp;</span>settings))
+            .wrap(actix_middleware::Compress::default())
+            .app_data(data.clone())
+            .wrap(actix_middleware::NormalizePath::new(
+                actix_middleware::TrailingSlash::Trim,
             ))
-            .<span class="ident">configure</span>(<span class="ident">routes::services</span>)
-            .<span class="ident">app_data</span>(<span class="ident">get_json_err</span>())
+            .configure(routes::services)
+            .app_data(get_json_err())
     })
-    .<span class="ident">bind</span>(<span class="kw-2">&amp;</span><span class="ident">ip</span>)
-    .<span class="ident">unwrap</span>()
-    .<span class="ident">run</span>()
+    .bind(<span class="kw-2">&amp;</span>ip)
+    .unwrap()
+    .run()
     .<span class="kw">await</span><span class="question-mark">?</span>;
 
-    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">demo_user</span>) <span class="op">=</span> <span class="ident">demo_user</span> {
-        <span class="ident">demo_user</span>.<span class="ident">abort</span>();
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(demo_user) = demo_user {
+        demo_user.abort();
     }
     <span class="prelude-val">Ok</span>(())
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_json_err</span>() -&gt; <span class="ident">JsonConfig</span> {
-    <span class="ident">JsonConfig::default</span>().<span class="ident">error_handler</span>(<span class="op">|</span><span class="ident">err</span>, <span class="kw">_</span><span class="op">|</span> {
-        <span class="comment">//debug!(&quot;JSON deserialization error: {:?}&quot;, &amp;err);</span>
-        <span class="ident">InternalError::new</span>(<span class="ident">err</span>, <span class="ident">StatusCode::BAD_REQUEST</span>).<span class="ident">into</span>()
+<span class="attribute">#[cfg(not(tarpaulin_include))]
+</span><span class="kw">pub fn </span>get_json_err() -&gt; JsonConfig {
+    JsonConfig::default().error_handler(|err, <span class="kw">_</span>| {
+        <span class="comment">//debug!(&quot;JSON deserialization error: {:?}&quot;, &amp;err);
+        </span>InternalError::new(err, StatusCode::BAD_REQUEST).into()
     })
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_identity_service</span>(
-    <span class="ident">settings</span>: <span class="kw-2">&amp;</span><span class="ident">Settings</span>,
-) -&gt; <span class="ident">IdentityService</span><span class="op">&lt;</span><span class="ident">CookieIdentityPolicy</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">cookie_secret</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">settings</span>.<span class="ident">server</span>.<span class="ident">cookie_secret</span>;
-    <span class="ident">IdentityService::new</span>(
-        <span class="ident">CookieIdentityPolicy::new</span>(<span class="ident">cookie_secret</span>.<span class="ident">as_bytes</span>())
-            .<span class="ident">name</span>(<span class="string">&quot;Authorization&quot;</span>)
-            <span class="comment">//TODO change cookie age</span>
-            .<span class="ident">max_age_secs</span>(<span class="number">216000</span>)
-            .<span class="ident">domain</span>(<span class="kw-2">&amp;</span><span class="ident">settings</span>.<span class="ident">server</span>.<span class="ident">domain</span>)
-            .<span class="ident">secure</span>(<span class="bool-val">false</span>),
+<span class="attribute">#[cfg(not(tarpaulin_include))]
+</span><span class="kw">pub fn </span>get_identity_service(
+    settings: <span class="kw-2">&amp;</span>Settings,
+) -&gt; IdentityService&lt;CookieIdentityPolicy&gt; {
+    <span class="kw">let </span>cookie_secret = <span class="kw-2">&amp;</span>settings.server.cookie_secret;
+    IdentityService::new(
+        CookieIdentityPolicy::new(cookie_secret.as_bytes())
+            .name(<span class="string">&quot;Authorization&quot;</span>)
+            <span class="comment">//TODO change cookie age
+            </span>.max_age_secs(<span class="number">216000</span>)
+            .domain(<span class="kw-2">&amp;</span>settings.server.domain)
+            .secure(<span class="bool-val">false</span>),
     )
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">test</span> {
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">version_source_code_url_works</span>() {
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>test {
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>version_source_code_url_works() {
         <span class="macro">assert_eq!</span>(
-            <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident"><span class="kw">crate</span>::SOURCE_FILES_OF_INSTANCE</span>,
+            <span class="kw-2">&amp;*</span><span class="kw">crate</span>::SOURCE_FILES_OF_INSTANCE,
             <span class="kw-2">&amp;</span><span class="macro">format!</span>(
                 <span class="string">&quot;https://github.com/mCaptcha/mCaptcha/tree/{}&quot;</span>,
-                <span class="ident"><span class="kw">crate</span>::GIT_COMMIT_HASH</span>
+                <span class="kw">crate</span>::GIT_COMMIT_HASH
             )
         );
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="mcaptcha" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="mcaptcha" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

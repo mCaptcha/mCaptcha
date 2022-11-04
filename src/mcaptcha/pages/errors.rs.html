@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pages/errors.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>errors.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../mcaptcha/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pages/errors.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>errors.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../mcaptcha/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -133,110 +133,110 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
- */</span>
+ */
 
-<span class="kw">use</span> <span class="ident">actix_web</span>::{<span class="ident">web</span>, <span class="ident">HttpResponse</span>, <span class="ident">Responder</span>};
-<span class="kw">use</span> <span class="ident">lazy_static::lazy_static</span>;
-<span class="kw">use</span> <span class="ident">sailfish::TemplateOnce</span>;
+</span><span class="kw">use </span>actix_web::{web, HttpResponse, Responder};
+<span class="kw">use </span>lazy_static::lazy_static;
+<span class="kw">use </span>sailfish::TemplateOnce;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::errors::PageError</span>;
+<span class="kw">use </span><span class="kw">crate</span>::errors::PageError;
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">TemplateOnce</span>)]</span>
-<span class="attribute">#[<span class="ident">template</span>(<span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;errors/index.html&quot;</span>)]</span>
-<span class="kw">struct</span> <span class="ident">ErrorPage</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="ident">title</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>,
-    <span class="ident">message</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>,
+<span class="attribute">#[derive(Clone, TemplateOnce)]
+#[template(path = <span class="string">&quot;errors/index.html&quot;</span>)]
+</span><span class="kw">struct </span>ErrorPage&lt;<span class="lifetime">&#39;a</span>&gt; {
+    title: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
+    message: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
 }
 
-<span class="kw">const</span> <span class="ident">PAGE</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;Error&quot;</span>;
+<span class="kw">const </span>PAGE: <span class="kw-2">&amp;</span>str = <span class="string">&quot;Error&quot;</span>;
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">ErrorPage</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">title</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>, <span class="ident">message</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident">ErrorPage</span> { <span class="ident">title</span>, <span class="ident">message</span> }
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ErrorPage&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="kw">fn </span>new(title: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str, message: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str) -&gt; <span class="self">Self </span>{
+        ErrorPage { title, message }
     }
 }
 
-<span class="macro">lazy_static!</span> {
-    <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">INTERNAL_SERVER_ERROR_BODY</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">ErrorPage::new</span>(
+<span class="macro">lazy_static! </span>{
+    <span class="kw">static </span><span class="kw-2">ref </span>INTERNAL_SERVER_ERROR_BODY: String = ErrorPage::new(
         <span class="string">&quot;Internal Server Error&quot;</span>,
-        <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">PageError::InternalServerError</span>),
+        <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, PageError::InternalServerError),
     )
-    .<span class="ident">render_once</span>()
-    .<span class="ident">unwrap</span>();
-    <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">UNKNOWN_ERROR_BODY</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">ErrorPage::new</span>(
+    .render_once()
+    .unwrap();
+    <span class="kw">static </span><span class="kw-2">ref </span>UNKNOWN_ERROR_BODY: String = ErrorPage::new(
         <span class="string">&quot;Something went wrong&quot;</span>,
-        <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">PageError::InternalServerError</span>),
+        <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, PageError::InternalServerError),
     )
-    .<span class="ident">render_once</span>()
-    .<span class="ident">unwrap</span>();
+    .render_once()
+    .unwrap();
 }
 
-<span class="kw">const</span> <span class="ident">ERROR_ROUTE</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;/error/{id}&quot;</span>;
+<span class="kw">const </span>ERROR_ROUTE: <span class="kw-2">&amp;</span>str = <span class="string">&quot;/error/{id}&quot;</span>;
 
-<span class="attribute">#[<span class="ident">my_codegen::get</span>(<span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;ERROR_ROUTE&quot;</span>)]</span>
-<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">error</span>(<span class="ident">path</span>: <span class="ident">web::Path</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) -&gt; <span class="kw">impl</span> <span class="ident">Responder</span> {
-    <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">path</span>.<span class="ident">into_inner</span>() {
-        <span class="number">500</span> =&gt; <span class="ident">HttpResponse::InternalServerError</span>()
-            .<span class="ident">content_type</span>(<span class="string">&quot;text/html; charset=utf-8&quot;</span>)
-            .<span class="ident">body</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">INTERNAL_SERVER_ERROR_BODY</span>),
+<span class="attribute">#[my_codegen::get(path = <span class="string">&quot;ERROR_ROUTE&quot;</span>)]
+</span><span class="kw">async fn </span>error(path: web::Path&lt;usize&gt;) -&gt; <span class="kw">impl </span>Responder {
+    <span class="kw">let </span>resp = <span class="kw">match </span>path.into_inner() {
+        <span class="number">500 </span>=&gt; HttpResponse::InternalServerError()
+            .content_type(<span class="string">&quot;text/html; charset=utf-8&quot;</span>)
+            .body(<span class="kw-2">&amp;**</span>INTERNAL_SERVER_ERROR_BODY),
 
-        <span class="kw">_</span> =&gt; <span class="ident">HttpResponse::InternalServerError</span>()
-            .<span class="ident">content_type</span>(<span class="string">&quot;text/html; charset=utf-8&quot;</span>)
-            .<span class="ident">body</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">UNKNOWN_ERROR_BODY</span>),
+        <span class="kw">_ </span>=&gt; HttpResponse::InternalServerError()
+            .content_type(<span class="string">&quot;text/html; charset=utf-8&quot;</span>)
+            .body(<span class="kw-2">&amp;**</span>UNKNOWN_ERROR_BODY),
     };
 
-    <span class="ident">resp</span>
+    resp
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">services</span>(<span class="ident">cfg</span>: <span class="kw-2">&amp;mut</span> <span class="ident">web::ServiceConfig</span>) {
-    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">error</span>);
+<span class="kw">pub fn </span>services(cfg: <span class="kw-2">&amp;mut </span>web::ServiceConfig) {
+    cfg.service(error);
 }
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">routes</span> {
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Errors</span> {
-        <span class="kw">pub</span> <span class="ident">internal_server_error</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
-        <span class="kw">pub</span> <span class="ident">unknown_error</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
+<span class="kw">pub mod </span>routes {
+    <span class="kw">pub struct </span>Errors {
+        <span class="kw">pub </span>internal_server_error: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        <span class="kw">pub </span>unknown_error: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
     }
 
-    <span class="kw">impl</span> <span class="ident">Errors</span> {
-        <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
-            <span class="ident">Errors</span> {
-                <span class="ident">internal_server_error</span>: <span class="string">&quot;/error/500&quot;</span>,
-                <span class="ident">unknown_error</span>: <span class="string">&quot;/error/007&quot;</span>,
+    <span class="kw">impl </span>Errors {
+        <span class="kw">pub const fn </span>new() -&gt; <span class="self">Self </span>{
+            Errors {
+                internal_server_error: <span class="string">&quot;/error/500&quot;</span>,
+                unknown_error: <span class="string">&quot;/error/007&quot;</span>,
             }
         }
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="ident">actix_web</span>::{<span class="ident">http::StatusCode</span>, <span class="ident">test</span>, <span class="ident">App</span>};
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>tests {
+    <span class="kw">use </span>actix_web::{http::StatusCode, test, App};
 
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::PAGES</span>;
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
+    <span class="kw">use </span><span class="kw">crate</span>::PAGES;
 
-    <span class="attribute">#[<span class="ident">actix_rt::test</span>]</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">error_pages_work</span>() {
-        <span class="kw">let</span> <span class="ident">app</span> <span class="op">=</span> <span class="ident">test::init_service</span>(<span class="ident">App::new</span>().<span class="ident">configure</span>(<span class="ident">services</span>)).<span class="kw">await</span>;
+    <span class="attribute">#[actix_rt::test]
+    </span><span class="kw">async fn </span>error_pages_work() {
+        <span class="kw">let </span>app = test::init_service(App::new().configure(services)).<span class="kw">await</span>;
 
-        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="ident">app</span>,
-            <span class="ident">test::TestRequest::get</span>()
-                .<span class="ident">uri</span>(<span class="ident">PAGES</span>.<span class="ident">errors</span>.<span class="ident">internal_server_error</span>)
-                .<span class="ident">to_request</span>(),
+        <span class="kw">let </span>resp = test::call_service(
+            <span class="kw-2">&amp;</span>app,
+            test::TestRequest::get()
+                .uri(PAGES.errors.internal_server_error)
+                .to_request(),
         )
         .<span class="kw">await</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::INTERNAL_SERVER_ERROR</span>);
+        <span class="macro">assert_eq!</span>(resp.status(), StatusCode::INTERNAL_SERVER_ERROR);
 
-        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="ident">app</span>,
-            <span class="ident">test::TestRequest::get</span>()
-                .<span class="ident">uri</span>(<span class="ident">PAGES</span>.<span class="ident">errors</span>.<span class="ident">unknown_error</span>)
-                .<span class="ident">to_request</span>(),
+        <span class="kw">let </span>resp = test::call_service(
+            <span class="kw-2">&amp;</span>app,
+            test::TestRequest::get()
+                .uri(PAGES.errors.unknown_error)
+                .to_request(),
         )
         .<span class="kw">await</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::INTERNAL_SERVER_ERROR</span>);
+        <span class="macro">assert_eq!</span>(resp.status(), StatusCode::INTERNAL_SERVER_ERROR);
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="mcaptcha" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="mcaptcha" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

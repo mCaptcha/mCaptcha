@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/api/v1/mcaptcha/easy.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>easy.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../../mcaptcha/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/api/v1/mcaptcha/easy.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>easy.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../../mcaptcha/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../../mcaptcha/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -411,388 +411,388 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
- */</span>
-<span class="kw">use</span> <span class="ident">actix_identity::Identity</span>;
-<span class="kw">use</span> <span class="ident">actix_web</span>::{<span class="ident">web</span>, <span class="ident">HttpResponse</span>, <span class="ident">Responder</span>};
-<span class="kw">use</span> <span class="ident">libmcaptcha</span>::{<span class="ident">defense::Level</span>, <span class="ident">defense::LevelBuilder</span>};
-<span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
+ */
+</span><span class="kw">use </span>actix_identity::Identity;
+<span class="kw">use </span>actix_web::{web, HttpResponse, Responder};
+<span class="kw">use </span>libmcaptcha::{defense::Level, defense::LevelBuilder};
+<span class="kw">use </span>serde::{Deserialize, Serialize};
 
-<span class="kw">use</span> <span class="ident">db_core::TrafficPattern</span>;
+<span class="kw">use </span>db_core::TrafficPattern;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::create</span>::{<span class="ident">runner::create</span> <span class="kw">as</span> <span class="ident">create_runner</span>, <span class="ident">CreateCaptcha</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::update</span>::{<span class="ident">runner::update_captcha</span> <span class="kw">as</span> <span class="ident">update_captcha_runner</span>, <span class="ident">UpdateCaptcha</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::errors</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::settings::DefaultDifficultyStrategy</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::AppData</span>;
+<span class="kw">use </span><span class="kw">super</span>::create::{runner::create <span class="kw">as </span>create_runner, CreateCaptcha};
+<span class="kw">use </span><span class="kw">super</span>::update::{runner::update_captcha <span class="kw">as </span>update_captcha_runner, UpdateCaptcha};
+<span class="kw">use </span><span class="kw">crate</span>::errors::<span class="kw-2">*</span>;
+<span class="kw">use </span><span class="kw">crate</span>::settings::DefaultDifficultyStrategy;
+<span class="kw">use </span><span class="kw">crate</span>::AppData;
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">routes</span> {
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Easy</span> {
-        <span class="doccomment">/// easy is using defaults</span>
-        <span class="kw">pub</span> <span class="ident">create</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
-        <span class="kw">pub</span> <span class="ident">update</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
+<span class="kw">pub mod </span>routes {
+    <span class="kw">pub struct </span>Easy {
+        <span class="doccomment">/// easy is using defaults
+        </span><span class="kw">pub </span>create: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        <span class="kw">pub </span>update: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
     }
 
-    <span class="kw">impl</span> <span class="ident">Easy</span> {
-        <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
-            <span class="self">Self</span> {
-                <span class="ident">create</span>: <span class="string">&quot;/api/v1/mcaptcha/add/easy&quot;</span>,
-                <span class="ident">update</span>: <span class="string">&quot;/api/v1/mcaptcha/update/easy&quot;</span>,
+    <span class="kw">impl </span>Easy {
+        <span class="kw">pub const fn </span>new() -&gt; <span class="self">Self </span>{
+            <span class="self">Self </span>{
+                create: <span class="string">&quot;/api/v1/mcaptcha/add/easy&quot;</span>,
+                update: <span class="string">&quot;/api/v1/mcaptcha/update/easy&quot;</span>,
             }
         }
     }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">services</span>(<span class="ident">cfg</span>: <span class="kw-2">&amp;mut</span> <span class="ident">web::ServiceConfig</span>) {
-    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">update</span>);
-    <span class="ident">cfg</span>.<span class="ident">service</span>(<span class="ident">create</span>);
+<span class="kw">pub fn </span>services(cfg: <span class="kw-2">&amp;mut </span>web::ServiceConfig) {
+    cfg.service(update);
+    cfg.service(create);
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Default</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
-<span class="doccomment">/// User&#39;s traffic pattern; used in generating a captcha configuration</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TrafficPatternRequest</span> {
-    <span class="doccomment">/// average traffic of user&#39;s website</span>
-    <span class="kw">pub</span> <span class="ident">avg_traffic</span>: <span class="ident">u32</span>,
-    <span class="doccomment">/// the peak traffic that the user&#39;s website can handle</span>
-    <span class="kw">pub</span> <span class="ident">peak_sustainable_traffic</span>: <span class="ident">u32</span>,
-    <span class="doccomment">/// traffic that bought the user&#39;s website down; optional</span>
-    <span class="kw">pub</span> <span class="ident">broke_my_site_traffic</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Captcha description</span>
-    <span class="kw">pub</span> <span class="ident">description</span>: <span class="ident">String</span>,
+<span class="attribute">#[derive(Default, Serialize, Deserialize, Clone, Debug)]
+</span><span class="doccomment">/// User&#39;s traffic pattern; used in generating a captcha configuration
+</span><span class="kw">pub struct </span>TrafficPatternRequest {
+    <span class="doccomment">/// average traffic of user&#39;s website
+    </span><span class="kw">pub </span>avg_traffic: u32,
+    <span class="doccomment">/// the peak traffic that the user&#39;s website can handle
+    </span><span class="kw">pub </span>peak_sustainable_traffic: u32,
+    <span class="doccomment">/// traffic that bought the user&#39;s website down; optional
+    </span><span class="kw">pub </span>broke_my_site_traffic: <span class="prelude-ty">Option</span>&lt;u32&gt;,
+    <span class="doccomment">/// Captcha description
+    </span><span class="kw">pub </span>description: String,
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">TrafficPatternRequest</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">TrafficPattern</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">t</span>: <span class="kw-2">&amp;</span><span class="ident">TrafficPatternRequest</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident">TrafficPattern</span> {
-            <span class="ident">avg_traffic</span>: <span class="ident">t</span>.<span class="ident">avg_traffic</span>,
-            <span class="ident">peak_sustainable_traffic</span>: <span class="ident">t</span>.<span class="ident">peak_sustainable_traffic</span>,
-            <span class="ident">broke_my_site_traffic</span>: <span class="ident">t</span>.<span class="ident">broke_my_site_traffic</span>,
+<span class="kw">impl </span>From&lt;<span class="kw-2">&amp;</span>TrafficPatternRequest&gt; <span class="kw">for </span>TrafficPattern {
+    <span class="kw">fn </span>from(t: <span class="kw-2">&amp;</span>TrafficPatternRequest) -&gt; <span class="self">Self </span>{
+        TrafficPattern {
+            avg_traffic: t.avg_traffic,
+            peak_sustainable_traffic: t.peak_sustainable_traffic,
+            broke_my_site_traffic: t.broke_my_site_traffic,
         }
     }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">calculate</span>(
-    <span class="ident">tp</span>: <span class="kw-2">&amp;</span><span class="ident">TrafficPattern</span>,
-    <span class="ident">strategy</span>: <span class="kw-2">&amp;</span><span class="ident">DefaultDifficultyStrategy</span>,
-) -&gt; <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Level</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">levels</span> <span class="op">=</span> <span class="macro">vec!</span>[
-        <span class="ident">LevelBuilder::default</span>()
-            .<span class="ident">difficulty_factor</span>(<span class="ident">strategy</span>.<span class="ident">avg_traffic_difficulty</span>)<span class="question-mark">?</span>
-            .<span class="ident">visitor_threshold</span>(<span class="ident">tp</span>.<span class="ident">avg_traffic</span>)
-            .<span class="ident">build</span>()<span class="question-mark">?</span>,
-        <span class="ident">LevelBuilder::default</span>()
-            .<span class="ident">difficulty_factor</span>(<span class="ident">strategy</span>.<span class="ident">peak_sustainable_traffic_difficulty</span>)<span class="question-mark">?</span>
-            .<span class="ident">visitor_threshold</span>(<span class="ident">tp</span>.<span class="ident">peak_sustainable_traffic</span>)
-            .<span class="ident">build</span>()<span class="question-mark">?</span>,
+<span class="kw">pub fn </span>calculate(
+    tp: <span class="kw-2">&amp;</span>TrafficPattern,
+    strategy: <span class="kw-2">&amp;</span>DefaultDifficultyStrategy,
+) -&gt; ServiceResult&lt;Vec&lt;Level&gt;&gt; {
+    <span class="kw">let </span><span class="kw-2">mut </span>levels = <span class="macro">vec!</span>[
+        LevelBuilder::default()
+            .difficulty_factor(strategy.avg_traffic_difficulty)<span class="question-mark">?
+            </span>.visitor_threshold(tp.avg_traffic)
+            .build()<span class="question-mark">?</span>,
+        LevelBuilder::default()
+            .difficulty_factor(strategy.peak_sustainable_traffic_difficulty)<span class="question-mark">?
+            </span>.visitor_threshold(tp.peak_sustainable_traffic)
+            .build()<span class="question-mark">?</span>,
     ];
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">highest_level</span> <span class="op">=</span> <span class="ident">LevelBuilder::default</span>();
-    <span class="ident">highest_level</span>.<span class="ident">difficulty_factor</span>(<span class="ident">strategy</span>.<span class="ident">broke_my_site_traffic_difficulty</span>)<span class="question-mark">?</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>highest_level = LevelBuilder::default();
+    highest_level.difficulty_factor(strategy.broke_my_site_traffic_difficulty)<span class="question-mark">?</span>;
 
-    <span class="kw">match</span> <span class="ident">tp</span>.<span class="ident">broke_my_site_traffic</span> {
-        <span class="prelude-val">Some</span>(<span class="ident">broke_my_site_traffic</span>) =&gt; {
-            <span class="ident">highest_level</span>.<span class="ident">visitor_threshold</span>(<span class="ident">broke_my_site_traffic</span>)
+    <span class="kw">match </span>tp.broke_my_site_traffic {
+        <span class="prelude-val">Some</span>(broke_my_site_traffic) =&gt; {
+            highest_level.visitor_threshold(broke_my_site_traffic)
         }
-        <span class="prelude-val">None</span> =&gt; <span class="kw">match</span> <span class="ident">tp</span>
-            .<span class="ident">peak_sustainable_traffic</span>
-            .<span class="ident">checked_add</span>(<span class="ident">tp</span>.<span class="ident">peak_sustainable_traffic</span> <span class="op">/</span> <span class="number">2</span>)
+        <span class="prelude-val">None </span>=&gt; <span class="kw">match </span>tp
+            .peak_sustainable_traffic
+            .checked_add(tp.peak_sustainable_traffic / <span class="number">2</span>)
         {
-            <span class="prelude-val">Some</span>(<span class="ident">num</span>) =&gt; <span class="ident">highest_level</span>.<span class="ident">visitor_threshold</span>(<span class="ident">num</span>),
-            <span class="comment">// TODO check for overflow: database saves these values as i32, so this u32 is cast</span>
-            <span class="comment">// into i32. Should choose bigger number or casts properly</span>
-            <span class="prelude-val">None</span> =&gt; <span class="ident">highest_level</span>.<span class="ident">visitor_threshold</span>(<span class="ident">u32::MAX</span>),
+            <span class="prelude-val">Some</span>(num) =&gt; highest_level.visitor_threshold(num),
+            <span class="comment">// TODO check for overflow: database saves these values as i32, so this u32 is cast
+            // into i32. Should choose bigger number or casts properly
+            </span><span class="prelude-val">None </span>=&gt; highest_level.visitor_threshold(u32::MAX),
         },
     };
 
-    <span class="ident">levels</span>.<span class="ident">push</span>(<span class="ident">highest_level</span>.<span class="ident">build</span>()<span class="question-mark">?</span>);
+    levels.push(highest_level.build()<span class="question-mark">?</span>);
 
-    <span class="prelude-val">Ok</span>(<span class="ident">levels</span>)
+    <span class="prelude-val">Ok</span>(levels)
 }
 
-<span class="attribute">#[<span class="ident">my_codegen::post</span>(
-    <span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;crate::V1_API_ROUTES.captcha.easy.create&quot;</span>,
-    <span class="ident">wrap</span> <span class="op">=</span> <span class="string">&quot;crate::api::v1::get_middleware()&quot;</span>
-)]</span>
-<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create</span>(
-    <span class="ident">payload</span>: <span class="ident">web::Json</span><span class="op">&lt;</span><span class="ident">TrafficPatternRequest</span><span class="op">&gt;</span>,
-    <span class="ident">data</span>: <span class="ident">AppData</span>,
-    <span class="ident">id</span>: <span class="ident">Identity</span>,
-) -&gt; <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">username</span> <span class="op">=</span> <span class="ident">id</span>.<span class="ident">identity</span>().<span class="ident">unwrap</span>();
-    <span class="kw">let</span> <span class="ident">payload</span> <span class="op">=</span> <span class="ident">payload</span>.<span class="ident">into_inner</span>();
-    <span class="kw">let</span> <span class="ident">pattern</span> <span class="op">=</span> (<span class="kw-2">&amp;</span><span class="ident">payload</span>).<span class="ident">into</span>();
-    <span class="kw">let</span> <span class="ident">levels</span> <span class="op">=</span>
-        <span class="ident">calculate</span>(<span class="kw-2">&amp;</span><span class="ident">pattern</span>, <span class="kw-2">&amp;</span><span class="ident">data</span>.<span class="ident">settings</span>.<span class="ident">captcha</span>.<span class="ident">default_difficulty_strategy</span>)<span class="question-mark">?</span>;
-    <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="ident">CreateCaptcha</span> {
-        <span class="ident">levels</span>,
-        <span class="ident">duration</span>: <span class="ident">data</span>.<span class="ident">settings</span>.<span class="ident">captcha</span>.<span class="ident">default_difficulty_strategy</span>.<span class="ident">duration</span>,
-        <span class="ident">description</span>: <span class="ident">payload</span>.<span class="ident">description</span>,
+<span class="attribute">#[my_codegen::post(
+    path = <span class="string">&quot;crate::V1_API_ROUTES.captcha.easy.create&quot;</span>,
+    wrap = <span class="string">&quot;crate::api::v1::get_middleware()&quot;
+</span>)]
+</span><span class="kw">async fn </span>create(
+    payload: web::Json&lt;TrafficPatternRequest&gt;,
+    data: AppData,
+    id: Identity,
+) -&gt; ServiceResult&lt;<span class="kw">impl </span>Responder&gt; {
+    <span class="kw">let </span>username = id.identity().unwrap();
+    <span class="kw">let </span>payload = payload.into_inner();
+    <span class="kw">let </span>pattern = (<span class="kw-2">&amp;</span>payload).into();
+    <span class="kw">let </span>levels =
+        calculate(<span class="kw-2">&amp;</span>pattern, <span class="kw-2">&amp;</span>data.settings.captcha.default_difficulty_strategy)<span class="question-mark">?</span>;
+    <span class="kw">let </span>msg = CreateCaptcha {
+        levels,
+        duration: data.settings.captcha.default_difficulty_strategy.duration,
+        description: payload.description,
     };
 
-    <span class="kw">let</span> <span class="ident">mcaptcha_config</span> <span class="op">=</span> <span class="ident">create_runner</span>(<span class="kw-2">&amp;</span><span class="ident">msg</span>, <span class="kw-2">&amp;</span><span class="ident">data</span>, <span class="kw-2">&amp;</span><span class="ident">username</span>).<span class="kw">await</span><span class="question-mark">?</span>;
-    <span class="ident">data</span>.<span class="ident">db</span>
-        .<span class="ident">add_traffic_pattern</span>(<span class="kw-2">&amp;</span><span class="ident">username</span>, <span class="kw-2">&amp;</span><span class="ident">mcaptcha_config</span>.<span class="ident">key</span>, <span class="kw-2">&amp;</span><span class="ident">pattern</span>)
+    <span class="kw">let </span>mcaptcha_config = create_runner(<span class="kw-2">&amp;</span>msg, <span class="kw-2">&amp;</span>data, <span class="kw-2">&amp;</span>username).<span class="kw">await</span><span class="question-mark">?</span>;
+    data.db
+        .add_traffic_pattern(<span class="kw-2">&amp;</span>username, <span class="kw-2">&amp;</span>mcaptcha_config.key, <span class="kw-2">&amp;</span>pattern)
         .<span class="kw">await</span><span class="question-mark">?</span>;
-    <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse::Ok</span>().<span class="ident">json</span>(<span class="ident">mcaptcha_config</span>))
+    <span class="prelude-val">Ok</span>(HttpResponse::Ok().json(mcaptcha_config))
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UpdateTrafficPattern</span> {
-    <span class="kw">pub</span> <span class="ident">pattern</span>: <span class="ident">TrafficPatternRequest</span>,
-    <span class="kw">pub</span> <span class="ident">key</span>: <span class="ident">String</span>,
+<span class="attribute">#[derive(Serialize, Deserialize, Clone, Debug)]
+</span><span class="kw">pub struct </span>UpdateTrafficPattern {
+    <span class="kw">pub </span>pattern: TrafficPatternRequest,
+    <span class="kw">pub </span>key: String,
 }
 
-<span class="attribute">#[<span class="ident">my_codegen::post</span>(
-    <span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;crate::V1_API_ROUTES.captcha.easy.update&quot;</span>,
-    <span class="ident">wrap</span> <span class="op">=</span> <span class="string">&quot;crate::api::v1::get_middleware()&quot;</span>
-)]</span>
-<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update</span>(
-    <span class="ident">payload</span>: <span class="ident">web::Json</span><span class="op">&lt;</span><span class="ident">UpdateTrafficPattern</span><span class="op">&gt;</span>,
-    <span class="ident">data</span>: <span class="ident">AppData</span>,
-    <span class="ident">id</span>: <span class="ident">Identity</span>,
-) -&gt; <span class="ident">ServiceResult</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Responder</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">username</span> <span class="op">=</span> <span class="ident">id</span>.<span class="ident">identity</span>().<span class="ident">unwrap</span>();
-    <span class="kw">let</span> <span class="ident">payload</span> <span class="op">=</span> <span class="ident">payload</span>.<span class="ident">into_inner</span>();
-    <span class="kw">let</span> <span class="ident">pattern</span> <span class="op">=</span> (<span class="kw-2">&amp;</span><span class="ident">payload</span>.<span class="ident">pattern</span>).<span class="ident">into</span>();
-    <span class="kw">let</span> <span class="ident">levels</span> <span class="op">=</span>
-        <span class="ident">calculate</span>(<span class="kw-2">&amp;</span><span class="ident">pattern</span>, <span class="kw-2">&amp;</span><span class="ident">data</span>.<span class="ident">settings</span>.<span class="ident">captcha</span>.<span class="ident">default_difficulty_strategy</span>)<span class="question-mark">?</span>;
+<span class="attribute">#[my_codegen::post(
+    path = <span class="string">&quot;crate::V1_API_ROUTES.captcha.easy.update&quot;</span>,
+    wrap = <span class="string">&quot;crate::api::v1::get_middleware()&quot;
+</span>)]
+</span><span class="kw">async fn </span>update(
+    payload: web::Json&lt;UpdateTrafficPattern&gt;,
+    data: AppData,
+    id: Identity,
+) -&gt; ServiceResult&lt;<span class="kw">impl </span>Responder&gt; {
+    <span class="kw">let </span>username = id.identity().unwrap();
+    <span class="kw">let </span>payload = payload.into_inner();
+    <span class="kw">let </span>pattern = (<span class="kw-2">&amp;</span>payload.pattern).into();
+    <span class="kw">let </span>levels =
+        calculate(<span class="kw-2">&amp;</span>pattern, <span class="kw-2">&amp;</span>data.settings.captcha.default_difficulty_strategy)<span class="question-mark">?</span>;
 
-    <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="ident">UpdateCaptcha</span> {
-        <span class="ident">levels</span>,
-        <span class="ident">duration</span>: <span class="ident">data</span>.<span class="ident">settings</span>.<span class="ident">captcha</span>.<span class="ident">default_difficulty_strategy</span>.<span class="ident">duration</span>,
-        <span class="ident">description</span>: <span class="ident">payload</span>.<span class="ident">pattern</span>.<span class="ident">description</span>,
-        <span class="ident">key</span>: <span class="ident">payload</span>.<span class="ident">key</span>,
+    <span class="kw">let </span>msg = UpdateCaptcha {
+        levels,
+        duration: data.settings.captcha.default_difficulty_strategy.duration,
+        description: payload.pattern.description,
+        key: payload.key,
     };
 
-    <span class="ident">update_captcha_runner</span>(<span class="kw-2">&amp;</span><span class="ident">msg</span>, <span class="kw-2">&amp;</span><span class="ident">data</span>, <span class="kw-2">&amp;</span><span class="ident">username</span>).<span class="kw">await</span><span class="question-mark">?</span>;
+    update_captcha_runner(<span class="kw-2">&amp;</span>msg, <span class="kw-2">&amp;</span>data, <span class="kw-2">&amp;</span>username).<span class="kw">await</span><span class="question-mark">?</span>;
 
-    <span class="ident">data</span>.<span class="ident">db</span>.<span class="ident">delete_traffic_pattern</span>(<span class="kw-2">&amp;</span><span class="ident">username</span>, <span class="kw-2">&amp;</span><span class="ident">msg</span>.<span class="ident">key</span>).<span class="kw">await</span><span class="question-mark">?</span>;
+    data.db.delete_traffic_pattern(<span class="kw-2">&amp;</span>username, <span class="kw-2">&amp;</span>msg.key).<span class="kw">await</span><span class="question-mark">?</span>;
 
-    <span class="ident">data</span>.<span class="ident">db</span>
-        .<span class="ident">add_traffic_pattern</span>(<span class="kw-2">&amp;</span><span class="ident">username</span>, <span class="kw-2">&amp;</span><span class="ident">msg</span>.<span class="ident">key</span>, <span class="kw-2">&amp;</span><span class="ident">pattern</span>)
+    data.db
+        .add_traffic_pattern(<span class="kw-2">&amp;</span>username, <span class="kw-2">&amp;</span>msg.key, <span class="kw-2">&amp;</span>pattern)
         .<span class="kw">await</span><span class="question-mark">?</span>;
 
-    <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse::Ok</span>())
+    <span class="prelude-val">Ok</span>(HttpResponse::Ok())
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="ident">actix_web::http::StatusCode</span>;
-    <span class="kw">use</span> <span class="ident">actix_web::test</span>;
-    <span class="kw">use</span> <span class="ident">actix_web::web::Bytes</span>;
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">pub mod </span>tests {
+    <span class="kw">use </span>actix_web::http::StatusCode;
+    <span class="kw">use </span>actix_web::test;
+    <span class="kw">use </span>actix_web::web::Bytes;
 
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::api::v1::mcaptcha::create::MCaptchaDetails</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::api::v1::ROUTES</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::tests</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="kw-2">*</span>;
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
+    <span class="kw">use </span><span class="kw">crate</span>::api::v1::mcaptcha::create::MCaptchaDetails;
+    <span class="kw">use </span><span class="kw">crate</span>::api::v1::ROUTES;
+    <span class="kw">use </span><span class="kw">crate</span>::tests::<span class="kw-2">*</span>;
+    <span class="kw">use crate</span>::<span class="kw-2">*</span>;
 
-    <span class="kw">mod</span> <span class="ident">isoloated_test</span> {
-        <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">calculate</span>, <span class="ident">LevelBuilder</span>};
+    <span class="kw">mod </span>isoloated_test {
+        <span class="kw">use super</span>::{calculate, LevelBuilder};
 
-        <span class="kw">use</span> <span class="ident">db_core::TrafficPattern</span>;
+        <span class="kw">use </span>db_core::TrafficPattern;
 
-        <span class="attribute">#[<span class="ident">test</span>]</span>
-        <span class="kw">fn</span> <span class="ident">easy_configuration_works</span>() {
-            <span class="kw">let</span> <span class="ident">settings</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::tests::get_settings</span>();
+        <span class="attribute">#[test]
+        </span><span class="kw">fn </span>easy_configuration_works() {
+            <span class="kw">let </span>settings = <span class="kw">crate</span>::tests::get_settings();
 
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">payload</span> <span class="op">=</span> <span class="ident">TrafficPattern</span> {
-                <span class="ident">avg_traffic</span>: <span class="number">100_000</span>,
-                <span class="ident">peak_sustainable_traffic</span>: <span class="number">1_000_000</span>,
-                <span class="ident">broke_my_site_traffic</span>: <span class="prelude-val">Some</span>(<span class="number">10_000_000</span>),
+            <span class="kw">let </span><span class="kw-2">mut </span>payload = TrafficPattern {
+                avg_traffic: <span class="number">100_000</span>,
+                peak_sustainable_traffic: <span class="number">1_000_000</span>,
+                broke_my_site_traffic: <span class="prelude-val">Some</span>(<span class="number">10_000_000</span>),
             };
 
-            <span class="kw">let</span> <span class="ident">strategy</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">settings</span>.<span class="ident">captcha</span>.<span class="ident">default_difficulty_strategy</span>;
-            <span class="kw">let</span> <span class="ident">l1</span> <span class="op">=</span> <span class="ident">LevelBuilder::default</span>()
-                .<span class="ident">difficulty_factor</span>(<span class="ident">strategy</span>.<span class="ident">avg_traffic_difficulty</span>)
-                .<span class="ident">unwrap</span>()
-                .<span class="ident">visitor_threshold</span>(<span class="ident">payload</span>.<span class="ident">avg_traffic</span>)
-                .<span class="ident">build</span>()
-                .<span class="ident">unwrap</span>();
+            <span class="kw">let </span>strategy = <span class="kw-2">&amp;</span>settings.captcha.default_difficulty_strategy;
+            <span class="kw">let </span>l1 = LevelBuilder::default()
+                .difficulty_factor(strategy.avg_traffic_difficulty)
+                .unwrap()
+                .visitor_threshold(payload.avg_traffic)
+                .build()
+                .unwrap();
 
-            <span class="kw">let</span> <span class="ident">l2</span> <span class="op">=</span> <span class="ident">LevelBuilder::default</span>()
-                .<span class="ident">difficulty_factor</span>(<span class="ident">strategy</span>.<span class="ident">peak_sustainable_traffic_difficulty</span>)
-                .<span class="ident">unwrap</span>()
-                .<span class="ident">visitor_threshold</span>(<span class="ident">payload</span>.<span class="ident">peak_sustainable_traffic</span>)
-                .<span class="ident">build</span>()
-                .<span class="ident">unwrap</span>();
-            <span class="kw">let</span> <span class="ident">l3</span> <span class="op">=</span> <span class="ident">LevelBuilder::default</span>()
-                .<span class="ident">difficulty_factor</span>(<span class="ident">strategy</span>.<span class="ident">broke_my_site_traffic_difficulty</span>)
-                .<span class="ident">unwrap</span>()
-                .<span class="ident">visitor_threshold</span>(<span class="ident">payload</span>.<span class="ident">broke_my_site_traffic</span>.<span class="ident">unwrap</span>())
-                .<span class="ident">build</span>()
-                .<span class="ident">unwrap</span>();
+            <span class="kw">let </span>l2 = LevelBuilder::default()
+                .difficulty_factor(strategy.peak_sustainable_traffic_difficulty)
+                .unwrap()
+                .visitor_threshold(payload.peak_sustainable_traffic)
+                .build()
+                .unwrap();
+            <span class="kw">let </span>l3 = LevelBuilder::default()
+                .difficulty_factor(strategy.broke_my_site_traffic_difficulty)
+                .unwrap()
+                .visitor_threshold(payload.broke_my_site_traffic.unwrap())
+                .build()
+                .unwrap();
 
-            <span class="kw">let</span> <span class="ident">levels</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="ident">l1</span>, <span class="ident">l2</span>, <span class="ident">l3</span>];
-            <span class="macro">assert_eq!</span>(<span class="ident">calculate</span>(<span class="kw-2">&amp;</span><span class="ident">payload</span>, <span class="ident">strategy</span>).<span class="ident">unwrap</span>(), <span class="ident">levels</span>);
+            <span class="kw">let </span>levels = <span class="macro">vec!</span>[l1, l2, l3];
+            <span class="macro">assert_eq!</span>(calculate(<span class="kw-2">&amp;</span>payload, strategy).unwrap(), levels);
 
-            <span class="kw">let</span> <span class="ident">estimated_lmax</span> <span class="op">=</span> <span class="ident">LevelBuilder::default</span>()
-                .<span class="ident">difficulty_factor</span>(<span class="ident">strategy</span>.<span class="ident">broke_my_site_traffic_difficulty</span>)
-                .<span class="ident">unwrap</span>()
-                .<span class="ident">visitor_threshold</span>(<span class="number">1500000</span>)
-                .<span class="ident">build</span>()
-                .<span class="ident">unwrap</span>();
-            <span class="ident">payload</span>.<span class="ident">broke_my_site_traffic</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+            <span class="kw">let </span>estimated_lmax = LevelBuilder::default()
+                .difficulty_factor(strategy.broke_my_site_traffic_difficulty)
+                .unwrap()
+                .visitor_threshold(<span class="number">1500000</span>)
+                .build()
+                .unwrap();
+            payload.broke_my_site_traffic = <span class="prelude-val">None</span>;
             <span class="macro">assert_eq!</span>(
-                <span class="ident">calculate</span>(<span class="kw-2">&amp;</span><span class="ident">payload</span>, <span class="ident">strategy</span>).<span class="ident">unwrap</span>(),
-                <span class="macro">vec!</span>[<span class="ident">l1</span>, <span class="ident">l2</span>, <span class="ident">estimated_lmax</span>]
+                calculate(<span class="kw-2">&amp;</span>payload, strategy).unwrap(),
+                <span class="macro">vec!</span>[l1, l2, estimated_lmax]
             );
 
-            <span class="kw">let</span> <span class="ident">lmax</span> <span class="op">=</span> <span class="ident">LevelBuilder::default</span>()
-                .<span class="ident">difficulty_factor</span>(<span class="ident">strategy</span>.<span class="ident">broke_my_site_traffic_difficulty</span>)
-                .<span class="ident">unwrap</span>()
-                .<span class="ident">visitor_threshold</span>(<span class="ident">u32::MAX</span>)
-                .<span class="ident">build</span>()
-                .<span class="ident">unwrap</span>();
+            <span class="kw">let </span>lmax = LevelBuilder::default()
+                .difficulty_factor(strategy.broke_my_site_traffic_difficulty)
+                .unwrap()
+                .visitor_threshold(u32::MAX)
+                .build()
+                .unwrap();
 
-            <span class="kw">let</span> <span class="ident">very_large_l2_peak_traffic</span> <span class="op">=</span> <span class="ident">u32::MAX</span> <span class="op">-</span> <span class="number">1</span>;
-            <span class="kw">let</span> <span class="ident">very_large_l2</span> <span class="op">=</span> <span class="ident">LevelBuilder::default</span>()
-                .<span class="ident">difficulty_factor</span>(<span class="ident">strategy</span>.<span class="ident">peak_sustainable_traffic_difficulty</span>)
-                .<span class="ident">unwrap</span>()
-                .<span class="ident">visitor_threshold</span>(<span class="ident">very_large_l2_peak_traffic</span>)
-                .<span class="ident">build</span>()
-                .<span class="ident">unwrap</span>();
+            <span class="kw">let </span>very_large_l2_peak_traffic = u32::MAX - <span class="number">1</span>;
+            <span class="kw">let </span>very_large_l2 = LevelBuilder::default()
+                .difficulty_factor(strategy.peak_sustainable_traffic_difficulty)
+                .unwrap()
+                .visitor_threshold(very_large_l2_peak_traffic)
+                .build()
+                .unwrap();
 
-            <span class="comment">//        payload.broke_my_site_traffic = Some(very_large_l2_peak_traffic);</span>
-            <span class="ident">payload</span>.<span class="ident">peak_sustainable_traffic</span> <span class="op">=</span> <span class="ident">very_large_l2_peak_traffic</span>;
+            <span class="comment">//        payload.broke_my_site_traffic = Some(very_large_l2_peak_traffic);
+            </span>payload.peak_sustainable_traffic = very_large_l2_peak_traffic;
             <span class="macro">assert_eq!</span>(
-                <span class="ident">calculate</span>(<span class="kw-2">&amp;</span><span class="ident">payload</span>, <span class="ident">strategy</span>).<span class="ident">unwrap</span>(),
-                <span class="macro">vec!</span>[<span class="ident">l1</span>, <span class="ident">very_large_l2</span>, <span class="ident">lmax</span>]
+                calculate(<span class="kw-2">&amp;</span>payload, strategy).unwrap(),
+                <span class="macro">vec!</span>[l1, very_large_l2, lmax]
             );
         }
     }
 
-    <span class="attribute">#[<span class="ident">actix_rt::test</span>]</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">easy_works_pg</span>() {
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::tests::pg::get_data</span>().<span class="kw">await</span>;
-        <span class="ident">easy_works</span>(<span class="ident">data</span>).<span class="kw">await</span>;
+    <span class="attribute">#[actix_rt::test]
+    </span><span class="kw">async fn </span>easy_works_pg() {
+        <span class="kw">let </span>data = <span class="kw">crate</span>::tests::pg::get_data().<span class="kw">await</span>;
+        easy_works(data).<span class="kw">await</span>;
     }
 
-    <span class="attribute">#[<span class="ident">actix_rt::test</span>]</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">easy_works_maria</span>() {
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::tests::maria::get_data</span>().<span class="kw">await</span>;
-        <span class="ident">easy_works</span>(<span class="ident">data</span>).<span class="kw">await</span>;
+    <span class="attribute">#[actix_rt::test]
+    </span><span class="kw">async fn </span>easy_works_maria() {
+        <span class="kw">let </span>data = <span class="kw">crate</span>::tests::maria::get_data().<span class="kw">await</span>;
+        easy_works(data).<span class="kw">await</span>;
     }
 
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">easy_works</span>(<span class="ident">data</span>: <span class="ident">ArcData</span>) {
-        <span class="kw">const</span> <span class="ident">NAME</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;defaultuserconfgworks&quot;</span>;
-        <span class="kw">const</span> <span class="ident">PASSWORD</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;longpassworddomain&quot;</span>;
-        <span class="kw">const</span> <span class="ident">EMAIL</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;defaultuserconfgworks@a.com&quot;</span>;
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">data</span>;
+    <span class="kw">pub async fn </span>easy_works(data: ArcData) {
+        <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span>str = <span class="string">&quot;defaultuserconfgworks&quot;</span>;
+        <span class="kw">const </span>PASSWORD: <span class="kw-2">&amp;</span>str = <span class="string">&quot;longpassworddomain&quot;</span>;
+        <span class="kw">const </span>EMAIL: <span class="kw-2">&amp;</span>str = <span class="string">&quot;defaultuserconfgworks@a.com&quot;</span>;
+        <span class="kw">let </span>data = <span class="kw-2">&amp;</span>data;
 
-        <span class="ident">delete_user</span>(<span class="ident">data</span>, <span class="ident">NAME</span>).<span class="kw">await</span>;
+        delete_user(data, NAME).<span class="kw">await</span>;
 
-        <span class="kw">let</span> (<span class="ident">_creds</span>, <span class="ident">signin_resp</span>) <span class="op">=</span>
-            <span class="ident">register_and_signin</span>(<span class="ident">data</span>, <span class="ident">NAME</span>, <span class="ident">EMAIL</span>, <span class="ident">PASSWORD</span>).<span class="kw">await</span>;
-        <span class="kw">let</span> <span class="ident">cookies</span> <span class="op">=</span> <span class="macro">get_cookie!</span>(<span class="ident">signin_resp</span>);
-        <span class="kw">let</span> <span class="ident">app</span> <span class="op">=</span> <span class="macro">get_app!</span>(<span class="ident">data</span>).<span class="kw">await</span>;
+        <span class="kw">let </span>(_creds, signin_resp) =
+            register_and_signin(data, NAME, EMAIL, PASSWORD).<span class="kw">await</span>;
+        <span class="kw">let </span>cookies = <span class="macro">get_cookie!</span>(signin_resp);
+        <span class="kw">let </span>app = <span class="macro">get_app!</span>(data).<span class="kw">await</span>;
 
-        <span class="kw">let</span> <span class="ident">payload</span> <span class="op">=</span> <span class="ident">TrafficPatternRequest</span> {
-            <span class="ident">avg_traffic</span>: <span class="number">100_000</span>,
-            <span class="ident">peak_sustainable_traffic</span>: <span class="number">1_000_000</span>,
-            <span class="ident">broke_my_site_traffic</span>: <span class="prelude-val">Some</span>(<span class="number">10_000_000</span>),
-            <span class="ident">description</span>: <span class="ident">NAME</span>.<span class="ident">into</span>(),
+        <span class="kw">let </span>payload = TrafficPatternRequest {
+            avg_traffic: <span class="number">100_000</span>,
+            peak_sustainable_traffic: <span class="number">1_000_000</span>,
+            broke_my_site_traffic: <span class="prelude-val">Some</span>(<span class="number">10_000_000</span>),
+            description: NAME.into(),
         };
 
-        <span class="kw">let</span> <span class="ident">default_levels</span> <span class="op">=</span> <span class="ident">calculate</span>(
-            <span class="kw-2">&amp;</span>(<span class="kw-2">&amp;</span><span class="ident">payload</span>).<span class="ident">into</span>(),
-            <span class="kw-2">&amp;</span><span class="ident">data</span>.<span class="ident">settings</span>.<span class="ident">captcha</span>.<span class="ident">default_difficulty_strategy</span>,
+        <span class="kw">let </span>default_levels = calculate(
+            <span class="kw-2">&amp;</span>(<span class="kw-2">&amp;</span>payload).into(),
+            <span class="kw-2">&amp;</span>data.settings.captcha.default_difficulty_strategy,
         )
-        .<span class="ident">unwrap</span>();
+        .unwrap();
 
-        <span class="comment">// START create_easy</span>
+        <span class="comment">// START create_easy
 
-        <span class="kw">let</span> <span class="ident">add_token_resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="ident">app</span>,
-            <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span><span class="ident">payload</span>, <span class="ident">ROUTES</span>.<span class="ident">captcha</span>.<span class="ident">easy</span>.<span class="ident">create</span>)
-                .<span class="ident">cookie</span>(<span class="ident">cookies</span>.<span class="ident">clone</span>())
-                .<span class="ident">to_request</span>(),
-        )
-        .<span class="kw">await</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">add_token_resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::OK</span>);
-        <span class="kw">let</span> <span class="ident">token_key</span>: <span class="ident">MCaptchaDetails</span> <span class="op">=</span> <span class="ident">test::read_body_json</span>(<span class="ident">add_token_resp</span>).<span class="kw">await</span>;
-
-        <span class="kw">let</span> <span class="ident">get_level_resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="ident">app</span>,
-            <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span><span class="ident">token_key</span>, <span class="ident">ROUTES</span>.<span class="ident">captcha</span>.<span class="ident">get</span>)
-                .<span class="ident">cookie</span>(<span class="ident">cookies</span>.<span class="ident">clone</span>())
-                .<span class="ident">to_request</span>(),
+        </span><span class="kw">let </span>add_token_resp = test::call_service(
+            <span class="kw-2">&amp;</span>app,
+            <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span>payload, ROUTES.captcha.easy.create)
+                .cookie(cookies.clone())
+                .to_request(),
         )
         .<span class="kw">await</span>;
+        <span class="macro">assert_eq!</span>(add_token_resp.status(), StatusCode::OK);
+        <span class="kw">let </span>token_key: MCaptchaDetails = test::read_body_json(add_token_resp).<span class="kw">await</span>;
 
-        <span class="macro">assert_eq!</span>(<span class="ident">get_level_resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::OK</span>);
-        <span class="kw">let</span> <span class="ident">res_levels</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Level</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">test::read_body_json</span>(<span class="ident">get_level_resp</span>).<span class="kw">await</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">res_levels</span>, <span class="ident">default_levels</span>);
-        <span class="comment">// END create_easy</span>
+        <span class="kw">let </span>get_level_resp = test::call_service(
+            <span class="kw-2">&amp;</span>app,
+            <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span>token_key, ROUTES.captcha.get)
+                .cookie(cookies.clone())
+                .to_request(),
+        )
+        .<span class="kw">await</span>;
 
-        <span class="comment">// START update_easy</span>
-        <span class="kw">let</span> <span class="ident">update_pattern</span> <span class="op">=</span> <span class="ident">TrafficPatternRequest</span> {
-            <span class="ident">avg_traffic</span>: <span class="number">1_000</span>,
-            <span class="ident">peak_sustainable_traffic</span>: <span class="number">10_000</span>,
-            <span class="ident">broke_my_site_traffic</span>: <span class="prelude-val">Some</span>(<span class="number">1_000_000</span>),
-            <span class="ident">description</span>: <span class="ident">NAME</span>.<span class="ident">into</span>(),
+        <span class="macro">assert_eq!</span>(get_level_resp.status(), StatusCode::OK);
+        <span class="kw">let </span>res_levels: Vec&lt;Level&gt; = test::read_body_json(get_level_resp).<span class="kw">await</span>;
+        <span class="macro">assert_eq!</span>(res_levels, default_levels);
+        <span class="comment">// END create_easy
+
+        // START update_easy
+        </span><span class="kw">let </span>update_pattern = TrafficPatternRequest {
+            avg_traffic: <span class="number">1_000</span>,
+            peak_sustainable_traffic: <span class="number">10_000</span>,
+            broke_my_site_traffic: <span class="prelude-val">Some</span>(<span class="number">1_000_000</span>),
+            description: NAME.into(),
         };
 
-        <span class="kw">let</span> <span class="ident">updated_default_values</span> <span class="op">=</span> <span class="ident">calculate</span>(
-            <span class="kw-2">&amp;</span>(<span class="kw-2">&amp;</span><span class="ident">update_pattern</span>).<span class="ident">into</span>(),
-            <span class="kw-2">&amp;</span><span class="ident">data</span>.<span class="ident">settings</span>.<span class="ident">captcha</span>.<span class="ident">default_difficulty_strategy</span>,
+        <span class="kw">let </span>updated_default_values = calculate(
+            <span class="kw-2">&amp;</span>(<span class="kw-2">&amp;</span>update_pattern).into(),
+            <span class="kw-2">&amp;</span>data.settings.captcha.default_difficulty_strategy,
         )
-        .<span class="ident">unwrap</span>();
+        .unwrap();
 
-        <span class="kw">let</span> <span class="ident">payload</span> <span class="op">=</span> <span class="ident">UpdateTrafficPattern</span> {
-            <span class="ident">pattern</span>: <span class="ident">update_pattern</span>,
-            <span class="ident">key</span>: <span class="ident">token_key</span>.<span class="ident">key</span>.<span class="ident">clone</span>(),
+        <span class="kw">let </span>payload = UpdateTrafficPattern {
+            pattern: update_pattern,
+            key: token_key.key.clone(),
         };
 
-        <span class="kw">let</span> <span class="ident">update_token_resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="ident">app</span>,
-            <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span><span class="ident">payload</span>, <span class="ident">ROUTES</span>.<span class="ident">captcha</span>.<span class="ident">easy</span>.<span class="ident">update</span>)
-                .<span class="ident">cookie</span>(<span class="ident">cookies</span>.<span class="ident">clone</span>())
-                .<span class="ident">to_request</span>(),
+        <span class="kw">let </span>update_token_resp = test::call_service(
+            <span class="kw-2">&amp;</span>app,
+            <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span>payload, ROUTES.captcha.easy.update)
+                .cookie(cookies.clone())
+                .to_request(),
         )
         .<span class="kw">await</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">update_token_resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::OK</span>);
+        <span class="macro">assert_eq!</span>(update_token_resp.status(), StatusCode::OK);
 
-        <span class="kw">let</span> <span class="ident">get_level_resp</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="ident">app</span>,
-            <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span><span class="ident">token_key</span>, <span class="ident">ROUTES</span>.<span class="ident">captcha</span>.<span class="ident">get</span>)
-                .<span class="ident">cookie</span>(<span class="ident">cookies</span>.<span class="ident">clone</span>())
-                .<span class="ident">to_request</span>(),
+        <span class="kw">let </span>get_level_resp = test::call_service(
+            <span class="kw-2">&amp;</span>app,
+            <span class="macro">post_request!</span>(<span class="kw-2">&amp;</span>token_key, ROUTES.captcha.get)
+                .cookie(cookies.clone())
+                .to_request(),
         )
         .<span class="kw">await</span>;
 
-        <span class="macro">assert_eq!</span>(<span class="ident">get_level_resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::OK</span>);
-        <span class="kw">let</span> <span class="ident">res_levels</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Level</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">test::read_body_json</span>(<span class="ident">get_level_resp</span>).<span class="kw">await</span>;
-        <span class="macro">assert_ne!</span>(<span class="ident">res_levels</span>, <span class="ident">default_levels</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">res_levels</span>, <span class="ident">updated_default_values</span>);
-        <span class="comment">// END update_easy</span>
+        <span class="macro">assert_eq!</span>(get_level_resp.status(), StatusCode::OK);
+        <span class="kw">let </span>res_levels: Vec&lt;Level&gt; = test::read_body_json(get_level_resp).<span class="kw">await</span>;
+        <span class="macro">assert_ne!</span>(res_levels, default_levels);
+        <span class="macro">assert_eq!</span>(res_levels, updated_default_values);
+        <span class="comment">// END update_easy
 
-        <span class="comment">// test easy edit page</span>
-        <span class="kw">let</span> <span class="ident">easy_url</span> <span class="op">=</span> <span class="ident">PAGES</span>.<span class="ident">panel</span>.<span class="ident">sitekey</span>.<span class="ident">get_edit_easy</span>(<span class="kw-2">&amp;</span><span class="ident">token_key</span>.<span class="ident">key</span>);
+        // test easy edit page
+        </span><span class="kw">let </span>easy_url = PAGES.panel.sitekey.get_edit_easy(<span class="kw-2">&amp;</span>token_key.key);
 
-        <span class="kw">let</span> <span class="ident">easy_edit_page</span> <span class="op">=</span> <span class="ident">test::call_service</span>(
-            <span class="kw-2">&amp;</span><span class="ident">app</span>,
-            <span class="ident">test::TestRequest::get</span>()
-                .<span class="ident">uri</span>(<span class="kw-2">&amp;</span><span class="ident">easy_url</span>)
-                .<span class="ident">cookie</span>(<span class="ident">cookies</span>.<span class="ident">clone</span>())
-                .<span class="ident">to_request</span>(),
+        <span class="kw">let </span>easy_edit_page = test::call_service(
+            <span class="kw-2">&amp;</span>app,
+            test::TestRequest::get()
+                .uri(<span class="kw-2">&amp;</span>easy_url)
+                .cookie(cookies.clone())
+                .to_request(),
         )
         .<span class="kw">await</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">easy_edit_page</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::OK</span>);
+        <span class="macro">assert_eq!</span>(easy_edit_page.status(), StatusCode::OK);
 
-        <span class="kw">let</span> <span class="ident">body</span>: <span class="ident">Bytes</span> <span class="op">=</span> <span class="ident">test::read_body</span>(<span class="ident">easy_edit_page</span>).<span class="kw">await</span>;
-        <span class="kw">let</span> <span class="ident">body</span> <span class="op">=</span> <span class="ident">String::from_utf8</span>(<span class="ident">body</span>.<span class="ident">to_vec</span>()).<span class="ident">unwrap</span>();
-        <span class="macro">assert!</span>(<span class="ident">body</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">token_key</span>.<span class="ident">name</span>));
+        <span class="kw">let </span>body: Bytes = test::read_body(easy_edit_page).<span class="kw">await</span>;
+        <span class="kw">let </span>body = String::from_utf8(body.to_vec()).unwrap();
+        <span class="macro">assert!</span>(body.contains(<span class="kw-2">&amp;</span>token_key.name));
 
-        <span class="macro">assert!</span>(<span class="ident">body</span>.<span class="ident">contains</span>(
-            <span class="kw-2">&amp;</span><span class="ident">payload</span>
-                .<span class="ident">pattern</span>
-                .<span class="ident">broke_my_site_traffic</span>
-                .<span class="ident">as_ref</span>()
-                .<span class="ident">unwrap</span>()
-                .<span class="ident">to_string</span>()
+        <span class="macro">assert!</span>(body.contains(
+            <span class="kw-2">&amp;</span>payload
+                .pattern
+                .broke_my_site_traffic
+                .as_ref()
+                .unwrap()
+                .to_string()
         ));
-        <span class="macro">assert!</span>(<span class="ident">body</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">payload</span>.<span class="ident">pattern</span>.<span class="ident">avg_traffic</span>.<span class="ident">to_string</span>()));
-        <span class="macro">assert!</span>(<span class="ident">body</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">payload</span>.<span class="ident">pattern</span>.<span class="ident">peak_sustainable_traffic</span>.<span class="ident">to_string</span>()));
+        <span class="macro">assert!</span>(body.contains(<span class="kw-2">&amp;</span>payload.pattern.avg_traffic.to_string()));
+        <span class="macro">assert!</span>(body.contains(<span class="kw-2">&amp;</span>payload.pattern.peak_sustainable_traffic.to_string()));
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="mcaptcha" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="mcaptcha" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>
