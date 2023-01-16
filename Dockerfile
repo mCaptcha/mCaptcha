@@ -38,6 +38,7 @@ COPY --from=cacher /src/target target
 #COPY --from=cacher /src/db/db-migrations/target /src/db/db-migrations/target 
 #COPY --from=cacher /src/utils/cache-bust/target /src/utils/cache-bust/target 
 COPY --from=frontend /src/static/cache/bundle/ /src/static/cache/bundle/
+COPY --from=frontend /src/docs/openapi/dist/ /src/docs/openapi/dist/
 RUN cargo --version
 RUN make cache-bust
 RUN cargo build --release
