@@ -36,7 +36,7 @@ rust-embed = "6.4.0"
 cache-buster = { git = "https://github.com/realaravinth/cache-buster" }
 
 futures = "0.3.15"
-tokio = { version = "1.14", features = ["sync"]}
+tokio = { version = "1.20", features = ["sync"]}
 
 sqlx = { version = "0.5.13", features = [ "runtime-actix-rustls", "postgres", "time", "offline", "mysql"] }
 argon2-creds = { branch = "master", git = "https://github.com/realaravinth/argon2-creds"}
