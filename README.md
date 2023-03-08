@@ -41,9 +41,9 @@ When a user wants to do something on an mCaptcha-protected website,
 
 2. We'll validate the proof:
 
-   - **if validation is unsuccessful**, they will be prevented from
-     accessing their target website
-   - **if validation is successful**, read on,
+    - **if validation is unsuccessful**, they will be prevented from
+      accessing their target website
+    - **if validation is successful**, read on,
 
 3. They will be issued a token that they should submit along
    with their request/form submission to the target website.
@@ -63,14 +63,14 @@ to their request.
 
 ## Why use mCaptcha?
 
-- [x] **Free software, privacy focused**
-- [x] **Seamless UX** - No more annoying CAPTCHAs!
-- [x] **No tracking:** Our CAPTCHA routes are cookie free!
-- [x] **IP address independent:** your users are behind a NAT? We got you covered!
-- [x] **Resistant to replay attacks:** proof-of-work configurations have
-      short lifetimes(30s) and can be used only once. If a user submits a
-      PoW to an already used configuration or an expired one, their proof
-      will be rejected.
+-   [x] **Free software, privacy focused**
+-   [x] **Seamless UX** - No more annoying CAPTCHAs!
+-   [x] **No tracking:** Our CAPTCHA routes are cookie free!
+-   [x] **IP address independent:** your users are behind a NAT? We got you covered!
+-   [x] **Resistant to replay attacks:** proof-of-work configurations have
+        short lifetimes(30s) and can be used only once. If a user submits a
+        PoW to an already used configuration or an expired one, their proof
+        will be rejected.
 
 ## Demo
 
@@ -87,8 +87,8 @@ monitor console and network activity.
 
 ### Demo servers are available at:
 
-- https://demo.mcaptcha.org/
-- https://demo2.mcaptcha.org/ (runs on a Raspberry Pi!)
+-   https://demo.mcaptcha.org/
+-   https://demo2.mcaptcha.org/ (runs on a Raspberry Pi!)
 
 > Core functionality is working but it's still very much
 > work-in-progress. Since we don't have a stable release yet, hosted
@@ -109,9 +109,8 @@ docker-compose up -d
 
 After the containers are up, visit [http://localhost:7000](http://localhost:7000) and login with the default credentials:
 
-- username: aaronsw 
-- password: password
-
+-   username: aaronsw
+-   password: password
 
 It takes a while to build the image so please be patient :)
 
@@ -129,3 +128,21 @@ See [DEPLOYMENT.md](./docs/DEPLOYMENT.md)
 ## Configuration:
 
 See [CONFIGURATION.md](./docs/CONFIGURATION.md)
+
+## Funding
+
+### NLnet
+
+<div align="center">
+	<img
+		height="150px"
+		alt="NLnet NGIZero logo"
+		src="./docs/third-party/NGIZero-green.hex.svg"
+	/>
+</div>
+
+<br />
+
+2023 development is funded through the [NGI0 Entrust
+Fund](https://nlnet.nl/entrust), via [NLnet](https://nlnet.nl/). Please
+see [here](https://nlnet.nl/project/mCaptcha/) for more details.
