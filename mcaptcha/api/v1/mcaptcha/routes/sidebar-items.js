@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["Captcha",""]]};
+window.SIDEBAR_ITEMS = {"struct":["Captcha"]};

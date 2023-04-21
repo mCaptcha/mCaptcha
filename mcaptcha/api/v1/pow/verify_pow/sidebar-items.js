@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["ValidationToken","validation token that clients receive as proof for submiting valid PoW"],["verify_pow","route handler that verifies PoW and issues a solution token if verification is successful"]]};
+window.SIDEBAR_ITEMS = {"constant":["FIELDS"],"enum":["__Field"],"fn":["verify_pow"],"struct":["ValidationToken","__FieldVisitor","__Visitor","verify_pow"]};

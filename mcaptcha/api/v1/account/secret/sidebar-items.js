@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["services",""]],"struct":[["get_secret",""],["update_user_secret",""]]};
+window.SIDEBAR_ITEMS = {"fn":["get_secret","services","update_user_secret"],"struct":["get_secret","update_user_secret"]};

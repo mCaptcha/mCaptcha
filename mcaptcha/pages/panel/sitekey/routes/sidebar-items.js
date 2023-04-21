@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["Sitekey",""]]};
+window.SIDEBAR_ITEMS = {"constant":["S"],"struct":["Sitekey"]};

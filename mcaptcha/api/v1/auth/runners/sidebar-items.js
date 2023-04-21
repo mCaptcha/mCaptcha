@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["login_runner","returns Ok(()) when everything checks out and the user is authenticated. Errors otherwise"],["register_runner",""]],"struct":[["Login",""],["Password",""],["Register",""]]};
+window.SIDEBAR_ITEMS = {"constant":["FIELDS"],"enum":["__Field"],"fn":["login_runner","register_runner"],"struct":["Login","Password","Register","__FieldVisitor","__Visitor"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["CaptchaValidateResp",""],["VerifyCaptchaResultPayload",""],["validate_captcha_token","route handler that validates a PoW solution token"]]};
+window.SIDEBAR_ITEMS = {"constant":["FIELDS"],"enum":["__Field"],"fn":["validate_captcha_token"],"struct":["CaptchaValidateResp","VerifyCaptchaResultPayload","__FieldVisitor","__Visitor","validate_captcha_token"]};

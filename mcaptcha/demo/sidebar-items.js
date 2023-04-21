@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":[["DEMO_PASSWORD","Demo password"],["DEMO_USER","Demo username"]],"struct":[["DemoUser",""]]};
+window.SIDEBAR_ITEMS = {"constant":["DEMO_PASSWORD","DEMO_USER"],"struct":["DemoUser"]};

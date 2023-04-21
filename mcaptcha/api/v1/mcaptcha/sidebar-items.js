@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["get_random",""],["services",""]],"mod":[["create",""],["delete",""],["easy",""],["get",""],["routes",""],["stats",""],["update",""]]};
+window.SIDEBAR_ITEMS = {"fn":["get_random","services"],"mod":["create","delete","easy","get","routes","stats","update"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["delete_sitekey",""]]};
+window.SIDEBAR_ITEMS = {"fn":["delete_sitekey"],"struct":["delete_sitekey"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["MarkReadReq",""],["mark_read","route handler that marks a notification read"]]};
+window.SIDEBAR_ITEMS = {"constant":["FIELDS"],"enum":["__Field"],"fn":["mark_read"],"struct":["MarkReadReq","__FieldVisitor","__Visitor","mark_read"]};

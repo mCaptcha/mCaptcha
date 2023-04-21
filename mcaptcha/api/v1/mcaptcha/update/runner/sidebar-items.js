@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["update_captcha",""]]};
+window.SIDEBAR_ITEMS = {"fn":["update_captcha"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":[["PAGE",""]],"struct":[["ADVANCE_INDEX",""],["AdvanceIndexPage",""],["EASY_INDEX",""],["EasyIndexPage",""],["advance",""],["easy",""]]};
+window.SIDEBAR_ITEMS = {"constant":["PAGE"],"fn":["__stability","__static_ref_initialize","advance","easy"],"static":["LAZY","SIZE_HINT"],"struct":["ADVANCE_INDEX","AdvanceIndexPage","EASY_INDEX","EasyIndexPage","advance","easy"]};

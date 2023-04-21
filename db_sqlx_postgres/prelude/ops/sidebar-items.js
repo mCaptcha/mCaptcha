@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"trait":[["Connect","Create database connection"],["DBOps","Database operations trait(migrations, pool creation and fetching connection from pool)"],["GetConnection","Get database connection"],["Migrate","database migrations"]]};
+window.SIDEBAR_ITEMS = {"trait":["Connect","DBOps","GetConnection","Migrate"]};

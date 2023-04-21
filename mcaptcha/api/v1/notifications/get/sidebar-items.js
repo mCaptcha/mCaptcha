@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["NotificationResp",""],["get_notification","route handler that gets all unread notifications"]]};
+window.SIDEBAR_ITEMS = {"constant":["FIELDS"],"enum":["__Field"],"fn":["get_notification"],"struct":["NotificationResp","__FieldVisitor","__Visitor","get_notification"]};

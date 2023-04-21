@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":[["ROUTES",""]],"struct":[["Routes",""]]};
+window.SIDEBAR_ITEMS = {"constant":["ROUTES"],"struct":["Routes"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["services",""]],"mod":[["runners",""]],"struct":[["Username",""],["set_username","update username"],["username_exists",""]]};
+window.SIDEBAR_ITEMS = {"constant":["FIELDS"],"enum":["__Field"],"fn":["services","set_username","username_exists"],"mod":["runners"],"struct":["Username","__FieldVisitor","__Visitor","set_username","username_exists"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["get_middleware",""],["services",""]],"mod":[["account",""],["auth",""],["mcaptcha",""],["meta",""],["notifications",""],["pow",""],["routes",""]],"struct":[["RedirectQuery",""]]};
+window.SIDEBAR_ITEMS = {"constant":["FIELDS"],"enum":["__Field"],"fn":["get_middleware","services"],"mod":["account","auth","mcaptcha","meta","notifications","pow","routes"],"struct":["RedirectQuery","__FieldVisitor","__Visitor"]};

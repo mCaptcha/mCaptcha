@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["map_register_err","map postgres errors to DBError types"],["map_row_not_found_err","map custom row not found error to DB error"]]};
+window.SIDEBAR_ITEMS = {"fn":["map_register_err","map_row_not_found_err"]};

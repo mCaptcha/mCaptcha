@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["INDEX",""],["IndexPage",""],["sitemap",""]]};
+window.SIDEBAR_ITEMS = {"fn":["__stability","__static_ref_initialize","sitemap"],"static":["LAZY","SIZE_HINT"],"struct":["INDEX","IndexPage","sitemap"]};

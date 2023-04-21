@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":[["PAGE",""]],"fn":[["services",""]],"mod":[["notifications",""],["routes",""],["settings",""],["sitekey",""]],"struct":[["IndexPage",""],["panel",""]]};
+window.SIDEBAR_ITEMS = {"constant":["COPY_ALT","COPY_CLASS","DONE_ALT","DONE_CLASS","PAGE"],"fn":["panel","services"],"mod":["notifications","routes","settings","sitekey"],"static":["SIZE_HINT"],"struct":["IndexPage","panel"]};

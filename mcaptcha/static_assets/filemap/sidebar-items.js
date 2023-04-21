@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["FileMap",""]]};
+window.SIDEBAR_ITEMS = {"struct":["FileMap"]};

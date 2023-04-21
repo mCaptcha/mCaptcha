@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["maria",""],["pg",""]],"type":[["BoxDB",""]]};
+window.SIDEBAR_ITEMS = {"mod":["maria","pg"],"type":["BoxDB"]};

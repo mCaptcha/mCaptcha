@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["services",""]],"mod":[["get_config",""],["routes",""],["verify_pow","PoW Verification module"],["verify_token","PoW success token module"]]};
+window.SIDEBAR_ITEMS = {"fn":["services"],"mod":["get_config","routes","verify_pow","verify_token"]};

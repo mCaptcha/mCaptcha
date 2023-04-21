@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["CaptchaStats",""],["Dummy",""],["Real",""]],"trait":[["CloneStats","Trait to clone MCDatabase"],["Stats",""]]};
+window.SIDEBAR_ITEMS = {"constant":["FIELDS"],"enum":["__Field"],"struct":["CaptchaStats","Dummy","Real","__FieldVisitor","__Visitor"],"trait":["CloneStats","Stats"]};

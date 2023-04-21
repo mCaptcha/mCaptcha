@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":[["DOCS",""],["OPEN_API_SPEC",""]],"fn":[["handle_embedded_file",""],["services",""]],"mod":[["routes",""]],"struct":[["Asset",""],["dist",""],["index",""],["spec",""]]};
+window.SIDEBAR_ITEMS = {"constant":["DOCS","OPEN_API_SPEC","excludes","includes"],"fn":["dist","handle_embedded_file","index","services","spec"],"mod":["routes"],"struct":["Asset","dist","index","spec"]};

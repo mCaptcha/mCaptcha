@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":[["PAGE",""]],"struct":[["IndexPage",""],["list_sitekeys","render a list of all sitekeys that a user has"]]};
+window.SIDEBAR_ITEMS = {"constant":["COPY_ALT","COPY_CLASS","DONE_ALT","DONE_CLASS","PAGE"],"fn":["list_sitekeys"],"static":["SIZE_HINT"],"struct":["IndexPage","list_sitekeys"]};
