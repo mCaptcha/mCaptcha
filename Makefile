@@ -123,6 +123,9 @@ test: frontend-test frontend ## Run all available tests
 	cargo test --no-fail-fast
 #	./scripts/tests.sh
 
+test.integration: ## run integration tests with nightwatch.js
+	./scripts/integration.sh
+
 xml-test-coverage: migrate ## Generate code coverage report in XML format
 	$(call cache_bust)
 	cargo tarpaulin -t 1200 --out Xml
