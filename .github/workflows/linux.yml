@@ -104,6 +104,9 @@ jobs:
           profile: minimal
           override: true
 
+      - name: install nightwatch dep
+        run: sudo apt-get install xvfb
+
       - name: Run migrations
         run: make migrate
         env:
