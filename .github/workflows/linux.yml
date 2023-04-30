@@ -128,6 +128,9 @@ jobs:
           POSTGRES_DATABASE_URL: "${{ env.POSTGRES_DATABASE_URL }}"
           MARIA_DATABASE_URL: "${{ env.MARIA_DATABASE_URL }}"
 
+      - name: run integration tests
+        run: make test.integration
+
       - name: Login to DockerHub
         if: (github.ref == 'refs/heads/master' || github.event_name == 'push') && github.repository == 'mCaptcha/mCaptcha'
         uses: docker/login-action@v1
