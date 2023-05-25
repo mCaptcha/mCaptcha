@@ -38,7 +38,7 @@ you will be overriding the values set in the configuration files.
 | `MCAPTCHA_DATEBASE_USERNAME`         | database username                                              |
 | `MCAPTCHA_DATEBASE_POOL`             | database connection pool size                                  |
 | `MCAPTCHA_DATEBASE_DATABASE_TYPE`    | database tpye: "postgres" or "maria"                           |
-| `DATABSE_URL` (overrides above vars) | database URL in `postgres://user:pass@host:port/dbname` format |
+| `DATABASE_URL` (overrides above vars) | database URL in `postgres://user:pass@host:port/dbname` format |
 
 #### Redis
 
