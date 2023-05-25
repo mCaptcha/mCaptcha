@@ -32,11 +32,11 @@ yourself!](https://demo.mcaptcha.org/widget/?sitekey=pHy0AktWyOKuxZDzFfoaewncWec
 
 ## How does it work?
 
-mCaptcha uses SHA256 based proof-of-work(PoW) to rate limit users.
+mCaptcha uses SHA256 based proof-of-work (PoW) to rate limit users.
 
-When a user wants to do something on an mCaptcha-protected website,
+When a user wants to do something on a mCaptcha-protected website,
 
-1. they will have to generate proof-of-work(a bunch of math that will takes
+1. they will have to generate proof-of-work (a bunch of math that will takes
    time to compute) and submit it to mCaptcha.
 
 2. We'll validate the proof:
@@ -54,8 +54,8 @@ When a user wants to do something on an mCaptcha-protected website,
 The whole process is automated from the user's POV. All they have to do
 is click on a button to initiate the process.
 
-mCaptcha makes interacting with websites (computationally)expensive for
-the user. A well-behaving user will experience a slight delay(no delay
+mCaptcha makes interacting with websites (computationally) expensive for
+the user. A well-behaving user will experience a slight delay (no delay
 when under moderate load to 2s when under attack; PoW difficulty is
 variable) but if someone wants to hammer your site, they will have to do
 more work to send requests than your server will have to do to respond
@@ -68,7 +68,7 @@ to their request.
 -   [x] **No tracking:** Our CAPTCHA routes are cookie free!
 -   [x] **IP address independent:** your users are behind a NAT? We got you covered!
 -   [x] **Resistant to replay attacks:** proof-of-work configurations have
-        short lifetimes(30s) and can be used only once. If a user submits a
+        short lifetimes (30s) and can be used only once. If a user submits a
         PoW to an already used configuration or an expired one, their proof
         will be rejected.
 
@@ -95,7 +95,7 @@ monitor console and network activity.
 > demo servers might be a few versions behind `master`. Please check footer for
 > build commit.
 
-Feel free to provide bogus information while signing up(project under
+Feel free to provide bogus information while signing up (project under
 development, database frequently wiped).
 
 ### Self-hosted:
