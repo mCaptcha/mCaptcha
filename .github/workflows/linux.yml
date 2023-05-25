@@ -104,6 +104,9 @@ jobs:
           profile: minimal
           override: true
 
+      - name: install nightwatch dep
+        run: sudo apt-get install xvfb
+
       - name: Run migrations
         run: make migrate
         env:
@@ -127,6 +130,9 @@ jobs:
         env:
           POSTGRES_DATABASE_URL: "${{ env.POSTGRES_DATABASE_URL }}"
           MARIA_DATABASE_URL: "${{ env.MARIA_DATABASE_URL }}"
+
+      - name: run integration tests
+        run: make test.integration
 
       - name: Login to DockerHub
         if: (github.ref == 'refs/heads/master' || github.event_name == 'push') && github.repository == 'mCaptcha/mCaptcha'
