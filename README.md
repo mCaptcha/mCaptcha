@@ -114,7 +114,7 @@ After the containers are up, visit [http://localhost:7000](http://localhost:7000
 
 It takes a while to build the image so please be patient :)
 
-See [DEPLOYMENT.md](./docs/DEPLOYMENT.md) detailed alternate deployment
+See [DEPLOYMENT.md](./docs/DEPLOYMENT.md) for detailed alternate deployment
 methods.
 
 ## Development:
