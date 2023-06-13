@@ -89,4 +89,5 @@ async fn everyting_works() {
         description: CAPTCHA_DESCRIPTION,
     };
     database_works(&db, &p, &c, &LEVELS, &TRAFFIC_PATTERN, &ADD_NOTIFICATION).await;
+    challenges_works(&db).await;
 }
