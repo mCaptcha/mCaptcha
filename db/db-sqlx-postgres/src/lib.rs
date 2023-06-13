@@ -95,6 +95,23 @@ impl Migrate for Database {
             .run(&self.pool)
             .await
             .map_err(|e| DBError::DBError(Box::new(e)))?;
+
+        for reason in [
+            ChallengeReason::EmailVerification,
+            ChallengeReason::PasswordReset,
+        ] {
+            sqlx::query!(
+                "INSERT INTO
+                    mcaptcha_challenge_reason (name)
+                VALUES ($1) ON CONFLICT DO NOTHING
+                ",
+                reason.to_str()
+            )
+            .execute(&self.pool)
+            .await
+            .map_err(|e| DBError::DBError(Box::new(e)))?;
+        }
+
         Ok(())
     }
 }
@@ -900,6 +917,73 @@ impl MCDatabase for Database {
         .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
 
         Ok(Date::dates_to_unix(records))
+    }
+
+    /// Record challenge in database
+    async fn new_challenge(&self, challenge: &mut Challenge) -> DBResult<()> {
+        let now = now_unix_time_stamp();
+        loop {
+            let res = sqlx::query!(
+                "INSERT INTO mcaptcha_challenge (challenge_id, received, reason)
+                VALUES ($1, $2, (SELECT ID FROM mcaptcha_challenge_reason WHERE name = $3));
+                ",
+                &challenge.challenge.to_string(),
+                now,
+                challenge.reason.to_str()
+            )
+            .execute(&self.pool)
+            .await;
+            if let Err(Error::Database(err)) = res {
+                use std::borrow::Cow;
+
+                if err.code() == Some(Cow::from("23505")) {
+                    let msg = err.message();
+                    if msg.contains("mcaptcha_challenge_challenge_id_key") {
+                        challenge.new_id();
+                        continue;
+                    }
+                }
+            }
+            break;
+        }
+        Ok(())
+    }
+
+    /// Record challenge in database
+    async fn fetch_challenge(&self, challenge: &Challenge) -> DBResult<Challenge> {
+        struct C {
+            id: i32,
+        }
+        sqlx::query_as!(
+            C,
+            "SELECT ID
+                FROM mcaptcha_challenge
+            WHERE
+                challenge_id = $1
+            AND reason = (SELECT ID FROM mcaptcha_challenge_reason WHERE name = $2);",
+            &challenge.challenge.to_string(),
+            challenge.reason.to_str(),
+        )
+        .fetch_one(&self.pool)
+        .await
+        .map_err(map_register_err)?;
+        Ok(challenge.clone())
+    }
+
+    /// Delete a challenge from database
+    async fn delete_challenge(&self, challenge: &Challenge) -> DBResult<()> {
+        let _ = sqlx::query!(
+            "DELETE
+                FROM mcaptcha_challenge
+            WHERE
+                challenge_id = $1
+            AND reason = (SELECT ID FROM mcaptcha_challenge_reason WHERE name = $2);",
+            &challenge.challenge.to_string(),
+            challenge.reason.to_str(),
+        )
+        .execute(&self.pool)
+        .await;
+        Ok(())
     }
 }
 
