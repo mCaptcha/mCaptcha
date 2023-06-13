@@ -31,7 +31,10 @@
 //! - [errors](crate::auth): error data structures used in this crate
 //! - [ops](crate::ops): meta operations like connection pool creation, migrations and getting
 //! connection from pool
+use std::str::FromStr;
+
 use serde::{Deserialize, Serialize};
+use uuid::Uuid;
 
 pub use libmcaptcha::defense::Level;
 
@@ -95,6 +98,64 @@ pub struct NameHash {
     pub username: String,
     /// hashed password
     pub hash: String,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
+/// Email challenge reason
+pub enum ChallengeReason {
+    /// challenge created to verify a newly registered user
+    EmailVerification,
+    /// Challenge created to verify a password reset request
+    PasswordReset,
+}
+
+impl ChallengeReason {
+    pub fn to_str(&self) -> &'static str {
+        match self {
+            Self::EmailVerification => "email_verification",
+            Self::PasswordReset => "password_resset",
+        }
+    }
+}
+
+impl ToString for ChallengeReason {
+    fn to_string(&self) -> String {
+        self.to_str().into()
+    }
+}
+
+impl FromStr for ChallengeReason {
+    type Err = ();
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        for reason in [Self::PasswordReset, Self::EmailVerification].iter() {
+            if s == reason.to_str() {
+                return Ok(reason.clone());
+            }
+        }
+        Err(())
+    }
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
+/// Email challenge
+pub struct Challenge {
+    /// challenge unique identifier
+    pub challenge: Uuid,
+    /// reason why the challenge was create
+    pub reason: ChallengeReason,
+}
+
+impl Challenge {
+    /// create new Challenge instance for a given reason. Challenge text is auto-generated
+    pub fn new(reason: ChallengeReason) -> Self {
+        let challenge = Uuid::new_v4();
+        Self { challenge, reason }
+    }
+
+    /// Generate new ID (useful when ID clashes)
+    pub fn new_id(&mut self) {
+        self.challenge = Uuid::new_v4();
+    }
 }
 
 #[async_trait]
@@ -250,6 +311,15 @@ pub trait MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
 
     /// fetch PoWConfig confirms
     async fn fetch_confirm(&self, user: &str, key: &str) -> DBResult<Vec<i64>>;
+
+    /// Record challenge in database
+    async fn new_challenge(&self, challenge: &mut Challenge) -> DBResult<()>;
+
+    /// Record challenge in database
+    async fn fetch_challenge(&self, challenge: &Challenge) -> DBResult<Challenge>;
+
+    /// Delete a challenge from database
+    async fn delete_challenge(&self, challenge: &Challenge) -> DBResult<()>;
 }
 
 #[derive(Debug, Clone, Default, Deserialize, Serialize, PartialEq)]

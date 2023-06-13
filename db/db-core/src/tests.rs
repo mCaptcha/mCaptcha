@@ -296,3 +296,14 @@ pub async fn database_works<'a, T: MCDatabase>(
     db.delete_captcha(p.username, p.username).await.unwrap();
     assert!(!db.captcha_exists(Some(p.username), c.key).await.unwrap());
 }
+
+/// test all challenge routines
+pub async fn challenges_works<'a, T: MCDatabase>(db: &T) {
+    let mut challenge = Challenge::new(ChallengeReason::PasswordReset);
+    db.new_challenge(&mut challenge).await.unwrap();
+    db.new_challenge(&mut challenge).await.unwrap();
+    let c = db.fetch_challenge(&challenge).await.unwrap();
+    assert_eq!(c, challenge);
+    db.delete_challenge(&challenge).await.unwrap();
+    assert!(db.fetch_challenge(&challenge).await.is_err())
+}
