@@ -295,15 +295,13 @@ pub async fn database_works<'a, T: MCDatabase>(
     // delete captcha; updated key = p.username so invoke delete with it
     db.delete_captcha(p.username, p.username).await.unwrap();
     assert!(!db.captcha_exists(Some(p.username), c.key).await.unwrap());
-}
 
-/// test all challenge routines
-pub async fn challenges_works<'a, T: MCDatabase>(db: &T) {
     let mut challenge = Challenge::new(ChallengeReason::PasswordReset);
-    db.new_challenge(&mut challenge).await.unwrap();
-    db.new_challenge(&mut challenge).await.unwrap();
-    let c = db.fetch_challenge(&challenge).await.unwrap();
-    assert_eq!(c, challenge);
+    db.new_challenge(p.username, &mut challenge).await.unwrap();
+    db.new_challenge(p.username, &mut challenge).await.unwrap();
+    let c = db.fetch_challenge_user(&challenge).await.unwrap();
+    assert_eq!(c.username, p.username);
+    assert_eq!(&c.email, p.email.as_ref().unwrap());
     db.delete_challenge(&challenge).await.unwrap();
-    assert!(db.fetch_challenge(&challenge).await.is_err())
+    assert!(db.fetch_challenge_user(&challenge).await.is_err())
 }

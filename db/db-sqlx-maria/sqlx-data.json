@@ -10,6 +10,44 @@
     },
     "query": "INSERT IGNORE INTO\n                    mcaptcha_challenge_reason (name)\n                VALUES (?)"
   },
+  "12a7d765fb683c8134d032563f2d101e2fd70c261e71696e7a90387507e0ef43": {
+    "describe": {
+      "columns": [
+        {
+          "name": "name",
+          "ordinal": 0,
+          "type_info": {
+            "char_set": 224,
+            "flags": {
+              "bits": 4101
+            },
+            "max_size": 400,
+            "type": "VarString"
+          }
+        },
+        {
+          "name": "email",
+          "ordinal": 1,
+          "type_info": {
+            "char_set": 224,
+            "flags": {
+              "bits": 4
+            },
+            "max_size": 400,
+            "type": "VarString"
+          }
+        }
+      ],
+      "nullable": [
+        false,
+        true
+      ],
+      "parameters": {
+        "Right": 2
+      }
+    },
+    "query": "SELECT name, email\n            FROM mcaptcha_users\n            WHERE ID = (SELECT user_id \n                        FROM mcaptcha_challenge\n                        WHERE\n                            challenge_id = ?\n                        AND reason = (\n                            SELECT id FROM mcaptcha_challenge_reason WHERE name = ?\n                        )\n               );"
+  },
   "1367dceb151a766a901b5dd771d0b75d0bc61d2fef17a94a90c8ffa0065e2c44": {
     "describe": {
       "columns": [
@@ -209,16 +247,6 @@
     },
     "query": "UPDATE mcaptcha_users set name = ?\n            WHERE name = ?"
   },
-  "6a31a6745dc005449f742b516979f195674848222b16c72c48da553a379a4e6f": {
-    "describe": {
-      "columns": [],
-      "nullable": [],
-      "parameters": {
-        "Right": 3
-      }
-    },
-    "query": "INSERT INTO mcaptcha_challenge (challenge_id, received, reason)\n                VALUES (?, ?, (SELECT id FROM mcaptcha_challenge_reason WHERE name = ?));\n                "
-  },
   "6d1b6e5e58ca2ba285cab7b050bbdc43de1f3e46cf7d420bc95c124a1c7c9d1f": {
     "describe": {
       "columns": [],
@@ -266,6 +294,16 @@
       }
     },
     "query": "SELECT difficulty_factor, visitor_threshold FROM mcaptcha_levels  WHERE\n            config_id = (\n                SELECT config_id FROM mcaptcha_config where captcha_key= (?)\n                ) ORDER BY difficulty_factor ASC;"
+  },
+  "740ed2dab8c07c718c1b0e8e4262251bbf2501cdebfc4872fb903f70ec3d0dc8": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Right": 4
+      }
+    },
+    "query": "INSERT INTO mcaptcha_challenge (challenge_id, received, reason, user_id)\n                VALUES (?, ?,\n                    (SELECT id FROM mcaptcha_challenge_reason WHERE name = ?),\n                    (SELECT id FROM mcaptcha_users WHERE name = ?)\n                    );\n                "
   },
   "74d68a86f852d3d85957e94ed04e8acd8e6144744f7b13e383ebcb2bcf3360ae": {
     "describe": {
@@ -351,31 +389,6 @@
       }
     },
     "query": "insert into mcaptcha_users \n        (name , password, email, secret) values (?, ?, ?, ?)"
-  },
-  "900a1f8c30fed90f8e56f88c4d0a2e81a7ea6af24d90c3a76764ee411b01af73": {
-    "describe": {
-      "columns": [
-        {
-          "name": "id",
-          "ordinal": 0,
-          "type_info": {
-            "char_set": 63,
-            "flags": {
-              "bits": 515
-            },
-            "max_size": 11,
-            "type": "Long"
-          }
-        }
-      ],
-      "nullable": [
-        false
-      ],
-      "parameters": {
-        "Right": 2
-      }
-    },
-    "query": "SELECT id\n                FROM mcaptcha_challenge\n            WHERE\n                challenge_id = ?\n            AND reason = (SELECT id FROM mcaptcha_challenge_reason WHERE name = ?);"
   },
   "9c435148ed5655e79dd1e73e3566ce23b7c6d38edcedbb988c95813c5da893ed": {
     "describe": {

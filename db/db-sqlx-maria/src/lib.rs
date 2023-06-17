@@ -913,16 +913,24 @@ impl MCDatabase for Database {
     }
 
     /// Record challenge in database
-    async fn new_challenge(&self, challenge: &mut Challenge) -> DBResult<()> {
+    async fn new_challenge(
+        &self,
+        user: &str,
+        challenge: &mut Challenge,
+    ) -> DBResult<()> {
         let now = now_unix_time_stamp();
         loop {
             let res = sqlx::query!(
-                "INSERT INTO mcaptcha_challenge (challenge_id, received, reason)
-                VALUES (?, ?, (SELECT id FROM mcaptcha_challenge_reason WHERE name = ?));
+                "INSERT INTO mcaptcha_challenge (challenge_id, received, reason, user_id)
+                VALUES (?, ?,
+                    (SELECT id FROM mcaptcha_challenge_reason WHERE name = ?),
+                    (SELECT id FROM mcaptcha_users WHERE name = ?)
+                    );
                 ",
                 &challenge.challenge.to_string(),
                 now,
-                challenge.reason.to_str()
+                challenge.reason.to_str(),
+                user
             )
             .execute(&self.pool)
             .await;
@@ -943,24 +951,36 @@ impl MCDatabase for Database {
     }
 
     /// Record challenge in database
-    async fn fetch_challenge(&self, challenge: &Challenge) -> DBResult<Challenge> {
+    async fn fetch_challenge_user(
+        &self,
+        challenge: &Challenge,
+    ) -> DBResult<ChallengeUser> {
         struct C {
-            id: i32,
+            name: String,
+            email: Option<String>,
         }
-        sqlx::query_as!(
+        let res = sqlx::query_as!(
             C,
-            "SELECT id
-                FROM mcaptcha_challenge
-            WHERE
-                challenge_id = ?
-            AND reason = (SELECT id FROM mcaptcha_challenge_reason WHERE name = ?);",
+            "SELECT name, email
+            FROM mcaptcha_users
+            WHERE ID = (SELECT user_id 
+                        FROM mcaptcha_challenge
+                        WHERE
+                            challenge_id = ?
+                        AND reason = (
+                            SELECT id FROM mcaptcha_challenge_reason WHERE name = ?
+                        )
+               );",
             &challenge.challenge.to_string(),
             challenge.reason.to_str(),
         )
         .fetch_one(&self.pool)
         .await
         .map_err(map_register_err)?;
-        Ok(challenge.clone())
+        Ok(ChallengeUser {
+            username: res.name,
+            email: res.email.unwrap(),
+        })
     }
 
     /// Delete a challenge from database

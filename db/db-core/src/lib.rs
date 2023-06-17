@@ -137,6 +137,15 @@ impl FromStr for ChallengeReason {
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
+/// Minimal user representation for use in challenge verification
+pub struct ChallengeUser {
+    /// username of the user
+    pub username: String,
+    /// email ID of the user
+    pub email: String,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
 /// Email challenge
 pub struct Challenge {
     /// challenge unique identifier
@@ -313,10 +322,14 @@ pub trait MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
     async fn fetch_confirm(&self, user: &str, key: &str) -> DBResult<Vec<i64>>;
 
     /// Record challenge in database
-    async fn new_challenge(&self, challenge: &mut Challenge) -> DBResult<()>;
+    async fn new_challenge(&self, user: &str, challenge: &mut Challenge)
+        -> DBResult<()>;
 
     /// Record challenge in database
-    async fn fetch_challenge(&self, challenge: &Challenge) -> DBResult<Challenge>;
+    async fn fetch_challenge_user(
+        &self,
+        challenge: &Challenge,
+    ) -> DBResult<ChallengeUser>;
 
     /// Delete a challenge from database
     async fn delete_challenge(&self, challenge: &Challenge) -> DBResult<()>;
