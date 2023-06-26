@@ -14,3 +14,5 @@ coverage
 dist
 assets
 yarn-error.log
+src/cache_buster_data.json.license
+**/**/target

@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2023 Aravinth Manivannan <realaravinth@batsense.net>
+--
+-- SPDX-License-Identifier: AGPL-3.0-or-later
+
 CREATE TABLE IF NOT EXISTS mcaptcha_sitekey_user_provided_avg_traffic (
 	config_id INT NOT NULL,
 	PRIMARY KEY(config_id),

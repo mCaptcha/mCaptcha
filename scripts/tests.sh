@@ -1,4 +1,9 @@
 #!/bin/bash
+
+# SPDX-FileCopyrightText: 2023 Aravinth Manivannan <realaravinth@batsense.net>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 # hotfix for DB error: too many connections, can't create new client
 #
 # I tried running cargo test with the `--jobs` parameter set to 1 but that didn't 

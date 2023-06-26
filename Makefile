@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2023 Aravinth Manivannan <realaravinth@batsense.net>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 BUNDLE = static/cache/bundle
 OPENAPI = docs/openapi
 CLEAN_UP = $(BUNDLE) src/cache_buster_data.json assets
