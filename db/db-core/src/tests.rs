@@ -260,6 +260,14 @@ pub async fn database_works<'a, T: MCDatabase>(
     db.record_solve(c.key).await.unwrap();
     db.record_confirm(c.key).await.unwrap();
 
+    let analytics = PerformanceAnalytics {
+        time: 0,
+        difficulty_factor: 0,
+        worker_type: "wasm".into(),
+    };
+    db.analysis_save(c.key, &analytics).await.unwrap();
+    assert_eq!(db.analytics_fetch(c.key).await.unwrap(), vec![analytics]);
+
     assert_eq!(db.fetch_solve(p.username, c.key).await.unwrap().len(), 1);
     assert_eq!(
         db.fetch_config_fetched(p.username, c.key)

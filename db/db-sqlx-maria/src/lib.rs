@@ -895,6 +895,72 @@ impl MCDatabase for Database {
 
         Ok(Date::dates_to_unix(records))
     }
+
+    /// record PoW timing
+    async fn analysis_save(
+        &self,
+        captcha_id: &str,
+        d: &PerformanceAnalytics,
+    ) -> DBResult<()> {
+        let _ = sqlx::query!(
+            "INSERT INTO mcaptcha_pow_analytics 
+            (config_id, time, difficulty_factor, worker_type)
+        VALUES ((SELECT config_id FROM mcaptcha_config where captcha_key= ?), ?, ?, ?)",
+            captcha_id,
+            d.time as i32,
+            d.difficulty_factor as i32,
+            &d.worker_type,
+        )
+        .execute(&self.pool)
+        .await
+        .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
+        Ok(())
+    }
+
+    /// fetch PoW analytics
+    async fn analytics_fetch(
+        &self,
+        captcha_id: &str,
+    ) -> DBResult<Vec<PerformanceAnalytics>> {
+        struct P {
+            time: i32,
+            difficulty_factor: i32,
+            worker_type: String,
+        }
+
+        impl From<P> for PerformanceAnalytics {
+            fn from(v: P) -> Self {
+                Self {
+                    time: v.time as u32,
+                    difficulty_factor: v.difficulty_factor as u32,
+                    worker_type: v.worker_type,
+                }
+            }
+        }
+
+        let mut c = sqlx::query_as!(
+            P,
+            "SELECT time, difficulty_factor, worker_type FROM mcaptcha_pow_analytics
+            WHERE 
+                config_id = (
+                    SELECT 
+                        config_id FROM mcaptcha_config 
+                    WHERE 
+                        captcha_key = ?
+                        )
+                ORDER BY ID",
+            &captcha_id,
+        )
+        .fetch_all(&self.pool)
+        .await
+        .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
+        let mut res = Vec::with_capacity(c.len());
+        for i in c.drain(0..) {
+            res.push(i.into())
+        }
+
+        Ok(res)
+    }
 }
 
 #[derive(Clone)]

@@ -277,6 +277,57 @@
     },
     "query": "DELETE FROM mcaptcha_levels \n        WHERE config_id = (\n            SELECT config_id FROM mcaptcha_config where captcha_key= (?) \n            AND user_id = (\n            SELECT ID from mcaptcha_users WHERE name = ?\n            )\n            )"
   },
+  "7fde24630da96b8c4fd9d6120a54b4fae9db4f3c1c1bc15ebb2c0e94831ff9af": {
+    "describe": {
+      "columns": [
+        {
+          "name": "time",
+          "ordinal": 0,
+          "type_info": {
+            "char_set": 63,
+            "flags": {
+              "bits": 4097
+            },
+            "max_size": 11,
+            "type": "Long"
+          }
+        },
+        {
+          "name": "difficulty_factor",
+          "ordinal": 1,
+          "type_info": {
+            "char_set": 63,
+            "flags": {
+              "bits": 4097
+            },
+            "max_size": 11,
+            "type": "Long"
+          }
+        },
+        {
+          "name": "worker_type",
+          "ordinal": 2,
+          "type_info": {
+            "char_set": 224,
+            "flags": {
+              "bits": 4101
+            },
+            "max_size": 400,
+            "type": "VarString"
+          }
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false
+      ],
+      "parameters": {
+        "Right": 1
+      }
+    },
+    "query": "SELECT time, difficulty_factor, worker_type FROM mcaptcha_pow_analytics\n            WHERE \n                config_id = (\n                    SELECT \n                        config_id FROM mcaptcha_config \n                    WHERE \n                        captcha_key = ?\n                        )\n                ORDER BY ID"
+  },
   "89386c46668a2653a54687e65958af5cf7a8da268339a1f5a379ede47b3c6d2a": {
     "describe": {
       "columns": [],
@@ -872,6 +923,16 @@
       }
     },
     "query": "SELECT name, password  FROM mcaptcha_users WHERE email = ?"
+  },
+  "f987c4568ab28271d87af47f473b18cf41130a483333e81d5f50199758cbb98b": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Right": 4
+      }
+    },
+    "query": "INSERT INTO mcaptcha_pow_analytics \n            (config_id, time, difficulty_factor, worker_type)\n        VALUES ((SELECT config_id FROM mcaptcha_config where captcha_key= ?), ?, ?, ?)"
   },
   "fc717ff0827ccfaa1cc61a71cc7f71c348ebb03d35895c54b011c03121ad2385": {
     "describe": {

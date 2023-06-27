@@ -493,6 +493,21 @@
     },
     "query": "SELECT EXISTS (SELECT 1 from mcaptcha_users WHERE name = $1)"
   },
+  "af47990880a92c63d1cf5192203899c72621479dc6bb47859fb4498264b78033": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Int4",
+          "Int4",
+          "Varchar"
+        ]
+      }
+    },
+    "query": "INSERT INTO mcaptcha_pow_analytics \n        (config_id, time, difficulty_factor, worker_type)\n        VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1), $2, $3, $4)"
+  },
   "b97d810814fbeb2df19f47bcfa381bc6fb7ac6832d040b377cf4fca2ca896cfb": {
     "describe": {
       "columns": [],
@@ -610,6 +625,38 @@
       }
     },
     "query": "DELETE FROM mcaptcha_users WHERE name = ($1)"
+  },
+  "d4ca28f0d895ef832d5cc1bc56c17e94c33efdfe63e10f29bbe54b6841a43320": {
+    "describe": {
+      "columns": [
+        {
+          "name": "time",
+          "ordinal": 0,
+          "type_info": "Int4"
+        },
+        {
+          "name": "difficulty_factor",
+          "ordinal": 1,
+          "type_info": "Int4"
+        },
+        {
+          "name": "worker_type",
+          "ordinal": 2,
+          "type_info": "Varchar"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      }
+    },
+    "query": "SELECT time, difficulty_factor, worker_type FROM mcaptcha_pow_analytics\n            WHERE \n                config_id = (\n                    SELECT \n                        config_id FROM mcaptcha_config \n                    WHERE \n                        key = $1\n                        )\n                ORDER BY ID"
   },
   "d7dd6cd6a7626e79c62377b2d59115067c5851ec044911ff8833779a08bbb8f7": {
     "describe": {
