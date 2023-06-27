@@ -2,6 +2,32 @@ BUNDLE = static/cache/bundle
 OPENAPI = docs/openapi
 CLEAN_UP = $(BUNDLE) src/cache_buster_data.json assets
 
+define deploy_dependencies ## deploy dependencies
+	docker create --name ${db}  \
+		-e POSTGRES_PASSWORD=password  \
+		-p 5432:5432   \
+		postgres
+	docker create  \
+		-p 3306:3306  \
+		--name ${mdb} \
+		--env MARIADB_USER=maria \
+		--env MARIADB_PASSWORD=password  \
+		--env MARIADB_ROOT_PASSWORD=password  \
+		--env MARIADB_DATABASE=maria  \
+		mariadb:latest
+	docker create  \
+		-p 6379:6379 \
+		--name mcaptcha-cache \
+		mcaptcha/cache:latest
+	docker start ${db}
+	docker start ${mdb}
+	docker start mcaptcha-cache
+endef
+
+define run_migrations ## run database migrations
+	cd db/db-migrations/ && cargo run
+endef
+
 define frontend_env ## install frontend deps
 	yarn install
 	cd docs/openapi && yarn install
@@ -54,6 +80,19 @@ env: ## Setup development environtment
 	cargo fetch
 	$(call frontend_env)
 
+env.db: ## Deploy dependencies
+	$(call deploy_dependencies)
+	sleep 5
+	$(call run_migrations)
+
+env.db.recreate: ## Deploy dependencies from scratch
+	@-docker rm -f ${db}
+	@-docker rm -f ${mdb}
+	@-docker rm -f mcaptcha-cache
+	$(call deploy_dependencies)
+	sleep 5
+	$(call run_migrations)
+
 frontend-env: ## Install frontend deps
 	$(call frontend_env)
 
@@ -87,7 +126,7 @@ lint: ## Lint codebase
 	cd $(OPENAPI)&& yarn test
 
 migrate: ## Run database migrations
-	cd db/db-migrations/ && cargo run
+	$(call run_migrations)
 
 release: frontend ## Build app with release optimizations
 	$(call cache_bust)
