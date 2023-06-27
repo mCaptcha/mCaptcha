@@ -28,6 +28,13 @@ define run_migrations ## run database migrations
 	cd db/db-migrations/ && cargo run
 endef
 
+define run_dev_migrations ## run database migrations
+	cd db/db-sqlx-maria/ && \
+		DATABASE_URL=${MARIA_DATABASE_URL} sqlx migrate run
+	cd db/db-sqlx-postgres/ && \
+		DATABASE_URL=${POSTGRES_DATABASE_URL} sqlx migrate run
+endef
+
 define frontend_env ## install frontend deps
 	yarn install
 	cd docs/openapi && yarn install
@@ -127,6 +134,9 @@ lint: ## Lint codebase
 
 migrate: ## Run database migrations
 	$(call run_migrations)
+
+migrate.dev: ## Run database migrations during development
+	$(call run_dev_migrations)
 
 release: frontend ## Build app with release optimizations
 	$(call cache_bust)
