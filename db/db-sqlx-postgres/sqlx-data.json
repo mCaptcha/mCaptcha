@@ -1,5 +1,45 @@
 {
   "db": "PostgreSQL",
+  "017576128f1c63aee062799a33f872457fe19f5d6429d0af312dc00c244b31cb": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Int4"
+        },
+        {
+          "name": "time",
+          "ordinal": 1,
+          "type_info": "Int4"
+        },
+        {
+          "name": "difficulty_factor",
+          "ordinal": 2,
+          "type_info": "Int4"
+        },
+        {
+          "name": "worker_type",
+          "ordinal": 3,
+          "type_info": "Varchar"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Int8",
+          "Int8"
+        ]
+      }
+    },
+    "query": "SELECT id, time, difficulty_factor, worker_type FROM mcaptcha_pow_analytics\n            WHERE \n                config_id = (\n                    SELECT \n                        config_id FROM mcaptcha_config \n                    WHERE \n                        key = $1\n                        )\n                ORDER BY ID\n                OFFSET $2 LIMIT $3\n                "
+  },
   "02deb524bb12632af9b7883975f75fdc30d6775d836aff647add1dffd1a4bc00": {
     "describe": {
       "columns": [
@@ -625,38 +665,6 @@
       }
     },
     "query": "DELETE FROM mcaptcha_users WHERE name = ($1)"
-  },
-  "d4ca28f0d895ef832d5cc1bc56c17e94c33efdfe63e10f29bbe54b6841a43320": {
-    "describe": {
-      "columns": [
-        {
-          "name": "time",
-          "ordinal": 0,
-          "type_info": "Int4"
-        },
-        {
-          "name": "difficulty_factor",
-          "ordinal": 1,
-          "type_info": "Int4"
-        },
-        {
-          "name": "worker_type",
-          "ordinal": 2,
-          "type_info": "Varchar"
-        }
-      ],
-      "nullable": [
-        false,
-        false,
-        false
-      ],
-      "parameters": {
-        "Left": [
-          "Text"
-        ]
-      }
-    },
-    "query": "SELECT time, difficulty_factor, worker_type FROM mcaptcha_pow_analytics\n            WHERE \n                config_id = (\n                    SELECT \n                        config_id FROM mcaptcha_config \n                    WHERE \n                        key = $1\n                        )\n                ORDER BY ID"
   },
   "d7dd6cd6a7626e79c62377b2d59115067c5851ec044911ff8833779a08bbb8f7": {
     "describe": {

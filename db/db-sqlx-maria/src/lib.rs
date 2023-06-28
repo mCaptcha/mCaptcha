@@ -900,7 +900,7 @@ impl MCDatabase for Database {
     async fn analysis_save(
         &self,
         captcha_id: &str,
-        d: &PerformanceAnalytics,
+        d: &CreatePerformanceAnalytics,
     ) -> DBResult<()> {
         let _ = sqlx::query!(
             "INSERT INTO mcaptcha_pow_analytics 
@@ -921,8 +921,11 @@ impl MCDatabase for Database {
     async fn analytics_fetch(
         &self,
         captcha_id: &str,
+        limit: usize,
+        offset: usize,
     ) -> DBResult<Vec<PerformanceAnalytics>> {
         struct P {
+            id: i32,
             time: i32,
             difficulty_factor: i32,
             worker_type: String,
@@ -931,6 +934,7 @@ impl MCDatabase for Database {
         impl From<P> for PerformanceAnalytics {
             fn from(v: P) -> Self {
                 Self {
+                    id: v.id as usize,
                     time: v.time as u32,
                     difficulty_factor: v.difficulty_factor as u32,
                     worker_type: v.worker_type,
@@ -940,16 +944,19 @@ impl MCDatabase for Database {
 
         let mut c = sqlx::query_as!(
             P,
-            "SELECT time, difficulty_factor, worker_type FROM mcaptcha_pow_analytics
-            WHERE 
+            "SELECT
+                id, time, difficulty_factor, worker_type
+            FROM
+                mcaptcha_pow_analytics
+            WHERE
                 config_id = (
-                    SELECT 
-                        config_id FROM mcaptcha_config 
-                    WHERE 
-                        captcha_key = ?
-                        )
-                ORDER BY ID",
+                    SELECT config_id FROM mcaptcha_config WHERE captcha_key = ?
+                ) 
+            ORDER BY ID
+            LIMIT ? OFFSET ?",
             &captcha_id,
+            limit as i64,
+            offset as i64,
         )
         .fetch_all(&self.pool)
         .await

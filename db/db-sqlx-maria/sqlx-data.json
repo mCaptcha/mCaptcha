@@ -277,57 +277,6 @@
     },
     "query": "DELETE FROM mcaptcha_levels \n        WHERE config_id = (\n            SELECT config_id FROM mcaptcha_config where captcha_key= (?) \n            AND user_id = (\n            SELECT ID from mcaptcha_users WHERE name = ?\n            )\n            )"
   },
-  "7fde24630da96b8c4fd9d6120a54b4fae9db4f3c1c1bc15ebb2c0e94831ff9af": {
-    "describe": {
-      "columns": [
-        {
-          "name": "time",
-          "ordinal": 0,
-          "type_info": {
-            "char_set": 63,
-            "flags": {
-              "bits": 4097
-            },
-            "max_size": 11,
-            "type": "Long"
-          }
-        },
-        {
-          "name": "difficulty_factor",
-          "ordinal": 1,
-          "type_info": {
-            "char_set": 63,
-            "flags": {
-              "bits": 4097
-            },
-            "max_size": 11,
-            "type": "Long"
-          }
-        },
-        {
-          "name": "worker_type",
-          "ordinal": 2,
-          "type_info": {
-            "char_set": 224,
-            "flags": {
-              "bits": 4101
-            },
-            "max_size": 400,
-            "type": "VarString"
-          }
-        }
-      ],
-      "nullable": [
-        false,
-        false,
-        false
-      ],
-      "parameters": {
-        "Right": 1
-      }
-    },
-    "query": "SELECT time, difficulty_factor, worker_type FROM mcaptcha_pow_analytics\n            WHERE \n                config_id = (\n                    SELECT \n                        config_id FROM mcaptcha_config \n                    WHERE \n                        captcha_key = ?\n                        )\n                ORDER BY ID"
-  },
   "89386c46668a2653a54687e65958af5cf7a8da268339a1f5a379ede47b3c6d2a": {
     "describe": {
       "columns": [],
@@ -456,6 +405,70 @@
       }
     },
     "query": "UPDATE mcaptcha_users set email = ?\n            WHERE name = ?"
+  },
+  "9f10afb0f242f11c58389803c5e85e244cc59102b8929a21e3fcaa852d57a52c": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": {
+            "char_set": 63,
+            "flags": {
+              "bits": 515
+            },
+            "max_size": 11,
+            "type": "Long"
+          }
+        },
+        {
+          "name": "time",
+          "ordinal": 1,
+          "type_info": {
+            "char_set": 63,
+            "flags": {
+              "bits": 4097
+            },
+            "max_size": 11,
+            "type": "Long"
+          }
+        },
+        {
+          "name": "difficulty_factor",
+          "ordinal": 2,
+          "type_info": {
+            "char_set": 63,
+            "flags": {
+              "bits": 4097
+            },
+            "max_size": 11,
+            "type": "Long"
+          }
+        },
+        {
+          "name": "worker_type",
+          "ordinal": 3,
+          "type_info": {
+            "char_set": 224,
+            "flags": {
+              "bits": 4101
+            },
+            "max_size": 400,
+            "type": "VarString"
+          }
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "parameters": {
+        "Right": 3
+      }
+    },
+    "query": "SELECT\n                id, time, difficulty_factor, worker_type\n            FROM\n                mcaptcha_pow_analytics\n            WHERE\n                config_id = (\n                    SELECT config_id FROM mcaptcha_config WHERE captcha_key = ?\n                ) \n            ORDER BY ID\n            LIMIT ? OFFSET ?"
   },
   "a89c066db044cddfdebee6a0fd0d80a5a26dcb7ecc00a9899f5634b72ea0a952": {
     "describe": {

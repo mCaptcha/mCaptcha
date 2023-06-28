@@ -255,19 +255,34 @@ pub trait MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
     async fn analysis_save(
         &self,
         captcha_id: &str,
-        d: &PerformanceAnalytics,
+        d: &CreatePerformanceAnalytics,
     ) -> DBResult<()>;
 
     /// fetch PoW analytics
     async fn analytics_fetch(
         &self,
         captcha_id: &str,
+        limit: usize,
+        offset: usize,
     ) -> DBResult<Vec<PerformanceAnalytics>>;
+}
+
+#[derive(Debug, Clone, Default, Deserialize, Serialize, PartialEq)]
+/// Log Proof-of-Work CAPTCHA performance analytics
+pub struct CreatePerformanceAnalytics {
+    /// time taken to generate proof
+    pub time: u32,
+    /// difficulty factor for which the proof was generated
+    pub difficulty_factor: u32,
+    /// worker/client type: wasm, javascript, python, etc.
+    pub worker_type: String,
 }
 
 #[derive(Debug, Clone, Default, Deserialize, Serialize, PartialEq)]
 /// Proof-of-Work CAPTCHA performance analytics
 pub struct PerformanceAnalytics {
+    /// log ID
+    pub id: usize,
     /// time taken to generate proof
     pub time: u32,
     /// difficulty factor for which the proof was generated
