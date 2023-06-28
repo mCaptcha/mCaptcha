@@ -13,8 +13,8 @@ async-trait = "0.1.51"
 thiserror = "1.0.30"
 serde = { version = "1", features = ["derive"]}
 url = { version  = "2.2.2", features = ["serde"] }
-#libmcaptcha = {  version = "0.2.2", git = "https://github.com/mCaptcha/libmcaptcha", features = ["minimal"], default-features = false, tag = "0.2.2"}
-libmcaptcha = { branch = "master", git = "https://github.com/mCaptcha/libmcaptcha", features = ["full"] }
+libmcaptcha = {  version = "0.2.3", git = "https://github.com/mCaptcha/libmcaptcha", features = ["minimal"], default-features = false, tag = "0.2.3"}
+#libmcaptcha = { branch = "master", git = "https://github.com/mCaptcha/libmcaptcha", features = ["full"] }
 
 [features]
 default = []

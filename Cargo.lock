@@ -1580,8 +1580,8 @@ checksum = "292a948cd991e376cf75541fe5b97a1081d713c618b4f1b9500f8844e49eb565"
 
 [[package]]
 name = "libmcaptcha"
-version = "0.2.2"
-source = "git+https://github.com/mCaptcha/libmcaptcha?branch=master#22e3cb1a1c774ed352da17e4919e1ee177264e07"
+version = "0.2.3"
+source = "git+https://github.com/mCaptcha/libmcaptcha?tag=0.2.3#6bc0d11f8839d18c4d930cac0c0b86505ed1b2f6"
 dependencies = [
  "actix",
  "crossbeam-channel",
