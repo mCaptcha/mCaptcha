@@ -3,11 +3,11 @@ OPENAPI = docs/openapi
 CLEAN_UP = $(BUNDLE) src/cache_buster_data.json assets
 
 define deploy_dependencies ## deploy dependencies
-	docker create --name ${db}  \
+	@-docker create --name ${db}  \
 		-e POSTGRES_PASSWORD=password  \
 		-p 5432:5432   \
 		postgres
-	docker create  \
+	@-docker create  \
 		-p 3306:3306  \
 		--name ${mdb} \
 		--env MARIADB_USER=maria \
@@ -15,7 +15,7 @@ define deploy_dependencies ## deploy dependencies
 		--env MARIADB_ROOT_PASSWORD=password  \
 		--env MARIADB_DATABASE=maria  \
 		mariadb:latest
-	docker create  \
+	@-docker create  \
 		-p 6379:6379 \
 		--name mcaptcha-cache \
 		mcaptcha/cache:latest
