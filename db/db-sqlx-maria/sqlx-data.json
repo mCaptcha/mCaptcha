@@ -214,6 +214,16 @@
     },
     "query": "INSERT INTO mcaptcha_users \n        (name , password,  secret) VALUES (?, ?, ?)"
   },
+  "6094468b7fa20043b0da90e366b7f1fa29a8c748e163b6712725440b25ae9361": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Right": 1
+      }
+    },
+    "query": "\n            DELETE FROM\n                mcaptcha_pow_analytics\n            WHERE\n                config_id = (\n                    SELECT config_id FROM mcaptcha_config WHERE captcha_key = ?\n            ) "
+  },
   "66ec7df10484f8e0206f3c97afc9136021589556c38dbbed341d6574487f79f2": {
     "describe": {
       "columns": [
@@ -882,6 +892,16 @@
       }
     },
     "query": "INSERT INTO mcaptcha_pow_solved_stats \n        (config_id, time) VALUES ((SELECT config_id FROM mcaptcha_config where captcha_key= ?), ?)"
+  },
+  "e4d9bf156a368dcee1433dd5ced9f1991aa15f84e0ade916433aada40f68f0aa": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Right": 1
+      }
+    },
+    "query": "\n        DELETE FROM\n            mcaptcha_psuedo_campaign_id\n        WHERE config_id = (\n            SELECT config_id FROM mcaptcha_config WHERE captcha_key = ?\n        );"
   },
   "e6569a6064d0e07abea4c0bd4686cdfdaac64f0109ac40efaed06a744a2eaf5e": {
     "describe": {

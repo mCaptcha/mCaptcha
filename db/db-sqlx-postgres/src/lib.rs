@@ -1057,6 +1057,39 @@ impl MCDatabase for Database {
         .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
         Ok(res.key)
     }
+
+    async fn analytics_delete_all_records_for_campaign(
+        &self,
+        campaign_id: &str,
+    ) -> DBResult<()> {
+        let _ = sqlx::query!(
+            "
+        DELETE FROM
+            mcaptcha_psuedo_campaign_id
+        WHERE config_id = (
+            SELECT config_id FROM mcaptcha_config WHERE key = ($1)
+        );",
+            campaign_id
+        )
+        .execute(&self.pool)
+        .await;
+
+        let _ = sqlx::query!(
+            "
+            DELETE FROM
+                mcaptcha_pow_analytics
+            WHERE
+                config_id = (
+                    SELECT config_id FROM mcaptcha_config WHERE key = $1
+                    )
+             ",
+            campaign_id
+        )
+        .execute(&self.pool)
+        .await;
+
+        Ok(())
+    }
 }
 
 #[derive(Clone)]

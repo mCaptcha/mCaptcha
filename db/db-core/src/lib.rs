@@ -283,6 +283,12 @@ pub trait MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
         &self,
         psuedo_id: &str,
     ) -> DBResult<String>;
+
+    /// Delete all records for campaign
+    async fn analytics_delete_all_records_for_campaign(
+        &self,
+        campaign_id: &str,
+    ) -> DBResult<()>;
 }
 
 #[derive(Debug, Clone, Default, Deserialize, Serialize, PartialEq)]
@@ -389,7 +395,6 @@ pub struct Secret {
     /// user's secret
     pub secret: String,
 }
-
 /// Trait to clone MCDatabase
 pub trait CloneSPDatabase {
     /// clone DB

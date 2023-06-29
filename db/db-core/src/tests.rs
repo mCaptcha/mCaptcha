@@ -304,6 +304,21 @@ pub async fn database_works<'a, T: MCDatabase>(
         .unwrap()
         .is_empty());
 
+    db.analytics_delete_all_records_for_campaign(c.key)
+        .await
+        .unwrap();
+    assert_eq!(db.analytics_fetch(c.key, 1000, 0).await.unwrap().len(), 0);
+    let err = db.analytics_get_psuedo_id_from_capmaign_id(c.key).await;
+    assert!(err.is_err());
+    assert_eq!(
+        format!("{:?}", err),
+        format!("{:?}", Err::<(), errors::DBError>(DBError::CaptchaNotFound))
+    );
+    db.analytics_delete_all_records_for_campaign(c.key)
+        .await
+        .unwrap();
+    // analytics end
+
     assert_eq!(db.fetch_solve(p.username, c.key).await.unwrap().len(), 1);
     assert_eq!(
         db.fetch_config_fetched(p.username, c.key)
@@ -314,7 +329,6 @@ pub async fn database_works<'a, T: MCDatabase>(
     );
     assert_eq!(db.fetch_solve(p.username, c.key).await.unwrap().len(), 1);
     assert_eq!(db.fetch_confirm(p.username, c.key).await.unwrap().len(), 1);
-    // analytics end
 
     // update captcha key; set key = username;
     db.update_captcha_key(p.username, c.key, p.username)
