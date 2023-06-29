@@ -13,6 +13,7 @@ async-trait = "0.1.51"
 db-core = {path = "../db-core"}
 futures = "0.3.15"
 sqlx = { version = "0.5.13", features = [ "runtime-actix-rustls", "mysql", "time", "offline" ] }
+uuid = { version = "1.4.0", features = ["v4", "serde"] }
 
 [dev-dependencies]
 actix-rt = "2"

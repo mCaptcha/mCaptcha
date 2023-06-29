@@ -22,6 +22,7 @@ use sqlx::postgres::PgPoolOptions;
 use sqlx::types::time::OffsetDateTime;
 use sqlx::ConnectOptions;
 use sqlx::PgPool;
+use uuid::Uuid;
 
 pub mod errors;
 #[cfg(test)]
@@ -974,6 +975,87 @@ impl MCDatabase for Database {
         }
 
         Ok(res)
+    }
+
+    /// Create psuedo ID against campaign ID to publish analytics
+    async fn analytics_create_psuedo_id_if_not_exists(
+        &self,
+        captcha_id: &str,
+    ) -> DBResult<()> {
+        let id = Uuid::new_v4();
+        sqlx::query!(
+            "
+            INSERT INTO
+                mcaptcha_psuedo_campaign_id (config_id, psuedo_id)
+            VALUES (
+                (SELECT config_id FROM mcaptcha_config WHERE key = ($1)),
+                $2
+            );",
+            captcha_id,
+            &id.to_string(),
+        )
+        .execute(&self.pool)
+        .await
+        .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
+
+        Ok(())
+    }
+
+    /// Get psuedo ID from campaign ID
+    async fn analytics_get_psuedo_id_from_capmaign_id(
+        &self,
+        captcha_id: &str,
+    ) -> DBResult<String> {
+        struct ID {
+            psuedo_id: String,
+        }
+
+        let res = sqlx::query_as!(
+            ID,
+            "SELECT psuedo_id FROM
+                mcaptcha_psuedo_campaign_id
+            WHERE
+                 config_id = (SELECT config_id FROM mcaptcha_config WHERE key = ($1));
+            ",
+            captcha_id
+        )
+        .fetch_one(&self.pool)
+        .await
+        .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
+
+        Ok(res.psuedo_id)
+    }
+
+    /// Get campaign ID from psuedo ID
+    async fn analytics_get_capmaign_id_from_psuedo_id(
+        &self,
+        psuedo_id: &str,
+    ) -> DBResult<String> {
+        struct ID {
+            key: String,
+        }
+
+        let res = sqlx::query_as!(
+            ID,
+            "SELECT
+                key
+            FROM
+                mcaptcha_config
+            WHERE
+                 config_id = (
+                     SELECT
+                         config_id
+                     FROM
+                         mcaptcha_psuedo_campaign_id
+                     WHERE
+                         psuedo_id = $1
+                 );",
+            psuedo_id
+        )
+        .fetch_one(&self.pool)
+        .await
+        .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
+        Ok(res.key)
     }
 }
 

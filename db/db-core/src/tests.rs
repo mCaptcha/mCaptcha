@@ -260,6 +260,31 @@ pub async fn database_works<'a, T: MCDatabase>(
     db.record_solve(c.key).await.unwrap();
     db.record_confirm(c.key).await.unwrap();
 
+    // analytics start
+
+    db.analytics_create_psuedo_id_if_not_exists(c.key)
+        .await
+        .unwrap();
+    let psuedo_id = db
+        .analytics_get_psuedo_id_from_capmaign_id(c.key)
+        .await
+        .unwrap();
+    db.analytics_create_psuedo_id_if_not_exists(c.key)
+        .await
+        .unwrap();
+    assert_eq!(
+        psuedo_id,
+        db.analytics_get_psuedo_id_from_capmaign_id(c.key)
+            .await
+            .unwrap()
+    );
+    assert_eq!(
+        c.key,
+        db.analytics_get_capmaign_id_from_psuedo_id(&psuedo_id)
+            .await
+            .unwrap()
+    );
+
     let analytics = CreatePerformanceAnalytics {
         time: 0,
         difficulty_factor: 0,
@@ -289,6 +314,7 @@ pub async fn database_works<'a, T: MCDatabase>(
     );
     assert_eq!(db.fetch_solve(p.username, c.key).await.unwrap().len(), 1);
     assert_eq!(db.fetch_confirm(p.username, c.key).await.unwrap().len(), 1);
+    // analytics end
 
     // update captcha key; set key = username;
     db.update_captcha_key(p.username, c.key, p.username)

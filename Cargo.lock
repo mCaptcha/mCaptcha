@@ -885,6 +885,7 @@ dependencies = [
  "futures",
  "sqlx",
  "url",
+ "uuid",
 ]
 
 [[package]]
@@ -897,6 +898,7 @@ dependencies = [
  "futures",
  "sqlx",
  "url",
+ "uuid",
 ]
 
 [[package]]
@@ -3391,6 +3393,16 @@ name = "utf-8"
 version = "0.7.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "09cc8ee72d2a9becf2f2febe0205bbed8fc6615b7cb429ad062dc7b7ddd036a9"
+
+[[package]]
+name = "uuid"
+version = "1.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d023da39d1fde5a8a3fe1f3e01ca9632ada0a63e9797de55a879d6e2236277be"
+dependencies = [
+ "getrandom",
+ "serde 1.0.143",
+]
 
 [[package]]
 name = "validator"

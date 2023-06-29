@@ -25,6 +25,31 @@
     },
     "query": "SELECT time FROM mcaptcha_pow_confirmed_stats \n            WHERE \n                config_id = (\n                    SELECT config_id FROM mcaptcha_config \n                WHERE \n                    captcha_key = ?\n                AND\n                     user_id = (\n                        SELECT \n                            ID FROM mcaptcha_users WHERE name = ?))\n                ORDER BY time DESC"
   },
+  "14dc89b2988b221fd24e4f319b1d48f5e6c65c760c30d11c9c29087f09cee23a": {
+    "describe": {
+      "columns": [
+        {
+          "name": "captcha_key",
+          "ordinal": 0,
+          "type_info": {
+            "char_set": 224,
+            "flags": {
+              "bits": 4101
+            },
+            "max_size": 400,
+            "type": "VarString"
+          }
+        }
+      ],
+      "nullable": [
+        false
+      ],
+      "parameters": {
+        "Right": 1
+      }
+    },
+    "query": "SELECT\n                captcha_key\n            FROM\n                mcaptcha_config\n            WHERE\n                 config_id = (\n                     SELECT\n                         config_id\n                     FROM\n                         mcaptcha_psuedo_campaign_id\n                     WHERE\n                         psuedo_id = ?\n                 );"
+  },
   "22e697114c3ed5b0156cdceab11a398f1ef3a804f482e1cd948bc615ef95fc92": {
     "describe": {
       "columns": [],
@@ -153,6 +178,31 @@
       }
     },
     "query": "INSERT INTO mcaptcha_pow_fetched_stats \n        (config_id, time) VALUES ((SELECT config_id FROM mcaptcha_config where captcha_key= ?), ?)"
+  },
+  "5ad1ef722a961183228d851813b9f50284520bf8cc8118c765b72c108daaf6fb": {
+    "describe": {
+      "columns": [
+        {
+          "name": "psuedo_id",
+          "ordinal": 0,
+          "type_info": {
+            "char_set": 224,
+            "flags": {
+              "bits": 4101
+            },
+            "max_size": 400,
+            "type": "VarString"
+          }
+        }
+      ],
+      "nullable": [
+        false
+      ],
+      "parameters": {
+        "Right": 1
+      }
+    },
+    "query": "SELECT psuedo_id FROM\n                mcaptcha_psuedo_campaign_id\n            WHERE\n                 config_id = (SELECT config_id FROM mcaptcha_config WHERE captcha_key = (?));\n            "
   },
   "5d5a106981345e9f62bc2239c00cdc683d3aaaa820d63da300dc51e3f6f363d3": {
     "describe": {
@@ -405,6 +455,16 @@
       }
     },
     "query": "UPDATE mcaptcha_users set email = ?\n            WHERE name = ?"
+  },
+  "9e45969a0f79eab8caba41b0d91e5e3b85a1a68a49136f89fc90793c38f00041": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Right": 2
+      }
+    },
+    "query": "\n            INSERT INTO\n                mcaptcha_psuedo_campaign_id (config_id, psuedo_id)\n            VALUES (\n                (SELECT config_id FROM mcaptcha_config WHERE captcha_key = (?)),\n                ?\n            );"
   },
   "9f10afb0f242f11c58389803c5e85e244cc59102b8929a21e3fcaa852d57a52c": {
     "describe": {

@@ -172,6 +172,26 @@
     },
     "query": "UPDATE mcaptcha_users set name = $1\n            WHERE name = $2"
   },
+  "21cdf28d8962389d22c8ddefdad82780f5316737e3d833623512aa12a54a026a": {
+    "describe": {
+      "columns": [
+        {
+          "name": "key",
+          "ordinal": 0,
+          "type_info": "Varchar"
+        }
+      ],
+      "nullable": [
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      }
+    },
+    "query": "SELECT\n                key\n            FROM\n                mcaptcha_config\n            WHERE\n                 config_id = (\n                     SELECT\n                         config_id\n                     FROM\n                         mcaptcha_psuedo_campaign_id\n                     WHERE\n                         psuedo_id = $1\n                 );"
+  },
   "2b319a202bb983d5f28979d1e371f399125da1122fbda36a5a55b75b9c743451": {
     "describe": {
       "columns": [],
@@ -446,6 +466,26 @@
     },
     "query": "INSERT INTO mcaptcha_users \n        (name , password,  secret) VALUES ($1, $2, $3)"
   },
+  "839dfdfc3543b12128cb2b44bf356cd81f3da380963e5684ec3624a0ea4f9547": {
+    "describe": {
+      "columns": [
+        {
+          "name": "psuedo_id",
+          "ordinal": 0,
+          "type_info": "Varchar"
+        }
+      ],
+      "nullable": [
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      }
+    },
+    "query": "SELECT psuedo_id FROM\n                mcaptcha_psuedo_campaign_id\n            WHERE\n                 config_id = (SELECT config_id FROM mcaptcha_config WHERE key = ($1));\n            "
+  },
   "84484cb6892db29121816bc5bff5702b9e857e20aa14e79d080d78ae7593153b": {
     "describe": {
       "columns": [
@@ -599,6 +639,19 @@
       }
     },
     "query": "SELECT name, password  FROM mcaptcha_users WHERE email = ($1)"
+  },
+  "c1bb8e02d1f9dc28322309d055de3c40ed4e1a1b9453a7e5a93a70e5186d762d": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Varchar"
+        ]
+      }
+    },
+    "query": "\n            INSERT INTO\n                mcaptcha_psuedo_campaign_id (config_id, psuedo_id)\n            VALUES (\n                (SELECT config_id FROM mcaptcha_config WHERE key = ($1)),\n                $2\n            );"
   },
   "c2e167e56242de7e0a835e25004b15ca8340545fa0ca7ac8f3293157d2d03d98": {
     "describe": {

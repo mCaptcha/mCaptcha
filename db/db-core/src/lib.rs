@@ -265,6 +265,24 @@ pub trait MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
         limit: usize,
         offset: usize,
     ) -> DBResult<Vec<PerformanceAnalytics>>;
+
+    /// Create psuedo ID against campaign ID to publish analytics
+    async fn analytics_create_psuedo_id_if_not_exists(
+        &self,
+        captcha_id: &str,
+    ) -> DBResult<()>;
+
+    /// Get psuedo ID from campaign ID
+    async fn analytics_get_psuedo_id_from_capmaign_id(
+        &self,
+        captcha_id: &str,
+    ) -> DBResult<String>;
+
+    /// Get campaign ID from psuedo ID
+    async fn analytics_get_capmaign_id_from_psuedo_id(
+        &self,
+        psuedo_id: &str,
+    ) -> DBResult<String>;
 }
 
 #[derive(Debug, Clone, Default, Deserialize, Serialize, PartialEq)]
