@@ -79,6 +79,7 @@ lettre = { version = "0.10.0-rc.3", features = [
 ]}
 
 openssl = { version = "0.10.48", features = ["vendored"] }
+uuid = { version = "1.4.0", features = ["v4", "serde"] }
 
 
 [dependencies.db-core]

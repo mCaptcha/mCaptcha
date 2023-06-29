@@ -42,6 +42,7 @@ type TrafficPattern = {
   peak_sustainable_traffic: number;
   broke_my_site_traffic?: number;
   description: string;
+  publish_benchmarks: boolean;
 };
 
 export const validate = (e: Event): TrafficPattern => {
@@ -49,14 +50,16 @@ export const validate = (e: Event): TrafficPattern => {
 
   let broke_is_set = false;
 
-  const AVG_TRAFFIC = <HTMLInputElement>(
-    FORM.querySelector("#avg_traffic")
-  );
+  const AVG_TRAFFIC = <HTMLInputElement>FORM.querySelector("#avg_traffic");
   const PEAK_TRAFFIC = <HTMLInputElement>(
     FORM.querySelector("#peak_sustainable_traffic")
   );
   const BROKE_MY_SITE_TRAFFIC = <HTMLInputElement>(
     FORM.querySelector("#broke_my_site_traffic")
+  );
+
+  const PUBLISH_BENCHMARKS = <HTMLInputElement>(
+    FORM.querySelector("#publish_benchmarks")
   );
 
   isBlankString(AVG_TRAFFIC.value, avg_traffic_name);
@@ -101,6 +104,7 @@ export const validate = (e: Event): TrafficPattern => {
     peak_sustainable_traffic,
     broke_my_site_traffic,
     description,
+    publish_benchmarks: PUBLISH_BENCHMARKS.checked,
   };
 
   return payload;
