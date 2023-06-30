@@ -521,7 +521,7 @@
           "type_info": {
             "char_set": 224,
             "flags": {
-              "bits": 4101
+              "bits": 4097
             },
             "max_size": 400,
             "type": "VarString"
