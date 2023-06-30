@@ -44,6 +44,30 @@ define cache_bust ## run cache_busting program
 	cd utils/cache-bust && cargo run
 endef
 
+
+define test_frontend ## run frontend tests
+	cd $(OPENAPI)&& yarn test
+	yarn test
+endef
+
+define test_db_sqlx_postgres
+	cd db/db-sqlx-postgres &&\
+		DATABASE_URL=${POSTGRES_DATABASE_URL}\
+		cargo test --no-fail-fast
+endef
+
+define test_db_sqlx_maria
+	cd db/db-sqlx-maria &&\
+		DATABASE_URL=${MARIA_DATABASE_URL}\
+		cargo test --no-fail-fast
+endef
+
+define test_core
+	cargo test --no-fail-fast
+endef
+
+
+
 default: frontend ## Build app in debug mode
 	$(call cache_bust)
 	cargo build
@@ -122,10 +146,6 @@ frontend: ## Build frontend
 	@./scripts/librejs.sh
 	@./scripts/cachebust.sh
 
-frontend-test: ## Run frontend tests
-	cd $(OPENAPI)&& yarn test
-	yarn test
-
 lint: ## Lint codebase
 	cargo fmt -v --all -- --emit files
 	cargo clippy --workspace --tests --all-features
@@ -147,30 +167,40 @@ run: frontend ## Run app in debug mode
 	cargo run
 
 
-sqlx-offline-data: ## prepare sqlx offline data
+db.sqlx.offline: ## prepare sqlx offline data
 	cd db/db-sqlx-postgres && cargo sqlx prepare  \
 		--database-url=${POSTGRES_DATABASE_URL} -- \
 		--all-features
 	cd db/db-sqlx-maria && cargo sqlx prepare  \
 		--database-url=${MARIA_DATABASE_URL} -- \
 		--all-features
-#	cd db/db-sqlx-sqlite/ \
-#		&& DATABASE_URL=${SQLITE_DATABASE_URL} cargo sqlx prepare
 
-test-db: ## run tests on database
-	cd db/db-sqlx-postgres &&\
-		DATABASE_URL=${POSTGRES_DATABASE_URL}\
-		cargo test --no-fail-fast
-test: frontend-test frontend ## Run all available tests
+test.frontend: ## Run frontend tests
+	$(call test_frontend)
+
+test: frontend ## Run all available tests
+	$(call test_frontend)
 	$(call cache_bust)
-	cd db/db-sqlx-postgres &&\
-		DATABASE_URL=${POSTGRES_DATABASE_URL}\
-		cargo test --no-fail-fast
-	cd db/db-sqlx-maria &&\
-		DATABASE_URL=${MARIA_DATABASE_URL}\
-		cargo test --no-fail-fast
+	$(call test_db_sqlx_postgres)
+	$(call test_db_sqlx_maria)
+	$(call test_core)
+
 	cargo test --no-fail-fast
 #	./scripts/tests.sh
+
+test.core: ## Run all core tests
+	$(call test_core)
+
+test.db: ## Run all database driver tests
+	$(call test_db_sqlx_postgres)
+	$(call test_db_sqlx_maria)
+
+test.db.pg: ## Run Postgres database driver tests
+	$(call test_db_sqlx_postgres)
+
+test.db.maria: ## Run Maria database driver tests
+	$(call test_db_sqlx_maria)
+
 
 test.integration: ## run integration tests with nightwatch.js
 	./scripts/integration.sh
@@ -180,4 +210,4 @@ xml-test-coverage: migrate ## Generate code coverage report in XML format
 	cargo tarpaulin -t 1200 --out Xml
 
 help: ## Prints help for targets with comments
-	@cat $(MAKEFILE_LIST) | grep -E '^[a-zA-Z_-]+:.*?## .*$$' | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	@cat $(MAKEFILE_LIST) | grep -E '^[a-zA-Z_-].+:.*?## .*$$' | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
