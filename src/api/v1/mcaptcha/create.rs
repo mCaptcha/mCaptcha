@@ -31,6 +31,7 @@ pub struct CreateCaptcha {
     pub levels: Vec<Level>,
     pub duration: u32,
     pub description: String,
+    pub publish_benchmarks: bool,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -52,6 +53,11 @@ pub async fn create(
 ) -> ServiceResult<impl Responder> {
     let username = id.identity().unwrap();
     let mcaptcha_config = runner::create(&payload, &data, &username).await?;
+    if payload.publish_benchmarks {
+        data.db
+            .analytics_create_psuedo_id_if_not_exists(&mcaptcha_config.key)
+            .await?;
+    }
     Ok(HttpResponse::Ok().json(mcaptcha_config))
 }
 

@@ -262,5 +262,6 @@ pub fn get_level_data() -> CreateCaptcha {
         levels,
         duration: 30,
         description: "dummy".into(),
+        publish_benchmarks: false,
     }
 }

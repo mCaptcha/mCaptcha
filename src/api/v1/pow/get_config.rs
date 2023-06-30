@@ -250,6 +250,7 @@ pub mod tests {
             levels: levels.into(),
             duration: 30,
             description: "dummy".into(),
+            publish_benchmarks: true,
         };
 
         // 1. add level
