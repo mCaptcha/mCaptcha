@@ -92,10 +92,6 @@ clean: ## Delete build artifacts
 	@yarn cache clean
 	@-rm $(CLEAN_UP)
 
-coverage: migrate ## Generate code coverage report in HTML format
-	$(call cache_bust)
-	cargo tarpaulin -t 1200 --out Html
-
 doc: ## Generate documentation
 	#yarn doc
 	cargo doc --no-deps --workspace --all-features
@@ -175,18 +171,22 @@ db.sqlx.offline: ## prepare sqlx offline data
 		--database-url=${MARIA_DATABASE_URL} -- \
 		--all-features
 
-test.frontend: ## Run frontend tests
-	$(call test_frontend)
-
 test: frontend ## Run all available tests
 	$(call test_frontend)
 	$(call cache_bust)
 	$(call test_db_sqlx_postgres)
 	$(call test_db_sqlx_maria)
 	$(call test_core)
-
-	cargo test --no-fail-fast
 #	./scripts/tests.sh
+
+test.cov.html: migrate ## Generate code coverage report in HTML format
+	$(call cache_bust)
+	cargo tarpaulin -t 1200 --out Html
+
+test.cov.xml: migrate ## Generate code coverage report in XML format
+	$(call cache_bust)
+	cargo tarpaulin -t 1200 --out Xml
+
 
 test.core: ## Run all core tests
 	$(call test_core)
@@ -201,13 +201,11 @@ test.db.pg: ## Run Postgres database driver tests
 test.db.maria: ## Run Maria database driver tests
 	$(call test_db_sqlx_maria)
 
+test.frontend: ## Run frontend tests
+	$(call test_frontend)
 
 test.integration: ## run integration tests with nightwatch.js
 	./scripts/integration.sh
-
-xml-test-coverage: migrate ## Generate code coverage report in XML format
-	$(call cache_bust)
-	cargo tarpaulin -t 1200 --out Xml
 
 help: ## Prints help for targets with comments
 	@cat $(MAKEFILE_LIST) | grep -E '^[a-zA-Z_-].+:.*?## .*$$' | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
