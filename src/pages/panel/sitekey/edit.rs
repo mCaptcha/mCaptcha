@@ -106,11 +106,19 @@ pub async fn easy(
     match data.db.get_traffic_pattern(&username, &key).await {
         Ok(c) => {
             let config = data.db.get_captcha_config(&username, &key).await?;
+            let publish_benchmarks =
+                match data.db.analytics_get_psuedo_id_from_capmaign_id(&key).await {
+                    Ok(_) => Ok(true),
+                    Err(db_core::errors::DBError::CaptchaNotFound) => Ok(false),
+                    Err(e) => Err(e),
+                }?;
+            println!("publish_benchmarks psot edit: {publish_benchmarks}");
             let pattern = TrafficPatternRequest {
                 peak_sustainable_traffic: c.peak_sustainable_traffic as u32,
                 avg_traffic: c.avg_traffic as u32,
                 broke_my_site_traffic: c.broke_my_site_traffic.map(|n| n as u32),
                 description: config.description,
+                publish_benchmarks,
             };
 
             let page = EasyEditPage::new(key, pattern).render_once().unwrap();

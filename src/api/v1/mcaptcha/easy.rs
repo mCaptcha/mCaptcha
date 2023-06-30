@@ -60,6 +60,9 @@ pub struct TrafficPatternRequest {
     pub broke_my_site_traffic: Option<u32>,
     /// Captcha description
     pub description: String,
+
+    /// publish benchmarks
+    pub publish_benchmarks: bool,
 }
 
 impl From<&TrafficPatternRequest> for TrafficPattern {
@@ -133,6 +136,12 @@ async fn create(
     data.db
         .add_traffic_pattern(&username, &mcaptcha_config.key, &pattern)
         .await?;
+
+    if payload.publish_benchmarks {
+        data.db
+            .analytics_create_psuedo_id_if_not_exists(&mcaptcha_config.key)
+            .await?;
+    }
     Ok(HttpResponse::Ok().json(mcaptcha_config))
 }
 
@@ -156,6 +165,16 @@ async fn update(
     let pattern = (&payload.pattern).into();
     let levels =
         calculate(&pattern, &data.settings.captcha.default_difficulty_strategy)?;
+
+    if payload.pattern.publish_benchmarks {
+        data.db
+            .analytics_create_psuedo_id_if_not_exists(&payload.key)
+            .await?;
+    } else {
+        data.db
+            .analytics_delete_all_records_for_campaign(&payload.key)
+            .await?;
+    }
 
     let msg = UpdateCaptcha {
         levels,
@@ -292,6 +311,7 @@ pub mod tests {
             peak_sustainable_traffic: 1_000_000,
             broke_my_site_traffic: Some(10_000_000),
             description: NAME.into(),
+            publish_benchmarks: false,
         };
 
         let default_levels = calculate(
@@ -323,6 +343,17 @@ pub mod tests {
         assert_eq!(get_level_resp.status(), StatusCode::OK);
         let res_levels: Vec<Level> = test::read_body_json(get_level_resp).await;
         assert_eq!(res_levels, default_levels);
+        let publish_benchmarks = match data
+            .db
+            .analytics_get_psuedo_id_from_capmaign_id(&token_key.key)
+            .await
+        {
+            Ok(_) => Ok(true),
+            Err(db_core::errors::DBError::CaptchaNotFound) => Ok(false),
+            Err(e) => Err(e),
+        }
+        .unwrap();
+        assert!(!publish_benchmarks);
         // END create_easy
 
         // START update_easy
@@ -331,6 +362,7 @@ pub mod tests {
             peak_sustainable_traffic: 10_000,
             broke_my_site_traffic: Some(1_000_000),
             description: NAME.into(),
+            publish_benchmarks: true,
         };
 
         let updated_default_values = calculate(
@@ -352,6 +384,11 @@ pub mod tests {
         )
         .await;
         assert_eq!(update_token_resp.status(), StatusCode::OK);
+        assert!(data
+            .db
+            .analytics_get_psuedo_id_from_capmaign_id(&token_key.key)
+            .await
+            .is_ok());
 
         let get_level_resp = test::call_service(
             &app,
@@ -394,5 +431,57 @@ pub mod tests {
         ));
         assert!(body.contains(&payload.pattern.avg_traffic.to_string()));
         assert!(body.contains(&payload.pattern.peak_sustainable_traffic.to_string()));
+
+        // START update_easy to delete published results
+        let mut payload2 = TrafficPatternRequest {
+            avg_traffic: 100_000,
+            peak_sustainable_traffic: 1_000_000,
+            broke_my_site_traffic: Some(10_000_000),
+            description: NAME.into(),
+            publish_benchmarks: true,
+        };
+
+        let add_token_resp = test::call_service(
+            &app,
+            post_request!(&payload2, ROUTES.captcha.easy.create)
+                .cookie(cookies.clone())
+                .to_request(),
+        )
+        .await;
+        assert_eq!(add_token_resp.status(), StatusCode::OK);
+
+        assert!(data
+            .db
+            .analytics_get_psuedo_id_from_capmaign_id(&token_key.key)
+            .await
+            .is_ok());
+
+        let token_key2: MCaptchaDetails = test::read_body_json(add_token_resp).await;
+
+        payload2.publish_benchmarks = false;
+
+        let payload = UpdateTrafficPattern {
+            pattern: payload2,
+            key: token_key2.key.clone(),
+        };
+
+        let update_token_resp = test::call_service(
+            &app,
+            post_request!(&payload, ROUTES.captcha.easy.update)
+                .cookie(cookies.clone())
+                .to_request(),
+        )
+        .await;
+        assert_eq!(update_token_resp.status(), StatusCode::OK);
+        assert_eq!(
+            format!(
+                "{:?}",
+                data.db
+                    .analytics_get_psuedo_id_from_capmaign_id(&token_key2.key)
+                    .await
+                    .err()
+            ),
+            format!("{:?}", Some(db_core::errors::DBError::CaptchaNotFound))
+        );
     }
 }
