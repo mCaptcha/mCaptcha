@@ -63,6 +63,8 @@ export const solveCaptchaRunner = async (e: Event): Promise<void> => {
         string: config.string,
         nonce: resp.work.nonce,
         result: resp.work.result,
+        time: resp.work.time,
+        worker_type: resp.work.worker_type,
       };
 
       // 3. submit work

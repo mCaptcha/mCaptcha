@@ -14,6 +14,15 @@ export type Work = {
   nonce: number;
   string: string;
   key: string;
+  time: number;
+  worker_type: string;
+};
+
+export type SubmitWork = {
+  time: number;
+  worker_type: string;
+  result: string;
+  nonce: number;
 };
 
 export type WasmWork = {
@@ -22,7 +31,7 @@ export type WasmWork = {
 };
 
 export type ServiceWorkerWork = {
-  work: WasmWork;
+  work: SubmitWork;
   duration: number;
 };
 
