@@ -343,17 +343,11 @@ pub mod tests {
         assert_eq!(get_level_resp.status(), StatusCode::OK);
         let res_levels: Vec<Level> = test::read_body_json(get_level_resp).await;
         assert_eq!(res_levels, default_levels);
-        let publish_benchmarks = match data
+        assert!(!data
             .db
-            .analytics_get_psuedo_id_from_capmaign_id(&token_key.key)
+            .analytics_captcha_is_published(&token_key.key)
             .await
-        {
-            Ok(_) => Ok(true),
-            Err(db_core::errors::DBError::CaptchaNotFound) => Ok(false),
-            Err(e) => Err(e),
-        }
-        .unwrap();
-        assert!(!publish_benchmarks);
+            .unwrap());
         // END create_easy
 
         // START update_easy
@@ -386,9 +380,9 @@ pub mod tests {
         assert_eq!(update_token_resp.status(), StatusCode::OK);
         assert!(data
             .db
-            .analytics_get_psuedo_id_from_capmaign_id(&token_key.key)
+            .analytics_captcha_is_published(&token_key.key)
             .await
-            .is_ok());
+            .unwrap());
 
         let get_level_resp = test::call_service(
             &app,
@@ -452,9 +446,9 @@ pub mod tests {
 
         assert!(data
             .db
-            .analytics_get_psuedo_id_from_capmaign_id(&token_key.key)
+            .analytics_captcha_is_published(&token_key.key)
             .await
-            .is_ok());
+            .unwrap());
 
         let token_key2: MCaptchaDetails = test::read_body_json(add_token_resp).await;
 
@@ -473,15 +467,10 @@ pub mod tests {
         )
         .await;
         assert_eq!(update_token_resp.status(), StatusCode::OK);
-        assert_eq!(
-            format!(
-                "{:?}",
-                data.db
-                    .analytics_get_psuedo_id_from_capmaign_id(&token_key2.key)
-                    .await
-                    .err()
-            ),
-            format!("{:?}", Some(db_core::errors::DBError::CaptchaNotFound))
-        );
+        assert!(!data
+            .db
+            .analytics_captcha_is_published(&token_key2.key)
+            .await
+            .unwrap());
     }
 }
