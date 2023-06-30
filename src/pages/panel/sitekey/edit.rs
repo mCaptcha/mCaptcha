@@ -35,15 +35,22 @@ struct AdvanceEditPage {
     name: String,
     key: String,
     levels: Vec<Level>,
+    publish_benchmarks: bool,
 }
 
 impl AdvanceEditPage {
-    fn new(config: Captcha, levels: Vec<Level>, key: String) -> Self {
+    fn new(
+        config: Captcha,
+        levels: Vec<Level>,
+        key: String,
+        publish_benchmarks: bool,
+    ) -> Self {
         AdvanceEditPage {
             duration: config.duration as u32,
             name: config.description,
             levels,
             key,
+            publish_benchmarks,
         }
     }
 }
@@ -63,8 +70,9 @@ pub async fn advance(
 
     let config = data.db.get_captcha_config(&username, &key).await?;
     let levels = data.db.get_captcha_levels(Some(&username), &key).await?;
+    let publish_benchmarks = data.db.analytics_captcha_is_published(&key).await?;
 
-    let body = AdvanceEditPage::new(config, levels, key)
+    let body = AdvanceEditPage::new(config, levels, key, publish_benchmarks)
         .render_once()
         .unwrap();
     Ok(HttpResponse::Ok()
@@ -107,12 +115,7 @@ pub async fn easy(
         Ok(c) => {
             let config = data.db.get_captcha_config(&username, &key).await?;
             let publish_benchmarks =
-                match data.db.analytics_get_psuedo_id_from_capmaign_id(&key).await {
-                    Ok(_) => Ok(true),
-                    Err(db_core::errors::DBError::CaptchaNotFound) => Ok(false),
-                    Err(e) => Err(e),
-                }?;
-            println!("publish_benchmarks psot edit: {publish_benchmarks}");
+                data.db.analytics_captcha_is_published(&key).await?;
             let pattern = TrafficPatternRequest {
                 peak_sustainable_traffic: c.peak_sustainable_traffic as u32,
                 avg_traffic: c.avg_traffic as u32,

@@ -130,6 +130,7 @@ async fn create(
         levels,
         duration: data.settings.captcha.default_difficulty_strategy.duration,
         description: payload.description,
+        publish_benchmarks: payload.publish_benchmarks,
     };
 
     let mcaptcha_config = create_runner(&msg, &data, &username).await?;
@@ -137,11 +138,6 @@ async fn create(
         .add_traffic_pattern(&username, &mcaptcha_config.key, &pattern)
         .await?;
 
-    if payload.publish_benchmarks {
-        data.db
-            .analytics_create_psuedo_id_if_not_exists(&mcaptcha_config.key)
-            .await?;
-    }
     Ok(HttpResponse::Ok().json(mcaptcha_config))
 }
 
@@ -166,21 +162,12 @@ async fn update(
     let levels =
         calculate(&pattern, &data.settings.captcha.default_difficulty_strategy)?;
 
-    if payload.pattern.publish_benchmarks {
-        data.db
-            .analytics_create_psuedo_id_if_not_exists(&payload.key)
-            .await?;
-    } else {
-        data.db
-            .analytics_delete_all_records_for_campaign(&payload.key)
-            .await?;
-    }
-
     let msg = UpdateCaptcha {
         levels,
         duration: data.settings.captcha.default_difficulty_strategy.duration,
         description: payload.pattern.description,
         key: payload.key,
+        publish_benchmarks: payload.pattern.publish_benchmarks,
     };
 
     update_captcha_runner(&msg, &data, &username).await?;

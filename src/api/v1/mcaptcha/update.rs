@@ -76,6 +76,7 @@ pub struct UpdateCaptcha {
     pub duration: u32,
     pub description: String,
     pub key: String,
+    pub publish_benchmarks: bool,
 }
 
 #[my_codegen::post(
@@ -138,6 +139,16 @@ pub mod runner {
                 &payload.key,
                 e
             );
+        }
+
+        if payload.publish_benchmarks {
+            data.db
+                .analytics_create_psuedo_id_if_not_exists(&payload.key)
+                .await?;
+        } else {
+            data.db
+                .analytics_delete_all_records_for_campaign(&payload.key)
+                .await?;
         }
         Ok(())
     }
