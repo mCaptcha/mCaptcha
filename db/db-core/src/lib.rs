@@ -289,6 +289,18 @@ pub trait MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
         &self,
         campaign_id: &str,
     ) -> DBResult<()>;
+
+    /// Get publishing status of pow analytics for captcha ID/ campaign ID
+    async fn analytics_captcha_is_published(&self, campaign_id: &str) -> DBResult<bool> {
+        match self
+            .analytics_get_psuedo_id_from_capmaign_id(campaign_id)
+            .await
+        {
+            Ok(_) => Ok(true),
+            Err(errors::DBError::CaptchaNotFound) => Ok(false),
+            Err(e) => Err(e),
+        }
+    }
 }
 
 #[derive(Debug, Clone, Default, Deserialize, Serialize, PartialEq)]

@@ -308,12 +308,7 @@ pub async fn database_works<'a, T: MCDatabase>(
         .await
         .unwrap();
     assert_eq!(db.analytics_fetch(c.key, 1000, 0).await.unwrap().len(), 0);
-    let err = db.analytics_get_psuedo_id_from_capmaign_id(c.key).await;
-    assert!(err.is_err());
-    assert_eq!(
-        format!("{:?}", err),
-        format!("{:?}", Err::<(), errors::DBError>(DBError::CaptchaNotFound))
-    );
+    assert!(!db.analytics_captcha_is_published(c.key).await.unwrap());
     db.analytics_delete_all_records_for_campaign(c.key)
         .await
         .unwrap();
