@@ -52,7 +52,7 @@ jobs:
 
 
       maria:
-        image: mariadb
+        image: mariadb:10
         env: 
           MARIADB_USER: "maria"
           MARIADB_PASSWORD: "password"
