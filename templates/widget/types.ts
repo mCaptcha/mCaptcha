@@ -32,7 +32,6 @@ export type WasmWork = {
 
 export type ServiceWorkerWork = {
   work: SubmitWork;
-  duration: number;
 };
 
 export type PoWConfig = {

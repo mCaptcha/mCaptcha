@@ -19,15 +19,9 @@ onmessage = async (e) => {
   console.debug("message received at worker");
   const config: PoWConfig = e.data;
 
-  const t0 = performance.now();
   const work = await prove(config);
-
-  const t1 = performance.now();
-  const duration = t1 - t0;
-
   const res: ServiceWorkerWork = {
     work,
-    duration,
   };
 
   postMessage(res);
