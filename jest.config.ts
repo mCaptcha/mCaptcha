@@ -136,7 +136,9 @@ export default {
   testEnvironment: "jest-environment-jsdom",
 
   // Options that will be passed to the testEnvironment
-  // testEnvironmentOptions: {},
+   testEnvironmentOptions: {
+     "url": "http://localhost:7000/widget/?sitekey=imbatman"
+   },
 
   // Adds a location field to test results
   // testLocationInResults: false,
