@@ -103,7 +103,7 @@ jobs:
         run: make frontend
 
       - name: Run the frontend tests
-        run: make frontend-test
+        run: make test.frontend
 
       - name: Run migrations
         run: make migrate
