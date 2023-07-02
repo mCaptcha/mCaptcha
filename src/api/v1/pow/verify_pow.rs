@@ -59,7 +59,7 @@ impl From<ApiWork> for Work {
 /// if verification is successful
 #[my_codegen::post(path = "V1_API_ROUTES.pow.verify_pow()")]
 pub async fn verify_pow(
-    _req: HttpRequest,
+    req: HttpRequest,
     payload: web::Json<ApiWork>,
     data: AppData,
 ) -> ServiceResult<impl Responder> {
