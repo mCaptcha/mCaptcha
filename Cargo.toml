@@ -78,7 +78,7 @@ lettre = { version = "0.10.0-rc.3", features = [
 "smtp-transport"
 ]}
 
-openssl = { version = "0.10.48", features = ["vendored"] }
+openssl = { version = "0.10.55", features = ["vendored"] }
 uuid = { version = "1.4.0", features = ["v4", "serde"] }
 
 
