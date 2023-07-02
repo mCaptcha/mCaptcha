@@ -1,4 +1,4 @@
-FROM node:16.0.0 as frontend
+FROM node:18.0.0 as frontend
 RUN set -ex; \
     apt-get update; \
     DEBIAN_FRONTEND=noninteractive \

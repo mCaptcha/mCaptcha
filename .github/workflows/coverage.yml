@@ -90,7 +90,7 @@ jobs:
 
       - uses: actions/setup-node@v2
         with:
-          node-version: "16.x"
+          node-version: "18.0.0"
 
       - name: Install ${{ matrix.version }}
         uses: actions-rs/toolchain@v1
