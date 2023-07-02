@@ -260,6 +260,60 @@ pub async fn database_works<'a, T: MCDatabase>(
     db.record_solve(c.key).await.unwrap();
     db.record_confirm(c.key).await.unwrap();
 
+    // analytics start
+
+    db.analytics_create_psuedo_id_if_not_exists(c.key)
+        .await
+        .unwrap();
+    let psuedo_id = db
+        .analytics_get_psuedo_id_from_capmaign_id(c.key)
+        .await
+        .unwrap();
+    db.analytics_create_psuedo_id_if_not_exists(c.key)
+        .await
+        .unwrap();
+    assert_eq!(
+        psuedo_id,
+        db.analytics_get_psuedo_id_from_capmaign_id(c.key)
+            .await
+            .unwrap()
+    );
+    assert_eq!(
+        c.key,
+        db.analytics_get_capmaign_id_from_psuedo_id(&psuedo_id)
+            .await
+            .unwrap()
+    );
+
+    let analytics = CreatePerformanceAnalytics {
+        time: 0,
+        difficulty_factor: 0,
+        worker_type: "wasm".into(),
+    };
+    db.analysis_save(c.key, &analytics).await.unwrap();
+    let limit = 50;
+    let mut offset = 0;
+    let a = db.analytics_fetch(c.key, limit, offset).await.unwrap();
+    assert_eq!(a[0].time, analytics.time);
+    assert_eq!(a[0].difficulty_factor, analytics.difficulty_factor);
+    assert_eq!(a[0].worker_type, analytics.worker_type);
+    offset += 1;
+    assert!(db
+        .analytics_fetch(c.key, limit, offset)
+        .await
+        .unwrap()
+        .is_empty());
+
+    db.analytics_delete_all_records_for_campaign(c.key)
+        .await
+        .unwrap();
+    assert_eq!(db.analytics_fetch(c.key, 1000, 0).await.unwrap().len(), 0);
+    assert!(!db.analytics_captcha_is_published(c.key).await.unwrap());
+    db.analytics_delete_all_records_for_campaign(c.key)
+        .await
+        .unwrap();
+    // analytics end
+
     assert_eq!(db.fetch_solve(p.username, c.key).await.unwrap().len(), 1);
     assert_eq!(
         db.fetch_config_fetched(p.username, c.key)

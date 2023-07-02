@@ -23,6 +23,23 @@
       <. for (count, level) in levels.iter().enumerate() { .>
         <. include!("./existing-level.html"); .>
       <. } .>
+
+    <label class="sitekey-form__label" for="publish_benchmarks">
+		Anonymously publish CAPTCHA performance statistics to help other webmasters
+     <input
+       class="sitekey-form__input"
+       type="checkbox"
+       id="publish_benchmarks"
+       readonly="readonly"
+       name="publish_benchmarks" 
+        <. if publish_benchmarks { .>
+          checked
+        <. }.>
+	  />
+	</label>
+
+
+
 <./* synchronise with "./__form-bottom.html" Lines below should break form */.>
     </form>
     <. include!("./stats.html"); .>

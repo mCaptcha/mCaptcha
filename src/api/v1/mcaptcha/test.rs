@@ -82,6 +82,7 @@ pub async fn level_routes_work(data: ArcData) {
         levels: levels.clone(),
         description: add_level.description,
         duration: add_level.duration,
+        publish_benchmarks: true,
     };
 
     let add_token_resp = test::call_service(

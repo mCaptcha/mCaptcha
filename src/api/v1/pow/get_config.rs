@@ -109,8 +109,8 @@ pub async fn init_mcaptcha(data: &AppData, key: &str) -> ServiceResult<()> {
 
     for level in levels.iter() {
         let level = LevelBuilder::default()
-            .visitor_threshold(level.visitor_threshold as u32)
-            .difficulty_factor(level.difficulty_factor as u32)
+            .visitor_threshold(level.visitor_threshold)
+            .difficulty_factor(level.difficulty_factor)
             .unwrap()
             .build()
             .unwrap();
@@ -250,6 +250,7 @@ pub mod tests {
             levels: levels.into(),
             duration: 30,
             description: "dummy".into(),
+            publish_benchmarks: true,
         };
 
         // 1. add level
@@ -267,11 +268,11 @@ pub mod tests {
             key: token_key.key.clone(),
         };
 
-        let url = V1_API_ROUTES.pow.get_config;
+        let _url = V1_API_ROUTES.pow.get_config;
         let mut prev = 0;
         for (count, l) in levels.iter().enumerate() {
-            for l in prev..l.visitor_threshold * 2 {
-                let get_config_resp = test::call_service(
+            for _l in prev..l.visitor_threshold * 2 {
+                let _get_config_resp = test::call_service(
                     &app,
                     post_request!(&get_config_payload, V1_API_ROUTES.pow.get_config)
                         .to_request(),

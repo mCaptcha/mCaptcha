@@ -47,11 +47,19 @@ const submit = async (e: Event) => {
 
   const key = BTN.get().dataset.sitekey;
 
+
+  const PUBLISH_BENCHMARKS = <HTMLInputElement>(
+    Add.FORM.querySelector("#publish_benchmarks")
+  );
+
+
+
   const payload = {
     levels,
     duration,
     description,
     key,
+    publish_benchmarks: PUBLISH_BENCHMARKS.checked,
   };
 
   console.debug(`[form submition] json payload: ${JSON.stringify(payload)}`);

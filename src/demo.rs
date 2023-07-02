@@ -132,7 +132,7 @@ mod tests {
         let duration = Duration::from_secs(DURATION);
 
         // register works
-        let _ = DemoUser::register_demo_user(&data).await.unwrap();
+        DemoUser::register_demo_user(&data).await.unwrap();
         let payload = AccountCheckPayload {
             val: DEMO_USER.into(),
         };

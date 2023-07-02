@@ -52,8 +52,8 @@ pub mod pg {
         settings.captcha.runners = Some(1);
         settings.database.url = url.clone();
         settings.database.database_type = DBType::Postgres;
-        let data = Data::new(&settings).await;
-        data
+        
+        Data::new(&settings).await
     }
 }
 pub mod maria {
@@ -71,8 +71,8 @@ pub mod maria {
         settings.captcha.runners = Some(1);
         settings.database.url = url.clone();
         settings.database.database_type = DBType::Maria;
-        let data = Data::new(&settings).await;
-        data
+        
+        Data::new(&settings).await
     }
 }
 //pub async fn get_data() -> ArcData {
@@ -118,7 +118,7 @@ macro_rules! get_app {
                 .wrap(actix_middleware::NormalizePath::new(
                     actix_middleware::TrailingSlash::Trim,
                 ))
-                .configure(crate::routes::services),
+                .configure($crate::routes::services),
         )
     };
     ($data:expr) => {
@@ -262,5 +262,6 @@ pub fn get_level_data() -> CreateCaptcha {
         levels,
         duration: 30,
         description: "dummy".into(),
+        publish_benchmarks: false,
     }
 }

@@ -38,6 +38,13 @@ export const addSubmitEventListener = (): void =>
 const submit = async (e: Event) => {
   e.preventDefault();
 
+
+  const PUBLISH_BENCHMARKS = <HTMLInputElement>(
+    FORM.querySelector("#publish_benchmarks")
+  );
+
+
+
   const description = validateDescription(e);
   const duration = validateDuration();
 
@@ -50,6 +57,7 @@ const submit = async (e: Event) => {
     levels: levels,
     duration,
     description,
+    publish_benchmarks: PUBLISH_BENCHMARKS.checked,
   };
 
   console.debug(`[form submition] json payload: ${JSON.stringify(payload)}`);

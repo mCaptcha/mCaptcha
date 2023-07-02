@@ -19,7 +19,7 @@ use std::{env, fs};
 
 use config::{Config, ConfigError, Environment, File};
 use derive_more::Display;
-use log::{debug, warn};
+
 use serde::{Deserialize, Serialize};
 use url::Url;
 
@@ -191,7 +191,7 @@ impl Settings {
                     .unwrap();
                 log::info!("Overriding [database].url and [database].database_type with environment variable");
             }
-            Err(e) => {
+            Err(_e) => {
                 set_database_url(&mut s);
             }
         }

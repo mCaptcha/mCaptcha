@@ -22,6 +22,7 @@ use sqlx::postgres::PgPoolOptions;
 use sqlx::types::time::OffsetDateTime;
 use sqlx::ConnectOptions;
 use sqlx::PgPool;
+use uuid::Uuid;
 
 pub mod errors;
 #[cfg(test)]
@@ -900,6 +901,194 @@ impl MCDatabase for Database {
         .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
 
         Ok(Date::dates_to_unix(records))
+    }
+
+    /// record PoW timing
+    async fn analysis_save(
+        &self,
+        captcha_id: &str,
+        d: &CreatePerformanceAnalytics,
+    ) -> DBResult<()> {
+        let _ = sqlx::query!(
+            "INSERT INTO mcaptcha_pow_analytics 
+        (config_id, time, difficulty_factor, worker_type)
+        VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1), $2, $3, $4)",
+            captcha_id,
+            d.time as i32,
+            d.difficulty_factor as i32,
+            &d.worker_type,
+        )
+        .execute(&self.pool)
+        .await
+        .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
+        Ok(())
+    }
+
+    /// fetch PoW analytics
+    async fn analytics_fetch(
+        &self,
+        captcha_id: &str,
+        limit: usize,
+        offset: usize,
+    ) -> DBResult<Vec<PerformanceAnalytics>> {
+        struct P {
+            id: i32,
+            time: i32,
+            difficulty_factor: i32,
+            worker_type: String,
+        }
+
+        impl From<P> for PerformanceAnalytics {
+            fn from(v: P) -> Self {
+                Self {
+                    time: v.time as u32,
+                    difficulty_factor: v.difficulty_factor as u32,
+                    worker_type: v.worker_type,
+                    id: v.id as usize,
+                }
+            }
+        }
+
+        let mut c = sqlx::query_as!(
+            P,
+            "SELECT id, time, difficulty_factor, worker_type FROM mcaptcha_pow_analytics
+            WHERE 
+                config_id = (
+                    SELECT 
+                        config_id FROM mcaptcha_config 
+                    WHERE 
+                        key = $1
+                        )
+                ORDER BY ID
+                OFFSET $2 LIMIT $3
+                ",
+            &captcha_id,
+            offset as i32,
+            limit as i32
+        )
+        .fetch_all(&self.pool)
+        .await
+        .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
+        let mut res = Vec::with_capacity(c.len());
+        for i in c.drain(0..) {
+            res.push(i.into())
+        }
+
+        Ok(res)
+    }
+
+    /// Create psuedo ID against campaign ID to publish analytics
+    async fn analytics_create_psuedo_id_if_not_exists(
+        &self,
+        captcha_id: &str,
+    ) -> DBResult<()> {
+        let id = Uuid::new_v4();
+        sqlx::query!(
+            "
+            INSERT INTO
+                mcaptcha_psuedo_campaign_id (config_id, psuedo_id)
+            VALUES (
+                (SELECT config_id FROM mcaptcha_config WHERE key = ($1)),
+                $2
+            );",
+            captcha_id,
+            &id.to_string(),
+        )
+        .execute(&self.pool)
+        .await
+        .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
+
+        Ok(())
+    }
+
+    /// Get psuedo ID from campaign ID
+    async fn analytics_get_psuedo_id_from_capmaign_id(
+        &self,
+        captcha_id: &str,
+    ) -> DBResult<String> {
+        struct ID {
+            psuedo_id: String,
+        }
+
+        let res = sqlx::query_as!(
+            ID,
+            "SELECT psuedo_id FROM
+                mcaptcha_psuedo_campaign_id
+            WHERE
+                 config_id = (SELECT config_id FROM mcaptcha_config WHERE key = ($1));
+            ",
+            captcha_id
+        )
+        .fetch_one(&self.pool)
+        .await
+        .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
+
+        Ok(res.psuedo_id)
+    }
+
+    /// Get campaign ID from psuedo ID
+    async fn analytics_get_capmaign_id_from_psuedo_id(
+        &self,
+        psuedo_id: &str,
+    ) -> DBResult<String> {
+        struct ID {
+            key: String,
+        }
+
+        let res = sqlx::query_as!(
+            ID,
+            "SELECT
+                key
+            FROM
+                mcaptcha_config
+            WHERE
+                 config_id = (
+                     SELECT
+                         config_id
+                     FROM
+                         mcaptcha_psuedo_campaign_id
+                     WHERE
+                         psuedo_id = $1
+                 );",
+            psuedo_id
+        )
+        .fetch_one(&self.pool)
+        .await
+        .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
+        Ok(res.key)
+    }
+
+    async fn analytics_delete_all_records_for_campaign(
+        &self,
+        campaign_id: &str,
+    ) -> DBResult<()> {
+        let _ = sqlx::query!(
+            "
+        DELETE FROM
+            mcaptcha_psuedo_campaign_id
+        WHERE config_id = (
+            SELECT config_id FROM mcaptcha_config WHERE key = ($1)
+        );",
+            campaign_id
+        )
+        .execute(&self.pool)
+        .await;
+
+        let _ = sqlx::query!(
+            "
+            DELETE FROM
+                mcaptcha_pow_analytics
+            WHERE
+                config_id = (
+                    SELECT config_id FROM mcaptcha_config WHERE key = $1
+                    )
+             ",
+            campaign_id
+        )
+        .execute(&self.pool)
+        .await;
+
+        Ok(())
     }
 }
 

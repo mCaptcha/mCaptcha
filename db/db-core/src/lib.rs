@@ -250,6 +250,81 @@ pub trait MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
 
     /// fetch PoWConfig confirms
     async fn fetch_confirm(&self, user: &str, key: &str) -> DBResult<Vec<i64>>;
+
+    /// record PoW timing
+    async fn analysis_save(
+        &self,
+        captcha_id: &str,
+        d: &CreatePerformanceAnalytics,
+    ) -> DBResult<()>;
+
+    /// fetch PoW analytics
+    async fn analytics_fetch(
+        &self,
+        captcha_id: &str,
+        limit: usize,
+        offset: usize,
+    ) -> DBResult<Vec<PerformanceAnalytics>>;
+
+    /// Create psuedo ID against campaign ID to publish analytics
+    async fn analytics_create_psuedo_id_if_not_exists(
+        &self,
+        captcha_id: &str,
+    ) -> DBResult<()>;
+
+    /// Get psuedo ID from campaign ID
+    async fn analytics_get_psuedo_id_from_capmaign_id(
+        &self,
+        captcha_id: &str,
+    ) -> DBResult<String>;
+
+    /// Get campaign ID from psuedo ID
+    async fn analytics_get_capmaign_id_from_psuedo_id(
+        &self,
+        psuedo_id: &str,
+    ) -> DBResult<String>;
+
+    /// Delete all records for campaign
+    async fn analytics_delete_all_records_for_campaign(
+        &self,
+        campaign_id: &str,
+    ) -> DBResult<()>;
+
+    /// Get publishing status of pow analytics for captcha ID/ campaign ID
+    async fn analytics_captcha_is_published(&self, campaign_id: &str) -> DBResult<bool> {
+        match self
+            .analytics_get_psuedo_id_from_capmaign_id(campaign_id)
+            .await
+        {
+            Ok(_) => Ok(true),
+            Err(errors::DBError::CaptchaNotFound) => Ok(false),
+            Err(e) => Err(e),
+        }
+    }
+}
+
+#[derive(Debug, Clone, Default, Deserialize, Serialize, PartialEq)]
+/// Log Proof-of-Work CAPTCHA performance analytics
+pub struct CreatePerformanceAnalytics {
+    /// time taken to generate proof
+    pub time: u32,
+    /// difficulty factor for which the proof was generated
+    pub difficulty_factor: u32,
+    /// worker/client type: wasm, javascript, python, etc.
+    pub worker_type: String,
+}
+
+#[derive(Debug, Clone, Default, Deserialize, Serialize, PartialEq)]
+/// Proof-of-Work CAPTCHA performance analytics
+pub struct PerformanceAnalytics {
+    /// log ID
+    pub id: usize,
+    /// time taken to generate proof
+    pub time: u32,
+    /// difficulty factor for which the proof was generated
+    pub difficulty_factor: u32,
+    /// worker/client type: wasm, javascript, python, etc.
+    pub worker_type: String,
 }
 
 #[derive(Debug, Clone, Default, Deserialize, Serialize, PartialEq)]
@@ -332,7 +407,6 @@ pub struct Secret {
     /// user's secret
     pub secret: String,
 }
-
 /// Trait to clone MCDatabase
 pub trait CloneSPDatabase {
     /// clone DB

@@ -885,6 +885,7 @@ dependencies = [
  "futures",
  "sqlx",
  "url",
+ "uuid",
 ]
 
 [[package]]
@@ -897,6 +898,7 @@ dependencies = [
  "futures",
  "sqlx",
  "url",
+ "uuid",
 ]
 
 [[package]]
@@ -1580,8 +1582,8 @@ checksum = "292a948cd991e376cf75541fe5b97a1081d713c618b4f1b9500f8844e49eb565"
 
 [[package]]
 name = "libmcaptcha"
-version = "0.2.2"
-source = "git+https://github.com/mCaptcha/libmcaptcha?branch=master#22e3cb1a1c774ed352da17e4919e1ee177264e07"
+version = "0.2.3"
+source = "git+https://github.com/mCaptcha/libmcaptcha?tag=0.2.3#6bc0d11f8839d18c4d930cac0c0b86505ed1b2f6"
 dependencies = [
  "actix",
  "crossbeam-channel",
@@ -1722,6 +1724,7 @@ dependencies = [
  "tokio",
  "url",
  "urlencoding",
+ "uuid",
  "validator",
 ]
 
@@ -3391,6 +3394,16 @@ name = "utf-8"
 version = "0.7.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "09cc8ee72d2a9becf2f2febe0205bbed8fc6615b7cb429ad062dc7b7ddd036a9"
+
+[[package]]
+name = "uuid"
+version = "1.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d023da39d1fde5a8a3fe1f3e01ca9632ada0a63e9797de55a879d6e2236277be"
+dependencies = [
+ "getrandom",
+ "serde 1.0.143",
+]
 
 [[package]]
 name = "validator"

@@ -61,6 +61,21 @@
 	  />
 	</label>
 
+
+
+    <label class="sitekey-form__label" for="publish_benchmarks">
+		Anonymously publish CAPTCHA performance statistics to help other webmasters
+     <input
+       class="sitekey-form__input"
+       type="checkbox"
+       id="publish_benchmarks"
+       name="publish_benchmarks" 
+        <. if pattern.publish_benchmarks { .>
+          checked
+        <. }.>
+	  />
+	</label>
+
   <button data-sitekey="<.= key .>" class="sitekey-form__submit" type="submit">
     Submit
   </button>

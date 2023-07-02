@@ -83,7 +83,11 @@ impl SystemGroup {
     enum_system_wrapper!(get_pow, String, CaptchaResult<Option<PoWConfig>>);
 
     // utility function to verify [Work]
-    pub async fn verify_pow(&self, msg: Work, ip: String) -> CaptchaResult<String> {
+    pub async fn verify_pow(
+        &self,
+        msg: Work,
+        ip: String,
+    ) -> CaptchaResult<(String, u32)> {
         match self {
             Self::Embedded(val) => val.verify_pow(msg, ip).await,
             Self::Redis(val) => val.verify_pow(msg, ip).await,
@@ -203,9 +207,9 @@ impl Data {
         };
 
         let stats: Box<dyn Stats> = if s.captcha.enable_stats {
-            Box::new(Real::default())
+            Box::<Real>::default()
         } else {
-            Box::new(Dummy::default())
+            Box::<Dummy>::default()
         };
 
         let data = Data {

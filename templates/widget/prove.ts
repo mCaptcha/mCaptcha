@@ -11,31 +11,66 @@
 
 import { gen_pow } from "@mcaptcha/pow-wasm";
 import * as p from "@mcaptcha/pow_sha256-polyfill";
-import { WasmWork, PoWConfig } from "./types";
+import { WasmWork, PoWConfig, SubmitWork } from "./types";
 
 /**
  * proove work
  * @param {PoWConfig} config - the proof-of-work configuration using which
  * work needs to be computed
  * */
-const prove = async (config: PoWConfig): Promise<WasmWork> => {
-  let proof: WasmWork = null;
+const prove = async (config: PoWConfig): Promise<SubmitWork> => {
+  const WASM = "wasm";
+  const JS = "js";
   if (WasmSupported) {
+    let proof: WasmWork = null;
+    let res: SubmitWork = null;
+    let time: number = null;
+
+    const t0 = performance.now();
     const proofString = gen_pow(
       config.salt,
       config.string,
       config.difficulty_factor
     );
+    const t1 = performance.now();
+    time = t1 - t0;
+
     proof = JSON.parse(proofString);
+    const worker_type = WASM;
+    res = {
+      result: proof.result,
+      nonce: proof.nonce,
+      worker_type,
+      time,
+    };
+    return res;
   } else {
     console.log("WASM unsupported, expect delay during proof generation");
+
+    let proof: WasmWork = null;
+    let time: number = null;
+    let res: SubmitWork = null;
+
+    const t0 = performance.now();
+
     proof = await p.generate_work(
       config.salt,
       config.string,
       config.difficulty_factor
     );
+    const t1 = performance.now();
+    time = t1 - t0;
+
+    const worker_type = JS;
+    res = {
+      result: proof.result,
+      nonce: proof.nonce,
+      worker_type,
+      time,
+    };
+
+    return res;
   }
-  return proof;
 };
 
 // credits: @jf-bastien on Stack Overflow

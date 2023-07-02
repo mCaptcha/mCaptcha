@@ -55,7 +55,7 @@ export const solveCaptchaRunner = async (e: Event): Promise<void> => {
     worker.onmessage = async (event: MessageEvent) => {
       const resp: ServiceWorkerWork = event.data;
       console.log(
-        `Proof generated. Difficuly: ${config.difficulty_factor} Duration: ${resp.duration}`
+        `Proof generated. Difficuly: ${config.difficulty_factor} Duration: ${resp.work.time}`
       );
 
       const proof: Work = {
@@ -63,6 +63,8 @@ export const solveCaptchaRunner = async (e: Event): Promise<void> => {
         string: config.string,
         nonce: resp.work.nonce,
         result: resp.work.result,
+        time: Math.trunc(resp.work.time),
+        worker_type: resp.work.worker_type,
       };
 
       // 3. submit work

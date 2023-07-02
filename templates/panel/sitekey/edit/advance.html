@@ -16,6 +16,22 @@
     <. } .>
 	<. let level = levels.len() + 1; .>
 	<. include!("../add/advance/add-level.html"); .>
+
+    <label class="sitekey-form__label" for="publish_benchmarks">
+		Anonymously publish CAPTCHA performance statistics to help other webmasters
+     <input
+       class="sitekey-form__input"
+       type="checkbox"
+       id="publish_benchmarks"
+       name="publish_benchmarks" 
+        <. if publish_benchmarks { .>
+          checked
+        <. }.>
+	  />
+	</label>
+
+
+
   <button data-sitekey="<.= key .>" 
 	  id="sitekey-form__submit" class="sitekey-form__submit" type="submit">
     Submit

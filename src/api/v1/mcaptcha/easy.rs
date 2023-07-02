@@ -60,6 +60,9 @@ pub struct TrafficPatternRequest {
     pub broke_my_site_traffic: Option<u32>,
     /// Captcha description
     pub description: String,
+
+    /// publish benchmarks
+    pub publish_benchmarks: bool,
 }
 
 impl From<&TrafficPatternRequest> for TrafficPattern {
@@ -127,12 +130,14 @@ async fn create(
         levels,
         duration: data.settings.captcha.default_difficulty_strategy.duration,
         description: payload.description,
+        publish_benchmarks: payload.publish_benchmarks,
     };
 
     let mcaptcha_config = create_runner(&msg, &data, &username).await?;
     data.db
         .add_traffic_pattern(&username, &mcaptcha_config.key, &pattern)
         .await?;
+
     Ok(HttpResponse::Ok().json(mcaptcha_config))
 }
 
@@ -162,6 +167,7 @@ async fn update(
         duration: data.settings.captcha.default_difficulty_strategy.duration,
         description: payload.pattern.description,
         key: payload.key,
+        publish_benchmarks: payload.pattern.publish_benchmarks,
     };
 
     update_captcha_runner(&msg, &data, &username).await?;
@@ -292,6 +298,7 @@ pub mod tests {
             peak_sustainable_traffic: 1_000_000,
             broke_my_site_traffic: Some(10_000_000),
             description: NAME.into(),
+            publish_benchmarks: false,
         };
 
         let default_levels = calculate(
@@ -323,6 +330,11 @@ pub mod tests {
         assert_eq!(get_level_resp.status(), StatusCode::OK);
         let res_levels: Vec<Level> = test::read_body_json(get_level_resp).await;
         assert_eq!(res_levels, default_levels);
+        assert!(!data
+            .db
+            .analytics_captcha_is_published(&token_key.key)
+            .await
+            .unwrap());
         // END create_easy
 
         // START update_easy
@@ -331,6 +343,7 @@ pub mod tests {
             peak_sustainable_traffic: 10_000,
             broke_my_site_traffic: Some(1_000_000),
             description: NAME.into(),
+            publish_benchmarks: true,
         };
 
         let updated_default_values = calculate(
@@ -352,6 +365,11 @@ pub mod tests {
         )
         .await;
         assert_eq!(update_token_resp.status(), StatusCode::OK);
+        assert!(data
+            .db
+            .analytics_captcha_is_published(&token_key.key)
+            .await
+            .unwrap());
 
         let get_level_resp = test::call_service(
             &app,
@@ -394,5 +412,52 @@ pub mod tests {
         ));
         assert!(body.contains(&payload.pattern.avg_traffic.to_string()));
         assert!(body.contains(&payload.pattern.peak_sustainable_traffic.to_string()));
+
+        // START update_easy to delete published results
+        let mut payload2 = TrafficPatternRequest {
+            avg_traffic: 100_000,
+            peak_sustainable_traffic: 1_000_000,
+            broke_my_site_traffic: Some(10_000_000),
+            description: NAME.into(),
+            publish_benchmarks: true,
+        };
+
+        let add_token_resp = test::call_service(
+            &app,
+            post_request!(&payload2, ROUTES.captcha.easy.create)
+                .cookie(cookies.clone())
+                .to_request(),
+        )
+        .await;
+        assert_eq!(add_token_resp.status(), StatusCode::OK);
+
+        assert!(data
+            .db
+            .analytics_captcha_is_published(&token_key.key)
+            .await
+            .unwrap());
+
+        let token_key2: MCaptchaDetails = test::read_body_json(add_token_resp).await;
+
+        payload2.publish_benchmarks = false;
+
+        let payload = UpdateTrafficPattern {
+            pattern: payload2,
+            key: token_key2.key.clone(),
+        };
+
+        let update_token_resp = test::call_service(
+            &app,
+            post_request!(&payload, ROUTES.captcha.easy.update)
+                .cookie(cookies.clone())
+                .to_request(),
+        )
+        .await;
+        assert_eq!(update_token_resp.status(), StatusCode::OK);
+        assert!(!data
+            .db
+            .analytics_captcha_is_published(&token_key2.key)
+            .await
+            .unwrap());
     }
 }
