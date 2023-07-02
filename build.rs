@@ -21,7 +21,7 @@ use sqlx::types::time::OffsetDateTime;
 fn main() {
     // note: add error checking yourself.
     let output = Command::new("git")
-        .args(&["rev-parse", "HEAD"])
+        .args(["rev-parse", "HEAD"])
         .output()
         .unwrap();
     let git_hash = String::from_utf8(output.stdout).unwrap();

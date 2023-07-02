@@ -207,9 +207,9 @@ impl Data {
         };
 
         let stats: Box<dyn Stats> = if s.captcha.enable_stats {
-            Box::new(Real::default())
+            Box::<Real>::default()
         } else {
-            Box::new(Dummy::default())
+            Box::<Dummy>::default()
         };
 
         let data = Data {

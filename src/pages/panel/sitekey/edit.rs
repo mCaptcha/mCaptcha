@@ -117,9 +117,9 @@ pub async fn easy(
             let publish_benchmarks =
                 data.db.analytics_captcha_is_published(&key).await?;
             let pattern = TrafficPatternRequest {
-                peak_sustainable_traffic: c.peak_sustainable_traffic as u32,
-                avg_traffic: c.avg_traffic as u32,
-                broke_my_site_traffic: c.broke_my_site_traffic.map(|n| n as u32),
+                peak_sustainable_traffic: c.peak_sustainable_traffic,
+                avg_traffic: c.avg_traffic,
+                broke_my_site_traffic: c.broke_my_site_traffic.map(|n| n),
                 description: config.description,
                 publish_benchmarks,
             };
