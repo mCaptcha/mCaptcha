@@ -12,7 +12,7 @@
 import log from "../logger";
 
 import prove from "./prove";
-import {PoWConfig, ServiceWorkerWork} from "./types";
+import { PoWConfig, ServiceWorkerWork } from "./types";
 
 log.log("worker registered");
 onmessage = async (e) => {
