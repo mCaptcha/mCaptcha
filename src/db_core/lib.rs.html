@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `db/db-core/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-c4dbdcde0fbd8430.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" disabled href="../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" disabled href="../../static.files/ayu-be46fdc453a55015.css"><script src="../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-98a684e84ae5b08b.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../db_core/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `db/db-core/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ba5701c5741a7b69.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="db_core" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0 (90c541806 2023-05-31)" data-search-js="search-e077946657036a58.js" data-settings-js="settings-298e1ea74db45b39.js" data-settings-css="settings-7bfb4c59cc6bc502.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ></div><script src="../../static.files/storage-62ce34ea385b278a.js"></script><script defer src="../../static.files/source-script-905937fbbdc8e9ea.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-f61008743c98d196.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../db_core/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -353,7 +353,81 @@
 <a href="#353" id="353">353</a>
 <a href="#354" id="354">354</a>
 <a href="#355" id="355">355</a>
-</pre><pre class="rust"><code><span class="comment">/*
+<a href="#356" id="356">356</a>
+<a href="#357" id="357">357</a>
+<a href="#358" id="358">358</a>
+<a href="#359" id="359">359</a>
+<a href="#360" id="360">360</a>
+<a href="#361" id="361">361</a>
+<a href="#362" id="362">362</a>
+<a href="#363" id="363">363</a>
+<a href="#364" id="364">364</a>
+<a href="#365" id="365">365</a>
+<a href="#366" id="366">366</a>
+<a href="#367" id="367">367</a>
+<a href="#368" id="368">368</a>
+<a href="#369" id="369">369</a>
+<a href="#370" id="370">370</a>
+<a href="#371" id="371">371</a>
+<a href="#372" id="372">372</a>
+<a href="#373" id="373">373</a>
+<a href="#374" id="374">374</a>
+<a href="#375" id="375">375</a>
+<a href="#376" id="376">376</a>
+<a href="#377" id="377">377</a>
+<a href="#378" id="378">378</a>
+<a href="#379" id="379">379</a>
+<a href="#380" id="380">380</a>
+<a href="#381" id="381">381</a>
+<a href="#382" id="382">382</a>
+<a href="#383" id="383">383</a>
+<a href="#384" id="384">384</a>
+<a href="#385" id="385">385</a>
+<a href="#386" id="386">386</a>
+<a href="#387" id="387">387</a>
+<a href="#388" id="388">388</a>
+<a href="#389" id="389">389</a>
+<a href="#390" id="390">390</a>
+<a href="#391" id="391">391</a>
+<a href="#392" id="392">392</a>
+<a href="#393" id="393">393</a>
+<a href="#394" id="394">394</a>
+<a href="#395" id="395">395</a>
+<a href="#396" id="396">396</a>
+<a href="#397" id="397">397</a>
+<a href="#398" id="398">398</a>
+<a href="#399" id="399">399</a>
+<a href="#400" id="400">400</a>
+<a href="#401" id="401">401</a>
+<a href="#402" id="402">402</a>
+<a href="#403" id="403">403</a>
+<a href="#404" id="404">404</a>
+<a href="#405" id="405">405</a>
+<a href="#406" id="406">406</a>
+<a href="#407" id="407">407</a>
+<a href="#408" id="408">408</a>
+<a href="#409" id="409">409</a>
+<a href="#410" id="410">410</a>
+<a href="#411" id="411">411</a>
+<a href="#412" id="412">412</a>
+<a href="#413" id="413">413</a>
+<a href="#414" id="414">414</a>
+<a href="#415" id="415">415</a>
+<a href="#416" id="416">416</a>
+<a href="#417" id="417">417</a>
+<a href="#418" id="418">418</a>
+<a href="#419" id="419">419</a>
+<a href="#420" id="420">420</a>
+<a href="#421" id="421">421</a>
+<a href="#422" id="422">422</a>
+<a href="#423" id="423">423</a>
+<a href="#424" id="424">424</a>
+<a href="#425" id="425">425</a>
+<a href="#426" id="426">426</a>
+<a href="#427" id="427">427</a>
+<a href="#428" id="428">428</a>
+<a href="#429" id="429">429</a>
+</pre></div><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
  *
  * This program is free software: you can redistribute it and/or modify
@@ -605,6 +679,81 @@
 
     <span class="doccomment">/// fetch PoWConfig confirms
     </span><span class="kw">async fn </span>fetch_confirm(<span class="kw-2">&amp;</span><span class="self">self</span>, user: <span class="kw-2">&amp;</span>str, key: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;Vec&lt;i64&gt;&gt;;
+
+    <span class="doccomment">/// record PoW timing
+    </span><span class="kw">async fn </span>analysis_save(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        captcha_id: <span class="kw-2">&amp;</span>str,
+        d: <span class="kw-2">&amp;</span>CreatePerformanceAnalytics,
+    ) -&gt; DBResult&lt;()&gt;;
+
+    <span class="doccomment">/// fetch PoW analytics
+    </span><span class="kw">async fn </span>analytics_fetch(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        captcha_id: <span class="kw-2">&amp;</span>str,
+        limit: usize,
+        offset: usize,
+    ) -&gt; DBResult&lt;Vec&lt;PerformanceAnalytics&gt;&gt;;
+
+    <span class="doccomment">/// Create psuedo ID against campaign ID to publish analytics
+    </span><span class="kw">async fn </span>analytics_create_psuedo_id_if_not_exists(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        captcha_id: <span class="kw-2">&amp;</span>str,
+    ) -&gt; DBResult&lt;()&gt;;
+
+    <span class="doccomment">/// Get psuedo ID from campaign ID
+    </span><span class="kw">async fn </span>analytics_get_psuedo_id_from_capmaign_id(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        captcha_id: <span class="kw-2">&amp;</span>str,
+    ) -&gt; DBResult&lt;String&gt;;
+
+    <span class="doccomment">/// Get campaign ID from psuedo ID
+    </span><span class="kw">async fn </span>analytics_get_capmaign_id_from_psuedo_id(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        psuedo_id: <span class="kw-2">&amp;</span>str,
+    ) -&gt; DBResult&lt;String&gt;;
+
+    <span class="doccomment">/// Delete all records for campaign
+    </span><span class="kw">async fn </span>analytics_delete_all_records_for_campaign(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        campaign_id: <span class="kw-2">&amp;</span>str,
+    ) -&gt; DBResult&lt;()&gt;;
+
+    <span class="doccomment">/// Get publishing status of pow analytics for captcha ID/ campaign ID
+    </span><span class="kw">async fn </span>analytics_captcha_is_published(<span class="kw-2">&amp;</span><span class="self">self</span>, campaign_id: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;bool&gt; {
+        <span class="kw">match </span><span class="self">self
+            </span>.analytics_get_psuedo_id_from_capmaign_id(campaign_id)
+            .<span class="kw">await
+        </span>{
+            <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="bool-val">true</span>),
+            <span class="prelude-val">Err</span>(errors::DBError::CaptchaNotFound) =&gt; <span class="prelude-val">Ok</span>(<span class="bool-val">false</span>),
+            <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e),
+        }
+    }
+}
+
+<span class="attr">#[derive(Debug, Clone, Default, Deserialize, Serialize, PartialEq)]
+</span><span class="doccomment">/// Log Proof-of-Work CAPTCHA performance analytics
+</span><span class="kw">pub struct </span>CreatePerformanceAnalytics {
+    <span class="doccomment">/// time taken to generate proof
+    </span><span class="kw">pub </span>time: u32,
+    <span class="doccomment">/// difficulty factor for which the proof was generated
+    </span><span class="kw">pub </span>difficulty_factor: u32,
+    <span class="doccomment">/// worker/client type: wasm, javascript, python, etc.
+    </span><span class="kw">pub </span>worker_type: String,
+}
+
+<span class="attr">#[derive(Debug, Clone, Default, Deserialize, Serialize, PartialEq)]
+</span><span class="doccomment">/// Proof-of-Work CAPTCHA performance analytics
+</span><span class="kw">pub struct </span>PerformanceAnalytics {
+    <span class="doccomment">/// log ID
+    </span><span class="kw">pub </span>id: usize,
+    <span class="doccomment">/// time taken to generate proof
+    </span><span class="kw">pub </span>time: u32,
+    <span class="doccomment">/// difficulty factor for which the proof was generated
+    </span><span class="kw">pub </span>difficulty_factor: u32,
+    <span class="doccomment">/// worker/client type: wasm, javascript, python, etc.
+    </span><span class="kw">pub </span>worker_type: String,
 }
 
 <span class="attr">#[derive(Debug, Clone, Default, Deserialize, Serialize, PartialEq)]
@@ -687,7 +836,6 @@
     <span class="doccomment">/// user&#39;s secret
     </span><span class="kw">pub </span>secret: String,
 }
-
 <span class="doccomment">/// Trait to clone MCDatabase
 </span><span class="kw">pub trait </span>CloneSPDatabase {
     <span class="doccomment">/// clone DB
@@ -708,5 +856,4 @@
         (<span class="kw-2">**</span><span class="self">self</span>).clone_db()
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="db_core" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0 (84c898d65 2023-04-16)" data-search-js="search-8a59a8356673ec1f.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

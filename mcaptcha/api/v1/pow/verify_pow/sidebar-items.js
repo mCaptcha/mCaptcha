@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["FIELDS"],"enum":["__Field"],"fn":["verify_pow"],"struct":["ValidationToken","__FieldVisitor","__Visitor","verify_pow"]};
+window.SIDEBAR_ITEMS = {"constant":["FIELDS"],"enum":["__Field"],"fn":["verify_pow"],"struct":["ApiWork","ValidationToken","__FieldVisitor","__Visitor","verify_pow"]};
