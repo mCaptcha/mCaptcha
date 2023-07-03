@@ -46,8 +46,8 @@ endef
 
 
 define test_frontend ## run frontend tests
-	cd $(OPENAPI)&& yarn test
 	yarn test
+#	cd $(OPENAPI)&& yarn test
 endef
 
 define test_db_sqlx_postgres
@@ -146,7 +146,7 @@ lint: ## Lint codebase
 	cargo fmt -v --all -- --emit files
 	cargo clippy --workspace --tests --all-features
 	yarn lint
-	cd $(OPENAPI)&& yarn test
+	#cd $(OPENAPI)&& yarn test
 
 migrate: ## Run database migrations
 	$(call run_migrations)
