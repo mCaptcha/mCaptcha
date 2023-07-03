@@ -21,7 +21,7 @@
   "homepage": "https://github.com/mCaptcha/mCaptcha#readme",
   "dependencies": {
     "@apidevtools/swagger-cli": "^4.0.4",
-    "@stoplight/spectral": "^6.1.0",
-    "redoc-cli": "^0.13.0"
+    "@stoplight/spectral": "^6.5.0",
+    "redoc-cli": "^0.13.21"
   }
 }
