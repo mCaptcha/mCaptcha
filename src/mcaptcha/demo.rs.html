@@ -310,7 +310,7 @@
         <span class="kw">let </span>duration = Duration::from_secs(DURATION);
 
         <span class="comment">// register works
-        </span><span class="kw">let _ </span>= DemoUser::register_demo_user(<span class="kw-2">&amp;</span>data).<span class="kw">await</span>.unwrap();
+        </span>DemoUser::register_demo_user(<span class="kw-2">&amp;</span>data).<span class="kw">await</span>.unwrap();
         <span class="kw">let </span>payload = AccountCheckPayload {
             val: DEMO_USER.into(),
         };

@@ -465,9 +465,9 @@
         };
 
         <span class="kw">let </span>stats: Box&lt;<span class="kw">dyn </span>Stats&gt; = <span class="kw">if </span>s.captcha.enable_stats {
-            Box::new(Real::default())
+            Box::&lt;Real&gt;::default()
         } <span class="kw">else </span>{
-            Box::new(Dummy::default())
+            Box::&lt;Dummy&gt;::default()
         };
 
         <span class="kw">let </span>data = Data {

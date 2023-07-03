@@ -285,7 +285,7 @@
 
 <span class="kw">use </span>config::{Config, ConfigError, Environment, File};
 <span class="kw">use </span>derive_more::Display;
-<span class="kw">use </span>log::{debug, warn};
+
 <span class="kw">use </span>serde::{Deserialize, Serialize};
 <span class="kw">use </span>url::Url;
 
@@ -457,7 +457,7 @@
                     .unwrap();
                 <span class="macro">log::info!</span>(<span class="string">&quot;Overriding [database].url and [database].database_type with environment variable&quot;</span>);
             }
-            <span class="prelude-val">Err</span>(e) =&gt; {
+            <span class="prelude-val">Err</span>(_e) =&gt; {
                 set_database_url(<span class="kw-2">&amp;mut </span>s);
             }
         }
