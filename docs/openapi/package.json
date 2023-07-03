@@ -4,10 +4,7 @@
   "description": "mCaptcha CAPTCHA service's API",
   "main": "index.js",
   "scripts": {
-    "build": "swagger-cli bundle openapi.yaml --outfile dist/openapi.yaml --type yaml",
-    "test": "npm run build && spectral lint dist/openapi.yaml",
-    "serve": "npm run build && redoc-cli serve dist/openapi.yaml --port 7000 --options.onlyRequiredInSamples",
-    "html": "npm run build && redoc-cli bundle dist/openapi.yaml  --output dist/index.html --options.onlyRequiredInSamples",
+    "build": "redocly bundle openapi.yaml --output dist/openapi.yaml",
     "clean": "rm -r dist"
   },
   "repository": {
@@ -19,9 +16,7 @@
     "url": "https://github.com/mCaptcha/mCaptcha/issues"
   },
   "homepage": "https://github.com/mCaptcha/mCaptcha#readme",
-  "dependencies": {
-    "@apidevtools/swagger-cli": "^4.0.4",
-    "@stoplight/spectral": "^6.5.0",
-    "redoc-cli": "^0.13.21"
+  "devDependencies": {
+    "@redocly/cli": "^1.0.0-beta.129"
   }
 }
