@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["FIELDS"],"enum":["__Field"],"fn":["delete"],"struct":["DeleteCaptcha","__FieldVisitor","__Visitor","delete"]};
+window.SIDEBAR_ITEMS = {"fn":["delete"],"struct":["DeleteCaptcha","delete"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["FIELDS"],"enum":["__Field"],"fn":["email_exists","services","set_email"],"struct":["Email","__FieldVisitor","__Visitor","email_exists","set_email"]};
+window.SIDEBAR_ITEMS = {"fn":["email_exists","services","set_email"],"struct":["Email","email_exists","set_email"]};

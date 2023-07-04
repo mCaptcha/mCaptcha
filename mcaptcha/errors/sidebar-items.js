@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["FIELDS"],"enum":["PageError","ServiceError","__Field"],"struct":["DBErrorWrapper","ErrorToResponse","SmtpErrorWrapper","__FieldVisitor","__Visitor"],"type":["PageResult","ServiceResult"]};
+window.SIDEBAR_ITEMS = {"enum":["PageError","ServiceError"],"struct":["DBErrorWrapper","ErrorToResponse","SmtpErrorWrapper"],"type":["PageResult","ServiceResult"]};
