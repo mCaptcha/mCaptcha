@@ -169,6 +169,83 @@
     },
     "query": "SELECT email FROM mcaptcha_users WHERE name = ?"
   },
+  "42d967d6e080efd3cff8d4df13ea4d2ff38f3093da5c97000349dfc23c4d4eb3": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": {
+            "char_set": 63,
+            "flags": {
+              "bits": 515
+            },
+            "max_size": 11,
+            "type": "Long"
+          }
+        },
+        {
+          "name": "heading",
+          "ordinal": 1,
+          "type_info": {
+            "char_set": 224,
+            "flags": {
+              "bits": 4097
+            },
+            "max_size": 400,
+            "type": "VarString"
+          }
+        },
+        {
+          "name": "message",
+          "ordinal": 2,
+          "type_info": {
+            "char_set": 224,
+            "flags": {
+              "bits": 4097
+            },
+            "max_size": 1000,
+            "type": "VarString"
+          }
+        },
+        {
+          "name": "received",
+          "ordinal": 3,
+          "type_info": {
+            "char_set": 63,
+            "flags": {
+              "bits": 1185
+            },
+            "max_size": 19,
+            "type": "Timestamp"
+          }
+        },
+        {
+          "name": "name",
+          "ordinal": 4,
+          "type_info": {
+            "char_set": 224,
+            "flags": {
+              "bits": 4101
+            },
+            "max_size": 400,
+            "type": "VarString"
+          }
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "parameters": {
+        "Right": 1
+      }
+    },
+    "query": "-- SPDX-FileCopyrightText: 2023 Aravinth Manivannan <realaravinth@batsense.net>\n--\n-- SPDX-License-Identifier: AGPL-3.0-or-later\n\n-- gets all unread notifications a user has\nSELECT \n    mcaptcha_notifications.id,\n    mcaptcha_notifications.heading,\n    mcaptcha_notifications.message,\n    mcaptcha_notifications.received,\n    mcaptcha_users.name\nFROM\n    mcaptcha_notifications \nINNER JOIN \n    mcaptcha_users \nON \n    mcaptcha_notifications.tx = mcaptcha_users.id\nWHERE \n    mcaptcha_notifications.rx = (\n        SELECT \n            id \n        FROM \n            mcaptcha_users\n        WHERE\n            name = ?\n        )\nAND \n    mcaptcha_notifications.read_notification IS NULL;\n"
+  },
   "598a8202942771eff460faa6f09bd3fb1fc910d5fab7edb07c49dadbbaeb1cb8": {
     "describe": {
       "columns": [],
@@ -600,83 +677,6 @@
     },
     "query": "DELETE FROM mcaptcha_config where captcha_key= (?)\n                AND\n            user_id = (SELECT ID FROM mcaptcha_users WHERE name = ?)"
   },
-  "b9b0c63380bc0dfdea8aae092dcefceb316fe94667d74f53d53063810cdd2ba8": {
-    "describe": {
-      "columns": [
-        {
-          "name": "id",
-          "ordinal": 0,
-          "type_info": {
-            "char_set": 63,
-            "flags": {
-              "bits": 515
-            },
-            "max_size": 11,
-            "type": "Long"
-          }
-        },
-        {
-          "name": "heading",
-          "ordinal": 1,
-          "type_info": {
-            "char_set": 224,
-            "flags": {
-              "bits": 4097
-            },
-            "max_size": 400,
-            "type": "VarString"
-          }
-        },
-        {
-          "name": "message",
-          "ordinal": 2,
-          "type_info": {
-            "char_set": 224,
-            "flags": {
-              "bits": 4097
-            },
-            "max_size": 1000,
-            "type": "VarString"
-          }
-        },
-        {
-          "name": "received",
-          "ordinal": 3,
-          "type_info": {
-            "char_set": 63,
-            "flags": {
-              "bits": 1185
-            },
-            "max_size": 19,
-            "type": "Timestamp"
-          }
-        },
-        {
-          "name": "name",
-          "ordinal": 4,
-          "type_info": {
-            "char_set": 224,
-            "flags": {
-              "bits": 4101
-            },
-            "max_size": 400,
-            "type": "VarString"
-          }
-        }
-      ],
-      "nullable": [
-        false,
-        false,
-        false,
-        false,
-        false
-      ],
-      "parameters": {
-        "Right": 1
-      }
-    },
-    "query": "-- gets all unread notifications a user has\nSELECT \n    mcaptcha_notifications.id,\n    mcaptcha_notifications.heading,\n    mcaptcha_notifications.message,\n    mcaptcha_notifications.received,\n    mcaptcha_users.name\nFROM\n    mcaptcha_notifications \nINNER JOIN \n    mcaptcha_users \nON \n    mcaptcha_notifications.tx = mcaptcha_users.id\nWHERE \n    mcaptcha_notifications.rx = (\n        SELECT \n            id \n        FROM \n            mcaptcha_users\n        WHERE\n            name = ?\n        )\nAND \n    mcaptcha_notifications.read_notification IS NULL;\n"
-  },
   "caa1638ee510ef62b86817e5d2baeaca8dfa432c23d7630c0e70737211a4680b": {
     "describe": {
       "columns": [
@@ -711,16 +711,6 @@
       }
     },
     "query": "UPDATE mcaptcha_users set password = ?\n            WHERE name = ?"
-  },
-  "cf333541509213f11a9bf7119dcb3289bb77abf1482fc1d47e7f5bb27bdc8d97": {
-    "describe": {
-      "columns": [],
-      "nullable": [],
-      "parameters": {
-        "Right": 2
-      }
-    },
-    "query": "--  mark a notification as read\nUPDATE mcaptcha_notifications\n    SET read_notification = TRUE\nWHERE \n    mcaptcha_notifications.id = ?\nAND\n    mcaptcha_notifications.rx = (\n        SELECT\n            id\n        FROM\n            mcaptcha_users\n        WHERE\n        name = ?\n    );\n"
   },
   "d05b84966f4e70c53789221f961bf3637f404f3ba45e880115e97ed1ba5a2809": {
     "describe": {
@@ -1026,6 +1016,16 @@
       }
     },
     "query": "INSERT INTO mcaptcha_pow_analytics \n            (config_id, time, difficulty_factor, worker_type)\n        VALUES ((SELECT config_id FROM mcaptcha_config where captcha_key= ?), ?, ?, ?)"
+  },
+  "f9f2ed1b2f47828d5d976d2e470e106d54b8a2357f9d525ef0cdb1f7965aa61c": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Right": 2
+      }
+    },
+    "query": "-- SPDX-FileCopyrightText: 2023 Aravinth Manivannan <realaravinth@batsense.net>\n--\n-- SPDX-License-Identifier: AGPL-3.0-or-later\n\n--  mark a notification as read\nUPDATE mcaptcha_notifications\n    SET read_notification = TRUE\nWHERE \n    mcaptcha_notifications.id = ?\nAND\n    mcaptcha_notifications.rx = (\n        SELECT\n            id\n        FROM\n            mcaptcha_users\n        WHERE\n        name = ?\n    );\n"
   },
   "fc717ff0827ccfaa1cc61a71cc7f71c348ebb03d35895c54b011c03121ad2385": {
     "describe": {
