@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2023 Aravinth Manivannan <realaravinth@batsense.net>
+--
+-- SPDX-License-Identifier: AGPL-3.0-or-later
+
 CREATE TABLE IF NOT EXISTS mcaptcha_pow_fetched_stats (
 	config_id INTEGER NOT NULL,
 	time timestamp NOT NULL DEFAULT now(),

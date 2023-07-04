@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 Aravinth Manivannan <realaravinth@batsense.net>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 export const EDIT_FORM = `
 <form class="sitekey-form" action="/api/v1/mcaptcha/levels/update" method="post" >
   <h1 class="form__title">

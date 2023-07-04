@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2023 Aravinth Manivannan <realaravinth@batsense.net>
+--
+-- SPDX-License-Identifier: AGPL-3.0-or-later
+
 CREATE TABLE IF NOT EXISTS mcaptcha_levels (
 	config_id INTEGER NOT NULL,
 	difficulty_factor INTEGER NOT NULL,
