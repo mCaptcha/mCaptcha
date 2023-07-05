@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["update_captcha","update_key"],"mod":["runner"],"struct":["UpdateCaptcha","update_captcha","update_key"]};
+window.SIDEBAR_ITEMS = {"constant":["FIELDS"],"enum":["__Field"],"fn":["update_captcha","update_key"],"mod":["runner"],"struct":["UpdateCaptcha","__FieldVisitor","__Visitor","update_captcha","update_key"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["get_notification"],"struct":["NotificationResp","get_notification"]};
+window.SIDEBAR_ITEMS = {"constant":["FIELDS"],"enum":["__Field"],"fn":["get_notification"],"struct":["NotificationResp","__FieldVisitor","__Visitor","get_notification"]};

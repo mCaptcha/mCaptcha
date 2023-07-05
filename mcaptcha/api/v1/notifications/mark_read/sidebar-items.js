@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["mark_read"],"struct":["MarkReadReq","mark_read"]};
+window.SIDEBAR_ITEMS = {"constant":["FIELDS"],"enum":["__Field"],"fn":["mark_read"],"struct":["MarkReadReq","__FieldVisitor","__Visitor","mark_read"]};

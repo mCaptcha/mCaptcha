@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["services","update_password_runner","update_user_password"],"struct":["ChangePasswordReqest","UpdatePassword","update_user_password"]};
+window.SIDEBAR_ITEMS = {"constant":["FIELDS"],"enum":["__Field"],"fn":["services","update_password_runner","update_user_password"],"struct":["ChangePasswordReqest","UpdatePassword","__FieldVisitor","__Visitor","update_user_password"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["get_config","init_mcaptcha"],"struct":["GetConfigPayload","get_config"]};
+window.SIDEBAR_ITEMS = {"constant":["FIELDS"],"enum":["__Field"],"fn":["get_config","init_mcaptcha"],"struct":["GetConfigPayload","__FieldVisitor","__Visitor","get_config"]};
