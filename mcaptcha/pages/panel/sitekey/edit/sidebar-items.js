@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["PAGE","READONLY","URL"],"fn":["advance","easy"],"static":["SIZE_HINT"],"struct":["AdvanceEditPage","EasyEditPage","advance","easy"]};
+window.SIDEBAR_ITEMS = {"constant":["PAGE"],"struct":["AdvanceEditPage","EasyEditPage","advance","easy"]};

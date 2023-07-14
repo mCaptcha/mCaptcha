@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["delete_account","services"],"mod":["runners"],"struct":["delete_account"]};
+window.SIDEBAR_ITEMS = {"fn":["services"],"mod":["runners"],"struct":["delete_account"]};

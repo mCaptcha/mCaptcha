@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["FIELDS"],"enum":["__Field"],"fn":["get"],"mod":["routes"],"struct":["StatsPayload","__FieldVisitor","__Visitor","get"]};
+window.SIDEBAR_ITEMS = {"mod":["routes"],"struct":["StatsPayload","get"]};

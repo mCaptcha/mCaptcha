@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["AUTH"],"struct":["Auth"]};
+window.SIDEBAR_ITEMS = {"struct":["Auth"]};

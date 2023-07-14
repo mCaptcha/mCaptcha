@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["FIELDS"],"enum":["BuildDetailsBuilderError","HealthBuilderError","__Field"],"fn":["build_details","health","services"],"mod":["routes"],"struct":["BuildDetails","BuildDetailsBuilder","Health","HealthBuilder","__FieldVisitor","__Visitor","build_details","health"]};
+window.SIDEBAR_ITEMS = {"enum":["BuildDetailsBuilderError","HealthBuilderError"],"fn":["services"],"mod":["routes"],"struct":["BuildDetails","BuildDetailsBuilder","Health","HealthBuilder","build_details","health"]};

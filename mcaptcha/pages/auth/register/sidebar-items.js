@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["PAGE"],"fn":["__stability","__static_ref_initialize","join"],"static":["LAZY","SIZE_HINT"],"struct":["INDEX","IndexPage","join"]};
+window.SIDEBAR_ITEMS = {"constant":["PAGE"],"struct":["INDEX","IndexPage","join"]};

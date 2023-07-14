@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["PAGE","SUBJECT"],"fn":["verification"],"static":["SIZE_HINT"],"struct":["IndexPage"]};
+window.SIDEBAR_ITEMS = {"constant":["PAGE"],"fn":["verification"],"struct":["IndexPage"]};

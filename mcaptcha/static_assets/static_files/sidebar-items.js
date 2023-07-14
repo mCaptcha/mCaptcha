@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["excludes","includes"],"fn":["favicons","handle_assets","handle_favicons","static_files"],"mod":["assets"],"struct":["Asset","Favicons","favicons","static_files"]};
+window.SIDEBAR_ITEMS = {"fn":["handle_assets","handle_favicons"],"mod":["assets"],"struct":["Asset","Favicons","favicons","static_files"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["PAGE","READONLY","URL"],"fn":["view_sitekey"],"static":["SIZE_HINT"],"struct":["IndexPage","view_sitekey"]};
+window.SIDEBAR_ITEMS = {"constant":["PAGE"],"struct":["IndexPage","view_sitekey"]};

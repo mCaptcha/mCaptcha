@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["PAGE","WIDGET_ROUTES"],"fn":["__stability","__static_ref_initialize","services","show_widget"],"mod":["routes"],"static":["LAZY","SIZE_HINT"],"struct":["INDEX_PAGE","IndexPage","show_widget"]};
+window.SIDEBAR_ITEMS = {"constant":["PAGE","WIDGET_ROUTES"],"fn":["services"],"mod":["routes"],"struct":["INDEX_PAGE","IndexPage","show_widget"]};

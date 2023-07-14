@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["PAGE"],"static":["SIZE_HINT"],"struct":["SudoPage"]};
+window.SIDEBAR_ITEMS = {"constant":["PAGE"],"struct":["SudoPage"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["S"],"struct":["Settings"]};
+window.SIDEBAR_ITEMS = {"struct":["Settings"]};
