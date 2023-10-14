@@ -41,7 +41,7 @@ tokio = { version = "1.14", features = ["sync"]}
 sqlx = { version = "0.5.13", features = [ "runtime-actix-rustls", "postgres", "time", "offline", "mysql"] }
 argon2-creds = { branch = "master", git = "https://github.com/realaravinth/argon2-creds"}
 #argon2-creds = { version="*", path = "../../argon2-creds/" }
-config = "0.11"
+config = "0.13"
 validator = { version = "0.15", features = ["derive"]}
 
 derive_builder = "0.11"

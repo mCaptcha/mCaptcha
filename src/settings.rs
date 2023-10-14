@@ -6,7 +6,7 @@
 use std::path::Path;
 use std::{env, fs};
 
-use config::{Config, ConfigError, Environment, File};
+use config::{Config, ConfigError, Environment, File, ConfigBuilder};
 use derive_more::Display;
 
 use serde::{Deserialize, Serialize};
@@ -57,32 +57,6 @@ impl Server {
     }
 }
 
-//#[derive(Debug, Clone, Deserialize)]
-//struct DatabaseBuilder {
-//    pub port: u32,
-//    pub hostname: String,
-//    pub username: String,
-//    pub password: String,
-//    pub name: String,
-//}
-
-//impl DatabaseBuilder {
-//    #[cfg(not(tarpaulin_include))]
-//    fn extract_database_url(url: &Url) -> Self {
-//        debug!("Database name: {}", url.path());
-//        let mut path = url.path().split('/');
-//        path.next();
-//        let name = path.next().expect("no database name").to_string();
-//        DatabaseBuilder {
-//            port: url.port().expect("Enter database port").into(),
-//            hostname: url.host().expect("Enter database host").to_string(),
-//            username: url.username().into(),
-//            password: url.password().expect("Enter database password").into(),
-//            name,
-//        }
-//    }
-//}
-
 #[derive(Deserialize, Serialize, Display, PartialEq, Clone, Debug)]
 #[serde(rename_all = "lowercase")]
 pub enum DBType {
@@ -132,12 +106,12 @@ pub struct Settings {
 #[cfg(not(tarpaulin_include))]
 impl Settings {
     pub fn new() -> Result<Self, ConfigError> {
-        let mut s = Config::new();
+        let mut s = Config::builder();
 
         const CURRENT_DIR: &str = "./config/default.toml";
         const ETC: &str = "/etc/mcaptcha/config.toml";
 
-        s.set("capatcha.enable_stats", true.to_string())
+        s = s.set_default("capatcha.enable_stats", true.to_string())
             .expect("unable to set capatcha.enable_stats default config");
 
         if let Ok(path) = env::var("MCAPTCHA_CONFIG") {
@@ -146,7 +120,7 @@ impl Settings {
                 "Loading config file from {}",
                 absolute_path.to_str().unwrap()
             );
-            s.merge(File::with_name(absolute_path.to_str().unwrap()))?;
+            s = s.add_source(File::with_name(absolute_path.to_str().unwrap()));
         } else if Path::new(CURRENT_DIR).exists() {
             let absolute_path = fs::canonicalize(CURRENT_DIR).unwrap();
             log::info!(
@@ -154,56 +128,55 @@ impl Settings {
                 absolute_path.to_str().unwrap()
             );
             // merging default config from file
-            s.merge(File::with_name(absolute_path.to_str().unwrap()))?;
+            s = s.add_source(File::with_name(absolute_path.to_str().unwrap()));
         } else if Path::new(ETC).exists() {
             log::info!("{}", format!("Loading config file from {}", ETC));
-            s.merge(File::with_name(ETC))?;
+            s = s.add_source(File::with_name(ETC));
         } else {
             log::warn!("Configuration file not found");
         }
 
-        s.merge(Environment::with_prefix("MCAPTCHA").separator("_"))?;
+        s = s.add_source(Environment::with_prefix("MCAPTCHA").separator("_"));
 
-        check_url(&s);
 
         if let Ok(val) = env::var("PORT") {
-            s.set("server.port", val).unwrap();
+            s = s.set_override("server.port", val).unwrap();
             log::info!("Overriding [server].port with environment variable");
         }
 
         match env::var("DATABASE_URL") {
             Ok(val) => {
                 let url = Url::parse(&val).expect("couldn't parse Database URL");
-                s.set("database.url", url.to_string()).unwrap();
+                s = s.set_override("database.url", url.to_string()).unwrap();
                 let database_type = DBType::from_url(&url).unwrap();
-                s.set("database.database_type", database_type.to_string())
+                s = s.set_override("database.database_type", database_type.to_string())
                     .unwrap();
                 log::info!("Overriding [database].url and [database].database_type with environment variable");
             }
-            Err(_e) => {
-                set_database_url(&mut s);
+            Err(e) => {
+                log::warn!("Couldn't interpret DATABASE_URL: {:?}", e);
             }
         }
 
-        // setting default values
-        #[cfg(test)]
-        s.set("database.pool", 2.to_string())
-            .expect("Couldn't set database pool count");
+        let mut settings = s.build()?.try_deserialize::<Settings>()?;
+        settings.check_url();
 
-        match s.try_into() {
-            Ok(val) => Ok(val),
-            Err(e) => Err(ConfigError::Message(format!("\n\nError: {}. If it says missing fields, then please refer to https://github.com/mCaptcha/mcaptcha#configuration to learn more about how mcaptcha reads configuration\n\n", e))),
-        }
+        #[cfg(test)]
+        settings.set_test_defaults();
+
+        Ok(settings)
+     
     }
-}
+
+    // bypass for issue #15701 <https://github.com/rust-lang/rust/issues/15701> for more information
+    fn set_test_defaults(&mut self)  {
+        self.database.pool = 2;
+    }
 
 #[cfg(not(tarpaulin_include))]
-fn check_url(s: &Config) {
-    let url = s
-        .get::<String>("source_code")
-        .expect("Couldn't access source_code");
-
-    Url::parse(&url).expect("Please enter a URL for source_code in settings");
+fn check_url(&self) {
+    Url::parse(&self.source_code).expect("Please enter a URL for source_code in settings");
+}
 }
 
 #[cfg(not(tarpaulin_include))]
