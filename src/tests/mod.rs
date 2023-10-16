@@ -118,7 +118,7 @@ macro_rules! get_app {
                 .wrap(actix_middleware::NormalizePath::new(
                     actix_middleware::TrailingSlash::Trim,
                 ))
-                .configure(crate::routes::services)
+                .configure($crate::routes::services)
                 //.data(std::sync::Arc::new(crate::data::Data::new().await))
                 .app_data(actix_web::web::Data::new($data.clone())),
         )

@@ -67,11 +67,11 @@ pub async fn verify_pow(
     let time = payload.time;
     let (res, difficulty_factor) = data.captcha.verify_pow(payload.into(), ip).await?;
     data.stats.record_solve(&data, &key).await?;
-    if time.is_some() && worker_type.is_some() {
+    if let (Some(time), Some(worker_type)) = (time, worker_type) {
         let analytics = db_core::CreatePerformanceAnalytics {
             difficulty_factor,
-            time: time.unwrap(),
-            worker_type: worker_type.unwrap(),
+            time,
+            worker_type,
         };
         data.db.analysis_save(&key, &analytics).await?;
     }

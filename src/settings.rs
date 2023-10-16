@@ -294,7 +294,7 @@ mod tests {
         let env = "MCPATCHA_redis_URL";
         let val = "redis://redis.example.org";
         println!("Setting env var {} to {} for test", env, val);
-        env::set_var(env, val.to_string());
+        env::set_var(env, val);
         new_settings = get_settings();
         assert_eq!(new_settings.redis.as_ref().unwrap().url, val);
         assert_ne!(
@@ -364,7 +364,7 @@ mod tests {
         ];
         for env in vals.iter() {
             println!("Setting env var {} to {} for test", env, env);
-            env::set_var(env, env.to_string());
+            env::set_var(env, env);
         }
 
         let port = 9999;

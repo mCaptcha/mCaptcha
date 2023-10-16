@@ -49,7 +49,6 @@ pub mod dev {
 
 pub mod prelude {
     pub use super::*;
-    pub use db_core::prelude::*;
 }
 
 #[async_trait]

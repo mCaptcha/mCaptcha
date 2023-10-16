@@ -20,7 +20,7 @@ impl Default for IndexPage {
 }
 
 lazy_static! {
-    static ref INDEX: String = IndexPage::default().render_once().unwrap();
+    static ref INDEX: String = IndexPage.render_once().unwrap();
 }
 
 #[my_codegen::get(path = "crate::PAGES.auth.join")]

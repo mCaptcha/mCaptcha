@@ -108,7 +108,7 @@ pub async fn easy(
             let pattern = TrafficPatternRequest {
                 peak_sustainable_traffic: c.peak_sustainable_traffic,
                 avg_traffic: c.avg_traffic,
-                broke_my_site_traffic: c.broke_my_site_traffic.map(|n| n),
+                broke_my_site_traffic: c.broke_my_site_traffic,
                 description: config.description,
                 publish_benchmarks,
             };
