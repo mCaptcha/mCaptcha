@@ -17,9 +17,7 @@ jobs:
       fail-fast: false
       matrix:
         version:
-          #- 1.51.0
           - stable
-            #  - nightly
 
     name: ${{ matrix.version }} - x86_64-unknown-linux-gnu
     runs-on: ubuntu-latest
@@ -69,7 +67,7 @@ jobs:
           - 3306:3306
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         #- name: ⚡ Cache
       #        uses: actions/cache@v2
       #        with:
@@ -97,12 +95,7 @@ jobs:
         with:
           node-version: "18.0.0"
 
-      - name: Install ${{ matrix.version }}
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: ${{ matrix.version }}-x86_64-unknown-linux-gnu
-          profile: minimal
-          override: true
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
 
       - name: install nightwatch dep
         run: sudo apt-get install xvfb
