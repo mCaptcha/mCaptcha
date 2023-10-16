@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/settings.rs`."><title>settings.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-f3501f0f5ae15dfb.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="mcaptcha" data-themes="" data-resource-suffix="" data-rustdoc-version="1.71.0 (8ede3aae2 2023-07-12)" data-search-js="search-4926e5fc22a5646a.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ></div><script src="../../static.files/storage-62ce34ea385b278a.js"></script><script defer src="../../static.files/source-script-11255107d0a65077.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-f0540c1d82cde29b.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../mcaptcha/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/settings.rs`."><title>settings.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="mcaptcha" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../mcaptcha/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -253,6 +253,157 @@
 <a href="#253" id="253">253</a>
 <a href="#254" id="254">254</a>
 <a href="#255" id="255">255</a>
+<a href="#256" id="256">256</a>
+<a href="#257" id="257">257</a>
+<a href="#258" id="258">258</a>
+<a href="#259" id="259">259</a>
+<a href="#260" id="260">260</a>
+<a href="#261" id="261">261</a>
+<a href="#262" id="262">262</a>
+<a href="#263" id="263">263</a>
+<a href="#264" id="264">264</a>
+<a href="#265" id="265">265</a>
+<a href="#266" id="266">266</a>
+<a href="#267" id="267">267</a>
+<a href="#268" id="268">268</a>
+<a href="#269" id="269">269</a>
+<a href="#270" id="270">270</a>
+<a href="#271" id="271">271</a>
+<a href="#272" id="272">272</a>
+<a href="#273" id="273">273</a>
+<a href="#274" id="274">274</a>
+<a href="#275" id="275">275</a>
+<a href="#276" id="276">276</a>
+<a href="#277" id="277">277</a>
+<a href="#278" id="278">278</a>
+<a href="#279" id="279">279</a>
+<a href="#280" id="280">280</a>
+<a href="#281" id="281">281</a>
+<a href="#282" id="282">282</a>
+<a href="#283" id="283">283</a>
+<a href="#284" id="284">284</a>
+<a href="#285" id="285">285</a>
+<a href="#286" id="286">286</a>
+<a href="#287" id="287">287</a>
+<a href="#288" id="288">288</a>
+<a href="#289" id="289">289</a>
+<a href="#290" id="290">290</a>
+<a href="#291" id="291">291</a>
+<a href="#292" id="292">292</a>
+<a href="#293" id="293">293</a>
+<a href="#294" id="294">294</a>
+<a href="#295" id="295">295</a>
+<a href="#296" id="296">296</a>
+<a href="#297" id="297">297</a>
+<a href="#298" id="298">298</a>
+<a href="#299" id="299">299</a>
+<a href="#300" id="300">300</a>
+<a href="#301" id="301">301</a>
+<a href="#302" id="302">302</a>
+<a href="#303" id="303">303</a>
+<a href="#304" id="304">304</a>
+<a href="#305" id="305">305</a>
+<a href="#306" id="306">306</a>
+<a href="#307" id="307">307</a>
+<a href="#308" id="308">308</a>
+<a href="#309" id="309">309</a>
+<a href="#310" id="310">310</a>
+<a href="#311" id="311">311</a>
+<a href="#312" id="312">312</a>
+<a href="#313" id="313">313</a>
+<a href="#314" id="314">314</a>
+<a href="#315" id="315">315</a>
+<a href="#316" id="316">316</a>
+<a href="#317" id="317">317</a>
+<a href="#318" id="318">318</a>
+<a href="#319" id="319">319</a>
+<a href="#320" id="320">320</a>
+<a href="#321" id="321">321</a>
+<a href="#322" id="322">322</a>
+<a href="#323" id="323">323</a>
+<a href="#324" id="324">324</a>
+<a href="#325" id="325">325</a>
+<a href="#326" id="326">326</a>
+<a href="#327" id="327">327</a>
+<a href="#328" id="328">328</a>
+<a href="#329" id="329">329</a>
+<a href="#330" id="330">330</a>
+<a href="#331" id="331">331</a>
+<a href="#332" id="332">332</a>
+<a href="#333" id="333">333</a>
+<a href="#334" id="334">334</a>
+<a href="#335" id="335">335</a>
+<a href="#336" id="336">336</a>
+<a href="#337" id="337">337</a>
+<a href="#338" id="338">338</a>
+<a href="#339" id="339">339</a>
+<a href="#340" id="340">340</a>
+<a href="#341" id="341">341</a>
+<a href="#342" id="342">342</a>
+<a href="#343" id="343">343</a>
+<a href="#344" id="344">344</a>
+<a href="#345" id="345">345</a>
+<a href="#346" id="346">346</a>
+<a href="#347" id="347">347</a>
+<a href="#348" id="348">348</a>
+<a href="#349" id="349">349</a>
+<a href="#350" id="350">350</a>
+<a href="#351" id="351">351</a>
+<a href="#352" id="352">352</a>
+<a href="#353" id="353">353</a>
+<a href="#354" id="354">354</a>
+<a href="#355" id="355">355</a>
+<a href="#356" id="356">356</a>
+<a href="#357" id="357">357</a>
+<a href="#358" id="358">358</a>
+<a href="#359" id="359">359</a>
+<a href="#360" id="360">360</a>
+<a href="#361" id="361">361</a>
+<a href="#362" id="362">362</a>
+<a href="#363" id="363">363</a>
+<a href="#364" id="364">364</a>
+<a href="#365" id="365">365</a>
+<a href="#366" id="366">366</a>
+<a href="#367" id="367">367</a>
+<a href="#368" id="368">368</a>
+<a href="#369" id="369">369</a>
+<a href="#370" id="370">370</a>
+<a href="#371" id="371">371</a>
+<a href="#372" id="372">372</a>
+<a href="#373" id="373">373</a>
+<a href="#374" id="374">374</a>
+<a href="#375" id="375">375</a>
+<a href="#376" id="376">376</a>
+<a href="#377" id="377">377</a>
+<a href="#378" id="378">378</a>
+<a href="#379" id="379">379</a>
+<a href="#380" id="380">380</a>
+<a href="#381" id="381">381</a>
+<a href="#382" id="382">382</a>
+<a href="#383" id="383">383</a>
+<a href="#384" id="384">384</a>
+<a href="#385" id="385">385</a>
+<a href="#386" id="386">386</a>
+<a href="#387" id="387">387</a>
+<a href="#388" id="388">388</a>
+<a href="#389" id="389">389</a>
+<a href="#390" id="390">390</a>
+<a href="#391" id="391">391</a>
+<a href="#392" id="392">392</a>
+<a href="#393" id="393">393</a>
+<a href="#394" id="394">394</a>
+<a href="#395" id="395">395</a>
+<a href="#396" id="396">396</a>
+<a href="#397" id="397">397</a>
+<a href="#398" id="398">398</a>
+<a href="#399" id="399">399</a>
+<a href="#400" id="400">400</a>
+<a href="#401" id="401">401</a>
+<a href="#402" id="402">402</a>
+<a href="#403" id="403">403</a>
+<a href="#404" id="404">404</a>
+<a href="#405" id="405">405</a>
+<a href="#406" id="406">406</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 // SPDX-FileCopyrightText: 2023 Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 //
@@ -261,23 +412,25 @@
 </span><span class="kw">use </span>std::path::Path;
 <span class="kw">use </span>std::{env, fs};
 
-<span class="kw">use </span>config::{Config, ConfigError, Environment, File};
+<span class="kw">use </span>config::builder::DefaultState;
+<span class="kw">use </span>config::{Config, ConfigBuilder, ConfigError, File};
 <span class="kw">use </span>derive_more::Display;
 
 <span class="kw">use </span>serde::{Deserialize, Serialize};
 <span class="kw">use </span>url::Url;
 
-<span class="attr">#[derive(Debug, Clone, Deserialize)]
+<span class="attr">#[derive(Debug, Clone, Deserialize, Eq, PartialEq)]
 </span><span class="kw">pub struct </span>Server {
     <span class="kw">pub </span>port: u32,
     <span class="kw">pub </span>domain: String,
     <span class="kw">pub </span>cookie_secret: String,
     <span class="kw">pub </span>ip: String,
-    <span class="kw">pub </span>url_prefix: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    <span class="comment">// TODO: remove
+    </span><span class="kw">pub </span>url_prefix: <span class="prelude-ty">Option</span>&lt;String&gt;,
     <span class="kw">pub </span>proxy_has_tls: bool,
 }
 
-<span class="attr">#[derive(Debug, Clone, Deserialize)]
+<span class="attr">#[derive(Debug, Clone, Deserialize, Eq, PartialEq)]
 </span><span class="kw">pub struct </span>Captcha {
     <span class="kw">pub </span>salt: String,
     <span class="kw">pub </span>gc: u64,
@@ -287,7 +440,7 @@
     <span class="kw">pub </span>default_difficulty_strategy: DefaultDifficultyStrategy,
 }
 
-<span class="attr">#[derive(Debug, Clone, Deserialize)]
+<span class="attr">#[derive(Debug, Clone, Deserialize, Eq, PartialEq)]
 </span><span class="kw">pub struct </span>DefaultDifficultyStrategy {
     <span class="kw">pub </span>avg_traffic_difficulty: u32,
     <span class="kw">pub </span>broke_my_site_traffic_difficulty: u32,
@@ -295,7 +448,7 @@
     <span class="kw">pub </span>duration: u32,
 }
 
-<span class="attr">#[derive(Debug, Clone, Deserialize)]
+<span class="attr">#[derive(Debug, Clone, Deserialize, Eq, PartialEq)]
 </span><span class="kw">pub struct </span>Smtp {
     <span class="kw">pub </span>from: String,
     <span class="kw">pub </span>reply: String,
@@ -312,33 +465,7 @@
     }
 }
 
-<span class="comment">//#[derive(Debug, Clone, Deserialize)]
-//struct DatabaseBuilder {
-//    pub port: u32,
-//    pub hostname: String,
-//    pub username: String,
-//    pub password: String,
-//    pub name: String,
-//}
-
-//impl DatabaseBuilder {
-//    #[cfg(not(tarpaulin_include))]
-//    fn extract_database_url(url: &amp;Url) -&gt; Self {
-//        debug!(&quot;Database name: {}&quot;, url.path());
-//        let mut path = url.path().split(&#39;/&#39;);
-//        path.next();
-//        let name = path.next().expect(&quot;no database name&quot;).to_string();
-//        DatabaseBuilder {
-//            port: url.port().expect(&quot;Enter database port&quot;).into(),
-//            hostname: url.host().expect(&quot;Enter database host&quot;).to_string(),
-//            username: url.username().into(),
-//            password: url.password().expect(&quot;Enter database password&quot;).into(),
-//            name,
-//        }
-//    }
-//}
-
-</span><span class="attr">#[derive(Deserialize, Serialize, Display, PartialEq, Clone, Debug)]
+<span class="attr">#[derive(Deserialize, Serialize, Display, Eq, PartialEq, Clone, Debug)]
 #[serde(rename_all = <span class="string">&quot;lowercase&quot;</span>)]
 </span><span class="kw">pub enum </span>DBType {
     <span class="attr">#[display(fmt = <span class="string">&quot;postgres&quot;</span>)]
@@ -357,43 +484,104 @@
     }
 }
 
-<span class="attr">#[derive(Debug, Clone, Deserialize)]
+<span class="attr">#[derive(Debug, Clone, Deserialize, Eq, PartialEq)]
 </span><span class="kw">pub struct </span>Database {
     <span class="kw">pub </span>url: String,
     <span class="kw">pub </span>pool: u32,
     <span class="kw">pub </span>database_type: DBType,
 }
 
-<span class="attr">#[derive(Debug, Clone, Deserialize)]
+<span class="attr">#[derive(Debug, Clone, Deserialize, Eq, PartialEq)]
 </span><span class="kw">pub struct </span>Redis {
     <span class="kw">pub </span>url: String,
     <span class="kw">pub </span>pool: u32,
 }
 
-<span class="attr">#[derive(Debug, Clone, Deserialize)]
+<span class="attr">#[derive(Debug, Clone, Deserialize, Eq, PartialEq)]
 </span><span class="kw">pub struct </span>Settings {
     <span class="kw">pub </span>debug: bool,
     <span class="kw">pub </span>commercial: bool,
+    <span class="kw">pub </span>source_code: String,
+    <span class="kw">pub </span>allow_registration: bool,
+    <span class="kw">pub </span>allow_demo: bool,
     <span class="kw">pub </span>database: Database,
     <span class="kw">pub </span>redis: <span class="prelude-ty">Option</span>&lt;Redis&gt;,
     <span class="kw">pub </span>server: Server,
     <span class="kw">pub </span>captcha: Captcha,
-    <span class="kw">pub </span>source_code: String,
     <span class="kw">pub </span>smtp: <span class="prelude-ty">Option</span>&lt;Smtp&gt;,
-    <span class="kw">pub </span>allow_registration: bool,
-    <span class="kw">pub </span>allow_demo: bool,
 }
+
+<span class="kw">const </span>ENV_VAR_CONFIG: [(<span class="kw-2">&amp;</span>str, <span class="kw-2">&amp;</span>str); <span class="number">29</span>] = [
+    <span class="comment">/* top-level */
+    </span>(<span class="string">&quot;debug&quot;</span>, <span class="string">&quot;MCAPTCHA_debug&quot;</span>),
+    (<span class="string">&quot;commercial&quot;</span>, <span class="string">&quot;MCAPTCHA_commercial&quot;</span>),
+    (<span class="string">&quot;source_code&quot;</span>, <span class="string">&quot;MCAPTCHA_source_code&quot;</span>),
+    (<span class="string">&quot;allow_registration&quot;</span>, <span class="string">&quot;MCAPTCHA_allow_registration&quot;</span>),
+    (<span class="string">&quot;allow_demo&quot;</span>, <span class="string">&quot;MCAPTCHA_allow_demo&quot;</span>),
+
+    <span class="comment">/* database */
+    </span>(<span class="string">&quot;database.url&quot;</span>, <span class="string">&quot;DATABASE_URL&quot;</span>),
+    (<span class="string">&quot;database.pool&quot;</span>, <span class="string">&quot;MCAPTCHA_database_POOL&quot;</span>),
+
+    <span class="comment">/* redis */
+    </span>(<span class="string">&quot;redis.url&quot;</span>, <span class="string">&quot;MCPATCHA_redis_URL&quot;</span>),
+    (<span class="string">&quot;redis.pool&quot;</span>, <span class="string">&quot;MCPATCHA_redis_POOL&quot;</span>),
+
+    <span class="comment">/* server */
+    </span>(<span class="string">&quot;server.port&quot;</span>, <span class="string">&quot;PORT&quot;</span>),
+    (<span class="string">&quot;server.domain&quot;</span>, <span class="string">&quot;MCAPTCHA_server_DOMAIN&quot;</span>),
+    (<span class="string">&quot;server.cookie_secret&quot;</span>, <span class="string">&quot;MCAPTCHA__server_COOKIE_SECRET&quot;</span>),
+    (<span class="string">&quot;server.ip&quot;</span>, <span class="string">&quot;MCAPTCHA__server_IP&quot;</span>),
+    (<span class="string">&quot;server.proxy_has_tls&quot;</span>, <span class="string">&quot;MCAPTCHA__server_PROXY_HAS_TLS&quot;</span>),
+
+
+    <span class="comment">/* captcha */
+    </span>(<span class="string">&quot;captcha.salt&quot;</span>, <span class="string">&quot;MCAPTCHA_captcha_SALT&quot;</span>),
+    (<span class="string">&quot;captcha.gc&quot;</span>, <span class="string">&quot;MCAPTCHA_captcha_GC&quot;</span>),
+    (<span class="string">&quot;captcha.runners&quot;</span>, <span class="string">&quot;MCAPTCHA_captcha_RUNNERS&quot;</span>),
+    (<span class="string">&quot;captcha.queue_length&quot;</span>, <span class="string">&quot;MCAPTCHA_captcha_QUEUE_LENGTH&quot;</span>),
+    (<span class="string">&quot;captcha.enable_stats&quot;</span>, <span class="string">&quot;MCAPTCHA_captcha_ENABLE_STATS&quot;</span>),
+    (<span class="string">&quot;captcha.default_difficulty_strategy.avg_traffic_difficulty&quot;</span>, <span class="string">&quot;MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_avg_traffic_difficulty&quot;</span>),
+    (<span class="string">&quot;captcha.default_difficulty_strategy.broke_my_site_traffic_difficulty&quot;</span>, <span class="string">&quot;MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_broke_my_site_traffic_difficulty&quot;</span>),
+    (<span class="string">&quot;captcha.default_difficulty_strategy.peak_sustainable_traffic_difficulty&quot;</span>,
+     <span class="string">&quot;MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_peak_sustainable_traffic_difficulty&quot;</span>),
+    ( <span class="string">&quot;captcha.default_difficulty_strategy.duration&quot;</span>,
+         <span class="string">&quot;MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_duration&quot;
+     </span>),
+
+
+    <span class="comment">/* SMTP */
+    </span>(<span class="string">&quot;smtp.from&quot;</span>, <span class="string">&quot;MCPATCHA_smtp_FROM&quot;</span>),
+    (<span class="string">&quot;smtp.reply&quot;</span>, <span class="string">&quot;MCPATCHA_smtp_REPLY&quot;</span>),
+    (<span class="string">&quot;smtp.url&quot;</span>, <span class="string">&quot;MCPATCHA_smtp_URL&quot;</span>),
+    (<span class="string">&quot;smtp.username&quot;</span>, <span class="string">&quot;MCPATCHA_smtp_USERNAME&quot;</span>),
+    (<span class="string">&quot;smtp.password&quot;</span>, <span class="string">&quot;MCPATCHA_smtp_PASSWORD&quot;</span>),
+    (<span class="string">&quot;smtp.port&quot;</span>, <span class="string">&quot;MCPATCHA_smtp_PORT&quot;</span>),
+
+
+
+];
 
 <span class="attr">#[cfg(not(tarpaulin_include))]
 </span><span class="kw">impl </span>Settings {
     <span class="kw">pub fn </span>new() -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, ConfigError&gt; {
-        <span class="kw">let </span><span class="kw-2">mut </span>s = Config::new();
+        <span class="kw">let </span><span class="kw-2">mut </span>s = Config::builder();
 
         <span class="kw">const </span>CURRENT_DIR: <span class="kw-2">&amp;</span>str = <span class="string">&quot;./config/default.toml&quot;</span>;
         <span class="kw">const </span>ETC: <span class="kw-2">&amp;</span>str = <span class="string">&quot;/etc/mcaptcha/config.toml&quot;</span>;
 
-        s.set(<span class="string">&quot;capatcha.enable_stats&quot;</span>, <span class="bool-val">true</span>.to_string())
+        s = s
+            .set_default(<span class="string">&quot;capatcha.enable_stats&quot;</span>, <span class="bool-val">true</span>.to_string())
             .expect(<span class="string">&quot;unable to set capatcha.enable_stats default config&quot;</span>);
+
+        <span class="comment">// Will be overridden after config is parsed and loaded into Settings by
+        // Settings::set_database_type.
+        // This parameter is not ergonomic for users, but it is required and can be programatically
+        // inferred. But we need a default value for config lib to parse successfully, since it is
+        // DBType and not Option&lt;DBType&gt;
+        </span>s = s
+            .set_default(<span class="string">&quot;database.database_type&quot;</span>, DBType::Postgres.to_string())
+            .expect(<span class="string">&quot;unable to set database.database_type default config&quot;</span>);
 
         <span class="kw">if let </span><span class="prelude-val">Ok</span>(path) = env::var(<span class="string">&quot;MCAPTCHA_CONFIG&quot;</span>) {
             <span class="kw">let </span>absolute_path = Path::new(<span class="kw-2">&amp;</span>path).canonicalize().unwrap();
@@ -401,7 +589,7 @@
                 <span class="string">&quot;Loading config file from {}&quot;</span>,
                 absolute_path.to_str().unwrap()
             );
-            s.merge(File::with_name(absolute_path.to_str().unwrap()))<span class="question-mark">?</span>;
+            s = s.add_source(File::with_name(absolute_path.to_str().unwrap()));
         } <span class="kw">else if </span>Path::new(CURRENT_DIR).exists() {
             <span class="kw">let </span>absolute_path = fs::canonicalize(CURRENT_DIR).unwrap();
             <span class="macro">log::info!</span>(
@@ -409,103 +597,217 @@
                 absolute_path.to_str().unwrap()
             );
             <span class="comment">// merging default config from file
-            </span>s.merge(File::with_name(absolute_path.to_str().unwrap()))<span class="question-mark">?</span>;
+            </span>s = s.add_source(File::with_name(absolute_path.to_str().unwrap()));
         } <span class="kw">else if </span>Path::new(ETC).exists() {
             <span class="macro">log::info!</span>(<span class="string">&quot;{}&quot;</span>, <span class="macro">format!</span>(<span class="string">&quot;Loading config file from {}&quot;</span>, ETC));
-            s.merge(File::with_name(ETC))<span class="question-mark">?</span>;
+            s = s.add_source(File::with_name(ETC));
         } <span class="kw">else </span>{
             <span class="macro">log::warn!</span>(<span class="string">&quot;Configuration file not found&quot;</span>);
         }
 
-        s.merge(Environment::with_prefix(<span class="string">&quot;MCAPTCHA&quot;</span>).separator(<span class="string">&quot;_&quot;</span>))<span class="question-mark">?</span>;
+        s = <span class="self">Self</span>::env_override(s);
 
-        check_url(<span class="kw-2">&amp;</span>s);
+        <span class="kw">let </span><span class="kw-2">mut </span>settings = s.build()<span class="question-mark">?</span>.try_deserialize::&lt;Settings&gt;()<span class="question-mark">?</span>;
+        settings.check_url();
 
-        <span class="kw">if let </span><span class="prelude-val">Ok</span>(val) = env::var(<span class="string">&quot;PORT&quot;</span>) {
-            s.set(<span class="string">&quot;server.port&quot;</span>, val).unwrap();
-            <span class="macro">log::info!</span>(<span class="string">&quot;Overriding [server].port with environment variable&quot;</span>);
-        }
+        settings.set_database_type();
 
-        <span class="kw">match </span>env::var(<span class="string">&quot;DATABASE_URL&quot;</span>) {
-            <span class="prelude-val">Ok</span>(val) =&gt; {
-                <span class="kw">let </span>url = Url::parse(<span class="kw-2">&amp;</span>val).expect(<span class="string">&quot;couldn&#39;t parse Database URL&quot;</span>);
-                s.set(<span class="string">&quot;database.url&quot;</span>, url.to_string()).unwrap();
-                <span class="kw">let </span>database_type = DBType::from_url(<span class="kw-2">&amp;</span>url).unwrap();
-                s.set(<span class="string">&quot;database.database_type&quot;</span>, database_type.to_string())
-                    .unwrap();
-                <span class="macro">log::info!</span>(<span class="string">&quot;Overriding [database].url and [database].database_type with environment variable&quot;</span>);
-            }
-            <span class="prelude-val">Err</span>(_e) =&gt; {
-                set_database_url(<span class="kw-2">&amp;mut </span>s);
+        <span class="prelude-val">Ok</span>(settings)
+    }
+
+    <span class="kw">fn </span>env_override(<span class="kw-2">mut </span>s: ConfigBuilder&lt;DefaultState&gt;) -&gt; ConfigBuilder&lt;DefaultState&gt; {
+        <span class="kw">for </span>(parameter, env_var_name) <span class="kw">in </span>ENV_VAR_CONFIG.iter() {
+            <span class="kw">if let </span><span class="prelude-val">Ok</span>(val) = env::var(env_var_name) {
+                <span class="macro">log::debug!</span>(
+                    <span class="string">&quot;Overriding [{parameter}] with environment variable {env_var_name}&quot;
+                </span>);
+                s = s.set_override(parameter, val).unwrap();
             }
         }
 
-        <span class="comment">// setting default values
-        </span><span class="attr">#[cfg(test)]
-        </span>s.set(<span class="string">&quot;database.pool&quot;</span>, <span class="number">2</span>.to_string())
-            .expect(<span class="string">&quot;Couldn&#39;t set database pool count&quot;</span>);
+        s
+    }
 
-        <span class="kw">match </span>s.try_into() {
-            <span class="prelude-val">Ok</span>(val) =&gt; <span class="prelude-val">Ok</span>(val),
-            <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(ConfigError::Message(<span class="macro">format!</span>(<span class="string">&quot;\n\nError: {}. If it says missing fields, then please refer to https://github.com/mCaptcha/mcaptcha#configuration to learn more about how mcaptcha reads configuration\n\n&quot;</span>, e))),
-        }
+    <span class="kw">fn </span>set_database_type(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">let </span>url = Url::parse(<span class="kw-2">&amp;</span><span class="self">self</span>.database.url)
+            .expect(<span class="string">&quot;couldn&#39;t parse Database URL and detect database type&quot;</span>);
+        <span class="self">self</span>.database.database_type = DBType::from_url(<span class="kw-2">&amp;</span>url).unwrap();
+    }
+
+    <span class="kw">fn </span>check_url(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        Url::parse(<span class="kw-2">&amp;</span><span class="self">self</span>.source_code)
+            .expect(<span class="string">&quot;Please enter a URL for source_code in settings&quot;</span>);
     }
 }
 
-<span class="attr">#[cfg(not(tarpaulin_include))]
-</span><span class="kw">fn </span>check_url(s: <span class="kw-2">&amp;</span>Config) {
-    <span class="kw">let </span>url = s
-        .get::&lt;String&gt;(<span class="string">&quot;source_code&quot;</span>)
-        .expect(<span class="string">&quot;Couldn&#39;t access source_code&quot;</span>);
+<span class="attr">#[cfg(test)]
+</span><span class="kw">mod </span>tests {
 
-    Url::parse(<span class="kw-2">&amp;</span>url).expect(<span class="string">&quot;Please enter a URL for source_code in settings&quot;</span>);
-}
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
-<span class="attr">#[cfg(not(tarpaulin_include))]
-</span><span class="kw">fn </span>set_database_url(s: <span class="kw-2">&amp;mut </span>Config) {
-    s.set(
-        <span class="string">&quot;database.url&quot;</span>,
-        <span class="macro">format!</span>(
-            <span class="string">r&quot;postgres://{}:{}@{}:{}/{}&quot;</span>,
-            s.get::&lt;String&gt;(<span class="string">&quot;database.username&quot;</span>)
-                .expect(<span class="string">&quot;Couldn&#39;t access database username&quot;</span>),
-            urlencoding::encode(
-                s.get::&lt;String&gt;(<span class="string">&quot;database.password&quot;</span>)
-                    .expect(<span class="string">&quot;Couldn&#39;t access database password&quot;</span>)
-                    .as_str()
-            ),
-            s.get::&lt;String&gt;(<span class="string">&quot;database.hostname&quot;</span>)
-                .expect(<span class="string">&quot;Couldn&#39;t access database hostname&quot;</span>),
-            s.get::&lt;String&gt;(<span class="string">&quot;database.port&quot;</span>)
-                .expect(<span class="string">&quot;Couldn&#39;t access database port&quot;</span>),
-            s.get::&lt;String&gt;(<span class="string">&quot;database.name&quot;</span>)
-                .expect(<span class="string">&quot;Couldn&#39;t access database name&quot;</span>)
-        ),
-    )
-    .expect(<span class="string">&quot;Couldn&#39;t set database url&quot;</span>);
-}
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>env_override_works() {
+        <span class="kw">use </span><span class="kw">crate</span>::tests::get_settings;
+        <span class="kw">let </span>init_settings = get_settings();
+        <span class="comment">// so that it can be tested outside the macro (helper) too
+        </span><span class="kw">let </span><span class="kw-2">mut </span>new_settings;
 
-<span class="comment">//#[cfg(test)]
-//mod tests {
-//    use super::*;
-//
-//    #[test]
-//    fn url_prefix_test() {
-//        let mut settings = Settings::new().unwrap();
-//        assert!(settings.server.url_prefix.is_none());
-//        settings.server.url_prefix = Some(&quot;test&quot;.into());
-//        settings.server.check_url_prefix();
-//        settings.server.url_prefix = Some(&quot;    &quot;.into());
-//        settings.server.check_url_prefix();
-//        assert!(settings.server.url_prefix.is_none());
-//    }
-//
-//    #[test]
-//    fn smtp_config_works() {
-//        let settings = Settings::new().unwrap();
-//        assert!(settings.smtp.is_some());
-//        assert_eq!(settings.smtp.as_ref().unwrap().password, &quot;password&quot;);
-//        assert_eq!(settings.smtp.as_ref().unwrap().username, &quot;admin&quot;);
-//    }
-//}
-</span></code></pre></div></section></main></body></html>
+        <span class="macro">macro_rules! </span>helper {
+
+
+
+
+            (<span class="macro-nonterminal">$env</span>:expr, <span class="macro-nonterminal">$val</span>:expr, <span class="macro-nonterminal">$val_typed</span>:expr, $(<span class="macro-nonterminal">$param</span>:ident).+) =&gt; {
+                <span class="macro">println!</span>(<span class="string">&quot;Setting env var {} to {} for test&quot;</span>, <span class="macro-nonterminal">$env</span>, <span class="macro-nonterminal">$val</span>);
+                env::set_var(<span class="macro-nonterminal">$env</span>, <span class="macro-nonterminal">$val</span>);
+                new_settings = get_settings();
+                <span class="macro">assert_eq!</span>(new_settings.$(<span class="macro-nonterminal">$param</span>).+, <span class="macro-nonterminal">$val_typed</span>);
+                <span class="macro">assert_ne!</span>(new_settings.$(<span class="macro-nonterminal">$param</span>).+, init_settings.$(<span class="macro-nonterminal">$param</span>).+);
+                env::remove_var(<span class="macro-nonterminal">$env</span>);
+            };
+
+
+            (<span class="macro-nonterminal">$env</span>:expr, <span class="macro-nonterminal">$val</span>:expr, $(<span class="macro-nonterminal">$param</span>:ident).+) =&gt; {
+                <span class="macro">helper!</span>(<span class="macro-nonterminal">$env</span>, <span class="macro-nonterminal">$val</span>.to_string(), <span class="macro-nonterminal">$val</span>, $(<span class="macro-nonterminal">$param</span>).+);
+            };
+        }
+
+        <span class="comment">/* top level */
+        </span><span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_debug&quot;</span>, <span class="bool-val">false</span>, debug);
+        <span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_commercial&quot;</span>, <span class="bool-val">true</span>, commercial);
+        <span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_allow_registration&quot;</span>, <span class="bool-val">false</span>, allow_registration);
+        <span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_allow_demo&quot;</span>, <span class="bool-val">false</span>, allow_demo);
+
+        <span class="comment">/* database_type */
+
+        </span><span class="macro">helper!</span>(
+            <span class="string">&quot;DATABASE_URL&quot;</span>,
+            <span class="string">&quot;postgres://postgres:password@localhost:5432/postgres&quot;</span>,
+            database.url
+        );
+        <span class="macro">assert_eq!</span>(new_settings.database.database_type, DBType::Postgres);
+        <span class="macro">helper!</span>(
+            <span class="string">&quot;DATABASE_URL&quot;</span>,
+            <span class="string">&quot;mysql://maria:password@localhost/maria&quot;</span>,
+            database.url
+        );
+        <span class="macro">assert_eq!</span>(new_settings.database.database_type, DBType::Maria);
+        <span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_database_POOL&quot;</span>, <span class="number">1000</span>, database.pool);
+
+        <span class="comment">/* redis */
+
+        /* redis.url */
+        </span><span class="kw">let </span>env = <span class="string">&quot;MCPATCHA_redis_URL&quot;</span>;
+        <span class="kw">let </span>val = <span class="string">&quot;redis://redis.example.org&quot;</span>;
+        <span class="macro">println!</span>(<span class="string">&quot;Setting env var {} to {} for test&quot;</span>, env, val);
+        env::set_var(env, val);
+        new_settings = get_settings();
+        <span class="macro">assert_eq!</span>(new_settings.redis.as_ref().unwrap().url, val);
+        <span class="macro">assert_ne!</span>(
+            new_settings.redis.as_ref().unwrap().url,
+            init_settings.redis.as_ref().unwrap().url
+        );
+        env::remove_var(env);
+
+        <span class="comment">/* redis.pool */
+        </span><span class="kw">let </span>env = <span class="string">&quot;MCPATCHA_redis_POOL&quot;</span>;
+        <span class="kw">let </span>val = <span class="number">999</span>;
+        <span class="macro">println!</span>(<span class="string">&quot;Setting env var {} to {} for test&quot;</span>, env, val);
+        env::set_var(env, val.to_string());
+        new_settings = get_settings();
+        <span class="macro">assert_eq!</span>(new_settings.redis.as_ref().unwrap().pool, val);
+        <span class="macro">assert_ne!</span>(
+            new_settings.redis.as_ref().unwrap().pool,
+            init_settings.redis.as_ref().unwrap().pool
+        );
+        env::remove_var(env);
+
+        <span class="macro">helper!</span>(<span class="string">&quot;PORT&quot;</span>, <span class="number">0</span>, server.port);
+        <span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_server_DOMAIN&quot;</span>, <span class="string">&quot;example.org&quot;</span>, server.domain);
+        <span class="macro">helper!</span>(
+            <span class="string">&quot;MCAPTCHA__server_COOKIE_SECRET&quot;</span>,
+            <span class="string">&quot;dafasdfsdf&quot;</span>,
+            server.cookie_secret
+        );
+        <span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA__server_IP&quot;</span>, <span class="string">&quot;9.9.9.9&quot;</span>, server.ip);
+        <span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA__server_PROXY_HAS_TLS&quot;</span>, <span class="bool-val">true</span>, server.proxy_has_tls);
+
+        <span class="comment">/* captcha */
+
+        </span><span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_captcha_SALT&quot;</span>, <span class="string">&quot;foobarasdfasdf&quot;</span>, captcha.salt);
+        <span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_captcha_GC&quot;</span>, <span class="number">500</span>, captcha.gc);
+        <span class="macro">helper!</span>(
+            <span class="string">&quot;MCAPTCHA_captcha_RUNNERS&quot;</span>,
+            <span class="string">&quot;500&quot;</span>,
+            <span class="prelude-val">Some</span>(<span class="number">500</span>),
+            captcha.runners
+        );
+
+        <span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_captcha_QUEUE_LENGTH&quot;</span>, <span class="number">500</span>, captcha.queue_length);
+        <span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_captcha_ENABLE_STATS&quot;</span>, <span class="bool-val">false</span>, captcha.enable_stats);
+        <span class="macro">helper!</span>(
+            <span class="string">&quot;MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_avg_traffic_difficulty&quot;</span>,
+            <span class="number">999</span>,
+            captcha.default_difficulty_strategy.avg_traffic_difficulty
+        );
+        <span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_peak_sustainable_traffic_difficulty&quot;</span>, <span class="number">999 </span>, captcha.default_difficulty_strategy.peak_sustainable_traffic_difficulty);
+        <span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_broke_my_site_traffic_difficulty&quot;</span>, <span class="number">999 </span>, captcha.default_difficulty_strategy.broke_my_site_traffic_difficulty);
+        <span class="macro">helper!</span>(
+            <span class="string">&quot;MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_duration&quot;</span>,
+            <span class="number">999</span>,
+            captcha.default_difficulty_strategy.duration
+        );
+
+        <span class="comment">/* SMTP */
+
+        </span><span class="kw">let </span>vals = [
+            <span class="string">&quot;MCPATCHA_smtp_FROM&quot;</span>,
+            <span class="string">&quot;MCPATCHA_smtp_REPLY&quot;</span>,
+            <span class="string">&quot;MCPATCHA_smtp_URL&quot;</span>,
+            <span class="string">&quot;MCPATCHA_smtp_USERNAME&quot;</span>,
+            <span class="string">&quot;MCPATCHA_smtp_PASSWORD&quot;</span>,
+            <span class="string">&quot;MCPATCHA_smtp_PORT&quot;</span>,
+        ];
+        <span class="kw">for </span>env <span class="kw">in </span>vals.iter() {
+            <span class="macro">println!</span>(<span class="string">&quot;Setting env var {} to {} for test&quot;</span>, env, env);
+            env::set_var(env, env);
+        }
+
+        <span class="kw">let </span>port = <span class="number">9999</span>;
+        env::set_var(<span class="string">&quot;MCPATCHA_smtp_PORT&quot;</span>, port.to_string());
+
+        new_settings = get_settings();
+        <span class="kw">let </span>smtp_new = new_settings.smtp.as_ref().unwrap();
+        <span class="kw">let </span>smtp_old = init_settings.smtp.as_ref().unwrap();
+        <span class="macro">assert_eq!</span>(smtp_new.from, <span class="string">&quot;MCPATCHA_smtp_FROM&quot;</span>);
+        <span class="macro">assert_eq!</span>(smtp_new.reply, <span class="string">&quot;MCPATCHA_smtp_REPLY&quot;</span>);
+        <span class="macro">assert_eq!</span>(smtp_new.username, <span class="string">&quot;MCPATCHA_smtp_USERNAME&quot;</span>);
+        <span class="macro">assert_eq!</span>(smtp_new.password, <span class="string">&quot;MCPATCHA_smtp_PASSWORD&quot;</span>);
+        <span class="macro">assert_eq!</span>(smtp_new.port, port);
+        <span class="macro">assert_ne!</span>(smtp_new, smtp_old);
+
+        <span class="kw">for </span>env <span class="kw">in </span>vals.iter() {
+            env::remove_var(env);
+        }
+    }
+
+    <span class="comment">//    #[test]
+    //    fn url_prefix_test() {
+    //        let mut settings = Settings::new().unwrap();
+    //        assert!(settings.server.url_prefix.is_none());
+    //        settings.server.url_prefix = Some(&quot;test&quot;.into());
+    //        settings.server.check_url_prefix();
+    //        settings.server.url_prefix = Some(&quot;    &quot;.into());
+    //        settings.server.check_url_prefix();
+    //        assert!(settings.server.url_prefix.is_none());
+    //    }
+    //
+    //    #[test]
+    //    fn smtp_config_works() {
+    //        let settings = Settings::new().unwrap();
+    //        assert!(settings.smtp.is_some());
+    //        assert_eq!(settings.smtp.as_ref().unwrap().password, &quot;password&quot;);
+    //        assert_eq!(settings.smtp.as_ref().unwrap().username, &quot;admin&quot;);
+    //    }
+</span>}
+</code></pre></div></section></main></body></html>
