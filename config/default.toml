@@ -45,9 +45,8 @@ duration = 30 # cooldown period in seconds
 # url = "postgres://batman:password@batcave.org:5432/batcave"
 # database_type = "postgres"
 # pool = 4
-url = "http://example.org" # hack for tests to run successfully
+url = "postgres://example.org" # hack for tests to run successfully
 pool = 4
-database_type="postgres" # "postgres", "maria"
 
 [redis]
 # This section deals with the database location and how to access it

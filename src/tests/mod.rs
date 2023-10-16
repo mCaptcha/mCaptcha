@@ -41,7 +41,7 @@ pub mod pg {
         settings.database.url = url.clone();
         settings.database.database_type = DBType::Postgres;
         settings.database.pool = 2;
-        
+
         Data::new(&settings).await
     }
 }
@@ -61,7 +61,7 @@ pub mod maria {
         settings.database.url = url.clone();
         settings.database.database_type = DBType::Maria;
         settings.database.pool = 2;
-        
+
         Data::new(&settings).await
     }
 }
