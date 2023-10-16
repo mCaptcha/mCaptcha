@@ -68,18 +68,7 @@ jobs:
 
 
     steps:
-      - uses: actions/checkout@v2
-      - name: ⚡ Cache
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            node_modules
-            ./docs/openapi/node_modules
-            target
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-
+      - uses: actions/checkout@v4
 
       - name: load env
         run: |
@@ -92,12 +81,7 @@ jobs:
         with:
           node-version: "18.0.0"
 
-      - name: Install ${{ matrix.version }}
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: ${{ matrix.version }}-x86_64-unknown-linux-gnu
-          profile: minimal
-          override: true
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
 
       - name: Build frontend
         run: make frontend

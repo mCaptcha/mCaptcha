@@ -9,7 +9,7 @@ on:
     branches:
       - master
       - "*"
-      - '!gh-pages'
+      - "!gh-pages"
 
 jobs:
   build_and_test:
@@ -17,9 +17,7 @@ jobs:
       fail-fast: false
       matrix:
         version:
-          #- 1.51.0
           - stable
-            #  - nightly
 
     name: ${{ matrix.version }} - x86_64-unknown-linux-gnu
     runs-on: ubuntu-latest
@@ -55,7 +53,7 @@ jobs:
 
       maria:
         image: mariadb:10
-        env: 
+        env:
           MARIADB_USER: "maria"
           MARIADB_PASSWORD: "password"
           MARIADB_ROOT_PASSWORD: "password"
@@ -69,17 +67,17 @@ jobs:
           - 3306:3306
 
     steps:
-      - uses: actions/checkout@v2
-      - name: ⚡ Cache
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            node_modules
-            ./docs/openapi/node_modules
-            target
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - uses: actions/checkout@v4
+        #- name: ⚡ Cache
+      #        uses: actions/cache@v2
+      #        with:
+      #          path: |
+      #            ~/.cargo/registry
+      #            ~/.cargo/git
+      #            node_modules
+      #            ./docs/openapi/node_modules
+      #            target
+      #          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
       - name: configure GPG key
         if: (github.ref == 'refs/heads/master' || github.event_name == 'push') && github.repository == 'mCaptcha/mCaptcha'
@@ -97,12 +95,7 @@ jobs:
         with:
           node-version: "18.0.0"
 
-      - name: Install ${{ matrix.version }}
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: ${{ matrix.version }}-x86_64-unknown-linux-gnu
-          profile: minimal
-          override: true
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
 
       - name: install nightwatch dep
         run: sudo apt-get install xvfb
@@ -117,7 +110,8 @@ jobs:
         run: make
         env:
           POSTGRES_DATABASE_URL: "${{ env.POSTGRES_DATABASE_URL }}"
-          MARIA_DATABASE_URL: "${{ env.MARIA_DATABASE_URL }}"
+          MARIA_DATABASE_URL:
+            "${{ env.MARIA_DATABASE_URL }}"
 
             #      - name: build frontend
             #        run: make frontend

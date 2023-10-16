@@ -12,54 +12,21 @@ jobs:
   fmt:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: ⚡ Cache
-        uses: actions/cache@v2
+      - uses: actions/checkout@v4
+      # Ensure rustfmt is installed and setup problem matcher
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            node_modules
-            ./docs/openapi/node_modules
-            target
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-
-      - uses: actions/checkout@v2
-
-      - name: Install Rust
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
           components: rustfmt
-      - name: Check with rustfmt
-        uses: actions-rs/cargo@v1
-        with:
-          command: fmt
-          args: --all -- --check
+      - name: Rustfmt Check
+        uses: actions-rust-lang/rustfmt@v1
 
   clippy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: ⚡ Cache
-        uses: actions/cache@v2
+      - uses: actions/checkout@v4
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            node_modules
-            ./docs/openapi/node_modules
-            target
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-
-      - uses: actions/checkout@v2
-
-      - name: Install Rust
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
           components: clippy
-          override: true
 
       - uses: actions/setup-node@v2
         with:
@@ -68,8 +35,5 @@ jobs:
       - name: Build frontend
         run: make frontend
 
-      - name: Check with Clippy
-        uses: actions-rs/clippy-check@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          args: --workspace --tests --all-features
+      - name: clippy Check
+        run: cargo clippy --workspace --tests --all-features
