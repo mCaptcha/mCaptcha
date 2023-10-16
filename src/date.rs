@@ -52,7 +52,12 @@ impl Date {
 
     /// print date
     pub fn date(&self) -> String {
-            format!("{}{}{}", self.time.year(), self.time.month(), self.time.date())
+        format!(
+            "{}{}{}",
+            self.time.year(),
+            self.time.month(),
+            self.time.date()
+        )
     }
 
     pub fn new(unix: i64) -> Self {

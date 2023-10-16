@@ -7,7 +7,7 @@ use std::fs;
 use std::path::Path;
 use std::collections::HashMap;
 
-use cache_buster::{BusterBuilder, CACHE_BUSTER_DATA_FILE, NoHashCategory};
+use libcachebust::{BusterBuilder, CACHE_BUSTER_DATA_FILE, NoHashCategory};
 use serde::{Serialize, Deserialize};
 
 #[derive(Deserialize, Serialize)]

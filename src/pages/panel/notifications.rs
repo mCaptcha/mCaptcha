@@ -95,9 +95,11 @@ mod tests {
         assert!(n.print_date().contains("seconds ago"));
 
         // minutes test
-        n.received = OffsetDateTime::from_unix_timestamp(timestamp - MINUTE * 2).unwrap();
+        n.received =
+            OffsetDateTime::from_unix_timestamp(timestamp - MINUTE * 2).unwrap();
         assert!(n.print_date().contains("minutes ago"));
-        n.received = OffsetDateTime::from_unix_timestamp(timestamp - MINUTE * 56).unwrap();
+        n.received =
+            OffsetDateTime::from_unix_timestamp(timestamp - MINUTE * 56).unwrap();
         assert!(n.print_date().contains("minutes ago"));
 
         // hours test
@@ -112,7 +114,12 @@ mod tests {
 
         // date test
         n.received = OffsetDateTime::from_unix_timestamp(timestamp - 6 * WEEK).unwrap();
-        let date = format!("{}{}{}", n.received.year(), n.received.month(), n.received.date());
+        let date = format!(
+            "{}{}{}",
+            n.received.year(),
+            n.received.month(),
+            n.received.date()
+        );
         assert!(n.print_date().contains(&date))
     }
 }

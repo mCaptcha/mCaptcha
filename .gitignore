@@ -16,3 +16,5 @@ assets
 yarn-error.log
 src/cache_buster_data.json.license
 **/**/target
+src/libcachebust_data.json
+utils/cache-bust/src/libcachebust_data.json

@@ -3,7 +3,7 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-use cache_buster::Files;
+use libcachebust::Files;
 
 pub struct FileMap {
     pub files: Files,

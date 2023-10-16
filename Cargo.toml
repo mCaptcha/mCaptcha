@@ -33,7 +33,7 @@ actix-service = "2.0.0"
 async-trait = "0.1.51"
 mime_guess = "2.0.3"
 rust-embed = "6.4.0"
-cache-buster = { git = "https://github.com/realaravinth/cache-buster" }
+libcachebust = "0.3.0"
 
 futures = "0.3.15"
 tokio = { version = "1.14", features = ["sync"]}
@@ -59,8 +59,7 @@ log = "0.4"
 lazy_static = "1.4"
 
 
-libmcaptcha = { version = "0.2.3", git = "https://github.com/mCaptcha/libmcaptcha", features = ["full"], tag ="0.2.3" }
-#libmcaptcha = { branch = "master", git = "https://github.com/mCaptcha/libmcaptcha", features = ["full"] }
+libmcaptcha = { tag = "0.2.4", git = "https://github.com/mCaptcha/libmcaptcha", features = ["full"] }
 #libmcaptcha = { path = "../libmcaptcha", features = ["full"]}
 
 rand = "0.8"
