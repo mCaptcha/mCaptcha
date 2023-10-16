@@ -1,0 +1,25 @@
+{
+  "db_name": "MySQL",
+  "query": "SELECT config_id FROM mcaptcha_config\n                        WHERE\n                            captcha_key = ? \n                        AND user_id = (SELECT ID FROM mcaptcha_users WHERE name = ?)",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "config_id",
+        "type_info": {
+          "type": "Long",
+          "flags": "NOT_NULL | PRIMARY_KEY | AUTO_INCREMENT",
+          "char_set": 63,
+          "max_size": 11
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "66ec7df10484f8e0206f3c97afc9136021589556c38dbbed341d6574487f79f2"
+}

@@ -1,0 +1,15 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "INSERT INTO mcaptcha_pow_confirmed_stats \n        (config_id, time) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1), $2)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Timestamptz"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "044e2036a518de2ccac9318ccba07f7ce10e4a1c1d51d0128ea5e8cb94358ac5"
+}

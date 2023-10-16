@@ -22,7 +22,7 @@ impl Default for IndexPage {
 }
 
 lazy_static! {
-    static ref INDEX: String = IndexPage::default().render_once().unwrap();
+    static ref INDEX: String = IndexPage.render_once().unwrap();
 }
 
 #[get(path = "PAGES.auth.login")]

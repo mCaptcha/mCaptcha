@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "DELETE FROM mcaptcha_sitekey_user_provided_avg_traffic\n        WHERE config_id = (\n            SELECT config_id \n            FROM \n                mcaptcha_config \n            WHERE\n                captcha_key = ?\n            AND \n                user_id = (SELECT ID FROM mcaptcha_users WHERE name = ?)\n            );",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "fc717ff0827ccfaa1cc61a71cc7f71c348ebb03d35895c54b011c03121ad2385"
+}

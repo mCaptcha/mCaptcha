@@ -1,0 +1,22 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT secret  FROM mcaptcha_users WHERE ID = (\n                    SELECT user_id FROM mcaptcha_config WHERE key = $1\n                    )",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "secret",
+        "type_info": "Varchar"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Text"
+      ]
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "494d2aed281e1408aeda3606b0814db75aea2878783a2e2f11a4feb6fc48e938"
+}

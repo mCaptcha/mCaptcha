@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "INSERT INTO mcaptcha_users \n        (name , password,  secret) VALUES (?, ?, ?)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": []
+  },
+  "hash": "5d5a106981345e9f62bc2239c00cdc683d3aaaa820d63da300dc51e3f6f363d3"
+}

@@ -1,0 +1,18 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "INSERT INTO mcaptcha_sitekey_user_provided_avg_traffic (\n            config_id,\n            avg_traffic,\n            peak_sustainable_traffic,\n            broke_my_site_traffic\n            ) VALUES ( \n             (SELECT config_id FROM mcaptcha_config WHERE key = ($1)\n             AND user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2)\n            ), $3, $4, $5)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Text",
+        "Int4",
+        "Int4",
+        "Int4"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "0840af95cc17c8ea6fc994e53696d4dec39ef9b4b6dd6c58c21cc44ccbb4bd09"
+}

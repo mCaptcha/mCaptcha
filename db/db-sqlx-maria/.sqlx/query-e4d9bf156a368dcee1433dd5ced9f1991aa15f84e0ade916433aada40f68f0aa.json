@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "\n        DELETE FROM\n            mcaptcha_psuedo_campaign_id\n        WHERE config_id = (\n            SELECT config_id FROM mcaptcha_config WHERE captcha_key = ?\n        );",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": []
+  },
+  "hash": "e4d9bf156a368dcee1433dd5ced9f1991aa15f84e0ade916433aada40f68f0aa"
+}

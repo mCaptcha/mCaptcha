@@ -1,0 +1,47 @@
+{
+  "db_name": "MySQL",
+  "query": "SELECT \n          avg_traffic, \n          peak_sustainable_traffic, \n          broke_my_site_traffic \n        FROM \n          mcaptcha_sitekey_user_provided_avg_traffic \n        WHERE \n          config_id = (\n            SELECT \n              config_id \n            FROM \n              mcaptcha_config \n            WHERE \n              captcha_key = ? \n              AND user_id = (\n                SELECT \n                  id \n                FROM \n                  mcaptcha_users \n                WHERE \n                  NAME = ?\n              )\n          )\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "avg_traffic",
+        "type_info": {
+          "type": "Long",
+          "flags": "NOT_NULL | NO_DEFAULT_VALUE",
+          "char_set": 63,
+          "max_size": 11
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "peak_sustainable_traffic",
+        "type_info": {
+          "type": "Long",
+          "flags": "NOT_NULL | NO_DEFAULT_VALUE",
+          "char_set": 63,
+          "max_size": 11
+        }
+      },
+      {
+        "ordinal": 2,
+        "name": "broke_my_site_traffic",
+        "type_info": {
+          "type": "Long",
+          "flags": "",
+          "char_set": 63,
+          "max_size": 11
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": [
+      false,
+      false,
+      true
+    ]
+  },
+  "hash": "e91116ebce127833488130cf1060e0817e5677f39588632452b8d621688c405a"
+}

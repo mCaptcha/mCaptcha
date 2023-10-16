@@ -1,0 +1,18 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "INSERT INTO mcaptcha_notifications (\n              heading, message, tx, rx, received)\n              VALUES  (\n              $1, $2,\n                  (SELECT ID FROM mcaptcha_users WHERE name = $3),\n                  (SELECT ID FROM mcaptcha_users WHERE name = $4),\n                  $5\n                      );",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Varchar",
+        "Varchar",
+        "Text",
+        "Text",
+        "Timestamptz"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "d7dd6cd6a7626e79c62377b2d59115067c5851ec044911ff8833779a08bbb8f7"
+}

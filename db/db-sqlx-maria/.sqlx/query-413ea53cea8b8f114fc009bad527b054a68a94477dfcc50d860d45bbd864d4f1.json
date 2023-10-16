@@ -1,0 +1,25 @@
+{
+  "db_name": "MySQL",
+  "query": "SELECT email FROM mcaptcha_users WHERE name = ?",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "email",
+        "type_info": {
+          "type": "VarString",
+          "flags": "UNIQUE_KEY",
+          "char_set": 224,
+          "max_size": 400
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      true
+    ]
+  },
+  "hash": "413ea53cea8b8f114fc009bad527b054a68a94477dfcc50d860d45bbd864d4f1"
+}

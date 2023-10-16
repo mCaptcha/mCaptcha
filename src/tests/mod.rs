@@ -40,7 +40,8 @@ pub mod pg {
         settings.captcha.runners = Some(1);
         settings.database.url = url.clone();
         settings.database.database_type = DBType::Postgres;
-        
+        settings.database.pool = 2;
+
         Data::new(&settings).await
     }
 }
@@ -59,7 +60,8 @@ pub mod maria {
         settings.captcha.runners = Some(1);
         settings.database.url = url.clone();
         settings.database.database_type = DBType::Maria;
-        
+        settings.database.pool = 2;
+
         Data::new(&settings).await
     }
 }
@@ -116,7 +118,7 @@ macro_rules! get_app {
                 .wrap(actix_middleware::NormalizePath::new(
                     actix_middleware::TrailingSlash::Trim,
                 ))
-                .configure(crate::routes::services)
+                .configure($crate::routes::services)
                 //.data(std::sync::Arc::new(crate::data::Data::new().await))
                 .app_data(actix_web::web::Data::new($data.clone())),
         )

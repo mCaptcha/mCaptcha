@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "UPDATE mcaptcha_config SET name = ?, duration = ?\n            WHERE user_id = (SELECT ID FROM mcaptcha_users WHERE name = ?)\n            AND captcha_key = ?",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 4
+    },
+    "nullable": []
+  },
+  "hash": "3a8381eb0f0542a492d9dd51368e769e2b313e0576a1873e5c7630011e463daf"
+}

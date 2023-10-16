@@ -34,8 +34,7 @@ endef
 
 define run_dev_migrations ## run database migrations
 	cd db/db-sqlx-maria/ && \
-		DATABASE_URL=${MARIA_DATABASE_URL} sqlx migrate run
-	cd db/db-sqlx-postgres/ && \
+		DATABASE_URL=${MARIA_DATABASE_URL} sqlx migrate run cd db/db-sqlx-postgres/ && \
 		DATABASE_URL=${POSTGRES_DATABASE_URL} sqlx migrate run
 endef
 
@@ -67,10 +66,8 @@ define test_db_sqlx_maria
 endef
 
 define test_core
-	cargo test --no-fail-fast
+	cargo test --no-fail-fast --jobs=4
 endef
-
-
 
 default: frontend ## Build app in debug mode
 	$(call cache_bust)

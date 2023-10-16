@@ -68,16 +68,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-        #- name: ⚡ Cache
-      #        uses: actions/cache@v2
-      #        with:
-      #          path: |
-      #            ~/.cargo/registry
-      #            ~/.cargo/git
-      #            node_modules
-      #            ./docs/openapi/node_modules
-      #            target
-      #          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
 
       - name: configure GPG key
         if: (github.ref == 'refs/heads/master' || github.event_name == 'push') && github.repository == 'mCaptcha/mCaptcha'
@@ -110,8 +101,7 @@ jobs:
         run: make
         env:
           POSTGRES_DATABASE_URL: "${{ env.POSTGRES_DATABASE_URL }}"
-          MARIA_DATABASE_URL:
-            "${{ env.MARIA_DATABASE_URL }}"
+          MARIA_DATABASE_URL: "${{ env.MARIA_DATABASE_URL }}"
 
             #      - name: build frontend
             #        run: make frontend

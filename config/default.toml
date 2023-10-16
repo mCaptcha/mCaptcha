@@ -42,17 +42,11 @@ duration = 30 # cooldown period in seconds
 # This section deals with the database location and how to access it
 # Please note that at the moment, we have support for only postgresqa.
 # Example, if you are Batman, your config would be:
-# hostname = "batcave.org"
-# port = "5432"
-# username = "batman"
-# password = "somereallycomplicatedBatmanpassword"
-hostname = "localhost"
-port = "5432"
-username = "postgres"
-password = "password"
-name = "postgres"
+# url = "postgres://batman:password@batcave.org:5432/batcave"
+# database_type = "postgres"
+# pool = 4
+url = "postgres://example.org" # hack for tests to run successfully
 pool = 4
-database_type="postgres" # "postgres", "maria"
 
 [redis]
 # This section deals with the database location and how to access it

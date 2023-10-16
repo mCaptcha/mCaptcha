@@ -1,0 +1,42 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT id, time, difficulty_factor, worker_type FROM mcaptcha_pow_analytics\n            WHERE \n                config_id = (\n                    SELECT \n                        config_id FROM mcaptcha_config \n                    WHERE \n                        key = $1\n                        )\n                ORDER BY ID\n                OFFSET $2 LIMIT $3\n                ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 1,
+        "name": "time",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 2,
+        "name": "difficulty_factor",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 3,
+        "name": "worker_type",
+        "type_info": "Varchar"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Int8",
+        "Int8"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "017576128f1c63aee062799a33f872457fe19f5d6429d0af312dc00c244b31cb"
+}

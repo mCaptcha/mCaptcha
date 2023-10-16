@@ -1,0 +1,25 @@
+{
+  "db_name": "MySQL",
+  "query": "SELECT\n                captcha_key\n            FROM\n                mcaptcha_config\n            WHERE\n                 config_id = (\n                     SELECT\n                         config_id\n                     FROM\n                         mcaptcha_psuedo_campaign_id\n                     WHERE\n                         psuedo_id = ?\n                 );",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "captcha_key",
+        "type_info": {
+          "type": "VarString",
+          "flags": "NOT_NULL | UNIQUE_KEY | NO_DEFAULT_VALUE",
+          "char_set": 224,
+          "max_size": 400
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "14dc89b2988b221fd24e4f319b1d48f5e6c65c760c30d11c9c29087f09cee23a"
+}

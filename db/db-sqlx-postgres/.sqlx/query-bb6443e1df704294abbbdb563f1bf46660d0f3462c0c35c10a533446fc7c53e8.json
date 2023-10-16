@@ -1,0 +1,15 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "DELETE FROM mcaptcha_config WHERE key = ($1)\n                AND\n            user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Text"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "bb6443e1df704294abbbdb563f1bf46660d0f3462c0c35c10a533446fc7c53e8"
+}

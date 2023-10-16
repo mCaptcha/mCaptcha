@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "UPDATE mcaptcha_users set email = ?\n            WHERE name = ?",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "9cb416de904872d66af90baa0024f382ce6f8344464c607fe6e6c2572816dfc2"
+}
