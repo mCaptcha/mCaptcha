@@ -33,7 +33,7 @@ impl Date {
         let difference = now - timestamp;
 
         if difference >= 3 * WEEK {
-            date.format("%d-%m-%y")
+            format!("{}{}{}", date.year(), date.month(), date.date())
         } else if (DAY..(3 * WEEK)).contains(&difference) {
             format!("{} days ago", date.hour())
         } else if (HOUR..DAY).contains(&difference) {
@@ -52,12 +52,12 @@ impl Date {
 
     /// print date
     pub fn date(&self) -> String {
-        self.time.format("%F %r %z")
+            format!("{}{}{}", self.time.year(), self.time.month(), self.time.date())
     }
 
     pub fn new(unix: i64) -> Self {
         Self {
-            time: OffsetDateTime::from_unix_timestamp(unix),
+            time: OffsetDateTime::from_unix_timestamp(unix).unwrap(),
         }
     }
 }
@@ -77,28 +77,28 @@ mod tests {
 
         // seconds test
         assert!(n.print_date().contains("seconds ago"));
-        n.time = OffsetDateTime::from_unix_timestamp(timestamp - 5);
+        n.time = OffsetDateTime::from_unix_timestamp(timestamp - 5).unwrap();
         assert!(n.print_date().contains("seconds ago"));
 
         // minutes test
-        n.time = OffsetDateTime::from_unix_timestamp(timestamp - MINUTE * 2);
+        n.time = OffsetDateTime::from_unix_timestamp(timestamp - MINUTE * 2).unwrap();
         assert!(n.print_date().contains("minutes ago"));
-        n.time = OffsetDateTime::from_unix_timestamp(timestamp - MINUTE * 56);
+        n.time = OffsetDateTime::from_unix_timestamp(timestamp - MINUTE * 56).unwrap();
         assert!(n.print_date().contains("minutes ago"));
 
         // hours test
-        n.time = OffsetDateTime::from_unix_timestamp(timestamp - HOUR);
+        n.time = OffsetDateTime::from_unix_timestamp(timestamp - HOUR).unwrap();
         assert!(n.print_date().contains("hours ago"));
-        n.time = OffsetDateTime::from_unix_timestamp(timestamp - HOUR * 23);
+        n.time = OffsetDateTime::from_unix_timestamp(timestamp - HOUR * 23).unwrap();
         assert!(n.print_date().contains("hours ago"));
 
         // days test
-        n.time = OffsetDateTime::from_unix_timestamp(timestamp - 2 * WEEK);
+        n.time = OffsetDateTime::from_unix_timestamp(timestamp - 2 * WEEK).unwrap();
         assert!(n.print_date().contains("days ago"));
 
         // date test
-        n.time = OffsetDateTime::from_unix_timestamp(timestamp - 6 * WEEK);
-        let date = n.time.format("%d-%m-%y");
+        n.time = OffsetDateTime::from_unix_timestamp(timestamp - 6 * WEEK).unwrap();
+        let date = format!("{}{}{}", n.time.year(), n.time.month(), n.time.date());
         assert!(n.print_date().contains(&date))
     }
 }

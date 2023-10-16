@@ -123,7 +123,7 @@ pub mod tests {
         assert_eq!(get_config_resp.status(), StatusCode::OK);
         let config: PoWConfig = test::read_body_json(get_config_resp).await;
 
-        let pow = pow_sha256::ConfigBuilder::default()
+        let pow = mcaptcha_pow_sha256::ConfigBuilder::default()
             .salt(config.salt)
             .build()
             .unwrap();

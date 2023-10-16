@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "INSERT INTO mcaptcha_config\n        (`captcha_key`, `user_id`, `duration`, `name`)\n        VALUES (?, (SELECT ID FROM mcaptcha_users WHERE name = ?), ?, ?)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 4
+    },
+    "nullable": []
+  },
+  "hash": "d05b84966f4e70c53789221f961bf3637f404f3ba45e880115e97ed1ba5a2809"
+}

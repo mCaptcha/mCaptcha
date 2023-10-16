@@ -1,0 +1,17 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "INSERT INTO mcaptcha_levels (\n            difficulty_factor, \n            visitor_threshold,\n            config_id) VALUES  (\n            $1, $2, (\n                SELECT config_id FROM mcaptcha_config WHERE\n                key = ($3) AND user_id = (\n                SELECT ID FROM mcaptcha_users WHERE name = $4\n                    )));",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Int4",
+        "Int4",
+        "Text",
+        "Text"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "f330cb94c53d33495df94aacec7e4e91d8a920742b89a63d1c59a8ea8937c5c8"
+}

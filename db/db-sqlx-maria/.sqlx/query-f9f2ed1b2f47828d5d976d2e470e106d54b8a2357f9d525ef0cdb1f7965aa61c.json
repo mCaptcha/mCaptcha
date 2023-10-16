@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "-- SPDX-FileCopyrightText: 2023 Aravinth Manivannan <realaravinth@batsense.net>\n--\n-- SPDX-License-Identifier: AGPL-3.0-or-later\n\n--  mark a notification as read\nUPDATE mcaptcha_notifications\n    SET read_notification = TRUE\nWHERE \n    mcaptcha_notifications.id = ?\nAND\n    mcaptcha_notifications.rx = (\n        SELECT\n            id\n        FROM\n            mcaptcha_users\n        WHERE\n        name = ?\n    );\n",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "f9f2ed1b2f47828d5d976d2e470e106d54b8a2357f9d525ef0cdb1f7965aa61c"
+}

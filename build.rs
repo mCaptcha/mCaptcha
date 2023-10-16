@@ -16,6 +16,7 @@ fn main() {
     let git_hash = String::from_utf8(output.stdout).unwrap();
     println!("cargo:rustc-env=GIT_HASH={}", git_hash);
 
-    let now = OffsetDateTime::now_utc().format("%y-%m-%d");
+    let now = OffsetDateTime::now_utc();
+    let now = format!("{}{}{}", now.year(), now.month(), now.date());
     println!("cargo:rustc-env=COMPILED_DATE={}", &now);
 }

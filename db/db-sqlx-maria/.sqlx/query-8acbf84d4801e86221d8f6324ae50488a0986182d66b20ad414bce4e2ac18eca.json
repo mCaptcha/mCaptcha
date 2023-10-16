@@ -1,0 +1,25 @@
+{
+  "db_name": "MySQL",
+  "query": "SELECT duration FROM mcaptcha_config  \n            where captcha_key= ?",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "duration",
+        "type_info": {
+          "type": "Long",
+          "flags": "NOT_NULL",
+          "char_set": 63,
+          "max_size": 11
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "8acbf84d4801e86221d8f6324ae50488a0986182d66b20ad414bce4e2ac18eca"
+}

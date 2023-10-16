@@ -1,0 +1,17 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "INSERT INTO mcaptcha_config\n        (key, user_id, duration, name)\n        VALUES ($1, (SELECT ID FROM mcaptcha_users WHERE name = $2), $3, $4)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Varchar",
+        "Text",
+        "Int4",
+        "Varchar"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "307245aaf5b0d692448b80358d6916aa50c507b35e724d66c9b16a16b60e1b38"
+}

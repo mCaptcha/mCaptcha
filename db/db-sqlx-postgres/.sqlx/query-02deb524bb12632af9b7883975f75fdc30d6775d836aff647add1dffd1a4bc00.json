@@ -1,0 +1,41 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT config_id, duration, name, key from mcaptcha_config WHERE\n                        key = $1 AND\n                        user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2) ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "config_id",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 1,
+        "name": "duration",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 2,
+        "name": "name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 3,
+        "name": "key",
+        "type_info": "Varchar"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Text"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "02deb524bb12632af9b7883975f75fdc30d6775d836aff647add1dffd1a4bc00"
+}

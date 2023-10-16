@@ -1,0 +1,28 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT difficulty_factor, visitor_threshold FROM mcaptcha_levels  WHERE\n            config_id = (\n                SELECT config_id FROM mcaptcha_config WHERE key = ($1)\n                ) ORDER BY difficulty_factor ASC;",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "difficulty_factor",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 1,
+        "name": "visitor_threshold",
+        "type_info": "Int4"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Text"
+      ]
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "9753721856a47438c5e72f28fd9d149db10c48e677b4613bf3f1e8487908aac8"
+}

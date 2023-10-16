@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "\n            INSERT INTO\n                mcaptcha_psuedo_campaign_id (config_id, psuedo_id)\n            VALUES (\n                (SELECT config_id FROM mcaptcha_config WHERE captcha_key = (?)),\n                ?\n            );",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "9e45969a0f79eab8caba41b0d91e5e3b85a1a68a49136f89fc90793c38f00041"
+}

@@ -1,0 +1,36 @@
+{
+  "db_name": "MySQL",
+  "query": "SELECT difficulty_factor, visitor_threshold FROM mcaptcha_levels  WHERE\n            config_id = (\n                SELECT config_id FROM mcaptcha_config where captcha_key= (?)\n                ) ORDER BY difficulty_factor ASC;",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "difficulty_factor",
+        "type_info": {
+          "type": "Long",
+          "flags": "NOT_NULL | NO_DEFAULT_VALUE",
+          "char_set": 63,
+          "max_size": 11
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "visitor_threshold",
+        "type_info": {
+          "type": "Long",
+          "flags": "NOT_NULL | NO_DEFAULT_VALUE",
+          "char_set": 63,
+          "max_size": 11
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "6d43e6ceb54a0ff8a803bd96dd9134b15da01d48776ac0cf3d66a2997dadce5e"
+}

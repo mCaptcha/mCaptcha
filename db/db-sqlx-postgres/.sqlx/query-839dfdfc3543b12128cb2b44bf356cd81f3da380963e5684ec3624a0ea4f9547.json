@@ -1,0 +1,22 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT psuedo_id FROM\n                mcaptcha_psuedo_campaign_id\n            WHERE\n                 config_id = (SELECT config_id FROM mcaptcha_config WHERE key = ($1));\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "psuedo_id",
+        "type_info": "Varchar"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Text"
+      ]
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "839dfdfc3543b12128cb2b44bf356cd81f3da380963e5684ec3624a0ea4f9547"
+}

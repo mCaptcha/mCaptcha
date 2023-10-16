@@ -38,7 +38,7 @@ impl From<db_core::Notification> for Notification {
         Notification {
             name: n.name.unwrap(),
             heading: n.heading.unwrap(),
-            received: OffsetDateTime::from_unix_timestamp(n.received.unwrap()),
+            received: OffsetDateTime::from_unix_timestamp(n.received.unwrap()).unwrap(),
             id: n.id.unwrap(),
             message: n.message.unwrap(),
         }
@@ -91,28 +91,28 @@ mod tests {
 
         // seconds test
         assert!(n.print_date().contains("seconds ago"));
-        n.received = OffsetDateTime::from_unix_timestamp(timestamp - 5);
+        n.received = OffsetDateTime::from_unix_timestamp(timestamp - 5).unwrap();
         assert!(n.print_date().contains("seconds ago"));
 
         // minutes test
-        n.received = OffsetDateTime::from_unix_timestamp(timestamp - MINUTE * 2);
+        n.received = OffsetDateTime::from_unix_timestamp(timestamp - MINUTE * 2).unwrap();
         assert!(n.print_date().contains("minutes ago"));
-        n.received = OffsetDateTime::from_unix_timestamp(timestamp - MINUTE * 56);
+        n.received = OffsetDateTime::from_unix_timestamp(timestamp - MINUTE * 56).unwrap();
         assert!(n.print_date().contains("minutes ago"));
 
         // hours test
-        n.received = OffsetDateTime::from_unix_timestamp(timestamp - HOUR);
+        n.received = OffsetDateTime::from_unix_timestamp(timestamp - HOUR).unwrap();
         assert!(n.print_date().contains("hours ago"));
-        n.received = OffsetDateTime::from_unix_timestamp(timestamp - HOUR * 23);
+        n.received = OffsetDateTime::from_unix_timestamp(timestamp - HOUR * 23).unwrap();
         assert!(n.print_date().contains("hours ago"));
 
         // days test
-        n.received = OffsetDateTime::from_unix_timestamp(timestamp - 2 * WEEK);
+        n.received = OffsetDateTime::from_unix_timestamp(timestamp - 2 * WEEK).unwrap();
         assert!(n.print_date().contains("days ago"));
 
         // date test
-        n.received = OffsetDateTime::from_unix_timestamp(timestamp - 6 * WEEK);
-        let date = n.received.format("%d-%m-%y");
+        n.received = OffsetDateTime::from_unix_timestamp(timestamp - 6 * WEEK).unwrap();
+        let date = format!("{}{}{}", n.received.year(), n.received.month(), n.received.date());
         assert!(n.print_date().contains(&date))
     }
 }

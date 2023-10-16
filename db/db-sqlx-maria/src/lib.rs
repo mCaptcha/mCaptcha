@@ -61,7 +61,7 @@ impl Connect for ConnectionOptions {
                 let mut connect_options =
                     sqlx::mysql::MySqlConnectOptions::from_str(&fresh.url).unwrap();
                 if fresh.disable_logging {
-                    connect_options.disable_statement_logging();
+                    connect_options = connect_options.disable_statement_logging();
                 }
                 fresh
                     .pool_options

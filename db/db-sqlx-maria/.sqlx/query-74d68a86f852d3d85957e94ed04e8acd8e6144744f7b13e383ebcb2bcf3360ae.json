@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "INSERT INTO mcaptcha_levels (\n            difficulty_factor, \n            visitor_threshold,\n            config_id) VALUES  (\n            ?, ?, (\n                SELECT config_id FROM mcaptcha_config WHERE\n                captcha_key = (?) AND user_id = (\n                SELECT ID FROM mcaptcha_users WHERE name = ?\n                    )));",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 4
+    },
+    "nullable": []
+  },
+  "hash": "74d68a86f852d3d85957e94ed04e8acd8e6144744f7b13e383ebcb2bcf3360ae"
+}

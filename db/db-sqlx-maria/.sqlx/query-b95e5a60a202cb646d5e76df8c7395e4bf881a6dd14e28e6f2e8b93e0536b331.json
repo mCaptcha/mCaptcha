@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "DELETE FROM mcaptcha_config where captcha_key= (?)\n                AND\n            user_id = (SELECT ID FROM mcaptcha_users WHERE name = ?)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "b95e5a60a202cb646d5e76df8c7395e4bf881a6dd14e28e6f2e8b93e0536b331"
+}

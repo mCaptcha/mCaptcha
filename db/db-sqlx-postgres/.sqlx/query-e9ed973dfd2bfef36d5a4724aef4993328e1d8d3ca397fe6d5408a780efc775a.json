@@ -1,0 +1,15 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "UPDATE mcaptcha_users set password = $1\n            WHERE name = $2",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Text"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "e9ed973dfd2bfef36d5a4724aef4993328e1d8d3ca397fe6d5408a780efc775a"
+}
