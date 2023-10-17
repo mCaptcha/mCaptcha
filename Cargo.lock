@@ -1784,7 +1784,8 @@ checksum = "f7012b1bbb0719e1097c47611d3898568c546d597c2e74d66f6087edd5233ff4"
 [[package]]
 name = "libmcaptcha"
 version = "0.2.4"
-source = "git+https://github.com/mCaptcha/libmcaptcha?tag=0.2.4#681a5c6380373440f56f4c0bda2ffac5654df773"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3bd24de3df9ea98d75d929dc4df5d637832213d3deb61d2cfa5c9055ccdaea6b"
 dependencies = [
  "actix",
  "crossbeam-channel",

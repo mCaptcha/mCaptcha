@@ -59,8 +59,7 @@ log = "0.4"
 lazy_static = "1.4"
 
 
-libmcaptcha = { tag = "0.2.4", git = "https://github.com/mCaptcha/libmcaptcha", features = ["full"] }
-#libmcaptcha = { path = "../libmcaptcha", features = ["full"]}
+libmcaptcha = "0.2.4"
 
 rand = "0.8"
 
