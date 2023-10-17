@@ -63,7 +63,8 @@ mod tests {
 
         let edit_sitekey_url = PAGES.panel.sitekey.get_edit_advance(&token_key.key);
         let delete_sitekey_url = PAGES.panel.sitekey.get_delete(&token_key.key);
-        let urls = [PAGES.home,
+        let urls = [
+            PAGES.home,
             PAGES.panel.sitekey.add_advance,
             PAGES.panel.sitekey.add_easy,
             PAGES.panel.sitekey.list,
@@ -72,7 +73,8 @@ mod tests {
             PAGES.panel.settings.delete_account,
             PAGES.panel.settings.update_secret,
             &delete_sitekey_url,
-            &edit_sitekey_url];
+            &edit_sitekey_url,
+        ];
 
         for url in urls.iter() {
             let resp =

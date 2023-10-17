@@ -4,7 +4,7 @@
 
 BUNDLE = static/cache/bundle
 OPENAPI = docs/openapi
-CLEAN_UP = $(BUNDLE) src/cache_buster_data.json assets
+CLEAN_UP = $(BUNDLE) src/libcachebust_data.json assets
 
 define deploy_dependencies ## deploy dependencies
 	@-docker create --name ${db}  \
