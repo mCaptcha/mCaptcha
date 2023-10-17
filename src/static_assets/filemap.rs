@@ -12,7 +12,7 @@ pub struct FileMap {
 impl FileMap {
     #[allow(clippy::new_without_default)]
     pub fn new() -> Self {
-        let map = include_str!("../cache_buster_data.json");
+        let map = include_str!("../libcachebust_data.json");
         let files = Files::new(map);
         Self { files }
     }
