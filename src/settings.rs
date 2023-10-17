@@ -92,6 +92,12 @@ pub struct Redis {
 }
 
 #[derive(Debug, Clone, Deserialize, Eq, PartialEq)]
+pub struct Survey {
+    pub nodes: Vec<url::Url>,
+    pub rate_limit: u64,
+}
+
+#[derive(Debug, Clone, Deserialize, Eq, PartialEq)]
 pub struct Settings {
     pub debug: bool,
     pub commercial: bool,
@@ -99,6 +105,7 @@ pub struct Settings {
     pub allow_registration: bool,
     pub allow_demo: bool,
     pub database: Database,
+    pub survey: Survey,
     pub redis: Option<Redis>,
     pub server: Server,
     pub captcha: Captcha,
