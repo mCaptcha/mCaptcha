@@ -102,6 +102,11 @@
 <a href="#102" id="102">102</a>
 <a href="#103" id="103">103</a>
 <a href="#104" id="104">104</a>
+<a href="#105" id="105">105</a>
+<a href="#106" id="106">106</a>
+<a href="#107" id="107">107</a>
+<a href="#108" id="108">108</a>
+<a href="#109" id="109">109</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 // SPDX-FileCopyrightText: 2023 Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 //
@@ -156,7 +161,12 @@
 
     <span class="doccomment">/// print date
     </span><span class="kw">pub fn </span>date(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
-            <span class="macro">format!</span>(<span class="string">&quot;{}{}{}&quot;</span>, <span class="self">self</span>.time.year(), <span class="self">self</span>.time.month(), <span class="self">self</span>.time.date())
+        <span class="macro">format!</span>(
+            <span class="string">&quot;{}{}{}&quot;</span>,
+            <span class="self">self</span>.time.year(),
+            <span class="self">self</span>.time.month(),
+            <span class="self">self</span>.time.date()
+        )
     }
 
     <span class="kw">pub fn </span>new(unix: i64) -&gt; <span class="self">Self </span>{

@@ -38,7 +38,7 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-</span><span class="kw">use </span>cache_buster::Files;
+</span><span class="kw">use </span>libcachebust::Files;
 
 <span class="kw">pub struct </span>FileMap {
     <span class="kw">pub </span>files: Files,
@@ -47,7 +47,7 @@
 <span class="kw">impl </span>FileMap {
     <span class="attr">#[allow(clippy::new_without_default)]
     </span><span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span>map = <span class="macro">include_str!</span>(<span class="string">&quot;../cache_buster_data.json&quot;</span>);
+        <span class="kw">let </span>map = <span class="macro">include_str!</span>(<span class="string">&quot;../libcachebust_data.json&quot;</span>);
         <span class="kw">let </span>files = Files::new(map);
         <span class="self">Self </span>{ files }
     }

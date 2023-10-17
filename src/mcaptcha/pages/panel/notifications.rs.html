@@ -116,6 +116,13 @@
 <a href="#116" id="116">116</a>
 <a href="#117" id="117">117</a>
 <a href="#118" id="118">118</a>
+<a href="#119" id="119">119</a>
+<a href="#120" id="120">120</a>
+<a href="#121" id="121">121</a>
+<a href="#122" id="122">122</a>
+<a href="#123" id="123">123</a>
+<a href="#124" id="124">124</a>
+<a href="#125" id="125">125</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 // SPDX-FileCopyrightText: 2023 Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 //
@@ -213,9 +220,11 @@
         <span class="macro">assert!</span>(n.print_date().contains(<span class="string">&quot;seconds ago&quot;</span>));
 
         <span class="comment">// minutes test
-        </span>n.received = OffsetDateTime::from_unix_timestamp(timestamp - MINUTE * <span class="number">2</span>).unwrap();
+        </span>n.received =
+            OffsetDateTime::from_unix_timestamp(timestamp - MINUTE * <span class="number">2</span>).unwrap();
         <span class="macro">assert!</span>(n.print_date().contains(<span class="string">&quot;minutes ago&quot;</span>));
-        n.received = OffsetDateTime::from_unix_timestamp(timestamp - MINUTE * <span class="number">56</span>).unwrap();
+        n.received =
+            OffsetDateTime::from_unix_timestamp(timestamp - MINUTE * <span class="number">56</span>).unwrap();
         <span class="macro">assert!</span>(n.print_date().contains(<span class="string">&quot;minutes ago&quot;</span>));
 
         <span class="comment">// hours test
@@ -230,7 +239,12 @@
 
         <span class="comment">// date test
         </span>n.received = OffsetDateTime::from_unix_timestamp(timestamp - <span class="number">6 </span>* WEEK).unwrap();
-        <span class="kw">let </span>date = <span class="macro">format!</span>(<span class="string">&quot;{}{}{}&quot;</span>, n.received.year(), n.received.month(), n.received.date());
+        <span class="kw">let </span>date = <span class="macro">format!</span>(
+            <span class="string">&quot;{}{}{}&quot;</span>,
+            n.received.year(),
+            n.received.month(),
+            n.received.date()
+        );
         <span class="macro">assert!</span>(n.print_date().contains(<span class="kw-2">&amp;</span>date))
     }
 }

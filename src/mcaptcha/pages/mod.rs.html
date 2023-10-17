@@ -109,6 +109,8 @@
 <a href="#109" id="109">109</a>
 <a href="#110" id="110">110</a>
 <a href="#111" id="111">111</a>
+<a href="#112" id="112">112</a>
+<a href="#113" id="113">113</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 // SPDX-FileCopyrightText: 2023 Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 //
@@ -174,7 +176,8 @@
 
         <span class="kw">let </span>edit_sitekey_url = PAGES.panel.sitekey.get_edit_advance(<span class="kw-2">&amp;</span>token_key.key);
         <span class="kw">let </span>delete_sitekey_url = PAGES.panel.sitekey.get_delete(<span class="kw-2">&amp;</span>token_key.key);
-        <span class="kw">let </span>urls = [PAGES.home,
+        <span class="kw">let </span>urls = [
+            PAGES.home,
             PAGES.panel.sitekey.add_advance,
             PAGES.panel.sitekey.add_easy,
             PAGES.panel.sitekey.list,
@@ -183,7 +186,8 @@
             PAGES.panel.settings.delete_account,
             PAGES.panel.settings.update_secret,
             <span class="kw-2">&amp;</span>delete_sitekey_url,
-            <span class="kw-2">&amp;</span>edit_sitekey_url];
+            <span class="kw-2">&amp;</span>edit_sitekey_url,
+        ];
 
         <span class="kw">for </span>url <span class="kw">in </span>urls.iter() {
             <span class="kw">let </span>resp =
