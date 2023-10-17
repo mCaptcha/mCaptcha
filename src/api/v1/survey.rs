@@ -28,12 +28,14 @@ pub fn services(cfg: &mut ServiceConfig) {
 pub mod routes {
     pub struct Survey {
         pub download: &'static str,
+        pub secret: &'static str,
     }
 
     impl Survey {
         pub const fn new() -> Self {
             Self {
                 download: "/api/v1/survey/{survey_id}/get",
+                secret: "/api/v1/survey/{survey_id}/secret",
             }
         }
 
