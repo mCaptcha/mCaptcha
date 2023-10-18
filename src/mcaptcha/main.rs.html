@@ -181,6 +181,8 @@
 <a href="#181" id="181">181</a>
 <a href="#182" id="182">182</a>
 <a href="#183" id="183">183</a>
+<a href="#184" id="184">184</a>
+<a href="#185" id="185">185</a>
 </pre></div><pre class="rust"><code><span class="attr">#![allow(warnings)]
 </span><span class="comment">// Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 // SPDX-FileCopyrightText: 2023 Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -213,6 +215,7 @@
 <span class="kw">mod </span>settings;
 <span class="kw">mod </span>static_assets;
 <span class="kw">mod </span>stats;
+<span class="kw">mod </span>survey;
 <span class="attr">#[cfg(test)]
 #[macro_use]
 </span><span class="kw">mod </span>tests;
@@ -285,7 +288,8 @@
     );
 
     <span class="kw">let </span>settings = Settings::new().unwrap();
-    <span class="kw">let </span>data = Data::new(<span class="kw-2">&amp;</span>settings).<span class="kw">await</span>;
+    <span class="kw">let </span>secrets = survey::SecretsStore::default();
+    <span class="kw">let </span>data = Data::new(<span class="kw-2">&amp;</span>settings, secrets).<span class="kw">await</span>;
     <span class="kw">let </span>data = actix_web::web::Data::new(data);
 
     <span class="kw">let </span><span class="kw-2">mut </span>demo_user: <span class="prelude-ty">Option</span>&lt;DemoUser&gt; = <span class="prelude-val">None</span>;
