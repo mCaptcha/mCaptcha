@@ -23,6 +23,7 @@ use crate::AppData;
 
 pub fn services(cfg: &mut ServiceConfig) {
     cfg.service(download);
+    cfg.service(secret);
 }
 
 pub mod routes {
@@ -35,7 +36,7 @@ pub mod routes {
         pub const fn new() -> Self {
             Self {
                 download: "/api/v1/survey/{survey_id}/get",
-                secret: "/api/v1/survey/{survey_id}/secret",
+                secret: "/api/v1/survey/secret",
             }
         }
 
@@ -76,23 +77,98 @@ async fn download(
     Ok(HttpResponse::Ok().json(data))
 }
 
+#[derive(Serialize, Deserialize)]
+struct SurveySecretUpload {
+    secret: String,
+    auth_token: String,
+}
+
+/// mCaptcha/survey upload secret route
+#[my_codegen::post(path = "crate::V1_API_ROUTES.survey.secret")]
+async fn secret(
+    data: AppData,
+    payload: web::Json<SurveySecretUpload>,
+) -> ServiceResult<impl Responder> {
+    match data.survey_secrets.get(&payload.auth_token) {
+        Some(survey_instance_url) => {
+            let payload = payload.into_inner();
+            data.survey_secrets.set(survey_instance_url, payload.secret);
+            data.survey_secrets.rm(&payload.auth_token);
+            Ok(HttpResponse::Ok())
+        }
+        None => Err(ServiceError::WrongPassword),
+    }
+}
+
 #[cfg(test)]
 pub mod tests {
     use actix_web::{http::StatusCode, test, App};
 
+    use super::*;
+    use crate::api::v1::mcaptcha::get_random;
     use crate::tests::*;
     use crate::*;
 
     #[actix_rt::test]
     async fn survey_works_pg() {
         let data = crate::tests::pg::get_data().await;
+        survey_registration_works(data.clone()).await;
         survey_works(data).await;
     }
 
     #[actix_rt::test]
     async fn survey_works_maria() {
         let data = crate::tests::maria::get_data().await;
+        survey_registration_works(data.clone()).await;
         survey_works(data).await;
+    }
+
+    pub async fn survey_registration_works(data: ArcData) {
+        let data = &data;
+        let app = get_app!(data).await;
+
+        let survey_instance_url = "http://survey_registration_works.survey.example.org";
+
+        let key = get_random(20);
+
+        let msg = SurveySecretUpload {
+            auth_token: key.clone(),
+            secret: get_random(32),
+        };
+
+        // should fail with ServiceError::WrongPassword since auth token is not loaded into
+        // keystore
+        bad_post_req_test_no_auth(
+            data,
+            V1_API_ROUTES.survey.secret,
+            &msg,
+            errors::ServiceError::WrongPassword,
+        )
+        .await;
+
+        // load auth token into key store, should succeed
+        data.survey_secrets
+            .set(key.clone(), survey_instance_url.to_owned());
+        let resp = test::call_service(
+            &app,
+            post_request!(&msg, V1_API_ROUTES.survey.secret).to_request(),
+        )
+        .await;
+        assert_eq!(resp.status(), StatusCode::OK);
+        // uploaded secret must be in keystore
+        assert_eq!(
+            data.survey_secrets.get(survey_instance_url).unwrap(),
+            msg.secret
+        );
+
+        // should fail since mCaptcha/survey secret upload auth tokens are single-use
+        bad_post_req_test_no_auth(
+            data,
+            V1_API_ROUTES.survey.secret,
+            &msg,
+            errors::ServiceError::WrongPassword,
+        )
+        .await;
     }
 
     pub async fn survey_works(data: ArcData) {
