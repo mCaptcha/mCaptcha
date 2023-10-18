@@ -181,6 +181,8 @@
 <a href="#181" id="181">181</a>
 <a href="#182" id="182">182</a>
 <a href="#183" id="183">183</a>
+<a href="#184" id="184">184</a>
+<a href="#185" id="185">185</a>
 </pre></div><pre class="rust"><code><span class="attr">#![allow(warnings)]
 </span><span class="comment">// Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 // SPDX-FileCopyrightText: 2023 Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -276,7 +278,9 @@
 </span><span class="kw">async fn </span>main() -&gt; std::io::Result&lt;()&gt; {
     <span class="kw">use </span>std::time::Duration;
 
-    env::set_var(<span class="string">&quot;RUST_LOG&quot;</span>, <span class="string">&quot;info&quot;</span>);
+    <span class="kw">if </span>env::var(<span class="string">&quot;RUST_LOG&quot;</span>).is_err() {
+        env::set_var(<span class="string">&quot;RUST_LOG&quot;</span>, <span class="string">&quot;info&quot;</span>);
+    }
 
     pretty_env_logger::init();
     <span class="macro">info!</span>(

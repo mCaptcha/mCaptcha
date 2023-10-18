@@ -404,6 +404,7 @@
 <a href="#404" id="404">404</a>
 <a href="#405" id="405">405</a>
 <a href="#406" id="406">406</a>
+<a href="#407" id="407">407</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 // SPDX-FileCopyrightText: 2023 Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 //
@@ -524,8 +525,8 @@
     (<span class="string">&quot;database.pool&quot;</span>, <span class="string">&quot;MCAPTCHA_database_POOL&quot;</span>),
 
     <span class="comment">/* redis */
-    </span>(<span class="string">&quot;redis.url&quot;</span>, <span class="string">&quot;MCPATCHA_redis_URL&quot;</span>),
-    (<span class="string">&quot;redis.pool&quot;</span>, <span class="string">&quot;MCPATCHA_redis_POOL&quot;</span>),
+    </span>(<span class="string">&quot;redis.url&quot;</span>, <span class="string">&quot;MCAPTCHA_redis_URL&quot;</span>),
+    (<span class="string">&quot;redis.pool&quot;</span>, <span class="string">&quot;MCAPTCHA_redis_POOL&quot;</span>),
 
     <span class="comment">/* server */
     </span>(<span class="string">&quot;server.port&quot;</span>, <span class="string">&quot;PORT&quot;</span>),
@@ -551,12 +552,12 @@
 
 
     <span class="comment">/* SMTP */
-    </span>(<span class="string">&quot;smtp.from&quot;</span>, <span class="string">&quot;MCPATCHA_smtp_FROM&quot;</span>),
-    (<span class="string">&quot;smtp.reply&quot;</span>, <span class="string">&quot;MCPATCHA_smtp_REPLY&quot;</span>),
-    (<span class="string">&quot;smtp.url&quot;</span>, <span class="string">&quot;MCPATCHA_smtp_URL&quot;</span>),
-    (<span class="string">&quot;smtp.username&quot;</span>, <span class="string">&quot;MCPATCHA_smtp_USERNAME&quot;</span>),
-    (<span class="string">&quot;smtp.password&quot;</span>, <span class="string">&quot;MCPATCHA_smtp_PASSWORD&quot;</span>),
-    (<span class="string">&quot;smtp.port&quot;</span>, <span class="string">&quot;MCPATCHA_smtp_PORT&quot;</span>),
+    </span>(<span class="string">&quot;smtp.from&quot;</span>, <span class="string">&quot;MCAPTCHA_smtp_FROM&quot;</span>),
+    (<span class="string">&quot;smtp.reply&quot;</span>, <span class="string">&quot;MCAPTCHA_smtp_REPLY&quot;</span>),
+    (<span class="string">&quot;smtp.url&quot;</span>, <span class="string">&quot;MCAPTCHA_smtp_URL&quot;</span>),
+    (<span class="string">&quot;smtp.username&quot;</span>, <span class="string">&quot;MCAPTCHA_smtp_USERNAME&quot;</span>),
+    (<span class="string">&quot;smtp.password&quot;</span>, <span class="string">&quot;MCAPTCHA_smtp_PASSWORD&quot;</span>),
+    (<span class="string">&quot;smtp.port&quot;</span>, <span class="string">&quot;MCAPTCHA_smtp_PORT&quot;</span>),
 
 
 
@@ -617,6 +618,7 @@
 
     <span class="kw">fn </span>env_override(<span class="kw-2">mut </span>s: ConfigBuilder&lt;DefaultState&gt;) -&gt; ConfigBuilder&lt;DefaultState&gt; {
         <span class="kw">for </span>(parameter, env_var_name) <span class="kw">in </span>ENV_VAR_CONFIG.iter() {
+            <span class="macro">println!</span>(<span class="string">&quot;[{env_var_name}]{:?}&quot;</span>, env::var(env_var_name));
             <span class="kw">if let </span><span class="prelude-val">Ok</span>(val) = env::var(env_var_name) {
                 <span class="macro">log::debug!</span>(
                     <span class="string">&quot;Overriding [{parameter}] with environment variable {env_var_name}&quot;
@@ -697,7 +699,7 @@
         <span class="comment">/* redis */
 
         /* redis.url */
-        </span><span class="kw">let </span>env = <span class="string">&quot;MCPATCHA_redis_URL&quot;</span>;
+        </span><span class="kw">let </span>env = <span class="string">&quot;MCAPTCHA_redis_URL&quot;</span>;
         <span class="kw">let </span>val = <span class="string">&quot;redis://redis.example.org&quot;</span>;
         <span class="macro">println!</span>(<span class="string">&quot;Setting env var {} to {} for test&quot;</span>, env, val);
         env::set_var(env, val);
@@ -710,7 +712,7 @@
         env::remove_var(env);
 
         <span class="comment">/* redis.pool */
-        </span><span class="kw">let </span>env = <span class="string">&quot;MCPATCHA_redis_POOL&quot;</span>;
+        </span><span class="kw">let </span>env = <span class="string">&quot;MCAPTCHA_redis_POOL&quot;</span>;
         <span class="kw">let </span>val = <span class="number">999</span>;
         <span class="macro">println!</span>(<span class="string">&quot;Setting env var {} to {} for test&quot;</span>, env, val);
         env::set_var(env, val.to_string());
@@ -761,12 +763,12 @@
         <span class="comment">/* SMTP */
 
         </span><span class="kw">let </span>vals = [
-            <span class="string">&quot;MCPATCHA_smtp_FROM&quot;</span>,
-            <span class="string">&quot;MCPATCHA_smtp_REPLY&quot;</span>,
-            <span class="string">&quot;MCPATCHA_smtp_URL&quot;</span>,
-            <span class="string">&quot;MCPATCHA_smtp_USERNAME&quot;</span>,
-            <span class="string">&quot;MCPATCHA_smtp_PASSWORD&quot;</span>,
-            <span class="string">&quot;MCPATCHA_smtp_PORT&quot;</span>,
+            <span class="string">&quot;MCAPTCHA_smtp_FROM&quot;</span>,
+            <span class="string">&quot;MCAPTCHA_smtp_REPLY&quot;</span>,
+            <span class="string">&quot;MCAPTCHA_smtp_URL&quot;</span>,
+            <span class="string">&quot;MCAPTCHA_smtp_USERNAME&quot;</span>,
+            <span class="string">&quot;MCAPTCHA_smtp_PASSWORD&quot;</span>,
+            <span class="string">&quot;MCAPTCHA_smtp_PORT&quot;</span>,
         ];
         <span class="kw">for </span>env <span class="kw">in </span>vals.iter() {
             <span class="macro">println!</span>(<span class="string">&quot;Setting env var {} to {} for test&quot;</span>, env, env);
@@ -774,15 +776,15 @@
         }
 
         <span class="kw">let </span>port = <span class="number">9999</span>;
-        env::set_var(<span class="string">&quot;MCPATCHA_smtp_PORT&quot;</span>, port.to_string());
+        env::set_var(<span class="string">&quot;MCAPTCHA_smtp_PORT&quot;</span>, port.to_string());
 
         new_settings = get_settings();
         <span class="kw">let </span>smtp_new = new_settings.smtp.as_ref().unwrap();
         <span class="kw">let </span>smtp_old = init_settings.smtp.as_ref().unwrap();
-        <span class="macro">assert_eq!</span>(smtp_new.from, <span class="string">&quot;MCPATCHA_smtp_FROM&quot;</span>);
-        <span class="macro">assert_eq!</span>(smtp_new.reply, <span class="string">&quot;MCPATCHA_smtp_REPLY&quot;</span>);
-        <span class="macro">assert_eq!</span>(smtp_new.username, <span class="string">&quot;MCPATCHA_smtp_USERNAME&quot;</span>);
-        <span class="macro">assert_eq!</span>(smtp_new.password, <span class="string">&quot;MCPATCHA_smtp_PASSWORD&quot;</span>);
+        <span class="macro">assert_eq!</span>(smtp_new.from, <span class="string">&quot;MCAPTCHA_smtp_FROM&quot;</span>);
+        <span class="macro">assert_eq!</span>(smtp_new.reply, <span class="string">&quot;MCAPTCHA_smtp_REPLY&quot;</span>);
+        <span class="macro">assert_eq!</span>(smtp_new.username, <span class="string">&quot;MCAPTCHA_smtp_USERNAME&quot;</span>);
+        <span class="macro">assert_eq!</span>(smtp_new.password, <span class="string">&quot;MCAPTCHA_smtp_PASSWORD&quot;</span>);
         <span class="macro">assert_eq!</span>(smtp_new.port, port);
         <span class="macro">assert_ne!</span>(smtp_new, smtp_old);
 
