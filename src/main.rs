@@ -93,7 +93,9 @@ pub type AppData = actix_web::web::Data<ArcData>;
 async fn main() -> std::io::Result<()> {
     use std::time::Duration;
 
-    env::set_var("RUST_LOG", "info");
+    if env::var("RUST_LOG").is_err() {
+        env::set_var("RUST_LOG", "info");
+    }
 
     pretty_env_logger::init();
     info!(
