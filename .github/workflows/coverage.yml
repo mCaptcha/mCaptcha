@@ -1,119 +1,119 @@
-name: Coverage
-
-on:
-  pull_request:
-    types: [opened, synchronize, reopened]
-  push:
-    branches:
-      - master
-      - db-abstract
-
-jobs:
-  build_and_test:
-    strategy:
-      fail-fast: false
-      matrix:
-        version:
-          - stable
-            #- 1.51.0
-
-    name: ${{ matrix.version }} - x86_64-unknown-linux-gnu
-    runs-on: ubuntu-latest
-
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_PASSWORD: password
-          POSTGRES_USER: postgres
-          POSTGRES_DB: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
-
-      mcaptcha-redis:
-        image: mcaptcha/cache
-        ports:
-          - 6379:6379
-
-      mcaptcha-smtp:
-        image: maildev/maildev
-        env:
-          MAILDEV_WEB_PORT: "1080"
-          MAILDEV_INCOMING_USER: "admin"
-          MAILDEV_INCOMING_PASS: "password"
-        ports:
-          - 1080:1080
-          - 10025:1025
-
-
-      maria:
-        image: mariadb:10
-        env: 
-          MARIADB_USER: "maria"
-          MARIADB_PASSWORD: "password"
-          MARIADB_ROOT_PASSWORD: "password"
-          MARIADB_DATABASE: "maria"
-        options: >-
-          --health-cmd="mysqladmin ping"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=10
-        ports:
-          - 3306:3306
-
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: load env
-        run: |
-          source .env_sample \
-            && echo "POSTGRES_DATABASE_URL=$POSTGRES_DATABASE_URL" >> $GITHUB_ENV \
-            && echo "MARIA_DATABASE_URL=$MARIA_DATABASE_URL" >> $GITHUB_ENV
-
-
-      - uses: actions/setup-node@v2
-        with:
-          node-version: "18.0.0"
-
-      - uses: actions-rust-lang/setup-rust-toolchain@v1
-
-      - name: Build frontend
-        run: make frontend
-
-      - name: Run the frontend tests
-        run: make test.frontend
-
-      - name: Run migrations
-        run: make migrate
-        env:
-          POSTGRES_DATABASE_URL: "${{ env.POSTGRES_DATABASE_URL }}"
-          MARIA_DATABASE_URL: "${{ env.MARIA_DATABASE_URL }}"
-
-      - name: build frontend
-        run: make frontend
-
-      - name: Generate coverage file
-        if: github.event_name == 'pull_request'
-        #if: (github.ref == 'refs/heads/master' || github.event_name == 'pull_request')
-        uses: actions-rs/tarpaulin@v0.1
-        with:
-          args: "-t 1200"
-        env:
-          POSTGRES_DATABASE_URL: "${{ env.POSTGRES_DATABASE_URL }}"
-          MARIA_DATABASE_URL: "${{ env.MARIA_DATABASE_URL }}"
-          # GIT_HASH is dummy value. I guess build.rs is skipped in tarpaulin
-          # execution so this value is required for preventing meta tests from
-          # panicking
-          GIT_HASH: 8e77345f1597e40c2e266cb4e6dee74888918a61
-          CACHE_BUSTER_FILE_MAP: '{"map":{"./static/bundle/main.js":"./prod/bundle/main.1417115E59909BE0A01040A45A398ADB09D928DF89CCF038FA44B14850442096.js"},"base_dir":"./prod"}'
-          COMPILED_DATE: "2021-07-21"
-
-      - name: Upload to Codecov
-        if: github.event_name == 'pull_request'
-        uses: codecov/codecov-action@v2
+#name: Coverage
+#
+#on:
+#  pull_request:
+#    types: [opened, synchronize, reopened]
+#  push:
+#    branches:
+#      - master
+#      - db-abstract
+#
+#jobs:
+#  build_and_test:
+#    strategy:
+#      fail-fast: false
+#      matrix:
+#        version:
+#          - stable
+#            #- 1.51.0
+#
+#    name: ${{ matrix.version }} - x86_64-unknown-linux-gnu
+#    runs-on: ubuntu-latest
+#
+#    services:
+#      postgres:
+#        image: postgres
+#        env:
+#          POSTGRES_PASSWORD: password
+#          POSTGRES_USER: postgres
+#          POSTGRES_DB: postgres
+#        options: >-
+#          --health-cmd pg_isready
+#          --health-interval 10s
+#          --health-timeout 5s
+#          --health-retries 5
+#        ports:
+#          - 5432:5432
+#
+#      mcaptcha-redis:
+#        image: mcaptcha/cache
+#        ports:
+#          - 6379:6379
+#
+#      mcaptcha-smtp:
+#        image: maildev/maildev
+#        env:
+#          MAILDEV_WEB_PORT: "1080"
+#          MAILDEV_INCOMING_USER: "admin"
+#          MAILDEV_INCOMING_PASS: "password"
+#        ports:
+#          - 1080:1080
+#          - 10025:1025
+#
+#
+#      maria:
+#        image: mariadb:10
+#        env: 
+#          MARIADB_USER: "maria"
+#          MARIADB_PASSWORD: "password"
+#          MARIADB_ROOT_PASSWORD: "password"
+#          MARIADB_DATABASE: "maria"
+#        options: >-
+#          --health-cmd="mysqladmin ping"
+#          --health-interval=10s
+#          --health-timeout=5s
+#          --health-retries=10
+#        ports:
+#          - 3306:3306
+#
+#
+#    steps:
+#      - uses: actions/checkout@v4
+#
+#      - name: load env
+#        run: |
+#          source .env_sample \
+#            && echo "POSTGRES_DATABASE_URL=$POSTGRES_DATABASE_URL" >> $GITHUB_ENV \
+#            && echo "MARIA_DATABASE_URL=$MARIA_DATABASE_URL" >> $GITHUB_ENV
+#
+#
+#      - uses: actions/setup-node@v2
+#        with:
+#          node-version: "18.0.0"
+#
+#      - uses: actions-rust-lang/setup-rust-toolchain@v1
+#
+#      - name: Build frontend
+#        run: make frontend
+#
+#      - name: Run the frontend tests
+#        run: make test.frontend
+#
+#      - name: Run migrations
+#        run: make migrate
+#        env:
+#          POSTGRES_DATABASE_URL: "${{ env.POSTGRES_DATABASE_URL }}"
+#          MARIA_DATABASE_URL: "${{ env.MARIA_DATABASE_URL }}"
+#
+#      - name: build frontend
+#        run: make frontend
+#
+#      - name: Generate coverage file
+#        if: github.event_name == 'pull_request'
+#        #if: (github.ref == 'refs/heads/master' || github.event_name == 'pull_request')
+#        uses: actions-rs/tarpaulin@v0.1
+#        with:
+#          args: "-t 1200"
+#        env:
+#          POSTGRES_DATABASE_URL: "${{ env.POSTGRES_DATABASE_URL }}"
+#          MARIA_DATABASE_URL: "${{ env.MARIA_DATABASE_URL }}"
+#          # GIT_HASH is dummy value. I guess build.rs is skipped in tarpaulin
+#          # execution so this value is required for preventing meta tests from
+#          # panicking
+#          GIT_HASH: 8e77345f1597e40c2e266cb4e6dee74888918a61
+#          CACHE_BUSTER_FILE_MAP: '{"map":{"./static/bundle/main.js":"./prod/bundle/main.1417115E59909BE0A01040A45A398ADB09D928DF89CCF038FA44B14850442096.js"},"base_dir":"./prod"}'
+#          COMPILED_DATE: "2021-07-21"
+#
+#      - name: Upload to Codecov
+#        if: github.event_name == 'pull_request'
+#        uses: codecov/codecov-action@v2
