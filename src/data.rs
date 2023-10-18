@@ -4,8 +4,8 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 //! App data: redis cache, database connections, etc.
-use std::sync::{RwLock, Arc};
 use std::collections::HashMap;
+use std::sync::Arc;
 use std::thread;
 use std::time::Duration;
 
@@ -31,15 +31,16 @@ use libmcaptcha::{
     system::{System, SystemBuilder},
 };
 use reqwest::Client;
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 use tokio::task::JoinHandle;
 use tokio::time::sleep;
 
-use crate::AppData;
 use crate::db::{self, BoxDB};
 use crate::errors::ServiceResult;
 use crate::settings::Settings;
 use crate::stats::{Dummy, Real, Stats};
+use crate::survey::SecretsStore;
+use crate::AppData;
 
 macro_rules! enum_system_actor {
     ($name:ident, $type:ident) => {
@@ -173,6 +174,8 @@ pub struct Data {
     pub settings: Settings,
     /// stats recorder
     pub stats: Box<dyn Stats>,
+    /// survey secret store
+    pub survey_secrets: SecretsStore,
 }
 
 impl Data {
@@ -187,7 +190,7 @@ impl Data {
     }
     #[cfg(not(tarpaulin_include))]
     /// create new instance of app data
-    pub async fn new(s: &Settings) -> Arc<Self> {
+    pub async fn new(s: &Settings, survey_secrets: SecretsStore) -> Arc<Self> {
         let creds = Self::get_creds();
         let c = creds.clone();
 
@@ -216,6 +219,7 @@ impl Data {
             mailer: Self::get_mailer(s),
             settings: s.clone(),
             stats,
+            survey_secrets,
         };
 
         #[cfg(not(debug_assertions))]
@@ -256,88 +260,6 @@ impl Data {
     async fn register_survey(&self) -> ServiceResult<()> {
         unimplemented!()
     }
-}
-
-#[async_trait::async_trait]
-trait SurveyClientTrait {
-    async fn start_job(&self, data: AppData) -> ServiceResult<JoinHandle<()>>;
-    async fn register(&self, data: &AppData) -> ServiceResult<()>;
-}
-
-#[derive(Clone, Debug, Default)]
-struct SecretsStore {
-    store: Arc<RwLock<HashMap<String, String>>>
-}
-
-impl SecretsStore {
-    fn get(&self, key: &str) -> Option<String> {
-        let r = self.store.read().unwrap();
-        r.get(key).map(|x| x.to_owned())
-    }
-
-    fn set(&self, key: String, value: String) {
-        let mut w = self.store.write().unwrap();
-        w.insert(key,value );
-        drop(w);
-    }
-}
-
-
-
-struct Survey {
-    settings: Settings,
-    client: Client,
-    secrets: SecretsStore,
-}
-impl Survey {
-    fn new(settings: Settings) -> Self {
-        Survey {
-            client: Client::new(),
-            settings,
-            secrets: SecretsStore::default(),
-        }
-    }
-}
-
-#[async_trait::async_trait]
-impl  SurveyClientTrait for Survey {
-    async fn start_job(&self, data: AppData) -> ServiceResult<JoinHandle<()>> {
-        let fut = async move {
-            loop {
-                sleep(Duration::new(data.settings.survey.rate_limit, 0)).await;
-//                if let Err(e) = Self::delete_demo_user(&data).await {
-//                    log::error!("Error while deleting demo user: {:?}", e);
-//                }
-//                if let Err(e) = Self::register_demo_user(&data).await {
-//                    log::error!("Error while registering demo user: {:?}", e);
-//                }
-            }
-        };
-        let handle = tokio::spawn(fut);
-        Ok(handle)
-
-    }
-    async fn register(&self, data: &AppData) -> ServiceResult<()> {
-        let protocol = if self.settings.server.proxy_has_tls {
-            "https://"
-        } else {
-            "http://"
-        };
-        #[derive(Serialize)]
-        struct MCaptchaInstance {
-            url: url::Url,
-        }
-
-        let payload =  MCaptchaInstance {
-            url: url::Url::parse(&format!("{protocol}{}", self.settings.server.domain))?,
-        };
-        for url in self.settings.survey.nodes.iter() {
-            self.client.post(url.clone()).json(&payload).send().await.unwrap();
-        }
-        Ok(())
-    }
-
-    
 }
 
 /// Mailer data type AsyncSmtpTransport<Tokio1Executor>

@@ -30,6 +30,7 @@ mod routes;
 mod settings;
 mod static_assets;
 mod stats;
+mod survey;
 #[cfg(test)]
 #[macro_use]
 mod tests;
@@ -104,7 +105,8 @@ async fn main() -> std::io::Result<()> {
     );
 
     let settings = Settings::new().unwrap();
-    let data = Data::new(&settings).await;
+    let secrets = survey::SecretsStore::default();
+    let data = Data::new(&settings, secrets).await;
     let data = actix_web::web::Data::new(data);
 
     let mut demo_user: Option<DemoUser> = None;
