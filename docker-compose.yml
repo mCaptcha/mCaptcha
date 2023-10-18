@@ -11,8 +11,8 @@ services:
       - 7000:7000
     environment:
       DATABASE_URL: postgres://postgres:password@mcaptcha_postgres:5432/postgres # set password at placeholder
-      MCAPTCHA_REDIS_URL: redis://mcaptcha_redis/
-      RUST_LOG: debug
+      MCAPTCHA_redis_URL: "redis://mcaptcha_redis/"
+      RUST_LOG: "debug"
       PORT: 7000
     depends_on:
       - mcaptcha_postgres

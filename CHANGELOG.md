@@ -2,6 +2,9 @@
 
 ### Changed
 
+-   2023-10-18: Environment variable names have changed, please see
+    [CONFIGURATION.md](docs/CONFIGURATION.md) for the names of environment
+    variables.
 -   ([`7d0e4c6`](https://github.com/mCaptcha/mCaptcha/commit/7d0e4c6be4b0769921cda7681858ebe16ec9a07b)) Add `secret` parameter to token verification request payload(`/api/v1/pow/siteverify`) to mitigate a security issue that @gusted found:
     > ...A malicious user could grab the sitekey
     > and use that sitekey with mcaptcha to use it for their own server.
