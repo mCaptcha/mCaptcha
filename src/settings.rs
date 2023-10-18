@@ -156,6 +156,33 @@ const ENV_VAR_CONFIG: [(&str, &str); 29] = [
 
 ];
 
+
+const DEPRECATED_ENV_VARS: [(&str, &str); 23] = [
+    ("debug","MCAPTCHA_DEBUG"),
+    ("commercial","MCAPTCHA_COMMERCIAL"),
+    ("source_code", "MCAPTCHA_SOURCE_CODE"),
+    ("allow_registration", "MCAPTCHA_ALLOW_REGISTRATION"),
+    ("allow_demo", "MCAPTCHA_ALLOW_DEMO"),
+    ("redis.pool", "MCAPTCHA_REDIS_POOL"),
+    ("redis.url", "MCAPTCHA_REDIS_URL"),
+    ("server.port", "MCAPTCHA_SERVER_PORT"),
+    ("server.ip", "MCAPTCHA_SERVER_IP"),
+    ("server.domain", "MCAPTCHA_SERVER_DOMAIN"),
+    ("server.cookie_secret", "MCAPTCHA_SERVER_COOKIE_SECRET"),
+    ("server.proxy_has_tls", "MCAPTCHA_SERVER_PROXY_HAS_TLS"),
+    ("captcha.salt", "MCAPTCHA_CAPTCHA_SALT"),
+    ("captcha.gc", "MCAPTCHA_CAPTCHA_GC"),
+    ("captcha.default_difficulty_strategy.avg_traffic_difficulty", "MCAPTCHA_CAPTCHA_AVG_TRAFFIC_DIFFICULTY"),
+    ("captcha.default_difficulty_strategy.peak_sustainable_traffic_difficulty", "MCAPTCHA_CAPTCHA_PEAK_TRAFFIC_DIFFICULTY"),
+    ("captcha.default_difficulty_strategy.broke_my_site_traffic_difficulty", "MCAPTCHA_CAPTCHA_BROKE_MY_SITE_TRAFFIC"),
+    ("smtp.from", "MCAPTCHA_SMTP_FROM"),
+    ("smtp.reply", "MCAPTCHA_SMTP_REPLY_TO"),
+    ("smtp.url", "MCAPTCHA_SMTP_URL"),
+    ("smtp.username", "MCAPTCHA_SMTP_USERNAME"),
+    ("smtp.password", "MCAPTCHA_SMTP_PASSWORD"),
+    ("smtp.port", "MCAPTCHA_SMTP_PORT"),
+];
+
 #[cfg(not(tarpaulin_include))]
 impl Settings {
     pub fn new() -> Result<Self, ConfigError> {
@@ -210,6 +237,17 @@ impl Settings {
     }
 
     fn env_override(mut s: ConfigBuilder<DefaultState>) -> ConfigBuilder<DefaultState> {
+
+        for (parameter, env_var_name) in DEPRECATED_ENV_VARS.iter() {
+            if let Ok(val) = env::var(env_var_name) {
+                log::warn!(
+                    "Found {env_var_name}. {env_var_name} will be deprecated soon. Please see https://github.com/mCaptcha/mCaptcha/blob/master/docs/CONFIGURATION.md for latest environment variable names"
+                );
+                s = s.set_override(parameter, val).unwrap();
+            }
+        }
+
+
         for (parameter, env_var_name) in ENV_VAR_CONFIG.iter() {
             if let Ok(val) = env::var(env_var_name) {
                 log::debug!(
@@ -239,8 +277,10 @@ mod tests {
 
     use super::*;
 
+
+
     #[test]
-    fn env_override_works() {
+    fn deprecated_env_override_works() {
         use crate::tests::get_settings;
         let init_settings = get_settings();
         // so that it can be tested outside the macro (helper) too
@@ -249,6 +289,126 @@ mod tests {
         macro_rules! helper {
 
 
+            ($env:expr, $val:expr, $val_typed:expr, $($param:ident).+) => {
+                println!("Setting env var {} to {} for test", $env, $val);
+                env::set_var($env, $val);
+                new_settings = get_settings();
+                assert_eq!(new_settings.$($param).+, $val_typed);
+                assert_ne!(new_settings.$($param).+, init_settings.$($param).+);
+                env::remove_var($env);
+            };
+
+
+            ($env:expr, $val:expr, $($param:ident).+) => {
+                helper!($env, $val.to_string(), $val, $($param).+);
+            };
+        }
+
+        /* top level */
+        helper!("MCAPTCHA_DEBUG", !init_settings.debug, debug);
+        helper!("MCAPTCHA_COMMERCIAL", !init_settings.commercial, commercial);
+        helper!("MCAPTCHA_ALLOW_REGISTRATION", !init_settings.allow_registration, allow_registration);
+        helper!("MCAPTCHA_ALLOW_DEMO", !init_settings.allow_demo, allow_demo);
+
+        /* database_type */
+
+        /* redis.url */
+        let env = "MCAPTCHA_REDIS_URL";
+        let val = "redis://redis.example.org";
+        println!("Setting env var {} to {} for test", env, val);
+        env::set_var(env, val);
+        new_settings = get_settings();
+        assert_eq!(new_settings.redis.as_ref().unwrap().url, val);
+        assert_ne!(
+            new_settings.redis.as_ref().unwrap().url,
+            init_settings.redis.as_ref().unwrap().url
+        );
+        env::remove_var(env);
+
+        /* redis.pool */
+        let env = "MCAPTCHA_REDIS_POOL";
+        let val = 999;
+        println!("Setting env var {} to {} for test", env, val);
+        env::set_var(env, val.to_string());
+        new_settings = get_settings();
+        assert_eq!(new_settings.redis.as_ref().unwrap().pool, val);
+        assert_ne!(
+            new_settings.redis.as_ref().unwrap().pool,
+            init_settings.redis.as_ref().unwrap().pool
+        );
+        env::remove_var(env);
+
+        helper!("PORT", 0, server.port);
+        helper!("MCAPTCHA_SERVER_DOMAIN", "example.org", server.domain);
+        helper!(
+            "MCAPTCHA_SERVER_COOKIE_SECRET",
+            "dafasdfsdf",
+            server.cookie_secret
+        );
+        helper!("MCAPTCHA_SERVER_IP", "9.9.9.9", server.ip);
+        helper!("MCAPTCHA_SERVER_PROXY_HAS_TLS", true, server.proxy_has_tls);
+
+        /* captcha */
+
+        helper!("MCAPTCHA_CAPTCHA_SALT", "foobarasdfasdf", captcha.salt);
+        helper!("MCAPTCHA_CAPTCHA_GC", 500, captcha.gc);
+        helper!(
+            "MCAPTCHA_captcha_RUNNERS",
+            "500",
+            Some(500),
+            captcha.runners
+        );
+
+        helper!(
+            "MCAPTCHA_CAPTCHA_AVG_TRAFFIC_DIFFICULTY",
+            999,
+            captcha.default_difficulty_strategy.avg_traffic_difficulty
+        );
+        helper!("MCAPTCHA_CAPTCHA_PEAK_TRAFFIC_DIFFICULTY", 999 , captcha.default_difficulty_strategy.peak_sustainable_traffic_difficulty);
+        helper!("MCAPTCHA_CAPTCHA_BROKE_MY_SITE_TRAFFIC", 999 , captcha.default_difficulty_strategy.broke_my_site_traffic_difficulty);
+
+        /* SMTP */
+
+        let vals = [
+            "MCAPTCHA_SMTP_FROM",
+            "MCAPTCHA_SMTP_REPLY_TO",
+            "MCAPTCHA_SMTP_URL",
+            "MCAPTCHA_SMTP_USERNAME",
+            "MCAPTCHA_SMTP_PASSWORD",
+            "MCAPTCHA_SMTP_PORT",
+        ];
+        for env in vals.iter() {
+            println!("Setting env var {} to {} for test", env, env);
+            env::set_var(env, env);
+        }
+
+        let port = 9999;
+        env::set_var("MCAPTCHA_SMTP_PORT", port.to_string());
+
+        new_settings = get_settings();
+        let smtp_new = new_settings.smtp.as_ref().unwrap();
+        let smtp_old = init_settings.smtp.as_ref().unwrap();
+        assert_eq!(smtp_new.from, "MCAPTCHA_SMTP_FROM");
+        assert_eq!(smtp_new.reply, "MCAPTCHA_SMTP_REPLY_TO");
+        assert_eq!(smtp_new.username, "MCAPTCHA_SMTP_USERNAME");
+        assert_eq!(smtp_new.password, "MCAPTCHA_SMTP_PASSWORD");
+        assert_eq!(smtp_new.port, port);
+        assert_ne!(smtp_new, smtp_old);
+
+        for env in vals.iter() {
+            env::remove_var(env);
+        }
+    }
+
+
+    #[test]
+    fn env_override_works() {
+        use crate::tests::get_settings;
+        let init_settings = get_settings();
+        // so that it can be tested outside the macro (helper) too
+        let mut new_settings;
+
+        macro_rules! helper {
 
 
             ($env:expr, $val:expr, $val_typed:expr, $($param:ident).+) => {
