@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["ENV_VAR_CONFIG"],"enum":["DBType"],"struct":["Captcha","Database","DefaultDifficultyStrategy","Redis","Server","Settings","Smtp","Survey"]};
+window.SIDEBAR_ITEMS = {"constant":["ENV_VAR_CONFIG"],"enum":["DBType"],"struct":["Captcha","Database","DefaultDifficultyStrategy","Redis","Server","Settings","Smtp"]};

@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["services"],"mod":["routes"],"struct":["Page","SurveySecretUpload","download","secret"]};

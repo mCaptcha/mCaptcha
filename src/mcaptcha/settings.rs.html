@@ -404,13 +404,6 @@
 <a href="#404" id="404">404</a>
 <a href="#405" id="405">405</a>
 <a href="#406" id="406">406</a>
-<a href="#407" id="407">407</a>
-<a href="#408" id="408">408</a>
-<a href="#409" id="409">409</a>
-<a href="#410" id="410">410</a>
-<a href="#411" id="411">411</a>
-<a href="#412" id="412">412</a>
-<a href="#413" id="413">413</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 // SPDX-FileCopyrightText: 2023 Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 //
@@ -505,12 +498,6 @@
 }
 
 <span class="attr">#[derive(Debug, Clone, Deserialize, Eq, PartialEq)]
-</span><span class="kw">pub struct </span>Survey {
-    <span class="kw">pub </span>nodes: Vec&lt;url::Url&gt;,
-    <span class="kw">pub </span>rate_limit: u64,
-}
-
-<span class="attr">#[derive(Debug, Clone, Deserialize, Eq, PartialEq)]
 </span><span class="kw">pub struct </span>Settings {
     <span class="kw">pub </span>debug: bool,
     <span class="kw">pub </span>commercial: bool,
@@ -518,7 +505,6 @@
     <span class="kw">pub </span>allow_registration: bool,
     <span class="kw">pub </span>allow_demo: bool,
     <span class="kw">pub </span>database: Database,
-    <span class="kw">pub </span>survey: Survey,
     <span class="kw">pub </span>redis: <span class="prelude-ty">Option</span>&lt;Redis&gt;,
     <span class="kw">pub </span>server: Server,
     <span class="kw">pub </span>captcha: Captcha,
