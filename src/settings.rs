@@ -118,8 +118,8 @@ const ENV_VAR_CONFIG: [(&str, &str); 29] = [
     ("database.pool", "MCAPTCHA_database_POOL"),
 
     /* redis */
-    ("redis.url", "MCPATCHA_redis_URL"),
-    ("redis.pool", "MCPATCHA_redis_POOL"),
+    ("redis.url", "MCAPTCHA_redis_URL"),
+    ("redis.pool", "MCAPTCHA_redis_POOL"),
 
     /* server */
     ("server.port", "PORT"),
@@ -145,12 +145,12 @@ const ENV_VAR_CONFIG: [(&str, &str); 29] = [
 
 
     /* SMTP */
-    ("smtp.from", "MCPATCHA_smtp_FROM"),
-    ("smtp.reply", "MCPATCHA_smtp_REPLY"),
-    ("smtp.url", "MCPATCHA_smtp_URL"),
-    ("smtp.username", "MCPATCHA_smtp_USERNAME"),
-    ("smtp.password", "MCPATCHA_smtp_PASSWORD"),
-    ("smtp.port", "MCPATCHA_smtp_PORT"),
+    ("smtp.from", "MCAPTCHA_smtp_FROM"),
+    ("smtp.reply", "MCAPTCHA_smtp_REPLY"),
+    ("smtp.url", "MCAPTCHA_smtp_URL"),
+    ("smtp.username", "MCAPTCHA_smtp_USERNAME"),
+    ("smtp.password", "MCAPTCHA_smtp_PASSWORD"),
+    ("smtp.port", "MCAPTCHA_smtp_PORT"),
 
 
 
@@ -291,7 +291,7 @@ mod tests {
         /* redis */
 
         /* redis.url */
-        let env = "MCPATCHA_redis_URL";
+        let env = "MCAPTCHA_redis_URL";
         let val = "redis://redis.example.org";
         println!("Setting env var {} to {} for test", env, val);
         env::set_var(env, val);
@@ -304,7 +304,7 @@ mod tests {
         env::remove_var(env);
 
         /* redis.pool */
-        let env = "MCPATCHA_redis_POOL";
+        let env = "MCAPTCHA_redis_POOL";
         let val = 999;
         println!("Setting env var {} to {} for test", env, val);
         env::set_var(env, val.to_string());
@@ -355,12 +355,12 @@ mod tests {
         /* SMTP */
 
         let vals = [
-            "MCPATCHA_smtp_FROM",
-            "MCPATCHA_smtp_REPLY",
-            "MCPATCHA_smtp_URL",
-            "MCPATCHA_smtp_USERNAME",
-            "MCPATCHA_smtp_PASSWORD",
-            "MCPATCHA_smtp_PORT",
+            "MCAPTCHA_smtp_FROM",
+            "MCAPTCHA_smtp_REPLY",
+            "MCAPTCHA_smtp_URL",
+            "MCAPTCHA_smtp_USERNAME",
+            "MCAPTCHA_smtp_PASSWORD",
+            "MCAPTCHA_smtp_PORT",
         ];
         for env in vals.iter() {
             println!("Setting env var {} to {} for test", env, env);
@@ -368,15 +368,15 @@ mod tests {
         }
 
         let port = 9999;
-        env::set_var("MCPATCHA_smtp_PORT", port.to_string());
+        env::set_var("MCAPTCHA_smtp_PORT", port.to_string());
 
         new_settings = get_settings();
         let smtp_new = new_settings.smtp.as_ref().unwrap();
         let smtp_old = init_settings.smtp.as_ref().unwrap();
-        assert_eq!(smtp_new.from, "MCPATCHA_smtp_FROM");
-        assert_eq!(smtp_new.reply, "MCPATCHA_smtp_REPLY");
-        assert_eq!(smtp_new.username, "MCPATCHA_smtp_USERNAME");
-        assert_eq!(smtp_new.password, "MCPATCHA_smtp_PASSWORD");
+        assert_eq!(smtp_new.from, "MCAPTCHA_smtp_FROM");
+        assert_eq!(smtp_new.reply, "MCAPTCHA_smtp_REPLY");
+        assert_eq!(smtp_new.username, "MCAPTCHA_smtp_USERNAME");
+        assert_eq!(smtp_new.password, "MCAPTCHA_smtp_PASSWORD");
         assert_eq!(smtp_new.port, port);
         assert_ne!(smtp_new, smtp_old);
 
