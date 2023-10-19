@@ -564,6 +564,33 @@
 <a href="#564" id="564">564</a>
 <a href="#565" id="565">565</a>
 <a href="#566" id="566">566</a>
+<a href="#567" id="567">567</a>
+<a href="#568" id="568">568</a>
+<a href="#569" id="569">569</a>
+<a href="#570" id="570">570</a>
+<a href="#571" id="571">571</a>
+<a href="#572" id="572">572</a>
+<a href="#573" id="573">573</a>
+<a href="#574" id="574">574</a>
+<a href="#575" id="575">575</a>
+<a href="#576" id="576">576</a>
+<a href="#577" id="577">577</a>
+<a href="#578" id="578">578</a>
+<a href="#579" id="579">579</a>
+<a href="#580" id="580">580</a>
+<a href="#581" id="581">581</a>
+<a href="#582" id="582">582</a>
+<a href="#583" id="583">583</a>
+<a href="#584" id="584">584</a>
+<a href="#585" id="585">585</a>
+<a href="#586" id="586">586</a>
+<a href="#587" id="587">587</a>
+<a href="#588" id="588">588</a>
+<a href="#589" id="589">589</a>
+<a href="#590" id="590">590</a>
+<a href="#591" id="591">591</a>
+<a href="#592" id="592">592</a>
+<a href="#593" id="593">593</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 // SPDX-FileCopyrightText: 2023 Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 //
@@ -658,6 +685,13 @@
 }
 
 <span class="attr">#[derive(Debug, Clone, Deserialize, Eq, PartialEq)]
+</span><span class="kw">pub struct </span>Survey {
+    <span class="kw">pub </span>nodes: Vec&lt;url::Url&gt;,
+    <span class="kw">pub </span>rate_limit: u64,
+    <span class="kw">pub </span>instance_root_url: Url,
+}
+
+<span class="attr">#[derive(Debug, Clone, Deserialize, Eq, PartialEq)]
 </span><span class="kw">pub struct </span>Settings {
     <span class="kw">pub </span>debug: bool,
     <span class="kw">pub </span>commercial: bool,
@@ -665,6 +699,7 @@
     <span class="kw">pub </span>allow_registration: bool,
     <span class="kw">pub </span>allow_demo: bool,
     <span class="kw">pub </span>database: Database,
+    <span class="kw">pub </span>survey: <span class="prelude-ty">Option</span>&lt;Survey&gt;,
     <span class="kw">pub </span>redis: <span class="prelude-ty">Option</span>&lt;Redis&gt;,
     <span class="kw">pub </span>server: Server,
     <span class="kw">pub </span>captcha: Captcha,
@@ -722,10 +757,9 @@
 
 ];
 
-
 <span class="kw">const </span>DEPRECATED_ENV_VARS: [(<span class="kw-2">&amp;</span>str, <span class="kw-2">&amp;</span>str); <span class="number">23</span>] = [
-    (<span class="string">&quot;debug&quot;</span>,<span class="string">&quot;MCAPTCHA_DEBUG&quot;</span>),
-    (<span class="string">&quot;commercial&quot;</span>,<span class="string">&quot;MCAPTCHA_COMMERCIAL&quot;</span>),
+    (<span class="string">&quot;debug&quot;</span>, <span class="string">&quot;MCAPTCHA_DEBUG&quot;</span>),
+    (<span class="string">&quot;commercial&quot;</span>, <span class="string">&quot;MCAPTCHA_COMMERCIAL&quot;</span>),
     (<span class="string">&quot;source_code&quot;</span>, <span class="string">&quot;MCAPTCHA_SOURCE_CODE&quot;</span>),
     (<span class="string">&quot;allow_registration&quot;</span>, <span class="string">&quot;MCAPTCHA_ALLOW_REGISTRATION&quot;</span>),
     (<span class="string">&quot;allow_demo&quot;</span>, <span class="string">&quot;MCAPTCHA_ALLOW_DEMO&quot;</span>),
@@ -738,9 +772,18 @@
     (<span class="string">&quot;server.proxy_has_tls&quot;</span>, <span class="string">&quot;MCAPTCHA_SERVER_PROXY_HAS_TLS&quot;</span>),
     (<span class="string">&quot;captcha.salt&quot;</span>, <span class="string">&quot;MCAPTCHA_CAPTCHA_SALT&quot;</span>),
     (<span class="string">&quot;captcha.gc&quot;</span>, <span class="string">&quot;MCAPTCHA_CAPTCHA_GC&quot;</span>),
-    (<span class="string">&quot;captcha.default_difficulty_strategy.avg_traffic_difficulty&quot;</span>, <span class="string">&quot;MCAPTCHA_CAPTCHA_AVG_TRAFFIC_DIFFICULTY&quot;</span>),
-    (<span class="string">&quot;captcha.default_difficulty_strategy.peak_sustainable_traffic_difficulty&quot;</span>, <span class="string">&quot;MCAPTCHA_CAPTCHA_PEAK_TRAFFIC_DIFFICULTY&quot;</span>),
-    (<span class="string">&quot;captcha.default_difficulty_strategy.broke_my_site_traffic_difficulty&quot;</span>, <span class="string">&quot;MCAPTCHA_CAPTCHA_BROKE_MY_SITE_TRAFFIC&quot;</span>),
+    (
+        <span class="string">&quot;captcha.default_difficulty_strategy.avg_traffic_difficulty&quot;</span>,
+        <span class="string">&quot;MCAPTCHA_CAPTCHA_AVG_TRAFFIC_DIFFICULTY&quot;</span>,
+    ),
+    (
+        <span class="string">&quot;captcha.default_difficulty_strategy.peak_sustainable_traffic_difficulty&quot;</span>,
+        <span class="string">&quot;MCAPTCHA_CAPTCHA_PEAK_TRAFFIC_DIFFICULTY&quot;</span>,
+    ),
+    (
+        <span class="string">&quot;captcha.default_difficulty_strategy.broke_my_site_traffic_difficulty&quot;</span>,
+        <span class="string">&quot;MCAPTCHA_CAPTCHA_BROKE_MY_SITE_TRAFFIC&quot;</span>,
+    ),
     (<span class="string">&quot;smtp.from&quot;</span>, <span class="string">&quot;MCAPTCHA_SMTP_FROM&quot;</span>),
     (<span class="string">&quot;smtp.reply&quot;</span>, <span class="string">&quot;MCAPTCHA_SMTP_REPLY_TO&quot;</span>),
     (<span class="string">&quot;smtp.url&quot;</span>, <span class="string">&quot;MCAPTCHA_SMTP_URL&quot;</span>),
@@ -803,7 +846,6 @@
     }
 
     <span class="kw">fn </span>env_override(<span class="kw-2">mut </span>s: ConfigBuilder&lt;DefaultState&gt;) -&gt; ConfigBuilder&lt;DefaultState&gt; {
-
         <span class="kw">for </span>(parameter, env_var_name) <span class="kw">in </span>DEPRECATED_ENV_VARS.iter() {
             <span class="kw">if let </span><span class="prelude-val">Ok</span>(val) = env::var(env_var_name) {
                 <span class="macro">log::warn!</span>(
@@ -812,7 +854,6 @@
                 s = s.set_override(parameter, val).unwrap();
             }
         }
-
 
         <span class="kw">for </span>(parameter, env_var_name) <span class="kw">in </span>ENV_VAR_CONFIG.iter() {
             <span class="kw">if let </span><span class="prelude-val">Ok</span>(val) = env::var(env_var_name) {
@@ -843,8 +884,6 @@
 
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
-
-
     <span class="attr">#[test]
     </span><span class="kw">fn </span>deprecated_env_override_works() {
         <span class="kw">use </span><span class="kw">crate</span>::tests::get_settings;
@@ -873,7 +912,11 @@
         <span class="comment">/* top level */
         </span><span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_DEBUG&quot;</span>, !init_settings.debug, debug);
         <span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_COMMERCIAL&quot;</span>, !init_settings.commercial, commercial);
-        <span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_ALLOW_REGISTRATION&quot;</span>, !init_settings.allow_registration, allow_registration);
+        <span class="macro">helper!</span>(
+            <span class="string">&quot;MCAPTCHA_ALLOW_REGISTRATION&quot;</span>,
+            !init_settings.allow_registration,
+            allow_registration
+        );
         <span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_ALLOW_DEMO&quot;</span>, !init_settings.allow_demo, allow_demo);
 
         <span class="comment">/* database_type */
@@ -930,8 +973,20 @@
             <span class="number">999</span>,
             captcha.default_difficulty_strategy.avg_traffic_difficulty
         );
-        <span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_CAPTCHA_PEAK_TRAFFIC_DIFFICULTY&quot;</span>, <span class="number">999 </span>, captcha.default_difficulty_strategy.peak_sustainable_traffic_difficulty);
-        <span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_CAPTCHA_BROKE_MY_SITE_TRAFFIC&quot;</span>, <span class="number">999 </span>, captcha.default_difficulty_strategy.broke_my_site_traffic_difficulty);
+        <span class="macro">helper!</span>(
+            <span class="string">&quot;MCAPTCHA_CAPTCHA_PEAK_TRAFFIC_DIFFICULTY&quot;</span>,
+            <span class="number">999</span>,
+            captcha
+                .default_difficulty_strategy
+                .peak_sustainable_traffic_difficulty
+        );
+        <span class="macro">helper!</span>(
+            <span class="string">&quot;MCAPTCHA_CAPTCHA_BROKE_MY_SITE_TRAFFIC&quot;</span>,
+            <span class="number">999</span>,
+            captcha
+                .default_difficulty_strategy
+                .broke_my_site_traffic_difficulty
+        );
 
         <span class="comment">/* SMTP */
 
@@ -965,7 +1020,6 @@
             env::remove_var(env);
         }
     }
-
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>env_override_works() {

@@ -339,6 +339,13 @@
 <a href="#339" id="339">339</a>
 <a href="#340" id="340">340</a>
 <a href="#341" id="341">341</a>
+<a href="#342" id="342">342</a>
+<a href="#343" id="343">343</a>
+<a href="#344" id="344">344</a>
+<a href="#345" id="345">345</a>
+<a href="#346" id="346">346</a>
+<a href="#347" id="347">347</a>
+<a href="#348" id="348">348</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 // SPDX-FileCopyrightText: 2023 Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 //
@@ -599,6 +606,12 @@
         .analytics_get_psuedo_id_from_capmaign_id(c.key)
         .<span class="kw">await
         </span>.unwrap();
+    <span class="macro">assert_eq!</span>(
+        <span class="macro">vec!</span>[psuedo_id.clone()],
+        db.analytics_get_all_psuedo_ids(<span class="number">0</span>).<span class="kw">await</span>.unwrap()
+    );
+    <span class="macro">assert!</span>(db.analytics_get_all_psuedo_ids(<span class="number">1</span>).<span class="kw">await</span>.unwrap().is_empty());
+
     db.analytics_create_psuedo_id_if_not_exists(c.key)
         .<span class="kw">await
         </span>.unwrap();
@@ -608,6 +621,7 @@
             .<span class="kw">await
             </span>.unwrap()
     );
+
     <span class="macro">assert_eq!</span>(
         c.key,
         db.analytics_get_capmaign_id_from_psuedo_id(<span class="kw-2">&amp;</span>psuedo_id)

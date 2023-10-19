@@ -41,6 +41,9 @@
 <a href="#41" id="41">41</a>
 <a href="#42" id="42">42</a>
 <a href="#43" id="43">43</a>
+<a href="#44" id="44">44</a>
+<a href="#45" id="45">45</a>
+<a href="#46" id="46">46</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 // SPDX-FileCopyrightText: 2023 Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 //
@@ -54,6 +57,7 @@
 <span class="kw">use </span><span class="kw">super</span>::meta::routes::Meta;
 <span class="kw">use </span><span class="kw">super</span>::notifications::routes::Notifications;
 <span class="kw">use </span><span class="kw">super</span>::pow::routes::PoW;
+<span class="kw">use </span><span class="kw">super</span>::survey::routes::Survey;
 
 <span class="kw">pub const </span>ROUTES: Routes = Routes::new();
 
@@ -63,6 +67,7 @@
     <span class="kw">pub </span>captcha: Captcha,
     <span class="kw">pub </span>meta: Meta,
     <span class="kw">pub </span>pow: PoW,
+    <span class="kw">pub </span>survey: Survey,
     <span class="kw">pub </span>notifications: Notifications,
 }
 
@@ -75,6 +80,7 @@
             meta: Meta::new(),
             pow: PoW::new(),
             notifications: Notifications::new(),
+            survey: Survey::new(),
         }
     }
 }

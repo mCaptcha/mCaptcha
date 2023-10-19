@@ -415,6 +415,9 @@
 <a href="#415" id="415">415</a>
 <a href="#416" id="416">416</a>
 <a href="#417" id="417">417</a>
+<a href="#418" id="418">418</a>
+<a href="#419" id="419">419</a>
+<a href="#420" id="420">420</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 // SPDX-FileCopyrightText: 2023 Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 //
@@ -706,6 +709,9 @@
             <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e),
         }
     }
+
+    <span class="doccomment">/// Get all psuedo IDs
+    </span><span class="kw">async fn </span>analytics_get_all_psuedo_ids(<span class="kw-2">&amp;</span><span class="self">self</span>, page: usize) -&gt; DBResult&lt;Vec&lt;String&gt;&gt;;
 }
 
 <span class="attr">#[derive(Debug, Clone, Default, Deserialize, Serialize, PartialEq)]
