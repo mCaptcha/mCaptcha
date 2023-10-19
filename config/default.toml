@@ -66,3 +66,8 @@ url = "127.0.0.1"
 port = 10025
 username = "admin"
 password = "password"
+
+#[survey]
+#nodes = ["http://localhost:7001"]
+#rate_limit = 10 # upload every hour
+#instance_root_url = "http://localhost:7000"

@@ -4,8 +4,10 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 //! App data: redis cache, database connections, etc.
+use std::collections::HashMap;
 use std::sync::Arc;
 use std::thread;
+use std::time::Duration;
 
 use actix::prelude::*;
 use argon2_creds::{Config, ConfigBuilder, PasswordPolicy};
@@ -28,11 +30,17 @@ use libmcaptcha::{
     pow::Work,
     system::{System, SystemBuilder},
 };
+use reqwest::Client;
+use serde::{Deserialize, Serialize};
+use tokio::task::JoinHandle;
+use tokio::time::sleep;
 
 use crate::db::{self, BoxDB};
 use crate::errors::ServiceResult;
 use crate::settings::Settings;
 use crate::stats::{Dummy, Real, Stats};
+use crate::survey::SecretsStore;
+use crate::AppData;
 
 macro_rules! enum_system_actor {
     ($name:ident, $type:ident) => {
@@ -166,6 +174,8 @@ pub struct Data {
     pub settings: Settings,
     /// stats recorder
     pub stats: Box<dyn Stats>,
+    /// survey secret store
+    pub survey_secrets: SecretsStore,
 }
 
 impl Data {
@@ -180,7 +190,7 @@ impl Data {
     }
     #[cfg(not(tarpaulin_include))]
     /// create new instance of app data
-    pub async fn new(s: &Settings) -> Arc<Self> {
+    pub async fn new(s: &Settings, survey_secrets: SecretsStore) -> Arc<Self> {
         let creds = Self::get_creds();
         let c = creds.clone();
 
@@ -209,6 +219,7 @@ impl Data {
             mailer: Self::get_mailer(s),
             settings: s.clone(),
             stats,
+            survey_secrets,
         };
 
         #[cfg(not(debug_assertions))]
@@ -241,6 +252,13 @@ impl Data {
         } else {
             None
         }
+    }
+
+    async fn upload_survey_job(&self) -> ServiceResult<()> {
+        unimplemented!()
+    }
+    async fn register_survey(&self) -> ServiceResult<()> {
+        unimplemented!()
     }
 }
 

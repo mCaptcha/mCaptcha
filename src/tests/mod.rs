@@ -20,6 +20,7 @@ use crate::api::v1::mcaptcha::create::CreateCaptcha;
 use crate::api::v1::mcaptcha::create::MCaptchaDetails;
 use crate::api::v1::ROUTES;
 use crate::errors::*;
+use crate::survey::SecretsStore;
 use crate::ArcData;
 
 pub fn get_settings() -> Settings {
@@ -30,6 +31,7 @@ pub mod pg {
 
     use crate::data::Data;
     use crate::settings::*;
+    use crate::survey::SecretsStore;
     use crate::ArcData;
 
     use super::get_settings;
@@ -42,7 +44,7 @@ pub mod pg {
         settings.database.database_type = DBType::Postgres;
         settings.database.pool = 2;
 
-        Data::new(&settings).await
+        Data::new(&settings, SecretsStore::default()).await
     }
 }
 pub mod maria {
@@ -50,6 +52,7 @@ pub mod maria {
 
     use crate::data::Data;
     use crate::settings::*;
+    use crate::survey::SecretsStore;
     use crate::ArcData;
 
     use super::get_settings;
@@ -62,7 +65,7 @@ pub mod maria {
         settings.database.database_type = DBType::Maria;
         settings.database.pool = 2;
 
-        Data::new(&settings).await
+        Data::new(&settings, SecretsStore::default()).await
     }
 }
 //pub async fn get_data() -> ArcData {
@@ -179,6 +182,26 @@ pub async fn signin(
             .await;
     assert_eq!(signin_resp.status(), StatusCode::OK);
     (creds, signin_resp)
+}
+
+/// pub duplicate test
+pub async fn bad_post_req_test_no_auth<T: Serialize>(
+    data: &ArcData,
+    url: &str,
+    payload: &T,
+    err: ServiceError,
+) {
+    let app = get_app!(data).await;
+
+    let resp = test::call_service(&app, post_request!(&payload, url).to_request()).await;
+    if resp.status() != err.status_code() {
+        let resp_err: ErrorToResponse = test::read_body_json(resp).await;
+        panic!("error {}", resp_err.error);
+    }
+    assert_eq!(resp.status(), err.status_code());
+    let resp_err: ErrorToResponse = test::read_body_json(resp).await;
+    //println!("{}", txt.error);
+    assert_eq!(resp_err.error, format!("{}", err));
 }
 
 /// pub duplicate test

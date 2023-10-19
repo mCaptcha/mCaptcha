@@ -1,0 +1,23 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n                SELECT\n                    psuedo_id\n                FROM\n                    mcaptcha_psuedo_campaign_id\n                    ORDER BY ID ASC LIMIT $1 OFFSET $2;",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "psuedo_id",
+        "type_info": "Varchar"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int8",
+        "Int8"
+      ]
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "d6b89b032e3a65bb5739dde8901a0d6363939bdd87739b4292dd1d88e03ce6f7"
+}

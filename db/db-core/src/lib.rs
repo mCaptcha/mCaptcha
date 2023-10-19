@@ -289,6 +289,9 @@ pub trait MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
             Err(e) => Err(e),
         }
     }
+
+    /// Get all psuedo IDs
+    async fn analytics_get_all_psuedo_ids(&self, page: usize) -> DBResult<Vec<String>>;
 }
 
 #[derive(Debug, Clone, Default, Deserialize, Serialize, PartialEq)]

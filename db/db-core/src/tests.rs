@@ -258,6 +258,12 @@ pub async fn database_works<'a, T: MCDatabase>(
         .analytics_get_psuedo_id_from_capmaign_id(c.key)
         .await
         .unwrap();
+    assert_eq!(
+        vec![psuedo_id.clone()],
+        db.analytics_get_all_psuedo_ids(0).await.unwrap()
+    );
+    assert!(db.analytics_get_all_psuedo_ids(1).await.unwrap().is_empty());
+
     db.analytics_create_psuedo_id_if_not_exists(c.key)
         .await
         .unwrap();
@@ -267,6 +273,7 @@ pub async fn database_works<'a, T: MCDatabase>(
             .await
             .unwrap()
     );
+
     assert_eq!(
         c.key,
         db.analytics_get_capmaign_id_from_psuedo_id(&psuedo_id)
