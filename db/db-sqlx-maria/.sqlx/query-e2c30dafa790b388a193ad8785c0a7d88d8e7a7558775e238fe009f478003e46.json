@@ -1,0 +1,25 @@
+{
+  "db_name": "MySQL",
+  "query": "\n                SELECT\n                    psuedo_id\n                FROM\n                    mcaptcha_psuedo_campaign_id\n                    ORDER BY ID ASC LIMIT ? OFFSET ?;",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "psuedo_id",
+        "type_info": {
+          "type": "VarString",
+          "flags": "NOT_NULL | UNIQUE_KEY | NO_DEFAULT_VALUE",
+          "char_set": 224,
+          "max_size": 400
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "e2c30dafa790b388a193ad8785c0a7d88d8e7a7558775e238fe009f478003e46"
+}

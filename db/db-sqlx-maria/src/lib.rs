@@ -987,12 +987,8 @@ impl MCDatabase for Database {
         &self,
         captcha_id: &str,
     ) -> DBResult<String> {
-        struct ID {
-            psuedo_id: String,
-        }
-
         let res = sqlx::query_as!(
-            ID,
+            PsuedoID,
             "SELECT psuedo_id FROM
                 mcaptcha_psuedo_campaign_id
             WHERE
@@ -1069,6 +1065,28 @@ impl MCDatabase for Database {
 
         Ok(())
     }
+    /// Get all psuedo IDs
+    async fn analytics_get_all_psuedo_ids(&self, page: usize) -> DBResult<Vec<String>> {
+        const LIMIT: usize = 50;
+        let offset = LIMIT * page;
+
+        let mut res = sqlx::query_as!(
+            PsuedoID,
+            "
+                SELECT
+                    psuedo_id
+                FROM
+                    mcaptcha_psuedo_campaign_id
+                    ORDER BY ID ASC LIMIT ? OFFSET ?;",
+            LIMIT as i64,
+            offset as i64
+        )
+        .fetch_all(&self.pool)
+        .await
+        .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
+
+        Ok(res.drain(0..).map(|r| r.psuedo_id).collect())
+    }
 }
 
 #[derive(Clone)]
@@ -1133,4 +1151,8 @@ impl From<InternaleCaptchaConfig> for Captcha {
             key: i.captcha_key,
         }
     }
+}
+
+struct PsuedoID {
+    psuedo_id: String,
 }
