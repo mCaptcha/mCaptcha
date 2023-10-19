@@ -46,6 +46,7 @@ use static_assets::FileMap;
 pub use widget::WIDGET_ROUTES;
 
 use crate::demo::DemoUser;
+use survey::SurveyClientTrait;
 
 lazy_static! {
     pub static ref SETTINGS: Settings = Settings::new().unwrap();
@@ -106,7 +107,7 @@ async fn main() -> std::io::Result<()> {
 
     let settings = Settings::new().unwrap();
     let secrets = survey::SecretsStore::default();
-    let data = Data::new(&settings, secrets).await;
+    let data = Data::new(&settings, secrets.clone()).await;
     let data = actix_web::web::Data::new(data);
 
     let mut demo_user: Option<DemoUser> = None;
@@ -117,6 +118,13 @@ async fn main() -> std::io::Result<()> {
                 .await
                 .unwrap(),
         );
+    }
+
+    let (mut survey_upload_tx, mut survey_upload_handle) = (None, None);
+    if settings.survey.is_some() {
+        let survey_runner_ctx = survey::Survey::new(data.clone());
+        let (x, y) = survey_runner_ctx.start_job().await.unwrap();
+        (survey_upload_tx, survey_upload_handle) = (Some(x), Some(y));
     }
 
     let ip = settings.server.get_ip();
@@ -143,9 +151,18 @@ async fn main() -> std::io::Result<()> {
     .run()
     .await?;
 
+    if let Some(survey_upload_tx) = survey_upload_tx {
+        survey_upload_tx.send(()).unwrap();
+    }
+
     if let Some(demo_user) = demo_user {
         demo_user.abort();
     }
+
+    if let Some(survey_upload_handle) = survey_upload_handle {
+        survey_upload_handle.await.unwrap();
+    }
+
     Ok(())
 }
 
