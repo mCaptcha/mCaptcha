@@ -85,10 +85,17 @@ pub mod runner {
         data.db
             .add_captcha_levels(username, &key, &payload.levels)
             .await?;
+
+        if payload.publish_benchmarks {
+            data.db.analytics_create_psuedo_id_if_not_exists(&key).await?;;
+        }
+
+
         let mcaptcha_config = MCaptchaDetails {
             name: payload.description.clone(),
             key,
         };
+
         Ok(mcaptcha_config)
     }
 }
