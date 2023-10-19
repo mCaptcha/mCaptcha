@@ -35,7 +35,7 @@ pub mod routes {
     impl Survey {
         pub const fn new() -> Self {
             Self {
-                download: "/api/v1/survey/{survey_id}/get",
+                download: "/api/v1/survey/takeout/{survey_id}/get",
                 secret: "/api/v1/survey/secret",
             }
         }

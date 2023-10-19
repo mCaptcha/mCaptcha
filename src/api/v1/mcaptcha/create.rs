@@ -87,9 +87,10 @@ pub mod runner {
             .await?;
 
         if payload.publish_benchmarks {
-            data.db.analytics_create_psuedo_id_if_not_exists(&key).await?;;
+            data.db
+                .analytics_create_psuedo_id_if_not_exists(&key)
+                .await?;
         }
-
 
         let mcaptcha_config = MCaptchaDetails {
             name: payload.description.clone(),
