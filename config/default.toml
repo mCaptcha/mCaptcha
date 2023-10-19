@@ -69,4 +69,5 @@ password = "password"
 
 [survey]
 nodes = ["http://localhost:7001"]
-rate_limit = 3600 # upload every hour
+rate_limit = 10 # upload every hour
+instance_root_url = "http://localhost:7000"

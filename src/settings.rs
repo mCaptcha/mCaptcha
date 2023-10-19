@@ -95,6 +95,7 @@ pub struct Redis {
 pub struct Survey {
     pub nodes: Vec<url::Url>,
     pub rate_limit: u64,
+    pub instance_root_url: Url,
 }
 
 #[derive(Debug, Clone, Deserialize, Eq, PartialEq)]
@@ -105,7 +106,7 @@ pub struct Settings {
     pub allow_registration: bool,
     pub allow_demo: bool,
     pub database: Database,
-    pub survey: Survey,
+    pub survey: Option<Survey>,
     pub redis: Option<Redis>,
     pub server: Server,
     pub captcha: Captcha,
@@ -163,10 +164,9 @@ const ENV_VAR_CONFIG: [(&str, &str); 29] = [
 
 ];
 
-
 const DEPRECATED_ENV_VARS: [(&str, &str); 23] = [
-    ("debug","MCAPTCHA_DEBUG"),
-    ("commercial","MCAPTCHA_COMMERCIAL"),
+    ("debug", "MCAPTCHA_DEBUG"),
+    ("commercial", "MCAPTCHA_COMMERCIAL"),
     ("source_code", "MCAPTCHA_SOURCE_CODE"),
     ("allow_registration", "MCAPTCHA_ALLOW_REGISTRATION"),
     ("allow_demo", "MCAPTCHA_ALLOW_DEMO"),
@@ -179,9 +179,18 @@ const DEPRECATED_ENV_VARS: [(&str, &str); 23] = [
     ("server.proxy_has_tls", "MCAPTCHA_SERVER_PROXY_HAS_TLS"),
     ("captcha.salt", "MCAPTCHA_CAPTCHA_SALT"),
     ("captcha.gc", "MCAPTCHA_CAPTCHA_GC"),
-    ("captcha.default_difficulty_strategy.avg_traffic_difficulty", "MCAPTCHA_CAPTCHA_AVG_TRAFFIC_DIFFICULTY"),
-    ("captcha.default_difficulty_strategy.peak_sustainable_traffic_difficulty", "MCAPTCHA_CAPTCHA_PEAK_TRAFFIC_DIFFICULTY"),
-    ("captcha.default_difficulty_strategy.broke_my_site_traffic_difficulty", "MCAPTCHA_CAPTCHA_BROKE_MY_SITE_TRAFFIC"),
+    (
+        "captcha.default_difficulty_strategy.avg_traffic_difficulty",
+        "MCAPTCHA_CAPTCHA_AVG_TRAFFIC_DIFFICULTY",
+    ),
+    (
+        "captcha.default_difficulty_strategy.peak_sustainable_traffic_difficulty",
+        "MCAPTCHA_CAPTCHA_PEAK_TRAFFIC_DIFFICULTY",
+    ),
+    (
+        "captcha.default_difficulty_strategy.broke_my_site_traffic_difficulty",
+        "MCAPTCHA_CAPTCHA_BROKE_MY_SITE_TRAFFIC",
+    ),
     ("smtp.from", "MCAPTCHA_SMTP_FROM"),
     ("smtp.reply", "MCAPTCHA_SMTP_REPLY_TO"),
     ("smtp.url", "MCAPTCHA_SMTP_URL"),
@@ -244,7 +253,6 @@ impl Settings {
     }
 
     fn env_override(mut s: ConfigBuilder<DefaultState>) -> ConfigBuilder<DefaultState> {
-
         for (parameter, env_var_name) in DEPRECATED_ENV_VARS.iter() {
             if let Ok(val) = env::var(env_var_name) {
                 log::warn!(
@@ -253,7 +261,6 @@ impl Settings {
                 s = s.set_override(parameter, val).unwrap();
             }
         }
-
 
         for (parameter, env_var_name) in ENV_VAR_CONFIG.iter() {
             if let Ok(val) = env::var(env_var_name) {
@@ -284,8 +291,6 @@ mod tests {
 
     use super::*;
 
-
-
     #[test]
     fn deprecated_env_override_works() {
         use crate::tests::get_settings;
@@ -314,7 +319,11 @@ mod tests {
         /* top level */
         helper!("MCAPTCHA_DEBUG", !init_settings.debug, debug);
         helper!("MCAPTCHA_COMMERCIAL", !init_settings.commercial, commercial);
-        helper!("MCAPTCHA_ALLOW_REGISTRATION", !init_settings.allow_registration, allow_registration);
+        helper!(
+            "MCAPTCHA_ALLOW_REGISTRATION",
+            !init_settings.allow_registration,
+            allow_registration
+        );
         helper!("MCAPTCHA_ALLOW_DEMO", !init_settings.allow_demo, allow_demo);
 
         /* database_type */
@@ -371,8 +380,20 @@ mod tests {
             999,
             captcha.default_difficulty_strategy.avg_traffic_difficulty
         );
-        helper!("MCAPTCHA_CAPTCHA_PEAK_TRAFFIC_DIFFICULTY", 999 , captcha.default_difficulty_strategy.peak_sustainable_traffic_difficulty);
-        helper!("MCAPTCHA_CAPTCHA_BROKE_MY_SITE_TRAFFIC", 999 , captcha.default_difficulty_strategy.broke_my_site_traffic_difficulty);
+        helper!(
+            "MCAPTCHA_CAPTCHA_PEAK_TRAFFIC_DIFFICULTY",
+            999,
+            captcha
+                .default_difficulty_strategy
+                .peak_sustainable_traffic_difficulty
+        );
+        helper!(
+            "MCAPTCHA_CAPTCHA_BROKE_MY_SITE_TRAFFIC",
+            999,
+            captcha
+                .default_difficulty_strategy
+                .broke_my_site_traffic_difficulty
+        );
 
         /* SMTP */
 
@@ -406,7 +427,6 @@ mod tests {
             env::remove_var(env);
         }
     }
-
 
     #[test]
     fn env_override_works() {
