@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/mCaptcha/mCaptcha#readme",
   "devDependencies": {
-    "@redocly/cli": "^1.0.0-beta.129"
+    "@redocly/cli": "^1.4.0"
   }
 }
