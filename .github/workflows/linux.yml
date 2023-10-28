@@ -84,7 +84,7 @@ jobs:
 
       - uses: actions/setup-node@v2
         with:
-          node-version: "18.0.0"
+          node-version: "20.0.0"
 
       - uses: actions-rust-lang/setup-rust-toolchain@v1
 
