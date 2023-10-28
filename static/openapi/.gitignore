@@ -1,0 +1,29 @@
+node_modules
+.idea
+.vscode
+.deps_check
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.nyc_output
+npm-debug.log*
+.eslintcache
+*.iml
+selenium-debug.log
+chromedriver.log
+test/e2e/db.json
+docs/_book
+dev-helpers/examples
+
+# dist
+flavors/**/dist/*
+/lib
+/es
+dist/log*
+/swagger-ui-*.tgz
+
+# Cypress
+test/e2e-cypress/screenshots
+test/e2e-cypress/videos
