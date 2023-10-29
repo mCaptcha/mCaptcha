@@ -279,17 +279,6 @@
 <a href="#279" id="279">279</a>
 <a href="#280" id="280">280</a>
 <a href="#281" id="281">281</a>
-<a href="#282" id="282">282</a>
-<a href="#283" id="283">283</a>
-<a href="#284" id="284">284</a>
-<a href="#285" id="285">285</a>
-<a href="#286" id="286">286</a>
-<a href="#287" id="287">287</a>
-<a href="#288" id="288">288</a>
-<a href="#289" id="289">289</a>
-<a href="#290" id="290">290</a>
-<a href="#291" id="291">291</a>
-<a href="#292" id="292">292</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 // SPDX-FileCopyrightText: 2023 Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 //
@@ -297,6 +286,7 @@
 
 //use actix::prelude::*;
 </span><span class="kw">use </span>actix_web::{web, HttpResponse, Responder};
+<span class="kw">use </span>libmcaptcha::pow::PoWConfig;
 <span class="kw">use </span>libmcaptcha::{
     defense::LevelBuilder, master::messages::AddSiteBuilder, DefenseBuilder,
     MCaptchaBuilder,
@@ -313,9 +303,15 @@
     <span class="kw">pub </span>key: String,
 }
 
-<span class="comment">// API keys are mcaptcha actor names
+<span class="attr">#[derive(Clone, Serialize, Deserialize, Debug)]
+</span><span class="kw">pub struct </span>ApiPoWConfig {
+    <span class="kw">pub </span>string: String,
+    <span class="kw">pub </span>difficulty_factor: u32,
+    <span class="kw">pub </span>salt: String,
+    <span class="kw">pub </span>max_recorded_nonce: u32,
+}
 
-</span><span class="doccomment">/// get PoW configuration for an mcaptcha key
+<span class="doccomment">/// get PoW configuration for an mcaptcha key
 </span><span class="attr">#[my_codegen::post(path = <span class="string">&quot;V1_API_ROUTES.pow.get_config()&quot;</span>)]
 </span><span class="kw">pub async fn </span>get_config(
     payload: web::Json&lt;GetConfigPayload&gt;,
@@ -327,53 +323,35 @@
     }
     <span class="kw">let </span>payload = payload.into_inner();
 
-    <span class="kw">match </span>data.captcha.get_pow(payload.key.clone()).<span class="kw">await </span>{
-        <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(config)) =&gt; {
-            data.stats.record_fetch(<span class="kw-2">&amp;</span>data, <span class="kw-2">&amp;</span>payload.key).<span class="kw">await</span><span class="question-mark">?</span>;
-            <span class="prelude-val">Ok</span>(HttpResponse::Ok().json(config))
-        }
-        <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; {
-            init_mcaptcha(<span class="kw-2">&amp;</span>data, <span class="kw-2">&amp;</span>payload.key).<span class="kw">await</span><span class="question-mark">?</span>;
-            <span class="kw">let </span>config = data
-                .captcha
-                .get_pow(payload.key.clone())
-                .<span class="kw">await
-                </span>.expect(<span class="string">&quot;mcaptcha should be initialized and ready to go&quot;</span>);
-            <span class="comment">// background it. would require data::Data to be static
-            // to satidfy lifetime
-            </span>data.stats.record_fetch(<span class="kw-2">&amp;</span>data, <span class="kw-2">&amp;</span>payload.key).<span class="kw">await</span><span class="question-mark">?</span>;
-            <span class="prelude-val">Ok</span>(HttpResponse::Ok().json(config))
-        }
-        <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
-    }
+    <span class="kw">let </span>config: ServiceResult&lt;PoWConfig&gt; =
+        <span class="kw">match </span>data.captcha.get_pow(payload.key.clone()).<span class="kw">await </span>{
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(config)) =&gt; <span class="prelude-val">Ok</span>(config),
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; {
+                init_mcaptcha(<span class="kw-2">&amp;</span>data, <span class="kw-2">&amp;</span>payload.key).<span class="kw">await</span><span class="question-mark">?</span>;
+                <span class="kw">let </span>config = data
+                    .captcha
+                    .get_pow(payload.key.clone())
+                    .<span class="kw">await
+                    </span>.expect(<span class="string">&quot;mcaptcha should be initialized and ready to go&quot;</span>);
+                <span class="prelude-val">Ok</span>(config.unwrap())
+            }
+            <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
+        };
+    <span class="kw">let </span>config = config<span class="question-mark">?</span>;
+    <span class="kw">let </span>max_nonce = data
+        .db
+        .get_max_nonce_for_level(<span class="kw-2">&amp;</span>payload.key, config.difficulty_factor)
+        .<span class="kw">await</span><span class="question-mark">?</span>;
+    data.stats.record_fetch(<span class="kw-2">&amp;</span>data, <span class="kw-2">&amp;</span>payload.key).<span class="kw">await</span><span class="question-mark">?</span>;
 
-    <span class="comment">//    match res.exists {
-    //        Some(true) =&gt; {
-    //            match data.captcha.get_pow(payload.key.clone()).await {
-    //                Ok(Some(config)) =&gt; {
-    //                    record_fetch(&amp;payload.key, &amp;data.db).await;
-    //                    Ok(HttpResponse::Ok().json(config))
-    //                }
-    //                Ok(None) =&gt; {
-    //                    init_mcaptcha(&amp;data, &amp;payload.key).await?;
-    //                    let config = data
-    //                        .captcha
-    //                        .get_pow(payload.key.clone())
-    //                        .await
-    //                        .expect(&quot;mcaptcha should be initialized and ready to go&quot;);
-    //                    // background it. would require data::Data to be static
-    //                    // to satidfy lifetime
-    //                    record_fetch(&amp;payload.key, &amp;data.db).await;
-    //                    Ok(HttpResponse::Ok().json(config))
-    //                }
-    //                Err(e) =&gt; Err(e.into()),
-    //            }
-    //        }
-    //
-    //        Some(false) =&gt; Err(ServiceError::TokenNotFound),
-    //        None =&gt; Err(ServiceError::TokenNotFound),
-    //    }
-</span>}
+    <span class="kw">let </span>config = ApiPoWConfig {
+        string: config.string,
+        difficulty_factor: config.difficulty_factor,
+        salt: config.salt,
+        max_recorded_nonce: max_nonce,
+    };
+    <span class="prelude-val">Ok</span>(HttpResponse::Ok().json(config))
+}
 <span class="doccomment">/// Call this when [MCaptcha][libmcaptcha::MCaptcha] is not in master.
 ///
 /// This fn gets mcaptcha config from database, builds [Defense][libmcaptcha::Defense],

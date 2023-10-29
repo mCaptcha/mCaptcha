@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["init_mcaptcha"],"struct":["GetConfigPayload","get_config"]};
+window.SIDEBAR_ITEMS = {"fn":["init_mcaptcha"],"struct":["ApiPoWConfig","GetConfigPayload","get_config"]};

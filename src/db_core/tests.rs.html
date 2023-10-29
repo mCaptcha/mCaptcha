@@ -346,6 +346,33 @@
 <a href="#346" id="346">346</a>
 <a href="#347" id="347">347</a>
 <a href="#348" id="348">348</a>
+<a href="#349" id="349">349</a>
+<a href="#350" id="350">350</a>
+<a href="#351" id="351">351</a>
+<a href="#352" id="352">352</a>
+<a href="#353" id="353">353</a>
+<a href="#354" id="354">354</a>
+<a href="#355" id="355">355</a>
+<a href="#356" id="356">356</a>
+<a href="#357" id="357">357</a>
+<a href="#358" id="358">358</a>
+<a href="#359" id="359">359</a>
+<a href="#360" id="360">360</a>
+<a href="#361" id="361">361</a>
+<a href="#362" id="362">362</a>
+<a href="#363" id="363">363</a>
+<a href="#364" id="364">364</a>
+<a href="#365" id="365">365</a>
+<a href="#366" id="366">366</a>
+<a href="#367" id="367">367</a>
+<a href="#368" id="368">368</a>
+<a href="#369" id="369">369</a>
+<a href="#370" id="370">370</a>
+<a href="#371" id="371">371</a>
+<a href="#372" id="372">372</a>
+<a href="#373" id="373">373</a>
+<a href="#374" id="374">374</a>
+<a href="#375" id="375">375</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 // SPDX-FileCopyrightText: 2023 Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 //
@@ -657,6 +684,33 @@
         .<span class="kw">await
         </span>.unwrap();
     <span class="comment">// analytics end
+
+    // nonce tracking start
+    </span><span class="macro">assert_eq!</span>(
+        db.get_max_nonce_for_level(c.key, l[<span class="number">0</span>].difficulty_factor)
+            .<span class="kw">await
+            </span>.unwrap(),
+        <span class="number">0
+    </span>);
+    db.update_max_nonce_for_level(c.key, l[<span class="number">0</span>].difficulty_factor, <span class="number">1000</span>)
+        .<span class="kw">await
+        </span>.unwrap();
+    <span class="macro">assert_eq!</span>(
+        db.get_max_nonce_for_level(c.key, l[<span class="number">0</span>].difficulty_factor)
+            .<span class="kw">await
+            </span>.unwrap(),
+        <span class="number">1000
+    </span>);
+    db.update_max_nonce_for_level(c.key, l[<span class="number">0</span>].difficulty_factor, <span class="number">10_000</span>)
+        .<span class="kw">await
+        </span>.unwrap();
+    <span class="macro">assert_eq!</span>(
+        db.get_max_nonce_for_level(c.key, l[<span class="number">0</span>].difficulty_factor)
+            .<span class="kw">await
+            </span>.unwrap(),
+        <span class="number">10_000
+    </span>);
+    <span class="comment">// nonce tracking end
 
     </span><span class="macro">assert_eq!</span>(db.fetch_solve(p.username, c.key).<span class="kw">await</span>.unwrap().len(), <span class="number">1</span>);
     <span class="macro">assert_eq!</span>(

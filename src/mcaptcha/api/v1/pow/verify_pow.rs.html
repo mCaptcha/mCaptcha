@@ -254,6 +254,10 @@
 <a href="#254" id="254">254</a>
 <a href="#255" id="255">255</a>
 <a href="#256" id="256">256</a>
+<a href="#257" id="257">257</a>
+<a href="#258" id="258">258</a>
+<a href="#259" id="259">259</a>
+<a href="#260" id="260">260</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 // SPDX-FileCopyrightText: 2023 Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 //
@@ -321,6 +325,7 @@
     <span class="kw">let </span>payload = payload.into_inner();
     <span class="kw">let </span>worker_type = payload.worker_type.clone();
     <span class="kw">let </span>time = payload.time;
+    <span class="kw">let </span>nonce = payload.nonce;
     <span class="kw">let </span>(res, difficulty_factor) = data.captcha.verify_pow(payload.into(), ip).<span class="kw">await</span><span class="question-mark">?</span>;
     data.stats.record_solve(<span class="kw-2">&amp;</span>data, <span class="kw-2">&amp;</span>key).<span class="kw">await</span><span class="question-mark">?</span>;
     <span class="kw">if let </span>(<span class="prelude-val">Some</span>(time), <span class="prelude-val">Some</span>(worker_type)) = (time, worker_type) {
@@ -331,6 +336,9 @@
         };
         data.db.analysis_save(<span class="kw-2">&amp;</span>key, <span class="kw-2">&amp;</span>analytics).<span class="kw">await</span><span class="question-mark">?</span>;
     }
+    data.db
+        .update_max_nonce_for_level(<span class="kw-2">&amp;</span>key, difficulty_factor, nonce <span class="kw">as </span>u32)
+        .<span class="kw">await</span><span class="question-mark">?</span>;
     <span class="kw">let </span>payload = ValidationToken { token: res };
     <span class="prelude-val">Ok</span>(HttpResponse::Ok().json(payload))
 }

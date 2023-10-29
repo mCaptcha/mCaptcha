@@ -418,6 +418,21 @@
 <a href="#418" id="418">418</a>
 <a href="#419" id="419">419</a>
 <a href="#420" id="420">420</a>
+<a href="#421" id="421">421</a>
+<a href="#422" id="422">422</a>
+<a href="#423" id="423">423</a>
+<a href="#424" id="424">424</a>
+<a href="#425" id="425">425</a>
+<a href="#426" id="426">426</a>
+<a href="#427" id="427">427</a>
+<a href="#428" id="428">428</a>
+<a href="#429" id="429">429</a>
+<a href="#430" id="430">430</a>
+<a href="#431" id="431">431</a>
+<a href="#432" id="432">432</a>
+<a href="#433" id="433">433</a>
+<a href="#434" id="434">434</a>
+<a href="#435" id="435">435</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 // SPDX-FileCopyrightText: 2023 Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 //
@@ -712,6 +727,21 @@
 
     <span class="doccomment">/// Get all psuedo IDs
     </span><span class="kw">async fn </span>analytics_get_all_psuedo_ids(<span class="kw-2">&amp;</span><span class="self">self</span>, page: usize) -&gt; DBResult&lt;Vec&lt;String&gt;&gt;;
+
+    <span class="doccomment">/// Track maximum nonce received against captcha levels
+    </span><span class="kw">async fn </span>update_max_nonce_for_level(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        captcha_key: <span class="kw-2">&amp;</span>str,
+        difficulty_factor: u32,
+        latest_nonce: u32,
+    ) -&gt; DBResult&lt;()&gt;;
+
+    <span class="doccomment">/// Get maximum nonce tracked so far for captcha levels
+    </span><span class="kw">async fn </span>get_max_nonce_for_level(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        captcha_key: <span class="kw-2">&amp;</span>str,
+        difficulty_factor: u32,
+    ) -&gt; DBResult&lt;u32&gt;;
 }
 
 <span class="attr">#[derive(Debug, Clone, Default, Deserialize, Serialize, PartialEq)]
