@@ -65,6 +65,7 @@ pub async fn verify_pow(
     let payload = payload.into_inner();
     let worker_type = payload.worker_type.clone();
     let time = payload.time;
+    let nonce = payload.nonce;
     let (res, difficulty_factor) = data.captcha.verify_pow(payload.into(), ip).await?;
     data.stats.record_solve(&data, &key).await?;
     if let (Some(time), Some(worker_type)) = (time, worker_type) {
@@ -75,6 +76,9 @@ pub async fn verify_pow(
         };
         data.db.analysis_save(&key, &analytics).await?;
     }
+    data.db
+        .update_max_nonce_for_level(&key, difficulty_factor, nonce as u32)
+        .await?;
     let payload = ValidationToken { token: res };
     Ok(HttpResponse::Ok().json(payload))
 }

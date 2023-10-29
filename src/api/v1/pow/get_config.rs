@@ -5,6 +5,7 @@
 
 //use actix::prelude::*;
 use actix_web::{web, HttpResponse, Responder};
+use libmcaptcha::pow::PoWConfig;
 use libmcaptcha::{
     defense::LevelBuilder, master::messages::AddSiteBuilder, DefenseBuilder,
     MCaptchaBuilder,
@@ -21,7 +22,13 @@ pub struct GetConfigPayload {
     pub key: String,
 }
 
-// API keys are mcaptcha actor names
+#[derive(Clone, Serialize, Deserialize, Debug)]
+pub struct ApiPoWConfig {
+    pub string: String,
+    pub difficulty_factor: u32,
+    pub salt: String,
+    pub max_recorded_nonce: u32,
+}
 
 /// get PoW configuration for an mcaptcha key
 #[my_codegen::post(path = "V1_API_ROUTES.pow.get_config()")]
@@ -35,52 +42,34 @@ pub async fn get_config(
     }
     let payload = payload.into_inner();
 
-    match data.captcha.get_pow(payload.key.clone()).await {
-        Ok(Some(config)) => {
-            data.stats.record_fetch(&data, &payload.key).await?;
-            Ok(HttpResponse::Ok().json(config))
-        }
-        Ok(None) => {
-            init_mcaptcha(&data, &payload.key).await?;
-            let config = data
-                .captcha
-                .get_pow(payload.key.clone())
-                .await
-                .expect("mcaptcha should be initialized and ready to go");
-            // background it. would require data::Data to be static
-            // to satidfy lifetime
-            data.stats.record_fetch(&data, &payload.key).await?;
-            Ok(HttpResponse::Ok().json(config))
-        }
-        Err(e) => Err(e.into()),
-    }
+    let config: ServiceResult<PoWConfig> =
+        match data.captcha.get_pow(payload.key.clone()).await {
+            Ok(Some(config)) => Ok(config),
+            Ok(None) => {
+                init_mcaptcha(&data, &payload.key).await?;
+                let config = data
+                    .captcha
+                    .get_pow(payload.key.clone())
+                    .await
+                    .expect("mcaptcha should be initialized and ready to go");
+                Ok(config.unwrap())
+            }
+            Err(e) => Err(e.into()),
+        };
+    let config = config?;
+    let max_nonce = data
+        .db
+        .get_max_nonce_for_level(&payload.key, config.difficulty_factor)
+        .await?;
+    data.stats.record_fetch(&data, &payload.key).await?;
 
-    //    match res.exists {
-    //        Some(true) => {
-    //            match data.captcha.get_pow(payload.key.clone()).await {
-    //                Ok(Some(config)) => {
-    //                    record_fetch(&payload.key, &data.db).await;
-    //                    Ok(HttpResponse::Ok().json(config))
-    //                }
-    //                Ok(None) => {
-    //                    init_mcaptcha(&data, &payload.key).await?;
-    //                    let config = data
-    //                        .captcha
-    //                        .get_pow(payload.key.clone())
-    //                        .await
-    //                        .expect("mcaptcha should be initialized and ready to go");
-    //                    // background it. would require data::Data to be static
-    //                    // to satidfy lifetime
-    //                    record_fetch(&payload.key, &data.db).await;
-    //                    Ok(HttpResponse::Ok().json(config))
-    //                }
-    //                Err(e) => Err(e.into()),
-    //            }
-    //        }
-    //
-    //        Some(false) => Err(ServiceError::TokenNotFound),
-    //        None => Err(ServiceError::TokenNotFound),
-    //    }
+    let config = ApiPoWConfig {
+        string: config.string,
+        difficulty_factor: config.difficulty_factor,
+        salt: config.salt,
+        max_recorded_nonce: max_nonce,
+    };
+    Ok(HttpResponse::Ok().json(config))
 }
 /// Call this when [MCaptcha][libmcaptcha::MCaptcha] is not in master.
 ///
