@@ -1170,7 +1170,12 @@ impl MCDatabase for Database {
             nonce: i32,
         }
 
-        let res = sqlx::query_as!(
+        async fn inner_get_max_nonce(
+            pool: &PgPool,
+            captcha_key: &str,
+            difficulty_factor: u32,
+        ) -> DBResult<X> {
+            sqlx::query_as!(
                 X,
                 "SELECT nonce FROM mcaptcha_track_nonce
                 WHERE level_id =  (
@@ -1186,10 +1191,41 @@ impl MCDatabase for Database {
                 &captcha_key,
                 difficulty_factor as i32,
             )
-                .fetch_one(&self.pool).await
+        .fetch_one(pool)
+                .await
+                .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))
+        }
+
+        let res = inner_get_max_nonce(&self.pool, captcha_key, difficulty_factor).await;
+        if let Err(DBError::CaptchaNotFound) = res {
+            sqlx::query!(
+                "INSERT INTO
+                    mcaptcha_track_nonce (level_id, nonce)
+                VALUES  ((
+                    SELECT
+                        level_id
+                    FROM
+                        mcaptcha_levels
+                    WHERE
+                        config_id = (SELECT config_id FROM mcaptcha_config WHERE key = ($1))
+                    AND
+                        difficulty_factor = $2
+                    ), $3);",
+                &captcha_key,
+                difficulty_factor as i32,
+                0,
+            )
+            .execute(&self.pool)
+            .await
                 .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
 
-        Ok(res.nonce as u32)
+            let res =
+                inner_get_max_nonce(&self.pool, captcha_key, difficulty_factor).await?;
+            Ok(res.nonce as u32)
+        } else {
+            let res = res?;
+            Ok(res.nonce as u32)
+        }
     }
 }
 
