@@ -3,7 +3,7 @@
 //
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
-import { gen_pow } from "@mcaptcha/pow-wasm";
+import { stepped_gen_pow } from "@mcaptcha/pow-wasm";
 import * as p from "@mcaptcha/pow_sha256-polyfill";
 import { WasmWork, PoWConfig, SubmitWork } from "./types";
 
@@ -12,19 +12,25 @@ import { WasmWork, PoWConfig, SubmitWork } from "./types";
  * @param {PoWConfig} config - the proof-of-work configuration using which
  * work needs to be computed
  * */
-const prove = async (config: PoWConfig): Promise<SubmitWork> => {
+const prove = async (
+  config: PoWConfig,
+  progress: (nonce: number) => void
+): Promise<SubmitWork> => {
   const WASM = "wasm";
   const JS = "js";
+  const STEPS = 5000;
   if (WasmSupported) {
     let proof: WasmWork = null;
     let res: SubmitWork = null;
     let time: number = null;
 
     const t0 = performance.now();
-    const proofString = gen_pow(
+    const proofString = stepped_gen_pow(
       config.salt,
       config.string,
-      config.difficulty_factor
+      config.difficulty_factor,
+      STEPS,
+      progress
     );
     const t1 = performance.now();
     time = t1 - t0;
@@ -47,10 +53,12 @@ const prove = async (config: PoWConfig): Promise<SubmitWork> => {
 
     const t0 = performance.now();
 
-    proof = await p.generate_work(
+    proof = await p.stepped_generate_work(
       config.salt,
       config.string,
-      config.difficulty_factor
+      config.difficulty_factor,
+      STEPS,
+      progress
     );
     const t1 = performance.now();
     time = t1 - t0;

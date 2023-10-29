@@ -37,8 +37,8 @@
     "webpack-dev-server": "^4.15.1"
   },
   "dependencies": {
-    "@mcaptcha/pow-wasm": "^0.1.0-rc1",
-    "@mcaptcha/pow_sha256-polyfill": "^0.1.0-rc1",
-    "@mcaptcha/vanilla-glue": "^0.1.0-rc1"
+    "@mcaptcha/pow_sha256-polyfill": "^0.1.0-rc2",
+    "@mcaptcha/vanilla-glue": "^0.1.0-rc1",
+    "@mcaptcha/pow-wasm": "^0.1.0-rc2"
   }
 }

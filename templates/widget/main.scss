@@ -7,106 +7,138 @@
 
 @import "../reset";
 
-.widget__contaienr {
-  align-items: center;
-  box-sizing: border-box;
-  display: flex;
-  height: 100%;
+body {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
+.widget__container {
+	align-items: center;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	margin: auto 0;
+}
+
+.widget__inner-container {
+	align-items: center;
+	box-sizing: border-box;
+	display: flex;
+	height: 100%;
+	width: 100%;
 }
 
 .widget__noscript-container {
-  display: flex;
-  font-size: 0.7rem;
-  line-height: 20px;
-  flex-direction: column;
-  padding: 5px;
-  box-sizing: border-box;
-  height: 100%;
-  margin: auto;
+	display: flex;
+	font-size: 0.7rem;
+	line-height: 20px;
+	flex-direction: column;
+	padding: 5px;
+	box-sizing: border-box;
+	height: 100%;
+	margin: auto;
 }
 
 .widget__noscript-warning {
-  display: block;
-  margin: auto;
-  flex: 2;
-  width: 100%;
-  margin: auto;
+	display: block;
+	margin: auto;
+	flex: 2;
+	width: 100%;
+	margin: auto;
 }
 
 .widget__source-code {
-  display: block;
-  flex: 1;
+	display: block;
+	flex: 1;
 }
 
 .widget__verification-container {
-  align-items: center;
-  display: none;
-  line-height: 30px;
-  font-size: 1rem;
+	align-items: center;
+	display: none;
+	line-height: 30px;
+	font-size: 1rem;
 }
 
 .widget__verification-checkbox {
-  width: 30px;
-  height: 30px;
-  margin: 0 10px;
+	width: 30px;
+	height: 30px;
+	margin: 0 10px;
 }
 
 #widget__verification-text--during {
-  display: none;
+	display: none;
 }
 
 #widget__verification-text--after {
-  display: none;
-  color: green;
+	display: none;
+	color: green;
 }
 
 #widget__verification-text--error {
-  display: none;
-  color: red;
+	display: none;
+	color: red;
 }
 
 .widget__verification-checkbox:checked ~ #widget__verification-text--before {
-  display: none;
+	display: none;
 }
 
 .widget__verification-checkbox:checked ~ #widget__verification-text--during {
-  display: none;
+	display: none;
 }
 
 .widget__verification-checkbox:checked ~ #widget__verification-text--error {
-  display: none;
+	display: none;
 }
 
 .widget__verification-checkbox:checked ~ #widget__verification-text--after {
-  display: block;
+	display: block;
 }
 
 .widget__mcaptcha-details {
-  display: flex;
-  flex-direction: column;
-  margin-left: auto;
-  margin-right: 10px;
+	display: flex;
+	flex-direction: column;
+	margin-left: auto;
+	margin-right: 10px;
 }
 
 .widget__mcaptcha-brand-name {
-  font-size: 0.7rem;
-  font-weight: 600;
-  margin: auto;
-  text-align: center;
+	font-size: 0.7rem;
+	font-weight: 600;
+	margin: auto;
+	text-align: center;
 }
 
 .widget__mcaptcha-logo {
-  display: block;
-  width: 35px;
-  margin: auto;
+	display: block;
+	width: 35px;
+	margin: auto;
 }
 
 .widget__mcaptcha-info-container {
-  display: flex;
-  margin: auto;
+	display: flex;
+	margin: auto;
 }
 
 .widget__mcaptcha-info-link {
-  font-size: 0.5rem;
-  margin: 2px;
+	font-size: 0.5rem;
+	margin: 2px;
+}
+
+/* progress bar courtesy of https://codepen.io/Bizzy-Coding/pen/poOymVJ?editors=1111 */
+.progress__bar {
+	position: relative;
+	height: 5px;
+	width: 100%;
+	background: #fff;
+	border-radius: 15px;
+}
+
+.progress__fill {
+	background: #65a2e0;
+	border-radius: 15px;
+	height: 100%;
+	width: 0%;
 }

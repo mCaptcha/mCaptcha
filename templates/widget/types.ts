@@ -32,8 +32,13 @@ export type PoWConfig = {
   string: string;
   difficulty_factor: number;
   salt: string;
+  max_recorded_nonce: number;
 };
 
 export type Token = {
   token: string;
 };
+
+export type ServiceWorkerMessage =
+  | { type: "work"; value: ServiceWorkerWork }
+  | { type: "progress"; nonce: number };
