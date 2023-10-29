@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "UPDATE mcaptcha_track_nonce SET nonce = ?\n                WHERE level_id =  (\n                    SELECT\n                        level_id\n                    FROM\n                        mcaptcha_levels\n                    WHERE\n                        config_id = (SELECT config_id FROM mcaptcha_config WHERE captcha_key = ?)\n                    AND\n                        difficulty_factor = ?\n                    )\n                AND nonce <= ?;",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 4
+    },
+    "nullable": []
+  },
+  "hash": "349ba17ff197aca7ee9fbd43e227d181c27ae04702fd6bdb6ddc32aab3bcb1ea"
+}

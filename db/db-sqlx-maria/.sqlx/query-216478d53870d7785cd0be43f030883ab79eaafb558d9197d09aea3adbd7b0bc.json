@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "INSERT INTO\n                    mcaptcha_track_nonce (level_id, nonce)\n                VALUES  ((\n                    SELECT\n                        level_id\n                    FROM\n                        mcaptcha_levels\n                    WHERE\n                        config_id = (SELECT config_id FROM mcaptcha_config WHERE captcha_key = ?)\n                    AND\n                        difficulty_factor = ?\n                    AND\n                        visitor_threshold = ?\n                    ), ?);",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 4
+    },
+    "nullable": []
+  },
+  "hash": "216478d53870d7785cd0be43f030883ab79eaafb558d9197d09aea3adbd7b0bc"
+}

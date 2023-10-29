@@ -6,51 +6,54 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 
 <. include!("../components/headers/widget-headers.html"); .>
   <body>
-    <form class="widget__contaienr">
-		<noscript>
-		  <div class="widget__noscript-container">
-			<span class="widget__noscript-warning">
-			  Please enable JavaScript to receive mCaptcha challenge
-			</span>
-			<a class="widget__source-code" href="https://github.com/mCaptcha">
-			  Read our source code
-			</a>
-		 </div>
-      </noscript>
-      <label class="widget__verification-container" for="widget__verification-checkbox">
-        <input 
-			id="widget__verification-checkbox"
-			class="widget__verification-checkbox"
-		type="checkbox" />
-		<span id="widget__verification-text--before">I'm not a robot</span>
-		<span id="widget__verification-text--during">Processing...</span>
-		<span id="widget__verification-text--after">Verified!</span>
-		<span id="widget__verification-text--error">Something went wrong</span>
-      </label>
-      <div class="widget__mcaptcha-details">
-        <a href="<.= crate::PKG_HOMEPAGE .>" 
-			class="widget__mcaptcha-logo-container"
-			target="_blank"
-		 >
-          <img
-            class="widget__mcaptcha-logo"
-			src="<.= crate::FILES.get("./static/cache/img/icon-trans.png").unwrap().>"
-            alt="mCaptcha logo"
-          />
-          <p class="widget__mcaptcha-brand-name">mCaptcha</p>
-        </a>
-        <div class="widget__mcaptcha-info-container">
-		  <a class="widget__mcaptcha-info-link"
-			target="_blank"
-			href="<.= crate::PKG_HOMEPAGE .><.= crate::PAGES.privacy .>">
-            Privacy
+    <main class="widget__container">
+      <form class="widget__inner-container">
+          <noscript>
+            <div class="widget__noscript-container">
+              <span class="widget__noscript-warning">
+                Please enable JavaScript to receive mCaptcha challenge
+              </span>
+              <a class="widget__source-code" href="https://github.com/mCaptcha">
+                Read our source code
+              </a>
+           </div>
+        </noscript>
+        <label class="widget__verification-container" for="widget__verification-checkbox">
+          <input 
+              id="widget__verification-checkbox"
+              class="widget__verification-checkbox"
+          type="checkbox" />
+          <span id="widget__verification-text--before">I'm not a robot</span>
+          <span id="widget__verification-text--during">Processing...</span>
+          <span id="widget__verification-text--after">Verified!</span>
+          <span id="widget__verification-text--error">Something went wrong</span>
+        </label>
+        <div class="widget__mcaptcha-details">
+          <a href="<.= crate::PKG_HOMEPAGE .>" 
+              class="widget__mcaptcha-logo-container"
+              target="_blank"
+           >
+            <img
+              class="widget__mcaptcha-logo"
+              src="<.= crate::FILES.get("./static/cache/img/icon-trans.png").unwrap().>"
+              alt="mCaptcha logo"
+            />
+            <p class="widget__mcaptcha-brand-name">mCaptcha</p>
           </a>
-		  <a class="widget__mcaptcha-info-link"
-		  	target="_blank"
-			href="<.= crate::PKG_HOMEPAGE .><.= crate::PAGES.security .>">
-            Terms
-          </a>
+          <div class="widget__mcaptcha-info-container">
+            <a class="widget__mcaptcha-info-link"
+              target="_blank"
+              href="<.= crate::PKG_HOMEPAGE .><.= crate::PAGES.privacy .>">
+              Privacy
+            </a>
+            <a class="widget__mcaptcha-info-link"
+              target="_blank"
+              href="<.= crate::PKG_HOMEPAGE .><.= crate::PAGES.security .>">
+              Terms
+            </a>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+      <div class="progress__bar"><div class="progress__fill"></div></div>
+    </main>
 <.include!("./footer.html"); .>

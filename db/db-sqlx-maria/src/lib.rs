@@ -437,6 +437,39 @@ impl MCDatabase for Database {
             .await
             .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
 
+        let mut futs = Vec::with_capacity(levels.len());
+
+        for level in levels.iter() {
+            let difficulty_factor = level.difficulty_factor as i32;
+            let visitor_threshold = level.visitor_threshold as i32;
+            let fut = sqlx::query!(
+                "INSERT INTO
+                    mcaptcha_track_nonce (level_id, nonce)
+                VALUES  ((
+                    SELECT
+                        level_id
+                    FROM
+                        mcaptcha_levels
+                    WHERE
+                        config_id = (SELECT config_id FROM mcaptcha_config WHERE captcha_key = ?)
+                    AND
+                        difficulty_factor = ?
+                    AND
+                        visitor_threshold = ?
+                    ), ?);",
+                &captcha_key,
+                difficulty_factor,
+                visitor_threshold,
+                0,
+            )
+            .execute(&self.pool);
+            futs.push(fut);
+        }
+
+        try_join_all(futs)
+            .await
+            .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
+
         Ok(())
     }
 
@@ -1086,6 +1119,70 @@ impl MCDatabase for Database {
         .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
 
         Ok(res.drain(0..).map(|r| r.psuedo_id).collect())
+    }
+
+    /// Track maximum nonce received against captcha levels
+    async fn update_max_nonce_for_level(
+        &self,
+        captcha_key: &str,
+        difficulty_factor: u32,
+        latest_nonce: u32,
+    ) -> DBResult<()> {
+        let latest_nonce = latest_nonce as i64;
+        sqlx::query!(
+                "UPDATE mcaptcha_track_nonce SET nonce = ?
+                WHERE level_id =  (
+                    SELECT
+                        level_id
+                    FROM
+                        mcaptcha_levels
+                    WHERE
+                        config_id = (SELECT config_id FROM mcaptcha_config WHERE captcha_key = ?)
+                    AND
+                        difficulty_factor = ?
+                    )
+                AND nonce <= ?;",
+                latest_nonce,
+                &captcha_key,
+                difficulty_factor as i64,
+                latest_nonce
+            )
+            .execute(&self.pool).await
+        .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
+
+        Ok(())
+    }
+
+    /// Get maximum nonce tracked so far for captcha levels
+    async fn get_max_nonce_for_level(
+        &self,
+        captcha_key: &str,
+        difficulty_factor: u32,
+    ) -> DBResult<u32> {
+        struct X {
+            nonce: i32,
+        }
+
+        let res = sqlx::query_as!(
+                X,
+                "SELECT nonce FROM mcaptcha_track_nonce
+                WHERE level_id =  (
+                    SELECT
+                        level_id
+                    FROM
+                        mcaptcha_levels
+                    WHERE
+                        config_id = (SELECT config_id FROM mcaptcha_config WHERE captcha_key = ?)
+                    AND
+                        difficulty_factor = ?
+                    );",
+                &captcha_key,
+                difficulty_factor as i32,
+            )
+                .fetch_one(&self.pool).await
+                .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
+
+        Ok(res.nonce as u32)
     }
 }
 
