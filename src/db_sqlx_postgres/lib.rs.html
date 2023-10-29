@@ -1260,6 +1260,42 @@
 <a href="#1260" id="1260">1260</a>
 <a href="#1261" id="1261">1261</a>
 <a href="#1262" id="1262">1262</a>
+<a href="#1263" id="1263">1263</a>
+<a href="#1264" id="1264">1264</a>
+<a href="#1265" id="1265">1265</a>
+<a href="#1266" id="1266">1266</a>
+<a href="#1267" id="1267">1267</a>
+<a href="#1268" id="1268">1268</a>
+<a href="#1269" id="1269">1269</a>
+<a href="#1270" id="1270">1270</a>
+<a href="#1271" id="1271">1271</a>
+<a href="#1272" id="1272">1272</a>
+<a href="#1273" id="1273">1273</a>
+<a href="#1274" id="1274">1274</a>
+<a href="#1275" id="1275">1275</a>
+<a href="#1276" id="1276">1276</a>
+<a href="#1277" id="1277">1277</a>
+<a href="#1278" id="1278">1278</a>
+<a href="#1279" id="1279">1279</a>
+<a href="#1280" id="1280">1280</a>
+<a href="#1281" id="1281">1281</a>
+<a href="#1282" id="1282">1282</a>
+<a href="#1283" id="1283">1283</a>
+<a href="#1284" id="1284">1284</a>
+<a href="#1285" id="1285">1285</a>
+<a href="#1286" id="1286">1286</a>
+<a href="#1287" id="1287">1287</a>
+<a href="#1288" id="1288">1288</a>
+<a href="#1289" id="1289">1289</a>
+<a href="#1290" id="1290">1290</a>
+<a href="#1291" id="1291">1291</a>
+<a href="#1292" id="1292">1292</a>
+<a href="#1293" id="1293">1293</a>
+<a href="#1294" id="1294">1294</a>
+<a href="#1295" id="1295">1295</a>
+<a href="#1296" id="1296">1296</a>
+<a href="#1297" id="1297">1297</a>
+<a href="#1298" id="1298">1298</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 // SPDX-FileCopyrightText: 2023 Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 //
@@ -2432,7 +2468,12 @@
             nonce: i32,
         }
 
-        <span class="kw">let </span>res = <span class="macro">sqlx::query_as!</span>(
+        <span class="kw">async fn </span>inner_get_max_nonce(
+            pool: <span class="kw-2">&amp;</span>PgPool,
+            captcha_key: <span class="kw-2">&amp;</span>str,
+            difficulty_factor: u32,
+        ) -&gt; DBResult&lt;X&gt; {
+            <span class="macro">sqlx::query_as!</span>(
                 X,
                 <span class="string">&quot;SELECT nonce FROM mcaptcha_track_nonce
                 WHERE level_id =  (
@@ -2448,10 +2489,41 @@
                 <span class="kw-2">&amp;</span>captcha_key,
                 difficulty_factor <span class="kw">as </span>i32,
             )
-                .fetch_one(<span class="kw-2">&amp;</span><span class="self">self</span>.pool).<span class="kw">await
+        .fetch_one(pool)
+                .<span class="kw">await
+                </span>.map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))
+        }
+
+        <span class="kw">let </span>res = inner_get_max_nonce(<span class="kw-2">&amp;</span><span class="self">self</span>.pool, captcha_key, difficulty_factor).<span class="kw">await</span>;
+        <span class="kw">if let </span><span class="prelude-val">Err</span>(DBError::CaptchaNotFound) = res {
+            <span class="macro">sqlx::query!</span>(
+                <span class="string">&quot;INSERT INTO
+                    mcaptcha_track_nonce (level_id, nonce)
+                VALUES  ((
+                    SELECT
+                        level_id
+                    FROM
+                        mcaptcha_levels
+                    WHERE
+                        config_id = (SELECT config_id FROM mcaptcha_config WHERE key = ($1))
+                    AND
+                        difficulty_factor = $2
+                    ), $3);&quot;</span>,
+                <span class="kw-2">&amp;</span>captcha_key,
+                difficulty_factor <span class="kw">as </span>i32,
+                <span class="number">0</span>,
+            )
+            .execute(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
+            .<span class="kw">await
                 </span>.map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))<span class="question-mark">?</span>;
 
-        <span class="prelude-val">Ok</span>(res.nonce <span class="kw">as </span>u32)
+            <span class="kw">let </span>res =
+                inner_get_max_nonce(<span class="kw-2">&amp;</span><span class="self">self</span>.pool, captcha_key, difficulty_factor).<span class="kw">await</span><span class="question-mark">?</span>;
+            <span class="prelude-val">Ok</span>(res.nonce <span class="kw">as </span>u32)
+        } <span class="kw">else </span>{
+            <span class="kw">let </span>res = res<span class="question-mark">?</span>;
+            <span class="prelude-val">Ok</span>(res.nonce <span class="kw">as </span>u32)
+        }
     }
 }
 
