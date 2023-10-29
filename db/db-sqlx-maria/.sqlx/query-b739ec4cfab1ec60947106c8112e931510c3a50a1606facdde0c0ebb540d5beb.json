@@ -1,0 +1,25 @@
+{
+  "db_name": "MySQL",
+  "query": "SELECT nonce FROM mcaptcha_track_nonce\n                WHERE level_id =  (\n                    SELECT\n                        level_id\n                    FROM\n                        mcaptcha_levels\n                    WHERE\n                        config_id = (SELECT config_id FROM mcaptcha_config WHERE captcha_key = ?)\n                    AND\n                        difficulty_factor = ?\n                    );",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "nonce",
+        "type_info": {
+          "type": "Long",
+          "flags": "NOT_NULL",
+          "char_set": 63,
+          "max_size": 11
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "b739ec4cfab1ec60947106c8112e931510c3a50a1606facdde0c0ebb540d5beb"
+}

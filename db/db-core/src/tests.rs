@@ -310,6 +310,33 @@ pub async fn database_works<'a, T: MCDatabase>(
         .unwrap();
     // analytics end
 
+    // nonce tracking start
+    assert_eq!(
+        db.get_max_nonce_for_level(c.key, l[0].difficulty_factor)
+            .await
+            .unwrap(),
+        0
+    );
+    db.update_max_nonce_for_level(c.key, l[0].difficulty_factor, 1000)
+        .await
+        .unwrap();
+    assert_eq!(
+        db.get_max_nonce_for_level(c.key, l[0].difficulty_factor)
+            .await
+            .unwrap(),
+        1000
+    );
+    db.update_max_nonce_for_level(c.key, l[0].difficulty_factor, 10_000)
+        .await
+        .unwrap();
+    assert_eq!(
+        db.get_max_nonce_for_level(c.key, l[0].difficulty_factor)
+            .await
+            .unwrap(),
+        10_000
+    );
+    // nonce tracking end
+
     assert_eq!(db.fetch_solve(p.username, c.key).await.unwrap().len(), 1);
     assert_eq!(
         db.fetch_config_fetched(p.username, c.key)

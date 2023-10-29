@@ -1,0 +1,23 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT nonce FROM mcaptcha_track_nonce\n                WHERE level_id =  (\n                    SELECT\n                        level_id\n                    FROM\n                        mcaptcha_levels\n                    WHERE\n                        config_id = (SELECT config_id FROM mcaptcha_config WHERE key = ($1))\n                    AND\n                        difficulty_factor = $2\n                    );",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "nonce",
+        "type_info": "Int4"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Int4"
+      ]
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "96f1f1e45144d5add6c4ba4cd2df8eda6043bc8cd6952787f92a687fef778a6e"
+}

@@ -292,6 +292,21 @@ pub trait MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
 
     /// Get all psuedo IDs
     async fn analytics_get_all_psuedo_ids(&self, page: usize) -> DBResult<Vec<String>>;
+
+    /// Track maximum nonce received against captcha levels
+    async fn update_max_nonce_for_level(
+        &self,
+        captcha_key: &str,
+        difficulty_factor: u32,
+        latest_nonce: u32,
+    ) -> DBResult<()>;
+
+    /// Get maximum nonce tracked so far for captcha levels
+    async fn get_max_nonce_for_level(
+        &self,
+        captcha_key: &str,
+        difficulty_factor: u32,
+    ) -> DBResult<u32>;
 }
 
 #[derive(Debug, Clone, Default, Deserialize, Serialize, PartialEq)]
