@@ -1,0 +1,25 @@
+{
+  "db_name": "MySQL",
+  "query": "SELECT\n            difficulty_factor\n        FROM\n            mcaptcha_pow_analytics\n        WHERE\n            time <= ?\n        ORDER BY difficulty_factor ASC LIMIT 1 OFFSET ?;",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "difficulty_factor",
+        "type_info": {
+          "type": "Long",
+          "flags": "NOT_NULL | NO_DEFAULT_VALUE",
+          "char_set": 63,
+          "max_size": 11
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "c4d6ad934e38218931e74ae1c31c6712cbadb40f31bb12e160c9d333c7e3835c"
+}

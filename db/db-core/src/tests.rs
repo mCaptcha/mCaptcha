@@ -7,6 +7,29 @@
 use crate::errors::*;
 use crate::prelude::*;
 
+/// easy traffic pattern
+pub const TRAFFIC_PATTERN: TrafficPattern = TrafficPattern {
+    avg_traffic: 500,
+    peak_sustainable_traffic: 5_000,
+    broke_my_site_traffic: Some(10_000),
+};
+
+/// levels for complex captcha config
+pub const LEVELS: [Level; 3] = [
+    Level {
+        difficulty_factor: 1,
+        visitor_threshold: 1,
+    },
+    Level {
+        difficulty_factor: 2,
+        visitor_threshold: 2,
+    },
+    Level {
+        difficulty_factor: 3,
+        visitor_threshold: 3,
+    },
+];
+
 /// test all database functions
 pub async fn database_works<'a, T: MCDatabase>(
     db: &T,
@@ -250,7 +273,6 @@ pub async fn database_works<'a, T: MCDatabase>(
     db.record_confirm(c.key).await.unwrap();
 
     // analytics start
-
     db.analytics_create_psuedo_id_if_not_exists(c.key)
         .await
         .unwrap();
@@ -282,11 +304,31 @@ pub async fn database_works<'a, T: MCDatabase>(
     );
 
     let analytics = CreatePerformanceAnalytics {
-        time: 0,
-        difficulty_factor: 0,
+        time: 1,
+        difficulty_factor: 1,
         worker_type: "wasm".into(),
     };
+
+    assert_eq!(
+        db.stats_get_num_logs_under_time(analytics.time)
+            .await
+            .unwrap(),
+        0
+    );
+
     db.analysis_save(c.key, &analytics).await.unwrap();
+    assert_eq!(
+        db.stats_get_num_logs_under_time(analytics.time)
+            .await
+            .unwrap(),
+        1
+    );
+    assert_eq!(
+        db.stats_get_num_logs_under_time(analytics.time - 1)
+            .await
+            .unwrap(),
+        0
+    );
     let limit = 50;
     let mut offset = 0;
     let a = db.analytics_fetch(c.key, limit, offset).await.unwrap();
@@ -305,6 +347,50 @@ pub async fn database_works<'a, T: MCDatabase>(
         .unwrap();
     assert_eq!(db.analytics_fetch(c.key, 1000, 0).await.unwrap().len(), 0);
     assert!(!db.analytics_captcha_is_published(c.key).await.unwrap());
+
+    let rest_analytics = [
+        CreatePerformanceAnalytics {
+            time: 2,
+            difficulty_factor: 2,
+            worker_type: "wasm".into(),
+        },
+        CreatePerformanceAnalytics {
+            time: 3,
+            difficulty_factor: 3,
+            worker_type: "wasm".into(),
+        },
+        CreatePerformanceAnalytics {
+            time: 4,
+            difficulty_factor: 4,
+            worker_type: "wasm".into(),
+        },
+        CreatePerformanceAnalytics {
+            time: 5,
+            difficulty_factor: 5,
+            worker_type: "wasm".into(),
+        },
+    ];
+    for a in rest_analytics.iter() {
+        db.analysis_save(c.key, &a).await.unwrap();
+    }
+    assert!(db
+        .stats_get_entry_at_location_for_time_limit_asc(1, 2)
+        .await
+        .unwrap()
+        .is_none());
+    assert_eq!(
+        db.stats_get_entry_at_location_for_time_limit_asc(2, 1)
+            .await
+            .unwrap(),
+        Some(2)
+    );
+    assert_eq!(
+        db.stats_get_entry_at_location_for_time_limit_asc(3, 2)
+            .await
+            .unwrap(),
+        Some(3)
+    );
+
     db.analytics_delete_all_records_for_campaign(c.key)
         .await
         .unwrap();

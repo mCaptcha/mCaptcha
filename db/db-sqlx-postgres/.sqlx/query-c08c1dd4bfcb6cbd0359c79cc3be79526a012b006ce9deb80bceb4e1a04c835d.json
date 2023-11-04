@@ -1,0 +1,22 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT COUNT(difficulty_factor) FROM mcaptcha_pow_analytics WHERE time <= $1;",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "count",
+        "type_info": "Int8"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int4"
+      ]
+    },
+    "nullable": [
+      null
+    ]
+  },
+  "hash": "c08c1dd4bfcb6cbd0359c79cc3be79526a012b006ce9deb80bceb4e1a04c835d"
+}

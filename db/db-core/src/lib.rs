@@ -307,6 +307,17 @@ pub trait MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
         captcha_key: &str,
         difficulty_factor: u32,
     ) -> DBResult<u32>;
+
+    /// Get number of analytics entries that are under a certain duration
+    async fn stats_get_num_logs_under_time(&self, duration: u32) -> DBResult<usize>;
+
+    /// Get the entry at a location in the list of analytics entires under a certain time limit
+    /// and sorted in ascending order
+    async fn stats_get_entry_at_location_for_time_limit_asc(
+        &self,
+        duration: u32,
+        location: u32,
+    ) -> DBResult<Option<usize>>;
 }
 
 #[derive(Debug, Clone, Default, Deserialize, Serialize, PartialEq)]
