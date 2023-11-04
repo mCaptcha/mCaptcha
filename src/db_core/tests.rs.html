@@ -373,6 +373,67 @@
 <a href="#373" id="373">373</a>
 <a href="#374" id="374">374</a>
 <a href="#375" id="375">375</a>
+<a href="#376" id="376">376</a>
+<a href="#377" id="377">377</a>
+<a href="#378" id="378">378</a>
+<a href="#379" id="379">379</a>
+<a href="#380" id="380">380</a>
+<a href="#381" id="381">381</a>
+<a href="#382" id="382">382</a>
+<a href="#383" id="383">383</a>
+<a href="#384" id="384">384</a>
+<a href="#385" id="385">385</a>
+<a href="#386" id="386">386</a>
+<a href="#387" id="387">387</a>
+<a href="#388" id="388">388</a>
+<a href="#389" id="389">389</a>
+<a href="#390" id="390">390</a>
+<a href="#391" id="391">391</a>
+<a href="#392" id="392">392</a>
+<a href="#393" id="393">393</a>
+<a href="#394" id="394">394</a>
+<a href="#395" id="395">395</a>
+<a href="#396" id="396">396</a>
+<a href="#397" id="397">397</a>
+<a href="#398" id="398">398</a>
+<a href="#399" id="399">399</a>
+<a href="#400" id="400">400</a>
+<a href="#401" id="401">401</a>
+<a href="#402" id="402">402</a>
+<a href="#403" id="403">403</a>
+<a href="#404" id="404">404</a>
+<a href="#405" id="405">405</a>
+<a href="#406" id="406">406</a>
+<a href="#407" id="407">407</a>
+<a href="#408" id="408">408</a>
+<a href="#409" id="409">409</a>
+<a href="#410" id="410">410</a>
+<a href="#411" id="411">411</a>
+<a href="#412" id="412">412</a>
+<a href="#413" id="413">413</a>
+<a href="#414" id="414">414</a>
+<a href="#415" id="415">415</a>
+<a href="#416" id="416">416</a>
+<a href="#417" id="417">417</a>
+<a href="#418" id="418">418</a>
+<a href="#419" id="419">419</a>
+<a href="#420" id="420">420</a>
+<a href="#421" id="421">421</a>
+<a href="#422" id="422">422</a>
+<a href="#423" id="423">423</a>
+<a href="#424" id="424">424</a>
+<a href="#425" id="425">425</a>
+<a href="#426" id="426">426</a>
+<a href="#427" id="427">427</a>
+<a href="#428" id="428">428</a>
+<a href="#429" id="429">429</a>
+<a href="#430" id="430">430</a>
+<a href="#431" id="431">431</a>
+<a href="#432" id="432">432</a>
+<a href="#433" id="433">433</a>
+<a href="#434" id="434">434</a>
+<a href="#435" id="435">435</a>
+<a href="#436" id="436">436</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 // SPDX-FileCopyrightText: 2023 Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 //
@@ -381,6 +442,29 @@
 </span><span class="doccomment">//! Test utilities
 </span><span class="kw">use </span><span class="kw">crate</span>::errors::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
+
+<span class="doccomment">/// easy traffic pattern
+</span><span class="kw">pub const </span>TRAFFIC_PATTERN: TrafficPattern = TrafficPattern {
+        avg_traffic: <span class="number">500</span>,
+        peak_sustainable_traffic: <span class="number">5_000</span>,
+        broke_my_site_traffic: <span class="prelude-val">Some</span>(<span class="number">10_000</span>),
+    };
+
+<span class="doccomment">/// levels for complex captcha config
+</span><span class="kw">pub  const </span>LEVELS: [Level; <span class="number">3</span>] = [
+        Level {
+            difficulty_factor: <span class="number">1</span>,
+            visitor_threshold: <span class="number">1</span>,
+        },
+        Level {
+            difficulty_factor: <span class="number">2</span>,
+            visitor_threshold: <span class="number">2</span>,
+        },
+        Level {
+            difficulty_factor: <span class="number">3</span>,
+            visitor_threshold: <span class="number">3</span>,
+        },
+    ];
 
 <span class="doccomment">/// test all database functions
 </span><span class="kw">pub async fn </span>database_works&lt;<span class="lifetime">&#39;a</span>, T: MCDatabase&gt;(
@@ -625,7 +709,6 @@
     db.record_confirm(c.key).<span class="kw">await</span>.unwrap();
 
     <span class="comment">// analytics start
-
     </span>db.analytics_create_psuedo_id_if_not_exists(c.key)
         .<span class="kw">await
         </span>.unwrap();
@@ -657,11 +740,17 @@
     );
 
     <span class="kw">let </span>analytics = CreatePerformanceAnalytics {
-        time: <span class="number">0</span>,
-        difficulty_factor: <span class="number">0</span>,
+        time: <span class="number">1</span>,
+        difficulty_factor: <span class="number">1</span>,
         worker_type: <span class="string">&quot;wasm&quot;</span>.into(),
     };
+
+
+    <span class="macro">assert_eq!</span>(db.stats_get_num_logs_under_time(analytics.time).<span class="kw">await</span>.unwrap(), <span class="number">0</span>);
+
     db.analysis_save(c.key, <span class="kw-2">&amp;</span>analytics).<span class="kw">await</span>.unwrap();
+    <span class="macro">assert_eq!</span>(db.stats_get_num_logs_under_time(analytics.time).<span class="kw">await</span>.unwrap(), <span class="number">1</span>);
+    <span class="macro">assert_eq!</span>(db.stats_get_num_logs_under_time(analytics.time - <span class="number">1</span>).<span class="kw">await</span>.unwrap(), <span class="number">0</span>);
     <span class="kw">let </span>limit = <span class="number">50</span>;
     <span class="kw">let </span><span class="kw-2">mut </span>offset = <span class="number">0</span>;
     <span class="kw">let </span>a = db.analytics_fetch(c.key, limit, offset).<span class="kw">await</span>.unwrap();
@@ -680,6 +769,39 @@
         </span>.unwrap();
     <span class="macro">assert_eq!</span>(db.analytics_fetch(c.key, <span class="number">1000</span>, <span class="number">0</span>).<span class="kw">await</span>.unwrap().len(), <span class="number">0</span>);
     <span class="macro">assert!</span>(!db.analytics_captcha_is_published(c.key).<span class="kw">await</span>.unwrap());
+
+    <span class="kw">let </span>rest_analytics= [
+        CreatePerformanceAnalytics {
+        time: <span class="number">2</span>,
+        difficulty_factor: <span class="number">2</span>,
+        worker_type: <span class="string">&quot;wasm&quot;</span>.into(),
+    },
+        CreatePerformanceAnalytics {
+        time: <span class="number">3</span>,
+        difficulty_factor: <span class="number">3</span>,
+        worker_type: <span class="string">&quot;wasm&quot;</span>.into(),
+    },
+
+        CreatePerformanceAnalytics {
+        time: <span class="number">4</span>,
+        difficulty_factor: <span class="number">4</span>,
+        worker_type: <span class="string">&quot;wasm&quot;</span>.into(),
+    },
+
+        CreatePerformanceAnalytics {
+        time: <span class="number">5</span>,
+        difficulty_factor: <span class="number">5</span>,
+        worker_type: <span class="string">&quot;wasm&quot;</span>.into(),
+    },
+    ];
+    <span class="kw">for </span>a <span class="kw">in </span>rest_analytics.iter() {
+        db.analysis_save(c.key, <span class="kw-2">&amp;</span>a).<span class="kw">await</span>.unwrap();
+    }
+    <span class="macro">assert!</span>(db.stats_get_entry_at_location_for_time_limit_asc(<span class="number">1</span>, <span class="number">2</span>).<span class="kw">await</span>.unwrap().is_none());
+    <span class="macro">assert_eq!</span>(db.stats_get_entry_at_location_for_time_limit_asc(<span class="number">2</span>, <span class="number">1</span>).<span class="kw">await</span>.unwrap(), <span class="prelude-val">Some</span>(<span class="number">2</span>));
+    <span class="macro">assert_eq!</span>(db.stats_get_entry_at_location_for_time_limit_asc(<span class="number">3</span>, <span class="number">2</span>).<span class="kw">await</span>.unwrap(), <span class="prelude-val">Some</span>(<span class="number">3</span>));
+
+
     db.analytics_delete_all_records_for_campaign(c.key)
         .<span class="kw">await
         </span>.unwrap();

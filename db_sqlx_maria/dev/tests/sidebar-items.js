@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["database_works"]};
+window.SIDEBAR_ITEMS = {"constant":["LEVELS","TRAFFIC_PATTERN"],"fn":["database_works"]};

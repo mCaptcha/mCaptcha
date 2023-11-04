@@ -433,6 +433,14 @@
 <a href="#433" id="433">433</a>
 <a href="#434" id="434">434</a>
 <a href="#435" id="435">435</a>
+<a href="#436" id="436">436</a>
+<a href="#437" id="437">437</a>
+<a href="#438" id="438">438</a>
+<a href="#439" id="439">439</a>
+<a href="#440" id="440">440</a>
+<a href="#441" id="441">441</a>
+<a href="#442" id="442">442</a>
+<a href="#443" id="443">443</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 // SPDX-FileCopyrightText: 2023 Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 //
@@ -742,6 +750,14 @@
         captcha_key: <span class="kw-2">&amp;</span>str,
         difficulty_factor: u32,
     ) -&gt; DBResult&lt;u32&gt;;
+
+    <span class="doccomment">/// Get number of analytics entries that are under a certain duration
+    </span><span class="kw">async fn </span>stats_get_num_logs_under_time(<span class="kw-2">&amp;</span><span class="self">self</span>, duration: u32) -&gt; DBResult&lt;usize&gt;;
+
+    <span class="doccomment">/// Get the entry at a location in the list of analytics entires under a certain time limit
+    /// and sorted in ascending order
+    </span><span class="kw">async fn </span>stats_get_entry_at_location_for_time_limit_asc(<span class="kw-2">&amp;</span><span class="self">self</span>, duration: u32, location: u32) -&gt; DBResult&lt;<span class="prelude-ty">Option</span>&lt;usize&gt;&gt;;
+
 }
 
 <span class="attr">#[derive(Debug, Clone, Default, Deserialize, Serialize, PartialEq)]
