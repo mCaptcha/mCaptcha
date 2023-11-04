@@ -441,6 +441,9 @@
 <a href="#441" id="441">441</a>
 <a href="#442" id="442">442</a>
 <a href="#443" id="443">443</a>
+<a href="#444" id="444">444</a>
+<a href="#445" id="445">445</a>
+<a href="#446" id="446">446</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 // SPDX-FileCopyrightText: 2023 Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 //
@@ -756,8 +759,11 @@
 
     <span class="doccomment">/// Get the entry at a location in the list of analytics entires under a certain time limit
     /// and sorted in ascending order
-    </span><span class="kw">async fn </span>stats_get_entry_at_location_for_time_limit_asc(<span class="kw-2">&amp;</span><span class="self">self</span>, duration: u32, location: u32) -&gt; DBResult&lt;<span class="prelude-ty">Option</span>&lt;usize&gt;&gt;;
-
+    </span><span class="kw">async fn </span>stats_get_entry_at_location_for_time_limit_asc(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        duration: u32,
+        location: u32,
+    ) -&gt; DBResult&lt;<span class="prelude-ty">Option</span>&lt;usize&gt;&gt;;
 }
 
 <span class="attr">#[derive(Debug, Clone, Default, Deserialize, Serialize, PartialEq)]

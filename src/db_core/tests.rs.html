@@ -434,6 +434,31 @@
 <a href="#434" id="434">434</a>
 <a href="#435" id="435">435</a>
 <a href="#436" id="436">436</a>
+<a href="#437" id="437">437</a>
+<a href="#438" id="438">438</a>
+<a href="#439" id="439">439</a>
+<a href="#440" id="440">440</a>
+<a href="#441" id="441">441</a>
+<a href="#442" id="442">442</a>
+<a href="#443" id="443">443</a>
+<a href="#444" id="444">444</a>
+<a href="#445" id="445">445</a>
+<a href="#446" id="446">446</a>
+<a href="#447" id="447">447</a>
+<a href="#448" id="448">448</a>
+<a href="#449" id="449">449</a>
+<a href="#450" id="450">450</a>
+<a href="#451" id="451">451</a>
+<a href="#452" id="452">452</a>
+<a href="#453" id="453">453</a>
+<a href="#454" id="454">454</a>
+<a href="#455" id="455">455</a>
+<a href="#456" id="456">456</a>
+<a href="#457" id="457">457</a>
+<a href="#458" id="458">458</a>
+<a href="#459" id="459">459</a>
+<a href="#460" id="460">460</a>
+<a href="#461" id="461">461</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 // SPDX-FileCopyrightText: 2023 Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 //
@@ -445,26 +470,26 @@
 
 <span class="doccomment">/// easy traffic pattern
 </span><span class="kw">pub const </span>TRAFFIC_PATTERN: TrafficPattern = TrafficPattern {
-        avg_traffic: <span class="number">500</span>,
-        peak_sustainable_traffic: <span class="number">5_000</span>,
-        broke_my_site_traffic: <span class="prelude-val">Some</span>(<span class="number">10_000</span>),
-    };
+    avg_traffic: <span class="number">500</span>,
+    peak_sustainable_traffic: <span class="number">5_000</span>,
+    broke_my_site_traffic: <span class="prelude-val">Some</span>(<span class="number">10_000</span>),
+};
 
 <span class="doccomment">/// levels for complex captcha config
-</span><span class="kw">pub  const </span>LEVELS: [Level; <span class="number">3</span>] = [
-        Level {
-            difficulty_factor: <span class="number">1</span>,
-            visitor_threshold: <span class="number">1</span>,
-        },
-        Level {
-            difficulty_factor: <span class="number">2</span>,
-            visitor_threshold: <span class="number">2</span>,
-        },
-        Level {
-            difficulty_factor: <span class="number">3</span>,
-            visitor_threshold: <span class="number">3</span>,
-        },
-    ];
+</span><span class="kw">pub const </span>LEVELS: [Level; <span class="number">3</span>] = [
+    Level {
+        difficulty_factor: <span class="number">1</span>,
+        visitor_threshold: <span class="number">1</span>,
+    },
+    Level {
+        difficulty_factor: <span class="number">2</span>,
+        visitor_threshold: <span class="number">2</span>,
+    },
+    Level {
+        difficulty_factor: <span class="number">3</span>,
+        visitor_threshold: <span class="number">3</span>,
+    },
+];
 
 <span class="doccomment">/// test all database functions
 </span><span class="kw">pub async fn </span>database_works&lt;<span class="lifetime">&#39;a</span>, T: MCDatabase&gt;(
@@ -745,12 +770,26 @@
         worker_type: <span class="string">&quot;wasm&quot;</span>.into(),
     };
 
-
-    <span class="macro">assert_eq!</span>(db.stats_get_num_logs_under_time(analytics.time).<span class="kw">await</span>.unwrap(), <span class="number">0</span>);
+    <span class="macro">assert_eq!</span>(
+        db.stats_get_num_logs_under_time(analytics.time)
+            .<span class="kw">await
+            </span>.unwrap(),
+        <span class="number">0
+    </span>);
 
     db.analysis_save(c.key, <span class="kw-2">&amp;</span>analytics).<span class="kw">await</span>.unwrap();
-    <span class="macro">assert_eq!</span>(db.stats_get_num_logs_under_time(analytics.time).<span class="kw">await</span>.unwrap(), <span class="number">1</span>);
-    <span class="macro">assert_eq!</span>(db.stats_get_num_logs_under_time(analytics.time - <span class="number">1</span>).<span class="kw">await</span>.unwrap(), <span class="number">0</span>);
+    <span class="macro">assert_eq!</span>(
+        db.stats_get_num_logs_under_time(analytics.time)
+            .<span class="kw">await
+            </span>.unwrap(),
+        <span class="number">1
+    </span>);
+    <span class="macro">assert_eq!</span>(
+        db.stats_get_num_logs_under_time(analytics.time - <span class="number">1</span>)
+            .<span class="kw">await
+            </span>.unwrap(),
+        <span class="number">0
+    </span>);
     <span class="kw">let </span>limit = <span class="number">50</span>;
     <span class="kw">let </span><span class="kw-2">mut </span>offset = <span class="number">0</span>;
     <span class="kw">let </span>a = db.analytics_fetch(c.key, limit, offset).<span class="kw">await</span>.unwrap();
@@ -770,37 +809,48 @@
     <span class="macro">assert_eq!</span>(db.analytics_fetch(c.key, <span class="number">1000</span>, <span class="number">0</span>).<span class="kw">await</span>.unwrap().len(), <span class="number">0</span>);
     <span class="macro">assert!</span>(!db.analytics_captcha_is_published(c.key).<span class="kw">await</span>.unwrap());
 
-    <span class="kw">let </span>rest_analytics= [
+    <span class="kw">let </span>rest_analytics = [
         CreatePerformanceAnalytics {
-        time: <span class="number">2</span>,
-        difficulty_factor: <span class="number">2</span>,
-        worker_type: <span class="string">&quot;wasm&quot;</span>.into(),
-    },
+            time: <span class="number">2</span>,
+            difficulty_factor: <span class="number">2</span>,
+            worker_type: <span class="string">&quot;wasm&quot;</span>.into(),
+        },
         CreatePerformanceAnalytics {
-        time: <span class="number">3</span>,
-        difficulty_factor: <span class="number">3</span>,
-        worker_type: <span class="string">&quot;wasm&quot;</span>.into(),
-    },
-
+            time: <span class="number">3</span>,
+            difficulty_factor: <span class="number">3</span>,
+            worker_type: <span class="string">&quot;wasm&quot;</span>.into(),
+        },
         CreatePerformanceAnalytics {
-        time: <span class="number">4</span>,
-        difficulty_factor: <span class="number">4</span>,
-        worker_type: <span class="string">&quot;wasm&quot;</span>.into(),
-    },
-
+            time: <span class="number">4</span>,
+            difficulty_factor: <span class="number">4</span>,
+            worker_type: <span class="string">&quot;wasm&quot;</span>.into(),
+        },
         CreatePerformanceAnalytics {
-        time: <span class="number">5</span>,
-        difficulty_factor: <span class="number">5</span>,
-        worker_type: <span class="string">&quot;wasm&quot;</span>.into(),
-    },
+            time: <span class="number">5</span>,
+            difficulty_factor: <span class="number">5</span>,
+            worker_type: <span class="string">&quot;wasm&quot;</span>.into(),
+        },
     ];
     <span class="kw">for </span>a <span class="kw">in </span>rest_analytics.iter() {
         db.analysis_save(c.key, <span class="kw-2">&amp;</span>a).<span class="kw">await</span>.unwrap();
     }
-    <span class="macro">assert!</span>(db.stats_get_entry_at_location_for_time_limit_asc(<span class="number">1</span>, <span class="number">2</span>).<span class="kw">await</span>.unwrap().is_none());
-    <span class="macro">assert_eq!</span>(db.stats_get_entry_at_location_for_time_limit_asc(<span class="number">2</span>, <span class="number">1</span>).<span class="kw">await</span>.unwrap(), <span class="prelude-val">Some</span>(<span class="number">2</span>));
-    <span class="macro">assert_eq!</span>(db.stats_get_entry_at_location_for_time_limit_asc(<span class="number">3</span>, <span class="number">2</span>).<span class="kw">await</span>.unwrap(), <span class="prelude-val">Some</span>(<span class="number">3</span>));
-
+    <span class="macro">assert!</span>(db
+        .stats_get_entry_at_location_for_time_limit_asc(<span class="number">1</span>, <span class="number">2</span>)
+        .<span class="kw">await
+        </span>.unwrap()
+        .is_none());
+    <span class="macro">assert_eq!</span>(
+        db.stats_get_entry_at_location_for_time_limit_asc(<span class="number">2</span>, <span class="number">1</span>)
+            .<span class="kw">await
+            </span>.unwrap(),
+        <span class="prelude-val">Some</span>(<span class="number">2</span>)
+    );
+    <span class="macro">assert_eq!</span>(
+        db.stats_get_entry_at_location_for_time_limit_asc(<span class="number">3</span>, <span class="number">2</span>)
+            .<span class="kw">await
+            </span>.unwrap(),
+        <span class="prelude-val">Some</span>(<span class="number">3</span>)
+    );
 
     db.analytics_delete_all_records_for_campaign(c.key)
         .<span class="kw">await
