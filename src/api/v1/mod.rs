@@ -14,6 +14,7 @@ pub mod meta;
 pub mod notifications;
 pub mod pow;
 mod routes;
+pub mod stats;
 pub mod survey;
 
 pub use routes::ROUTES;
@@ -26,6 +27,7 @@ pub fn services(cfg: &mut ServiceConfig) {
     mcaptcha::services(cfg);
     notifications::services(cfg);
     survey::services(cfg);
+    stats::services(cfg);
 }
 
 #[derive(Deserialize)]

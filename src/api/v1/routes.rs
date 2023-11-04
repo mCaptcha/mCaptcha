@@ -11,6 +11,7 @@ use super::mcaptcha::routes::Captcha;
 use super::meta::routes::Meta;
 use super::notifications::routes::Notifications;
 use super::pow::routes::PoW;
+use super::stats::routes::Stats;
 use super::survey::routes::Survey;
 
 pub const ROUTES: Routes = Routes::new();
@@ -23,6 +24,7 @@ pub struct Routes {
     pub pow: PoW,
     pub survey: Survey,
     pub notifications: Notifications,
+    pub stats: Stats,
 }
 
 impl Routes {
@@ -35,6 +37,7 @@ impl Routes {
             pow: PoW::new(),
             notifications: Notifications::new(),
             survey: Survey::new(),
+            stats: Stats::new(),
         }
     }
 }

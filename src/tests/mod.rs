@@ -31,10 +31,10 @@ pub mod pg {
 
     use sqlx::migrate::MigrateDatabase;
 
+    use crate::api::v1::mcaptcha::get_random;
     use crate::data::Data;
     use crate::settings::*;
     use crate::survey::SecretsStore;
-    use crate::api::v1::mcaptcha::get_random;
     use crate::ArcData;
 
     use super::get_settings;
@@ -65,18 +65,16 @@ pub mod maria {
 
     use sqlx::migrate::MigrateDatabase;
 
+    use crate::api::v1::mcaptcha::get_random;
     use crate::data::Data;
     use crate::settings::*;
     use crate::survey::SecretsStore;
     use crate::ArcData;
-    use crate::api::v1::mcaptcha::get_random;
 
     use super::get_settings;
 
     pub async fn get_data() -> ArcData {
         let url = env::var("MARIA_DATABASE_URL").unwrap();
-
-
 
         let mut parsed = url::Url::parse(&url).unwrap();
         parsed.set_path(&get_random(16));
