@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["get_middleware","services"],"mod":["account","auth","mcaptcha","meta","notifications","pow","routes","survey"],"struct":["RedirectQuery"]};
+window.SIDEBAR_ITEMS = {"fn":["get_middleware","services"],"mod":["account","auth","mcaptcha","meta","notifications","pow","routes","stats","survey"],"struct":["RedirectQuery"]};
