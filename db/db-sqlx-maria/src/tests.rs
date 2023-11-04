@@ -5,8 +5,10 @@
 
 #![cfg(test)]
 
-use sqlx::mysql::MySqlPoolOptions;
 use std::env;
+
+use sqlx::{mysql::MySqlPoolOptions, migrate::MigrateDatabase};
+use url::Url;
 
 use crate::*;
 
@@ -26,28 +28,6 @@ async fn everyting_works() {
     const HEADING: &str = "testing notifications get db mariadb";
     const MESSAGE: &str = "testing notifications get message db mariadb";
 
-    // easy traffic pattern
-    const TRAFFIC_PATTERN: TrafficPattern = TrafficPattern {
-        avg_traffic: 500,
-        peak_sustainable_traffic: 5_000,
-        broke_my_site_traffic: Some(10_000),
-    };
-
-    const LEVELS: [Level; 3] = [
-        Level {
-            difficulty_factor: 1,
-            visitor_threshold: 1,
-        },
-        Level {
-            difficulty_factor: 2,
-            visitor_threshold: 2,
-        },
-        Level {
-            difficulty_factor: 3,
-            visitor_threshold: 3,
-        },
-    ];
-
     const ADD_NOTIFICATION: AddNotification = AddNotification {
         from: NAME,
         to: NAME,
@@ -56,10 +36,20 @@ async fn everyting_works() {
     };
 
     let url = env::var("MARIA_DATABASE_URL").unwrap();
+
+    let mut parsed = Url::parse(&url).unwrap();
+    parsed.set_path("db_maria_test");
+    let url = parsed.to_string();
+
+    if sqlx::MySql::database_exists(&url).await.unwrap() {
+        sqlx::MySql::drop_database(&url).await.unwrap();
+    }
+    sqlx::MySql::create_database(&url).await.unwrap();
+
     let pool_options = MySqlPoolOptions::new().max_connections(2);
     let connection_options = ConnectionOptions::Fresh(Fresh {
         pool_options,
-        url,
+        url: url.clone(),
         disable_logging: false,
     });
     let db = connection_options.connect().await.unwrap();
@@ -78,4 +68,6 @@ async fn everyting_works() {
         description: CAPTCHA_DESCRIPTION,
     };
     database_works(&db, &p, &c, &LEVELS, &TRAFFIC_PATTERN, &ADD_NOTIFICATION).await;
+    drop(db);
+    sqlx::MySql::drop_database(&url).await.unwrap();
 }

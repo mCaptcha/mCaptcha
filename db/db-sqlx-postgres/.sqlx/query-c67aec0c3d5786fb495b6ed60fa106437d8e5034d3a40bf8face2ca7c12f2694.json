@@ -1,0 +1,23 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT\n            difficulty_factor\n        FROM\n            mcaptcha_pow_analytics\n        WHERE\n            time <= $1\n        ORDER BY difficulty_factor ASC LIMIT 1 OFFSET $2;",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "difficulty_factor",
+        "type_info": "Int4"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int4",
+        "Int8"
+      ]
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "c67aec0c3d5786fb495b6ed60fa106437d8e5034d3a40bf8face2ca7c12f2694"
+}

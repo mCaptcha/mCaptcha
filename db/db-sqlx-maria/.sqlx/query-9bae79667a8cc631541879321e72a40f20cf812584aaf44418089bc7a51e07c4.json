@@ -1,0 +1,25 @@
+{
+  "db_name": "MySQL",
+  "query": "SELECT\n                COUNT(difficulty_factor) AS count\n            FROM\n                mcaptcha_pow_analytics\n            WHERE time <= ?;",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "count",
+        "type_info": {
+          "type": "LongLong",
+          "flags": "NOT_NULL | BINARY",
+          "char_set": 63,
+          "max_size": 21
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "9bae79667a8cc631541879321e72a40f20cf812584aaf44418089bc7a51e07c4"
+}
