@@ -313,8 +313,11 @@ pub trait MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
 
     /// Get the entry at a location in the list of analytics entires under a certain time limit
     /// and sorted in ascending order
-    async fn stats_get_entry_at_location_for_time_limit_asc(&self, duration: u32, location: u32) -> DBResult<Option<usize>>;
-
+    async fn stats_get_entry_at_location_for_time_limit_asc(
+        &self,
+        duration: u32,
+        location: u32,
+    ) -> DBResult<Option<usize>>;
 }
 
 #[derive(Debug, Clone, Default, Deserialize, Serialize, PartialEq)]

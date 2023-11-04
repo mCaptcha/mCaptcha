@@ -7,8 +7,8 @@
 
 use std::env;
 
-use sqlx::postgres::PgPoolOptions;
 use sqlx::migrate::MigrateDatabase;
+use sqlx::postgres::PgPoolOptions;
 use url::Url;
 
 use crate::*;
@@ -46,7 +46,6 @@ async fn everyting_works() {
         sqlx::Postgres::drop_database(&url).await.unwrap();
     }
     sqlx::Postgres::create_database(&url).await.unwrap();
-
 
     let pool_options = PgPoolOptions::new().max_connections(2);
     let connection_options = ConnectionOptions::Fresh(Fresh {

@@ -7,7 +7,7 @@
 
 use std::env;
 
-use sqlx::{mysql::MySqlPoolOptions, migrate::MigrateDatabase};
+use sqlx::{migrate::MigrateDatabase, mysql::MySqlPoolOptions};
 use url::Url;
 
 use crate::*;

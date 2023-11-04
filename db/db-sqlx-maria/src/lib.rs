@@ -1220,37 +1220,36 @@ impl MCDatabase for Database {
         }
     }
 
-
-
     /// Get number of analytics entries that are under a certain duration
     async fn stats_get_num_logs_under_time(&self, duration: u32) -> DBResult<usize> {
-
-    struct Count {
-        count: Option<i64>,
-    }
+        struct Count {
+            count: Option<i64>,
+        }
 
         //"SELECT COUNT(*) FROM (SELECT difficulty_factor FROM mcaptcha_pow_analytics WHERE time <= ?) as count",
-    let count = sqlx::query_as!(
-        Count,
+        let count = sqlx::query_as!(
+            Count,
             "SELECT
                 COUNT(difficulty_factor) AS count
             FROM
                 mcaptcha_pow_analytics
             WHERE time <= ?;",
-        duration as i32,
-    )
-    .fetch_one(&self.pool)
-    .await
-    .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
+            duration as i32,
+        )
+        .fetch_one(&self.pool)
+        .await
+        .map_err(|e| map_row_not_found_err(e, DBError::CaptchaNotFound))?;
 
         Ok(count.count.unwrap_or_else(|| 0) as usize)
     }
 
     /// Get the entry at a location in the list of analytics entires under a certain time limited
     /// and sorted in ascending order
-    async fn stats_get_entry_at_location_for_time_limit_asc(&self, duration: u32, location: u32) -> DBResult<Option<usize>> {
-
-
+    async fn stats_get_entry_at_location_for_time_limit_asc(
+        &self,
+        duration: u32,
+        location: u32,
+    ) -> DBResult<Option<usize>> {
         struct Difficulty {
             difficulty_factor: Option<i32>,
         }
@@ -1272,10 +1271,8 @@ impl MCDatabase for Database {
         {
             Ok(res) => Ok(Some(res.difficulty_factor.unwrap() as usize)),
             Err(sqlx::Error::RowNotFound) => Ok(None),
-            Err(e) => Err(map_row_not_found_err(e, DBError::CaptchaNotFound))
-
+            Err(e) => Err(map_row_not_found_err(e, DBError::CaptchaNotFound)),
         }
-
     }
 }
 

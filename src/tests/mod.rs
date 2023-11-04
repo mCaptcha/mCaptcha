@@ -29,15 +29,28 @@ pub fn get_settings() -> Settings {
 pub mod pg {
     use std::env;
 
+    use sqlx::migrate::MigrateDatabase;
+
     use crate::data::Data;
     use crate::settings::*;
     use crate::survey::SecretsStore;
+    use crate::api::v1::mcaptcha::get_random;
     use crate::ArcData;
 
     use super::get_settings;
 
     pub async fn get_data() -> ArcData {
         let url = env::var("POSTGRES_DATABASE_URL").unwrap();
+
+        let mut parsed = url::Url::parse(&url).unwrap();
+        parsed.set_path(&get_random(16));
+        let url = parsed.to_string();
+
+        if sqlx::Postgres::database_exists(&url).await.unwrap() {
+            sqlx::Postgres::drop_database(&url).await.unwrap();
+        }
+        sqlx::Postgres::create_database(&url).await.unwrap();
+
         let mut settings = get_settings();
         settings.captcha.runners = Some(1);
         settings.database.url = url.clone();
@@ -50,15 +63,30 @@ pub mod pg {
 pub mod maria {
     use std::env;
 
+    use sqlx::migrate::MigrateDatabase;
+
     use crate::data::Data;
     use crate::settings::*;
     use crate::survey::SecretsStore;
     use crate::ArcData;
+    use crate::api::v1::mcaptcha::get_random;
 
     use super::get_settings;
 
     pub async fn get_data() -> ArcData {
         let url = env::var("MARIA_DATABASE_URL").unwrap();
+
+
+
+        let mut parsed = url::Url::parse(&url).unwrap();
+        parsed.set_path(&get_random(16));
+        let url = parsed.to_string();
+
+        if sqlx::MySql::database_exists(&url).await.unwrap() {
+            sqlx::MySql::drop_database(&url).await.unwrap();
+        }
+        sqlx::MySql::create_database(&url).await.unwrap();
+
         let mut settings = get_settings();
         settings.captcha.runners = Some(1);
         settings.database.url = url.clone();
