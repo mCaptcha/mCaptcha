@@ -62,6 +62,7 @@ impl Health {
 #[my_codegen::get(path = "crate::V1_API_ROUTES.meta.health")]
 async fn health(data: AppData) -> impl Responder {
     let mut resp_builder = HealthBuilder::default();
+    resp_builder.redis(None);
 
     resp_builder.db(data.db.ping().await);
 
