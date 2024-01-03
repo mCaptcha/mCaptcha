@@ -1,0 +1,67 @@
+<!--
+SPDX-FileCopyrightText: 2023 Aravinth Manivannan <realaravinth@batsense.net>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<. include!("../../../components/headers/index.html"); .> 
+<. include!("../../navbar/index.html"); .>
+<div class="tmp-layout">
+<. include!("../../header/index.html"); .>
+<main class="panel-main">
+  <. include!("../../help-banner/index.html"); .>
+  <!-- Main content container -->
+  <div class="inner-container">
+  <div class="sitekey-form" action="<.= crate::V1_API_ROUTES.captcha.create .>" method="post">
+	<h1 class="form__title">
+		<.= PAGE .>
+	</h1>
+
+      <form class="settings__form" id="utils_percentile-form"
+        action="<.= crate::PAGES.panel.utils.percentile .>" method="post">
+
+        <. if let Some(difficulty_factor) = difficulty_factor { .>
+            <legend class="sitekey__level-title">
+              <p>Difficulty factor: <.= difficulty_factor .></p>
+            </legend>
+          <. } else { .>
+            <. if time.is_some() && percentile.is_some() { .>
+            <legend class="sitekey__level-title">
+              <p>Not enough inputs to compute statistics. Please try again later</p>
+            </legend>
+            <. } .>
+          <. } .>
+
+
+        <label class="settings-form__label" for="time">
+          Maximum time taken to solve CAPTCHA (in seconds)
+          <input
+            class="settings-form__input"
+            type="number"
+            name="time"
+            required
+            id="time"
+            <. if let Some(time) = time { .>
+              value="<.= time .>"
+            <. } .>
+          />
+        </label>
+        <label class="settings-form__label" for="percentile">
+          Percentile of requests coming under time limit
+          <input
+            class="settings-form__input"
+            type="number"
+            name="percentile"
+            required
+            id="percentile"
+            <. if let Some(percentile) = percentile { .>
+                value="<.= percentile .>"
+            <. } .>
+          />
+        </label>
+        <button class="settings__submit-btn" type="submit">Search</button>
+      </form>
+  </div>
+  </div>
+  <!-- end of container -->
+<. include!("../../../components/footers.html"); .>
