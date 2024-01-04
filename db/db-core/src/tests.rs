@@ -223,6 +223,11 @@ pub async fn database_works<'a, T: MCDatabase>(
         tp
     );
 
+    // get all traffic patterns
+    let patterns = db.get_all_easy_captchas(10, 0).await.unwrap();
+    assert_eq!(patterns.get(0).as_ref().unwrap().key, c.key);
+    assert_eq!(&patterns.get(0).unwrap().traffic_pattern, tp);
+
     // delete traffic pattern
     db.delete_traffic_pattern(p.username, c.key).await.unwrap();
     assert!(

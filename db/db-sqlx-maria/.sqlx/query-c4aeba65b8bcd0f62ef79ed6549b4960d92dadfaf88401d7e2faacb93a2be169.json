@@ -1,0 +1,58 @@
+{
+  "db_name": "MySQL",
+  "query": "SELECT \n          mcaptcha_sitekey_user_provided_avg_traffic.avg_traffic, \n          mcaptcha_sitekey_user_provided_avg_traffic.peak_sustainable_traffic, \n          mcaptcha_sitekey_user_provided_avg_traffic.broke_my_site_traffic,\n          mcaptcha_config.captcha_key\n        FROM \n          mcaptcha_sitekey_user_provided_avg_traffic \n        INNER JOIN\n            mcaptcha_config\n        ON\n            mcaptcha_config.config_id = mcaptcha_sitekey_user_provided_avg_traffic.config_id\n            ORDER BY mcaptcha_config.config_id\n            LIMIT ? OFFSET ?",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "avg_traffic",
+        "type_info": {
+          "type": "Long",
+          "flags": "NOT_NULL | NO_DEFAULT_VALUE",
+          "char_set": 63,
+          "max_size": 11
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "peak_sustainable_traffic",
+        "type_info": {
+          "type": "Long",
+          "flags": "NOT_NULL | NO_DEFAULT_VALUE",
+          "char_set": 63,
+          "max_size": 11
+        }
+      },
+      {
+        "ordinal": 2,
+        "name": "broke_my_site_traffic",
+        "type_info": {
+          "type": "Long",
+          "flags": "",
+          "char_set": 63,
+          "max_size": 11
+        }
+      },
+      {
+        "ordinal": 3,
+        "name": "captcha_key",
+        "type_info": {
+          "type": "VarString",
+          "flags": "NOT_NULL | UNIQUE_KEY | NO_DEFAULT_VALUE",
+          "char_set": 224,
+          "max_size": 400
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": [
+      false,
+      false,
+      true,
+      false
+    ]
+  },
+  "hash": "c4aeba65b8bcd0f62ef79ed6549b4960d92dadfaf88401d7e2faacb93a2be169"
+}
