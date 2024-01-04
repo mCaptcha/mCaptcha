@@ -1,0 +1,53 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT \n                  mcaptcha_sitekey_user_provided_avg_traffic.avg_traffic, \n                  mcaptcha_sitekey_user_provided_avg_traffic.peak_sustainable_traffic, \n                  mcaptcha_sitekey_user_provided_avg_traffic.broke_my_site_traffic,\n                  mcaptcha_config.name,\n                  mcaptcha_users.name as username,\n                  mcaptcha_config.key\n            FROM \n              mcaptcha_sitekey_user_provided_avg_traffic \n            INNER JOIN\n                mcaptcha_config\n            ON\n                mcaptcha_config.config_id = mcaptcha_sitekey_user_provided_avg_traffic.config_id\n            INNER JOIN\n                mcaptcha_users\n            ON\n                mcaptcha_config.user_id = mcaptcha_users.ID\n            ORDER BY mcaptcha_config.config_id\n            OFFSET $1 LIMIT $2; ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "avg_traffic",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 1,
+        "name": "peak_sustainable_traffic",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 2,
+        "name": "broke_my_site_traffic",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 3,
+        "name": "name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 4,
+        "name": "username",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 5,
+        "name": "key",
+        "type_info": "Varchar"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int8",
+        "Int8"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      true,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "f01a9c09c8722bc195f477a8c3ce6466d415e7c74665fa882eff4a8566e70577"
+}

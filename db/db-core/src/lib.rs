@@ -202,6 +202,13 @@ pub trait MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
         captcha_key: &str,
     ) -> DBResult<TrafficPattern>;
 
+    /// Get all easy captcha configurations on instance
+    async fn get_all_easy_captchas(
+        &self,
+        limit: usize,
+        offset: usize,
+    ) -> DBResult<Vec<EasyCaptcha>>;
+
     /// Delete traffic configuration
     async fn delete_traffic_pattern(
         &self,
@@ -381,6 +388,19 @@ pub struct AddNotification<'a> {
     pub heading: &'a str,
     /// message of the notification
     pub message: &'a str,
+}
+
+#[derive(Default, PartialEq, Serialize, Deserialize, Clone, Debug)]
+/// Represents Easy captcha configuration
+pub struct EasyCaptcha {
+    /// traffic pattern of easy captcha
+    pub traffic_pattern: TrafficPattern,
+    /// captcha key/sitekey
+    pub key: String,
+    /// captcha description
+    pub description: String,
+    /// Owner of the captcha configuration
+    pub username: String,
 }
 
 #[derive(Default, PartialEq, Serialize, Deserialize, Clone, Debug)]

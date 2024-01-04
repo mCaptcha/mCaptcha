@@ -14,6 +14,7 @@ use actix_web::{
 };
 use lazy_static::lazy_static;
 use log::info;
+use tokio::task::JoinHandle;
 
 mod api;
 mod data;
@@ -21,6 +22,7 @@ mod date;
 mod db;
 mod demo;
 mod docs;
+mod easy;
 mod email;
 mod errors;
 #[macro_use]
@@ -110,11 +112,22 @@ async fn main() -> std::io::Result<()> {
     let data = Data::new(&settings, secrets.clone()).await;
     let data = actix_web::web::Data::new(data);
 
-    let mut demo_user: Option<DemoUser> = None;
+    let mut demo_user: Option<(DemoUser, JoinHandle<()>)> = None;
 
     if settings.allow_demo && settings.allow_registration {
-        demo_user = Some(
-            DemoUser::spawn(data.clone(), Duration::from_secs(60 * 30))
+        demo_user = Some(DemoUser::spawn(data.clone(), 60 * 30).await.unwrap());
+    }
+
+    let mut update_easy_captcha: Option<(easy::UpdateEasyCaptcha, JoinHandle<()>)> =
+        None;
+    if settings
+        .captcha
+        .default_difficulty_strategy
+        .avg_traffic_time
+        .is_some()
+    {
+        update_easy_captcha = Some(
+            easy::UpdateEasyCaptcha::spawn(data.clone(), 60 * 30)
                 .await
                 .unwrap(),
         );
@@ -156,7 +169,13 @@ async fn main() -> std::io::Result<()> {
     }
 
     if let Some(demo_user) = demo_user {
-        demo_user.abort();
+        demo_user.0.abort();
+        demo_user.1.await.unwrap();
+    }
+
+    if let Some(update_easy_captcha) = update_easy_captcha {
+        update_easy_captcha.0.abort();
+        update_easy_captcha.1.await.unwrap();
     }
 
     if let Some(survey_upload_handle) = survey_upload_handle {

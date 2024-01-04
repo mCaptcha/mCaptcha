@@ -669,13 +669,8 @@ impl MCDatabase for Database {
         username: &str,
         captcha_key: &str,
     ) -> DBResult<TrafficPattern> {
-        struct Traffic {
-            peak_sustainable_traffic: i32,
-            avg_traffic: i32,
-            broke_my_site_traffic: Option<i32>,
-        }
         let res = sqlx::query_as!(
-            Traffic,
+            InnerTraffic,
             "SELECT 
           avg_traffic, 
           peak_sustainable_traffic, 
@@ -706,11 +701,67 @@ impl MCDatabase for Database {
         .fetch_one(&self.pool)
         .await
         .map_err(|e| map_row_not_found_err(e, DBError::TrafficPatternNotFound))?;
-        Ok(TrafficPattern {
-            broke_my_site_traffic: res.broke_my_site_traffic.as_ref().map(|v| *v as u32),
-            avg_traffic: res.avg_traffic as u32,
-            peak_sustainable_traffic: res.peak_sustainable_traffic as u32,
-        })
+        Ok(res.into())
+    }
+
+    /// Get all easy captcha configurations on instance
+    async fn get_all_easy_captchas(
+        &self,
+        limit: usize,
+        offset: usize,
+    ) -> DBResult<Vec<EasyCaptcha>> {
+        struct InnerEasyCaptcha {
+            key: String,
+            peak_sustainable_traffic: i32,
+            avg_traffic: i32,
+            broke_my_site_traffic: Option<i32>,
+            name: String,
+            username: String,
+        }
+        let mut inner_res = sqlx::query_as!(
+            InnerEasyCaptcha,
+            "SELECT 
+                  mcaptcha_sitekey_user_provided_avg_traffic.avg_traffic, 
+                  mcaptcha_sitekey_user_provided_avg_traffic.peak_sustainable_traffic, 
+                  mcaptcha_sitekey_user_provided_avg_traffic.broke_my_site_traffic,
+                  mcaptcha_config.name,
+                  mcaptcha_users.name as username,
+                  mcaptcha_config.key
+            FROM 
+              mcaptcha_sitekey_user_provided_avg_traffic 
+            INNER JOIN
+                mcaptcha_config
+            ON
+                mcaptcha_config.config_id = mcaptcha_sitekey_user_provided_avg_traffic.config_id
+            INNER JOIN
+                mcaptcha_users
+            ON
+                mcaptcha_config.user_id = mcaptcha_users.ID
+            ORDER BY mcaptcha_config.config_id
+            OFFSET $1 LIMIT $2; ",
+            offset as i32,
+            limit as i32
+        )
+        .fetch_all(&self.pool)
+        .await
+        .map_err(|e| map_row_not_found_err(e, DBError::TrafficPatternNotFound))?;
+        let mut res = Vec::with_capacity(inner_res.len());
+        inner_res.drain(0..).for_each(|v| {
+            res.push(EasyCaptcha {
+                key: v.key,
+                description: v.name,
+                username: v.username,
+                traffic_pattern: TrafficPattern {
+                    broke_my_site_traffic: v
+                        .broke_my_site_traffic
+                        .as_ref()
+                        .map(|v| *v as u32),
+                    avg_traffic: v.avg_traffic as u32,
+                    peak_sustainable_traffic: v.peak_sustainable_traffic as u32,
+                },
+            })
+        });
+        Ok(res)
     }
 
     /// Delete traffic configuration
@@ -1342,6 +1393,22 @@ impl From<InternaleCaptchaConfig> for Captcha {
             duration: i.duration,
             description: i.name,
             key: i.key,
+        }
+    }
+}
+
+struct InnerTraffic {
+    peak_sustainable_traffic: i32,
+    avg_traffic: i32,
+    broke_my_site_traffic: Option<i32>,
+}
+
+impl From<InnerTraffic> for TrafficPattern {
+    fn from(v: InnerTraffic) -> Self {
+        TrafficPattern {
+            broke_my_site_traffic: v.broke_my_site_traffic.as_ref().map(|v| *v as u32),
+            avg_traffic: v.avg_traffic as u32,
+            peak_sustainable_traffic: v.peak_sustainable_traffic as u32,
         }
     }
 }

@@ -56,23 +56,22 @@ you will be overriding the values set in the configuration files.
 
 ### Captcha
 
-| Name                                                                                | Value                                                                                                                                 |
-| ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | --- |
-| `MCAPTCHA_captcha_SALT`                                                             | Salt has to be long and random                                                                                                        |
-| `MCAPTCHA_captcha_GC`                                                               | Garbage collection duration in seconds, requires tuning but 30 is a good starting point                                               |
-| `MCAPTCHA_captcha_RUNNERS`                                                          | [Performance] Number of runners to use for PoW validation. Defaults to number of CPUs available                                       |
-| `MCAPTCHA_captcha_QUEUE_LENGTH`                                                     | [Performance] PoW Validation queue length, controls how many pending validation jobs can be held in queue                             |
-| `MCAPTCHA_captcha_ENABLE_STATS`                                                     | Record for CAPTCHA events like configuration fetch, solves and authentication of validation token. Useful for commercial deployments. |     |
-| `MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_avg_traffic_difficulty`%              | Default difficulty factor to use in easy mode CAPTCHA configuration estimation for average traffic metric                             |
-| `MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_peak_sustainable_traffic_difficulty`% | Default difficulty factor to use in easy mode CAPTCHA configuration estimation for peak traffic metric                                |
-| `MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_broke_my_site_traffic_difficulty`%    | Default difficulty factor to use in easy mode CAPTCHA configuration estimation for traffic that took the website down                 |
-| `MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_duration`%                            | Default duration to use in CAPTCHA configuration in easy mode                                                                         |
+| Name                                                                               | Value                                                                                                                                 |
+| ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `MCAPTCHA_captcha_SALT`                                                            | Salt has to be long and random                                                                                                        |
+| `MCAPTCHA_captcha_GC`                                                              | Garbage collection duration in seconds, requires tuning but 30 is a good starting point                                               |
+| `MCAPTCHA_captcha_RUNNERS`                                                         | [Performance] Number of runners to use for PoW validation. Defaults to number of CPUs available                                       |
+| `MCAPTCHA_captcha_QUEUE_LENGTH`                                                    | [Performance] PoW Validation queue length, controls how many pending validation jobs can be held in queue                             |
+| `MCAPTCHA_captcha_ENABLE_STATS`                                                    | Record for CAPTCHA events like configuration fetch, solves and authentication of validation token. Useful for commercial deployments. |
+| `MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_avg_traffic_difficulty`              | Default difficulty factor to use in easy mode CAPTCHA configuration estimation for average traffic metric                             |
+| `MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_avg_traffic_time`                    | This difficulty factor is used in to use in easy mode CAPTCHA configuration estimation for average traffic metric                     |
+| `MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_peak_sustainable_traffic_difficulty` | Default difficulty factor to use in easy mode CAPTCHA configuration estimation for peak traffic metric                                |
+| `MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_peak_sustainable_traffic_time`       | This difficulty factor is used in to use in easy mode CAPTCHA configuration estimation for peak traffic metric                        |
+| `MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_broke_my_site_traffic_difficulty`    | Default difficulty factor to use in easy mode CAPTCHA configuration estimation for traffic that took the website down                 |
+| `MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_broke_my_site_traffic_time`          | Default time (in seconds) to use to compute difficulty factor using stored PoW performance records.                                   |
+| `MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_duration`                            | Default duration to use in CAPTCHA configuration in easy mode                                                                         |
 
-\% See commits
-[`54b14291ec140e`](https://github.com/mCaptcha/mCaptcha/commit/54b14291ec140ea4cbbf73462d3d6fc2d39f2d2c)
-and
-[`42544ec421e0`](https://github.com/mCaptcha/mCaptcha/commit/42544ec421e0c3ec4a8d132e6101ab4069bf0065)
-for more info.
+See commits [`54b14291ec140e`](https://github.com/mCaptcha/mCaptcha/commit/54b14291ec140ea4cbbf73462d3d6fc2d39f2d2c) and [`42544ec421e0`](https://github.com/mCaptcha/mCaptcha/commit/42544ec421e0c3ec4a8d132e6101ab4069bf0065) for more info.
 
 ### SMTP
 
