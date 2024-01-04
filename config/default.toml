@@ -34,8 +34,11 @@ enable_stats = true
 
 [captcha.default_difficulty_strategy]
 avg_traffic_difficulty =  50000 # almost instant solution
+#avg_traffic_time =  1 # almost instant solution
 peak_sustainable_traffic_difficulty = 3000000 # roughly 1.5s
+#peak_sustainable_traffic_time = 3
 broke_my_site_traffic_difficulty = 5000000  # greater than 3.5s
+#broke_my_site_traffic_time = 5
 duration = 30 # cooldown period in seconds
 
 [database]

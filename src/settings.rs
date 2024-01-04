@@ -37,8 +37,11 @@ pub struct Captcha {
 #[derive(Debug, Clone, Deserialize, Eq, PartialEq)]
 pub struct DefaultDifficultyStrategy {
     pub avg_traffic_difficulty: u32,
-    pub broke_my_site_traffic_difficulty: u32,
+    pub avg_traffic_time: Option<u32>,
     pub peak_sustainable_traffic_difficulty: u32,
+    pub peak_sustainable_traffic_time: Option<u32>,
+    pub broke_my_site_traffic_time: Option<u32>,
+    pub broke_my_site_traffic_difficulty: u32,
     pub duration: u32,
 }
 
@@ -113,7 +116,7 @@ pub struct Settings {
     pub smtp: Option<Smtp>,
 }
 
-const ENV_VAR_CONFIG: [(&str, &str); 29] = [
+const ENV_VAR_CONFIG: [(&str, &str); 32] = [
     /* top-level */
     ("debug", "MCAPTCHA_debug"),
     ("commercial", "MCAPTCHA_commercial"),
@@ -150,6 +153,9 @@ const ENV_VAR_CONFIG: [(&str, &str); 29] = [
     ( "captcha.default_difficulty_strategy.duration",
          "MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_duration"
      ),
+    ("captcha.default_difficulty_strategy.avg_traffic_time", "MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_avg_traffic_time"),
+    ("captcha.default_difficulty_strategy.peak_sustainable_traffic_time", "MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_peak_sustainable_traffic_time"),
+    ("captcha.default_difficulty_strategy.broke_my_site_traffic_time", "MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_broke_my_site_traffic_time"),
 
 
     /* SMTP */
@@ -250,6 +256,28 @@ impl Settings {
         settings.set_database_type();
 
         Ok(settings)
+    }
+    fn check_easy_captcha_config(&self) {
+        let s = &self.captcha.default_difficulty_strategy;
+        if s.avg_traffic_time.is_some() {
+            if s.broke_my_site_traffic_time.is_none()
+                || s.peak_sustainable_traffic_time.is_none()
+            {
+                panic!("if captcha.default_difficulty_strategy.avg_traffic_time is set, then captcha.default_difficulty_strategy.broke_my_site_traffic_time and captcha.default_difficulty_strategy.peak_sustainable_traffic_time must also be set");
+            }
+        }
+        if s.peak_sustainable_traffic_time.is_some() {
+            if s.avg_traffic_time.is_none() || s.peak_sustainable_traffic_time.is_none()
+            {
+                panic!("if captcha.default_difficulty_strategy.peak_sustainable_traffic_time is set, then captcha.default_difficulty_strategy.broke_my_site_traffic_time and captcha.default_difficulty_strategy.avg_traffic_time must also be set");
+            }
+        }
+        if s.broke_my_site_traffic_time.is_some() {
+            if s.avg_traffic_time.is_none() || s.peak_sustainable_traffic_time.is_none()
+            {
+                panic!("if captcha.default_difficulty_strategy.broke_my_site_traffic_time is set, then captcha.default_difficulty_strategy.peak_sustainable_traffic_time and captcha.default_difficulty_strategy.avg_traffic_time must also be set");
+            }
+        }
     }
 
     fn env_override(mut s: ConfigBuilder<DefaultState>) -> ConfigBuilder<DefaultState> {
@@ -537,6 +565,30 @@ mod tests {
             "MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_duration",
             999,
             captcha.default_difficulty_strategy.duration
+        );
+        helper!(
+            "MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_avg_traffic_time",
+            "10",
+            Some(10),
+            captcha.default_difficulty_strategy.avg_traffic_time
+        );
+
+        helper!(
+            "MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_peak_sustainable_traffic_time",
+            "20",
+            Some(20),
+            captcha
+                .default_difficulty_strategy
+                .peak_sustainable_traffic_time
+        );
+
+        helper!(
+            "MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_broke_my_site_traffic_time",
+            "30",
+            Some(30),
+            captcha
+                .default_difficulty_strategy
+                .broke_my_site_traffic_time
         );
 
         /* SMTP */
