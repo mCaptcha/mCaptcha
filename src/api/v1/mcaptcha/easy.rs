@@ -224,36 +224,15 @@ async fn update(
 ) -> ServiceResult<impl Responder> {
     let username = id.identity().unwrap();
     let payload = payload.into_inner();
-    let pattern = (&payload.pattern).into();
-    let levels =
-        calculate(&pattern, &data.settings.captcha.default_difficulty_strategy)?;
-
-    let msg = UpdateCaptcha {
-        levels,
-        duration: data.settings.captcha.default_difficulty_strategy.duration,
-        description: payload.pattern.description,
-        key: payload.key,
-        publish_benchmarks: payload.pattern.publish_benchmarks,
-    };
-
-    update_captcha_runner(&msg, &data, &username).await?;
-
-    data.db.delete_traffic_pattern(&username, &msg.key).await?;
-
-    data.db
-        .add_traffic_pattern(&username, &msg.key, &pattern)
-        .await?;
-
+    update_runner(&data, payload, username).await?;
     Ok(HttpResponse::Ok())
 }
 
-async fn update_runner(
-    payload: web::Json<UpdateTrafficPattern>,
-    data: AppData,
-    id: Identity,
-) -> ServiceResult<impl Responder> {
-    let username = id.identity().unwrap();
-    let payload = payload.into_inner();
+pub async fn update_runner(
+    data: &AppData,
+    payload: UpdateTrafficPattern,
+    username: String,
+) -> ServiceResult<()> {
     let pattern = (&payload.pattern).into();
     let levels =
         calculate(&pattern, &data.settings.captcha.default_difficulty_strategy)?;
@@ -274,7 +253,7 @@ async fn update_runner(
         .add_traffic_pattern(&username, &msg.key, &pattern)
         .await?;
 
-    Ok(HttpResponse::Ok())
+    Ok(())
 }
 
 #[cfg(test)]
