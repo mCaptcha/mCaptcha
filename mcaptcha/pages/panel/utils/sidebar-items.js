@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["PAGE"],"fn":["services"],"mod":["routes"],"struct":["PercentilePage","get_percentile","post_percentile"]};

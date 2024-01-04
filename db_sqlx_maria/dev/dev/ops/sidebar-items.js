@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"trait":["Connect","DBOps","GetConnection","Migrate"]};

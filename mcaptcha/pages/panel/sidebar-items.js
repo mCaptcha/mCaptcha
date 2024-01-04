@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["PAGE"],"fn":["services"],"mod":["notifications","routes","settings","sitekey"],"struct":["IndexPage","panel"]};
+window.SIDEBAR_ITEMS = {"constant":["PAGE"],"fn":["services"],"mod":["notifications","routes","settings","sitekey","utils"],"struct":["IndexPage","panel"]};
