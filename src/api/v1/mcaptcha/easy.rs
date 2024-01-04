@@ -101,6 +101,79 @@ pub fn calculate(
     Ok(levels)
 }
 
+async fn calculate_with_percentile(
+    data: &AppData,
+    tp: &TrafficPattern,
+) -> ServiceResult<Option<Vec<Level>>> {
+    use crate::api::v1::stats::{percentile_bench_runner, PercentileReq};
+
+    let strategy = &data.settings.captcha.default_difficulty_strategy;
+
+    if strategy.avg_traffic_time.is_none()
+        && strategy.peak_sustainable_traffic_time.is_none()
+        && strategy.broke_my_site_traffic_time.is_none()
+    {
+        return Ok(None);
+    }
+
+    let mut req = PercentileReq {
+        time: strategy.avg_traffic_time.unwrap(),
+        percentile: 90.00,
+    };
+    let resp = percentile_bench_runner(data, &req).await?;
+    if resp.difficulty_factor.is_none() {
+        return Ok(None);
+    }
+    let avg_traffic_difficulty = resp.difficulty_factor.unwrap();
+
+    req.time = strategy.peak_sustainable_traffic_time.unwrap();
+    let resp = percentile_bench_runner(data, &req).await?;
+    if resp.difficulty_factor.is_none() {
+        return Ok(None);
+    }
+    let peak_sustainable_traffic_difficulty = resp.difficulty_factor.unwrap();
+
+    req.time = strategy.broke_my_site_traffic_time.unwrap();
+    let resp = percentile_bench_runner(data, &req).await?;
+    let broke_my_site_traffic_difficulty = if resp.difficulty_factor.is_none() {
+        resp.difficulty_factor.unwrap()
+    } else {
+        peak_sustainable_traffic_difficulty * 2
+    };
+
+    let mut levels = vec![
+        LevelBuilder::default()
+            .difficulty_factor(avg_traffic_difficulty)?
+            .visitor_threshold(tp.avg_traffic)
+            .build()?,
+        LevelBuilder::default()
+            .difficulty_factor(peak_sustainable_traffic_difficulty)?
+            .visitor_threshold(tp.peak_sustainable_traffic)
+            .build()?,
+    ];
+    let mut highest_level = LevelBuilder::default();
+    highest_level.difficulty_factor(broke_my_site_traffic_difficulty)?;
+
+    match tp.broke_my_site_traffic {
+        Some(broke_my_site_traffic) => {
+            highest_level.visitor_threshold(broke_my_site_traffic)
+        }
+        None => match tp
+            .peak_sustainable_traffic
+            .checked_add(tp.peak_sustainable_traffic / 2)
+        {
+            Some(num) => highest_level.visitor_threshold(num),
+            // TODO check for overflow: database saves these values as i32, so this u32 is cast
+            // into i32. Should choose bigger number or casts properly
+            None => highest_level.visitor_threshold(u32::MAX),
+        },
+    };
+
+    levels.push(highest_level.build()?);
+
+    Ok(Some(levels))
+}
+
 #[my_codegen::post(
     path = "crate::V1_API_ROUTES.captcha.easy.create",
     wrap = "crate::api::v1::get_middleware()"
@@ -113,8 +186,12 @@ async fn create(
     let username = id.identity().unwrap();
     let payload = payload.into_inner();
     let pattern = (&payload).into();
-    let levels =
-        calculate(&pattern, &data.settings.captcha.default_difficulty_strategy)?;
+    let levels = if let Some(levels) = calculate_with_percentile(&data, &pattern).await?
+    {
+        levels
+    } else {
+        calculate(&pattern, &data.settings.captcha.default_difficulty_strategy)?
+    };
     let msg = CreateCaptcha {
         levels,
         duration: data.settings.captcha.default_difficulty_strategy.duration,
@@ -141,6 +218,36 @@ pub struct UpdateTrafficPattern {
     wrap = "crate::api::v1::get_middleware()"
 )]
 async fn update(
+    payload: web::Json<UpdateTrafficPattern>,
+    data: AppData,
+    id: Identity,
+) -> ServiceResult<impl Responder> {
+    let username = id.identity().unwrap();
+    let payload = payload.into_inner();
+    let pattern = (&payload.pattern).into();
+    let levels =
+        calculate(&pattern, &data.settings.captcha.default_difficulty_strategy)?;
+
+    let msg = UpdateCaptcha {
+        levels,
+        duration: data.settings.captcha.default_difficulty_strategy.duration,
+        description: payload.pattern.description,
+        key: payload.key,
+        publish_benchmarks: payload.pattern.publish_benchmarks,
+    };
+
+    update_captcha_runner(&msg, &data, &username).await?;
+
+    data.db.delete_traffic_pattern(&username, &msg.key).await?;
+
+    data.db
+        .add_traffic_pattern(&username, &msg.key, &pattern)
+        .await?;
+
+    Ok(HttpResponse::Ok())
+}
+
+async fn update_runner(
     payload: web::Json<UpdateTrafficPattern>,
     data: AppData,
     id: Identity,
