@@ -459,6 +459,11 @@
 <a href="#459" id="459">459</a>
 <a href="#460" id="460">460</a>
 <a href="#461" id="461">461</a>
+<a href="#462" id="462">462</a>
+<a href="#463" id="463">463</a>
+<a href="#464" id="464">464</a>
+<a href="#465" id="465">465</a>
+<a href="#466" id="466">466</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 // SPDX-FileCopyrightText: 2023 Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 //
@@ -683,6 +688,11 @@
         <span class="kw-2">&amp;</span>db.get_traffic_pattern(p.username, c.key).<span class="kw">await</span>.unwrap(),
         tp
     );
+
+    <span class="comment">// get all traffic patterns
+    </span><span class="kw">let </span>patterns = db.get_all_easy_captchas(<span class="number">10</span>, <span class="number">0</span>).<span class="kw">await</span>.unwrap();
+    <span class="macro">assert_eq!</span>(patterns.get(<span class="number">0</span>).as_ref().unwrap().key, c.key);
+    <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;</span>patterns.get(<span class="number">0</span>).unwrap().traffic_pattern, tp);
 
     <span class="comment">// delete traffic pattern
     </span>db.delete_traffic_pattern(p.username, c.key).<span class="kw">await</span>.unwrap();

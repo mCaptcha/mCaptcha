@@ -202,6 +202,25 @@
 <a href="#202" id="202">202</a>
 <a href="#203" id="203">203</a>
 <a href="#204" id="204">204</a>
+<a href="#205" id="205">205</a>
+<a href="#206" id="206">206</a>
+<a href="#207" id="207">207</a>
+<a href="#208" id="208">208</a>
+<a href="#209" id="209">209</a>
+<a href="#210" id="210">210</a>
+<a href="#211" id="211">211</a>
+<a href="#212" id="212">212</a>
+<a href="#213" id="213">213</a>
+<a href="#214" id="214">214</a>
+<a href="#215" id="215">215</a>
+<a href="#216" id="216">216</a>
+<a href="#217" id="217">217</a>
+<a href="#218" id="218">218</a>
+<a href="#219" id="219">219</a>
+<a href="#220" id="220">220</a>
+<a href="#221" id="221">221</a>
+<a href="#222" id="222">222</a>
+<a href="#223" id="223">223</a>
 </pre></div><pre class="rust"><code><span class="attr">#![allow(warnings)]
 </span><span class="comment">// Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 // SPDX-FileCopyrightText: 2023 Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
@@ -218,6 +237,7 @@
 };
 <span class="kw">use </span>lazy_static::lazy_static;
 <span class="kw">use </span>log::info;
+<span class="kw">use </span>tokio::task::JoinHandle;
 
 <span class="kw">mod </span>api;
 <span class="kw">mod </span>data;
@@ -225,6 +245,7 @@
 <span class="kw">mod </span>db;
 <span class="kw">mod </span>demo;
 <span class="kw">mod </span>docs;
+<span class="kw">mod </span>easy;
 <span class="kw">mod </span>email;
 <span class="kw">mod </span>errors;
 <span class="attr">#[macro_use]
@@ -314,11 +335,22 @@
     <span class="kw">let </span>data = Data::new(<span class="kw-2">&amp;</span>settings, secrets.clone()).<span class="kw">await</span>;
     <span class="kw">let </span>data = actix_web::web::Data::new(data);
 
-    <span class="kw">let </span><span class="kw-2">mut </span>demo_user: <span class="prelude-ty">Option</span>&lt;DemoUser&gt; = <span class="prelude-val">None</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>demo_user: <span class="prelude-ty">Option</span>&lt;(DemoUser, JoinHandle&lt;()&gt;)&gt; = <span class="prelude-val">None</span>;
 
     <span class="kw">if </span>settings.allow_demo &amp;&amp; settings.allow_registration {
-        demo_user = <span class="prelude-val">Some</span>(
-            DemoUser::spawn(data.clone(), Duration::from_secs(<span class="number">60 </span>* <span class="number">30</span>))
+        demo_user = <span class="prelude-val">Some</span>(DemoUser::spawn(data.clone(), <span class="number">60 </span>* <span class="number">30</span>).<span class="kw">await</span>.unwrap());
+    }
+
+    <span class="kw">let </span><span class="kw-2">mut </span>update_easy_captcha: <span class="prelude-ty">Option</span>&lt;(easy::UpdateEasyCaptcha, JoinHandle&lt;()&gt;)&gt; =
+        <span class="prelude-val">None</span>;
+    <span class="kw">if </span>settings
+        .captcha
+        .default_difficulty_strategy
+        .avg_traffic_time
+        .is_some()
+    {
+        update_easy_captcha = <span class="prelude-val">Some</span>(
+            easy::UpdateEasyCaptcha::spawn(data.clone(), <span class="number">60 </span>* <span class="number">30</span>)
                 .<span class="kw">await
                 </span>.unwrap(),
         );
@@ -360,7 +392,13 @@
     }
 
     <span class="kw">if let </span><span class="prelude-val">Some</span>(demo_user) = demo_user {
-        demo_user.abort();
+        demo_user.<span class="number">0</span>.abort();
+        demo_user.<span class="number">1</span>.<span class="kw">await</span>.unwrap();
+    }
+
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(update_easy_captcha) = update_easy_captcha {
+        update_easy_captcha.<span class="number">0</span>.abort();
+        update_easy_captcha.<span class="number">1</span>.<span class="kw">await</span>.unwrap();
     }
 
     <span class="kw">if let </span><span class="prelude-val">Some</span>(survey_upload_handle) = survey_upload_handle {

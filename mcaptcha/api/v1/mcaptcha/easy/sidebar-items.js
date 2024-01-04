@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["calculate","services"],"mod":["routes"],"struct":["TrafficPatternRequest","UpdateTrafficPattern","create","update"]};
+window.SIDEBAR_ITEMS = {"fn":["calculate","calculate_with_percentile","services","update_runner"],"mod":["routes"],"struct":["TrafficPatternRequest","UpdateTrafficPattern","create","update"]};

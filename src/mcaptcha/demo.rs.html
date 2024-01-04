@@ -165,6 +165,34 @@
 <a href="#165" id="165">165</a>
 <a href="#166" id="166">166</a>
 <a href="#167" id="167">167</a>
+<a href="#168" id="168">168</a>
+<a href="#169" id="169">169</a>
+<a href="#170" id="170">170</a>
+<a href="#171" id="171">171</a>
+<a href="#172" id="172">172</a>
+<a href="#173" id="173">173</a>
+<a href="#174" id="174">174</a>
+<a href="#175" id="175">175</a>
+<a href="#176" id="176">176</a>
+<a href="#177" id="177">177</a>
+<a href="#178" id="178">178</a>
+<a href="#179" id="179">179</a>
+<a href="#180" id="180">180</a>
+<a href="#181" id="181">181</a>
+<a href="#182" id="182">182</a>
+<a href="#183" id="183">183</a>
+<a href="#184" id="184">184</a>
+<a href="#185" id="185">185</a>
+<a href="#186" id="186">186</a>
+<a href="#187" id="187">187</a>
+<a href="#188" id="188">188</a>
+<a href="#189" id="189">189</a>
+<a href="#190" id="190">190</a>
+<a href="#191" id="191">191</a>
+<a href="#192" id="192">192</a>
+<a href="#193" id="193">193</a>
+<a href="#194" id="194">194</a>
+<a href="#195" id="195">195</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright (C) 2022  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 // SPDX-FileCopyrightText: 2023 Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 //
@@ -175,6 +203,7 @@
 
 </span><span class="kw">use </span>actix::clock::sleep;
 <span class="kw">use </span>actix::spawn;
+<span class="kw">use </span>tokio::sync::oneshot::{channel, error::TryRecvError, Receiver, Sender};
 <span class="kw">use </span>tokio::task::JoinHandle;
 
 <span class="kw">use </span><span class="kw">crate</span>::api::v1::account::delete::runners::delete_user;
@@ -190,20 +219,24 @@
 </span><span class="kw">pub const </span>DEMO_PASSWORD: <span class="kw-2">&amp;</span>str = <span class="string">&quot;password&quot;</span>;
 
 <span class="kw">pub struct </span>DemoUser {
-    handle: JoinHandle&lt;()&gt;,
+    tx: Sender&lt;()&gt;,
 }
 
 <span class="kw">impl </span>DemoUser {
-    <span class="kw">pub async fn </span>spawn(data: AppData, duration: Duration) -&gt; ServiceResult&lt;<span class="self">Self</span>&gt; {
-        <span class="kw">let </span>handle = <span class="self">Self</span>::run(data, duration).<span class="kw">await</span><span class="question-mark">?</span>;
-        <span class="kw">let </span>d = <span class="self">Self </span>{ handle };
+    <span class="kw">pub async fn </span>spawn(
+        data: AppData,
+        duration: u32,
+    ) -&gt; ServiceResult&lt;(<span class="self">Self</span>, JoinHandle&lt;()&gt;)&gt; {
+        <span class="kw">let </span>(tx, rx) = channel();
+        <span class="kw">let </span>handle = <span class="self">Self</span>::run(data, duration, rx).<span class="kw">await</span><span class="question-mark">?</span>;
+        <span class="kw">let </span>d = <span class="self">Self </span>{ tx };
 
-        <span class="prelude-val">Ok</span>(d)
+        <span class="prelude-val">Ok</span>((d, handle))
     }
 
     <span class="attr">#[allow(dead_code)]
-    </span><span class="kw">pub fn </span>abort(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="self">self</span>.handle.abort();
+    </span><span class="kw">pub fn </span>abort(<span class="kw-2">mut </span><span class="self">self</span>) {
+        <span class="self">self</span>.tx.send(());
     }
 
     <span class="doccomment">/// register demo user runner
@@ -238,16 +271,38 @@
 
     <span class="kw">pub async fn </span>run(
         data: AppData,
-        duration: Duration,
+        duration: u32,
+        <span class="kw-2">mut </span>rx: Receiver&lt;()&gt;,
     ) -&gt; ServiceResult&lt;JoinHandle&lt;()&gt;&gt; {
         <span class="self">Self</span>::register_demo_user(<span class="kw-2">&amp;</span>data).<span class="kw">await</span><span class="question-mark">?</span>;
 
+        <span class="kw">fn </span>can_run(rx: <span class="kw-2">&amp;mut </span>Receiver&lt;()&gt;) -&gt; bool {
+            <span class="kw">match </span>rx.try_recv() {
+                <span class="prelude-val">Err</span>(TryRecvError::Empty) =&gt; <span class="bool-val">true</span>,
+                <span class="kw">_ </span>=&gt; <span class="bool-val">false</span>,
+            }
+        }
+
+        <span class="kw">let </span><span class="kw-2">mut </span>exit = <span class="bool-val">false</span>;
         <span class="kw">let </span>fut = <span class="kw">async move </span>{
             <span class="kw">loop </span>{
-                sleep(duration).<span class="kw">await</span>;
+                <span class="kw">if </span>exit {
+                    <span class="kw">break</span>;
+                }
+                <span class="kw">for _ in </span><span class="number">0</span>..duration {
+                    <span class="kw">if </span>can_run(<span class="kw-2">&amp;mut </span>rx) {
+                        sleep(Duration::new(<span class="number">1</span>, <span class="number">0</span>)).<span class="kw">await</span>;
+                        <span class="kw">continue</span>;
+                    } <span class="kw">else </span>{
+                        exit = <span class="bool-val">true</span>;
+                        <span class="kw">break</span>;
+                    }
+                }
+
                 <span class="kw">if let </span><span class="prelude-val">Err</span>(e) = <span class="self">Self</span>::delete_demo_user(<span class="kw-2">&amp;</span>data).<span class="kw">await </span>{
                     <span class="macro">log::error!</span>(<span class="string">&quot;Error while deleting demo user: {:?}&quot;</span>, e);
                 }
+
                 <span class="kw">if let </span><span class="prelude-val">Err</span>(e) = <span class="self">Self</span>::register_demo_user(<span class="kw-2">&amp;</span>data).<span class="kw">await </span>{
                     <span class="macro">log::error!</span>(<span class="string">&quot;Error while registering demo user: {:?}&quot;</span>, e);
                 }
@@ -300,7 +355,7 @@
         <span class="macro">assert!</span>(!username_exists(<span class="kw-2">&amp;</span>payload, <span class="kw-2">&amp;</span>data).<span class="kw">await</span>.unwrap().exists);
 
         <span class="comment">// test the runner
-        </span><span class="kw">let </span>user = DemoUser::spawn(data, duration).<span class="kw">await</span>.unwrap();
+        </span><span class="kw">let </span>user = DemoUser::spawn(data, DURATION <span class="kw">as </span>u32).<span class="kw">await</span>.unwrap();
         <span class="kw">let </span>(<span class="kw">_</span>, signin_resp, token_key) =
             add_levels_util(data_inner, DEMO_USER, DEMO_PASSWORD).<span class="kw">await</span>;
         <span class="kw">let </span>cookies = <span class="macro">get_cookie!</span>(signin_resp);
@@ -329,7 +384,8 @@
         <span class="macro">assert_eq!</span>(resp.status(), StatusCode::OK);
         <span class="kw">let </span>res_levels: Vec&lt;Level&gt; = test::read_body_json(resp).<span class="kw">await</span>;
         <span class="macro">assert!</span>(res_levels.is_empty());
-        user.abort();
+        user.<span class="number">0</span>.abort();
+        user.<span class="number">1</span>.<span class="kw">await</span>.unwrap();
     }
 }
 </code></pre></div></section></main></body></html>
