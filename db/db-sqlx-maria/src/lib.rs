@@ -1274,33 +1274,39 @@ impl MCDatabase for Database {
         }
     }
 
-
     /// Get all easy captcha configurations on instance
     async fn get_all_easy_captchas(
         &self,
         limit: usize,
         offset: usize,
     ) -> DBResult<Vec<EasyCaptcha>> {
-
-    struct InnerEasyCaptcha {
-        captcha_key: String,
-        peak_sustainable_traffic: i32,
-        avg_traffic: i32,
-        broke_my_site_traffic: Option<i32>,
-    }
+        struct InnerEasyCaptcha {
+            captcha_key: String,
+            name: String,
+            username: String,
+            peak_sustainable_traffic: i32,
+            avg_traffic: i32,
+            broke_my_site_traffic: Option<i32>,
+        }
         let mut inner_res = sqlx::query_as!(
             InnerEasyCaptcha,
-            "SELECT 
-          mcaptcha_sitekey_user_provided_avg_traffic.avg_traffic, 
-          mcaptcha_sitekey_user_provided_avg_traffic.peak_sustainable_traffic, 
-          mcaptcha_sitekey_user_provided_avg_traffic.broke_my_site_traffic,
-          mcaptcha_config.captcha_key
-        FROM 
-          mcaptcha_sitekey_user_provided_avg_traffic 
-        INNER JOIN
-            mcaptcha_config
-        ON
-            mcaptcha_config.config_id = mcaptcha_sitekey_user_provided_avg_traffic.config_id
+                "SELECT 
+              mcaptcha_sitekey_user_provided_avg_traffic.avg_traffic, 
+              mcaptcha_sitekey_user_provided_avg_traffic.peak_sustainable_traffic, 
+              mcaptcha_sitekey_user_provided_avg_traffic.broke_my_site_traffic,
+              mcaptcha_config.name,
+              mcaptcha_users.name as username,
+              mcaptcha_config.captcha_key
+            FROM 
+              mcaptcha_sitekey_user_provided_avg_traffic 
+            INNER JOIN
+                mcaptcha_config
+            ON
+                mcaptcha_config.config_id = mcaptcha_sitekey_user_provided_avg_traffic.config_id
+            INNER JOIN
+                mcaptcha_users
+            ON
+                mcaptcha_config.user_id = mcaptcha_users.ID
             ORDER BY mcaptcha_config.config_id
             LIMIT ? OFFSET ?",
             limit as i64,
@@ -1309,16 +1315,22 @@ impl MCDatabase for Database {
         .fetch_all(&self.pool)
         .await
         .map_err(|e| map_row_not_found_err(e, DBError::TrafficPatternNotFound))?;
-        let mut res =  Vec::with_capacity(inner_res.len());
-        inner_res.drain(0..).for_each(|v|
-        res.push(EasyCaptcha {
-            key: v.captcha_key,
-            traffic_pattern: TrafficPattern {
-            broke_my_site_traffic: v.broke_my_site_traffic.as_ref().map(|v| *v as u32),
-            avg_traffic: v.avg_traffic as u32,
-            peak_sustainable_traffic: v.peak_sustainable_traffic as u32,
-            }
-        }));
+        let mut res = Vec::with_capacity(inner_res.len());
+        inner_res.drain(0..).for_each(|v| {
+            res.push(EasyCaptcha {
+                key: v.captcha_key,
+                description: v.name,
+                username: v.username,
+                traffic_pattern: TrafficPattern {
+                    broke_my_site_traffic: v
+                        .broke_my_site_traffic
+                        .as_ref()
+                        .map(|v| *v as u32),
+                    avg_traffic: v.avg_traffic as u32,
+                    peak_sustainable_traffic: v.peak_sustainable_traffic as u32,
+                },
+            })
+        });
         Ok(res)
     }
 }

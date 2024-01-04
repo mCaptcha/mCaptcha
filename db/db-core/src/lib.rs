@@ -397,6 +397,10 @@ pub struct EasyCaptcha {
     pub traffic_pattern: TrafficPattern,
     /// captcha key/sitekey
     pub key: String,
+    /// captcha description
+    pub description: String,
+    /// Owner of the captcha configuration
+    pub username: String,
 }
 
 #[derive(Default, PartialEq, Serialize, Deserialize, Clone, Debug)]
