@@ -12,9 +12,9 @@ use actix_web::{
     error::InternalError, http::StatusCode, middleware as actix_middleware,
     web::JsonConfig, App, HttpServer,
 };
-use tokio::task::JoinHandle;
 use lazy_static::lazy_static;
 use log::info;
+use tokio::task::JoinHandle;
 
 mod api;
 mod data;
@@ -22,6 +22,7 @@ mod date;
 mod db;
 mod demo;
 mod docs;
+mod easy;
 mod email;
 mod errors;
 #[macro_use]
@@ -114,8 +115,19 @@ async fn main() -> std::io::Result<()> {
     let mut demo_user: Option<(DemoUser, JoinHandle<()>)> = None;
 
     if settings.allow_demo && settings.allow_registration {
-        demo_user = Some(
-            DemoUser::spawn(data.clone(), 60 * 30)
+        demo_user = Some(DemoUser::spawn(data.clone(), 60 * 30).await.unwrap());
+    }
+
+    let mut update_easy_captcha: Option<(easy::UpdateEasyCaptcha, JoinHandle<()>)> =
+        None;
+    if settings
+        .captcha
+        .default_difficulty_strategy
+        .avg_traffic_time
+        .is_some()
+    {
+        update_easy_captcha = Some(
+            easy::UpdateEasyCaptcha::spawn(data.clone(), 60 * 30)
                 .await
                 .unwrap(),
         );
@@ -159,6 +171,11 @@ async fn main() -> std::io::Result<()> {
     if let Some(demo_user) = demo_user {
         demo_user.0.abort();
         demo_user.1.await.unwrap();
+    }
+
+    if let Some(update_easy_captcha) = update_easy_captcha {
+        update_easy_captcha.0.abort();
+        update_easy_captcha.1.await.unwrap();
     }
 
     if let Some(survey_upload_handle) = survey_upload_handle {

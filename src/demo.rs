@@ -28,7 +28,10 @@ pub struct DemoUser {
 }
 
 impl DemoUser {
-    pub async fn spawn(data: AppData, duration: u32) -> ServiceResult<(Self, JoinHandle<()>)> {
+    pub async fn spawn(
+        data: AppData,
+        duration: u32,
+    ) -> ServiceResult<(Self, JoinHandle<()>)> {
         let (tx, rx) = channel();
         let handle = Self::run(data, duration, rx).await?;
         let d = Self { tx };
@@ -108,7 +111,6 @@ impl DemoUser {
                 if let Err(e) = Self::register_demo_user(&data).await {
                     log::error!("Error while registering demo user: {:?}", e);
                 }
-
             }
         };
         let handle = spawn(fut);
