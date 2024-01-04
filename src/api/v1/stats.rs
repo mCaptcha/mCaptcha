@@ -32,82 +32,89 @@ pub mod routes {
     }
 }
 
-/// Get difficulty factor with max time limit for percentile of stats
-#[my_codegen::post(path = "crate::V1_API_ROUTES.stats.percentile_benches")]
-async fn percentile_benches(
-    data: AppData,
-    payload: web::Json<PercentileReq>,
-) -> ServiceResult<impl Responder> {
-    let count = data.db.stats_get_num_logs_under_time(payload.time).await?;
+pub async fn percentile_bench_runner(
+    data: &AppData,
+    req: &PercentileReq,
+) -> ServiceResult<PercentileResp> {
+    let count = data.db.stats_get_num_logs_under_time(req.time).await?;
 
     if count == 0 {
-        return Ok(HttpResponse::Ok().json(PercentileResp {
+        return Ok(PercentileResp {
             difficulty_factor: None,
-        }));
+        });
     }
 
     if count < 2 {
-        return Ok(HttpResponse::Ok().json(PercentileResp {
+        return Ok(PercentileResp {
             difficulty_factor: None,
-        }));
+        });
     }
 
-    let location = ((count - 1) as f64 * (payload.percentile / 100.00)) + 1.00;
+    let location = ((count - 1) as f64 * (req.percentile / 100.00)) + 1.00;
     let fraction = location - location.floor();
 
     if fraction > 0.00 {
         if let (Some(base), Some(ceiling)) = (
             data.db
                 .stats_get_entry_at_location_for_time_limit_asc(
-                    payload.time,
+                    req.time,
                     location.floor() as u32,
                 )
                 .await?,
             data.db
                 .stats_get_entry_at_location_for_time_limit_asc(
-                    payload.time,
+                    req.time,
                     location.floor() as u32 + 1,
                 )
                 .await?,
         ) {
             let res = base as u32 + ((ceiling - base) as f64 * fraction).floor() as u32;
 
-            return Ok(HttpResponse::Ok().json(PercentileResp {
+            return Ok(PercentileResp {
                 difficulty_factor: Some(res),
-            }));
+            });
         }
     } else {
         if let Some(base) = data
             .db
             .stats_get_entry_at_location_for_time_limit_asc(
-                payload.time,
+                req.time,
                 location.floor() as u32,
             )
             .await?
         {
             let res = base as u32;
 
-            return Ok(HttpResponse::Ok().json(PercentileResp {
+            return Ok(PercentileResp {
                 difficulty_factor: Some(res),
-            }));
+            });
         }
     };
-    Ok(HttpResponse::Ok().json(PercentileResp {
+    Ok(PercentileResp {
         difficulty_factor: None,
-    }))
+    })
+}
+
+/// Get difficulty factor with max time limit for percentile of stats
+#[my_codegen::post(path = "crate::V1_API_ROUTES.stats.percentile_benches")]
+async fn percentile_benches(
+    data: AppData,
+    payload: web::Json<PercentileReq>,
+) -> ServiceResult<impl Responder> {
+    Ok(HttpResponse::Ok().json(percentile_bench_runner(&data, &payload).await?))
 }
 
 #[derive(Clone, Debug, Deserialize, Builder, Serialize)]
 /// Health check return datatype
 pub struct PercentileReq {
-    time: u32,
-    percentile: f64,
+    pub time: u32,
+    pub percentile: f64,
 }
 
 #[derive(Clone, Debug, Deserialize, Builder, Serialize)]
 /// Health check return datatype
 pub struct PercentileResp {
-    difficulty_factor: Option<u32>,
+    pub difficulty_factor: Option<u32>,
 }
 
 pub fn services(cfg: &mut web::ServiceConfig) {

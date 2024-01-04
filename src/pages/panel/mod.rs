@@ -10,6 +10,7 @@ use sailfish::TemplateOnce;
 mod notifications;
 mod settings;
 pub mod sitekey;
+mod utils;
 
 use db_core::Captcha;
 
@@ -47,18 +48,21 @@ pub fn services(cfg: &mut actix_web::web::ServiceConfig) {
     cfg.service(panel);
     settings::services(cfg);
     sitekey::services(cfg);
+    utils::services(cfg);
     cfg.service(notifications::notifications);
 }
 
 pub mod routes {
     use super::settings::routes::Settings;
     use super::sitekey::routes::Sitekey;
+    use super::utils::routes::Utils;
 
     pub struct Panel {
         pub home: &'static str,
         pub sitekey: Sitekey,
         pub notifications: &'static str,
         pub settings: Settings,
+        pub utils: Utils,
     }
 
     impl Panel {
@@ -68,10 +72,11 @@ pub mod routes {
                 sitekey: Sitekey::new(),
                 notifications: "/notifications",
                 settings: Settings::new(),
+                utils: Utils::new(),
             }
         }
 
-        pub const fn get_sitemap() -> [&'static str; 5] {
+        pub const fn get_sitemap() -> [&'static str; 6] {
             const PANEL: Panel = Panel::new();
             const S: [&str; 2] = Sitekey::get_sitemap();
 
@@ -81,6 +86,7 @@ pub mod routes {
                 S[0],
                 S[1],
                 Settings::get_sitemap()[0],
+                Utils::get_sitemap()[0],
             ]
         }
     }

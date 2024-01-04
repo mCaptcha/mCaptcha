@@ -5,15 +5,15 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
 <nav class="secondary-menu">
-	<input type="checkbox" class="nav-toggle" id="nav-toggle" >
+  <input type="checkbox" class="nav-toggle" id="nav-toggle" >
   <div class="secondary-menu__heading">
-	  <a  class="novisit" href="/">
-		  <img class="secondary-menu__logo" src="<.= crate::MCAPTCHA_TRANS_ICON.0 .>" alt="<.= crate::MCAPTCHA_TRANS_ICON.1 .>" />
+    <a  class="novisit" href="/">
+      <img class="secondary-menu__logo" src="<.= crate::MCAPTCHA_TRANS_ICON.0 .>" alt="<.= crate::MCAPTCHA_TRANS_ICON.1 .>" />
     </a>
     <a href="/" class="secondary-menu__brand-name">
       mCaptcha
     </a>
-	<label class="nav__hamburger-menu"for="nav-toggle">
+    <label class="nav__hamburger-menu"for="nav-toggle">
       <span></span>
       <span></span>
       <span></span>
@@ -21,7 +21,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
   </div>
   <ul class="secondary-menu__list">
     <li class="secondary-menu__item">
-        <a class="secondary-menu__item-link" href="<.= crate::PAGES.home .>">
+      <a class="secondary-menu__item-link" href="<.= crate::PAGES.home .>">
         <img class="secondary-menu__icon" src="<.= crate::HOME.0 .>" alt="<.= crate::HOME.1 .>" />
         <div class="secondary-menu__item-name">
           Overview
@@ -29,10 +29,18 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       </a>
     </li>
     <li class="secondary-menu__item">
-        <a class="secondary-menu__item-link" href="<.= crate::PAGES.panel.sitekey.list .>">
+      <a class="secondary-menu__item-link" href="<.= crate::PAGES.panel.sitekey.list .>">
         <img class="secondary-menu__icon" src="<.= crate::KEY.0 .>" alt="<.= crate::KEY.1 .>" />
         <div class="secondary-menu__item-name">
           Site Keys
+        </div>
+      </a>
+    </li>
+    <li class="secondary-menu__item">
+      <a class="secondary-menu__item-link" href="<.= crate::PAGES.panel.utils.percentile .>">
+        <img class="secondary-menu__icon" src="<.= crate::BAR_CHART.0 .>" alt="<.= crate::BAR_CHART.1 .>" />
+        <div class="secondary-menu__item-name">
+          Statistics
         </div>
       </a>
     </li>

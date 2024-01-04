@@ -43,7 +43,6 @@ pub mod dev {
     pub use super::errors::*;
     pub use super::Database;
     pub use db_core::dev::*;
-    pub use prelude::*;
     pub use sqlx::Error;
 }
 
