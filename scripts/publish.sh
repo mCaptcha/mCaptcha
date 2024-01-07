@@ -44,6 +44,7 @@ copy() {
 	mkdir $TARGET_DIR/docs
 	cp docs/DEPLOYMENT.md $TARGET_DIR/docs
 	cp docs/CONFIGURATION.md $TARGET_DIR/docs
+	cp config/default.toml $TARGET_DIR/config.toml
 
 	get_bin
 }
