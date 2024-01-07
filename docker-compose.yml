@@ -9,11 +9,8 @@ services:
     image: mcaptcha/mcaptcha:latest
     ports:
       - 7000:7000
-    environment:
-      DATABASE_URL: postgres://postgres:password@mcaptcha_postgres:5432/postgres # set password at placeholder
-      MCAPTCHA_redis_URL: "redis://mcaptcha_redis/"
-      RUST_LOG: "debug"
-      PORT: 7000
+    env_file:
+      - .env.docker-compose
     depends_on:
       - mcaptcha_postgres
       - mcaptcha_redis
