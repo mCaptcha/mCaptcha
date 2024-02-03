@@ -19,14 +19,15 @@ SPDX-License-Identifier: MIT OR Apache-2.0
            </div>
         </noscript>
         <label class="widget__verification-container" for="widget__verification-checkbox">
+          <span id="widget__verification-text"
+            >I'm not a robot</span>
           <input 
               id="widget__verification-checkbox"
+              aria-valuenow="I'm not a robot"
+                aria-checked="false"
+                role="checkbox"
               class="widget__verification-checkbox"
           type="checkbox" />
-          <span id="widget__verification-text--before">I'm not a robot</span>
-          <span id="widget__verification-text--during">Processing...</span>
-          <span id="widget__verification-text--after">Verified!</span>
-          <span id="widget__verification-text--error">Something went wrong</span>
         </label>
         <div class="widget__mcaptcha-details">
           <a href="<.= crate::PKG_HOMEPAGE .>" 
@@ -54,6 +55,8 @@ SPDX-License-Identifier: MIT OR Apache-2.0
           </div>
         </div>
       </form>
-      <div class="progress__bar"><div class="progress__fill"></div></div>
+      <div class="progress__bar"><div 
+             aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
+             role="progressbar" class="progress__fill"></div></div>
     </main>
 <.include!("./footer.html"); .>
