@@ -5,7 +5,7 @@
 
 import * as CONST from "../const";
 
-import {getBaseHtml, sitekey, checkbox} from "./setupTests";
+import { getBaseHtml, sitekey, checkbox } from "./setupTests";
 import * as TESTElements from "./setupTests";
 
 it("const works", () => {
@@ -17,29 +17,17 @@ it("const works", () => {
 
   // display after
   CONST.messageText().after();
-  expect(TESTElements.afterMsg.style.display).toBe("block");
-  expect(TESTElements.beforeMsg.style.display).toBe("none");
-  expect(TESTElements.duringMsg.style.display).toBe("none");
-  expect(TESTElements.errorMsg.style.display).toBe("none");
+  expect(TESTElements.Msg.innerText).toBe(CONST.AFTER);
 
   // display before
   CONST.messageText().before();
-  expect(TESTElements.afterMsg.style.display).toBe("none");
-  expect(TESTElements.beforeMsg.style.display).toBe("block");
-  expect(TESTElements.duringMsg.style.display).toBe("none");
-  expect(TESTElements.errorMsg.style.display).toBe("none");
+  expect(TESTElements.Msg.innerText).toBe(CONST.BEFORE);
 
   // display during
   CONST.messageText().during();
-  expect(TESTElements.afterMsg.style.display).toBe("none");
-  expect(TESTElements.beforeMsg.style.display).toBe("none");
-  expect(TESTElements.duringMsg.style.display).toBe("block");
-  expect(TESTElements.errorMsg.style.display).toBe("none");
+  expect(TESTElements.Msg.innerText).toBe(CONST.DURING);
 
   // display error
   CONST.messageText().error();
-  expect(TESTElements.afterMsg.style.display).toBe("none");
-  expect(TESTElements.beforeMsg.style.display).toBe("none");
-  expect(TESTElements.duringMsg.style.display).toBe("none");
-  expect(TESTElements.errorMsg.style.display).toBe("block");
+  expect(TESTElements.Msg.innerText).toBe(CONST.ERROR);
 });

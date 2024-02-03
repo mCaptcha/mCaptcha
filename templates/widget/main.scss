@@ -56,7 +56,8 @@ body {
 
 .widget__verification-container {
 	align-items: center;
-	display: none;
+	display: flex;
+	flex-direction: row-reverse;
 	line-height: 30px;
 	font-size: 1rem;
 }
@@ -65,36 +66,6 @@ body {
 	width: 30px;
 	height: 30px;
 	margin: 0 10px;
-}
-
-#widget__verification-text--during {
-	display: none;
-}
-
-#widget__verification-text--after {
-	display: none;
-	color: green;
-}
-
-#widget__verification-text--error {
-	display: none;
-	color: red;
-}
-
-.widget__verification-checkbox:checked ~ #widget__verification-text--before {
-	display: none;
-}
-
-.widget__verification-checkbox:checked ~ #widget__verification-text--during {
-	display: none;
-}
-
-.widget__verification-checkbox:checked ~ #widget__verification-text--error {
-	display: none;
-}
-
-.widget__verification-checkbox:checked ~ #widget__verification-text--after {
-	display: block;
 }
 
 .widget__mcaptcha-details {

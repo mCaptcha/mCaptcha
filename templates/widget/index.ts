@@ -25,6 +25,12 @@ export const registerVerificationEventHandler = (): void => {
 
 export const solveCaptchaRunner = async (e: Event): Promise<void> => {
   const PROGRESS_FILL = <HTMLElement>document.querySelector(".progress__fill");
+
+  const setWidth = (width: number) => {
+    PROGRESS_FILL.style.width = `${width}%`;
+    PROGRESS_FILL.ariaValueNow = <any>parseInt(<any>width);
+  };
+
   let width = 0;
 
   if (LOCK) {
@@ -36,8 +42,9 @@ export const solveCaptchaRunner = async (e: Event): Promise<void> => {
     LOCK = true;
     if (CONST.btn().checked == false) {
       width = 0;
-      PROGRESS_FILL.style.width = `${width}%`;
+      setWidth(width);
       CONST.messageText().before();
+      CONST.btn().ariaChecked = <any>false;
       LOCK = false;
       return;
     }
@@ -57,7 +64,7 @@ export const solveCaptchaRunner = async (e: Event): Promise<void> => {
 
       if (resp.type === "work") {
         width = 80;
-        PROGRESS_FILL.style.width = `${width}%`;
+        setWidth(width);
         console.log(
           `Proof generated. Difficuly: ${config.difficulty_factor} Duration: ${resp.value.work.time}`
         );
@@ -72,22 +79,23 @@ export const solveCaptchaRunner = async (e: Event): Promise<void> => {
         };
 
         width = 90;
-        PROGRESS_FILL.style.width = `${width}%`;
+        setWidth(width);
         // 3. submit work
         const token = await sendWork(proof);
         // 4. send token
         sendToParent(token);
         // 5. mark checkbox checked
         CONST.btn().checked = true;
+        CONST.btn().ariaChecked = <any>true;
         width = 100;
-        PROGRESS_FILL.style.width = `${width}%`;
+        setWidth(width);
         CONST.messageText().after();
         LOCK = false;
       }
       if (resp.type === "progress") {
         if (width < 80) {
           width = (resp.nonce / max_recorded_nonce) * 100;
-          PROGRESS_FILL.style.width = `${width}%`;
+          setWidth(width);
         }
         console.log(`received nonce ${resp.nonce}`);
       }
