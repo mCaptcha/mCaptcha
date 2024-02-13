@@ -28,6 +28,8 @@ body {
 	display: flex;
 	height: 100%;
 	width: 100%;
+	background-color: #f6f6f6;
+	border: 2px solid #e5e5e5;
 }
 
 .widget__noscript-container {
@@ -103,6 +105,11 @@ body {
 		background-color: #1c1c1c;
 	}
 
+	.widget__inner-container {
+		background-color: #1c1c1c;
+		border: 2px solid #656569;
+	}
+
 	.widget__verification-container {
 		color: rgb(232, 230, 227);
 	}
@@ -130,4 +137,10 @@ body {
 	border-radius: 15px;
 	height: 100%;
 	width: 0%;
+}
+
+@media (prefers-color-scheme: dark) {
+	.progress__bar {
+		background: unset;
+	}
 }
