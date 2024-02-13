@@ -98,6 +98,24 @@ body {
 	margin: 2px;
 }
 
+@media (prefers-color-scheme: dark) {
+	.widget__container {
+		background-color: #1c1c1c;
+	}
+
+	.widget__verification-container {
+		color: rgb(232, 230, 227);
+	}
+
+	.widget__mcaptcha-brand-name {
+		color: #7d94f9;
+	}
+
+	.widget__mcaptcha-info-link {
+		color: #7d94f9;
+	}
+}
+
 /* progress bar courtesy of https://codepen.io/Bizzy-Coding/pen/poOymVJ?editors=1111 */
 .progress__bar {
 	position: relative;
