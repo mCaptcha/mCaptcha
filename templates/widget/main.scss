@@ -28,6 +28,8 @@ body {
 	display: flex;
 	height: 100%;
 	width: 100%;
+	background-color: #f6f6f6;
+	border: 2px solid #e5e5e5;
 }
 
 .widget__noscript-container {
@@ -98,6 +100,29 @@ body {
 	margin: 2px;
 }
 
+@media (prefers-color-scheme: dark) {
+	.widget__container {
+		background-color: #1c1c1c;
+	}
+
+	.widget__inner-container {
+		background-color: #1c1c1c;
+		border: 2px solid #656569;
+	}
+
+	.widget__verification-container {
+		color: rgb(232, 230, 227);
+	}
+
+	.widget__mcaptcha-brand-name {
+		color: #7d94f9;
+	}
+
+	.widget__mcaptcha-info-link {
+		color: #7d94f9;
+	}
+}
+
 /* progress bar courtesy of https://codepen.io/Bizzy-Coding/pen/poOymVJ?editors=1111 */
 .progress__bar {
 	position: relative;
@@ -112,4 +137,10 @@ body {
 	border-radius: 15px;
 	height: 100%;
 	width: 0%;
+}
+
+@media (prefers-color-scheme: dark) {
+	.progress__bar {
+		background: unset;
+	}
 }
