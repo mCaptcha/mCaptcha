@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/errors.rs`."><title>errors.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="mcaptcha" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/errors.rs`."><title>errors.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="mcaptcha" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -356,7 +357,7 @@
 
 <span class="kw">impl </span>std::cmp::PartialEq <span class="kw">for </span>DBErrorWrapper {
     <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; bool {
-        <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, <span class="self">self</span>.<span class="number">0</span>) == <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, other.<span class="number">0</span>)
+        <span class="macro">format!</span>(<span class="string">"{}"</span>, <span class="self">self</span>.<span class="number">0</span>) == <span class="macro">format!</span>(<span class="string">"{}"</span>, other.<span class="number">0</span>)
     }
 }
 
@@ -369,74 +370,74 @@
 <span class="attr">#[derive(Debug, Display, PartialEq, Error)]
 #[cfg(not(tarpaulin_include))]
 </span><span class="kw">pub enum </span>ServiceError {
-    <span class="attr">#[display(fmt = <span class="string">&quot;internal server error&quot;</span>)]
+    <span class="attr">#[display(fmt = <span class="string">"internal server error"</span>)]
     </span>InternalServerError,
 
     <span class="attr">#[display(
-        fmt = <span class="string">&quot;This server is is closed for registration. Contact admin if this is unexpecter&quot;
+        fmt = <span class="string">"This server is is closed for registration. Contact admin if this is unexpecter"
     </span>)]
     </span>ClosedForRegistration,
 
-    <span class="attr">#[display(fmt = <span class="string">&quot;The value you entered for email is not an email&quot;</span>)] </span><span class="comment">//405j
+    <span class="attr">#[display(fmt = <span class="string">"The value you entered for email is not an email"</span>)] </span><span class="comment">//405j
     </span>NotAnEmail,
-    <span class="attr">#[display(fmt = <span class="string">&quot;The value you entered for URL is not a URL&quot;</span>)] </span><span class="comment">//405j
+    <span class="attr">#[display(fmt = <span class="string">"The value you entered for URL is not a URL"</span>)] </span><span class="comment">//405j
     </span>NotAUrl,
 
-    <span class="attr">#[display(fmt = <span class="string">&quot;Wrong password&quot;</span>)]
+    <span class="attr">#[display(fmt = <span class="string">"Wrong password"</span>)]
     </span>WrongPassword,
-    <span class="attr">#[display(fmt = <span class="string">&quot;Username not found&quot;</span>)]
+    <span class="attr">#[display(fmt = <span class="string">"Username not found"</span>)]
     </span>UsernameNotFound,
-    <span class="attr">#[display(fmt = <span class="string">&quot;Account not found&quot;</span>)]
+    <span class="attr">#[display(fmt = <span class="string">"Account not found"</span>)]
     </span>AccountNotFound,
 
     <span class="doccomment">/// when the value passed contains profainity
-    </span><span class="attr">#[display(fmt = <span class="string">&quot;Can&#39;t allow profanity in usernames&quot;</span>)]
+    </span><span class="attr">#[display(fmt = <span class="string">"Can't allow profanity in usernames"</span>)]
     </span>ProfainityError,
     <span class="doccomment">/// when the value passed contains blacklisted words
     /// see [blacklist](https://github.com/shuttlecraft/The-Big-Username-Blacklist)
-    </span><span class="attr">#[display(fmt = <span class="string">&quot;Username contains blacklisted words&quot;</span>)]
+    </span><span class="attr">#[display(fmt = <span class="string">"Username contains blacklisted words"</span>)]
     </span>BlacklistError,
     <span class="doccomment">/// when the value passed contains characters not present
     /// in [UsernameCaseMapped](https://tools.ietf.org/html/rfc8265#page-7)
     /// profile
-    </span><span class="attr">#[display(fmt = <span class="string">&quot;username_case_mapped violation&quot;</span>)]
+    </span><span class="attr">#[display(fmt = <span class="string">"username_case_mapped violation"</span>)]
     </span>UsernameCaseMappedError,
 
-    <span class="attr">#[display(fmt = <span class="string">&quot;Passsword too short&quot;</span>)]
+    <span class="attr">#[display(fmt = <span class="string">"Passsword too short"</span>)]
     </span>PasswordTooShort,
-    <span class="attr">#[display(fmt = <span class="string">&quot;Username too long&quot;</span>)]
+    <span class="attr">#[display(fmt = <span class="string">"Username too long"</span>)]
     </span>PasswordTooLong,
-    <span class="attr">#[display(fmt = <span class="string">&quot;Passwords don&#39;t match&quot;</span>)]
+    <span class="attr">#[display(fmt = <span class="string">"Passwords don't match"</span>)]
     </span>PasswordsDontMatch,
 
     <span class="doccomment">/// when the a username is already taken
-    </span><span class="attr">#[display(fmt = <span class="string">&quot;Username not available&quot;</span>)]
+    </span><span class="attr">#[display(fmt = <span class="string">"Username not available"</span>)]
     </span>UsernameTaken,
 
     <span class="doccomment">/// email is already taken
-    </span><span class="attr">#[display(fmt = <span class="string">&quot;Email not available&quot;</span>)]
+    </span><span class="attr">#[display(fmt = <span class="string">"Email not available"</span>)]
     </span>EmailTaken,
 
     <span class="doccomment">/// Unable to send email
-    </span><span class="attr">#[display(fmt = <span class="string">&quot;Unable to send email, contact admin&quot;</span>)]
+    </span><span class="attr">#[display(fmt = <span class="string">"Unable to send email, contact admin"</span>)]
     </span>UnableToSendEmail(SmtpErrorWrapper),
 
     <span class="doccomment">/// token not found
-    </span><span class="attr">#[display(fmt = <span class="string">&quot;Token not found. Is token registered?&quot;</span>)]
+    </span><span class="attr">#[display(fmt = <span class="string">"Token not found. Is token registered?"</span>)]
     </span>TokenNotFound,
 
-    <span class="attr">#[display(fmt = <span class="string">&quot;{}&quot;</span>, _0)]
+    <span class="attr">#[display(fmt = <span class="string">"{}"</span>, _0)]
     </span>CaptchaError(CaptchaError),
 
-    <span class="attr">#[display(fmt = <span class="string">&quot;{}&quot;</span>, _0)]
+    <span class="attr">#[display(fmt = <span class="string">"{}"</span>, _0)]
     </span>DBError(DBErrorWrapper),
 
     <span class="doccomment">/// captcha not found
-    </span><span class="attr">#[display(fmt = <span class="string">&quot;Captcha not found.&quot;</span>)]
+    </span><span class="attr">#[display(fmt = <span class="string">"Captcha not found."</span>)]
     </span>CaptchaNotFound,
 
     <span class="doccomment">/// Traffic pattern not found
-    </span><span class="attr">#[display(fmt = <span class="string">&quot;Traffic pattern not found&quot;</span>)]
+    </span><span class="attr">#[display(fmt = <span class="string">"Traffic pattern not found"</span>)]
     </span>TrafficPatternNotFound,
 }
 
@@ -451,7 +452,7 @@
     <span class="attr">#[cfg(not(tarpaulin_include))]
     </span><span class="kw">fn </span>error_response(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; HttpResponse {
         HttpResponseBuilder::new(<span class="self">self</span>.status_code())
-            .append_header((header::CONTENT_TYPE, <span class="string">&quot;application/json; charset=UTF-8&quot;</span>))
+            .append_header((header::CONTENT_TYPE, <span class="string">"application/json; charset=UTF-8"</span>))
             .body(
                 serde_json::to_string(<span class="kw-2">&amp;</span>ErrorToResponse {
                     error: <span class="self">self</span>.to_string(),
@@ -484,7 +485,7 @@
 
             ServiceError::TokenNotFound =&gt; StatusCode::NOT_FOUND,
             ServiceError::CaptchaError(e) =&gt; {
-                <span class="macro">log::error!</span>(<span class="string">&quot;{}&quot;</span>, e);
+                <span class="macro">log::error!</span>(<span class="string">"{}"</span>, e);
                 <span class="kw">match </span>e {
                     CaptchaError::MailboxError =&gt; StatusCode::INTERNAL_SERVER_ERROR,
                     <span class="kw">_ </span>=&gt; StatusCode::BAD_REQUEST,
@@ -492,7 +493,7 @@
             }
 
             ServiceError::UnableToSendEmail(e) =&gt; {
-                <span class="macro">log::error!</span>(<span class="string">&quot;{}&quot;</span>, e.<span class="number">0</span>);
+                <span class="macro">log::error!</span>(<span class="string">"{}"</span>, e.<span class="number">0</span>);
                 StatusCode::INTERNAL_SERVER_ERROR
             }
 
@@ -521,7 +522,7 @@
 <span class="kw">impl </span>From&lt;DBError&gt; <span class="kw">for </span>ServiceError {
     <span class="attr">#[cfg(not(tarpaulin_include))]
     </span><span class="kw">fn </span>from(e: DBError) -&gt; ServiceError {
-        <span class="macro">println!</span>(<span class="string">&quot;from conversin: {}&quot;</span>, e);
+        <span class="macro">println!</span>(<span class="string">"from conversin: {}"</span>, e);
         <span class="kw">match </span>e {
             DBError::UsernameTaken =&gt; ServiceError::UsernameTaken,
             DBError::SecretTaken =&gt; ServiceError::InternalServerError,
@@ -567,7 +568,7 @@
 </span><span class="kw">impl </span>From&lt;RecvError&gt; <span class="kw">for </span>ServiceError {
     <span class="attr">#[cfg(not(tarpaulin_include))]
     </span><span class="kw">fn </span>from(e: RecvError) -&gt; <span class="self">Self </span>{
-        <span class="macro">log::error!</span>(<span class="string">&quot;{:?}&quot;</span>, e);
+        <span class="macro">log::error!</span>(<span class="string">"{:?}"</span>, e);
         ServiceError::InternalServerError
     }
 }
@@ -576,7 +577,7 @@
 </span><span class="kw">impl </span>From&lt;MailboxError&gt; <span class="kw">for </span>ServiceError {
     <span class="attr">#[cfg(not(tarpaulin_include))]
     </span><span class="kw">fn </span>from(e: MailboxError) -&gt; <span class="self">Self </span>{
-        <span class="macro">log::error!</span>(<span class="string">&quot;{:?}&quot;</span>, e);
+        <span class="macro">log::error!</span>(<span class="string">"{:?}"</span>, e);
         ServiceError::InternalServerError
     }
 }
@@ -587,10 +588,10 @@
 <span class="attr">#[derive(Debug, Display, PartialEq, Error)]
 #[cfg(not(tarpaulin_include))]
 </span><span class="kw">pub enum </span>PageError {
-    <span class="attr">#[display(fmt = <span class="string">&quot;Something weng wrong: Internal server error&quot;</span>)]
+    <span class="attr">#[display(fmt = <span class="string">"Something weng wrong: Internal server error"</span>)]
     </span>InternalServerError,
 
-    <span class="attr">#[display(fmt = <span class="string">&quot;{}&quot;</span>, _0)]
+    <span class="attr">#[display(fmt = <span class="string">"{}"</span>, _0)]
     </span>ServiceError(ServiceError),
 }
 

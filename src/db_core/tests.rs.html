@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `db/db-core/src/tests.rs`."><title>tests.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="db_core" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `db/db-core/src/tests.rs`."><title>tests.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="db_core" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -497,21 +498,21 @@
 ];
 
 <span class="doccomment">/// test all database functions
-</span><span class="kw">pub async fn </span>database_works&lt;<span class="lifetime">&#39;a</span>, T: MCDatabase&gt;(
+</span><span class="kw">pub async fn </span>database_works&lt;<span class="lifetime">'a</span>, T: MCDatabase&gt;(
     db: <span class="kw-2">&amp;</span>T,
-    p: <span class="kw-2">&amp;</span>Register&lt;<span class="lifetime">&#39;a</span>&gt;,
-    c: <span class="kw-2">&amp;</span>CreateCaptcha&lt;<span class="lifetime">&#39;a</span>&gt;,
+    p: <span class="kw-2">&amp;</span>Register&lt;<span class="lifetime">'a</span>&gt;,
+    c: <span class="kw-2">&amp;</span>CreateCaptcha&lt;<span class="lifetime">'a</span>&gt;,
     l: <span class="kw-2">&amp;</span>[Level],
     tp: <span class="kw-2">&amp;</span>TrafficPattern,
-    an: <span class="kw-2">&amp;</span>AddNotification&lt;<span class="lifetime">&#39;a</span>&gt;,
+    an: <span class="kw-2">&amp;</span>AddNotification&lt;<span class="lifetime">'a</span>&gt;,
 ) {
-    <span class="macro">assert!</span>(db.ping().<span class="kw">await</span>, <span class="string">&quot;ping test&quot;</span>);
+    <span class="macro">assert!</span>(db.ping().<span class="kw">await</span>, <span class="string">"ping test"</span>);
 
     <span class="kw">if </span>db.username_exists(p.username).<span class="kw">await</span>.unwrap() {
         db.delete_user(p.username).<span class="kw">await</span>.unwrap();
         <span class="macro">assert!</span>(
             !db.username_exists(p.username).<span class="kw">await</span>.unwrap(),
-            <span class="string">&quot;user is deleted so username shouldn&#39;t exist&quot;
+            <span class="string">"user is deleted so username shouldn't exist"
         </span>);
     }
 
@@ -526,7 +527,7 @@
 
     <span class="comment">// testing get secret
     </span><span class="kw">let </span>secret = db.get_secret(p.username).<span class="kw">await</span>.unwrap();
-    <span class="macro">assert_eq!</span>(secret.secret, p.secret, <span class="string">&quot;user secret matches&quot;</span>);
+    <span class="macro">assert_eq!</span>(secret.secret, p.secret, <span class="string">"user secret matches"</span>);
 
     <span class="comment">// testing update secret: setting secret = username
     </span>db.update_secret(p.username, p.username).<span class="kw">await</span>.unwrap();
@@ -534,24 +535,24 @@
     <span class="kw">let </span>secret = db.get_secret(p.username).<span class="kw">await</span>.unwrap();
     <span class="macro">assert_eq!</span>(
         secret.secret, p.username,
-        <span class="string">&quot;user secret matches username; as set by previous step&quot;
+        <span class="string">"user secret matches username; as set by previous step"
     </span>);
 
     <span class="comment">// testing get_password
 
     // with username
     </span><span class="kw">let </span>name_hash = db.get_password(<span class="kw-2">&amp;</span>Login::Username(p.username)).<span class="kw">await</span>.unwrap();
-    <span class="macro">assert_eq!</span>(name_hash.hash, p.hash, <span class="string">&quot;user password matches&quot;</span>);
+    <span class="macro">assert_eq!</span>(name_hash.hash, p.hash, <span class="string">"user password matches"</span>);
 
-    <span class="macro">assert_eq!</span>(name_hash.username, p.username, <span class="string">&quot;username matches&quot;</span>);
+    <span class="macro">assert_eq!</span>(name_hash.username, p.username, <span class="string">"username matches"</span>);
 
     <span class="comment">// with email
     </span><span class="kw">let </span><span class="kw-2">mut </span>name_hash = db
         .get_password(<span class="kw-2">&amp;</span>Login::Email(p.email.as_ref().unwrap()))
         .<span class="kw">await
         </span>.unwrap();
-    <span class="macro">assert_eq!</span>(name_hash.hash, p.hash, <span class="string">&quot;user password matches&quot;</span>);
-    <span class="macro">assert_eq!</span>(name_hash.username, p.username, <span class="string">&quot;username matches&quot;</span>);
+    <span class="macro">assert_eq!</span>(name_hash.hash, p.hash, <span class="string">"user password matches"</span>);
+    <span class="macro">assert_eq!</span>(name_hash.username, p.username, <span class="string">"username matches"</span>);
 
     <span class="comment">// testing get_email
     </span><span class="macro">assert_eq!</span>(
@@ -567,11 +568,11 @@
     <span class="comment">// testing email exists
     </span><span class="macro">assert!</span>(
         db.email_exists(p.email.as_ref().unwrap()).<span class="kw">await</span>.unwrap(),
-        <span class="string">&quot;user is registered so email should exist&quot;
+        <span class="string">"user is registered so email should exist"
     </span>);
     <span class="macro">assert!</span>(
         db.username_exists(p.username).<span class="kw">await</span>.unwrap(),
-        <span class="string">&quot;user is registered so username should exist&quot;
+        <span class="string">"user is registered so username should exist"
     </span>);
 
     <span class="comment">// update password test. setting password = username
@@ -581,28 +582,28 @@
     <span class="kw">let </span>name_hash = db.get_password(<span class="kw-2">&amp;</span>Login::Username(p.username)).<span class="kw">await</span>.unwrap();
     <span class="macro">assert_eq!</span>(
         name_hash.hash, p.username,
-        <span class="string">&quot;user password matches with changed value&quot;
+        <span class="string">"user password matches with changed value"
     </span>);
-    <span class="macro">assert_eq!</span>(name_hash.username, p.username, <span class="string">&quot;username matches&quot;</span>);
+    <span class="macro">assert_eq!</span>(name_hash.username, p.username, <span class="string">"username matches"</span>);
 
     <span class="comment">// update username to p.email
     </span><span class="macro">assert!</span>(
         !db.username_exists(p.email.as_ref().unwrap()).<span class="kw">await</span>.unwrap(),
-        <span class="string">&quot;user with p.email doesn&#39;t exist. pre-check to update username to p.email&quot;
+        <span class="string">"user with p.email doesn't exist. pre-check to update username to p.email"
     </span>);
     db.update_username(p.username, p.email.as_ref().unwrap())
         .<span class="kw">await
         </span>.unwrap();
     <span class="macro">assert!</span>(
         db.username_exists(p.email.as_ref().unwrap()).<span class="kw">await</span>.unwrap(),
-        <span class="string">&quot;user with p.email exist post-update&quot;
+        <span class="string">"user with p.email exist post-update"
     </span>);
 
     <span class="comment">// deleting user for re-registration with email = None
     </span>db.delete_user(p.email.as_ref().unwrap()).<span class="kw">await</span>.unwrap();
     <span class="macro">assert!</span>(
         !db.username_exists(p.email.as_ref().unwrap()).<span class="kw">await</span>.unwrap(),
-        <span class="string">&quot;user is deleted so username shouldn&#39;t exist&quot;
+        <span class="string">"user is deleted so username shouldn't exist"
     </span>);
 
     <span class="comment">// register with email = None
@@ -611,11 +612,11 @@
     db.register(<span class="kw-2">&amp;</span>p2).<span class="kw">await</span>.unwrap();
     <span class="macro">assert!</span>(
         db.username_exists(p2.username).<span class="kw">await</span>.unwrap(),
-        <span class="string">&quot;user is registered so username should exist&quot;
+        <span class="string">"user is registered so username should exist"
     </span>);
     <span class="macro">assert!</span>(
         !db.email_exists(p.email.as_ref().unwrap()).<span class="kw">await</span>.unwrap(),
-        <span class="string">&quot;user registration with email is deleted; so email shouldn&#39;t exist&quot;
+        <span class="string">"user registration with email is deleted; so email shouldn't exist"
     </span>);
 
     <span class="comment">// testing get_email = None
@@ -628,12 +629,12 @@
     };
     db.update_email(<span class="kw-2">&amp;</span>update_email).<span class="kw">await</span>.unwrap();
     <span class="macro">println!</span>(
-        <span class="string">&quot;null user email: {}&quot;</span>,
+        <span class="string">"null user email: {}"</span>,
         db.email_exists(p.email.as_ref().unwrap()).<span class="kw">await</span>.unwrap()
     );
     <span class="macro">assert!</span>(
         db.email_exists(p.email.as_ref().unwrap()).<span class="kw">await</span>.unwrap(),
-        <span class="string">&quot;user was with empty email but email is set; so email should exist&quot;
+        <span class="string">"user was with empty email but email is set; so email should exist"
     </span>);
 
     <span class="comment">/*
@@ -666,7 +667,7 @@
 
     <span class="comment">// get secret from captcha key
     </span><span class="kw">let </span>secret_from_captcha = db.get_secret_from_captcha(<span class="kw-2">&amp;</span>c.key).<span class="kw">await</span>.unwrap();
-    <span class="macro">assert_eq!</span>(secret_from_captcha.secret, p.secret, <span class="string">&quot;user secret matches&quot;</span>);
+    <span class="macro">assert_eq!</span>(secret_from_captcha.secret, p.secret, <span class="string">"user secret matches"</span>);
 
     <span class="comment">// get captcha configuration
     </span><span class="kw">let </span>captcha = db.get_captcha_config(p.username, c.key).<span class="kw">await</span>.unwrap();
@@ -701,7 +702,7 @@
             db.get_traffic_pattern(p.username, c.key).<span class="kw">await</span>,
             <span class="prelude-val">Err</span>(DBError::TrafficPatternNotFound)
         ),
-        <span class="string">&quot;deletion successful; traffic pattern no longer exists&quot;
+        <span class="string">"deletion successful; traffic pattern no longer exists"
     </span>);
 
     <span class="comment">// add captcha levels
@@ -777,7 +778,7 @@
     <span class="kw">let </span>analytics = CreatePerformanceAnalytics {
         time: <span class="number">1</span>,
         difficulty_factor: <span class="number">1</span>,
-        worker_type: <span class="string">&quot;wasm&quot;</span>.into(),
+        worker_type: <span class="string">"wasm"</span>.into(),
     };
 
     <span class="macro">assert_eq!</span>(
@@ -823,22 +824,22 @@
         CreatePerformanceAnalytics {
             time: <span class="number">2</span>,
             difficulty_factor: <span class="number">2</span>,
-            worker_type: <span class="string">&quot;wasm&quot;</span>.into(),
+            worker_type: <span class="string">"wasm"</span>.into(),
         },
         CreatePerformanceAnalytics {
             time: <span class="number">3</span>,
             difficulty_factor: <span class="number">3</span>,
-            worker_type: <span class="string">&quot;wasm&quot;</span>.into(),
+            worker_type: <span class="string">"wasm"</span>.into(),
         },
         CreatePerformanceAnalytics {
             time: <span class="number">4</span>,
             difficulty_factor: <span class="number">4</span>,
-            worker_type: <span class="string">&quot;wasm&quot;</span>.into(),
+            worker_type: <span class="string">"wasm"</span>.into(),
         },
         CreatePerformanceAnalytics {
             time: <span class="number">5</span>,
             difficulty_factor: <span class="number">5</span>,
-            worker_type: <span class="string">&quot;wasm&quot;</span>.into(),
+            worker_type: <span class="string">"wasm"</span>.into(),
         },
     ];
     <span class="kw">for </span>a <span class="kw">in </span>rest_analytics.iter() {
@@ -909,7 +910,7 @@
     </span>db.update_captcha_key(p.username, c.key, p.username)
         .<span class="kw">await
         </span>.unwrap();
-    <span class="comment">// checking for captcha with old key; shouldn&#39;t exist
+    <span class="comment">// checking for captcha with old key; shouldn't exist
     </span><span class="macro">assert!</span>(!db.captcha_exists(<span class="prelude-val">Some</span>(p.username), c.key).<span class="kw">await</span>.unwrap());
     <span class="comment">// checking for captcha with new key; shouldn exist
     </span><span class="macro">assert!</span>(db

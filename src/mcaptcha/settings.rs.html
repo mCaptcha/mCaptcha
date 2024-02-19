@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/settings.rs`."><title>settings.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="mcaptcha" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/settings.rs`."><title>settings.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="mcaptcha" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -703,25 +704,25 @@
 <span class="kw">impl </span>Server {
     <span class="attr">#[cfg(not(tarpaulin_include))]
     </span><span class="kw">pub fn </span>get_ip(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
-        <span class="macro">format!</span>(<span class="string">&quot;{}:{}&quot;</span>, <span class="self">self</span>.ip, <span class="self">self</span>.port)
+        <span class="macro">format!</span>(<span class="string">"{}:{}"</span>, <span class="self">self</span>.ip, <span class="self">self</span>.port)
     }
 }
 
 <span class="attr">#[derive(Deserialize, Serialize, Display, Eq, PartialEq, Clone, Debug)]
-#[serde(rename_all = <span class="string">&quot;lowercase&quot;</span>)]
+#[serde(rename_all = <span class="string">"lowercase"</span>)]
 </span><span class="kw">pub enum </span>DBType {
-    <span class="attr">#[display(fmt = <span class="string">&quot;postgres&quot;</span>)]
+    <span class="attr">#[display(fmt = <span class="string">"postgres"</span>)]
     </span>Postgres,
-    <span class="attr">#[display(fmt = <span class="string">&quot;maria&quot;</span>)]
+    <span class="attr">#[display(fmt = <span class="string">"maria"</span>)]
     </span>Maria,
 }
 
 <span class="kw">impl </span>DBType {
     <span class="kw">fn </span>from_url(url: <span class="kw-2">&amp;</span>Url) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, ConfigError&gt; {
         <span class="kw">match </span>url.scheme() {
-            <span class="string">&quot;mysql&quot; </span>=&gt; <span class="prelude-val">Ok</span>(<span class="self">Self</span>::Maria),
-            <span class="string">&quot;postgres&quot; </span>=&gt; <span class="prelude-val">Ok</span>(<span class="self">Self</span>::Postgres),
-            <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(ConfigError::Message(<span class="string">&quot;Unknown database type&quot;</span>.into())),
+            <span class="string">"mysql" </span>=&gt; <span class="prelude-val">Ok</span>(<span class="self">Self</span>::Maria),
+            <span class="string">"postgres" </span>=&gt; <span class="prelude-val">Ok</span>(<span class="self">Self</span>::Postgres),
+            <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(ConfigError::Message(<span class="string">"Unknown database type"</span>.into())),
         }
     }
 }
@@ -763,91 +764,91 @@
 
 <span class="kw">const </span>ENV_VAR_CONFIG: [(<span class="kw-2">&amp;</span>str, <span class="kw-2">&amp;</span>str); <span class="number">32</span>] = [
     <span class="comment">/* top-level */
-    </span>(<span class="string">&quot;debug&quot;</span>, <span class="string">&quot;MCAPTCHA_debug&quot;</span>),
-    (<span class="string">&quot;commercial&quot;</span>, <span class="string">&quot;MCAPTCHA_commercial&quot;</span>),
-    (<span class="string">&quot;source_code&quot;</span>, <span class="string">&quot;MCAPTCHA_source_code&quot;</span>),
-    (<span class="string">&quot;allow_registration&quot;</span>, <span class="string">&quot;MCAPTCHA_allow_registration&quot;</span>),
-    (<span class="string">&quot;allow_demo&quot;</span>, <span class="string">&quot;MCAPTCHA_allow_demo&quot;</span>),
+    </span>(<span class="string">"debug"</span>, <span class="string">"MCAPTCHA_debug"</span>),
+    (<span class="string">"commercial"</span>, <span class="string">"MCAPTCHA_commercial"</span>),
+    (<span class="string">"source_code"</span>, <span class="string">"MCAPTCHA_source_code"</span>),
+    (<span class="string">"allow_registration"</span>, <span class="string">"MCAPTCHA_allow_registration"</span>),
+    (<span class="string">"allow_demo"</span>, <span class="string">"MCAPTCHA_allow_demo"</span>),
 
     <span class="comment">/* database */
-    </span>(<span class="string">&quot;database.url&quot;</span>, <span class="string">&quot;DATABASE_URL&quot;</span>),
-    (<span class="string">&quot;database.pool&quot;</span>, <span class="string">&quot;MCAPTCHA_database_POOL&quot;</span>),
+    </span>(<span class="string">"database.url"</span>, <span class="string">"DATABASE_URL"</span>),
+    (<span class="string">"database.pool"</span>, <span class="string">"MCAPTCHA_database_POOL"</span>),
 
     <span class="comment">/* redis */
-    </span>(<span class="string">&quot;redis.url&quot;</span>, <span class="string">&quot;MCAPTCHA_redis_URL&quot;</span>),
-    (<span class="string">&quot;redis.pool&quot;</span>, <span class="string">&quot;MCAPTCHA_redis_POOL&quot;</span>),
+    </span>(<span class="string">"redis.url"</span>, <span class="string">"MCAPTCHA_redis_URL"</span>),
+    (<span class="string">"redis.pool"</span>, <span class="string">"MCAPTCHA_redis_POOL"</span>),
 
     <span class="comment">/* server */
-    </span>(<span class="string">&quot;server.port&quot;</span>, <span class="string">&quot;PORT&quot;</span>),
-    (<span class="string">&quot;server.domain&quot;</span>, <span class="string">&quot;MCAPTCHA_server_DOMAIN&quot;</span>),
-    (<span class="string">&quot;server.cookie_secret&quot;</span>, <span class="string">&quot;MCAPTCHA__server_COOKIE_SECRET&quot;</span>),
-    (<span class="string">&quot;server.ip&quot;</span>, <span class="string">&quot;MCAPTCHA__server_IP&quot;</span>),
-    (<span class="string">&quot;server.proxy_has_tls&quot;</span>, <span class="string">&quot;MCAPTCHA__server_PROXY_HAS_TLS&quot;</span>),
+    </span>(<span class="string">"server.port"</span>, <span class="string">"PORT"</span>),
+    (<span class="string">"server.domain"</span>, <span class="string">"MCAPTCHA_server_DOMAIN"</span>),
+    (<span class="string">"server.cookie_secret"</span>, <span class="string">"MCAPTCHA__server_COOKIE_SECRET"</span>),
+    (<span class="string">"server.ip"</span>, <span class="string">"MCAPTCHA__server_IP"</span>),
+    (<span class="string">"server.proxy_has_tls"</span>, <span class="string">"MCAPTCHA__server_PROXY_HAS_TLS"</span>),
 
 
     <span class="comment">/* captcha */
-    </span>(<span class="string">&quot;captcha.salt&quot;</span>, <span class="string">&quot;MCAPTCHA_captcha_SALT&quot;</span>),
-    (<span class="string">&quot;captcha.gc&quot;</span>, <span class="string">&quot;MCAPTCHA_captcha_GC&quot;</span>),
-    (<span class="string">&quot;captcha.runners&quot;</span>, <span class="string">&quot;MCAPTCHA_captcha_RUNNERS&quot;</span>),
-    (<span class="string">&quot;captcha.queue_length&quot;</span>, <span class="string">&quot;MCAPTCHA_captcha_QUEUE_LENGTH&quot;</span>),
-    (<span class="string">&quot;captcha.enable_stats&quot;</span>, <span class="string">&quot;MCAPTCHA_captcha_ENABLE_STATS&quot;</span>),
-    (<span class="string">&quot;captcha.default_difficulty_strategy.avg_traffic_difficulty&quot;</span>, <span class="string">&quot;MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_avg_traffic_difficulty&quot;</span>),
-    (<span class="string">&quot;captcha.default_difficulty_strategy.broke_my_site_traffic_difficulty&quot;</span>, <span class="string">&quot;MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_broke_my_site_traffic_difficulty&quot;</span>),
-    (<span class="string">&quot;captcha.default_difficulty_strategy.peak_sustainable_traffic_difficulty&quot;</span>,
-     <span class="string">&quot;MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_peak_sustainable_traffic_difficulty&quot;</span>),
-    ( <span class="string">&quot;captcha.default_difficulty_strategy.duration&quot;</span>,
-         <span class="string">&quot;MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_duration&quot;
+    </span>(<span class="string">"captcha.salt"</span>, <span class="string">"MCAPTCHA_captcha_SALT"</span>),
+    (<span class="string">"captcha.gc"</span>, <span class="string">"MCAPTCHA_captcha_GC"</span>),
+    (<span class="string">"captcha.runners"</span>, <span class="string">"MCAPTCHA_captcha_RUNNERS"</span>),
+    (<span class="string">"captcha.queue_length"</span>, <span class="string">"MCAPTCHA_captcha_QUEUE_LENGTH"</span>),
+    (<span class="string">"captcha.enable_stats"</span>, <span class="string">"MCAPTCHA_captcha_ENABLE_STATS"</span>),
+    (<span class="string">"captcha.default_difficulty_strategy.avg_traffic_difficulty"</span>, <span class="string">"MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_avg_traffic_difficulty"</span>),
+    (<span class="string">"captcha.default_difficulty_strategy.broke_my_site_traffic_difficulty"</span>, <span class="string">"MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_broke_my_site_traffic_difficulty"</span>),
+    (<span class="string">"captcha.default_difficulty_strategy.peak_sustainable_traffic_difficulty"</span>,
+     <span class="string">"MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_peak_sustainable_traffic_difficulty"</span>),
+    ( <span class="string">"captcha.default_difficulty_strategy.duration"</span>,
+         <span class="string">"MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_duration"
      </span>),
-    (<span class="string">&quot;captcha.default_difficulty_strategy.avg_traffic_time&quot;</span>, <span class="string">&quot;MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_avg_traffic_time&quot;</span>),
-    (<span class="string">&quot;captcha.default_difficulty_strategy.peak_sustainable_traffic_time&quot;</span>, <span class="string">&quot;MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_peak_sustainable_traffic_time&quot;</span>),
-    (<span class="string">&quot;captcha.default_difficulty_strategy.broke_my_site_traffic_time&quot;</span>, <span class="string">&quot;MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_broke_my_site_traffic_time&quot;</span>),
+    (<span class="string">"captcha.default_difficulty_strategy.avg_traffic_time"</span>, <span class="string">"MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_avg_traffic_time"</span>),
+    (<span class="string">"captcha.default_difficulty_strategy.peak_sustainable_traffic_time"</span>, <span class="string">"MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_peak_sustainable_traffic_time"</span>),
+    (<span class="string">"captcha.default_difficulty_strategy.broke_my_site_traffic_time"</span>, <span class="string">"MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_broke_my_site_traffic_time"</span>),
 
 
     <span class="comment">/* SMTP */
-    </span>(<span class="string">&quot;smtp.from&quot;</span>, <span class="string">&quot;MCAPTCHA_smtp_FROM&quot;</span>),
-    (<span class="string">&quot;smtp.reply&quot;</span>, <span class="string">&quot;MCAPTCHA_smtp_REPLY&quot;</span>),
-    (<span class="string">&quot;smtp.url&quot;</span>, <span class="string">&quot;MCAPTCHA_smtp_URL&quot;</span>),
-    (<span class="string">&quot;smtp.username&quot;</span>, <span class="string">&quot;MCAPTCHA_smtp_USERNAME&quot;</span>),
-    (<span class="string">&quot;smtp.password&quot;</span>, <span class="string">&quot;MCAPTCHA_smtp_PASSWORD&quot;</span>),
-    (<span class="string">&quot;smtp.port&quot;</span>, <span class="string">&quot;MCAPTCHA_smtp_PORT&quot;</span>),
+    </span>(<span class="string">"smtp.from"</span>, <span class="string">"MCAPTCHA_smtp_FROM"</span>),
+    (<span class="string">"smtp.reply"</span>, <span class="string">"MCAPTCHA_smtp_REPLY"</span>),
+    (<span class="string">"smtp.url"</span>, <span class="string">"MCAPTCHA_smtp_URL"</span>),
+    (<span class="string">"smtp.username"</span>, <span class="string">"MCAPTCHA_smtp_USERNAME"</span>),
+    (<span class="string">"smtp.password"</span>, <span class="string">"MCAPTCHA_smtp_PASSWORD"</span>),
+    (<span class="string">"smtp.port"</span>, <span class="string">"MCAPTCHA_smtp_PORT"</span>),
 
 
 
 ];
 
 <span class="kw">const </span>DEPRECATED_ENV_VARS: [(<span class="kw-2">&amp;</span>str, <span class="kw-2">&amp;</span>str); <span class="number">23</span>] = [
-    (<span class="string">&quot;debug&quot;</span>, <span class="string">&quot;MCAPTCHA_DEBUG&quot;</span>),
-    (<span class="string">&quot;commercial&quot;</span>, <span class="string">&quot;MCAPTCHA_COMMERCIAL&quot;</span>),
-    (<span class="string">&quot;source_code&quot;</span>, <span class="string">&quot;MCAPTCHA_SOURCE_CODE&quot;</span>),
-    (<span class="string">&quot;allow_registration&quot;</span>, <span class="string">&quot;MCAPTCHA_ALLOW_REGISTRATION&quot;</span>),
-    (<span class="string">&quot;allow_demo&quot;</span>, <span class="string">&quot;MCAPTCHA_ALLOW_DEMO&quot;</span>),
-    (<span class="string">&quot;redis.pool&quot;</span>, <span class="string">&quot;MCAPTCHA_REDIS_POOL&quot;</span>),
-    (<span class="string">&quot;redis.url&quot;</span>, <span class="string">&quot;MCAPTCHA_REDIS_URL&quot;</span>),
-    (<span class="string">&quot;server.port&quot;</span>, <span class="string">&quot;MCAPTCHA_SERVER_PORT&quot;</span>),
-    (<span class="string">&quot;server.ip&quot;</span>, <span class="string">&quot;MCAPTCHA_SERVER_IP&quot;</span>),
-    (<span class="string">&quot;server.domain&quot;</span>, <span class="string">&quot;MCAPTCHA_SERVER_DOMAIN&quot;</span>),
-    (<span class="string">&quot;server.cookie_secret&quot;</span>, <span class="string">&quot;MCAPTCHA_SERVER_COOKIE_SECRET&quot;</span>),
-    (<span class="string">&quot;server.proxy_has_tls&quot;</span>, <span class="string">&quot;MCAPTCHA_SERVER_PROXY_HAS_TLS&quot;</span>),
-    (<span class="string">&quot;captcha.salt&quot;</span>, <span class="string">&quot;MCAPTCHA_CAPTCHA_SALT&quot;</span>),
-    (<span class="string">&quot;captcha.gc&quot;</span>, <span class="string">&quot;MCAPTCHA_CAPTCHA_GC&quot;</span>),
+    (<span class="string">"debug"</span>, <span class="string">"MCAPTCHA_DEBUG"</span>),
+    (<span class="string">"commercial"</span>, <span class="string">"MCAPTCHA_COMMERCIAL"</span>),
+    (<span class="string">"source_code"</span>, <span class="string">"MCAPTCHA_SOURCE_CODE"</span>),
+    (<span class="string">"allow_registration"</span>, <span class="string">"MCAPTCHA_ALLOW_REGISTRATION"</span>),
+    (<span class="string">"allow_demo"</span>, <span class="string">"MCAPTCHA_ALLOW_DEMO"</span>),
+    (<span class="string">"redis.pool"</span>, <span class="string">"MCAPTCHA_REDIS_POOL"</span>),
+    (<span class="string">"redis.url"</span>, <span class="string">"MCAPTCHA_REDIS_URL"</span>),
+    (<span class="string">"server.port"</span>, <span class="string">"MCAPTCHA_SERVER_PORT"</span>),
+    (<span class="string">"server.ip"</span>, <span class="string">"MCAPTCHA_SERVER_IP"</span>),
+    (<span class="string">"server.domain"</span>, <span class="string">"MCAPTCHA_SERVER_DOMAIN"</span>),
+    (<span class="string">"server.cookie_secret"</span>, <span class="string">"MCAPTCHA_SERVER_COOKIE_SECRET"</span>),
+    (<span class="string">"server.proxy_has_tls"</span>, <span class="string">"MCAPTCHA_SERVER_PROXY_HAS_TLS"</span>),
+    (<span class="string">"captcha.salt"</span>, <span class="string">"MCAPTCHA_CAPTCHA_SALT"</span>),
+    (<span class="string">"captcha.gc"</span>, <span class="string">"MCAPTCHA_CAPTCHA_GC"</span>),
     (
-        <span class="string">&quot;captcha.default_difficulty_strategy.avg_traffic_difficulty&quot;</span>,
-        <span class="string">&quot;MCAPTCHA_CAPTCHA_AVG_TRAFFIC_DIFFICULTY&quot;</span>,
+        <span class="string">"captcha.default_difficulty_strategy.avg_traffic_difficulty"</span>,
+        <span class="string">"MCAPTCHA_CAPTCHA_AVG_TRAFFIC_DIFFICULTY"</span>,
     ),
     (
-        <span class="string">&quot;captcha.default_difficulty_strategy.peak_sustainable_traffic_difficulty&quot;</span>,
-        <span class="string">&quot;MCAPTCHA_CAPTCHA_PEAK_TRAFFIC_DIFFICULTY&quot;</span>,
+        <span class="string">"captcha.default_difficulty_strategy.peak_sustainable_traffic_difficulty"</span>,
+        <span class="string">"MCAPTCHA_CAPTCHA_PEAK_TRAFFIC_DIFFICULTY"</span>,
     ),
     (
-        <span class="string">&quot;captcha.default_difficulty_strategy.broke_my_site_traffic_difficulty&quot;</span>,
-        <span class="string">&quot;MCAPTCHA_CAPTCHA_BROKE_MY_SITE_TRAFFIC&quot;</span>,
+        <span class="string">"captcha.default_difficulty_strategy.broke_my_site_traffic_difficulty"</span>,
+        <span class="string">"MCAPTCHA_CAPTCHA_BROKE_MY_SITE_TRAFFIC"</span>,
     ),
-    (<span class="string">&quot;smtp.from&quot;</span>, <span class="string">&quot;MCAPTCHA_SMTP_FROM&quot;</span>),
-    (<span class="string">&quot;smtp.reply&quot;</span>, <span class="string">&quot;MCAPTCHA_SMTP_REPLY_TO&quot;</span>),
-    (<span class="string">&quot;smtp.url&quot;</span>, <span class="string">&quot;MCAPTCHA_SMTP_URL&quot;</span>),
-    (<span class="string">&quot;smtp.username&quot;</span>, <span class="string">&quot;MCAPTCHA_SMTP_USERNAME&quot;</span>),
-    (<span class="string">&quot;smtp.password&quot;</span>, <span class="string">&quot;MCAPTCHA_SMTP_PASSWORD&quot;</span>),
-    (<span class="string">&quot;smtp.port&quot;</span>, <span class="string">&quot;MCAPTCHA_SMTP_PORT&quot;</span>),
+    (<span class="string">"smtp.from"</span>, <span class="string">"MCAPTCHA_SMTP_FROM"</span>),
+    (<span class="string">"smtp.reply"</span>, <span class="string">"MCAPTCHA_SMTP_REPLY_TO"</span>),
+    (<span class="string">"smtp.url"</span>, <span class="string">"MCAPTCHA_SMTP_URL"</span>),
+    (<span class="string">"smtp.username"</span>, <span class="string">"MCAPTCHA_SMTP_USERNAME"</span>),
+    (<span class="string">"smtp.password"</span>, <span class="string">"MCAPTCHA_SMTP_PASSWORD"</span>),
+    (<span class="string">"smtp.port"</span>, <span class="string">"MCAPTCHA_SMTP_PORT"</span>),
 ];
 
 <span class="attr">#[cfg(not(tarpaulin_include))]
@@ -855,12 +856,12 @@
     <span class="kw">pub fn </span>new() -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, ConfigError&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>s = Config::builder();
 
-        <span class="kw">const </span>CURRENT_DIR: <span class="kw-2">&amp;</span>str = <span class="string">&quot;./config/default.toml&quot;</span>;
-        <span class="kw">const </span>ETC: <span class="kw-2">&amp;</span>str = <span class="string">&quot;/etc/mcaptcha/config.toml&quot;</span>;
+        <span class="kw">const </span>CURRENT_DIR: <span class="kw-2">&amp;</span>str = <span class="string">"./config/default.toml"</span>;
+        <span class="kw">const </span>ETC: <span class="kw-2">&amp;</span>str = <span class="string">"/etc/mcaptcha/config.toml"</span>;
 
         s = s
-            .set_default(<span class="string">&quot;capatcha.enable_stats&quot;</span>, <span class="bool-val">true</span>.to_string())
-            .expect(<span class="string">&quot;unable to set capatcha.enable_stats default config&quot;</span>);
+            .set_default(<span class="string">"capatcha.enable_stats"</span>, <span class="bool-val">true</span>.to_string())
+            .expect(<span class="string">"unable to set capatcha.enable_stats default config"</span>);
 
         <span class="comment">// Will be overridden after config is parsed and loaded into Settings by
         // Settings::set_database_type.
@@ -868,29 +869,29 @@
         // inferred. But we need a default value for config lib to parse successfully, since it is
         // DBType and not Option&lt;DBType&gt;
         </span>s = s
-            .set_default(<span class="string">&quot;database.database_type&quot;</span>, DBType::Postgres.to_string())
-            .expect(<span class="string">&quot;unable to set database.database_type default config&quot;</span>);
+            .set_default(<span class="string">"database.database_type"</span>, DBType::Postgres.to_string())
+            .expect(<span class="string">"unable to set database.database_type default config"</span>);
 
-        <span class="kw">if let </span><span class="prelude-val">Ok</span>(path) = env::var(<span class="string">&quot;MCAPTCHA_CONFIG&quot;</span>) {
+        <span class="kw">if let </span><span class="prelude-val">Ok</span>(path) = env::var(<span class="string">"MCAPTCHA_CONFIG"</span>) {
             <span class="kw">let </span>absolute_path = Path::new(<span class="kw-2">&amp;</span>path).canonicalize().unwrap();
             <span class="macro">log::info!</span>(
-                <span class="string">&quot;Loading config file from {}&quot;</span>,
+                <span class="string">"Loading config file from {}"</span>,
                 absolute_path.to_str().unwrap()
             );
             s = s.add_source(File::with_name(absolute_path.to_str().unwrap()));
         } <span class="kw">else if </span>Path::new(CURRENT_DIR).exists() {
             <span class="kw">let </span>absolute_path = fs::canonicalize(CURRENT_DIR).unwrap();
             <span class="macro">log::info!</span>(
-                <span class="string">&quot;Loading config file from {}&quot;</span>,
+                <span class="string">"Loading config file from {}"</span>,
                 absolute_path.to_str().unwrap()
             );
             <span class="comment">// merging default config from file
             </span>s = s.add_source(File::with_name(absolute_path.to_str().unwrap()));
         } <span class="kw">else if </span>Path::new(ETC).exists() {
-            <span class="macro">log::info!</span>(<span class="string">&quot;{}&quot;</span>, <span class="macro">format!</span>(<span class="string">&quot;Loading config file from {}&quot;</span>, ETC));
+            <span class="macro">log::info!</span>(<span class="string">"{}"</span>, <span class="macro">format!</span>(<span class="string">"Loading config file from {}"</span>, ETC));
             s = s.add_source(File::with_name(ETC));
         } <span class="kw">else </span>{
-            <span class="macro">log::warn!</span>(<span class="string">&quot;Configuration file not found&quot;</span>);
+            <span class="macro">log::warn!</span>(<span class="string">"Configuration file not found"</span>);
         }
 
         s = <span class="self">Self</span>::env_override(s);
@@ -908,19 +909,19 @@
             <span class="kw">if </span>s.broke_my_site_traffic_time.is_none()
                 || s.peak_sustainable_traffic_time.is_none()
             {
-                <span class="macro">panic!</span>(<span class="string">&quot;if captcha.default_difficulty_strategy.avg_traffic_time is set, then captcha.default_difficulty_strategy.broke_my_site_traffic_time and captcha.default_difficulty_strategy.peak_sustainable_traffic_time must also be set&quot;</span>);
+                <span class="macro">panic!</span>(<span class="string">"if captcha.default_difficulty_strategy.avg_traffic_time is set, then captcha.default_difficulty_strategy.broke_my_site_traffic_time and captcha.default_difficulty_strategy.peak_sustainable_traffic_time must also be set"</span>);
             }
         }
         <span class="kw">if </span>s.peak_sustainable_traffic_time.is_some() {
             <span class="kw">if </span>s.avg_traffic_time.is_none() || s.peak_sustainable_traffic_time.is_none()
             {
-                <span class="macro">panic!</span>(<span class="string">&quot;if captcha.default_difficulty_strategy.peak_sustainable_traffic_time is set, then captcha.default_difficulty_strategy.broke_my_site_traffic_time and captcha.default_difficulty_strategy.avg_traffic_time must also be set&quot;</span>);
+                <span class="macro">panic!</span>(<span class="string">"if captcha.default_difficulty_strategy.peak_sustainable_traffic_time is set, then captcha.default_difficulty_strategy.broke_my_site_traffic_time and captcha.default_difficulty_strategy.avg_traffic_time must also be set"</span>);
             }
         }
         <span class="kw">if </span>s.broke_my_site_traffic_time.is_some() {
             <span class="kw">if </span>s.avg_traffic_time.is_none() || s.peak_sustainable_traffic_time.is_none()
             {
-                <span class="macro">panic!</span>(<span class="string">&quot;if captcha.default_difficulty_strategy.broke_my_site_traffic_time is set, then captcha.default_difficulty_strategy.peak_sustainable_traffic_time and captcha.default_difficulty_strategy.avg_traffic_time must also be set&quot;</span>);
+                <span class="macro">panic!</span>(<span class="string">"if captcha.default_difficulty_strategy.broke_my_site_traffic_time is set, then captcha.default_difficulty_strategy.peak_sustainable_traffic_time and captcha.default_difficulty_strategy.avg_traffic_time must also be set"</span>);
             }
         }
     }
@@ -929,7 +930,7 @@
         <span class="kw">for </span>(parameter, env_var_name) <span class="kw">in </span>DEPRECATED_ENV_VARS.iter() {
             <span class="kw">if let </span><span class="prelude-val">Ok</span>(val) = env::var(env_var_name) {
                 <span class="macro">log::warn!</span>(
-                    <span class="string">&quot;Found {env_var_name}. {env_var_name} will be deprecated soon. Please see https://github.com/mCaptcha/mCaptcha/blob/master/docs/CONFIGURATION.md for latest environment variable names&quot;
+                    <span class="string">"Found {env_var_name}. {env_var_name} will be deprecated soon. Please see https://github.com/mCaptcha/mCaptcha/blob/master/docs/CONFIGURATION.md for latest environment variable names"
                 </span>);
                 s = s.set_override(parameter, val).unwrap();
             }
@@ -938,7 +939,7 @@
         <span class="kw">for </span>(parameter, env_var_name) <span class="kw">in </span>ENV_VAR_CONFIG.iter() {
             <span class="kw">if let </span><span class="prelude-val">Ok</span>(val) = env::var(env_var_name) {
                 <span class="macro">log::debug!</span>(
-                    <span class="string">&quot;Overriding [{parameter}] with environment variable {env_var_name}&quot;
+                    <span class="string">"Overriding [{parameter}] with environment variable {env_var_name}"
                 </span>);
                 s = s.set_override(parameter, val).unwrap();
             }
@@ -949,13 +950,13 @@
 
     <span class="kw">fn </span>set_database_type(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="kw">let </span>url = Url::parse(<span class="kw-2">&amp;</span><span class="self">self</span>.database.url)
-            .expect(<span class="string">&quot;couldn&#39;t parse Database URL and detect database type&quot;</span>);
+            .expect(<span class="string">"couldn't parse Database URL and detect database type"</span>);
         <span class="self">self</span>.database.database_type = DBType::from_url(<span class="kw-2">&amp;</span>url).unwrap();
     }
 
     <span class="kw">fn </span>check_url(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         Url::parse(<span class="kw-2">&amp;</span><span class="self">self</span>.source_code)
-            .expect(<span class="string">&quot;Please enter a URL for source_code in settings&quot;</span>);
+            .expect(<span class="string">"Please enter a URL for source_code in settings"</span>);
     }
 }
 
@@ -975,7 +976,7 @@
 
 
             (<span class="macro-nonterminal">$env</span>:expr, <span class="macro-nonterminal">$val</span>:expr, <span class="macro-nonterminal">$val_typed</span>:expr, $(<span class="macro-nonterminal">$param</span>:ident).+) =&gt; {
-                <span class="macro">println!</span>(<span class="string">&quot;Setting env var {} to {} for test&quot;</span>, <span class="macro-nonterminal">$env</span>, <span class="macro-nonterminal">$val</span>);
+                <span class="macro">println!</span>(<span class="string">"Setting env var {} to {} for test"</span>, <span class="macro-nonterminal">$env</span>, <span class="macro-nonterminal">$val</span>);
                 env::set_var(<span class="macro-nonterminal">$env</span>, <span class="macro-nonterminal">$val</span>);
                 new_settings = get_settings();
                 <span class="macro">assert_eq!</span>(new_settings.$(<span class="macro-nonterminal">$param</span>).+, <span class="macro-nonterminal">$val_typed</span>);
@@ -990,21 +991,21 @@
         }
 
         <span class="comment">/* top level */
-        </span><span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_DEBUG&quot;</span>, !init_settings.debug, debug);
-        <span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_COMMERCIAL&quot;</span>, !init_settings.commercial, commercial);
+        </span><span class="macro">helper!</span>(<span class="string">"MCAPTCHA_DEBUG"</span>, !init_settings.debug, debug);
+        <span class="macro">helper!</span>(<span class="string">"MCAPTCHA_COMMERCIAL"</span>, !init_settings.commercial, commercial);
         <span class="macro">helper!</span>(
-            <span class="string">&quot;MCAPTCHA_ALLOW_REGISTRATION&quot;</span>,
+            <span class="string">"MCAPTCHA_ALLOW_REGISTRATION"</span>,
             !init_settings.allow_registration,
             allow_registration
         );
-        <span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_ALLOW_DEMO&quot;</span>, !init_settings.allow_demo, allow_demo);
+        <span class="macro">helper!</span>(<span class="string">"MCAPTCHA_ALLOW_DEMO"</span>, !init_settings.allow_demo, allow_demo);
 
         <span class="comment">/* database_type */
 
         /* redis.url */
-        </span><span class="kw">let </span>env = <span class="string">&quot;MCAPTCHA_REDIS_URL&quot;</span>;
-        <span class="kw">let </span>val = <span class="string">&quot;redis://redis.example.org&quot;</span>;
-        <span class="macro">println!</span>(<span class="string">&quot;Setting env var {} to {} for test&quot;</span>, env, val);
+        </span><span class="kw">let </span>env = <span class="string">"MCAPTCHA_REDIS_URL"</span>;
+        <span class="kw">let </span>val = <span class="string">"redis://redis.example.org"</span>;
+        <span class="macro">println!</span>(<span class="string">"Setting env var {} to {} for test"</span>, env, val);
         env::set_var(env, val);
         new_settings = get_settings();
         <span class="macro">assert_eq!</span>(new_settings.redis.as_ref().unwrap().url, val);
@@ -1015,9 +1016,9 @@
         env::remove_var(env);
 
         <span class="comment">/* redis.pool */
-        </span><span class="kw">let </span>env = <span class="string">&quot;MCAPTCHA_REDIS_POOL&quot;</span>;
+        </span><span class="kw">let </span>env = <span class="string">"MCAPTCHA_REDIS_POOL"</span>;
         <span class="kw">let </span>val = <span class="number">999</span>;
-        <span class="macro">println!</span>(<span class="string">&quot;Setting env var {} to {} for test&quot;</span>, env, val);
+        <span class="macro">println!</span>(<span class="string">"Setting env var {} to {} for test"</span>, env, val);
         env::set_var(env, val.to_string());
         new_settings = get_settings();
         <span class="macro">assert_eq!</span>(new_settings.redis.as_ref().unwrap().pool, val);
@@ -1027,41 +1028,41 @@
         );
         env::remove_var(env);
 
-        <span class="macro">helper!</span>(<span class="string">&quot;PORT&quot;</span>, <span class="number">0</span>, server.port);
-        <span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_SERVER_DOMAIN&quot;</span>, <span class="string">&quot;example.org&quot;</span>, server.domain);
+        <span class="macro">helper!</span>(<span class="string">"PORT"</span>, <span class="number">0</span>, server.port);
+        <span class="macro">helper!</span>(<span class="string">"MCAPTCHA_SERVER_DOMAIN"</span>, <span class="string">"example.org"</span>, server.domain);
         <span class="macro">helper!</span>(
-            <span class="string">&quot;MCAPTCHA_SERVER_COOKIE_SECRET&quot;</span>,
-            <span class="string">&quot;dafasdfsdf&quot;</span>,
+            <span class="string">"MCAPTCHA_SERVER_COOKIE_SECRET"</span>,
+            <span class="string">"dafasdfsdf"</span>,
             server.cookie_secret
         );
-        <span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_SERVER_IP&quot;</span>, <span class="string">&quot;9.9.9.9&quot;</span>, server.ip);
-        <span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_SERVER_PROXY_HAS_TLS&quot;</span>, <span class="bool-val">true</span>, server.proxy_has_tls);
+        <span class="macro">helper!</span>(<span class="string">"MCAPTCHA_SERVER_IP"</span>, <span class="string">"9.9.9.9"</span>, server.ip);
+        <span class="macro">helper!</span>(<span class="string">"MCAPTCHA_SERVER_PROXY_HAS_TLS"</span>, <span class="bool-val">true</span>, server.proxy_has_tls);
 
         <span class="comment">/* captcha */
 
-        </span><span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_CAPTCHA_SALT&quot;</span>, <span class="string">&quot;foobarasdfasdf&quot;</span>, captcha.salt);
-        <span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_CAPTCHA_GC&quot;</span>, <span class="number">500</span>, captcha.gc);
+        </span><span class="macro">helper!</span>(<span class="string">"MCAPTCHA_CAPTCHA_SALT"</span>, <span class="string">"foobarasdfasdf"</span>, captcha.salt);
+        <span class="macro">helper!</span>(<span class="string">"MCAPTCHA_CAPTCHA_GC"</span>, <span class="number">500</span>, captcha.gc);
         <span class="macro">helper!</span>(
-            <span class="string">&quot;MCAPTCHA_captcha_RUNNERS&quot;</span>,
-            <span class="string">&quot;500&quot;</span>,
+            <span class="string">"MCAPTCHA_captcha_RUNNERS"</span>,
+            <span class="string">"500"</span>,
             <span class="prelude-val">Some</span>(<span class="number">500</span>),
             captcha.runners
         );
 
         <span class="macro">helper!</span>(
-            <span class="string">&quot;MCAPTCHA_CAPTCHA_AVG_TRAFFIC_DIFFICULTY&quot;</span>,
+            <span class="string">"MCAPTCHA_CAPTCHA_AVG_TRAFFIC_DIFFICULTY"</span>,
             <span class="number">999</span>,
             captcha.default_difficulty_strategy.avg_traffic_difficulty
         );
         <span class="macro">helper!</span>(
-            <span class="string">&quot;MCAPTCHA_CAPTCHA_PEAK_TRAFFIC_DIFFICULTY&quot;</span>,
+            <span class="string">"MCAPTCHA_CAPTCHA_PEAK_TRAFFIC_DIFFICULTY"</span>,
             <span class="number">999</span>,
             captcha
                 .default_difficulty_strategy
                 .peak_sustainable_traffic_difficulty
         );
         <span class="macro">helper!</span>(
-            <span class="string">&quot;MCAPTCHA_CAPTCHA_BROKE_MY_SITE_TRAFFIC&quot;</span>,
+            <span class="string">"MCAPTCHA_CAPTCHA_BROKE_MY_SITE_TRAFFIC"</span>,
             <span class="number">999</span>,
             captcha
                 .default_difficulty_strategy
@@ -1071,28 +1072,28 @@
         <span class="comment">/* SMTP */
 
         </span><span class="kw">let </span>vals = [
-            <span class="string">&quot;MCAPTCHA_SMTP_FROM&quot;</span>,
-            <span class="string">&quot;MCAPTCHA_SMTP_REPLY_TO&quot;</span>,
-            <span class="string">&quot;MCAPTCHA_SMTP_URL&quot;</span>,
-            <span class="string">&quot;MCAPTCHA_SMTP_USERNAME&quot;</span>,
-            <span class="string">&quot;MCAPTCHA_SMTP_PASSWORD&quot;</span>,
-            <span class="string">&quot;MCAPTCHA_SMTP_PORT&quot;</span>,
+            <span class="string">"MCAPTCHA_SMTP_FROM"</span>,
+            <span class="string">"MCAPTCHA_SMTP_REPLY_TO"</span>,
+            <span class="string">"MCAPTCHA_SMTP_URL"</span>,
+            <span class="string">"MCAPTCHA_SMTP_USERNAME"</span>,
+            <span class="string">"MCAPTCHA_SMTP_PASSWORD"</span>,
+            <span class="string">"MCAPTCHA_SMTP_PORT"</span>,
         ];
         <span class="kw">for </span>env <span class="kw">in </span>vals.iter() {
-            <span class="macro">println!</span>(<span class="string">&quot;Setting env var {} to {} for test&quot;</span>, env, env);
+            <span class="macro">println!</span>(<span class="string">"Setting env var {} to {} for test"</span>, env, env);
             env::set_var(env, env);
         }
 
         <span class="kw">let </span>port = <span class="number">9999</span>;
-        env::set_var(<span class="string">&quot;MCAPTCHA_SMTP_PORT&quot;</span>, port.to_string());
+        env::set_var(<span class="string">"MCAPTCHA_SMTP_PORT"</span>, port.to_string());
 
         new_settings = get_settings();
         <span class="kw">let </span>smtp_new = new_settings.smtp.as_ref().unwrap();
         <span class="kw">let </span>smtp_old = init_settings.smtp.as_ref().unwrap();
-        <span class="macro">assert_eq!</span>(smtp_new.from, <span class="string">&quot;MCAPTCHA_SMTP_FROM&quot;</span>);
-        <span class="macro">assert_eq!</span>(smtp_new.reply, <span class="string">&quot;MCAPTCHA_SMTP_REPLY_TO&quot;</span>);
-        <span class="macro">assert_eq!</span>(smtp_new.username, <span class="string">&quot;MCAPTCHA_SMTP_USERNAME&quot;</span>);
-        <span class="macro">assert_eq!</span>(smtp_new.password, <span class="string">&quot;MCAPTCHA_SMTP_PASSWORD&quot;</span>);
+        <span class="macro">assert_eq!</span>(smtp_new.from, <span class="string">"MCAPTCHA_SMTP_FROM"</span>);
+        <span class="macro">assert_eq!</span>(smtp_new.reply, <span class="string">"MCAPTCHA_SMTP_REPLY_TO"</span>);
+        <span class="macro">assert_eq!</span>(smtp_new.username, <span class="string">"MCAPTCHA_SMTP_USERNAME"</span>);
+        <span class="macro">assert_eq!</span>(smtp_new.password, <span class="string">"MCAPTCHA_SMTP_PASSWORD"</span>);
         <span class="macro">assert_eq!</span>(smtp_new.port, port);
         <span class="macro">assert_ne!</span>(smtp_new, smtp_old);
 
@@ -1112,7 +1113,7 @@
 
 
             (<span class="macro-nonterminal">$env</span>:expr, <span class="macro-nonterminal">$val</span>:expr, <span class="macro-nonterminal">$val_typed</span>:expr, $(<span class="macro-nonterminal">$param</span>:ident).+) =&gt; {
-                <span class="macro">println!</span>(<span class="string">&quot;Setting env var {} to {} for test&quot;</span>, <span class="macro-nonterminal">$env</span>, <span class="macro-nonterminal">$val</span>);
+                <span class="macro">println!</span>(<span class="string">"Setting env var {} to {} for test"</span>, <span class="macro-nonterminal">$env</span>, <span class="macro-nonterminal">$val</span>);
                 env::set_var(<span class="macro-nonterminal">$env</span>, <span class="macro-nonterminal">$val</span>);
                 new_settings = get_settings();
                 <span class="macro">assert_eq!</span>(new_settings.$(<span class="macro-nonterminal">$param</span>).+, <span class="macro-nonterminal">$val_typed</span>);
@@ -1127,33 +1128,33 @@
         }
 
         <span class="comment">/* top level */
-        </span><span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_debug&quot;</span>, <span class="bool-val">false</span>, debug);
-        <span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_commercial&quot;</span>, <span class="bool-val">true</span>, commercial);
-        <span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_allow_registration&quot;</span>, <span class="bool-val">false</span>, allow_registration);
-        <span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_allow_demo&quot;</span>, <span class="bool-val">false</span>, allow_demo);
+        </span><span class="macro">helper!</span>(<span class="string">"MCAPTCHA_debug"</span>, <span class="bool-val">false</span>, debug);
+        <span class="macro">helper!</span>(<span class="string">"MCAPTCHA_commercial"</span>, <span class="bool-val">true</span>, commercial);
+        <span class="macro">helper!</span>(<span class="string">"MCAPTCHA_allow_registration"</span>, <span class="bool-val">false</span>, allow_registration);
+        <span class="macro">helper!</span>(<span class="string">"MCAPTCHA_allow_demo"</span>, <span class="bool-val">false</span>, allow_demo);
 
         <span class="comment">/* database_type */
 
         </span><span class="macro">helper!</span>(
-            <span class="string">&quot;DATABASE_URL&quot;</span>,
-            <span class="string">&quot;postgres://postgres:password@localhost:5432/postgres&quot;</span>,
+            <span class="string">"DATABASE_URL"</span>,
+            <span class="string">"postgres://postgres:password@localhost:5432/postgres"</span>,
             database.url
         );
         <span class="macro">assert_eq!</span>(new_settings.database.database_type, DBType::Postgres);
         <span class="macro">helper!</span>(
-            <span class="string">&quot;DATABASE_URL&quot;</span>,
-            <span class="string">&quot;mysql://maria:password@localhost/maria&quot;</span>,
+            <span class="string">"DATABASE_URL"</span>,
+            <span class="string">"mysql://maria:password@localhost/maria"</span>,
             database.url
         );
         <span class="macro">assert_eq!</span>(new_settings.database.database_type, DBType::Maria);
-        <span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_database_POOL&quot;</span>, <span class="number">1000</span>, database.pool);
+        <span class="macro">helper!</span>(<span class="string">"MCAPTCHA_database_POOL"</span>, <span class="number">1000</span>, database.pool);
 
         <span class="comment">/* redis */
 
         /* redis.url */
-        </span><span class="kw">let </span>env = <span class="string">&quot;MCAPTCHA_redis_URL&quot;</span>;
-        <span class="kw">let </span>val = <span class="string">&quot;redis://redis.example.org&quot;</span>;
-        <span class="macro">println!</span>(<span class="string">&quot;Setting env var {} to {} for test&quot;</span>, env, val);
+        </span><span class="kw">let </span>env = <span class="string">"MCAPTCHA_redis_URL"</span>;
+        <span class="kw">let </span>val = <span class="string">"redis://redis.example.org"</span>;
+        <span class="macro">println!</span>(<span class="string">"Setting env var {} to {} for test"</span>, env, val);
         env::set_var(env, val);
         new_settings = get_settings();
         <span class="macro">assert_eq!</span>(new_settings.redis.as_ref().unwrap().url, val);
@@ -1164,9 +1165,9 @@
         env::remove_var(env);
 
         <span class="comment">/* redis.pool */
-        </span><span class="kw">let </span>env = <span class="string">&quot;MCAPTCHA_redis_POOL&quot;</span>;
+        </span><span class="kw">let </span>env = <span class="string">"MCAPTCHA_redis_POOL"</span>;
         <span class="kw">let </span>val = <span class="number">999</span>;
-        <span class="macro">println!</span>(<span class="string">&quot;Setting env var {} to {} for test&quot;</span>, env, val);
+        <span class="macro">println!</span>(<span class="string">"Setting env var {} to {} for test"</span>, env, val);
         env::set_var(env, val.to_string());
         new_settings = get_settings();
         <span class="macro">assert_eq!</span>(new_settings.redis.as_ref().unwrap().pool, val);
@@ -1176,51 +1177,51 @@
         );
         env::remove_var(env);
 
-        <span class="macro">helper!</span>(<span class="string">&quot;PORT&quot;</span>, <span class="number">0</span>, server.port);
-        <span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_server_DOMAIN&quot;</span>, <span class="string">&quot;example.org&quot;</span>, server.domain);
+        <span class="macro">helper!</span>(<span class="string">"PORT"</span>, <span class="number">0</span>, server.port);
+        <span class="macro">helper!</span>(<span class="string">"MCAPTCHA_server_DOMAIN"</span>, <span class="string">"example.org"</span>, server.domain);
         <span class="macro">helper!</span>(
-            <span class="string">&quot;MCAPTCHA__server_COOKIE_SECRET&quot;</span>,
-            <span class="string">&quot;dafasdfsdf&quot;</span>,
+            <span class="string">"MCAPTCHA__server_COOKIE_SECRET"</span>,
+            <span class="string">"dafasdfsdf"</span>,
             server.cookie_secret
         );
-        <span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA__server_IP&quot;</span>, <span class="string">&quot;9.9.9.9&quot;</span>, server.ip);
-        <span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA__server_PROXY_HAS_TLS&quot;</span>, <span class="bool-val">true</span>, server.proxy_has_tls);
+        <span class="macro">helper!</span>(<span class="string">"MCAPTCHA__server_IP"</span>, <span class="string">"9.9.9.9"</span>, server.ip);
+        <span class="macro">helper!</span>(<span class="string">"MCAPTCHA__server_PROXY_HAS_TLS"</span>, <span class="bool-val">true</span>, server.proxy_has_tls);
 
         <span class="comment">/* captcha */
 
-        </span><span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_captcha_SALT&quot;</span>, <span class="string">&quot;foobarasdfasdf&quot;</span>, captcha.salt);
-        <span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_captcha_GC&quot;</span>, <span class="number">500</span>, captcha.gc);
+        </span><span class="macro">helper!</span>(<span class="string">"MCAPTCHA_captcha_SALT"</span>, <span class="string">"foobarasdfasdf"</span>, captcha.salt);
+        <span class="macro">helper!</span>(<span class="string">"MCAPTCHA_captcha_GC"</span>, <span class="number">500</span>, captcha.gc);
         <span class="macro">helper!</span>(
-            <span class="string">&quot;MCAPTCHA_captcha_RUNNERS&quot;</span>,
-            <span class="string">&quot;500&quot;</span>,
+            <span class="string">"MCAPTCHA_captcha_RUNNERS"</span>,
+            <span class="string">"500"</span>,
             <span class="prelude-val">Some</span>(<span class="number">500</span>),
             captcha.runners
         );
 
-        <span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_captcha_QUEUE_LENGTH&quot;</span>, <span class="number">500</span>, captcha.queue_length);
-        <span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_captcha_ENABLE_STATS&quot;</span>, <span class="bool-val">false</span>, captcha.enable_stats);
+        <span class="macro">helper!</span>(<span class="string">"MCAPTCHA_captcha_QUEUE_LENGTH"</span>, <span class="number">500</span>, captcha.queue_length);
+        <span class="macro">helper!</span>(<span class="string">"MCAPTCHA_captcha_ENABLE_STATS"</span>, <span class="bool-val">false</span>, captcha.enable_stats);
         <span class="macro">helper!</span>(
-            <span class="string">&quot;MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_avg_traffic_difficulty&quot;</span>,
+            <span class="string">"MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_avg_traffic_difficulty"</span>,
             <span class="number">999</span>,
             captcha.default_difficulty_strategy.avg_traffic_difficulty
         );
-        <span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_peak_sustainable_traffic_difficulty&quot;</span>, <span class="number">999 </span>, captcha.default_difficulty_strategy.peak_sustainable_traffic_difficulty);
-        <span class="macro">helper!</span>(<span class="string">&quot;MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_broke_my_site_traffic_difficulty&quot;</span>, <span class="number">999 </span>, captcha.default_difficulty_strategy.broke_my_site_traffic_difficulty);
+        <span class="macro">helper!</span>(<span class="string">"MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_peak_sustainable_traffic_difficulty"</span>, <span class="number">999 </span>, captcha.default_difficulty_strategy.peak_sustainable_traffic_difficulty);
+        <span class="macro">helper!</span>(<span class="string">"MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_broke_my_site_traffic_difficulty"</span>, <span class="number">999 </span>, captcha.default_difficulty_strategy.broke_my_site_traffic_difficulty);
         <span class="macro">helper!</span>(
-            <span class="string">&quot;MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_duration&quot;</span>,
+            <span class="string">"MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_duration"</span>,
             <span class="number">999</span>,
             captcha.default_difficulty_strategy.duration
         );
         <span class="macro">helper!</span>(
-            <span class="string">&quot;MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_avg_traffic_time&quot;</span>,
-            <span class="string">&quot;10&quot;</span>,
+            <span class="string">"MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_avg_traffic_time"</span>,
+            <span class="string">"10"</span>,
             <span class="prelude-val">Some</span>(<span class="number">10</span>),
             captcha.default_difficulty_strategy.avg_traffic_time
         );
 
         <span class="macro">helper!</span>(
-            <span class="string">&quot;MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_peak_sustainable_traffic_time&quot;</span>,
-            <span class="string">&quot;20&quot;</span>,
+            <span class="string">"MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_peak_sustainable_traffic_time"</span>,
+            <span class="string">"20"</span>,
             <span class="prelude-val">Some</span>(<span class="number">20</span>),
             captcha
                 .default_difficulty_strategy
@@ -1228,8 +1229,8 @@
         );
 
         <span class="macro">helper!</span>(
-            <span class="string">&quot;MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_broke_my_site_traffic_time&quot;</span>,
-            <span class="string">&quot;30&quot;</span>,
+            <span class="string">"MCAPTCHA_captcha_DEFAULT_DIFFICULTY_STRATEGY_broke_my_site_traffic_time"</span>,
+            <span class="string">"30"</span>,
             <span class="prelude-val">Some</span>(<span class="number">30</span>),
             captcha
                 .default_difficulty_strategy
@@ -1239,28 +1240,28 @@
         <span class="comment">/* SMTP */
 
         </span><span class="kw">let </span>vals = [
-            <span class="string">&quot;MCAPTCHA_smtp_FROM&quot;</span>,
-            <span class="string">&quot;MCAPTCHA_smtp_REPLY&quot;</span>,
-            <span class="string">&quot;MCAPTCHA_smtp_URL&quot;</span>,
-            <span class="string">&quot;MCAPTCHA_smtp_USERNAME&quot;</span>,
-            <span class="string">&quot;MCAPTCHA_smtp_PASSWORD&quot;</span>,
-            <span class="string">&quot;MCAPTCHA_smtp_PORT&quot;</span>,
+            <span class="string">"MCAPTCHA_smtp_FROM"</span>,
+            <span class="string">"MCAPTCHA_smtp_REPLY"</span>,
+            <span class="string">"MCAPTCHA_smtp_URL"</span>,
+            <span class="string">"MCAPTCHA_smtp_USERNAME"</span>,
+            <span class="string">"MCAPTCHA_smtp_PASSWORD"</span>,
+            <span class="string">"MCAPTCHA_smtp_PORT"</span>,
         ];
         <span class="kw">for </span>env <span class="kw">in </span>vals.iter() {
-            <span class="macro">println!</span>(<span class="string">&quot;Setting env var {} to {} for test&quot;</span>, env, env);
+            <span class="macro">println!</span>(<span class="string">"Setting env var {} to {} for test"</span>, env, env);
             env::set_var(env, env);
         }
 
         <span class="kw">let </span>port = <span class="number">9999</span>;
-        env::set_var(<span class="string">&quot;MCAPTCHA_smtp_PORT&quot;</span>, port.to_string());
+        env::set_var(<span class="string">"MCAPTCHA_smtp_PORT"</span>, port.to_string());
 
         new_settings = get_settings();
         <span class="kw">let </span>smtp_new = new_settings.smtp.as_ref().unwrap();
         <span class="kw">let </span>smtp_old = init_settings.smtp.as_ref().unwrap();
-        <span class="macro">assert_eq!</span>(smtp_new.from, <span class="string">&quot;MCAPTCHA_smtp_FROM&quot;</span>);
-        <span class="macro">assert_eq!</span>(smtp_new.reply, <span class="string">&quot;MCAPTCHA_smtp_REPLY&quot;</span>);
-        <span class="macro">assert_eq!</span>(smtp_new.username, <span class="string">&quot;MCAPTCHA_smtp_USERNAME&quot;</span>);
-        <span class="macro">assert_eq!</span>(smtp_new.password, <span class="string">&quot;MCAPTCHA_smtp_PASSWORD&quot;</span>);
+        <span class="macro">assert_eq!</span>(smtp_new.from, <span class="string">"MCAPTCHA_smtp_FROM"</span>);
+        <span class="macro">assert_eq!</span>(smtp_new.reply, <span class="string">"MCAPTCHA_smtp_REPLY"</span>);
+        <span class="macro">assert_eq!</span>(smtp_new.username, <span class="string">"MCAPTCHA_smtp_USERNAME"</span>);
+        <span class="macro">assert_eq!</span>(smtp_new.password, <span class="string">"MCAPTCHA_smtp_PASSWORD"</span>);
         <span class="macro">assert_eq!</span>(smtp_new.port, port);
         <span class="macro">assert_ne!</span>(smtp_new, smtp_old);
 
@@ -1273,9 +1274,9 @@
     //    fn url_prefix_test() {
     //        let mut settings = Settings::new().unwrap();
     //        assert!(settings.server.url_prefix.is_none());
-    //        settings.server.url_prefix = Some(&quot;test&quot;.into());
+    //        settings.server.url_prefix = Some("test".into());
     //        settings.server.check_url_prefix();
-    //        settings.server.url_prefix = Some(&quot;    &quot;.into());
+    //        settings.server.url_prefix = Some("    ".into());
     //        settings.server.check_url_prefix();
     //        assert!(settings.server.url_prefix.is_none());
     //    }
@@ -1284,8 +1285,8 @@
     //    fn smtp_config_works() {
     //        let settings = Settings::new().unwrap();
     //        assert!(settings.smtp.is_some());
-    //        assert_eq!(settings.smtp.as_ref().unwrap().password, &quot;password&quot;);
-    //        assert_eq!(settings.smtp.as_ref().unwrap().username, &quot;admin&quot;);
+    //        assert_eq!(settings.smtp.as_ref().unwrap().password, "password");
+    //        assert_eq!(settings.smtp.as_ref().unwrap().username, "admin");
     //    }
 </span>}
 </code></pre></div></section></main></body></html>

@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/survey.rs`."><title>survey.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="mcaptcha" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/survey.rs`."><title>survey.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="mcaptcha" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -267,7 +268,7 @@
 <span class="kw">impl </span>Survey {
     <span class="kw">pub fn </span>new(app_ctx: AppData) -&gt; <span class="self">Self </span>{
         <span class="kw">if </span>app_ctx.settings.survey.is_none() {
-            <span class="macro">panic!</span>(<span class="string">&quot;Survey uploader shouldn&#39;t be initialized it isn&#39;t configured, please report this bug&quot;</span>)
+            <span class="macro">panic!</span>(<span class="string">"Survey uploader shouldn't be initialized it isn't configured, please report this bug"</span>)
         }
         Survey {
             client: Client::new(),
@@ -292,7 +293,7 @@
         <span class="kw">let </span>fut = <span class="kw">async move </span>{
             <span class="kw">loop </span>{
                 <span class="kw">if </span>!can_run(<span class="kw-2">&amp;mut </span>rx) {
-                    <span class="macro">log::info!</span>(<span class="string">&quot;Stopping survey uploads&quot;</span>);
+                    <span class="macro">log::info!</span>(<span class="string">"Stopping survey uploads"</span>);
                     <span class="kw">break</span>;
                 }
 
@@ -310,7 +311,7 @@
 
                 <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..this.app_ctx.settings.survey.as_ref().unwrap().rate_limit {
                     <span class="kw">if </span>!can_run(<span class="kw-2">&amp;mut </span>rx) {
-                        <span class="macro">log::info!</span>(<span class="string">&quot;Stopping survey uploads&quot;</span>);
+                        <span class="macro">log::info!</span>(<span class="string">"Stopping survey uploads"</span>);
                         <span class="kw">break</span>;
                     }
                     sleep(Duration::new(<span class="number">1</span>, <span class="number">0</span>)).<span class="kw">await</span>;
@@ -319,10 +320,10 @@
 
                 <span class="comment">// for url in this.app_ctx.settings.survey.as_ref().unwrap().nodes.iter() {
                 //     if !can_run(&amp;mut rx) {
-                //         log::info!(&quot;Stopping survey uploads&quot;);
+                //         log::info!("Stopping survey uploads");
                 //         break;
                 //     }
-                //     log::info!(&quot;Uploading to survey instance {}&quot;, url);
+                //     log::info!("Uploading to survey instance {}", url);
                 // }
             </span>}
         };
@@ -333,7 +334,7 @@
         <span class="kw">let </span>res = <span class="self">self
             </span>.client
             .get(<span class="macro">format!</span>(
-                <span class="string">&quot;http://{}{}&quot;</span>,
+                <span class="string">"http://{}{}"</span>,
                 <span class="self">self</span>.app_ctx.settings.server.get_ip(),
                 V1_API_ROUTES.meta.health
             ))
@@ -344,7 +345,7 @@
     }
 
     <span class="kw">async fn </span>schedule_upload_job(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ServiceResult&lt;()&gt; {
-        <span class="macro">log::debug!</span>(<span class="string">&quot;Running upload job&quot;</span>);
+        <span class="macro">log::debug!</span>(<span class="string">"Running upload job"</span>);
         <span class="attr">#[derive(Serialize)]
         </span><span class="kw">struct </span>Secret {
             secret: String,
@@ -353,7 +354,7 @@
         <span class="kw">loop </span>{
             <span class="kw">let </span>psuedo_ids = <span class="self">self</span>.app_ctx.db.analytics_get_all_psuedo_ids(page).<span class="kw">await</span><span class="question-mark">?</span>;
             <span class="kw">if </span>psuedo_ids.is_empty() {
-                <span class="macro">log::debug!</span>(<span class="string">&quot;upload job complete, no more IDs to upload&quot;</span>);
+                <span class="macro">log::debug!</span>(<span class="string">"upload job complete, no more IDs to upload"</span>);
                 <span class="kw">break</span>;
             }
             <span class="kw">for </span>id <span class="kw">in </span>psuedo_ids {
@@ -361,12 +362,12 @@
                     <span class="kw">if let </span><span class="prelude-val">Some</span>(secret) = <span class="self">self</span>.app_ctx.survey_secrets.get(url.as_str()) {
                         <span class="kw">let </span>payload = Secret { secret };
 
-                        <span class="macro">log::info!</span>(<span class="string">&quot;Uploading to survey instance {} campaign {id}&quot;</span>, url);
+                        <span class="macro">log::info!</span>(<span class="string">"Uploading to survey instance {} campaign {id}"</span>, url);
                         <span class="kw">let </span><span class="kw-2">mut </span>url = url.clone();
-                        url.set_path(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;/mcaptcha/api/v1/{id}/upload&quot;</span>));
+                        url.set_path(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">"/mcaptcha/api/v1/{id}/upload"</span>));
                         <span class="kw">let </span>resp =
                             <span class="self">self</span>.client.post(url).json(<span class="kw-2">&amp;</span>payload).send().<span class="kw">await</span>.unwrap();
-                        <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, resp.text().<span class="kw">await</span>.unwrap());
+                        <span class="macro">println!</span>(<span class="string">"{}"</span>, resp.text().<span class="kw">await</span>.unwrap());
                     }
                 }
             }
@@ -410,7 +411,7 @@
                 .survey_secrets
                 .set(secret_upload_auth_token, url.to_string());
             <span class="kw">let </span><span class="kw-2">mut </span>url = url.clone();
-            url.set_path(<span class="string">&quot;/mcaptcha/api/v1/register&quot;</span>);
+            url.set_path(<span class="string">"/mcaptcha/api/v1/register"</span>);
             <span class="kw">let </span>resp = <span class="self">self</span>.client.post(url).json(<span class="kw-2">&amp;</span>payload).send().<span class="kw">await</span>.unwrap();
         }
         <span class="prelude-val">Ok</span>(())

@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `db/db-core/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="db_core" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `db/db-core/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="db_core" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -491,7 +492,7 @@
 
 <span class="kw">pub mod </span>errors;
 <span class="kw">pub mod </span>ops;
-<span class="attr">#[cfg(feature = <span class="string">&quot;test&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"test"</span>)]
 </span><span class="kw">pub mod </span>tests;
 
 <span class="kw">use </span>dev::<span class="kw-2">*</span>;
@@ -513,33 +514,33 @@
 
 <span class="attr">#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
 </span><span class="doccomment">/// Data required to register a new user
-</span><span class="kw">pub struct </span>Register&lt;<span class="lifetime">&#39;a</span>&gt; {
+</span><span class="kw">pub struct </span>Register&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// username of new user
-    </span><span class="kw">pub </span>username: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
+    </span><span class="kw">pub </span>username: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str,
     <span class="doccomment">/// secret of new user
-    </span><span class="kw">pub </span>secret: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
+    </span><span class="kw">pub </span>secret: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str,
     <span class="doccomment">/// hashed password of new use
-    </span><span class="kw">pub </span>hash: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
+    </span><span class="kw">pub </span>hash: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str,
     <span class="doccomment">/// Optionally, email of new use
-    </span><span class="kw">pub </span>email: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str&gt;,
+    </span><span class="kw">pub </span>email: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>str&gt;,
 }
 
 <span class="attr">#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
 </span><span class="doccomment">/// data required to update them email of a user
-</span><span class="kw">pub struct </span>UpdateEmail&lt;<span class="lifetime">&#39;a</span>&gt; {
+</span><span class="kw">pub struct </span>UpdateEmail&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// username of the user
-    </span><span class="kw">pub </span>username: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
+    </span><span class="kw">pub </span>username: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str,
     <span class="doccomment">/// new email address of the user
-    </span><span class="kw">pub </span>new_email: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
+    </span><span class="kw">pub </span>new_email: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str,
 }
 
 <span class="attr">#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
 </span><span class="doccomment">/// types of credentials used as identifiers during login
-</span><span class="kw">pub enum </span>Login&lt;<span class="lifetime">&#39;a</span>&gt; {
+</span><span class="kw">pub enum </span>Login&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// username as login
-    </span>Username(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str),
+    </span>Username(<span class="kw-2">&amp;</span><span class="lifetime">'a </span>str),
     <span class="doccomment">/// email as login
-    </span>Email(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str),
+    </span>Email(<span class="kw-2">&amp;</span><span class="lifetime">'a </span>str),
 }
 
 <span class="attr">#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
@@ -552,7 +553,7 @@
 }
 
 <span class="attr">#[async_trait]
-</span><span class="doccomment">/// mCaptcha&#39;s database requirements. To implement support for $Database, kindly implement this
+</span><span class="doccomment">/// mCaptcha's database requirements. To implement support for $Database, kindly implement this
 /// trait.
 </span><span class="kw">pub trait </span>MCDatabase: std::marker::Send + std::marker::Sync + CloneSPDatabase {
     <span class="doccomment">/// ping DB
@@ -573,25 +574,25 @@
     <span class="doccomment">/// check if email exists
     </span><span class="kw">async fn </span>email_exists(<span class="kw-2">&amp;</span><span class="self">self</span>, email: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;bool&gt;;
 
-    <span class="doccomment">/// update a user&#39;s email
+    <span class="doccomment">/// update a user's email
     </span><span class="kw">async fn </span>update_email(<span class="kw-2">&amp;</span><span class="self">self</span>, p: <span class="kw-2">&amp;</span>UpdateEmail) -&gt; DBResult&lt;()&gt;;
 
-    <span class="doccomment">/// get a user&#39;s password
+    <span class="doccomment">/// get a user's password
     </span><span class="kw">async fn </span>get_password(<span class="kw-2">&amp;</span><span class="self">self</span>, l: <span class="kw-2">&amp;</span>Login) -&gt; DBResult&lt;NameHash&gt;;
 
-    <span class="doccomment">/// update user&#39;s password
+    <span class="doccomment">/// update user's password
     </span><span class="kw">async fn </span>update_password(<span class="kw-2">&amp;</span><span class="self">self</span>, p: <span class="kw-2">&amp;</span>NameHash) -&gt; DBResult&lt;()&gt;;
 
     <span class="doccomment">/// update username
     </span><span class="kw">async fn </span>update_username(<span class="kw-2">&amp;</span><span class="self">self</span>, current: <span class="kw-2">&amp;</span>str, new: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;()&gt;;
 
-    <span class="doccomment">/// get a user&#39;s secret
+    <span class="doccomment">/// get a user's secret
     </span><span class="kw">async fn </span>get_secret(<span class="kw-2">&amp;</span><span class="self">self</span>, username: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;Secret&gt;;
 
-    <span class="doccomment">/// get a user&#39;s secret from a captcha key
+    <span class="doccomment">/// get a user's secret from a captcha key
     </span><span class="kw">async fn </span>get_secret_from_captcha(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;Secret&gt;;
 
-    <span class="doccomment">/// update a user&#39;s secret
+    <span class="doccomment">/// update a user's secret
     </span><span class="kw">async fn </span>update_secret(<span class="kw-2">&amp;</span><span class="self">self</span>, username: <span class="kw-2">&amp;</span>str, secret: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;()&gt;;
 
     <span class="doccomment">/// create new captcha
@@ -603,14 +604,14 @@
     <span class="doccomment">/// Get all captchas belonging to user
     </span><span class="kw">async fn </span>get_all_user_captchas(<span class="kw-2">&amp;</span><span class="self">self</span>, username: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;Vec&lt;Captcha&gt;&gt;;
 
-    <span class="doccomment">/// update captcha metadata; doesn&#39;t change captcha key
+    <span class="doccomment">/// update captcha metadata; doesn't change captcha key
     </span><span class="kw">async fn </span>update_captcha_metadata(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         username: <span class="kw-2">&amp;</span>str,
         p: <span class="kw-2">&amp;</span>CreateCaptcha,
     ) -&gt; DBResult&lt;()&gt;;
 
-    <span class="doccomment">/// update captcha key; doesn&#39;t change metadata
+    <span class="doccomment">/// update captcha key; doesn't change metadata
     </span><span class="kw">async fn </span>update_captcha_key(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         username: <span class="kw-2">&amp;</span>str,
@@ -650,7 +651,7 @@
         captcha_key: <span class="kw-2">&amp;</span>str,
     ) -&gt; DBResult&lt;Vec&lt;Level&gt;&gt;;
 
-    <span class="doccomment">/// Get captcha&#39;s cooldown period
+    <span class="doccomment">/// Get captcha's cooldown period
     </span><span class="kw">async fn </span>get_captcha_cooldown(<span class="kw-2">&amp;</span><span class="self">self</span>, captcha_key: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;i32&gt;;
 
     <span class="doccomment">/// Add traffic configuration
@@ -845,15 +846,15 @@
 
 <span class="attr">#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 </span><span class="doccomment">/// Data required to add notification
-</span><span class="kw">pub struct </span>AddNotification&lt;<span class="lifetime">&#39;a</span>&gt; {
+</span><span class="kw">pub struct </span>AddNotification&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// who is the notification addressed to?
-    </span><span class="kw">pub </span>to: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
+    </span><span class="kw">pub </span>to: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str,
     <span class="doccomment">/// notification sender
-    </span><span class="kw">pub </span>from: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
+    </span><span class="kw">pub </span>from: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str,
     <span class="doccomment">/// heading of the notification
-    </span><span class="kw">pub </span>heading: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
+    </span><span class="kw">pub </span>heading: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str,
     <span class="doccomment">/// message of the notification
-    </span><span class="kw">pub </span>message: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
+    </span><span class="kw">pub </span>message: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str,
 }
 
 <span class="attr">#[derive(Default, PartialEq, Serialize, Deserialize, Clone, Debug)]
@@ -870,25 +871,25 @@
 }
 
 <span class="attr">#[derive(Default, PartialEq, Serialize, Deserialize, Clone, Debug)]
-</span><span class="doccomment">/// User&#39;s traffic pattern; used in generating a captcha configuration
+</span><span class="doccomment">/// User's traffic pattern; used in generating a captcha configuration
 </span><span class="kw">pub struct </span>TrafficPattern {
-    <span class="doccomment">/// average traffic of user&#39;s website
+    <span class="doccomment">/// average traffic of user's website
     </span><span class="kw">pub </span>avg_traffic: u32,
-    <span class="doccomment">/// the peak traffic that the user&#39;s website can handle
+    <span class="doccomment">/// the peak traffic that the user's website can handle
     </span><span class="kw">pub </span>peak_sustainable_traffic: u32,
-    <span class="doccomment">/// traffic that bought the user&#39;s website down; optional
+    <span class="doccomment">/// traffic that bought the user's website down; optional
     </span><span class="kw">pub </span>broke_my_site_traffic: <span class="prelude-ty">Option</span>&lt;u32&gt;,
 }
 
 <span class="attr">#[derive(Clone, Debug, Default, PartialEq, Deserialize, Serialize)]
 </span><span class="doccomment">/// data required to create new captcha
-</span><span class="kw">pub struct </span>CreateCaptcha&lt;<span class="lifetime">&#39;a</span>&gt; {
+</span><span class="kw">pub struct </span>CreateCaptcha&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// cool down duration
     </span><span class="kw">pub </span>duration: i32,
     <span class="doccomment">/// description of the captcha
-    </span><span class="kw">pub </span>description: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
+    </span><span class="kw">pub </span>description: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str,
     <span class="doccomment">/// secret key of the captcha
-    </span><span class="kw">pub </span>key: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
+    </span><span class="kw">pub </span>key: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str,
 }
 
 <span class="attr">#[derive(Clone, Debug, Default, PartialEq, Deserialize, Serialize)]
@@ -905,9 +906,9 @@
 }
 
 <span class="attr">#[derive(Clone, Debug, Deserialize, PartialEq, Default, Serialize)]
-</span><span class="doccomment">/// datastructure representing a user&#39;s secret
+</span><span class="doccomment">/// datastructure representing a user's secret
 </span><span class="kw">pub struct </span>Secret {
-    <span class="doccomment">/// user&#39;s secret
+    <span class="doccomment">/// user's secret
     </span><span class="kw">pub </span>secret: String,
 }
 <span class="doccomment">/// Trait to clone MCDatabase
@@ -918,7 +919,7 @@
 
 <span class="kw">impl</span>&lt;T&gt; CloneSPDatabase <span class="kw">for </span>T
 <span class="kw">where
-    </span>T: MCDatabase + Clone + <span class="lifetime">&#39;static</span>,
+    </span>T: MCDatabase + Clone + <span class="lifetime">'static</span>,
 {
     <span class="kw">fn </span>clone_db(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Box&lt;<span class="kw">dyn </span>MCDatabase&gt; {
         Box::new(<span class="self">self</span>.clone())

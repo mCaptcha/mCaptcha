@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `db/db-sqlx-postgres/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="db_sqlx_postgres" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `db/db-sqlx-postgres/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="db_sqlx_postgres" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1493,7 +1494,7 @@
 <span class="attr">#[async_trait]
 </span><span class="kw">impl </span>Migrate <span class="kw">for </span>Database {
     <span class="kw">async fn </span>migrate(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; DBResult&lt;()&gt; {
-        <span class="macro">sqlx::migrate!</span>(<span class="string">&quot;./migrations/&quot;</span>)
+        <span class="macro">sqlx::migrate!</span>(<span class="string">"./migrations/"</span>)
             .run(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
             .<span class="kw">await
             </span>.map_err(|e| DBError::DBError(Box::new(e)))<span class="question-mark">?</span>;
@@ -1518,8 +1519,8 @@
     </span><span class="kw">async fn </span>register(<span class="kw-2">&amp;</span><span class="self">self</span>, p: <span class="kw-2">&amp;</span>Register) -&gt; DBResult&lt;()&gt; {
         <span class="kw">let </span>res = <span class="kw">if let </span><span class="prelude-val">Some</span>(email) = <span class="kw-2">&amp;</span>p.email {
             <span class="macro">sqlx::query!</span>(
-                <span class="string">&quot;insert into mcaptcha_users 
-        (name , password, email, secret) values ($1, $2, $3, $4)&quot;</span>,
+                <span class="string">"insert into mcaptcha_users 
+        (name , password, email, secret) values ($1, $2, $3, $4)"</span>,
                 <span class="kw-2">&amp;</span>p.username,
                 <span class="kw-2">&amp;</span>p.hash,
                 <span class="kw-2">&amp;</span>email,
@@ -1529,8 +1530,8 @@
             .<span class="kw">await
         </span>} <span class="kw">else </span>{
             <span class="macro">sqlx::query!</span>(
-                <span class="string">&quot;INSERT INTO mcaptcha_users 
-        (name , password,  secret) VALUES ($1, $2, $3)&quot;</span>,
+                <span class="string">"INSERT INTO mcaptcha_users 
+        (name , password,  secret) VALUES ($1, $2, $3)"</span>,
                 <span class="kw-2">&amp;</span>p.username,
                 <span class="kw-2">&amp;</span>p.hash,
                 <span class="kw-2">&amp;</span>p.secret,
@@ -1544,7 +1545,7 @@
 
     <span class="doccomment">/// delete a user
     </span><span class="kw">async fn </span>delete_user(<span class="kw-2">&amp;</span><span class="self">self</span>, username: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;()&gt; {
-        <span class="macro">sqlx::query!</span>(<span class="string">&quot;DELETE FROM mcaptcha_users WHERE name = ($1)&quot;</span>, username)
+        <span class="macro">sqlx::query!</span>(<span class="string">"DELETE FROM mcaptcha_users WHERE name = ($1)"</span>, username)
             .execute(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
             .<span class="kw">await
             </span>.map_err(|e| map_row_not_found_err(e, DBError::AccountNotFound))<span class="question-mark">?</span>;
@@ -1554,7 +1555,7 @@
     <span class="doccomment">/// check if username exists
     </span><span class="kw">async fn </span>username_exists(<span class="kw-2">&amp;</span><span class="self">self</span>, username: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;bool&gt; {
         <span class="kw">let </span>res = <span class="macro">sqlx::query!</span>(
-            <span class="string">&quot;SELECT EXISTS (SELECT 1 from mcaptcha_users WHERE name = $1)&quot;</span>,
+            <span class="string">"SELECT EXISTS (SELECT 1 from mcaptcha_users WHERE name = $1)"</span>,
             username,
         )
         .fetch_one(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
@@ -1577,7 +1578,7 @@
 
         <span class="kw">let </span>res = <span class="macro">sqlx::query_as!</span>(
             Email,
-            <span class="string">&quot;SELECT email FROM mcaptcha_users WHERE name = $1&quot;</span>,
+            <span class="string">"SELECT email FROM mcaptcha_users WHERE name = $1"</span>,
             username
         )
         .fetch_one(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
@@ -1589,7 +1590,7 @@
     <span class="doccomment">/// check if email exists
     </span><span class="kw">async fn </span>email_exists(<span class="kw-2">&amp;</span><span class="self">self</span>, email: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;bool&gt; {
         <span class="kw">let </span>res = <span class="macro">sqlx::query!</span>(
-            <span class="string">&quot;SELECT EXISTS (SELECT 1 from mcaptcha_users WHERE email = $1)&quot;</span>,
+            <span class="string">"SELECT EXISTS (SELECT 1 from mcaptcha_users WHERE email = $1)"</span>,
             email
         )
         .fetch_one(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
@@ -1604,11 +1605,11 @@
         <span class="prelude-val">Ok</span>(resp)
     }
 
-    <span class="doccomment">/// update a user&#39;s email
+    <span class="doccomment">/// update a user's email
     </span><span class="kw">async fn </span>update_email(<span class="kw-2">&amp;</span><span class="self">self</span>, p: <span class="kw-2">&amp;</span>UpdateEmail) -&gt; DBResult&lt;()&gt; {
         <span class="macro">sqlx::query!</span>(
-            <span class="string">&quot;UPDATE mcaptcha_users set email = $1
-            WHERE name = $2&quot;</span>,
+            <span class="string">"UPDATE mcaptcha_users set email = $1
+            WHERE name = $2"</span>,
             <span class="kw-2">&amp;</span>p.new_email,
             <span class="kw-2">&amp;</span>p.username,
         )
@@ -1619,7 +1620,7 @@
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="doccomment">/// get a user&#39;s password
+    <span class="doccomment">/// get a user's password
     </span><span class="kw">async fn </span>get_password(<span class="kw-2">&amp;</span><span class="self">self</span>, l: <span class="kw-2">&amp;</span>Login) -&gt; DBResult&lt;NameHash&gt; {
         <span class="kw">struct </span>Password {
             name: String,
@@ -1629,7 +1630,7 @@
         <span class="kw">let </span>rec = <span class="kw">match </span>l {
             Login::Username(u) =&gt; <span class="macro">sqlx::query_as!</span>(
                 Password,
-                <span class="string">r#&quot;SELECT name, password  FROM mcaptcha_users WHERE name = ($1)&quot;#</span>,
+                <span class="string">r#"SELECT name, password  FROM mcaptcha_users WHERE name = ($1)"#</span>,
                 u,
             )
             .fetch_one(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
@@ -1638,7 +1639,7 @@
 
             Login::Email(e) =&gt; <span class="macro">sqlx::query_as!</span>(
                 Password,
-                <span class="string">r#&quot;SELECT name, password  FROM mcaptcha_users WHERE email = ($1)&quot;#</span>,
+                <span class="string">r#"SELECT name, password  FROM mcaptcha_users WHERE email = ($1)"#</span>,
                 e,
             )
             .fetch_one(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
@@ -1654,11 +1655,11 @@
         <span class="prelude-val">Ok</span>(res)
     }
 
-    <span class="doccomment">/// update user&#39;s password
+    <span class="doccomment">/// update user's password
     </span><span class="kw">async fn </span>update_password(<span class="kw-2">&amp;</span><span class="self">self</span>, p: <span class="kw-2">&amp;</span>NameHash) -&gt; DBResult&lt;()&gt; {
         <span class="macro">sqlx::query!</span>(
-            <span class="string">&quot;UPDATE mcaptcha_users set password = $1
-            WHERE name = $2&quot;</span>,
+            <span class="string">"UPDATE mcaptcha_users set password = $1
+            WHERE name = $2"</span>,
             <span class="kw-2">&amp;</span>p.hash,
             <span class="kw-2">&amp;</span>p.username,
         )
@@ -1672,8 +1673,8 @@
     <span class="doccomment">/// update username
     </span><span class="kw">async fn </span>update_username(<span class="kw-2">&amp;</span><span class="self">self</span>, current: <span class="kw-2">&amp;</span>str, new: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;()&gt; {
         <span class="macro">sqlx::query!</span>(
-            <span class="string">&quot;UPDATE mcaptcha_users set name = $1
-            WHERE name = $2&quot;</span>,
+            <span class="string">"UPDATE mcaptcha_users set name = $1
+            WHERE name = $2"</span>,
             new,
             current,
         )
@@ -1684,11 +1685,11 @@
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="doccomment">/// get a user&#39;s secret
+    <span class="doccomment">/// get a user's secret
     </span><span class="kw">async fn </span>get_secret(<span class="kw-2">&amp;</span><span class="self">self</span>, username: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;Secret&gt; {
         <span class="kw">let </span>secret = <span class="macro">sqlx::query_as!</span>(
             Secret,
-            <span class="string">r#&quot;SELECT secret  FROM mcaptcha_users WHERE name = ($1)&quot;#</span>,
+            <span class="string">r#"SELECT secret  FROM mcaptcha_users WHERE name = ($1)"#</span>,
             username,
         )
         .fetch_one(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
@@ -1698,13 +1699,13 @@
         <span class="prelude-val">Ok</span>(secret)
     }
 
-    <span class="doccomment">/// get a user&#39;s secret from a captcha key
+    <span class="doccomment">/// get a user's secret from a captcha key
     </span><span class="kw">async fn </span>get_secret_from_captcha(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;Secret&gt; {
         <span class="kw">let </span>secret = <span class="macro">sqlx::query_as!</span>(
             Secret,
-            <span class="string">r#&quot;SELECT secret  FROM mcaptcha_users WHERE ID = (
+            <span class="string">r#"SELECT secret  FROM mcaptcha_users WHERE ID = (
                     SELECT user_id FROM mcaptcha_config WHERE key = $1
-                    )&quot;#</span>,
+                    )"#</span>,
             key,
         )
         .fetch_one(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
@@ -1714,11 +1715,11 @@
         <span class="prelude-val">Ok</span>(secret)
     }
 
-    <span class="doccomment">/// update a user&#39;s secret
+    <span class="doccomment">/// update a user's secret
     </span><span class="kw">async fn </span>update_secret(<span class="kw-2">&amp;</span><span class="self">self</span>, username: <span class="kw-2">&amp;</span>str, secret: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;()&gt; {
         <span class="macro">sqlx::query!</span>(
-            <span class="string">&quot;UPDATE mcaptcha_users set secret = $1
-        WHERE name = $2&quot;</span>,
+            <span class="string">"UPDATE mcaptcha_users set secret = $1
+        WHERE name = $2"</span>,
             <span class="kw-2">&amp;</span>secret,
             <span class="kw-2">&amp;</span>username,
         )
@@ -1732,9 +1733,9 @@
     <span class="doccomment">/// create new captcha
     </span><span class="kw">async fn </span>create_captcha(<span class="kw-2">&amp;</span><span class="self">self</span>, username: <span class="kw-2">&amp;</span>str, p: <span class="kw-2">&amp;</span>CreateCaptcha) -&gt; DBResult&lt;()&gt; {
         <span class="macro">sqlx::query!</span>(
-            <span class="string">&quot;INSERT INTO mcaptcha_config
+            <span class="string">"INSERT INTO mcaptcha_config
         (key, user_id, duration, name)
-        VALUES ($1, (SELECT ID FROM mcaptcha_users WHERE name = $2), $3, $4)&quot;</span>,
+        VALUES ($1, (SELECT ID FROM mcaptcha_users WHERE name = $2), $3, $4)"</span>,
             p.key,
             username,
             p.duration <span class="kw">as </span>i32,
@@ -1751,9 +1752,9 @@
     </span><span class="kw">async fn </span>get_captcha_config(<span class="kw-2">&amp;</span><span class="self">self</span>, username: <span class="kw-2">&amp;</span>str, key: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;Captcha&gt; {
         <span class="kw">let </span>captcha = <span class="macro">sqlx::query_as!</span>(
             InternaleCaptchaConfig,
-            <span class="string">&quot;SELECT config_id, duration, name, key from mcaptcha_config WHERE
+            <span class="string">"SELECT config_id, duration, name, key from mcaptcha_config WHERE
                         key = $1 AND
-                        user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2) &quot;</span>,
+                        user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2) "</span>,
             <span class="kw-2">&amp;</span>key,
             <span class="kw-2">&amp;</span>username,
         )
@@ -1768,8 +1769,8 @@
     </span><span class="kw">async fn </span>get_all_user_captchas(<span class="kw-2">&amp;</span><span class="self">self</span>, username: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;Vec&lt;Captcha&gt;&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>res = <span class="macro">sqlx::query_as!</span>(
             InternaleCaptchaConfig,
-            <span class="string">&quot;SELECT key, name, config_id, duration FROM mcaptcha_config WHERE
-            user_id = (SELECT ID FROM mcaptcha_users WHERE name = $1) &quot;</span>,
+            <span class="string">"SELECT key, name, config_id, duration FROM mcaptcha_config WHERE
+            user_id = (SELECT ID FROM mcaptcha_users WHERE name = $1) "</span>,
             <span class="kw-2">&amp;</span>username,
         )
         .fetch_all(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
@@ -1783,16 +1784,16 @@
         <span class="prelude-val">Ok</span>(captchas)
     }
 
-    <span class="doccomment">/// update captcha metadata; doesn&#39;t change captcha key
+    <span class="doccomment">/// update captcha metadata; doesn't change captcha key
     </span><span class="kw">async fn </span>update_captcha_metadata(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         username: <span class="kw-2">&amp;</span>str,
         p: <span class="kw-2">&amp;</span>CreateCaptcha,
     ) -&gt; DBResult&lt;()&gt; {
         <span class="macro">sqlx::query!</span>(
-            <span class="string">&quot;UPDATE mcaptcha_config SET name = $1, duration = $2
+            <span class="string">"UPDATE mcaptcha_config SET name = $1, duration = $2
             WHERE user_id = (SELECT ID FROM mcaptcha_users WHERE name = $3)
-            AND key = $4&quot;</span>,
+            AND key = $4"</span>,
             p.description,
             p.duration,
             username,
@@ -1805,7 +1806,7 @@
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="doccomment">/// update captcha key; doesn&#39;t change metadata
+    <span class="doccomment">/// update captcha key; doesn't change metadata
     </span><span class="kw">async fn </span>update_captcha_key(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         username: <span class="kw-2">&amp;</span>str,
@@ -1813,8 +1814,8 @@
         new_key: <span class="kw-2">&amp;</span>str,
     ) -&gt; DBResult&lt;()&gt; {
         <span class="macro">sqlx::query!</span>(
-            <span class="string">&quot;UPDATE mcaptcha_config SET key = $1 
-        WHERE key = $2 AND user_id = (SELECT ID FROM mcaptcha_users WHERE name = $3)&quot;</span>,
+            <span class="string">"UPDATE mcaptcha_config SET key = $1 
+        WHERE key = $2 AND user_id = (SELECT ID FROM mcaptcha_users WHERE name = $3)"</span>,
             new_key,
             old_key,
             username,
@@ -1840,7 +1841,7 @@
             <span class="kw">let </span>difficulty_factor = level.difficulty_factor <span class="kw">as </span>i32;
             <span class="kw">let </span>visitor_threshold = level.visitor_threshold <span class="kw">as </span>i32;
             <span class="kw">let </span>fut = <span class="macro">sqlx::query!</span>(
-                <span class="string">&quot;INSERT INTO mcaptcha_levels (
+                <span class="string">"INSERT INTO mcaptcha_levels (
             difficulty_factor, 
             visitor_threshold,
             config_id) VALUES  (
@@ -1848,7 +1849,7 @@
                 SELECT config_id FROM mcaptcha_config WHERE
                 key = ($3) AND user_id = (
                 SELECT ID FROM mcaptcha_users WHERE name = $4
-                    )));&quot;</span>,
+                    )));"</span>,
                 difficulty_factor,
                 visitor_threshold,
                 <span class="kw-2">&amp;</span>captcha_key,
@@ -1867,7 +1868,7 @@
             <span class="kw">let </span>difficulty_factor = level.difficulty_factor <span class="kw">as </span>i32;
             <span class="kw">let </span>visitor_threshold = level.visitor_threshold <span class="kw">as </span>i32;
             <span class="kw">let </span>fut = <span class="macro">sqlx::query!</span>(
-                <span class="string">&quot;INSERT INTO
+                <span class="string">"INSERT INTO
                     mcaptcha_track_nonce (level_id, nonce)
                 VALUES  ((
                     SELECT
@@ -1880,7 +1881,7 @@
                         difficulty_factor = $2
                     AND
                         visitor_threshold = $3
-                    ), $4);&quot;</span>,
+                    ), $4);"</span>,
                 <span class="kw-2">&amp;</span>captcha_key,
                 difficulty_factor,
                 visitor_threshold,
@@ -1908,10 +1909,10 @@
         <span class="kw">match </span>username {
             <span class="prelude-val">Some</span>(username) =&gt; {
                 <span class="kw">let </span>x = <span class="macro">sqlx::query!</span>(
-                    <span class="string">&quot;SELECT EXISTS (
+                    <span class="string">"SELECT EXISTS (
             SELECT 1 from mcaptcha_config WHERE key = $1 
             AND user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2)
-            )&quot;</span>,
+            )"</span>,
                     captcha_key,
                     username
                 )
@@ -1925,7 +1926,7 @@
 
             <span class="prelude-val">None </span>=&gt; {
                 <span class="kw">let </span>x = <span class="macro">sqlx::query!</span>(
-                    <span class="string">&quot;SELECT EXISTS (SELECT 1 from mcaptcha_config WHERE key = $1)&quot;</span>,
+                    <span class="string">"SELECT EXISTS (SELECT 1 from mcaptcha_config WHERE key = $1)"</span>,
                     <span class="kw-2">&amp;</span>captcha_key,
                 )
                 .fetch_one(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
@@ -1947,13 +1948,13 @@
         captcha_key: <span class="kw-2">&amp;</span>str,
     ) -&gt; DBResult&lt;()&gt; {
         <span class="macro">sqlx::query!</span>(
-            <span class="string">&quot;DELETE FROM mcaptcha_levels 
+            <span class="string">"DELETE FROM mcaptcha_levels 
         WHERE config_id = (
             SELECT config_id FROM mcaptcha_config where key = ($1) 
             AND user_id = (
             SELECT ID from mcaptcha_users WHERE name = $2
             )
-            )&quot;</span>,
+            )"</span>,
             captcha_key,
             username
         )
@@ -1967,9 +1968,9 @@
     <span class="doccomment">/// Delete captcha
     </span><span class="kw">async fn </span>delete_captcha(<span class="kw-2">&amp;</span><span class="self">self</span>, username: <span class="kw-2">&amp;</span>str, captcha_key: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;()&gt; {
         <span class="macro">sqlx::query!</span>(
-            <span class="string">&quot;DELETE FROM mcaptcha_config WHERE key = ($1)
+            <span class="string">"DELETE FROM mcaptcha_config WHERE key = ($1)
                 AND
-            user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2)&quot;</span>,
+            user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2)"</span>,
             captcha_key,
             username,
         )
@@ -1993,10 +1994,10 @@
         <span class="kw">let </span>levels = <span class="kw">match </span>username {
             <span class="prelude-val">None </span>=&gt; <span class="macro">sqlx::query_as!</span>(
                 I32Levels,
-                <span class="string">&quot;SELECT difficulty_factor, visitor_threshold FROM mcaptcha_levels  WHERE
+                <span class="string">"SELECT difficulty_factor, visitor_threshold FROM mcaptcha_levels  WHERE
             config_id = (
                 SELECT config_id FROM mcaptcha_config WHERE key = ($1)
-                ) ORDER BY difficulty_factor ASC;&quot;</span>,
+                ) ORDER BY difficulty_factor ASC;"</span>,
                 captcha_key,
             )
             .fetch_all(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
@@ -2005,12 +2006,12 @@
 
             <span class="prelude-val">Some</span>(username) =&gt; <span class="macro">sqlx::query_as!</span>(
                 I32Levels,
-                <span class="string">&quot;SELECT difficulty_factor, visitor_threshold FROM mcaptcha_levels  WHERE
+                <span class="string">"SELECT difficulty_factor, visitor_threshold FROM mcaptcha_levels  WHERE
             config_id = (
                 SELECT config_id FROM mcaptcha_config WHERE key = ($1)
                 AND user_id = (SELECT ID from mcaptcha_users WHERE name = $2)
                 )
-            ORDER BY difficulty_factor ASC;&quot;</span>,
+            ORDER BY difficulty_factor ASC;"</span>,
                 captcha_key,
                 username
             )
@@ -2029,7 +2030,7 @@
         <span class="prelude-val">Ok</span>(new_levels)
     }
 
-    <span class="doccomment">/// Get captcha&#39;s cooldown period
+    <span class="doccomment">/// Get captcha's cooldown period
     </span><span class="kw">async fn </span>get_captcha_cooldown(<span class="kw-2">&amp;</span><span class="self">self</span>, captcha_key: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;i32&gt; {
         <span class="kw">struct </span>DurationResp {
             duration: i32,
@@ -2037,8 +2038,8 @@
 
         <span class="kw">let </span>resp = <span class="macro">sqlx::query_as!</span>(
             DurationResp,
-            <span class="string">&quot;SELECT duration FROM mcaptcha_config  
-            WHERE key = $1&quot;</span>,
+            <span class="string">"SELECT duration FROM mcaptcha_config  
+            WHERE key = $1"</span>,
             captcha_key,
         )
         .fetch_one(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
@@ -2055,7 +2056,7 @@
         pattern: <span class="kw-2">&amp;</span>TrafficPattern,
     ) -&gt; DBResult&lt;()&gt; {
         <span class="macro">sqlx::query!</span>(
-            <span class="string">&quot;INSERT INTO mcaptcha_sitekey_user_provided_avg_traffic (
+            <span class="string">"INSERT INTO mcaptcha_sitekey_user_provided_avg_traffic (
             config_id,
             avg_traffic,
             peak_sustainable_traffic,
@@ -2063,7 +2064,7 @@
             ) VALUES ( 
              (SELECT config_id FROM mcaptcha_config WHERE key = ($1)
              AND user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2)
-            ), $3, $4, $5)&quot;</span>,
+            ), $3, $4, $5)"</span>,
             <span class="comment">//payload.avg_traffic,
             </span>captcha_key,
             username,
@@ -2085,7 +2086,7 @@
     ) -&gt; DBResult&lt;TrafficPattern&gt; {
         <span class="kw">let </span>res = <span class="macro">sqlx::query_as!</span>(
             InnerTraffic,
-            <span class="string">&quot;SELECT 
+            <span class="string">"SELECT 
           avg_traffic, 
           peak_sustainable_traffic, 
           broke_my_site_traffic 
@@ -2108,7 +2109,7 @@
                   NAME = $2
               )
           )
-        &quot;</span>,
+        "</span>,
             captcha_key,
             username
         )
@@ -2134,7 +2135,7 @@
         }
         <span class="kw">let </span><span class="kw-2">mut </span>inner_res = <span class="macro">sqlx::query_as!</span>(
             InnerEasyCaptcha,
-            <span class="string">&quot;SELECT 
+            <span class="string">"SELECT 
                   mcaptcha_sitekey_user_provided_avg_traffic.avg_traffic, 
                   mcaptcha_sitekey_user_provided_avg_traffic.peak_sustainable_traffic, 
                   mcaptcha_sitekey_user_provided_avg_traffic.broke_my_site_traffic,
@@ -2152,7 +2153,7 @@
             ON
                 mcaptcha_config.user_id = mcaptcha_users.ID
             ORDER BY mcaptcha_config.config_id
-            OFFSET $1 LIMIT $2; &quot;</span>,
+            OFFSET $1 LIMIT $2; "</span>,
             offset <span class="kw">as </span>i32,
             limit <span class="kw">as </span>i32
         )
@@ -2185,7 +2186,7 @@
         captcha_key: <span class="kw-2">&amp;</span>str,
     ) -&gt; DBResult&lt;()&gt; {
         <span class="macro">sqlx::query!</span>(
-            <span class="string">&quot;DELETE FROM mcaptcha_sitekey_user_provided_avg_traffic
+            <span class="string">"DELETE FROM mcaptcha_sitekey_user_provided_avg_traffic
         WHERE config_id = (
             SELECT config_id 
             FROM 
@@ -2194,7 +2195,7 @@
                 key = ($1) 
             AND 
                 user_id = (SELECT ID FROM mcaptcha_users WHERE name = $2)
-            );&quot;</span>,
+            );"</span>,
             captcha_key,
             username,
         )
@@ -2208,14 +2209,14 @@
     </span><span class="kw">async fn </span>create_notification(<span class="kw-2">&amp;</span><span class="self">self</span>, p: <span class="kw-2">&amp;</span>AddNotification) -&gt; DBResult&lt;()&gt; {
         <span class="kw">let </span>now = now_unix_time_stamp();
         <span class="macro">sqlx::query!</span>(
-            <span class="string">&quot;INSERT INTO mcaptcha_notifications (
+            <span class="string">"INSERT INTO mcaptcha_notifications (
               heading, message, tx, rx, received)
               VALUES  (
               $1, $2,
                   (SELECT ID FROM mcaptcha_users WHERE name = $3),
                   (SELECT ID FROM mcaptcha_users WHERE name = $4),
                   $5
-                      );&quot;</span>,
+                      );"</span>,
             p.heading,
             p.message,
             p.from,
@@ -2236,7 +2237,7 @@
     ) -&gt; DBResult&lt;Vec&lt;Notification&gt;&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>inner_notifications = <span class="macro">sqlx::query_file_as!</span>(
             InnerNotification,
-            <span class="string">&quot;./src/get_all_unread_notifications.sql&quot;</span>,
+            <span class="string">"./src/get_all_unread_notifications.sql"</span>,
             <span class="kw-2">&amp;</span>username
         )
         .fetch_all(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
@@ -2256,7 +2257,7 @@
     </span><span class="kw">async fn </span>mark_notification_read(<span class="kw-2">&amp;</span><span class="self">self</span>, username: <span class="kw-2">&amp;</span>str, id: i32) -&gt; DBResult&lt;()&gt; {
         <span class="macro">sqlx::query_file_as!</span>(
             Notification,
-            <span class="string">&quot;./src/mark_notification_read.sql&quot;</span>,
+            <span class="string">"./src/mark_notification_read.sql"</span>,
             id,
             <span class="kw-2">&amp;</span>username
         )
@@ -2271,8 +2272,8 @@
     </span><span class="kw">async fn </span>record_fetch(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;()&gt; {
         <span class="kw">let </span>now = now_unix_time_stamp();
         <span class="kw">let _ </span>= <span class="macro">sqlx::query!</span>(
-        <span class="string">&quot;INSERT INTO mcaptcha_pow_fetched_stats 
-        (config_id, time) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1), $2)&quot;</span>,
+        <span class="string">"INSERT INTO mcaptcha_pow_fetched_stats 
+        (config_id, time) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1), $2)"</span>,
         key,
         <span class="kw-2">&amp;</span>now,
     )
@@ -2286,8 +2287,8 @@
     </span><span class="kw">async fn </span>record_solve(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;()&gt; {
         <span class="kw">let </span>now = OffsetDateTime::now_utc();
         <span class="kw">let _ </span>= <span class="macro">sqlx::query!</span>(
-        <span class="string">&quot;INSERT INTO mcaptcha_pow_solved_stats 
-        (config_id, time) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1), $2)&quot;</span>,
+        <span class="string">"INSERT INTO mcaptcha_pow_solved_stats 
+        (config_id, time) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1), $2)"</span>,
         key,
         <span class="kw-2">&amp;</span>now,
     )
@@ -2301,8 +2302,8 @@
     </span><span class="kw">async fn </span>record_confirm(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;()&gt; {
         <span class="kw">let </span>now = now_unix_time_stamp();
         <span class="kw">let _ </span>= <span class="macro">sqlx::query!</span>(
-        <span class="string">&quot;INSERT INTO mcaptcha_pow_confirmed_stats 
-        (config_id, time) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1), $2)&quot;</span>,
+        <span class="string">"INSERT INTO mcaptcha_pow_confirmed_stats 
+        (config_id, time) VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1), $2)"</span>,
         key,
         <span class="kw-2">&amp;</span>now
     )
@@ -2316,7 +2317,7 @@
     </span><span class="kw">async fn </span>fetch_config_fetched(<span class="kw-2">&amp;</span><span class="self">self</span>, user: <span class="kw-2">&amp;</span>str, key: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;Vec&lt;i64&gt;&gt; {
         <span class="kw">let </span>records = <span class="macro">sqlx::query_as!</span>(
             Date,
-            <span class="string">&quot;SELECT time FROM mcaptcha_pow_fetched_stats
+            <span class="string">"SELECT time FROM mcaptcha_pow_fetched_stats
             WHERE 
                 config_id = (
                     SELECT 
@@ -2327,7 +2328,7 @@
                         user_id = (
                         SELECT 
                             ID FROM mcaptcha_users WHERE name = $2))
-                ORDER BY time DESC&quot;</span>,
+                ORDER BY time DESC"</span>,
             <span class="kw-2">&amp;</span>key,
             <span class="kw-2">&amp;</span>user,
         )
@@ -2342,7 +2343,7 @@
     </span><span class="kw">async fn </span>fetch_solve(<span class="kw-2">&amp;</span><span class="self">self</span>, user: <span class="kw-2">&amp;</span>str, key: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;Vec&lt;i64&gt;&gt; {
         <span class="kw">let </span>records = <span class="macro">sqlx::query_as!</span>(
             Date,
-            <span class="string">&quot;SELECT time FROM mcaptcha_pow_solved_stats 
+            <span class="string">"SELECT time FROM mcaptcha_pow_solved_stats 
             WHERE config_id = (
                 SELECT config_id FROM mcaptcha_config 
                 WHERE 
@@ -2351,7 +2352,7 @@
                      user_id = (
                         SELECT 
                             ID FROM mcaptcha_users WHERE name = $2)) 
-                ORDER BY time DESC&quot;</span>,
+                ORDER BY time DESC"</span>,
             <span class="kw-2">&amp;</span>key,
             <span class="kw-2">&amp;</span>user
         )
@@ -2366,7 +2367,7 @@
     </span><span class="kw">async fn </span>fetch_confirm(<span class="kw-2">&amp;</span><span class="self">self</span>, user: <span class="kw-2">&amp;</span>str, key: <span class="kw-2">&amp;</span>str) -&gt; DBResult&lt;Vec&lt;i64&gt;&gt; {
         <span class="kw">let </span>records = <span class="macro">sqlx::query_as!</span>(
             Date,
-            <span class="string">&quot;SELECT time FROM mcaptcha_pow_confirmed_stats 
+            <span class="string">"SELECT time FROM mcaptcha_pow_confirmed_stats 
             WHERE 
                 config_id = (
                     SELECT config_id FROM mcaptcha_config 
@@ -2376,7 +2377,7 @@
                      user_id = (
                         SELECT 
                             ID FROM mcaptcha_users WHERE name = $2))
-                ORDER BY time DESC&quot;</span>,
+                ORDER BY time DESC"</span>,
             <span class="kw-2">&amp;</span>key,
             <span class="kw-2">&amp;</span>user
         )
@@ -2394,9 +2395,9 @@
         d: <span class="kw-2">&amp;</span>CreatePerformanceAnalytics,
     ) -&gt; DBResult&lt;()&gt; {
         <span class="kw">let _ </span>= <span class="macro">sqlx::query!</span>(
-            <span class="string">&quot;INSERT INTO mcaptcha_pow_analytics 
+            <span class="string">"INSERT INTO mcaptcha_pow_analytics 
         (config_id, time, difficulty_factor, worker_type)
-        VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1), $2, $3, $4)&quot;</span>,
+        VALUES ((SELECT config_id FROM mcaptcha_config WHERE key = $1), $2, $3, $4)"</span>,
             captcha_id,
             d.time <span class="kw">as </span>i32,
             d.difficulty_factor <span class="kw">as </span>i32,
@@ -2435,7 +2436,7 @@
 
         <span class="kw">let </span><span class="kw-2">mut </span>c = <span class="macro">sqlx::query_as!</span>(
             P,
-            <span class="string">&quot;SELECT id, time, difficulty_factor, worker_type FROM mcaptcha_pow_analytics
+            <span class="string">"SELECT id, time, difficulty_factor, worker_type FROM mcaptcha_pow_analytics
             WHERE 
                 config_id = (
                     SELECT 
@@ -2445,7 +2446,7 @@
                         )
                 ORDER BY ID
                 OFFSET $2 LIMIT $3
-                &quot;</span>,
+                "</span>,
             <span class="kw-2">&amp;</span>captcha_id,
             offset <span class="kw">as </span>i32,
             limit <span class="kw">as </span>i32
@@ -2468,13 +2469,13 @@
     ) -&gt; DBResult&lt;()&gt; {
         <span class="kw">let </span>id = Uuid::new_v4();
         <span class="macro">sqlx::query!</span>(
-            <span class="string">&quot;
+            <span class="string">"
             INSERT INTO
                 mcaptcha_psuedo_campaign_id (config_id, psuedo_id)
             VALUES (
                 (SELECT config_id FROM mcaptcha_config WHERE key = ($1)),
                 $2
-            );&quot;</span>,
+            );"</span>,
             captcha_id,
             <span class="kw-2">&amp;</span>id.to_string(),
         )
@@ -2492,11 +2493,11 @@
     ) -&gt; DBResult&lt;String&gt; {
         <span class="kw">let </span>res = <span class="macro">sqlx::query_as!</span>(
             PsuedoID,
-            <span class="string">&quot;SELECT psuedo_id FROM
+            <span class="string">"SELECT psuedo_id FROM
                 mcaptcha_psuedo_campaign_id
             WHERE
                  config_id = (SELECT config_id FROM mcaptcha_config WHERE key = ($1));
-            &quot;</span>,
+            "</span>,
             captcha_id
         )
         .fetch_one(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
@@ -2517,7 +2518,7 @@
 
         <span class="kw">let </span>res = <span class="macro">sqlx::query_as!</span>(
             ID,
-            <span class="string">&quot;SELECT
+            <span class="string">"SELECT
                 key
             FROM
                 mcaptcha_config
@@ -2529,7 +2530,7 @@
                          mcaptcha_psuedo_campaign_id
                      WHERE
                          psuedo_id = $1
-                 );&quot;</span>,
+                 );"</span>,
             psuedo_id
         )
         .fetch_one(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
@@ -2543,26 +2544,26 @@
         campaign_id: <span class="kw-2">&amp;</span>str,
     ) -&gt; DBResult&lt;()&gt; {
         <span class="kw">let _ </span>= <span class="macro">sqlx::query!</span>(
-            <span class="string">&quot;
+            <span class="string">"
         DELETE FROM
             mcaptcha_psuedo_campaign_id
         WHERE config_id = (
             SELECT config_id FROM mcaptcha_config WHERE key = ($1)
-        );&quot;</span>,
+        );"</span>,
             campaign_id
         )
         .execute(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
         .<span class="kw">await</span>;
 
         <span class="kw">let _ </span>= <span class="macro">sqlx::query!</span>(
-            <span class="string">&quot;
+            <span class="string">"
             DELETE FROM
                 mcaptcha_pow_analytics
             WHERE
                 config_id = (
                     SELECT config_id FROM mcaptcha_config WHERE key = $1
                     )
-             &quot;</span>,
+             "</span>,
             campaign_id
         )
         .execute(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
@@ -2578,12 +2579,12 @@
 
         <span class="kw">let </span><span class="kw-2">mut </span>res = <span class="macro">sqlx::query_as!</span>(
             PsuedoID,
-            <span class="string">&quot;
+            <span class="string">"
                 SELECT
                     psuedo_id
                 FROM
                     mcaptcha_psuedo_campaign_id
-                    ORDER BY ID ASC LIMIT $1 OFFSET $2;&quot;</span>,
+                    ORDER BY ID ASC LIMIT $1 OFFSET $2;"</span>,
             LIMIT <span class="kw">as </span>i64,
             offset <span class="kw">as </span>i64
         )
@@ -2602,7 +2603,7 @@
         latest_nonce: u32,
     ) -&gt; DBResult&lt;()&gt; {
         <span class="macro">sqlx::query!</span>(
-                <span class="string">&quot;UPDATE mcaptcha_track_nonce SET nonce = $3
+                <span class="string">"UPDATE mcaptcha_track_nonce SET nonce = $3
                 WHERE level_id =  (
                     SELECT
                         level_id
@@ -2613,7 +2614,7 @@
                     AND
                         difficulty_factor = $2
                     )
-                AND nonce &lt;= $3;&quot;</span>,
+                AND nonce &lt;= $3;"</span>,
                 <span class="kw-2">&amp;</span>captcha_key,
                 difficulty_factor <span class="kw">as </span>i32,
                 latest_nonce <span class="kw">as </span>i32,
@@ -2641,7 +2642,7 @@
         ) -&gt; DBResult&lt;X&gt; {
             <span class="macro">sqlx::query_as!</span>(
                 X,
-                <span class="string">&quot;SELECT nonce FROM mcaptcha_track_nonce
+                <span class="string">"SELECT nonce FROM mcaptcha_track_nonce
                 WHERE level_id =  (
                     SELECT
                         level_id
@@ -2651,7 +2652,7 @@
                         config_id = (SELECT config_id FROM mcaptcha_config WHERE key = ($1))
                     AND
                         difficulty_factor = $2
-                    );&quot;</span>,
+                    );"</span>,
                 <span class="kw-2">&amp;</span>captcha_key,
                 difficulty_factor <span class="kw">as </span>i32,
             )
@@ -2663,7 +2664,7 @@
         <span class="kw">let </span>res = inner_get_max_nonce(<span class="kw-2">&amp;</span><span class="self">self</span>.pool, captcha_key, difficulty_factor).<span class="kw">await</span>;
         <span class="kw">if let </span><span class="prelude-val">Err</span>(DBError::CaptchaNotFound) = res {
             <span class="macro">sqlx::query!</span>(
-                <span class="string">&quot;INSERT INTO
+                <span class="string">"INSERT INTO
                     mcaptcha_track_nonce (level_id, nonce)
                 VALUES  ((
                     SELECT
@@ -2674,7 +2675,7 @@
                         config_id = (SELECT config_id FROM mcaptcha_config WHERE key = ($1))
                     AND
                         difficulty_factor = $2
-                    ), $3);&quot;</span>,
+                    ), $3);"</span>,
                 <span class="kw-2">&amp;</span>captcha_key,
                 difficulty_factor <span class="kw">as </span>i32,
                 <span class="number">0</span>,
@@ -2700,7 +2701,7 @@
 
         <span class="kw">let </span>count = <span class="macro">sqlx::query_as!</span>(
         Count,
-        <span class="string">&quot;SELECT COUNT(difficulty_factor) FROM mcaptcha_pow_analytics WHERE time &lt;= $1;&quot;</span>,
+        <span class="string">"SELECT COUNT(difficulty_factor) FROM mcaptcha_pow_analytics WHERE time &lt;= $1;"</span>,
         duration <span class="kw">as </span>i32,
     )
         .fetch_one(<span class="kw-2">&amp;</span><span class="self">self</span>.pool)
@@ -2723,13 +2724,13 @@
 
         <span class="kw">match </span><span class="macro">sqlx::query_as!</span>(
             Difficulty,
-            <span class="string">&quot;SELECT
+            <span class="string">"SELECT
             difficulty_factor
         FROM
             mcaptcha_pow_analytics
         WHERE
             time &lt;= $1
-        ORDER BY difficulty_factor ASC LIMIT 1 OFFSET $2;&quot;</span>,
+        ORDER BY difficulty_factor ASC LIMIT 1 OFFSET $2;"</span>,
             duration <span class="kw">as </span>i32,
             location <span class="kw">as </span>i64 - <span class="number">1</span>,
         )

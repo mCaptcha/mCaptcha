@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/static_assets/static_files.rs`."><title>static_files.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="mcaptcha" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/static_assets/static_files.rs`."><title>static_files.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="mcaptcha" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -175,54 +176,54 @@
 
     <span class="kw">use </span><span class="kw">crate</span>::FILES;
 
-    <span class="kw">type </span>Img = (<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str);
+    <span class="kw">type </span>Img = (<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str, <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str);
 
     <span class="macro">lazy_static! </span>{
         <span class="kw">pub static </span><span class="kw-2">ref </span>KEY: Img =
-            (FILES.get(<span class="string">&quot;./static/cache/img/svg/key.svg&quot;</span>).unwrap(), <span class="string">&quot;key&quot;</span>);
+            (FILES.get(<span class="string">"./static/cache/img/svg/key.svg"</span>).unwrap(), <span class="string">"key"</span>);
         <span class="kw">pub static </span><span class="kw-2">ref </span>GITHUB: Img = (
-            FILES.get(<span class="string">&quot;./static/cache/img/svg/github.svg&quot;</span>).unwrap(),
-            <span class="string">&quot;Source code&quot;
+            FILES.get(<span class="string">"./static/cache/img/svg/github.svg"</span>).unwrap(),
+            <span class="string">"Source code"
         </span>);
         <span class="kw">pub static </span><span class="kw-2">ref </span>HOME: Img = (
-            FILES.get(<span class="string">&quot;./static/cache/img/svg/home.svg&quot;</span>).unwrap(),
-            <span class="string">&quot;Home&quot;
+            FILES.get(<span class="string">"./static/cache/img/svg/home.svg"</span>).unwrap(),
+            <span class="string">"Home"
         </span>);
         <span class="kw">pub static </span><span class="kw-2">ref </span>SETTINGS_ICON: Img = (
-            FILES.get(<span class="string">&quot;./static/cache/img/svg/settings.svg&quot;</span>).unwrap(),
-            <span class="string">&quot;Settings&quot;
+            FILES.get(<span class="string">"./static/cache/img/svg/settings.svg"</span>).unwrap(),
+            <span class="string">"Settings"
         </span>);
         <span class="kw">pub static </span><span class="kw-2">ref </span>CREDIT_CARD: Img = (
-            FILES.get(<span class="string">&quot;./static/cache/img/svg/credit-card.svg&quot;</span>).unwrap(),
-            <span class="string">&quot;Payment&quot;
+            FILES.get(<span class="string">"./static/cache/img/svg/credit-card.svg"</span>).unwrap(),
+            <span class="string">"Payment"
         </span>);
         <span class="kw">pub static </span><span class="kw-2">ref </span>HELP_CIRCLE: Img = (
-            FILES.get(<span class="string">&quot;./static/cache/img/svg/help-circle.svg&quot;</span>).unwrap(),
-            <span class="string">&quot;Help&quot;
+            FILES.get(<span class="string">"./static/cache/img/svg/help-circle.svg"</span>).unwrap(),
+            <span class="string">"Help"
         </span>);
         <span class="kw">pub static </span><span class="kw-2">ref </span>MESSAGE: Img = (
             FILES
-                .get(<span class="string">&quot;./static/cache/img/svg/message-square.svg&quot;</span>)
+                .get(<span class="string">"./static/cache/img/svg/message-square.svg"</span>)
                 .unwrap(),
-            <span class="string">&quot;Message&quot;
+            <span class="string">"Message"
         </span>);
         <span class="kw">pub static </span><span class="kw-2">ref </span>DOCS_ICON: Img = (
-            FILES.get(<span class="string">&quot;./static/cache/img/svg/file-text.svg&quot;</span>).unwrap(),
-            <span class="string">&quot;Documentation&quot;
+            FILES.get(<span class="string">"./static/cache/img/svg/file-text.svg"</span>).unwrap(),
+            <span class="string">"Documentation"
         </span>);
         <span class="kw">pub static </span><span class="kw-2">ref </span>MCAPTCHA_TRANS_ICON: Img = (
-            FILES.get(<span class="string">&quot;./static/cache/img/icon-trans.png&quot;</span>).unwrap(),
-            <span class="string">&quot;Logo&quot;
+            FILES.get(<span class="string">"./static/cache/img/icon-trans.png"</span>).unwrap(),
+            <span class="string">"Logo"
         </span>);
         <span class="kw">pub static </span><span class="kw-2">ref </span>BAR_CHART: Img = (
-            FILES.get(<span class="string">&quot;./static/cache/img/svg/bar-chart.svg&quot;</span>).unwrap(),
-            <span class="string">&quot;Statistics&quot;
+            FILES.get(<span class="string">"./static/cache/img/svg/bar-chart.svg"</span>).unwrap(),
+            <span class="string">"Statistics"
         </span>);
     }
 }
 
 <span class="attr">#[derive(RustEmbed)]
-#[folder = <span class="string">&quot;assets/&quot;</span>]
+#[folder = <span class="string">"assets/"</span>]
 </span><span class="kw">struct </span>Asset;
 
 <span class="kw">fn </span>handle_assets(path: <span class="kw-2">&amp;</span>str) -&gt; HttpResponse {
@@ -236,23 +237,23 @@
             HttpResponse::Ok()
                 .insert_header(header::CacheControl(<span class="macro">vec!</span>[
                     header::CacheDirective::Public,
-                    header::CacheDirective::Extension(<span class="string">&quot;immutable&quot;</span>.into(), <span class="prelude-val">None</span>),
+                    header::CacheDirective::Extension(<span class="string">"immutable"</span>.into(), <span class="prelude-val">None</span>),
                     header::CacheDirective::MaxAge(CACHE_AGE),
                 ]))
                 .content_type(from_path(path).first_or_octet_stream().as_ref())
                 .body(body)
         }
-        <span class="prelude-val">None </span>=&gt; HttpResponse::NotFound().body(<span class="string">&quot;404 Not Found&quot;</span>),
+        <span class="prelude-val">None </span>=&gt; HttpResponse::NotFound().body(<span class="string">"404 Not Found"</span>),
     }
 }
 
-<span class="attr">#[get(<span class="string">&quot;/assets/{_:.*}&quot;</span>)]
+<span class="attr">#[get(<span class="string">"/assets/{_:.*}"</span>)]
 </span><span class="kw">pub async fn </span>static_files(path: web::Path&lt;String&gt;) -&gt; <span class="kw">impl </span>Responder {
     handle_assets(<span class="kw-2">&amp;</span>path)
 }
 
 <span class="attr">#[derive(RustEmbed)]
-#[folder = <span class="string">&quot;static/favicons/&quot;</span>]
+#[folder = <span class="string">"static/favicons/"</span>]
 </span><span class="kw">struct </span>Favicons;
 
 <span class="kw">fn </span>handle_favicons(path: <span class="kw-2">&amp;</span>str) -&gt; HttpResponse {
@@ -266,19 +267,19 @@
             HttpResponse::Ok()
                 .insert_header(header::CacheControl(<span class="macro">vec!</span>[
                     header::CacheDirective::Public,
-                    header::CacheDirective::Extension(<span class="string">&quot;immutable&quot;</span>.into(), <span class="prelude-val">None</span>),
+                    header::CacheDirective::Extension(<span class="string">"immutable"</span>.into(), <span class="prelude-val">None</span>),
                     header::CacheDirective::MaxAge(CACHE_AGE),
                 ]))
                 .content_type(from_path(path).first_or_octet_stream().as_ref())
                 .body(body)
         }
-        <span class="prelude-val">None </span>=&gt; HttpResponse::NotFound().body(<span class="string">&quot;404 Not Found&quot;</span>),
+        <span class="prelude-val">None </span>=&gt; HttpResponse::NotFound().body(<span class="string">"404 Not Found"</span>),
     }
 }
 
-<span class="attr">#[get(<span class="string">&quot;/{file}&quot;</span>)]
+<span class="attr">#[get(<span class="string">"/{file}"</span>)]
 </span><span class="kw">pub async fn </span>favicons(path: web::Path&lt;String&gt;) -&gt; <span class="kw">impl </span>Responder {
-    <span class="macro">debug!</span>(<span class="string">&quot;searching favicons&quot;</span>);
+    <span class="macro">debug!</span>(<span class="string">"searching favicons"</span>);
     handle_favicons(<span class="kw-2">&amp;</span>path)
 }
 
@@ -298,13 +299,13 @@
             <span class="kw-2">*</span><span class="kw">crate</span>::VERIFICATIN_WIDGET_JS,
             <span class="kw-2">*</span><span class="kw">crate</span>::VERIFICATIN_WIDGET_CSS,
             <span class="kw">crate</span>::FILES
-                .get(<span class="string">&quot;./static/cache/img/icon-trans.png&quot;</span>)
+                .get(<span class="string">"./static/cache/img/icon-trans.png"</span>)
                 .unwrap(),
-            <span class="string">&quot;/favicon.ico&quot;</span>,
+            <span class="string">"/favicon.ico"</span>,
         ];
 
         <span class="kw">for </span>u <span class="kw">in </span>urls.iter() {
-            <span class="macro">println!</span>(<span class="string">&quot;[*] Testing static asset at URL: {u}&quot;</span>);
+            <span class="macro">println!</span>(<span class="string">"[*] Testing static asset at URL: {u}"</span>);
             <span class="kw">let </span>resp =
                 test::call_service(<span class="kw-2">&amp;</span>app, test::TestRequest::get().uri(u).to_request())
                     .<span class="kw">await</span>;
