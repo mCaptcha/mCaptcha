@@ -94,7 +94,7 @@ export const solveCaptchaRunner = async (e: Event): Promise<void> => {
       }
       if (resp.type === "progress") {
         if (width < 80) {
-          width = (resp.nonce / max_recorded_nonce) * 100;
+          width = Number(resp.nonce / max_recorded_nonce) * 100;
           setWidth(width);
         }
         console.log(`received nonce ${resp.nonce}`);
