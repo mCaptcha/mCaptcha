@@ -3,7 +3,7 @@
 //
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
-import { Work, ServiceWorkerMessage } from "./types";
+import {Work, ServiceWorkerMessage} from "./types";
 import fetchPoWConfig from "./fetchPoWConfig";
 import sendWork from "./sendWork";
 import sendToParent from "./sendToParent";
@@ -94,7 +94,7 @@ export const solveCaptchaRunner = async (e: Event): Promise<void> => {
       }
       if (resp.type === "progress") {
         if (width < 80) {
-          width = Number(resp.nonce / max_recorded_nonce) * 100;
+          width = resp.nonce / max_recorded_nonce * 100;
           setWidth(width);
         }
         console.log(`received nonce ${resp.nonce}`);
