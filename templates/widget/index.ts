@@ -12,7 +12,17 @@ import * as CONST from "./const";
 import "./main.scss";
 
 let LOCK = false;
-const worker = new Worker("/bench.js");
+
+const workerPromise = new Promise<Worker>((res) => {
+  const worker = new Worker("/bench.js");
+  worker.onmessage = (event: MessageEvent) => {
+    const message: ServiceWorkerMessage = event.data;
+    if(message.type === "ready") {
+      console.log("worker ready");
+      res(worker);
+    }
+  };
+});
 
 /** add  mcaptcha widget element to DOM */
 export const registerVerificationEventHandler = (): void => {
@@ -20,10 +30,14 @@ export const registerVerificationEventHandler = (): void => {
     document.querySelector(".widget__verification-container")
   );
   verificationContainer.style.display = "flex";
-  CONST.btn().addEventListener("click", (e) => solveCaptchaRunner(e));
+  workerPromise.then((worker: Worker) => {
+    const btn = CONST.btn();
+    btn.disabled = false;
+    btn.addEventListener("click", (e) => solveCaptchaRunner(worker, e));
+  });
 };
 
-export const solveCaptchaRunner = async (e: Event): Promise<void> => {
+export const solveCaptchaRunner = async (worker: Worker, e: Event): Promise<void> => {
   const PROGRESS_FILL = <HTMLElement>document.querySelector(".progress__fill");
 
   const setWidth = (width: number) => {

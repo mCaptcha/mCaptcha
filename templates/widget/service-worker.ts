@@ -9,6 +9,12 @@ import prove from "./prove";
 import { PoWConfig, ServiceWorkerMessage, ServiceWorkerWork } from "./types";
 
 log.log("worker registered");
+
+const ready: ServiceWorkerMessage = {
+  type: "ready",
+};
+postMessage(ready);
+
 onmessage = async (e) => {
   console.debug("message received at worker");
   const config: PoWConfig = e.data;
