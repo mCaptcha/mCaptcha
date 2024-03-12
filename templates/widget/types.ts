@@ -40,5 +40,6 @@ export type Token = {
 };
 
 export type ServiceWorkerMessage =
+  | { type: "ready" }
   | { type: "work"; value: ServiceWorkerWork }
   | { type: "progress"; nonce: number };
