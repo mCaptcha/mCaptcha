@@ -31,6 +31,10 @@ RUN cargo build --release
 
 FROM debian:bookworm as mCaptcha
 LABEL org.opencontainers.image.source https://github.com/mCaptcha/mCaptcha
+RUN set -ex; \
+    apt-get update; \
+    DEBIAN_FRONTEND=noninteractive \
+    apt-get install -y --no-install-recommends curl
 RUN useradd -ms /bin/bash -u 1001 mcaptcha
 WORKDIR /home/mcaptcha
 COPY --from=rust /src/target/release/mcaptcha /usr/local/bin/
