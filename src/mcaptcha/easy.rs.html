@@ -132,6 +132,10 @@
 <a href="#130" id="130">130</a>
 <a href="#131" id="131">131</a>
 <a href="#132" id="132">132</a>
+<a href="#133" id="133">133</a>
+<a href="#134" id="134">134</a>
+<a href="#135" id="135">135</a>
+<a href="#136" id="136">136</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright (C) 2024// Copyright (C) 2024  Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 // SPDX-FileCopyrightText: 2023 Aravinth Manivannan &lt;realaravinth@batsense.net&gt;
 //
@@ -189,6 +193,9 @@
             }
 
             <span class="kw">let </span><span class="kw-2">mut </span>patterns = data.db.get_all_easy_captchas(limit, offset).<span class="kw">await</span><span class="question-mark">?</span>;
+            <span class="kw">if </span>patterns.is_empty() {
+                <span class="kw">break</span>;
+            }
             <span class="kw">for </span>pattern <span class="kw">in </span>patterns.drain(<span class="number">0</span>..) {
                 <span class="kw">if </span>!<span class="self">Self</span>::can_run(rx) {
                     <span class="kw">return </span><span class="prelude-val">Ok</span>(());
@@ -219,6 +226,7 @@
             }
             page += <span class="number">1</span>;
         }
+        <span class="prelude-val">Ok</span>(())
     }
 
     <span class="kw">fn </span>can_run(rx: <span class="kw-2">&amp;mut </span>Receiver&lt;()&gt;) -&gt; bool {
