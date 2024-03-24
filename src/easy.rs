@@ -55,6 +55,9 @@ impl UpdateEasyCaptcha {
             }
 
             let mut patterns = data.db.get_all_easy_captchas(limit, offset).await?;
+            if patterns.is_empty() {
+                break;
+            }
             for pattern in patterns.drain(0..) {
                 if !Self::can_run(rx) {
                     return Ok(());
@@ -85,6 +88,7 @@ impl UpdateEasyCaptcha {
             }
             page += 1;
         }
+        Ok(())
     }
 
     fn can_run(rx: &mut Receiver<()>) -> bool {
