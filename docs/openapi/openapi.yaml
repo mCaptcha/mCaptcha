@@ -614,6 +614,7 @@ components:
       required:
         - username
         - password
+        - confirm_password
         - email
       properties:
         username:
@@ -621,6 +622,9 @@ components:
         email:
           type: string
         password:
+          type: string
+          format: password
+        confirm_password:
           type: string
           format: password
     LoginUser:
