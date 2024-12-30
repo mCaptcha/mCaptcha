@@ -104,7 +104,7 @@ serde_json = "1"
 sqlx = { version = "0.7", features = [ "runtime-tokio-rustls", "postgres", "time", "mysql" ] }
 
 [dev-dependencies]
-mcaptcha_pow_sha256 = "0.4"
+mcaptcha_pow_sha256 = "0.5"
 awc = "3.0.0"
 
 
