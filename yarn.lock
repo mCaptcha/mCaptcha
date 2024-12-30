@@ -642,9 +642,7 @@
   integrity sha512-ERIbxIo+ZnQKtti/T4FLmcY0neuc5R05L97qYc62Hm++i+3dx/W6A8oC4V9U0XKCPYnHZFoZozAZlbsGXjrsVQ==
 
 "@mcaptcha/vanilla-glue@^0.1.0-rc1":
-  version "0.1.0-rc1"
-  resolved "https://registry.yarnpkg.com/@mcaptcha/vanilla-glue/-/vanilla-glue-0.1.0-rc1.tgz#97244228d1422aadbfecd26fc6329ef90bb23dd6"
-  integrity sha512-nRJ0ILcQsFhoUEP/pkkHonz5poE+q4bob+CjuSXliQFAFKciCmjMdzDd19Nj7Au2Xl10UPio9oOFfOTBiYe7kA==
+  version "0.1.0-rc2"
   dependencies:
     "@mcaptcha/core-glue" "0.1.0-rc1"
     jest-environment-jsdom "^29.7.0"
