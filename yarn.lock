@@ -907,9 +907,7 @@
     parse5 "^7.0.0"
 
 "@types/jsdom@^21.1.4":
-  version "21.1.4"
-  resolved "https://registry.yarnpkg.com/@types/jsdom/-/jsdom-21.1.4.tgz#82105c8fb5a1072265dde1a180336ca74a8fbabf"
-  integrity sha512-NzAMLEV0KQ4cBaDx3Ls8VfJUElyDUm1xrtYRmcMK0gF8L5xYbujFVaQlJ50yinQ/d47j2rEP1XUzkiYrw4YRFA==
+  version "21.1.7"
   dependencies:
     "@types/node" "*"
     "@types/tough-cookie" "*"
