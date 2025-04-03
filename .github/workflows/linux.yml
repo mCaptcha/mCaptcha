@@ -82,7 +82,7 @@ jobs:
             && echo "POSTGRES_DATABASE_URL=$POSTGRES_DATABASE_URL" >> $GITHUB_ENV \
             && echo "MARIA_DATABASE_URL=$MARIA_DATABASE_URL" >> $GITHUB_ENV
 
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v4
         with:
           node-version: "20.0.0"
 
