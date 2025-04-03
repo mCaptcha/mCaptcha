@@ -44,7 +44,7 @@ argon2-creds = { branch = "master", git = "https://github.com/realaravinth/argon
 config = "0.15"
 validator = { version = "0.15", features = ["derive"]}
 
-derive_builder = "0.11"
+derive_builder = "0.20"
 derive_more = "0.99"
 
 serde = "1"
