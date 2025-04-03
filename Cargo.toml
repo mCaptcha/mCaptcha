@@ -69,7 +69,7 @@ mime = "0.3.16"
 
 num_cpus = "1.13.1"
 
-lettre = { version = "0.10.0-rc.3", features = [
+lettre = { version = "0.11.0", features = [
 "builder", 
 "tokio1", 
 "tokio1-native-tls",
