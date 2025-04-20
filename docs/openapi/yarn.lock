@@ -42,7 +42,7 @@
     uri-js "^4.2.2"
 
 "@redocly/cli@^1.4.0":
-  version "1.26.1"
+  version "1.34.2"
   dependencies:
     "@redocly/openapi-core" "1.4.0"
     chokidar "^3.5.1"
