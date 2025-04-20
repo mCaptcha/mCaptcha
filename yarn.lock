@@ -5091,7 +5091,7 @@ ts-jest@^29.1.1:
     yargs-parser "^21.0.1"
 
 ts-loader@^9.5.0:
-  version "9.5.1"
+  version "9.5.2"
   dependencies:
     chalk "^4.1.0"
     enhanced-resolve "^5.0.0"
