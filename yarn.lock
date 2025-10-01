@@ -5147,7 +5147,7 @@ type-is@~1.6.18:
     mime-types "~2.1.24"
 
 typescript@^5.2.2:
-  version "5.7.2"
+  version "5.9.3"
 
 undici-types@~5.26.4:
   version "5.26.5"
