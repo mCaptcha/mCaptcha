@@ -4604,7 +4604,7 @@ sass-loader@^13.3.2:
     neo-async "^2.6.2"
 
 sass@^1.69.5:
-  version "1.83.0"
+  version "1.93.2"
   dependencies:
     chokidar ">=3.0.0 <4.0.0"
     immutable "^4.0.0"
