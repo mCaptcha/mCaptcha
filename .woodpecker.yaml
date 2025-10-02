@@ -1,6 +1,6 @@
 steps:
   frontend:
-    image: node:20
+    image: node:22
     commands:
       - make frontend
     when:
