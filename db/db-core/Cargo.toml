@@ -10,7 +10,7 @@ authors = ["realaravinth <realaravinth@batsense.net>"]
 
 [dependencies] 
 async-trait = "0.1.51"
-thiserror = "1.0.30"
+thiserror = "2.0.0"
 serde = { version = "1", features = ["derive"]}
 url = { version  = "2.2.2", features = ["serde"] }
 libmcaptcha = "0.2.4"
