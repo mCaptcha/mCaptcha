@@ -1,5 +1,9 @@
-(function() {var implementors = {
-"db_core":[],
-"db_sqlx_maria":[],
-"db_sqlx_postgres":[]
-};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
+(function() {
+    var implementors = Object.fromEntries([["db_core",[]],["db_sqlx_maria",[]],["db_sqlx_postgres",[]]]);
+    if (window.register_implementors) {
+        window.register_implementors(implementors);
+    } else {
+        window.pending_implementors = implementors;
+    }
+})()
+//{"start":57,"fragment_lengths":[14,21,24]}
