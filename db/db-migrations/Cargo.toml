@@ -10,4 +10,4 @@ authors = ["realaravinth <realaravinth@batsense.net>"]
 
 [dependencies]
 actix-rt = "2"
-sqlx = { version = "0.7", features = [ "runtime-tokio-rustls", "postgres", "time", "mysql" ] }
+sqlx = { version = "0.8", features = [ "runtime-tokio-rustls", "postgres", "time", "mysql" ] }
