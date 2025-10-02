@@ -3825,7 +3825,7 @@ mimic-fn@^2.1.0:
   integrity sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg==
 
 mini-css-extract-plugin@^2.7.6:
-  version "2.9.2"
+  version "2.9.4"
   dependencies:
     schema-utils "^4.0.0"
 
