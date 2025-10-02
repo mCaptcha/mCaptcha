@@ -16,7 +16,7 @@ services:
       - mcaptcha_redis
 
   mcaptcha_postgres:
-    image: postgres:13.18
+    image: postgres:13.22
     volumes:
       - mcaptcha-data:/var/lib/postgresql/
     environment:
