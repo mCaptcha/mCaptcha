@@ -22,8 +22,8 @@ is_ci(){
 
 
 
-docker-compose down -v --remove-orphans || true
-docker-compose up -d
+docker compose down -v --remove-orphans || true
+docker compose up -d
 cd $(mktemp -d)
 pwd
 find 
@@ -40,4 +40,4 @@ else
 fi
 
 cd $PROJECT_ROOT
-docker-compose down -v --remove-orphans || true
+docker compose down -v --remove-orphans || true
