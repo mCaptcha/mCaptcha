@@ -26,7 +26,7 @@
     "jsdom": "^22.1.0",
     "mini-css-extract-plugin": "^2.7.6",
     "sass": "^1.69.5",
-    "sass-loader": "^13.3.2",
+    "sass-loader": "^16.0.0",
     "sinon": "^17.0.0",
     "ts-jest": "^29.1.1",
     "ts-loader": "^9.5.0",
