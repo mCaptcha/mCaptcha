@@ -32,7 +32,7 @@ actix-cors = "0.7.0"
 actix-service = "2.0.0"
 async-trait = "0.1.51"
 mime_guess = "2.0.3"
-rust-embed = "6.4.0"
+rust-embed = "8.0.0"
 libcachebust = "0.3.0"
 
 futures = "0.3.15"
