@@ -10,7 +10,7 @@
     "test": "jest"
   },
   "devDependencies": {
-    "@types/jest": "^29.5.6",
+    "@types/jest": "^30.0.0",
     "@types/jsdom": "^27.0.0",
     "@types/node": "^22.0.0",
     "@types/sinon": "^17.0.0",
@@ -20,8 +20,8 @@
     "css-loader": "^7.0.0",
     "css-minimizer-webpack-plugin": "^7.0.0",
     "eslint": "^9.0.0",
-    "jest": "^29.7.0",
-    "jest-environment-jsdom": "^29.7.0",
+    "jest": "^30.0.0",
+    "jest-environment-jsdom": "^30.0.0",
     "jest-fetch-mock": "^3.0.3",
     "jsdom": "^27.0.0",
     "mini-css-extract-plugin": "^2.7.6",
