@@ -27,7 +27,7 @@
     "mini-css-extract-plugin": "^2.7.6",
     "sass": "^1.69.5",
     "sass-loader": "^16.0.0",
-    "sinon": "^17.0.0",
+    "sinon": "^21.0.0",
     "ts-jest": "^29.1.1",
     "ts-loader": "^9.5.0",
     "ts-node": "^10.9.1",
