@@ -29,7 +29,7 @@ RUN cargo --version
 RUN make cache-bust
 RUN cargo build --release
 
-FROM debian:bookworm as mCaptcha
+FROM debian:trixie as mCaptcha
 LABEL org.opencontainers.image.source https://github.com/mCaptcha/mCaptcha
 RUN set -ex; \
     apt-get update; \

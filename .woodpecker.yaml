@@ -1,44 +1,10 @@
 steps:
   build_docker_img:
     image: plugins/docker
+    when:
+      event: [pull_request]
     settings:
       dry_run: true
-      repo: libresolutions/vanikam
+      repo: mcaptcha/mcaptcha
       tags:
         latest
-
-        #  build_and_publish_docker_img:
-        #    image: plugins/docker
-        #    when:
-        #      event: [push, tag, deployment]
-        #    settings:
-        #      username: forgeflux
-        #      password:
-        #        from_secret: DOCKER_TOKEN
-        #      repo: libresolutions/vanikam
-        #      tags:
-        #        latest
-
-        #  build_publisher_docker_img:
-        #    image: plugins/docker
-        #    when:
-        #      event: [push, tag, deployment]
-        #    settings:
-        #      dry_run: true
-        #      dockerfile: scripts/publish-bins-docker
-        #      purge: false
-        #      repo: libresolutions/vanikam-publisher
-        #      tags: latest
-        #
-        #  publish_bins:
-        #    image: rust
-        #    when:
-        #      event: [push, tag, deployment]
-        #    commands:
-        #      - apt update
-        #      - apt-get -y --no-install-recommends install gpg tar curl wget
-        #      - echo -n "$RELEASE_BOT_GPG_SIGNING_KEY" | gpg --batch --import --pinentry-mode loopback
-        #      - scripts/bin-publish.sh publish master latest $DUMBSERVE_PASSWORD
-        #    secrets: [RELEASE_BOT_GPG_SIGNING_KEY, DUMBSERVE_PASSWORD, GPG_PASSWORD]
-      #
-
