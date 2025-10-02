@@ -188,7 +188,6 @@ impl Data {
             .build()
             .unwrap()
     }
-    #[cfg(not(tarpaulin_include))]
     /// create new instance of app data
     pub async fn new(s: &Settings, survey_secrets: SecretsStore) -> Arc<Self> {
         let creds = Self::get_creds();

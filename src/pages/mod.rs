@@ -25,7 +25,6 @@ pub fn get_middleware() -> Authentication<routes::Routes> {
     Authentication::with_identity(routes::ROUTES)
 }
 
-#[cfg(not(tarpaulin_include))]
 #[cfg(test)]
 mod tests {
     use actix_web::http::StatusCode;

@@ -8,7 +8,6 @@ use std::env;
 use sqlx::postgres::PgPoolOptions;
 use sqlx::mysql::MySqlPoolOptions;
 
-#[cfg(not(tarpaulin_include))]
 #[actix_rt::main]
 async fn main() {
     //TODO featuregate sqlite and postgres

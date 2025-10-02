@@ -40,7 +40,6 @@ impl std::cmp::PartialEq for SmtpErrorWrapper {
 }
 
 #[derive(Debug, Display, PartialEq, Error)]
-#[cfg(not(tarpaulin_include))]
 pub enum ServiceError {
     #[display(fmt = "internal server error")]
     InternalServerError,
@@ -114,14 +113,11 @@ pub enum ServiceError {
 }
 
 #[derive(Serialize, Deserialize)]
-#[cfg(not(tarpaulin_include))]
 pub struct ErrorToResponse {
     pub error: String,
 }
 
-#[cfg(not(tarpaulin_include))]
 impl ResponseError for ServiceError {
-    #[cfg(not(tarpaulin_include))]
     fn error_response(&self) -> HttpResponse {
         HttpResponseBuilder::new(self.status_code())
             .append_header((header::CONTENT_TYPE, "application/json; charset=UTF-8"))
@@ -133,7 +129,6 @@ impl ResponseError for ServiceError {
             )
     }
 
-    #[cfg(not(tarpaulin_include))]
     fn status_code(&self) -> StatusCode {
         match self {
             ServiceError::ClosedForRegistration => StatusCode::FORBIDDEN,
@@ -177,7 +172,6 @@ impl ResponseError for ServiceError {
 }
 
 impl From<CredsError> for ServiceError {
-    #[cfg(not(tarpaulin_include))]
     fn from(e: CredsError) -> ServiceError {
         match e {
             CredsError::UsernameCaseMappedError => ServiceError::UsernameCaseMappedError,
@@ -192,7 +186,6 @@ impl From<CredsError> for ServiceError {
 }
 
 impl From<DBError> for ServiceError {
-    #[cfg(not(tarpaulin_include))]
     fn from(e: DBError) -> ServiceError {
         println!("from conversin: {}", e);
         match e {
@@ -208,57 +201,46 @@ impl From<DBError> for ServiceError {
 }
 
 impl From<ValidationErrors> for ServiceError {
-    #[cfg(not(tarpaulin_include))]
     fn from(_: ValidationErrors) -> ServiceError {
         ServiceError::NotAnEmail
     }
 }
 
 impl From<ParseError> for ServiceError {
-    #[cfg(not(tarpaulin_include))]
     fn from(_: ParseError) -> ServiceError {
         ServiceError::NotAUrl
     }
 }
 
-#[cfg(not(tarpaulin_include))]
 impl From<CaptchaError> for ServiceError {
     fn from(e: CaptchaError) -> ServiceError {
         ServiceError::CaptchaError(e)
     }
 }
 
-#[cfg(not(tarpaulin_include))]
 impl From<SmtpError> for ServiceError {
-    #[cfg(not(tarpaulin_include))]
     fn from(e: SmtpError) -> Self {
         ServiceError::UnableToSendEmail(SmtpErrorWrapper(e))
     }
 }
 
-#[cfg(not(tarpaulin_include))]
 impl From<RecvError> for ServiceError {
-    #[cfg(not(tarpaulin_include))]
     fn from(e: RecvError) -> Self {
         log::error!("{:?}", e);
         ServiceError::InternalServerError
     }
 }
 
-#[cfg(not(tarpaulin_include))]
 impl From<MailboxError> for ServiceError {
-    #[cfg(not(tarpaulin_include))]
     fn from(e: MailboxError) -> Self {
         log::error!("{:?}", e);
         ServiceError::InternalServerError
     }
 }
 
-#[cfg(not(tarpaulin_include))]
 pub type ServiceResult<V> = std::result::Result<V, ServiceError>;
 
 #[derive(Debug, Display, PartialEq, Error)]
-#[cfg(not(tarpaulin_include))]
 pub enum PageError {
     #[display(fmt = "Something weng wrong: Internal server error")]
     InternalServerError,
@@ -267,17 +249,13 @@ pub enum PageError {
     ServiceError(ServiceError),
 }
 
-#[cfg(not(tarpaulin_include))]
 impl From<ServiceError> for PageError {
-    #[cfg(not(tarpaulin_include))]
     fn from(e: ServiceError) -> Self {
         PageError::ServiceError(e)
     }
 }
 
-#[cfg(not(tarpaulin_include))]
 impl From<DBError> for PageError {
-    #[cfg(not(tarpaulin_include))]
     fn from(e: DBError) -> Self {
         let se: ServiceError = e.into();
         se.into()
@@ -297,7 +275,6 @@ impl ResponseError for PageError {
         }
     }
 
-    #[cfg(not(tarpaulin_include))]
     fn status_code(&self) -> StatusCode {
         match self {
             PageError::InternalServerError => StatusCode::INTERNAL_SERVER_ERROR,
@@ -306,7 +283,6 @@ impl ResponseError for PageError {
     }
 }
 
-#[cfg(not(tarpaulin_include))]
 pub type PageResult<V> = std::result::Result<V, PageError>;
 
 #[cfg(test)]
