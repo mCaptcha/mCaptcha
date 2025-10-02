@@ -1,0 +1,29 @@
+steps:
+  frontend:
+    image: node:22
+    commands:
+      - make frontend
+    when:
+      - event: [pull_request, push]
+      - branch:
+          include: [woodpecker-pipeline]
+          exclude:
+            - renovate/\*
+    volumes:
+      - /var/lib/woodpercker-cache/mcaptcha/yarn:/root/.cache/yarn
+
+  backend:
+    image: rust:latest
+    when:
+      - event: [pull_request, push]
+      - branch:
+          include: [woodpecker-pipeline]
+          exclude:
+            - renovate/\*
+    commands:
+      - cargo --version
+      - make cache-bust
+      - cargo build --release
+    volumes:
+      - /var/lib/woodpercker-cache/mcaptcha/cargo:/root/.cargo
+      - /var/lib/woodpercker-cache/mcaptcha/target:/woodpecker/src/git.batsense.net/mCaptcha/mCaptcha/target

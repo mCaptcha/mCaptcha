@@ -2,13 +2,13 @@
 // SPDX-FileCopyrightText: 2023 Aravinth Manivannan <realaravinth@batsense.net>
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
+"use strict";
 
 import createError from "./index";
 import * as e from "./index";
 
 import setup from "./setUpTests";
 
-"use strict";
 
 jest.useFakeTimers();
 

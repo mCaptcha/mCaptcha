@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: 2023 Aravinth Manivannan <realaravinth@batsense.net>
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
-FROM node:20 as frontend
+FROM node:22 as frontend
 RUN set -ex; \
     apt-get update; \
     DEBIAN_FRONTEND=noninteractive \
@@ -29,7 +29,7 @@ RUN cargo --version
 RUN make cache-bust
 RUN cargo build --release
 
-FROM debian:bookworm as mCaptcha
+FROM debian:trixie as mCaptcha
 LABEL org.opencontainers.image.source https://github.com/mCaptcha/mCaptcha
 RUN set -ex; \
     apt-get update; \

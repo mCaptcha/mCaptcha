@@ -56,7 +56,6 @@ pub struct Smtp {
 }
 
 impl Server {
-    #[cfg(not(tarpaulin_include))]
     pub fn get_ip(&self) -> String {
         format!("{}:{}", self.ip, self.port)
     }
@@ -205,7 +204,6 @@ const DEPRECATED_ENV_VARS: [(&str, &str); 23] = [
     ("smtp.port", "MCAPTCHA_SMTP_PORT"),
 ];
 
-#[cfg(not(tarpaulin_include))]
 impl Settings {
     pub fn new() -> Result<Self, ConfigError> {
         let mut s = Config::builder();

@@ -92,7 +92,6 @@ pub const CACHE_AGE: u32 = 604800;
 pub type ArcData = Arc<crate::data::Data>;
 pub type AppData = actix_web::web::Data<ArcData>;
 
-#[cfg(not(tarpaulin_include))]
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     use std::time::Duration;
@@ -185,7 +184,6 @@ async fn main() -> std::io::Result<()> {
     Ok(())
 }
 
-#[cfg(not(tarpaulin_include))]
 pub fn get_json_err() -> JsonConfig {
     JsonConfig::default().error_handler(|err, _| {
         //debug!("JSON deserialization error: {:?}", &err);
@@ -193,7 +191,6 @@ pub fn get_json_err() -> JsonConfig {
     })
 }
 
-#[cfg(not(tarpaulin_include))]
 pub fn get_identity_service(
     settings: &Settings,
 ) -> IdentityService<CookieIdentityPolicy> {

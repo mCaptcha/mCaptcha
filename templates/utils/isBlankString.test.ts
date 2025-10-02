@@ -2,6 +2,7 @@
 // SPDX-FileCopyrightText: 2023 Aravinth Manivannan <realaravinth@batsense.net>
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
+"use strict";
 
 import isBlankString from "./isBlankString";
 import {mockAlert} from "../setUpTests";
@@ -9,7 +10,6 @@ import {mockAlert} from "../setUpTests";
 
 import setup from "../components/error/setUpTests";
 
-"use strict";
 
 mockAlert();
 

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":dependencyDashboard"
+  ],
+  "labels": [
+    "renovate-bot"
+  ],
+  "prHourlyLimit": 0,
+  "timezone": "Asia/kolkata",
+  "prCreation": "immediate",
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "labels": [
+      "renovate-bot",
+      "renovate-security",
+      "security"
+    ]
+  }
+}
