@@ -34,7 +34,7 @@
     "typescript": "^5.2.2",
     "webpack": "^5.89.0",
     "webpack-cli": "^6.0.0",
-    "webpack-dev-server": "^4.15.1"
+    "webpack-dev-server": "^5.0.0"
   },
   "dependencies": {
     "@mcaptcha/pow_sha256-polyfill": "^0.1.0-rc2",
