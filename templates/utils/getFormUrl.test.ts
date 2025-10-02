@@ -2,11 +2,10 @@
 // SPDX-FileCopyrightText: 2023 Aravinth Manivannan <realaravinth@batsense.net>
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
+"use strict";
 
 import getFormUrl from "./getFormUrl";
 import {getLoginFormHtml} from "../setUpTests";
-
-"use strict";
 
 const formClassName = "form__box";
 const formURL = "/api/v1/signin";

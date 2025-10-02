@@ -30,7 +30,7 @@ const prove = async (
       config.string,
       config.difficulty_factor,
       STEPS,
-      (nonce: BigInt | number) => progress(Number(nonce))
+      (nonce: bigint | number) => progress(Number(nonce))
     );
     const t1 = performance.now();
     time = t1 - t0;

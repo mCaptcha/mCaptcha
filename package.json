@@ -10,6 +10,8 @@
     "test": "jest"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/js": "^9.36.0",
     "@types/jest": "^30.0.0",
     "@types/jsdom": "^27.0.0",
     "@types/node": "^22.0.0",
@@ -20,6 +22,7 @@
     "css-loader": "^7.0.0",
     "css-minimizer-webpack-plugin": "^7.0.0",
     "eslint": "^9.0.0",
+    "globals": "^16.4.0",
     "jest": "^30.0.0",
     "jest-environment-jsdom": "^30.0.0",
     "jest-fetch-mock": "^3.0.3",
@@ -38,7 +41,7 @@
   },
   "dependencies": {
     "@mcaptcha/pow_sha256-polyfill": "^0.1.0-rc2",
-    "@mcaptcha/vanilla-glue": "^0.1.0-rc1",
-    "@mcaptcha/pow-wasm": "^0.1.0-rc2"
+    "@mcaptcha/pow-wasm": "^0.1.0-rc2",
+    "@mcaptcha/vanilla-glue": "^0.1.0-rc1"
   }
 }
