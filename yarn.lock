@@ -5079,7 +5079,7 @@ ts-api-utils@^1.0.1:
   integrity sha512-wNMeqtMz5NtwpT/UZGY5alT+VoKdSsOOP/kqHFcUW1P/VRhH2wJ48+DN2WwUliNbQ976ETwDL0Ifd2VVvgonvg==
 
 ts-jest@^29.1.1:
-  version "29.3.2"
+  version "29.4.4"
   dependencies:
     bs-logger "0.x"
     fast-json-stable-stringify "2.x"
