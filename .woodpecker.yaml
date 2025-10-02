@@ -1,10 +1,24 @@
 steps:
-  build_docker_img:
-    image: plugins/docker
+  frontend:
+    image: node:20
     when:
-      event: [pull_request]
-    settings:
-      dry_run: true
-      repo: mcaptcha/mcaptcha
-      tags:
-        latest
+      - event: [pull_request, push]
+      - branch:
+        include: [woodpecker-pipeline]
+        exclude: ["renovate/*"]
+    commands:
+#      - apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends make
+#      - yarn install && cd docs/openapi && yarn install 
+      - make frontend
+
+  backend:
+    image: rust:latest
+    when:
+      - event: [pull_request, push]
+      - branch:
+        include: [woodpecker-pipeline]
+        exclude: ["renovate/*"]
+    commands:
+      - cargo --version
+      - make cache-bust
+      - cargo build
