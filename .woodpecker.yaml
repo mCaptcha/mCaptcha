@@ -7,12 +7,19 @@ steps:
       - event: [pull_request, push]
       - branch:
           include: [woodpecker-pipeline]
-          exclude: ["renovate/*"]
+          exclude:
+            - renovate/\*
     volumes:
       - /var/lib/woodpercker-cache/mcaptcha/yarn:/root/.cache/yarn
 
   backend:
     image: rust:latest
+    when:
+      - event: [pull_request, push]
+      - branch:
+          include: [woodpecker-pipeline]
+          exclude:
+            - renovate/\*
     commands:
       - cargo --version
       - make cache-bust
