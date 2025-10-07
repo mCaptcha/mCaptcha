@@ -18,10 +18,9 @@ services:
   mcaptcha_postgres:
     image: postgres:18.0
     volumes:
-      - mcaptcha-data:/var/lib/postgresql/
+      - mcaptcha-data:/var/lib/postgresql
     environment:
       POSTGRES_PASSWORD: password # change password
-      PGDATA: /var/lib/postgresql/data/mcaptcha/
 
   mcaptcha_redis:
     image: mcaptcha/cache:latest
