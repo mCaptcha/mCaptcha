@@ -49,6 +49,12 @@ a database instance mcaptcha instance.
 $ docker-compose up -d
 ```
 
+## Easypanel
+
+[Easypanel](https://easypanel.io/) is a self-hosted Docker deployment platform. mCaptcha has a one-click deployment template there that sets up the app, cache module, and PostgreSQL automatically:
+
+[![Deploy on Easypanel][easypanel-btn]][easypanel-deploy]
+
 ## Bare metal:
 
 The process is tedious, most of this will be automated with a script in
@@ -152,3 +158,6 @@ $ sudo systemctl daemon-reload && \
 	sudo systemctl start mcaptcha
 ``
 ```
+
+[easypanel-btn]: https://easypanel.io/img/deploy-on-easypanel-40.svg
+[easypanel-deploy]: https://easypanel.io/templates/mcaptcha
