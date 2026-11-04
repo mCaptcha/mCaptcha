@@ -125,6 +125,10 @@ See [HACKING.md](./docs/HACKING.md)
 
 See [DEPLOYMENT.md](./docs/DEPLOYMENT.md)
 
+## One-Click Deploy
+
+[![Deploy on RepoCloud](https://d16t0pc4846x52.cloudfront.net/deploylobe.svg)](https://repocloud.io/details/mCaptcha/)
+
 ## Configuration:
 
 See [CONFIGURATION.md](./docs/CONFIGURATION.md)
